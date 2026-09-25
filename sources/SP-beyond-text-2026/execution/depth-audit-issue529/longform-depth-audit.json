@@ -1,0 +1,904 @@
+{
+ "schema_version": "2.0-rc1",
+ "issue_id": "SP-beyond-text-2026",
+ "authority": "GitHub Issue #529 + Sol execution-boundary comment 2026-09-25; LONGFORM_SPECIAL reader-depth (TS-001-comparable)",
+ "basis": {
+  "transition_ledger": "sources/SP-beyond-text-2026/execution/evidence-semantic-depth-r2/transition-ledger.json",
+  "manuscript": "surveys/special/beyond-text-2026/main.tex (post §2/§6/§7/§8 expansion + §2 citation/number repair)",
+  "prior_audit": "sources/SP-beyond-text-2026/execution/publication-preview-r2-depth-audit/semantic-depth-delta-audit.json (not auto-inherited; T-COND-02 home record in §3 retained, §2 cross-ref noted)"
+ },
+ "counts": {
+  "LONGFORM_SUBSTANTIVE": 33,
+  "EVIDENCE_BLOCKED": 3,
+  "BOUNDARY_LIMITED": 7
+ },
+ "evidence_blocked": [
+  {
+   "transition_id": "T-PAR-06",
+   "gap": "SDE脚は実質的(時間依存得点網・予測子修正子・確率流ODE適応積分+厳密尤度・無条件得点からの条件生成、1000-2000評価費用の代償、流れ整合への継承)。EDM脚は要旨水準の framing(部品化・35評価)のみで、要求される設計空間深度(前処理/日程/解法の内訳ablation・backbone対目的分離)の本文典拠が不在。不足典拠=EDM full body(Karras et al. 2022, arXiv:2206.00364 のpreconditioning/schedule/solver ablation)+BT-D ID: BT-D022。SDE脚の条件付き exact 数値(IS 9.89/FID 2.20/NLL 2.99等)も本文は定性的。"
+  },
+  {
+   "transition_id": "T-EV-01",
+   "gap": "thinness traces to absent authority, not authorial omission: D083 full text unreachable (abstract plus cross-description only) and D086 per-model tables unconsumed; manuscript marks consumption levels and refuses rank inference. Expansion without new retrieval is forbidden, so EVIDENCE_BLOCKED is the correct LONGFORM verdict; repair is evidence-side re-consumption (out of scope), not prose repair."
+  },
+  {
+   "transition_id": "T-EV-02",
+   "gap": "Residual thinness traces to absent authority: D089 recorded locator does not resolve to the corpus paper (snippet-only) and D091 full text is gated; manuscript marks fragment/gated consumption and refuses corpus-fact-to-baseline promotion. EVIDENCE_BLOCKED; repair is evidence-side re-consumption (out of scope)."
+  }
+ ],
+ "transitions": [
+  {
+   "before_after_delta": "unchanged (containment verified)",
+   "bottleneck": "yes",
+   "classification": "BOUNDARY_LIMITED",
+   "condition_detail": "All envelopes vendor-stated and version/date-bound (sub-second local image, 30s single-pass plus extension video, 20s 1080p frame control, 10s/720p production, 5s 720p@24fps consumer-GPU operation); vendor charts quarantined; lifecycle facts (Imagen deprecation to hub, Sora end 2026-04-26 plus API removal 2026-09-24, Wan open line frozen at 2.2) recorded as product-direction facts, never architectural inevitability.",
+   "destination_package": "arch-capstones",
+   "manuscript_sections": [
+    "Section 13"
+   ],
+   "mechanism_detail": "Context chapter by design: undisclosed mechanisms explicitly marked (only vendor-disclosed fragments: flow-plus-embedder/distillation, latent-diffusion-over-temporal-latents, autoencoder-plus-diffusion-plus-adversarial post-training, MoE-plus-VAE). Sec.13 records capability/workflow/lifecycle surfaces with attribution, performing no hidden-architecture inference and no cross-condition ranking.",
+   "prior_classification": "BOUNDARY_ONLY",
+   "rationale": "Capability/workflow/lifecycle chapter with mechanism dimensions na/not-supported by design; manuscript holds the closed-system contract (attributed vendor claims, version/date binding, PARTIAL-scope discipline, lifecycle-direction-is-not-inevitability rule) and leaves the unified-vs-orchestrated question open. BOUNDARY_LIMITED is the correct LONGFORM terminal verdict (re-expressed from BOUNDARY_ONLY).",
+   "repair_action": "none",
+   "supporting_ids": [
+    "BT-D100",
+    "BT-D106",
+    "BT-D113",
+    "BT-D114",
+    "BT-D116",
+    "BT-D122",
+    "BT-D123",
+    "BT-D124",
+    "BT-D125",
+    "BT-D126",
+    "BT-D127",
+    "BT-D128"
+   ],
+   "transition_id": "T-CLOSED-01"
+  },
+  {
+   "before_after_delta": "unchanged (containment verified)",
+   "bottleneck": "yes",
+   "classification": "LONGFORM_SUBSTANTIVE",
+   "condition_detail": "Zero-shot conditions bound to 400M-pair joint space with prompt templates plus ensembling (D031); diffusion side bound to 10% text-dropout joint objective, static/dynamic thresholding, noise-augmented cascade; encoder-scale findings marked era-bound.",
+   "destination_package": "arch-conditioning",
+   "manuscript_sections": [
+    "Section 3"
+   ],
+   "mechanism_detail": "Contrastive joint-space pretraining (dual ResNet/ViT plus Transformer encoders, symmetric cross-entropy, learned temperature) into frozen-encoder diffusion conditioning (T5-XXL sequence plus pooled embeddings via cross-attention in 64px base plus text-conditional super-resolutions), separating training-time conditioning from inference-time guidance.",
+   "prior_classification": "SUBSTANTIVE",
+   "rationale": "Sec 3 (byte-identical) holds bottleneck, dual-encoder architecture, dropout objective, thresholded sampling, zero-shot/FID/human-alignment gains, counting/bias/photorealism tradeoffs, and latent-diffusion/CLAP succession with an era-bound caveat. Re-judged LONGFORM-sufficient.",
+   "repair_action": "none",
+   "supporting_ids": [
+    "BT-D011",
+    "BT-D031"
+   ],
+   "transition_id": "T-COND-01"
+  },
+  {
+   "before_after_delta": "unchanged (containment verified)",
+   "bottleneck": "yes",
+   "classification": "LONGFORM_SUBSTANTIVE",
+   "condition_detail": "Gains bound to swept scale and stated resolutions (64px FID 1.55 at w=0.1; 128px 2.43), 10-20% dropout and 20% empty-caption plus inpaint finetune configs; 2x NFE cost and diversity loss recorded; transfer beyond verified values unestablished.",
+   "destination_package": "arch-conditioning",
+   "manuscript_sections": [
+    "Section 3"
+   ],
+   "mechanism_detail": "Classifier-free guidance as training-plus-inference change: conditioning-dropout joint conditional/unconditional learning with inference-time extrapolation at swept scale (vs noised-CLIP-gradient guidance), extended to text-guided inpainting and SDEdit reuse.",
+   "prior_classification": "SUBSTANTIVE",
+   "rationale": "Sec 3 (byte-identical) covers guidance-side change with correctly absent representation claim, 2-pass cost, FID/Elo/zero-shot gains, saturation/diversity/unusual-object tradeoffs, and latent-diffusion/video succession. Re-judged LONGFORM-sufficient.",
+   "repair_action": "none",
+   "supporting_ids": [
+    "BT-D030",
+    "BT-D032",
+    "BT-D033"
+   ],
+   "transition_id": "T-COND-02"
+  },
+  {
+   "before_after_delta": "unchanged (containment verified)",
+   "bottleneck": "yes",
+   "classification": "LONGFORM_SUBSTANTIVE",
+   "condition_detail": "Gains bound to zero-shot 256px Config-B/D conditions (FID 7.26/7.04) and stated step budgets (4-expert at 600k vs shared baseline at 800k across the FID-CLIP curve); per-step cost invariance (one expert per sigma); training-free paint-with-words; expert-count training cost recorded.",
+   "destination_package": "arch-conditioning",
+   "manuscript_sections": [
+    "Section 3"
+   ],
+   "mechanism_detail": "Shared-EDM-denoiser to stage-expert split (log-normal pretraining, binary-tree sigma split, final 3-expert) with triple-encoder conditioning (T5-XXL plus CLIP-text plus CLIP-image, independent dropout) and two-phase pretrain-then-finetune objective.",
+   "prior_classification": "SUBSTANTIVE",
+   "rationale": "Sec 3 (byte-identical) holds ensemble-side change with correctly absent representation claim, multi-encoder conditioning, two-phase objective, same-per-step-cost sampling, FID-curve gains and CLIP-only compositionality limits. Re-judged LONGFORM-sufficient.",
+   "repair_action": "none",
+   "supporting_ids": [
+    "BT-D011",
+    "BT-D034"
+   ],
+   "transition_id": "T-COND-03"
+  },
+  {
+   "before_after_delta": "unchanged (containment verified)",
+   "bottleneck": "yes",
+   "classification": "LONGFORM_SUBSTANTIVE",
+   "condition_detail": "Zero-shot gains bound to stated tasks and templated-prompt cosine protocol (ESC50 82.6%, US8K 73.24%, FSD50K mAP 30.24%); speech/emotion/keyword near-chance results, caption-quality bottleneck, augmentation harm recorded; generative-audio diffusion conditioning use explicitly unestablished.",
+   "destination_package": "arch-conditioning",
+   "manuscript_sections": [
+    "Section 3"
+   ],
+   "mechanism_detail": "Single-source CLAP transition (CNN14 audio plus BERT text encoders, linear projections, learned temperature, symmetric contrastive loss on 128k pairs, 1024-d joint space) framed as conditioning-plus-evaluation, separating retrieval-style cosine inference (no diffusion) from downstream generative use.",
+   "prior_classification": "COMPRESSED_BUT_SUFFICIENT",
+   "rationale": "Necessarily compressed as a single-discovery transition, but all nine dimensions are present and the key validity boundary (generative-audio conditioning unestablished) is marked rather than elided. Outside Issue expansion scope; re-judged LONGFORM-sufficient.",
+   "repair_action": "none",
+   "supporting_ids": [
+    "BT-D035"
+   ],
+   "transition_id": "T-COND-04"
+  },
+  {
+   "before_after_delta": "unchanged (containment verified)",
+   "bottleneck": "yes",
+   "classification": "LONGFORM_SUBSTANTIVE",
+   "condition_detail": "ControlNet gains bound (sketch quality 4.22/fidelity 4.28, ADE20K IoU 0.35/FID 15.27, sub-10k sudden convergence; adapter COCO FID 16.78/17.36) with 50% prompt dropout and cubic timestep-sampling configs; ambiguous-input prompt need, manual multi-control weighting, single-control framing recorded.",
+   "destination_package": "arch-control",
+   "manuscript_sections": [
+    "Section 4"
+   ],
+   "mechanism_detail": "Zero-initialised control injection (locked UNet plus trainable encoder/middle copy via zero-convolutions growing from zero, tiny condition encoder) and lightweight-adapter successor (~77M down to 5M, 4-scale feature injection), with composable additive controls and cross-derivative generalisation.",
+   "prior_classification": "SUBSTANTIVE",
+   "rationale": "Sec 4 (byte-identical) holds control-side change with correctly absent representation claim, frozen-copy architecture, dropout/cubic-sampling objectives, composable sampling, conditioned gains, manual-weighting tradeoffs, and reference-adapter/video-motion succession. Re-judged LONGFORM-sufficient.",
+   "repair_action": "none",
+   "supporting_ids": [
+    "BT-D036",
+    "BT-D037"
+   ],
+   "transition_id": "T-CTRL-01"
+  },
+  {
+   "before_after_delta": "unchanged (containment verified)",
+   "bottleneck": "yes",
+   "classification": "LONGFORM_SUBSTANTIVE",
+   "condition_detail": "IP-Adapter gains bound to stated training scale and 50-step-class trajectory plus guidance conditions (COCO CLIP-I 0.828/CLIP-T 0.588); DreamBooth bound to 30-subject, 3-5 image, identifier-plus-class-noun protocol with DINO/CLIP/user-study numbers; LoRA diffusion-media behaviour explicitly left in the language domain.",
+   "destination_package": "arch-control",
+   "manuscript_sections": [
+    "Section 4"
+   ],
+   "mechanism_detail": "Three adaptation mechanisms separated: decoupled cross-attention image branches over frozen diffusion plus frozen vision encoder (~22M trained, 4-token reference projection, lambda-weighted image attention); full-layer identifier finetuning with prior preservation; frozen-base low-rank factor updates with zero-latency merging.",
+   "prior_classification": "SUBSTANTIVE",
+   "rationale": "Sec 4 (byte-identical) carries mechanism, objective, sampling, conditioned gains and distinct failure modes for all three legs (resemblance-only vs entanglement/overfit vs merged-batch limits); identity claims procedure-bound and diffusion-LoRA gap marked. Re-judged LONGFORM-sufficient.",
+   "repair_action": "none",
+   "supporting_ids": [
+    "BT-D038",
+    "BT-D039",
+    "BT-D040"
+   ],
+   "transition_id": "T-CTRL-02"
+  },
+  {
+   "before_after_delta": "unchanged (containment verified)",
+   "bottleneck": "yes",
+   "classification": "LONGFORM_SUBSTANTIVE",
+   "condition_detail": "SPADE gains bound to paired mask-image training (COCO mIoU 37.4/FID 22.6, 79-86% human preference); camera/object gains bound to staged camera-then-object training with stated error deltas; music-control gains bound to 6s window and tag-then-control protocol with DDIM-100 plus global-style guidance; joint-complex-control low success, order dependence, instrumental-only scope recorded.",
+   "destination_package": "arch-control",
+   "manuscript_sections": [
+    "Section 4"
+   ],
+   "mechanism_detail": "Layout control from GAN-era spatially-adaptive normalisation (SPADE, encoder-free ResNet, multi-scale discriminator) through diffusion-era transfer to decoupled video camera/object modules and music time-varying signals (melody/dynamics/rhythm via control-specific MLPs plus zero-convolution adapters).",
+   "prior_classification": "SUBSTANTIVE",
+   "rationale": "Sec 4 (byte-identical) fully covers the cross-modal control transition: precursor bottleneck, per-modality representations and staged objectives, inference-time conditioning forms, conditioned gains, and paired-data/window/monotony tradeoffs with disclosed linkage limits. Re-judged LONGFORM-sufficient.",
+   "repair_action": "none",
+   "supporting_ids": [
+    "BT-D041",
+    "BT-D042",
+    "BT-D043"
+   ],
+   "transition_id": "T-CTRL-03"
+  },
+  {
+   "before_after_delta": "unchanged (containment verified)",
+   "bottleneck": "yes",
+   "classification": "LONGFORM_SUBSTANTIVE",
+   "condition_detail": "Each stance bound to its reported regime (GRIT 64.3 average with VQ-GAN cap and Unrestricted-track limit; AudioPaLM observed-procedure BLEU deltas with synthetic-target and short-transfer caveats; AnyGPT zero-shot-skeleton values with 5s music cap and higher-than-single-modality loss; CoDi same-set FD/FID deltas with coherence-not-fidelity joint metric); C2PA assertions bound to homepage scope; SynthID bound to product-page scope.",
+   "destination_package": "arch-convergence",
+   "manuscript_sections": [
+    "Section 12"
+   ],
+   "mechanism_detail": "Four conditional unification stances (head-free multitask homogenised tokens; vocabulary-expanded single-decoder speech-text folding; data-level discretisation with frozen-LLM text-bridge alignment; independent per-modality LDMs with text-bridged prompt fusion) plus page-scoped provenance mechanisms, procedurally withholding closure via a five-step open-question discipline.",
+   "prior_classification": "COMPRESSED_BUT_SUFFICIENT",
+   "rationale": "Dense but sufficient: every stance carries its ceiling alongside its gain, the manuscript refuses the unified-vs-orchestrated verdict as required, keeps TS-002/TS-003 separation, and scopes BT-D098 PARTIAL claims to homepage consumption. Outside Issue expansion scope; re-judged LONGFORM-sufficient.",
+   "repair_action": "none",
+   "supporting_ids": [
+    "BT-D094",
+    "BT-D095",
+    "BT-D096",
+    "BT-D097",
+    "BT-D098",
+    "BT-D099"
+   ],
+   "transition_id": "T-CV-01"
+  },
+  {
+   "before_after_delta": "unchanged (containment verified)",
+   "bottleneck": "yes",
+   "classification": "LONGFORM_SUBSTANTIVE",
+   "condition_detail": "SDEdit tradeoff bound to t0 in [0.3,0.6] with guide-validity caveat; RePaint bound to T=250/jump-10/10-resample protocol (LPIPS 0.068, 56.25% votes) with 250x10-eval slowness; latent blending bound to 8x latent resolution with dilated-to-thin mask schedule; LPIPS-diversity penalty and VAE seam/colour-shift recorded; exact NFE/latency/VRAM marked not reported in consumed bodies.",
+   "destination_package": "arch-editing",
+   "manuscript_sections": [
+    "Section 5"
+   ],
+   "mechanism_detail": "No-retraining preservation procedures (partial diffusion to t0 plus reverse SDE; per-step mask-combine of noised-known plus predicted-unknown with resampling) and the latent-local move (text-conditioned foreground plus noised-background blending at 8x-downsampled latent resolution, optional per-image decoder finetune), fixing preservation-target/locality/failure-condition vocabulary.",
+   "prior_classification": "SUBSTANTIVE",
+   "rationale": "Sec 5 (byte-identical) holds all nine dimensions with per-method preservation targets, locality mechanisms, exchange coefficients, conditioned human/LPIPS gains and mask-bound validity limits; the NFE/VRAM gap is marked as consumed-body absence. Re-judged LONGFORM-sufficient.",
+   "repair_action": "none",
+   "supporting_ids": [
+    "BT-D044",
+    "BT-D045",
+    "BT-D046"
+   ],
+   "transition_id": "T-EDIT-01"
+  },
+  {
+   "before_after_delta": "unchanged (containment verified)",
+   "bottleneck": "yes",
+   "classification": "LONGFORM_SUBSTANTIVE",
+   "condition_detail": "Prompt-to-Prompt qualitative scope separated from Imagic quantitative scope (TEdBench >70% over three baselines, 9000+ 2AFC, eta 0.6-0.8 with 8-seed selection); InstructPix2Pix bound to 450k+ instruction pairs with directional filtering and dual-guidance conditions; Tune-A-Video bound to 42-video/140-instruction short-span conditions (frame consistency 92.40) with occlusion/drift/flicker limits; fidelity scores and runtime/VRAM marked not reported.",
+   "destination_package": "arch-editing",
+   "manuscript_sections": [
+    "Section 5"
+   ],
+   "mechanism_detail": "Attention-map injection (fixed-seed cross-attention maps at 64x64, word-swap/add/re-weight, DDIM inversion with mask fallback), optimisation editing (target-embedding denoising-loss optimisation plus UNet-plus-super-resolution finetune, eta interpolation), instruction-pair training (GPT-3-generated pairs, zero-init image-condition channels, multi-turn chaining), and one-shot video inflation (1x3x3 inflated conv, sparse first-plus-previous spatio-temporal attention, ~500-step finetune).",
+   "prior_classification": "SUBSTANTIVE",
+   "rationale": "Sec 5 (byte-identical) is the deepest-cited transition in the batch with full mechanism/condition/tradeoff coverage including ablation-separated roles and qualitative-vs-quantitative separation; inversion distortion, seed sensitivity, viewpoint failures and per-image optimisation cost recorded. Re-judged LONGFORM-sufficient.",
+   "repair_action": "none",
+   "supporting_ids": [
+    "BT-D047",
+    "BT-D048",
+    "BT-D049",
+    "BT-D050"
+   ],
+   "transition_id": "T-EDIT-02"
+  },
+  {
+   "before_after_delta": "unchanged (containment verified)",
+   "bottleneck": "yes",
+   "classification": "EVIDENCE_BLOCKED",
+   "condition_detail": "GenEval conditions bound (6 tasks x 553 prompts, Mask2Former thresholds 0.3/0.9, 83% human agreement, position/binding walls); Pick-a-Pic bound to stated backbone/split/population (70.5% accuracy, self-selected users); FID values, sample sizes and embedding dependence explicitly not body-established; T2I-CompBench tables explicitly unconsumed with no rank inference.",
+   "destination_package": "arch-evaluation",
+   "manuscript_sections": [
+    "Section 11"
+   ],
+   "mechanism_detail": "Consumable evaluation-side mechanisms only: Frechet-of-Gaussians distance with update-rule analysis at abstract level; objectness-diversity score with ~50k-sample requirement; 6-task templated detector-plus-CLIP protocol; PickScore CLIP-H finetune with preference objective; cross-condition leaderboards refused.",
+   "prior_classification": "COMPRESSED_BUT_SUFFICIENT",
+   "rationale": "Residual thinness traces to absent authority, not authorial omission: D083 full text unreachable (abstract plus cross-description only) and D086 per-model tables unconsumed; manuscript marks consumption levels and refuses rank inference. Expansion without new retrieval is forbidden, so EVIDENCE_BLOCKED is the correct LONGFORM verdict; repair is evidence-side re-consumption (out of scope), not prose repair.",
+   "repair_action": "none (manuscript); evidence-side re-consumption out of scope",
+   "supporting_ids": [
+    "BT-D083",
+    "BT-D084",
+    "BT-D085",
+    "BT-D086",
+    "BT-D087"
+   ],
+   "transition_id": "T-EV-01"
+  },
+  {
+   "before_after_delta": "unchanged (containment verified)",
+   "bottleneck": "yes",
+   "classification": "EVIDENCE_BLOCKED",
+   "condition_detail": "FAD bound to VGGish 128-d 1s-window/0.5s-stride protocol with stated human-correlation procedure (0.52 vs SDR 0.39, 69,300 pairs/20 raters) and ~300-clip/25-min usability floor; GE2E bound to stated 64-speaker/10-utterance training and sliding-window inference with internal-set and no-listening-test limits; D089 splits/alignment/baselines and D091 protocol details explicitly not body-established.",
+   "destination_package": "arch-evaluation",
+   "manuscript_sections": [
+    "Section 11"
+   ],
+   "mechanism_detail": "Consumable audio-metric mechanisms: Frechet distance between eval/background embedding Gaussians across distortion sweeps; batch softmax/contrast speaker loss with multi-reader weighting; non-substitution of the three legs (perceptual distance vs public read-speech corpus vs speaker-verification loss) with embedding-dependence and population limits.",
+   "prior_classification": "COMPRESSED_BUT_SUFFICIENT",
+   "rationale": "Residual thinness traces to absent authority: D089 recorded locator does not resolve to the corpus paper (snippet-only) and D091 full text is gated; manuscript marks fragment/gated consumption and refuses corpus-fact-to-baseline promotion. EVIDENCE_BLOCKED; repair is evidence-side re-consumption (out of scope).",
+   "repair_action": "none (manuscript); evidence-side re-consumption out of scope",
+   "supporting_ids": [
+    "BT-D088",
+    "BT-D089",
+    "BT-D090",
+    "BT-D091"
+   ],
+   "transition_id": "T-EV-02"
+  },
+  {
+   "before_after_delta": "Unconditioned babble / semantic-only non-vocodable -> 3-level hierarchical raw song (bottom -23.0 dB, ~24 s coherence then drift) -> semantic/acoustic staged text-music (FAD 4.0 vs 9.6, MCC 0.51, wins 312 vs 158/97, mem <0.2%).",
+   "bottleneck": "Minutes-long song as raw audio with singing; unconditioned babble; semantic-only cannot vocode.",
+   "boundary_respected": "MusicCaps-10s vs reconstruction-dB never cross-ranked; 24 s context vs 15 s-stride continuation vs 30 s-train extension kept as distinct conditions; memorisation read as data-handling not quality proof; MuLan failure inheritance stated; no verse/chorus claim.",
+   "bottleneck_evidence": "BT-D063 VERIFIED, BT-D065 VERIFIED, BT-D009 hybrid; evpack_s07",
+   "classification": "LONGFORM_SUBSTANTIVE",
+   "evidence_ids": [
+    "BT-D063",
+    "BT-D065",
+    "BT-D009"
+   ],
+   "improvement_condition_bound": "Jukebox spectral convergence bottom -23.0 dB (vs 256-code -15.9, none -40.5) on 5000x3 s held-out; 1.2M songs, 5B prior (8192 ctx ~24 s) + 1B upsamplers; qualitative-only eval. MusicLM MusicCaps-10 s FAD-VGG 4.0 vs Mubert 9.6 vs Riffusion 13.4, KLD 1.01, MCC 0.51, human wins 312 vs 158/97 (1200 ratings) vs ref 472; no-semantic ablation KLD 1.01->1.05 MCC 0.51->0.49; memorisation exact <0.2% approx <0.01% FP.",
+   "manuscript_section": "7 MUSIC",
+   "manuscript_subsection": "階層的自己回帰と意味・音響段階化 (lines 568-577) + 持続の延長と構造の維持 (650-655) verifies §7 fidelity-vs-structure check (local recon vs window-drift)",
+   "mechanism_beyond_naming": "Three separate VQ-VAEs (hop 8/32/128, cb 2048, restarts, multi-res spectral loss) + 5B sparse-Transformer top prior + 1B upsamplers + artist/genre/timing + encoder-decoder unaligned-lyrics (pretraining surgery) + windowed/primed ancestral; frozen SoundStream (50 Hz RVQ 12x1024 6 kbps) + w2v-BERT semantic (25 Hz) + MuLan (128-d 10 s) with train-on-audio-tokens infer-on-text swap; three 430M decoder-only stage Transformers (T 1.0/0.95/0.4) + story-mode 15 s-stride + melody-condition extension.",
+   "rationale": "Both legs mechanism-traced (level roles, codebook dB as local-recon not chorus proof; semantic/acoustic temperature split + ablation). §7 acceptance fidelity-vs-structure verified: local fidelity (dB/FAD) vs long-form (24 s drift, no repeating chorus/melody memory, no verse/chorus model) kept distinct; 15 s continuation read as inference procedure not form memory.",
+   "succession": "Hierarchical/staged thesis inherited by single-stage controllable + latent-diffusion music (T-MU-02); long-form/motif control left open.",
+   "tradeoff_residual": "Coherence ~24 s then window-drift; no repeating chorus/melody memory; novel-style weak (artist-embed dominates); MuLan negation/ordering failures; MCC favours own method; 30 s-train autoregressively extended; no release.",
+   "transition_id": "T-MU-01",
+   "what_changed_axis": "Representation 3-level VQ hops -> SoundStream acoustic + w2v-BERT semantic + MuLan joint tokens; architecture 3xVQ-VAE+prior/upsamplers -> 3x430M staged Transformers; objective VQ recon + prior NLL -> semantic-on-audio / acoustic-on-both with text-swap; sampling windowed/primed ancestral -> story-mode stride + melody extension; conditioning artist/genre/lyrics-window -> MuLan text/music."
+  },
+  {
+   "before_after_delta": "Slow weakly-controllable cascades -> single-stage controllable (FAD 3.1 vs 7.5, chroma-sim 0.66 vs 0.10) + waveform local-fidelity (MOS 4.44 ~GT) + CLAP latent general-audio (FD 23.31 vs 47.68) + open timed CC model (FD-openl3 78.24) + beat/chord control (beat-chroma 11.64-17.99, musicality 5.76-6.10 vs 2.75).",
+   "bottleneck": "Cascaded hierarchies slow + weakly controllable; text-to-music needs melody/chord/beat control with open weights + timing conditioning.",
+   "boundary_respected": "MusicCaps-10 s vs AudioCaps vs openl3 vs LJSpeech-vocode never cross-ranked (populations/procedures differ); tempo near-parity read with extractor-noise caveat; chroma-vs-objective exchange stated; CC-data vs closed-data comparison prohibited; D068/D069 locator defects rebound to 2407.14358/2311.08355, claims on verified bodies.",
+   "bottleneck_evidence": "BT-D064, D066, D067 VERIFIED, D068/D069 VERIFIED (rebound bodies); evpack_s07",
+   "classification": "LONGFORM_SUBSTANTIVE",
+   "evidence_ids": [
+    "BT-D064",
+    "BT-D066",
+    "BT-D067",
+    "BT-D068",
+    "BT-D069"
+   ],
+   "improvement_condition_bound": "MusicGen MusicCaps FAD-VGG 3.1 (300M) vs Mousai 7.5 vs Riffusion 14.8, KL 1.28, CLAP 0.31; human overall 78.43->84.81 (3.3B) vs MusicLM 80.51; melody chroma-sim 0.66 (text+chroma) vs 0.10 text-only. DiffWave LJSpeech MOS LARGE 4.44 vs WaveNet 4.43 vs GT 4.52; BASE-Fast 2.1x RT. AudioLDM AudioCaps FD 23.31 vs DiffSound 47.68, IS 8.13 vs 4.01, KL 1.59 vs 2.52, FAD 1.96 vs 7.75. Stable Audio Open FD-openl3 78.24 vs SA-1.0 103.66 vs AudioLDM2 101.11; SongDescriber FD 96.51 vs MusicGen-st 190.47. MuSTANGO TestB beat-chroma-mean 11.64-17.99 vs Tango 6.61 vs MusicGen-M 3.97 vs AudioLDM2 0.79; experts 5.76-6.10/7 vs Tango 2.75.",
+   "manuscript_section": "7 MUSIC",
+   "manuscript_subsection": "一段階可制御符号音楽 + 波形拡散と潜在拡散 + 時間条件・楽理制御 (lines 579-619) + 生成・継続・編集・制御の分離 table (627-648)",
+   "mechanism_beyond_naming": "EnCodec 32 kHz mono stride-640->50 Hz RVQ 4x2048 delay-pattern single decoder (T5 cross-attn, chroma-argmax prefix, CFG drop 0.2/scale 3.0, top-k 250/T 1.0; stereo doubles to 8); bidirectional dilated-conv epsilon-net (30L k3, 128-d step) unweighted ELBO + mel bias + 6-step fast; mel-VAE ratio-4 + CLAP-aligned LDM (audio-embed train, text-embed sample, audio-only mixup) + shallow-reverse/inpaint; VAE (5 conv, Snake, 64-d 21.5 Hz) + T5-base + DiT (timing+timestep prepend) silence-fill variable-length + DPM++ 100 steps; MuNet UNet sequential text->beat->chord cross-attns beat-first + DeBERTa-beat/FLAN-chord predictors + MusicBench 52,768 enrichment.",
+   "rationale": "Codec vs waveform vs latent vs timed-open vs theory-control paths each traced beyond naming with guidance/sampling budgets and control-vs-quality exchanges. §7 acceptance: fidelity-vs-structure (local MOS/FD as local, 10 s beat/chord as attribute-following not form) + task split (generate vs continue vs edit vs control, lines 627-648) verified; no cross-condition leaderboard.",
+   "succession": "Controllable-codec vs latent-diffusion paths frame closed commercial heirs (capability-level); long-form song + lyrics singing left open, handed to preference-validation gate (T-MU-03).",
+   "tradeoff_residual": "Guidance-only fine control; flattening 6000 vs 1500 steps; chroma degrades objective metrics; CLAP text/audio gap; CC-data limits music quality, connector/speech failures, EN-only; tempo near-parity (captions carry slow/fast + extractor noise); 10 s clips only.",
+   "transition_id": "T-MU-02",
+   "what_changed_axis": "Representation delay-pattern codec vs waveform vs mel-VAE latent vs 64-d continuous latent vs beat/chord-encoded latent; architecture single decoder vs epsilon-net vs CLAP-LDM vs VAE+DiT vs MuNet sequential attn; objective delay NLL vs unweighted ELBO vs CLAP-aligned diffusion vs timed diffusion vs beat-first control; sampling top-k/CFG vs 6-step collapse vs solver/guidance vs silence-fill vs predicted-beat/chord; conditioning chroma prefix vs text/music vs timing vs beat/chord predictors."
+  },
+  {
+   "before_after_delta": "Unvalidated auto metrics (local vs long-form conflated) -> 12-model x 500-clip / 15600-judgement human gate: Suno v3.5 top both axes, Stable v2 +5pp v1; FAD-music-audio best quality proxy, music-trained LAION-CLAP best alignment proxy (magnitudes figure-bound).",
+   "bottleneck": "Music quality/alignment metrics unvalidated vs human; local fidelity vs long-form structure conflated.",
+   "boundary_respected": "Exact correlation magnitudes withheld as figure-bound (not text-extracted); v3/v3.5-era not v5/v6, 10 s instrumental only, ElevenLabs thin; no extrapolation to singing/long-form/newer commercial; auto claims stay proxy-level; closed ranking gated on preference validation; cross-duration/protocol ranking prohibited.",
+   "bottleneck_evidence": "BT-D136 VERIFIED (bench) + BT-D088/D035 alignment context; evpack_s07 D136",
+   "classification": "BOUNDARY_LIMITED",
+   "evidence_ids": [
+    "BT-D136",
+    "BT-D088",
+    "BT-D035"
+   ],
+   "improvement_condition_bound": "6000 songs (12 models x 500 10 s instrumental highest-energy), tag-triple combos (CLAP cos <=0.1382, 500 combos), 7800+7800=15600 binary preference/alignment (2500+ raters 18-34), Elo K=8 base 1000 10k bootstraps + BT vs Frechet/CLAP variants; Suno v3.5 top Elo both axes above ref library; Stable v2 +5pp v1; qualitative direction only for correlations (figure-bound).",
+   "manuscript_section": "7 MUSIC",
+   "manuscript_subsection": "時間条件・楽理制御と人間選好検証 (lines 621-625) + 評価の四分割 (657-682, 4-way table) + 条件内比較の作法 (684-685); verifies §7 acceptance 4-way eval split",
+   "mechanism_beyond_naming": "Evaluation-side (representation/architecture NA by design): tag-triple dedup design + pairwise binary preference/alignment + Elo/BT vs Frechet-audio/CLAP variants; 4-way split axes: fidelity (FAD/KL recon/distribution proxy) vs alignment (CLAP/MCC correspondence proxy) vs structure/control (chroma/beat-chroma/musicality attribute proxy, 10 s-bound) vs preference (Elo/BT sequence). Duration/extension vs maintenance split (24 s ctx vs 15 s-stride vs 30 s-train vs 47 s silence-fill vs 10 s control) never compared across.",
+   "rationale": "Method + population + protocol + proxy-level discipline fully stated; 4-way split table (FAD/KL/CLAP/chroma/beat/Human-BT with 測らないもの column) verifies §7 acceptance 4-way eval split. LIMITED (not blocked) because exact correlation magnitudes need absent authority (figure-only values, not text-extracted) and newer-commercial/long-form/lyrics dimensions unmeasured; manuscript correctly withholds magnitudes and fences era/population/duration.",
+   "succession": "Human-validation thesis must gate any closed-music ranking; auto-metric claims stay proxy; long-form song structure left as open problem (lines 690-694).",
+   "tradeoff_residual": "Figure-bound magnitudes; v3/v3.5-era; 10 s instrumental only; thin vendor lane; long-form/lyrics unmeasured.",
+   "transition_id": "T-MU-03",
+   "what_changed_axis": "Evaluation-side: holistic auto scores -> decomposed human-vs-auto validation; objective pairwise judgements + Elo/BT vs FAD/CLAP variants; sampling tag-triple 12x500 design; no representation/architecture change (NA by design)."
+  },
+  {
+   "before_after_delta": "r1記録(SUBSTANTIVE)の内容を維持し、六軸分離表と設計指針の欄分け(畳み込み指針は骨格、競合損失は目的)で深化。数値・代償・継承とも保持。",
+   "bottleneck": "yes",
+   "boundary_respected": "yes (cross-condition: 解像度・予算・手順違いの横断順位付けを拒否; 役割は混合利用に限定)",
+   "classification": "LONGFORM_SUBSTANTIVE",
+   "evidence_ids": [
+    "BT-D013",
+    "BT-D014"
+   ],
+   "improvement_condition_bound": "yes",
+   "manuscript_section": "Section 2 — 生成パラダイムと目的関数：自己回帰・敵対・拡散・フロー / 敵対的生成の系譜：暗黙分布から様式分離へ(前半)+六軸分離表",
+   "mechanism_beyond_naming": "yes",
+   "rationale": "暗黙分布G(z)・交互SGDのMLP構成から歩幅畳み込み/分数歩幅・正規化除外・Adam 0.0002等の安定化指針、minimax+非飽和損失、単一順伝播を分離記述。Parzen MNIST 225±2、分類プローブ82.8%、SVHN誤り率22.48対28.87を条件付きで明記し、様式崩壊・分散・濾波崩壊の代償とvocoder/符号器への継承を記録。",
+   "succession": "yes",
+   "tradeoff_residual": "yes",
+   "transition_id": "T-PAR-01",
+   "what_changed_axis": "architecture:MLP-alternating-SGD→strided-conv-disc/fractional-stride-gen+batchnorm-rules+Adam-0.0002; objective:minimax+non-saturating-G-loss(optimum pg=pdata,D=1/2); representation:implicit-G(z)-samples-no-explicit-density"
+  },
+  {
+   "before_after_delta": "r1記録(SUBSTANTIVE)を維持し、改訂版の骨格側(配置見直し・重み復調・跳躍生成器)と目的側(遅延R1・経路長正則化)の分離で深化。FID/経路長の二段階低下を保持。",
+   "bottleneck": "yes",
+   "boundary_respected": "yes (cross-condition: FID/PPLの質感偏りと非構造集合の相反を記録し順位付けを拒否)",
+   "classification": "LONGFORM_SUBSTANTIVE",
+   "evidence_ids": [
+    "BT-D015",
+    "BT-D016"
+   ],
+   "improvement_condition_bound": "yes",
+   "manuscript_section": "Section 2 — 生成パラダイムと目的関数：自己回帰・敵対・拡散・フロー / 敵対的生成の系譜：暗黙分布から様式分離へ(後半・様式分離と品質改訂)",
+   "mechanism_beyond_naming": "yes",
+   "rationale": "8層写像網z→W・層別AdaIN・雑音図・尺度別混合から、外的配置見直し・stdのみ変調・重み復調・跳躍生成器/残差識別器・漸進成長廃止へと骨格を追跡し、混合正則化→logistic+lazy R1+経路長正則化(直交ヤコビ)を目的側に分離。FID 8.04→4.40→2.84、経路長412→200→145、打切り/混合制御と参照適合への継承を明記。",
+   "succession": "yes",
+   "tradeoff_residual": "yes",
+   "transition_id": "T-PAR-02",
+   "what_changed_axis": "representation:entangled-z→W-intermediate+per-layer-styles+noise-maps; architecture:AdaIN-synthesis→bias/noise-relocation+std-only-modulation+weight-demodulation+skip-G/residual-D-no-progressive; objective:mixing-reg→logistic+lazy-R1+path-length-reg"
+  },
+  {
+   "before_after_delta": "r1記録(SUBSTANTIVE)を維持し、六軸 framing(表現・骨格・目的・経路・抽出・短縮)で深化。尤度数値・逐次費用・継承とも保持。",
+   "bottleneck": "yes",
+   "boundary_respected": "yes (cross-condition: 層数・尤度の対応は条件別に整理し一般化しない; 全域注意の大規模比較は未確立と明記)",
+   "classification": "LONGFORM_SUBSTANTIVE",
+   "evidence_ids": [
+    "BT-D017",
+    "BT-D018"
+   ],
+   "improvement_condition_bound": "yes",
+   "manuscript_section": "Section 2 — 生成パラダイムと目的関数：自己回帰・敵対・拡散・フロー / 完全自己回帰：画素の同時分布を捉える",
+   "mechanism_beyond_naming": "yes",
+   "rationale": "行優先+RGB分解・256値多項の完全自己回帰表現、Row/Diagonal-BiLSTM(12層迄)・遮蔽畳み込み・多重解像度、復号器専用変換器+局所遮蔽注意+超解像符号器復号器を分離記述。MNIST 79.20nats・CIFAR-10 3.00→2.90 bits/dim・騙し率36.11±2.5%を条件付きで明記し、画素逐次費用・64画素大域構造弱・局所切詰めの代償と符号帳priorへの継承を記録。",
+   "succession": "yes",
+   "tradeoff_residual": "yes",
+   "transition_id": "T-PAR-03",
+   "what_changed_axis": "representation:row-major-RGB-split-256way-multinomial-factorisation; architecture:Row/Diagonal-BiLSTM+masked-conv-multiscale→decoder-only-Transformer-masked-local-attention+SR-encoder-decoder; objective:discrete-NLL-bits/dim-position-sum-MLE"
+  },
+  {
+   "before_after_delta": "r1記録が報告した条件付きFID対比(ImageNetでBigGANを下回る等)がNEW S02では定性的記述に後退し exact 数値が欠落。btd020/btd030引用鍵の取違え混入。要修復(いずれも能動Evidence内の値で修復可能)。",
+   "bottleneck": "yes",
+   "boundary_respected": "yes (cross-condition: 条件違いの順位付け拒否は明記; ただし引用鍵取違えはprovenance修復対象)",
+   "classification": "LONGFORM_SUBSTANTIVE",
+   "evidence_ids": [
+    "BT-D019",
+    "BT-D030"
+   ],
+   "improvement_condition_bound": "no",
+   "manuscript_section": "Section 2 — 生成パラダイムと目的関数：自己回帰・敵対・拡散・フロー / 雑音除去の転換：拡散と短縮抽出(前半・DDPM+大規模化)+条件誘導の分岐(分類器誘導脚)",
+   "mechanism_beyond_naming": "yes",
+   "rationale": "固定ガウス前向き+学習逆過程、Lsimpleの小時刻項抑制と得点整合等価性、128基底路・多解像注意・BigGAN残差・AdaGN・分類器誘導という骨格対目的の分離自体は正しく深化。欠落は改善の条件付き exact 数値(DDPM IS 9.46/FID 3.17・ADM ImageNet-128 FID 2.97対BigGAN 6.02等がEvidenceに在るも本文は定性的)と引用鍵取違え(L213/L215/L239のbtd020↔btd030 thematic swap; 節末要約は正鍵)。 REPAIRED 2026-09-26: ADM guidance cite btd020->btd030; ADM ImageNet-128 FID 2.97 vs BigGAN 6.02 + DDPM CIFAR-10 IS 9.46/FID 3.17 restored condition-bound from active Evidence.",
+   "succession": "yes",
+   "tradeoff_residual": "yes",
+   "transition_id": "T-PAR-04",
+   "what_changed_axis": "architecture:pixel-UNet-shared-across-t-1000(128ch+multires-attention+BigGAN-resblocks+AdaGN-timestep-class)+Transformer-sinusoidal-time-embed; objective:unweighted-epsilon-Lsimple-vs-true-VLB+Nichol-hybrid-plus-learned-variance; sampling:1000-step-ancestral→250/25-step+classifier-guidance-precision-recall-scale",
+   "repair_action": "APPLIED: REPAIRED 2026-09-26: ADM guidance cite btd020->btd030; ADM ImageNet-128 FID 2.97 vs BigGAN 6.02 + DDPM CIFAR-10 IS 9.46/FID 3.17 restored condition-bound from active Evidence."
+  },
+  {
+   "before_after_delta": "r1記録の段階別FID表がNEW S02では短縮率の要約(10-50x)に圧縮され、CIFAR-10条件の段階別FID階段が欠落。T-PAR-04と同一起源の引用鍵修復と数値復帰が要る。",
+   "bottleneck": "yes",
+   "boundary_respected": "yes (cross-condition: 少数段階到達点と後継蒸留の比較を拒否; ODE-確率流の開きを境界記録)",
+   "classification": "LONGFORM_SUBSTANTIVE",
+   "evidence_ids": [
+    "BT-D019",
+    "BT-D020"
+   ],
+   "improvement_condition_bound": "no",
+   "manuscript_section": "Section 2 — 生成パラダイムと目的関数：自己回帰・敵対・拡散・フロー / 雑音除去の転換：拡散と短縮抽出(後半・暗黙的短縮DDIM)",
+   "mechanism_beyond_naming": "yes",
+   "rationale": "同一周辺の非マルコフ前向き+sigmaベクトル(eta=0決定論/1はDDPM側)・部分軌道・ODE視と潜在符号化、学習目的不変の抽出側転換という機構分離は正確。欠落は段階別FID階段(10/20/50/100段:13.36/6.84/4.67/4.16対確率側41.07@10等、Evidence在り)の exact 条件付け。本文は「10-100段で千段階級・10-50x」の要約に留まる。短縮時劣化・実装sigma崩壊の代償と潜在DDIM/蒸留への継承は記録。 REPAIRED 2026-09-26: DDIM cites btd030->btd020 (3 locations); CIFAR-10 step-FID ladder 13.36/6.84/4.67/4.16 + 10-50x speedup restored condition-bound.",
+   "succession": "yes",
+   "tradeoff_residual": "yes",
+   "transition_id": "T-PAR-05",
+   "what_changed_axis": "sampling-only:1000-step-Markov-chain→non-Markovian-same-marginals-sigma-vector-subsampled-tau-10-100-step-deterministic-DDIM-ODE-view-encodable-latents; objective:unchanged(same-DDPM-training-loss)",
+   "repair_action": "APPLIED: REPAIRED 2026-09-26: DDIM cites btd030->btd020 (3 locations); CIFAR-10 step-FID ladder 13.36/6.84/4.67/4.16 + 10-50x speedup restored condition-bound."
+  },
+  {
+   "before_after_delta": "SDE統一機構の記述はr1から維持され要旨限定の扱いも正しい。ただしIssueがEDM設計空間深度を要求するため、本文典拠不在が確定し遷移級ではEVIDENCE_BLOCKEDを明示する(r1のCOMPRESSED扱いから再分類)。",
+   "bottleneck": "yes",
+   "boundary_respected": "yes (abstract-only D022: 前処理/日程/解法内訳・backbone対目的分離・他modality主張を本文未検証と明示; 要旨数値の本文格上げを拒否)",
+   "classification": "EVIDENCE_BLOCKED",
+   "evidence_ids": [
+    "BT-D021",
+    "BT-D022"
+   ],
+   "improvement_condition_bound": "no",
+   "manuscript_section": "Section 2 — 生成パラダイムと目的関数：自己回帰・敵対・拡散・フロー / 連続時間への統一と潜在への移行(前半・SDE統一+EDM要旨限定)",
+   "mechanism_beyond_naming": "yes",
+   "rationale": "SDE脚は実質的(時間依存得点網・予測子修正子・確率流ODE適応積分+厳密尤度・無条件得点からの条件生成、1000-2000評価費用の代償、流れ整合への継承)。EDM脚は要旨水準の framing(部品化・35評価)のみで、要求される設計空間深度(前処理/日程/解法の内訳ablation・backbone対目的分離)の本文典拠が不在。不足典拠=EDM full body(Karras et al. 2022, arXiv:2206.00364 のpreconditioning/schedule/solver ablation)+BT-D ID: BT-D022。SDE脚の条件付き exact 数値(IS 9.89/FID 2.20/NLL 2.99等)も本文は定性的。",
+   "succession": "yes",
+   "tradeoff_residual": "yes",
+   "transition_id": "T-PAR-06",
+   "what_changed_axis": "path-formulation:discrete-time-diffusion+separate-score-matching→continuous-time-SDE-unification(time-dependent-score-nets); sampling:reverse-SDE-solvers+predictor-corrector+probability-flow-ODE-adaptive-integration-exact-likelihood+conditional-from-unconditional; EDM-leg:preconditioning/schedule/solver-design-space-35-NFE (abstract-level-only)"
+  },
+  {
+   "before_after_delta": "D023機構の記述とD024-HOLD境界(実装庫に機構の重みを置かない)はr1から正しく維持。ただしr1記録の無条件/COCO条件付きFID数値がNEW S02では「分布距離の低下」の要約に後退。Evidence内数値で復帰可能。",
+   "bottleneck": "yes",
+   "boundary_respected": "yes (HOLD D024: 版/重み主張は本文未検証・機構の重みはD023報告に限定; cross-condition: 符号器対prior誤差帰属は焼き直し検証要求)",
+   "classification": "LONGFORM_SUBSTANTIVE",
+   "evidence_ids": [
+    "BT-D023",
+    "BT-D024"
+   ],
+   "improvement_condition_bound": "no",
+   "manuscript_section": "Section 2 — 生成パラダイムと目的関数：自己回帰・敵対・拡散・フロー / 連続時間への統一と潜在への移行(後半・潜在移行LDM)",
+   "mechanism_beyond_naming": "yes",
+   "rationale": "一度圧縮・潜在で拡散・一度だけ復号の表現転換、KL/VQ正則化符号器+時刻条件UNet+交叉注意領域符号器、潜在雑音整合目的、DDIM 10-200段・畳み込み千画素拡張・誘導尺度1.5-10/200-250段、第一段階律速・過圧縮停滞の代償、DiT/flow後継への継承は完備。欠落は条件付き exact 数値(CelebA-HQ 5.11/FFHQ 4.98/COCO FID 12.63・IS 30.29等、Evidence在り)のみ。btd024のS02内引用なし(HOLD遵守)。 REPAIRED 2026-09-26: LDM CelebA-HQ 5.11/FFHQ 4.98 restored condition-bound.",
+   "succession": "yes",
+   "tradeoff_residual": "yes",
+   "transition_id": "T-PAR-07",
+   "what_changed_axis": "representation:pixel→perceptually-trained-autoencoder-latent-once-compress(KL-toward-N(0,I)-or-VQ-decoder-side-quantise)-diffuse-on-z-decode-once; architecture:+time-conditional-UNet+tau_theta-cross-attention-text/boxes/layout; objective:latent-epsilon-matching+conditional-variant; sampling:DDIM-10-200-conv-beyond-256px",
+   "repair_action": "APPLIED: REPAIRED 2026-09-26: LDM CelebA-HQ 5.11/FFHQ 4.98 restored condition-bound."
+  },
+  {
+   "before_after_delta": "r1記録(COMPRESSED_BUT_SUFFICIENT)を上回り、同一backbone同一計算量の条件付き exact 対比を備えてLONGFORM充足へ到達。骨格対目的の分離が本節の規範例。",
+   "bottleneck": "yes",
+   "boundary_respected": "yes (cross-condition: JAX TPU-v3処理量は装置結合・FID手順鋭敏・画素空間未検証を明記)",
+   "classification": "LONGFORM_SUBSTANTIVE",
+   "evidence_ids": [
+    "BT-D025",
+    "BT-D026"
+   ],
+   "improvement_condition_bound": "yes",
+   "manuscript_section": "Section 2 — 生成パラダイムと目的関数：自己回帰・敵対・拡散・フロー / 変換器雑音除去器と流れ・無撞着への分岐(前半・DiT/SiT)",
+   "mechanism_beyond_naming": "yes",
+   "rationale": "凍結VAE潜在パッチ化+adaLN-Zeroの骨格交代と、同一骨格での速度目的・得点導出(式9)・Heun/逆SDE二解法の目的/経路交代を明確に分離。XL/2誘導FID 2.27対LDM 3.60/ADM 4.59、SiT 400K 17.2対19.5・7M 8.3対9.6・誘導256px 2.06対2.27を同一条件で明記。抽出計算≠模型計算、端点特異性(wKL/t=0)・正則化の代償、後継評価設計への継承を記録。",
+   "succession": "yes",
+   "tradeoff_residual": "yes",
+   "transition_id": "T-PAR-08",
+   "what_changed_axis": "architecture:UNet-denoiser→DiT-S/B/L/XL-patchified-frozen-VAE-latents-adaLN-Zero; objective:ADM-epsilon→interpolant-velocity-Lv-xt=alpha_t-x*+sigma_t-eps-score-via-eq9-continuous-time-unweighted-same-backbone-fair-ablation"
+  },
+  {
+   "before_after_delta": "r1記録を維持し、模擬なし回帰・OT直線化・整流/再流・一段階蒸留の機構とNFE/FID exact 対比を保持。後継比較の非確立宣言も維持。",
+   "bottleneck": "yes",
+   "boundary_respected": "yes (cross-condition: 再流費用対LCM/無撞着比較・1D外の最適性・高解像文条件転移は未確立と明記)",
+   "classification": "LONGFORM_SUBSTANTIVE",
+   "evidence_ids": [
+    "BT-D027",
+    "BT-D028"
+   ],
+   "improvement_condition_bound": "yes",
+   "manuscript_section": "Section 2 — 生成パラダイムと目的関数：自己回帰・敵対・拡散・フロー / 変換器雑音除去器と流れ・無撞着への分岐(後半・流れ整合/整流)+流れへの再定式化：模擬なし回帰と直線化",
+   "mechanism_beyond_naming": "yes",
+   "rationale": "周辺場→条件付き場回帰の等勾配(CFM Thm2)・OT版直線軌道・同一UNet骨格ablation、線形補間方向の最小二乗・周辺保存の結び直し・再流・一段階蒸留は末端接続という機構を分離記述。FM-OT NLL 2.99/FID 6.35/NFE 142対DDPM 3.12/7.48/274、一段階FID 4.85・再現率0.51(1回整流は2段以上・2回整流は1段で直線)を条件付きで明記。適応NFE百超・厳密場理論・再流誤差蓄積(1回推奨)の代償と映像編集比較への継承を記録。",
+   "succession": "yes",
+   "tradeoff_residual": "yes",
+   "transition_id": "T-PAR-09",
+   "what_changed_axis": "objective:CNF-MLE-ODE-simulation-cost→simulation-free-CFM-equal-gradients-conditional-regression+OT-conditional-target-straight-paths→least-squares-rectification-deterministic-rewiring-same-marginals+reflow+one-step-distill-last-only; sampling:adaptive-ODE→few-step-Euler-on-straight-trajectories"
+  },
+  {
+   "before_after_delta": "unchanged (containment verified)",
+   "bottleneck": "yes",
+   "classification": "LONGFORM_SUBSTANTIVE",
+   "condition_detail": "Wake-sleep-beating bounds and 49.3% phoneme mapping at ~25 Hz speech conditioned in-text; Gaussian-posterior example only (D001), no joint prior training with uniform prior during representation learning plus MSE pixel blur (D002).",
+   "destination_package": "arch-representation",
+   "manuscript_sections": [
+    "Section 1"
+   ],
+   "mechanism_detail": "Per-datapoint posterior bottleneck resolved by amortized Gaussian encoder q(z|x) with analytic KL plus reparameterised sampling, then discrete codebook latents via nearest-neighbour quantisation with straight-through gradients; MAP quantisation with ancestral sampling from a separately fitted PixelCNN/WaveNet prior.",
+   "prior_classification": "SUBSTANTIVE",
+   "rationale": "Sec 1 (byte-identical to r1) states bottleneck, amortized q(z|x), discrete codebooks under a uniform prior, wake-sleep-beating bounds and phoneme-mapping gains with blur/no-joint-prior costs and VQGAN/codec/video-tokeniser succession. No LONGFORM gap; re-judged LONGFORM-sufficient, not inherited.",
+   "repair_action": "none",
+   "supporting_ids": [
+    "BT-D001",
+    "BT-D002"
+   ],
+   "transition_id": "T-REP-01"
+  },
+  {
+   "before_after_delta": "unchanged (containment verified)",
+   "bottleneck": "yes",
+   "classification": "LONGFORM_SUBSTANTIVE",
+   "condition_detail": "CAS Top-1 54.83 (58.74 after reconstruction) vs BigGAN-deep 42.65; FID ~30 to ~10 with rejection; CIFAR-10 +18.63% FID at 14.08x faster sampling; COCO-Stuff FID 22.4; latent-likelihood incomparability and rejection-diversity tradeoffs recorded.",
+   "destination_package": "arch-representation",
+   "manuscript_sections": [
+    "Section 1"
+   ],
+   "mechanism_detail": "Two-level discrete maps (256px: 32x32 top plus top-conditioned 64x64 bottom, PixelSnail priors) and VQGAN codebook (|Z|=1024, 256x256 to 16x16 indices) with perceptual plus patch-discriminator losses and GPT-2-medium latent transformer with sliding-window autoregressive next-index prediction.",
+   "prior_classification": "SUBSTANTIVE",
+   "rationale": "Sec 1 (byte-identical) covers hierarchical and perceptual-adversarial tokenizers with architecture/objective/sampling separation, conditioned gains, and inheritance to latent-diffusion first stages. Re-judged LONGFORM-sufficient.",
+   "repair_action": "none",
+   "supporting_ids": [
+    "BT-D002",
+    "BT-D003",
+    "BT-D004"
+   ],
+   "transition_id": "T-REP-02"
+  },
+  {
+   "before_after_delta": "unchanged (containment verified)",
+   "bottleneck": "yes",
+   "classification": "LONGFORM_SUBSTANTIVE",
+   "condition_detail": "MS-COCO zero-shot human vote 90.0% realism plus 93.3% caption match; FID within ~2 pts of best prior; 21% COCO / 12% CUB overlap no-change check; heavy-compression detail loss, CUB gap, rerank dependence, variable-binding/text-rendering limits recorded.",
+   "destination_package": "arch-representation",
+   "manuscript_sections": [
+    "Section 1"
+   ],
+   "mechanism_detail": "dVAE 256x256 RGB to 32x32=1024 tokens x8192 vocabulary concatenated with BPE text (<=256 tokens) as a single stream; 12B sparse decoder-only transformer; joint ELBO with KL weight 6.6 and text 1/8 plus image 7/8 prior cross-entropy; autoregressive sampling with CLIP-contrastive best-of-512 rerank plateauing after ~32.",
+   "prior_classification": "SUBSTANTIVE",
+   "rationale": "Sec 1 (byte-identical) gives representation, sparse-transformer architecture, weighted joint objective, rerank sampling, human-vote gains and HF-detail costs. Re-judged LONGFORM-sufficient.",
+   "repair_action": "none",
+   "supporting_ids": [
+    "BT-D002",
+    "BT-D005"
+   ],
+   "transition_id": "T-REP-03"
+  },
+  {
+   "before_after_delta": "unchanged (containment verified)",
+   "bottleneck": "yes",
+   "classification": "LONGFORM_SUBSTANTIVE",
+   "condition_detail": "MUSHRA 3 kbps beats Opus 12 kbps, nears EVS 9.6 kbps; streamable 1.5-12 kbps from 49.2 to 90.6; 8 kbps beats EnCodec-12k on mel/STFT/ViSQOL/SI-SDR; crowdsourced (not strict) MUSHRA, constant-rate operation, music-hardest bounds recorded.",
+   "destination_package": "arch-representation",
+   "manuscript_sections": [
+    "Section 1"
+   ],
+   "mechanism_detail": "Three RVQ generations: causal conv embeddings downsampled 320x (75 frames/s at 24 kHz) with constant-D additive refinement; multistream RVQ with multi-scale STFT discriminator; stride-512 embeddings at 86 Hz with 9x10-bit factorised normalised RVQ at ~91x compression; hinge-adversarial plus mel-spectral objectives; streamable causal inference with selectable layer counts.",
+   "prior_classification": "SUBSTANTIVE",
+   "rationale": "Sec 1 (byte-identical) traces three codec generations with adversarial/mel objectives, stated latencies, MUSHRA gains and evaluation bounds, plus codec-LM succession. Re-judged LONGFORM-sufficient.",
+   "repair_action": "none",
+   "supporting_ids": [
+    "BT-D006",
+    "BT-D007",
+    "BT-D008"
+   ],
+   "transition_id": "T-REP-04"
+  },
+  {
+   "before_after_delta": "unchanged (containment verified)",
+   "bottleneck": "yes",
+   "classification": "LONGFORM_SUBSTANTIVE",
+   "condition_detail": "Semantic-250 bps ABX 6.7/7.6 vs acoustic-2000 bps 22.4/28.7; acoustic continuation ASR CER 3.4/WER 6.0; speaker accuracy 92.6% on continuation vs 3.2% on resampled semantics; proper-noun/background-noise errors recorded.",
+   "destination_package": "arch-representation",
+   "manuscript_sections": [
+    "Section 1"
+   ],
+   "mechanism_detail": "Hybrid semantic tokens (self-supervised layer-7 k-means K=1024 at 25 Hz, ~250 bps) plus acoustic SoundStream tokens (12x1024 RVQ at 50 Hz; 4 coarse=2000 bps plus 8 fine); frozen tokenisers plus three 0.3B decoder-only staged Transformers with 3-second-prompt continuation.",
+   "prior_classification": "COMPRESSED_BUT_SUFFICIENT",
+   "rationale": "Shares one subsection with T-REP-06/07 so compressed, but all five points (babble-vs-unvocodable bottleneck, hierarchy, staged likelihoods, ABX/CER/speaker numbers, noise failures) are present. Section outside the Issue expansion scope (§2/6/7/8); re-judged LONGFORM-sufficient rather than inherited.",
+   "repair_action": "none",
+   "supporting_ids": [
+    "BT-D007",
+    "BT-D009"
+   ],
+   "transition_id": "T-REP-05"
+  },
+  {
+   "before_after_delta": "unchanged (containment verified)",
+   "bottleneck": "yes",
+   "classification": "LONGFORM_SUBSTANTIVE",
+   "condition_detail": "UCF-101 FVD 332 to 76(L)/159(B); BAIR 84 to 62 (31 debiased); Kinetics-600 16.2 to 9.9 (~39% cut); ~100x diffusion sampling efficiency; VQ-fidelity plus fixed-16-frame-training plus naive-unmasking-failure bounds recorded.",
+   "destination_package": "arch-representation",
+   "manuscript_sections": [
+    "Section 1"
+   ],
+   "mechanism_detail": "3D-VQ video to 4x16x16=1024 tokens for 16x128x128 frames (codebook 1024) with inflated 2D-VQ initialisation; BERT transformer with COMMIT multivariate masks; multi-task cross-entropy over 10 tasks; non-autoregressive 12-step COMMIT decoding (0.25 s on TPU, 37 fps on V100).",
+   "prior_classification": "COMPRESSED_BUT_SUFFICIENT",
+   "rationale": "Compressed via shared subsection but mechanism (inflated init, COMMIT masks, 12-step decode) and conditioned FVD numbers with fidelity/length bounds are intact. Outside Issue expansion scope; re-judged LONGFORM-sufficient.",
+   "repair_action": "none",
+   "supporting_ids": [
+    "BT-D002",
+    "BT-D010"
+   ],
+   "transition_id": "T-REP-06"
+  },
+  {
+   "before_after_delta": "unchanged (containment verified)",
+   "bottleneck": "yes",
+   "classification": "LONGFORM_SUBSTANTIVE",
+   "condition_detail": "TI2V-5B 5 s 720P at 24 fps in under 9 min on a single 24 GB consumer GPU with offload flags; vendor-reported +65.6% images / +83.2% videos (vendor-attributed); no VAE reconstruction/ablation numbers and no training loss in consumed README bytes explicitly marked.",
+   "destination_package": "arch-representation",
+   "manuscript_sections": [
+    "Section 1"
+   ],
+   "mechanism_detail": "High-compression 4x16x16 temporal-height-width VAE (64x) plus patchification; 2-expert mixture-of-experts layout plus TI2V-5B dense unified model; ledger objective NOT_ESTABLISHED so correctly absent, not a defect.",
+   "prior_classification": "COMPRESSED_BUT_SUFFICIENT",
+   "rationale": "README-level-only treatment is the correct evidence-bound scope: consumer-GPU timing, attributed gains, and explicit no-numbers/no-loss bounds are all marked. No absent-authority gap the manuscript could fill; re-judged LONGFORM-sufficient.",
+   "repair_action": "none",
+   "supporting_ids": [
+    "BT-D010",
+    "BT-D012"
+   ],
+   "transition_id": "T-REP-07"
+  },
+  {
+   "before_after_delta": "r1はSection 10(実行章)でSUBSTANTIVE。NEW S02の接続節は無撞着核の橋渡しとして正確で、半減/LCM-LoRA/敵対/携帯の各論と遅延・VRAM実測を実行章へ明示譲渡するため、S02範囲の判定はBOUNDARY_LIMITED(正規住所はSection 10)。",
+   "bottleneck": "yes",
+   "boundary_respected": "yes (cross-section deferral + cross-condition: 機材・精度・画素・段数・予算の束ね外しの速さ比べを拒否し三層並置に留める)",
+   "classification": "BOUNDARY_LIMITED",
+   "evidence_ids": [
+    "BT-D019",
+    "BT-D020",
+    "BT-D078",
+    "BT-D079",
+    "BT-D080",
+    "BT-D081",
+    "BT-D082"
+   ],
+   "improvement_condition_bound": "yes",
+   "manuscript_section": "Section 2 — 生成パラダイムと目的関数：自己回帰・敵対・拡散・フロー / 短縮と蒸留から実行費用への接続(正規住所: Section 10 実行と配備)",
+   "mechanism_beyond_naming": "yes",
+   "rationale": "S02橋渡しは正確:千段階費用の隘路、自己無撞着関数+境界条件+跳躍変数化で既存拡散網再利用、蒸留/単独学習二経路、CIFAR一段階3.55・二段階2.93/64px 6.20・4.70(単独学習は漸進蒸留に並ぶ)、正則条件・順方向微分・単峰仮定の代償、D078-D082方向への継承、遅延/VRAM/量子化の実行章譲渡を明示。半減/LCM-LoRA/敵対/携帯の各論機構はS02外(Section 10に exact 束ね数値あり)。注:btd029引用はS02橋渡しに在るも台帳T-RT-01のdiscovery_ids外(binding観察、深度欠陥ではない)。",
+   "succession": "yes",
+   "tradeoff_residual": "yes",
+   "transition_id": "T-RT-01",
+   "what_changed_axis": "sampling-procedure:1000-step-ancestral→self-consistency-function-distillation-or-isolated-CT-1-4-step (S02 bridge: D029-core + pointer); per-method halving/LCM-LoRA/adversarial-distill/mobile-UViT-redesign depth canonical-home Section-10"
+  },
+  {
+   "before_after_delta": "16 kHz sample-by-sample AR (slow, 240-300 ms receptive ceiling) -> frame-level attention TTS (Griffin-Lim artefacts) -> neural-vocoder TTS (near-natural 4.526 vs 4.582) -> parallel NAR (0.025 s mel / 0.180 s e2e, 269x/38x, 0 hard errors vs 7/15/17).",
+   "bottleneck": "Direct 16k samples/s raw waveform without unit concatenation; pipeline TTS stacks; slow sequential mel with attention fragility (misalign/repeat).",
+   "boundary_respected": "No cross-condition ranking; MOS read as naturalness only (not WER/similarity); receptive-field and sequential-cost limits bound to stated configs; D053 locator defect rebound to 1712.05884 noted, claims rest on verified body.",
+   "bottleneck_evidence": "BT-D051..D054; evpack_s06 D051-D054 VERIFIED cards",
+   "classification": "LONGFORM_SUBSTANTIVE",
+   "evidence_ids": [
+    "BT-D051",
+    "BT-D052",
+    "BT-D053",
+    "BT-D054"
+   ],
+   "improvement_condition_bound": "WaveNet MOS 4.21 EN / 4.08 ZH vs LSTM 3.67/3.79, gap cut 51% EN 69% ZH (44h/109-spk VCTK, §4 cond); Tacotron MOS 3.82 vs parametric 3.69 (100 US-EN phrases, 8 ratings); Tacotron2 MOS 4.526 vs GT 4.582 (100 in-domain, 8+ raters); FastSpeech MOS 3.84, mel 0.025s vs 6.735s (269x), e2e 0.180s vs 6.895s (38x V100 b1), 50 hard 0 errors vs Transformer 7/15/17.",
+   "manuscript_section": "6 SPEECH (Sec:speech)",
+   "manuscript_subsection": "波形自己回帰と系列変換 + 並列化と神経声器と端末間統合 (lines 446-458 + tables); modeling-position axis subsection 何を何で表すか lines 475-494 verifies §6 acceptance axis",
+   "mechanism_beyond_naming": "Dilated-causal AR CNN (mu-law 256-way, gated, residual+skip, dilation 1..512) with linguistic+logF0 conditioning; seq2seq CBHG encoder + content-tanh attention GRU + 80-band mel + CBHG post-net + 50-iter Griffin-Lim; location-sensitive attention + LSTM decoder + post-net + modified 30-layer WaveNet vocoder (3 cycles, 10-comp logistic-mixture 16-bit); FFP Transformer FFT blocks + duration predictor (log-domain MSE, teacher alignments) + length regulator (alpha) + WaveGlow + sequence-level KD.",
+   "rationale": "Full bottleneck->mechanism->condition-bound improvement->tradeoff->succession arc with architecture/objective/sampling separated and WER/naturalness/speaker/latency axes distinct. §6 acceptance: modeling-position axis table (sample-dist vs mel-map vs duration+vocoder vs joint) present lines 475-494; full-duplex-as-constraint separation (speed vs simultaneity) present lines 515-518. No PARTIAL/closed/vendor gap in this leg.",
+   "succession": "Waveform/attention/parallel thesis inherited by end-to-end VAE-flow hybrids + GAN vocoders (T-SP-02); duration/teacher-dependence problem handed off.",
+   "tradeoff_residual": "Receptive ~240-300 ms misses long F0/prosody; sequential cost; misalign/repeat + Griffin-Lim artefacts cap quality; occasional mispronunciation/out-of-domain names weak; teacher-alignment + distillation dependence, duration error propagates.",
+   "transition_id": "T-SP-01",
+   "what_changed_axis": "Representation raw samples -> 80-band mel; architecture sequential AR -> frame attention -> parallel NAR + separate vocoder; objective waveform likelihood -> text-to-spec -> mel+vocoder likelihood -> duration-MSE + mel-recon; sampling sample-by-sample -> frame Griffin-Lim -> neural vocode -> parallel NAR; conditioning global/local -> text attention -> location-sensitive -> rate/break length-regulator."
+  },
+  {
+   "before_after_delta": "Two-stage parallel (fixed-mel finetune, single-speaker) -> end-to-end 67x real-time near-GT (4.43 vs 4.46) -> zero-shot multispeaker/multilingual (unseen sim 0.864, MOS 4.21 ~ GT, VC 4.20/4.07).",
+   "bottleneck": "Two-stage parallel needs sequential train/finetune on fixed mels; single-speaker limits; zero-shot multispeaker/multilingual missing.",
+   "boundary_respected": "WER=intelligibility vs MOS=naturalness vs encoder-sim/SMOS=speaker vs RTF/steps=latency kept distinct; zero-shot scores bound to VCTK 11-unseen protocol; phonemiser/duration limits read as intelligibility constraints; vocoder separated as fidelity-not-control layer; no vendor ranking.",
+   "bottleneck_evidence": "BT-D056, BT-D057; evpack_s06 D056/D057 VERIFIED",
+   "classification": "LONGFORM_SUBSTANTIVE",
+   "evidence_ids": [
+    "BT-D056",
+    "BT-D057"
+   ],
+   "improvement_condition_bound": "VITS LJSpeech MOS 4.43 vs GT 4.46, vs Glow+HiFiGAN-ft 4.32; VCTK 4.38 = GT; 1480 kHz 67x RT; ablation w/o flow 2.98; YourTTS VCTK-unseen cosine 0.864, MOS 4.21 vs GT 4.26, SMOS 4.16 vs 4.19; VC MOS 4.20/SMOS 4.07; <60 s adaptation near-GT.",
+   "manuscript_section": "6 SPEECH",
+   "manuscript_subsection": "並列化と神経声器と端末間統合 (lines 453-458) + 零射影複製 (lines 496-501 intro contrast)",
+   "mechanism_beyond_naming": "Conditional VAE (linear-spec posterior, Transformer text prior + volume-preserving flow, MAS, L1 mel recon) + stochastic duration predictor (variational dequant/augment, spline flows) + HiFi-GAN V1 (MPR+MPD, windowed training); VITS backbone + pretrained speaker embeddings (global cond/sum) + 4-dim language embeddings + optional speaker-consistency loss, raw-char input; zero-shot + VC modes.",
+   "rationale": "Complete lineage with flow-necessity ablation (2.98) and MPD-necessity (2.28) causal detail, stochastic-duration mechanism, and speaker/language conditioning distinguished from vocoding. §6 modeling-position row 端末間 (char prior + spectral posterior via flow) verifies axis.",
+   "succession": "End-to-end/zero-shot thesis inherited by codec LMs (T-SP-03); zero-shot scores delegated to successor per D056 limit, streaming delegated per D057.",
+   "tradeoff_residual": "Flow prior essential; IPA/phonemiser preprocessing remains; duration instability; mispronunciation w/o phonemes; gender/lang imbalance; consistency loss trades naturalness for similarity; streaming latency vs codec-LM scaling not established.",
+   "transition_id": "T-SP-02",
+   "what_changed_axis": "Representation linear-spec posterior + Transformer prior -> raw chars + speaker/lang embeddings; architecture two-stage -> single CVAE-flow-MAS-vocoder; objective mel recon + KL + adv + feat-match + stochastic duration; sampling windowed 67x RT -> zero-shot + <60 s finetune; conditioning stochastic duration -> speaker/language embedding + consistency loss."
+  },
+  {
+   "before_after_delta": "Mel-regression studio TTS (YourTTS WER 7.7/sim 0.337) -> codec-LM zero-shot (WER 5.9/sim 0.580, SMOS 4.38 vs 3.45) -> grouped-code + repetition-aware (mechanism only) -> flow infilling NAR (WER 5.9%->1.9%, sim 0.580->0.681, ~20x faster, cross-lingual 10.9%->5.2%).",
+   "bottleneck": "Zero-shot generalised poorly from small clean studio data; sampling instability/infinite loops; fixed high codec frame rates; slow past-only AR needing labels/forced alignment.",
+   "boundary_respected": "PARTIAL D059 respected: grouped-code + repetition-aware sampling mechanism only (group 1/2/4/8, AR group embed/predict + NAR rest, nucleus-then-random on repetition threshold); parity margins/latency/hard-sentence numbers NOT claimed (tables truncated, locator rebound 2406.05358->2406.05370). Cross-condition: LibriSpeech zero-shot vs VCTK vs Voicebox infill vs cross-lingual never cross-ranked; WER vs sim vs SMOS axes separated; prompt/noise dependence + misuse risk stated.",
+   "bottleneck_evidence": "BT-D058 VERIFIED, BT-D059 PARTIAL, BT-D060 VERIFIED; evpack_s06",
+   "classification": "BOUNDARY_LIMITED",
+   "evidence_ids": [
+    "BT-D058",
+    "BT-D059",
+    "BT-D060"
+   ],
+   "improvement_condition_bound": "VALL-E LibriLight 60k-h/7k-spk: LibriSpeech WER 5.9 vs YourTTS 7.7 (GT 2.2), sim 0.580 vs 0.337 (GT 0.754), SMOS 4.38 vs 3.45; VCTK SMOS 3.81 vs 3.70. Voicebox vs VALL-E WER 5.9%->1.9%, sim 0.580->0.681 up to 20x faster; cross-lingual vs YourTTS WER 10.9%->5.2%, sim 0.335->0.481; denoise -8.8% WER +0.450 sim +0.80 MOS. D059: NO numeric parity claim (PARTIAL).",
+   "manuscript_section": "6 SPEECH",
+   "manuscript_subsection": "零射影複製と符号言語模型 + 符号言語模型の生成方式と零射影の条件づけ + 流れ補完と実時間化 (lines 496-513); PARTIAL paras lines 443,499,546 explicitly fence D059",
+   "mechanism_beyond_naming": "EnCodec 24kHz->75Hz 8x1024 RVQ tokens: decoder-only AR quantiser-1 + NAR quantisers 2-8 (adaptive LN staging, shared embed/pred), phoneme + 3 s acoustic prompt, sampling decode + EnCodec decode; grouped-code LM (group embed/predict, NAR remainder) + repetition-aware (nucleus then random fallback); NAR continuous normalising flow (OT-CFM Transformer vector field on 80-d log-mel + frame phones) + duration model + infill past+future + CFG + ODE <10 evals + HiFi-GAN-class vocoder.",
+   "rationale": "Reader-depth met for consumed legs (AR/NAR split, prompting, infill, OT-CFM, ODE budget) with condition-bound deltas. LIMITED (not blocked) because D059 improvement arc cannot close without absent authority (truncated §4.2-4.3 tables: exact parity margins, latency speedups, hard-sentence stability). Manuscript correctly withholds numbers and records inheritance only. §6 modeling-position row 符号言語 (first-quantiser-only AR) verifies axis.",
+   "succession": "Codec-LM thesis inherited by versatile/in-the-wild systems (T-SP-04); sampling-instability + 3 s-prompt + alignment dependence handed to flow-infill lane.",
+   "tradeoff_residual": "Random-sampling instability/loops; 3 s prompt needed; noisy pseudo-phoneme labels; no streaming (D058); prompt length/quality/noise dependence + spoofing risk (D059); forced-alignment/phone-transcript + vocoder dependence (D060); §5 tables truncated.",
+   "transition_id": "T-SP-03",
+   "what_changed_axis": "Representation mel regression -> 75 Hz RVQ codec tokens -> grouped codes -> 80-d log-mel + phones for flow; architecture AR-first+NAR-rest -> grouped LM -> NAR flow Transformer + duration + vocoder; objective next-token with acoustic prompt -> grouped likelihood -> OT-CFM + infill + CFG; sampling sampling-decode -> repetition-aware fallback -> ODE <10 evals; conditioning acoustic prompt -> infill past+future."
+  },
+  {
+   "before_after_delta": "Studio/closed zero-shot -> versatile controllable (ICL WER 2.249/sim 0.762 ~human, SFT +0.37, RL +0.14, hard-WER 7.585->6.423) + open streaming near-lossless (2.47, stream 1.45/2.38/8.08) + translation-task speech (BLEU/ASR-BLEU + latency) + full-duplex framework (160 ms theory/~200 ms practice, quality withheld).",
+   "bottleneck": "Human-level in-the-wild zero-shot with controllability + deployable latency; pipeline dialogue seconds-latency with text bottleneck ignoring overlap/interruption.",
+   "boundary_respected": "PARTIAL D134 respected: Helium-7B + Mimi 12.5 Hz/80 ms split-RVQ + depth-Transformer + inner-monologue framework + latency only; NO quality ranking (eval section unconsumed). Vendor quarantine: D061 ByteDance + D062 Meta numbers condition-bound, independent reproduction not claimed, no leaderboard. Cross-condition: WER vs CMOS/SMOS vs RTF/steps vs BLEU/lag kept distinct; translation-task vs dialogue-latency claims separated; config-bound latency (device/steps/chunk) never compared unbound.",
+   "bottleneck_evidence": "BT-D061 VERIFIED, BT-D062 VERIFIED (v1 body; v2 expressive/streaming via 2312.05187), BT-D132 VERIFIED, BT-D133 VERIFIED, BT-D134 PARTIAL, BT-D135 benchmark",
+   "classification": "BOUNDARY_LIMITED",
+   "evidence_ids": [
+    "BT-D061",
+    "BT-D062",
+    "BT-D132",
+    "BT-D133",
+    "BT-D134",
+    "BT-D135"
+   ],
+   "improvement_condition_bound": "Seed-TTS ICL EN WER 2.249/sim 0.762/CMOS -0.07 vs human (2.143/0.730); SFT +0.37 CMOS; RL +0.14 CMOS hard-WER 7.585->6.423; deployed 0.028x RTF 0.132x CMOS -0.02 (vendor). F5-TTS 32-step WER 2.42/sim 0.66/RTF 0.31, 16-step 2.53/RTF 0.15 (RTX3090 10 s, GT 2.23). CosyVoice2 WER 2.47/MOS 3.96/sim 0.745 (human 2.66/3.84/0.697); streaming near-lossless ZH 1.45 EN 2.38 hard 8.08. Seamless v2-Large Fleurs ST BLEU 26.6 vs v1 24.1, S2S 29.7 vs 25.8; streaming thr-0.5 ST 20.0/lag 1.68 vs offline 23.7. Moshi: latency only. DuplexBench smooth 73.00% r1 -> 57.40% r1-10.",
+   "manuscript_section": "6 SPEECH",
+   "manuscript_subsection": "因果性と遅延と全二重 (lines 515-518, full-duplex-as-constraint) + 多能模型・翻訳・全二重対話 (lines 520-525) + 供給者隔離/PARTIAL/持続長 paras (543-550); verifies §6 acceptance full-duplex check",
+   "mechanism_beyond_naming": "AR token LM (speech tokeniser->tokens->diffusion Transformer->vocoder) + instruction/SFT + REINFORCE (sim/WER/spk objectives) + self-distilled factorisation + NAR variant w/o phoneme-duration + causal diffusion distillation + streaming; multitask encoder-decoder + UnitY2 hierarchical upsample + Prosody-UnitY2/PRETSSEL + EMMA streaming; DiT (22L/16H AdaLN-zero + ConvNeXt-V2 text refine) + OT-CFM + Sway/Euler; FSQ semantic tokeniser 25 Hz + Qwen2.5-0.5B interleaved LM + chunk-aware causal FM UNet (L=M*(d_lm+d_fm+d_voc)); Helium-7B + Mimi codec + hierarchical RQ depth-Transformer modelling parallel streams with acoustic delay + time-aligned text prefix; turn-segmented multi-round bench.",
+   "rationale": "Dense frontier correctly layered with latency model L=M*(...) and causality-vs-simultaneity split. LIMITED (not blocked) because D134 quality arc needs absent authority (evaluation section unconsumed; production deployment figures need independent measurement) and D061/D062 vendor evals need independent reproduction. Manuscript fences both and records framework+latency only for D134. §6 acceptance full-duplex-as-constraint verified: speed (NAR/infill/chunk-causal) vs simultaneity (overlap/interruption/continuation judgement, EMMA thresholds, acoustic delay) kept distinct.",
+   "succession": "Versatile/streaming/full-duplex is current frontier; closed realtime capstones (D107-D110) capability-level heirs; turn-segmentation dependence left as open method problem.",
+   "tradeoff_residual": "Hard-accent weak (15 s insufficient); reward-hacking (slower/cleaner less natural); vendor-authored evals; v1 lacks expressive/streaming eval (v2 body needed); offline-only (D132); config-bound latency, EN weaker, SV-metric dependence; research-system status; judge/segmentation dependence.",
+   "transition_id": "T-SP-04",
+   "what_changed_axis": "Representation speech tokens vs w2v-BERT/alignments/units vs char-filler vs supervised semantic tokens vs 12.5 Hz codec frames; architecture token-LM+RL vs multitask encoder-decoder vs DiT-refine vs LM+chunk-FM vs duplex backbone+codec+depth-TF; objective SFT/REINFORCE vs multitask translation vs OT-CFM vs chunk-FM; sampling causal-distilled streaming vs offline vs L-model vs 160/200 ms duplex; conditioning voice-design/timing vs turn/interruption modelling."
+  },
+  {
+   "before_after_delta": "Image-only diffusion (no temporal) -> factorized video (FVD 68.19/18.6, joint 202->57.84) -> HD cascade distilled 8+8 steps (CLIP 25.03 vs 25.19 ~18x) -> data-efficient frozen-prior motion-only (FID 13.17 vs 23.59, CLIPSIM 0.3049).",
+   "bottleneck": "Image diffusion lacked temporal coherence; HD long-video needed scaling; paired text-video scarce.",
+   "boundary_respected": "FVD/FID/CLIPSIM bound to BAIR/Kinetics/UCF-101/MSR-VTT-zero-shot (59,794 caps) conditions; joint gains bound to image-count (0->8); 16-frame-block limit + unreleased status explicit; duration != coherence enforced (max duration not coherence); representation NA correctly (tokenizer path in T-REP-06).",
+   "bottleneck_evidence": "BT-D070, D071, D073 VERIFIED; evpack_s08; D073 locator rebound 2209.14755->2209.14792",
+   "classification": "LONGFORM_SUBSTANTIVE",
+   "evidence_ids": [
+    "BT-D070",
+    "BT-D071",
+    "BT-D073"
+   ],
+   "improvement_condition_bound": "VDM UCF-101 16x64x64 FID 295/IS 57 vs real 60.2; BAIR 1-15 FVD 68.19 ancestral / 66.92 Langevin; Kinetics 5-11 FVD 18.6/16.2; joint text-video FVD 202.28/205.42 (0 imgs) -> 57.84/60.72 (8 imgs); 64-frame recon-guidance 136.22/134.55 vs replacement 451.45/436.16. Imagen-Video 1280x768 128f 24fps 11.6B; distilled 8+8 CLIP 25.03 vs orig 25.19 at 35 s vs 618 s (~18x, ~36x FLOPs). Make-A-Video MSR-VTT zero-shot FID 13.17/CLIPSIM 0.3049 vs CogVideo 23.59/0.2631; UCF zero-shot IS 33.00/FVD 367.23, ft 82.55/81.25; human pref 84.38%/78.13%.",
+   "manuscript_section": "8 VIDEO",
+   "manuscript_subsection": "分解型拡散と多重超解像 + 資料効率化 + 因子分解の設計差 + 潜在と圧縮の軸 (lines 712-750); duration!=coherence spine repeated",
+   "mechanism_beyond_naming": "Factorized 3D U-Net (2D 1x3x3 + per-frame spatial + temporal attn + relative pos; images via masked temporal attn) + reconstruction guidance (masked-error gradient wr) for SR/block-autoregressive; frozen T5-XXL + base + 3 spatial-SR + 3 temporal-SR (temporal attn base / temporal conv SR) + v-pred + noise-cond augment + classifier-free + oscillating guidance + 2-stage guided progressive distillation to 8 steps; T2I UNet + pseudo-3D conv (2D-pretrained + 1D identity) + pseudo-3D attn (spatial-pretrained + temporal zero/identity) + fps cond; prior->16x64x64 temporal decoder->masked interp (76f)->temporal+spatial SR with shared noise; motion learned videos-only (2.3B pairs prior frozen).",
+   "rationale": "Three legs traced with joint-training, v-pred/distillation, and frozen-prior/motion-only causality plus 64-frame and distillation ablations condition-bound. §8 acceptance partial: duration!=coherence spine verified (16-frame blocks, 5.3 s cascade, 76f interp as max-duration not coherence; unreleased status); six-axes separation completed jointly with T-VI-02/04/05 (see T-VI-05).",
+   "succession": "Factorized/cascaded/data-efficient thesis inherited by latent-video scaling + open MoE (T-VI-02); 16-frame/short-clip wall handed off.",
+   "tradeoff_residual": "16-frame blocks only; long via autoregressive/temporal-SR guidance; dataset bias, unreleased; cascade cost, inexact 3D rotation; video-only phenomena unlearnable; social-bias exaggeration; short-clip focus.",
+   "transition_id": "T-VI-01",
+   "what_changed_axis": "Architecture-side (representation NA): image UNet -> factorized 3D + masked joint -> 7-model cascade + distillation -> frozen-T2I + pseudo-3D motion-only; objective joint image-video -> v-pred + noise-augment -> prior-frozen motion; sampling recon-guidance/block-autoregressive -> oscillating + 8-step distill -> shared-noise multi-stage; conditioning joint text-video -> oscillating/CFG -> fps."
+  },
+  {
+   "before_after_delta": "Per-model tuning / uncurated training / closed-only deploy -> tuning-free animation (smoothness 2.825 vs 1.615) + curated 3-stage (FVD 242.02 vs 367.23, curation persists after ft) + open MoE consumer-GPU 5 s 720p24 <9 min (vendor +65.6%/+83.2%).",
+   "bottleneck": "Animate personalised T2I w/o per-model tuning preserving domain quality; unify curation with staged training; open HD video at fixed inference cost.",
+   "boundary_respected": "Smoothness/FVD/Elo bound to same-personalised / zero-shot / curation conditions; curation advantage persists after ft without dissolving population bias; Wan gains vendor-attributed (README-level, no VAE recon/ablation, no loss/corpus/compute), no independent-reproduction ranking; open line frozen at 2.2; 5.3 s+ continuation unquantified; depth-demo random-noise-only; cross-condition (smoothness vs FVD vs Elo) never ranked.",
+   "bottleneck_evidence": "BT-D074, D075 VERIFIED, BT-D124 VERIFIED (README-level); evpack_s08; D074 locator rebound 2307.04790->2307.04725",
+   "classification": "LONGFORM_SUBSTANTIVE",
+   "evidence_ids": [
+    "BT-D074",
+    "BT-D075",
+    "BT-D124"
+   ],
+   "improvement_condition_bound": "AnimateDiff same-personalised avg ratings 2.21/2.28/2.825 + CLIP 31.39/87.29/98.00 vs Tune-a-Video 2.18/1.10/1.615; MotionLoRA 50 refs OK, 5 degrades; temporal-conv ablation collapses to identical frames. SVD UCF zero-shot FVD 242.02 vs Make-A-Video 367.23; human Elo image-pretrained>scratch, curated-10M>WebVid/InternVid, curated-50M>uncurated persisting after 50k HR ft; 25f I2V preferred over commercial (voter). Wan2.2 MoE 14B-active/27B-total + VAE 4x16x16 (64x) + patch 4x32x32; TI2V-5B 5 s 720p24 <9 min on 24GB (vendor); +65.6% imgs/+83.2% vids vs 2.1 (vendor).",
+   "manuscript_section": "8 VIDEO",
+   "manuscript_subsection": "動作接続器と厳選潜在動画 + 潜在と圧縮の軸 table (lines 731-772); adapter-scale and curation-persists detail",
+   "mechanism_beyond_naming": "Inflate SD-V1.5 to 5D (image layers per-frame, motion merges spatial->batch) + temporal Transformer self-attn (sinusoidal, zero-init residual, base frozen) + LoRA domain adapter (alpha-scaled, 0 removes) + MotionLoRA on motion attn (20-50 vids, 2000 iters, ~30 MB, composable); SD2.1 spatial init + inserted temporal conv/attn full-ft + EDM + noise-shift + fps micro-cond, 3-stage (image/low-res/high-quality) + 14x256x384->14x320x576 + CLIP-image + noise-augmented concat + linearly-increasing guidance + camera LoRA; 2-expert MoE (high-noise layout / low-noise detail, SNR thresh) + dense TI2V + FSDP/Ulysses, offload flags.",
+   "rationale": "Adapter/curation/open-MoE lanes fully traced with scale-alpha causality, 50-ref threshold, and curation-persists-after-ft nuance (effect not bias removal). Vendor numbers quarantined with README-level disclosure limit (no recon/ablation/loss). Contributes to §8 six-axes separation (local vs short-range vs identity vs permanence) and duration!=coherence (short-clip focus, 24GB配備 as deploy not quality).",
+   "succession": "Adapter/curation/open-MoE is deployable-video lane; closed joint-AV heirs capability-level (T-VI-03); 50-ref and short-clip/VRAM walls handed off.",
+   "tradeoff_residual": "Video-data quality gap needs adapter; MotionLoRA ~50 refs; personalised-model misuse; depth-demo random-noise-only; short-clip focus, costly keyframe-at-once, too-little-motion, slow/high-VRAM; open frozen at 2.2; corpus/compute undisclosed beyond README.",
+   "transition_id": "T-VI-02",
+   "what_changed_axis": "Representation 5D inflated latents -> SD2.1+temporal -> 4x16x16 VAE + patch 4x32x32; architecture frozen+temporal attn + LoRA/MotionLoRA -> full-ft 3-stage + camera LoRA -> MoE + dense TI2V; objective no base retrain + adapter scaling -> 3-stage -> README-only; sampling adapter-scale alpha -> 25f I2V -> <9 min consumer-GPU; conditioning MotionLoRA shot-type + depth demo -> CLIP-image concat + increasing guidance."
+  },
+  {
+   "before_after_delta": "Research clip models (16f blocks, 5.3 s cascade, README open) -> closed joint-AV storytelling capstones (30 s single-pass + multi-min extension, 20 s native-audio, 20 s 1080p frame-control, 10 s/720p envelope) as workflow/lifecycle evidence; NO architecture delta (undisclosed).",
+   "bottleneck": "Clip-level generation -> creative-work storytelling with synced audio, multi-round extension, reference control, production workflows.",
+   "boundary_respected": "Closed by design: representation/architecture/objective NOT_ESTABLISHED (undisclosed in consumed bodies); NO hidden-architecture inference. Functional sampling/conditioning only (durations vendor-attributed, benchmark leads preliminary/vendor-harness). Max-duration explicitly not coherence. Lifecycle facts (Imagen deprecation, Sora shutdown 2026-04-26, Wan frozen 2.2) recorded. Vendor claims quarantined; version/checkpoint currency required. This is BOUNDARY_LIMITED not EVIDENCE_BLOCKED (absence is authority boundary, not missing fetch).",
+   "bottleneck_evidence": "BT-D117,D118,D119,D121,D122,D123 vendor bodies (capability/workflow/lifecycle); BT-D077 Sora page (no scores); D120/D125 blocked noted in ledger",
+   "classification": "BOUNDARY_LIMITED",
+   "evidence_ids": [
+    "BT-D117",
+    "BT-D118",
+    "BT-D119",
+    "BT-D121",
+    "BT-D122",
+    "BT-D123"
+   ],
+   "improvement_condition_bound": "Vendor-attributed only, no FVD/FID/CLIP conditions: 30 s single-pass + multi-round multi-min (D117); benchmark leads on 1003-sample T2V + 355-sample I2V + 527-sample AV sets (D118, vendor harness); preliminary preference % over named competitors (D119, early harness); 20 s 1080p frame-control (D123); 10 s/720p production envelope (D121); subversion drift Ray3 vs 3.14 banner; Sora ~1 min qualitative + dated lifecycle (BT-D077 page: no scores, lists physics/cause-effect/left-right/trajectory/morphing/multi-char failures).",
+   "manuscript_section": "8 VIDEO",
+   "manuscript_subsection": "閉鎖頂点・開放混合専門家と編集基準測定:前半 (lines 774-776, 781-783) + 読解上の境界 closed para (line 822 Sora/vendor sentences)",
+   "mechanism_beyond_naming": "NONE by design (not omitted): consumed bodies disclose only functionally-described unified multimodal joint-generation; no backbone/loss/params. Manuscript records what IS present beyond naming: sampling envelopes (single-pass + agentic chaining + extension), conditioning surfaces (multimodal refs, timestamp/greenscreen/camera/ref edit, ingredients/style/character, first-last frame, outpaint, keyframe/char-ref/annotation), and lifecycle (deprecation/shutdown/freeze) — without inferring hidden UNet/Transformer/diffusion/flow.",
+   "rationale": "Per instruction, mechanism absence is authority boundary, not evidence gap: demanding inference would violate LONGFORM_SPECIAL closed-product rule (architecture-v2 capstones purpose: capability/workflow/availability/lifecycle only). Manuscript enforces duration!=coherence (約1分 as max-duration not long-form proof) and version/currency binding. Hence BOUNDARY_LIMITED, explicitly not EVIDENCE_BLOCKED (no absent authority to name for a fetchable mechanism; undisclosed by vendor). Detail continues in Sec13 capstones per architecture.",
+   "succession": "Closed capstones succeed as workflow evidence, not architecture parents; open question unified vs orchestrated specialists (T-CV-01/T-CLOSED-01); open-weight lane (T-VI-02) carries mechanism weight.",
+   "tradeoff_residual": "Vendor acknowledges physical-plausibility + multi-subject stability room; short-segment spoken-AV sync issues; early/preliminary harness; subversion drift; single-snapshot status; Kling/Wan-hub bodies blocked.",
+   "transition_id": "T-VI-03",
+   "what_changed_axis": "No disclosed representation/architecture/objective change (NOT_ESTABLISHED). Change recorded on workflow axes only: sampling single-pass->multi-round extension; conditioning multimodal reference + frame-level control + section edit; lifecycle open-frozen vs API-only flagships."
+  },
+  {
+   "before_after_delta": "One-shot editing (consistency 92.40, pref 87.86%, occlusion/drift/flicker ablations) -> standardized FiVE benchmark (100 vids/420 pairs/15 metrics): Wan-Edit LPIPS 94.61/SSIM 82.55/PSNR 25.57 fidelity 89.43 at 3.07 s/f vs Pyramid 1.44 vs DMT 25.98; acc 46.97 vs 43.84 vs 48.42.",
+   "bottleneck": "One-shot text-driven video editing w/o large video training; no standardized fine-grained object-level benchmark for diffusion vs rectified-flow editing.",
+   "boundary_respected": "FiVE numbers bound to 100-video (74 real every-8f + 26 synth, 35-126f) / 420-pair (colour/material/substitution +/-nonrigid/add/remove) / SAM2 + VLLM / 15-metric editing-domain protocol; NO pure-generation superiority claimed (flow-vs-diffusion ablation thin); one-shot vs benchmark conditions never conflated; per-frame cost read as domain cost not general runtime.",
+   "bottleneck_evidence": "BT-D050 one-shot, BT-D138 FiVE VERIFIED; evpack_s08 D138",
+   "classification": "LONGFORM_SUBSTANTIVE",
+   "evidence_ids": [
+    "BT-D050",
+    "BT-D138"
+   ],
+   "improvement_condition_bound": "Tune-A-Video inflated-SD sparse-ST-attn 500-step one-shot: frame consistency 92.40 vs 90.64/88.89, user pref 87.86% consistency / 62.14%; ablations drift w/o sparse attn, stagnant w/o inversion, flicker w/o ft. FiVE: Wan-Edit LPIPS 94.61 SSIM 82.55 PSNR 25.57 fidelity 89.43 at 3.07 s/f vs Pyramid-Edit 1.44 s/f vs DMT 25.98 s/f; FiVE-Acc yes/no 41.41 multi 52.53 union 55.72 inter 38.22 acc 46.97 vs Pyramid 43.84 DMT 48.42 TokenFlow 27.43.",
+   "manuscript_section": "8 VIDEO",
+   "manuscript_subsection": "閉鎖頂点・開放混合専門家と編集基準測定:後半 (lines 777-779) + 参照・条件づけ・編集と基準測定の配置 (803-804)",
+   "mechanism_beyond_naming": "Inflated 3D UNet (inflated SD + sparse spatio-temporal attn, query-matrix ft) + DDIM-inversion unconditional then edited-prompt sampling + first-plus-previous querying + eta-interp 0.6-0.8 + 8-seed select; FiVE: 100 vids + 420 model-generated prompt pairs + SAM2 masks + FiVE-Accuracy VLLM yes/no + multi-choice; Pyramid-Flow-384P + Wan2.1-1.3B via training/inversion-free FlowEdit adaptation.",
+   "rationale": "One-shot->benchmark transition fully traced with preservation target (mask/region), locality, and failure modes (occlusion mixing, drift/flicker ablations). Editing-domain binding + thin pure-generation ablations explicitly fenced; no outside-domain ranking. Supports §8 axes separation (edit-preservation as distinct axis, not generation quality).",
+   "succession": "Flow-vs-diffusion comparison evidenced inside editing domain only; no superiority outside evidenced domains (feeds T-PAR-09 reflow question); single-good-sample != long-horizon rule enforced.",
+   "tradeoff_residual": "Occlusion mixing; drift/flicker ablations; editing-domain only; pure-generation ablations thin; hyperparameter-universal superiority not established.",
+   "transition_id": "T-VI-04",
+   "what_changed_axis": "Representation inflated 3D latents -> SAM2 masks + VLLM judgements; architecture inflated SD sparse-ST -> Pyramid-Flow/Wan2.1 + FlowEdit; objective one-shot 500-step ft -> benchmark measurement (no new training); sampling DDIM-inversion edit -> 15-metric eval; conditioning first-plus-previous querying -> colour/material/substitution/add/remove pairs."
+  },
+  {
+   "before_after_delta": "Single-valued quality (one good sample) -> decomposed validity-bounded eval: subject 86-92% vs spatial 18-37%, plot ~10-11%, motion-order 15-29%, >90% sync pref, 3.92-4.02 vs 2.91, physics joint 39.6% + auto ROC-AUC 82/73 vs 73/58; NO single score by design.",
+   "bottleneck": "Single-valued metrics misaligned with humans; lip-sync training signals unstable; physics simulation unknown; multi-round turn effects unmeasured.",
+   "boundary_respected": "All scores bound to stated backbones/populations/protocols; backbone bias + static-video cheating + talking-face-only + 2024-set ceilings explicit; cross-dimension weighting refused (no single score); cross-condition lip-sync-distance comparability refused; single-sample never upgraded to long-horizon; full temporal treatment continues in Sec9 (pointer, not duplication).",
+   "bottleneck_evidence": "BT-D092,D093,D129,D130,D131 (ledger); architecture temporal/evaluation boundaries",
+   "classification": "LONGFORM_SUBSTANTIVE",
+   "evidence_ids": [
+    "BT-D092",
+    "BT-D093",
+    "BT-D129",
+    "BT-D130",
+    "BT-D131"
+   ],
+   "improvement_condition_bound": "4-model subject consistency 86-92% vs spatial 18-37% (D092, backbone-bound); complex plot ~10-11% motion-order 15-29% (D093, VLM-mitigated); combined dubbed/random/TTS >90% vs unsynced (D129, public-SyncNet, talking-face); user study 3.92-4.02 vs Wav2Lip 2.91 (D130, lip-reading-feature); best joint physics 39.6% + auto 82/73 vs Gemini 73/58 (D131, 2024-set binary conflates quality/motion).",
+   "manuscript_section": "8 VIDEO (+ Sec9 pointer)",
+   "manuscript_subsection": "短断片の壁と長域・同一性・同期の未確立領域 + 評価軸 table 局所/短域/同一性/同期/長域/継続/編集保存 (lines 786-801) + 遷移の読み方/読解上の境界 (818-824); verifies §8 acceptance six-axes + duration!=coherence spine",
+   "mechanism_beyond_naming": "Evaluation-side (representation/architecture/sampling NA by design): decomposed quality + condition-consistency dims + human win-ratio alignment; intrinsic-faithfulness groups + caption-plus-judge + specialist detectors; expert-sync penalised generation (frozen SyncNet-style expert); lip-reading-feature objective + new AV metrics; curated physics benchmark + human/auto judgements with validity ceilings.",
+   "rationale": "§8 acceptance explicitly verified: six/seven axes table-separated (local fidelity / short-range / identity permanence / AV-sync / long-range structure / continuation / edit-preservation, lines 786-798) with 未確立 column; duration!=coherence spine enforced throughout (16/14/25f blocks, 128f/5.3 s, 76f interp, 64f extension as max-duration not coherence; 対応上限時間!=実証整合 repeated lines 703,715,722,775,801,816,822,824). Cross-dimension weighting refusal + single-sample rule explicit. No EVIDENCE_BLOCKED: longitudinal/minute-level gaps flagged as in-text ceilings, not absent-authority blocks.",
+   "succession": "Decomposed/validity-bounded thesis must gate any cross-model ranking; one good sample is not long-horizon evidence; handed to Sec9 temporal (lip/AV/physics/dialogue measurement).",
+   "tradeoff_residual": "Backbone biases; static-video cheating; VLM hallucination mitigated only; public-SyncNet instability + talking-face-only; 2024-set + binary-conflation ceilings; longitudinal stability + minute-level summarisation flagged in-text.",
+   "transition_id": "T-VI-05",
+   "what_changed_axis": "Evaluation-side: single-valued -> decomposed dims + faithfulness groups + sync-penalised + lip-feature + physics bench; no representation/architecture/sampling change (NA by design); conditioning NA."
+  },
+  {
+   "before_after_delta": "unchanged (containment verified)",
+   "bottleneck": "yes",
+   "classification": "BOUNDARY_LIMITED",
+   "condition_detail": "All reception claims bound to the single bounded pass (27 posts, 27 sections/URLs, stated account/instance arithmetic) with sparse lanes held LOW_SIGNAL; technical leads held as leads pending primary-authority rebound; popularity ranking and cross-condition score comparison prohibited in-text.",
+   "destination_package": "arch-reception",
+   "manuscript_sections": [
+    "Section 14"
+   ],
+   "mechanism_detail": "Context chapter by design: no technical representation, architecture, objective, sampling, or conditioning mechanism is posited. Sec.14 records community reception, local deployment friction, workflow adoption, and visible failure modes as one bounded reception record informing deployment/runtime reading without becoming a technical authority.",
+   "prior_classification": "BOUNDARY_ONLY",
+   "rationale": "Reception-side record with mechanism dimensions na by design; manuscript enforces the X boundary (no architecture/date/licence/price/score/causation authority, no popularity ranking, rebound requirement) and keeps LOW_SIGNAL lanes open rather than inflating them. BOUNDARY_LIMITED is the correct LONGFORM terminal verdict (re-expressed from BOUNDARY_ONLY).",
+   "repair_action": "none",
+   "supporting_ids": [
+    "BT-D139"
+   ],
+   "transition_id": "T-X-01"
+  }
+ ]
+}
