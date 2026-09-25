@@ -87,4 +87,6 @@ Human decision obtained in-session: `PUBLICATION_PREVIEW r1 / REQUEST_CHANGES @ 
 
 ## Final remote HEAD/tree
 
-- (recorded after push)
+- HEAD `9fbe75c55a81e1609bb4cc35dcdfb4a8751c3f38`, tree `84f7d96d865765f75785bad3b64d58421c1070f4`
+  (origin/special/beyond-text-2026-work fast-forward, non-force; no new/fallback branches;
+  no force push/reset/rebase/history rewrite).
