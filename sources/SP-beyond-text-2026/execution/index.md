@@ -13,15 +13,15 @@ This is the current human-readable navigation record for the edition. Machine li
 - Requested stop: `ARCHITECTURE_REVIEW`
 - Production Profile: `sources/SP-beyond-text-2026/production-profile.json`
 - Production State: `sources/SP-beyond-text-2026/production-state.json`
-- Current State SHA-256: `b8a0521c98d5e4d28124aa8e7342f1553bf81757f6e103a62ae5939576241c1f`
-- Current lifecycle: `CANDIDATES_NORMALIZED`
+- Current State SHA-256: `88338b8524b97222ac0d1b868ca4dfeb98fd971de06f26053025f89a5369f073`
+- Current lifecycle: `ARCHITECTURE_ESTABLISHED`
 - Current terminal reason: `none`
-- Current next action: `stage:evidence-materiality-completeness` (HELD — fresh Sol Evidence Semantic Review required first; Materiality/Completeness/Selection/Architecture NOT entered)
-- Operational meaning: `EVIDENCE_REBOUND / AWAITING_SOL_PROVENANCE_READBACK` (24 locator/title provenance rebinds incl. D062 v2 + D089 IEEE + D024 CompVis; r1/r2 preserved; Sol r2 provenance readback pending)
+- Current next action: `ARCHITECTURE_REVIEW` (fresh Human Architecture Review requested; Draft and later stages NOT entered)
+- Operational meaning: `ARCHITECTURE_REVIEW / AWAITING_HUMAN_ARCHITECTURE_DECISION` (rebound Evidence → Materiality → Completeness → Selection → Architecture; Sol provenance readback PASS authorized the advance)
 
 ## Human Gates
 
-- Architecture Review: `pending`
+- Architecture Review: `pending` (fresh review requested; dossier `execution/architecture-review-dossier-r1.md`; no decision fabricated)
 - Publication Preview: `pending`
 - Detailed review records: none recorded yet
 
@@ -103,6 +103,15 @@ This is the current human-readable navigation record for the edition. Machine li
 - Validation receipt: `execution/provenance-rebind-20260924/validation-rebind.json` (18/18 PASS)
 - r1 + r2 result-sets preserved; shared Core untouched; Materiality NOT entered
 
+## Materiality → Completeness → Selection → Architecture (2026-09-25)
+
+- Ledger: `materiality-ledger-v2.json` (139 rows: 109/5/25, canonical derived)
+- Completeness: `profile-completeness-v2.json` (LIMITED; 4 SATISFIED / 8 LIMITATION)
+- Selection: `candidate-matrix-v2.json` + `candidate-selection-v2.json` (134 SELECTED 57/77 / 5 HOLD / 0 REJECT)
+- Architecture: `architecture-v2.json` PROPOSED (14 packages, 80/96 page plan) + review summary READY + attention
+- Lifecycle: `CANDIDATES_NORMALIZED` → `EVIDENCE_REVIEWED` → `SELECTION_COMPLETE` → `ARCHITECTURE_ESTABLISHED`
+- Sessions: `sessions/ts002-materiality-through-architecture-review-20260925.md`
+
 ## Final disposition
 
-`EVIDENCE_REBOUND / AWAITING_SOL_PROVENANCE_READBACK` (rebind committed on the work branch for Sol provenance readback; Screening passed, rebound Evidence built+validated, Materiality and later stages pending; no Human Gate fabricated)
+`ARCHITECTURE_REVIEW / AWAITING_HUMAN_ARCHITECTURE_DECISION` (dossier committed on the work branch for Human review; Draft and later stages NOT entered; no Human decision fabricated)
