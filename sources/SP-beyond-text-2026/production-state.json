@@ -3,7 +3,7 @@
   "issue_id": "SP-beyond-text-2026",
   "research_profile": "THEMATIC",
   "publication_profile": "LONGFORM_SPECIAL",
-  "lifecycle_state": "ARCHITECTURE_ESTABLISHED",
+  "lifecycle_state": "DRAFT_COMPLETE",
   "profile": {
     "path": "sources/SP-beyond-text-2026/production-profile.json",
     "sha256": "9fb37cbf9c8401f80f898e2c2a62e7e24cd44ec0819fec9e1b1732dbc27a2bdb"
@@ -23,16 +23,19 @@
     "orchestrator_version": "survey-production-core-v2/0.15-postintegration-transport-thematic"
   },
   "human_gates": {
-    "architecture_review": "pending",
+    "architecture_review": "approved",
     "publication_preview": "pending"
   },
   "human_gate_provenance": {
-    "architecture_review": null,
+    "architecture_review": {
+      "path": "sources/SP-beyond-text-2026/gates/architecture-approval.json",
+      "sha256": "edd891999d7baf387f5d9190618cf11413ce0a7d97149090f22e2cbdc624e000"
+    },
     "publication_preview": null
   },
   "target_gate": "ARCHITECTURE_REVIEW",
-  "next_action": "ARCHITECTURE_REVIEW",
-  "terminal_reason": "HUMAN_GATE_REACHED",
+  "next_action": "stage:reader-publication-validation",
+  "terminal_reason": null,
   "exception_gate": {
     "status": "inactive",
     "reason": null
@@ -45,7 +48,7 @@
     "completeness": "passed",
     "selection": "passed",
     "architecture": "passed",
-    "draft": "pending",
+    "draft": "passed",
     "validation": "pending",
     "publication_preview": "pending",
     "freeze": "pending",
@@ -80,7 +83,10 @@
       "path": "sources/SP-beyond-text-2026/orchestration/v2/checkpoints/SELECTION_COMPLETE.json",
       "sha256": "9a32a0dde60590c60f03ab11ab950556e4f377c20a4233a91a1059926777ca8a"
     },
-    "draft": null,
+    "draft": {
+      "path": "sources/SP-beyond-text-2026/orchestration/v2/checkpoints/ARCHITECTURE_ESTABLISHED.json",
+      "sha256": "28b821eda0c2ea0eea0bedb98914ab6666a31b99d09aa367753b9ff1115c5e48"
+    },
     "validation": null,
     "publication_preview": null,
     "freeze": null,
@@ -128,6 +134,12 @@
       "to": "ARCHITECTURE_ESTABLISHED",
       "recorded_at": "2026-09-25T13:47:38Z",
       "repository_commit_sha": "38e32e910329db088151ab4f1d1680c34e226591"
+    },
+    {
+      "from": "ARCHITECTURE_ESTABLISHED",
+      "to": "DRAFT_COMPLETE",
+      "recorded_at": "2026-09-25T16:45:38Z",
+      "repository_commit_sha": "87d51f30f8d9e1a877ff9c40dad1c00179f582f6"
     }
   ]
 }

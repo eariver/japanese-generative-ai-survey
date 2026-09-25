@@ -1,0 +1,507 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-beyond-text-2026",
+  "research_profile": "THEMATIC",
+  "publication_profile": "LONGFORM_SPECIAL",
+  "package_id": "arch-editing",
+  "draft_version": "v1.0",
+  "status": "ESTABLISHED",
+  "basis": {
+    "draft_package_sha256": "afef3e15087f5b0f6f4f2eb283d0425eda96213a782385205ac39fa609929ba6",
+    "prompt_id": "article-drafting-v2",
+    "prompt_sha256": "b687313312a23025228c16c3f10cb68f669b910cd7215e41886d4dd91f44fe11"
+  },
+  "runner": {
+    "provider": "Muse Spark",
+    "model": "muse-spark-1.3",
+    "invocation": "TS-002 drafting-synthesis: 14-package Japanese long-form synthesis from approved Architecture r1 (Human APPROVED 2026-09-25); evidence-bounded prose with PARTIAL/NEEDS_MORE/LOW_SIGNAL guards, closed-system and X boundaries",
+    "generated_at": "2026-09-26T01:50:00+09:00",
+    "run_reference": "ts002-drafting-v1-20260926"
+  },
+  "headline": "生成から編集へ：保存を伴う改変の系譜",
+  "deck": "案内画像の部分拡散とマスク合成から潜在局所合成、注意写像操作、最適化編集、指示追従学習を経て一段階動画編集へ至る系譜を、保存対象と局所性と失敗条件の分離により新規生成と区別してたどる。",
+  "deck_attribution_mode": "MIXED",
+  "deck_evidence_refs": [
+    {
+      "evidence_task_id": "evidence:SP-beyond-text-2026:88f2354f17f87ab2",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1",
+      "subject_id": "evr2-btd044",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-beyond-text-2026:88f2354f17f87ab2",
+      "kind": "CLAIM",
+      "evidence_id": "claim-2",
+      "subject_id": "evr2-btd044",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-beyond-text-2026:4e1527a200f7a79c",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1",
+      "subject_id": "evr2-btd045",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-beyond-text-2026:4e1527a200f7a79c",
+      "kind": "CLAIM",
+      "evidence_id": "claim-2",
+      "subject_id": "evr2-btd045",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-beyond-text-2026:456c8363ab66a08b",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1",
+      "subject_id": "evr2-btd049",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-beyond-text-2026:456c8363ab66a08b",
+      "kind": "CLAIM",
+      "evidence_id": "claim-2",
+      "subject_id": "evr2-btd049",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-beyond-text-2026:7daea26dba61b172",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1",
+      "subject_id": "evr2-btd050",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-beyond-text-2026:7daea26dba61b172",
+      "kind": "CLAIM",
+      "evidence_id": "claim-2",
+      "subject_id": "evr2-btd050",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-beyond-text-2026:32d082adf07c3508",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1",
+      "subject_id": "evr2-btd046",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-beyond-text-2026:32d082adf07c3508",
+      "kind": "CLAIM",
+      "evidence_id": "claim-2",
+      "subject_id": "evr2-btd046",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-beyond-text-2026:e23ad6f5d9131845",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1",
+      "subject_id": "evr2-btd047",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-beyond-text-2026:e23ad6f5d9131845",
+      "kind": "CLAIM",
+      "evidence_id": "claim-2",
+      "subject_id": "evr2-btd047",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-beyond-text-2026:f1ad7b0d39fc9086",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1",
+      "subject_id": "evr2-btd048",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-beyond-text-2026:f1ad7b0d39fc9086",
+      "kind": "CLAIM",
+      "evidence_id": "claim-2",
+      "subject_id": "evr2-btd048",
+      "subject_role": "PRIMARY_SUBJECT"
+    }
+  ],
+  "blocks": [
+    {
+      "block_id": "arch-editing-b1",
+      "block_type": "PARAGRAPH",
+      "text": "新規生成と編集の分離が出発点である。事前学習済み拡散モデルで任意の案内画像や任意マスクに対応するには、課題別再学習なしで既知領域を保存しつつ未知領域だけを作り替える手続きが必要だった。変化は二つの方向で現れた。第一に、案内画像を時刻ｔ０まで雑音化してから学習済みスコアモデルで逆拡散する部分拡散であり、ｔ０を０．３から０．６の範囲で選ぶことで案内への忠実さと実在感の交換を調整する。第二に、既知領域は入力を順方向雑音化したものから取り出し、未知領域だけをモデル予測から取り出してマスク合成し、往復の再拡散で境界をなじませる手順であり、ジャンプ長一〇と再標本一〇回の条件でＬＰＩＰＳは〇．〇六八まで低下し、比較対象への選好は五六．二五％と報告された。報告された改善は条件付きである。人物描画入力でのＬ２距離は三二．五五まで低下し、実在感選好は八〇から九八％、満足度は七五から九一％の範囲で示され、広域や狭域や細線や太線の四種マスクでは九五％の選好が報告された。代償も明確である。妥当な案内とｔ０探索が不可欠で、白画素主体の案内では大きなｔ０が必要になり忠実さが失われる。反復再拡散は二五〇掛ける一〇回相当の評価を要し低速であり、ＬＰＩＰＳは正当な多様な補完に罰を与え、細線構造では破綻が残り、失敗事例は補遺に記録されている。保存主張はマスクと既知領域の定義に束縛され、新規生成の品質指標をそのまま流用できない点も編集固有の制約である。ここで確立した部分的拡散と保存領域合成の考え方は、潜在空間での局所編集へ継承される。",
+      "attribution_mode": "FACTUAL",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-beyond-text-2026:88f2354f17f87ab2",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "evr2-btd044",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-beyond-text-2026:88f2354f17f87ab2",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "evr2-btd044",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-beyond-text-2026:4e1527a200f7a79c",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "evr2-btd045",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-beyond-text-2026:4e1527a200f7a79c",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "evr2-btd045",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "arch-editing-b2",
+      "block_type": "PARAGRAPH",
+      "text": "画素空間での合成が高品質でも、画像ごとの最適化が重く境界の継ぎ目や色ずれが残ることが次の隘路になった。変化は潜在拡散の内部で前景と背景を分けて扱うことである。テキスト条件の前景潜在を各段階で生成しつつ、背景潜在は雑音化した入力から取り出して合成し、八分の一に圧縮された潜在解像度でダウンサンプリングされたマスクにより混合する。必要に応じて画像ごとの復号器微調整で再構成を補い、複数の予測から言語画像類似度で順位付けして選択する。潜在化による高速化は新規生成の効率化とは動機が異なり、保存領域の再計算を避けて改変箇所だけを生成し直すことにある。報告された改善は速度と精度の両面である。画素空間の先行手法が約二五分かかるのに対し桁違いに高速であり、比較対象の三手法に対する精度向上が報告されている。背景保存と前景変更の分離により、生成し直しではなく保存を伴う改変という編集固有の課題設定が明確になった。ただし代償は潜在表現の損失性に由来する。変分自己符号化器の再構成限界により継ぎ目やポアソン合成時の色ずれが生じ、潜在最適化は過度の平滑化を招く。薄いマスクでは細部再現が依然として失敗する。保存主張はマスク定義に束縛され、実行時間や映像メモリ使用量の定量化は消費本文では確立していない。自然さの軸での改善は、可知度や話者類似度とは区別して読む必要がある。この局所合成の枠組みは注意写像の操作へ継承される。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-beyond-text-2026:32d082adf07c3508",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "evr2-btd046",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-beyond-text-2026:32d082adf07c3508",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "evr2-btd046",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "arch-editing-b3",
+      "block_type": "PARAGRAPH",
+      "text": "小さな指示語の差し替えが画像全体を作り替えてしまうことは、実用上の大きな隘路だった。変化は生成過程の内部表現を編集界面にすることである。第一の方法は、同一乱数種で生成した参照側の交差注意写像を対象側生成の六四掛ける六四段階へ注入し、語入替では打ち切り時刻、語追加では重み付け、強弱調整では係数操作で局所変更を実現する。反転が歪む場合には注意から導出したマスクで代替する。第二の方法は、対象埋め込みを雑音除去損失で最適化した後に生成器本体を超解像も含めて微調整し、補間係数イータで忠実さと変更度の交換を制御し、八つの乱数種から選択する。イータは〇．六から〇．八の範囲で平均的な交換が報告されている。報告された改善は条件付きである。前者はケーキや自転車から自動車への変換、様式や仕様の変更、強弱スライダー操作を定性的に示した。後者は一〇〇組の編集課題で九〇〇〇超の二者択一回答により三種の先行手法に七〇％超の選好を得た。代償も共有される。反転は歪みを生みやすく、参照指示文が必要で、低解像注意が精度上限となり物体の空間移動はできない。語彙外の対象や複雑な空間配置では弱さが残り、保存度と変更度の交換は係数と乱数種の選択に依存する。顔や人物の再現は基盤モデルの限界を継承し、編集層では解消されない。画像ごとの最適化時間は実用上の制約であり、高速化は後継の指示学習に委ねられた。参照指示文の必要性は、編集の再現性を支える一方で、指示なし編集への一般化を残す。注意由来マスクの代替は、反転歪みの回避策として位置づけられる。最適化の低速性は実用上の制約であり、後継の指示学習が引き継いだ。保存度と変更度の交換は、係数探索の手続きとともに記録すべきである。",
+      "attribution_mode": "FACTUAL",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-beyond-text-2026:e23ad6f5d9131845",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "evr2-btd047",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-beyond-text-2026:e23ad6f5d9131845",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "evr2-btd047",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-beyond-text-2026:f1ad7b0d39fc9086",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "evr2-btd048",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-beyond-text-2026:f1ad7b0d39fc9086",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "evr2-btd048",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "arch-editing-b4",
+      "block_type": "PARAGRAPH",
+      "text": "マスクや注意操作の手続きを露出させず、日常語の指示だけで編集したいという要求が次の隘路になった。変化は指示追従を学習課題に変えることである。七〇〇組の三つ組みから微調整した言語モデルで四五万超の指示文と説明文の組を生成し、安定拡散に画像条件チャネルを追加して指示組で学習し、方向性フィルタで品質を保つ。推論時は画像とテキストの二重ガイダンスで編集強度を調整し、多段階の対話的連鎖も可能にする。報告された改善は交換曲線上の位置である。同一の方向類似度では画像類似度が高く、先行する案内画像手法を上回ることが示され、テキスト誘導七．五の条件での比較が報告され、全量と選別済みデータの除去検証では全量学習が最良だった。生成し直しではなく既存画像の保存領域を残す点で、新規生成とは別の技術課題として位置づけられる。代償は新規生成の限界と保存課題の交差に現れる。視点変更や拡大、過度な変更、物体の分離や入替、個数や空間推論は失敗し、基盤拡散モデルと言語モデルの偏見を継承する。微細すぎる変更や撮影角度のずれも弱点として記録されている。二重ガイダンスの重みは編集強度と保存度の交換を担い、多段階連鎖では誤差蓄積が懸念される。保存主張は領域定義に束縛される。この指示編集の系譜は動画への一段階適用へ接続する。二重ガイダンスの重みは編集強度と保存度の交換を担い、多段階連鎖では誤差蓄積が懸念される。視点や個数や空間推論の失敗は、基盤模型の構成性限界の継承であり、編集層では解消されない。全量学習の優位は、選別基準の再検討を示唆する。保存主張は領域定義に束縛される。",
+      "attribution_mode": "FACTUAL",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-beyond-text-2026:456c8363ab66a08b",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "evr2-btd049",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-beyond-text-2026:456c8363ab66a08b",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "evr2-btd049",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "arch-editing-b5",
+      "block_type": "PARAGRAPH",
+      "text": "一枚の動画だけから時間的一貫性を保ったまま対象動作や様式を変えることは、画像編集の延長では解けない隘路だった。変化は画像拡散を一段だけ動画化することである。三掛ける三畳み込みを一掛ける三掛ける三へ膨張させ、最初と直前のフレームだけを参照する疎な時空間注意を挿入し、問い合わせ行列を中心に単一動画で約五〇〇段階微調整する。推論時は無条件側を反転で求めてから編集指示文で標本化する。除去検証では疎注意なしで内容漂流、反転なしで動作停滞、微調整なしでちらつきが生じることが示され、各要素の役割が分離された。報告された改善は短区間の整合性である。四二本の動画と一四〇指示の条件で、枠間整合性は九二．四〇となり比較対象の九〇．六四と八八．八九を上回り、整合性選好は八七．八六％と六二．一四％、意味整合も同等以上だった。単一動画微調整は、生成器の記憶と運動事前分布の分離を前提とする。疎注意の参照範囲は計算量と整合性の交換であり、全参照への拡張は検証されていない。長時間地平の物語構造や同一性保持は確立しておらず、短区間整合の主張を超えて読んではならない。複数物体の重なりでは混合が生じ、対象画像モデルの物体限界も継承する。実行メモリや長時間整合の数値は報告されていない。以上で編集は新規生成と別の技術問題として自立した。疎注意の参照範囲は計算量と整合性の交換であり、全参照への拡張は検証されていない。長時間地平の物語構造や同一性保持は確立しておらず、短区間整合の主張を超えて読んではならない。編集保存の評価は枠間整合と意味整合の二軸で行い、単一指標への縮約は避けるべきである。",
+      "attribution_mode": "FACTUAL",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-beyond-text-2026:7daea26dba61b172",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "evr2-btd050",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-beyond-text-2026:7daea26dba61b172",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "evr2-btd050",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "arch-editing-boundaries",
+      "block_type": "CLAIM_BOUNDARY",
+      "text": "この節の読解上の境界: Preservation claims bind mask/region definitions; per-image optimisation costs stated. / Prior recorded locator 2108.01049 was a transcription defect; canonical Discovery provenance was rebound to 2108.01073 during the 2026-09-24 provenance repair (see provenance-repair-manifest.json). Claims rest on the verified-correct body. / Needs reasonable guide and t0 search; white-pixel guides need large t0 losing faithfulness. / Slow (250x10 evaluations); LPIPS penalises valid diverse fills; thin-structure artefacts; failure cases in App F. / Wall-clock/VRAM/quantisation and RTF not reported in consumed body. / Prior recorded locator 2301.01780 was a transcription defect; canonical Discovery provenance was rebound to 2211.09800 during the 2026-09-24 provenance repair (see provenance-repair-manifest.json). Claims rest on the verified-correct body. / Fails viewpoint/zoom, excessive changes, isolation, swapping/counting/spatial reasoning; inherits SD/GPT-3 biases. / Multi-object occlusion mixing; ablations show content drift without sparse attention, stagnant motion without inversion, flicker without finetune; inherits T2I object limits. / VRAM/quantisation/offload and long-horizon consistency numbers not reported. / Lossy VAE needs optional finetune; pixel stitching seams and Poisson colour-shift; latent optimisation oversmooths; thin masks still fail fine details. / Exact latency/VRAM/NFE and quantisation numbers not established in consumed excerpt. / Inversion distortion; needs source prompt; low-resolution attention bottleneck bounds precision; cannot spatially move objects. / Quantitative fidelity/alignment scores and runtime/VRAM not reported in consumed body. / Prior recorded locator 2209.15146 was a transcription defect; canonical Discovery provenance was rebound to 2210.09276 during the 2026-09-24 provenance repair (see provenance-repair-manifest.json). Claims rest on the verified-correct body. / Too-subtle edits or zoom/camera-angle shifts; eta/seed sensitive; inherits base-model face/bias limits; slow per-image optimisation.",
+      "attribution_mode": "INFERENCE",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-beyond-text-2026:88f2354f17f87ab2",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "evr2-btd044",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-beyond-text-2026:88f2354f17f87ab2",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "evr2-btd044",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-beyond-text-2026:4e1527a200f7a79c",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "evr2-btd045",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-beyond-text-2026:4e1527a200f7a79c",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "evr2-btd045",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-beyond-text-2026:456c8363ab66a08b",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "evr2-btd049",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-beyond-text-2026:456c8363ab66a08b",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "evr2-btd049",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-beyond-text-2026:7daea26dba61b172",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "evr2-btd050",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-beyond-text-2026:7daea26dba61b172",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "evr2-btd050",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-beyond-text-2026:32d082adf07c3508",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "evr2-btd046",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-beyond-text-2026:32d082adf07c3508",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "evr2-btd046",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-beyond-text-2026:e23ad6f5d9131845",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "evr2-btd047",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-beyond-text-2026:e23ad6f5d9131845",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "evr2-btd047",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-beyond-text-2026:f1ad7b0d39fc9086",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "evr2-btd048",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-beyond-text-2026:f1ad7b0d39fc9086",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "evr2-btd048",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    }
+  ],
+  "must_cover_coverage": [
+    {
+      "requirement": "BT-O05",
+      "block_ids": [
+        "arch-editing-b1",
+        "arch-editing-b2",
+        "arch-editing-b3",
+        "arch-editing-b4",
+        "arch-editing-b5",
+        "arch-editing-boundaries"
+      ]
+    }
+  ],
+  "boundary_dispositions": [
+    {
+      "boundary": "Preservation claims bind mask/region definitions; per-image optimisation costs stated.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "arch-editing-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Prior recorded locator 2108.01049 was a transcription defect; canonical Discovery provenance was rebound to 2108.01073 during the 2026-09-24 provenance repair (see provenance-repair-manifest.json). Claims rest on the verified-correct body.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "arch-editing-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Needs reasonable guide and t0 search; white-pixel guides need large t0 losing faithfulness.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "arch-editing-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Slow (250x10 evaluations); LPIPS penalises valid diverse fills; thin-structure artefacts; failure cases in App F.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "arch-editing-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Wall-clock/VRAM/quantisation and RTF not reported in consumed body.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "arch-editing-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Prior recorded locator 2301.01780 was a transcription defect; canonical Discovery provenance was rebound to 2211.09800 during the 2026-09-24 provenance repair (see provenance-repair-manifest.json). Claims rest on the verified-correct body.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "arch-editing-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Fails viewpoint/zoom, excessive changes, isolation, swapping/counting/spatial reasoning; inherits SD/GPT-3 biases.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "arch-editing-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Multi-object occlusion mixing; ablations show content drift without sparse attention, stagnant motion without inversion, flicker without finetune; inherits T2I object limits.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "arch-editing-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "VRAM/quantisation/offload and long-horizon consistency numbers not reported.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "arch-editing-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Lossy VAE needs optional finetune; pixel stitching seams and Poisson colour-shift; latent optimisation oversmooths; thin masks still fail fine details.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "arch-editing-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Exact latency/VRAM/NFE and quantisation numbers not established in consumed excerpt.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "arch-editing-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Inversion distortion; needs source prompt; low-resolution attention bottleneck bounds precision; cannot spatially move objects.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "arch-editing-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Quantitative fidelity/alignment scores and runtime/VRAM not reported in consumed body.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "arch-editing-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Prior recorded locator 2209.15146 was a transcription defect; canonical Discovery provenance was rebound to 2210.09276 during the 2026-09-24 provenance repair (see provenance-repair-manifest.json). Claims rest on the verified-correct body.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "arch-editing-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Too-subtle edits or zoom/camera-angle shifts; eta/seed sensitive; inherits base-model face/bias limits; slow per-image optimisation.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "arch-editing-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    }
+  ],
+  "profile_extensions": {},
+  "publication_extensions": {}
+}
