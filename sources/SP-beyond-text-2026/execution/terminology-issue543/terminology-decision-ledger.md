@@ -1032,3 +1032,7 @@ r2 rows: 51 with provenance SOL_AUTHORITATIVE_R2.
 - rationale: r1 ESCALATE解消
 - occurrences: L427 | before: 1 / residual: 0
 - evidence: btd044, btd045, btd046, btd047, btd048, btd049
+
+### TS543-R2-BUILD [N/A (typesetting)] — W^Q / FD_openl3 (raw TeX) → W$^Q$ / FD\_openl3 [REPLACE]
+- rationale: Pixel-identical visible output to Sol specification; build-necessary TeX-mode escape only, no term change. ×/→ already render in this document (pre-existing text-mode use). Sol may revert/adjust.
+- occurrences: L407,L613 | before: 2 / residual: 0

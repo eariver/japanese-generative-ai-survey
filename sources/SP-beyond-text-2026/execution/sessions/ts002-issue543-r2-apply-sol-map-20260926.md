@@ -37,9 +37,12 @@ Branch: `special/beyond-text-2026-work` (existing only)
 - Sections 116, order unchanged; 6 headings reworded by Sol map.
 - Frozen #533/#539 scans PASS; Sol LHS prohibitions all zero.
 
-## Next steps (same session)
+## Completion (2026-09-26)
 
-1. Commit + push (FF only; allowlist audit before push).
-2. CI PDF rebuild + artifact audit.
-3. build/advance validation (frozen Core only) + rendered-PDF broad scan + all-page visual QA + candidate.
-4. Final Core immutability audit + report. Stop at PUBLICATION_PREVIEW pending. No approval/Freeze/Release/merge. Issue #543 stays open.
+- Tex commits 4acdefa1 (map application) + 780ce975 (TeX-mode escapes W^Q/FD_openl3, pixel-identical, ledgered) pushed FF.
+- First CI run 36237006666 FAILED (Missing $ at L407 from literal `W^Q`); minimal invisible escapes applied, no term change; rebuild CI run 36237310732 PASS: 77pp (+1 widening, envelope内), 0 blocking, 0 hbox-layout. PDF `e98f769e0dd9a4fe493e57d1827c67fc65a6ef8246210a52624a9225f071a8ba` (1097548 bytes), source-bound to 780ce975.
+- Audit `pdf-build-audit-issue543-r8.json`; `build_validation_issue543_r8.py` (incl. Section-9 title fix) all PASS; prose guard PASS.
+- `advance_validation_issue543_r8.py`: DRAFT_COMPLETE → VALIDATED_DRAFT. `advance_candidate_issue543_r8.py`: candidate `9d6cd7dddababbad0bcccbf13e0e65d4ea988265113bd6815be6c56208969598` READY_FOR_PUBLICATION_PREVIEW → RELEASE_CANDIDATE, pub pending, HUMAN_GATE_REACHED.
+- 139/139 binding revalidated. Rendered-PDF broad scan on exact bytes: zero unexpected residuals (p64 extraction gap proven visual-only); designed residuals at expected levels; new canonical terms verified (one count checked visually).
+- All-page text verification: 77 pages, min 442 (p77 tail), no blanks. Visual QA (TOC/renamed headings/speech+video tables/metric+network names/capstone/biblio/tail): no clipping/overflow/broken glyphs. Bibliography regression PASS.
+- Core immutability audit PASS (impl + 4 hashes exact). Allowlist audit PASS. Architecture preserved. No approval/Freeze/Release/merge. Issue #543 stays open.
