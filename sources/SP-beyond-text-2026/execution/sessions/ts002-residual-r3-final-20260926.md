@@ -43,4 +43,6 @@ Branch: `special/beyond-text-2026-work` (existing only)
 ## Starting/final HEAD + tree
 
 - Start: HEAD `fe2fbc98c5dc12e132c2f877d55285915a910dd6`, tree `284d833593b17c7ff87b899afc383ba4ada26c4e`.
-- Final: (recorded after push)
+- Final: HEAD `645af4fe1f45201094c50ee901981f320211d4eb`, tree `73c118be206b049fbf0ca6a53855802ec53aa150`
+  (origin/special/beyond-text-2026-work fast-forward, non-force; no new/fallback branches;
+  no force push/reset/rebase/history rewrite).
