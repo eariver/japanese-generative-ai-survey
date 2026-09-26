@@ -5,7 +5,6 @@ Authority: Issue #533 + Sol execution-boundary comment. Source/entity-bound; no 
 ## Decision counts
 
 - DUPLICATE_ALREADY_APPLIED: 1
-- ESCALATE: 1
 - REPLACE: 228
 - REPLACE (manual compose of A+B entries): 1
 - REPLACE (manual compose of C+B entries): 1
@@ -25,7 +24,7 @@ Authority: Issue #533 + Sol execution-boundary comment. Source/entity-bound; no 
 | 類別条件 | 5 | 0 | クラス条件 |
 | 類別脱落 | 2 | 0 | クラスドロップアウト |
 | 変換器 | 57 | 0 | named architectures only, each source-bound |
-| ゼロショット素体 | 2 | 2 | ESCALATED to Sol unmodified (AnyGPT subject unconfirmable) |
+| ゼロショット素体 | 2 | 0 | REPLACE with AnyGPT base-model zero-shot wording (Sol readback bound) |
 | 流れ整合 | 14 | 0 | Flow Matching（フローマッチング） |
 | 整流流れ | 3 | 0 | Rectified Flow（整流フロー） |
 | 模擬なし | 4 | 0 | simulation-free + Japanese gloss |
@@ -34,6 +33,6 @@ Authority: Issue #533 + Sol execution-boundary comment. Source/entity-bound; no 
 | 話声 | 14 | 0 | 音声/発話音声/話者音声 per source |
 | 標本化 | 51 | 0 | generative sampling -> サンプリング, each verified |
 
-## Additional candidates: all REPLACE except ゼロショット素体 ESCALATE.
+## Additional candidates: all REPLACE (素体 residual resolved via Sol-bound base-model wording).
 ## Overlapping sites: 5 manual compositions (C+B, A+B, C+C+B mixes) recorded with both intents.
 ## Section titles §6/§7 updated by terminology (符号言語 in headings); fidelity locations rebuilt accordingly.
