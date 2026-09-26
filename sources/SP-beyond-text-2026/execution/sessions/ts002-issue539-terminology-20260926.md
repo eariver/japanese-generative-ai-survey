@@ -48,9 +48,20 @@ First attempt stopped zero-writes on stale local refs. Re-verified against remot
 - Sections 116, order unchanged; 2 headings reworded by terminology.
 - Numeric tokens: −$24$×3 / +24×3 / +1×5, fully explained by sanctioned GPU rewording (24GB/9分/5秒720P24 numerals preserved; 単一→1基 device-count rendering).
 
+## Completion (2026-09-26)
+
+- Tex commit fc662ae8 pushed (FF); CI `Build Special survey PDF` run 36223529553 PASS: 75pp, 0 blocking, 0 hbox-layout findings (2 benign vbox overfulls), PDF `98577eada91bcdf59cfc370ef25adc39a4b71d95c2d8966130fa0356e3d64dfd` (1089455 bytes).
+- Audit `pdf-build-audit-issue539.json`; PDF placed at `surveys/special/beyond-text-2026/main.pdf` (sha matches audit; source sha matches tex).
+- `build_validation_issue539.py`: manuscript/deterministic/bundle/surface/semantic/visual all PASS. Editorial prose guard re-run on new tex+bib: PASS, 0 errors.
+- `advance_validation_issue539.py`: DRAFT_COMPLETE → VALIDATED_DRAFT. `advance_candidate_issue539.py`: candidate `6a43daf3317e713d2f1e140ac50ebb41905382e7c83440691b72ad87f9b12dc6` READY_FOR_PUBLICATION_PREVIEW → RELEASE_CANDIDATE, publication_preview pending, HUMAN_GATE_REACHED.
+- 139/139 citation binding revalidated (undefined 0, uncited 0).
+- All-page text verification: 75 pages, min 442 chars (p75 refs tail), no blanks; rendered old-term zeros confirmed; new terms present (whitespace-flattened counts match).
+- Visual QA: cover, TOC (renamed titles render), U-Net/cross-attention tables, GPU passages, データ側 heading/table, model-card capstone, bibliography, refs tail inspected; no clipping/overflow/broken glyphs.
+- Final Core state: RELEASE_CANDIDATE / PUBLICATION_PREVIEW pending. Architecture approval preserved throughout. No Human approval generated. Freeze/Release/merge not entered.
+
 ## Next steps (same session)
 
-1. Commit + push tex/ledger (fast-forward only).
-2. Dispatch CI `Build Special survey PDF` on pushed SHA; download exact artifact.
-3. pdf-build-audit-issue539 + build_validation_issue539 + advance_validation_issue539 + all-page visual QA + advance_candidate_issue539.
-4. Commit + push; stop at PUBLICATION_PREVIEW / AWAITING_HUMAN_PUBLICATION_PREVIEW_DECISION. No approval, no Freeze/Release.
+1. Commit + push tex/ledger (fast-forward only). — DONE (fc662ae8)
+2. Dispatch CI `Build Special survey PDF` on pushed SHA; download exact artifact. — DONE (run 36223529553)
+3. pdf-build-audit-issue539 + build_validation_issue539 + advance_validation_issue539 + all-page visual QA + advance_candidate_issue539. — DONE
+4. Commit + push; stop at PUBLICATION_PREVIEW / AWAITING_HUMAN_PUBLICATION_PREVIEW_DECISION. No approval, no Freeze/Release. — validation/candidate committed (see below); final report stops at pending.
