@@ -1,15 +1,15 @@
 # Terminology decision ledger — TS-002 Issue #543 (final broad normalization)
 
-Canonical: `terminology-decision-ledger.json` (90 rows, generated; this MD is a synced view).
+Canonical: `terminology-decision-ledger.json` (178 rows, generated; this MD is a synced view).
 Scope: reader-facing terminology only. Blind global replace prohibited; semantic-risk terms verified by primary/Evidence read-back.
 
 ## Summary
 - ISSUE_SEED decisions: 45
 - BROAD_SCAN added candidates: 45
-- REPLACE rows: 73
-- RETAIN rows: 13
-- ESCALATE rows: 4
-- Unresolved terms (ESCALATE, text unchanged, returned to Sol): 分類得点 L158; 自然さ得点 L1090/L1108; 全帯域抽出 L158; 濾波崩壊×2; 膨張形式×1.
+- REPLACE rows: 164
+- RETAIN rows: 14
+- ESCALATE rows: 0
+- Unresolved terms: none (r1 ESCALATE ×4 resolved by Sol r2/r3; r8 candidates resolved by Sol r3; new r9 candidates in muse-candidates-for-sol-review-r9.md if any).
 
 ## Decisions
 ### TS543-S01 [ISSUE_SEED] — 端末間統合 → End-to-End（エンドツーエンド）統合/End-to-End [REPLACE]
@@ -339,9 +339,9 @@ Scope: reader-facing terminology only. Blind global replace prohibited; semantic
 - evidence: btd006, btd007, btd008, btd077, btd124, btd131
 - before: 17 / residual: 17
 
-### TS543-S39c [ISSUE_SEED] — 自然さ得点(vendor) → 自然さ得点(維持) [ESCALATE]
+### TS543-S39c [ISSUE_SEED] — 自然さ得点(vendor) → Naturalness MOS（自然さMOS） [REPLACE] (Sol r3 C001 resolved)
 - canonical: MOS? | meaning: ベンダー自然さ2件
-- rationale: MOS束縛は原典未確認
+- rationale: Sol r3 C001 (r2 S-005 btd110 scope retained); vendor boundary retained
 - occurrences: L1090,L1108
 - sections: L1089 \subsection{音声・対話：実時間利用と版バインドの機能集合}; L1103 \subsection{横断の読み方：capstoneを大きく見せない}
 - evidence: btd107, btd108, btd109, btd110, btd111, btd114
@@ -363,7 +363,7 @@ Scope: reader-facing terminology only. Blind global replace prohibited; semantic
 - evidence: btd043, btd039, btd038, btd040, btd042, btd069
 - before: 8 / residual: 8
 
-### TS543-S40c [ISSUE_SEED] — 全帯域抽出 → 全帯域抽出(維持) [ESCALATE]
+### TS543-S40c [ISSUE_SEED] — 全帯域抽出 → Balanced data sampling（均衡データサンプリング）+btd008 [REPLACE] (Sol r2 CIT-001/R-002 resolved)
 - canonical: sampling? | meaning: btd007曖昧1件
 - rationale: 評価sampling/特徴抽出の区別に本文要確認
 - occurrences: L158
@@ -483,7 +483,7 @@ Scope: reader-facing terminology only. Blind global replace prohibited; semantic
 - evidence: btd013, btd014, btd015, btd016, btd019, btd020
 - before: 2 / residual: 0
 
-### TS543-B14 [BROAD_SCAN] — 濾波崩壊 → 濾波崩壊(維持) [ESCALATE]
+### TS543-B14 [BROAD_SCAN] — 濾波崩壊 → 一部フィルタの単一振動モードへの崩壊 [REPLACE] (Sol r2 P-001 resolved)
 - canonical: filter collapse? | meaning: 長期学習2件
 - rationale: canonical termを原典未確認のため推測せず; モード崩壊との関係も含めSolへ
 - occurrences: L190,L239
@@ -667,7 +667,7 @@ Scope: reader-facing terminology only. Blind global replace prohibited; semantic
 - evidence: btd050, btd051, btd052, btd053, btd054, btd055
 - before: 9 / residual: 9
 
-### TS543-B33c [BROAD_SCAN] — 膨張形式 → 膨張形式(維持) [ESCALATE]
+### TS543-B33c [BROAD_SCAN] — 膨張形式 → 擬似3D畳み込みへのnetwork inflation（3×3→1×3×3） [REPLACE] (Sol r2 E-001 resolved)
 - canonical: dilation/mask format? | meaning: 編集条件1件
 - rationale: mask dilationか形式か原典未確認
 - occurrences: L427
@@ -1036,3 +1036,92 @@ r2 rows: 51 with provenance SOL_AUTHORITATIVE_R2.
 ### TS543-R2-BUILD [N/A (typesetting)] — W^Q / FD_openl3 (raw TeX) → W$^Q$ / FD\_openl3 [REPLACE]
 - rationale: Pixel-identical visible output to Sol specification; build-necessary TeX-mode escape only, no term change. ×/→ already render in this document (pre-existing text-mode use). Sol may revert/adjust.
 - occurrences: L407,L613 | before: 2 / residual: 0
+
+# r3 supplement — Sol final residual map application (Human r9 authority)
+
+r3 rows: 36 with provenance SOL_FINAL_RESIDUAL_R3 (discovery_source SOL_FINAL_RESIDUAL_R3).
+r2 frozen retained; r3 prevails only where explicitly conflicting. Numbers/units unchanged except Sol-authorized metric label restoration. Citations: SOL-CIT-001 maintained (btd008/btd007 split); SOL-CIT-002 applied (Wan2.2 wording + btd124). No other citation change.
+## Summary (all rows)
+- ISSUE_SEED / REPLACE: 43
+- ISSUE_SEED / RETAIN: 2
+- BROAD_SCAN / REPLACE: 37
+- BROAD_SCAN / RETAIN: 8
+- SOL_MAP_R2 / REPLACE: 52
+- SOL_FINAL_RESIDUAL_R3 / REPLACE: 35
+- SOL_FINAL_RESIDUAL_R3 / RETAIN: 1
+- ESCALATE: 0
+- r1 ESCALATE resolutions: S39c (r3 C001), S40c (r2 CIT-001/R-002), B14 (r2 P-001), B33c (r2 E-001) — all final.
+- New r9 candidates (if any): muse-candidates-for-sol-review-r9.md (CANDIDATE_FOR_SOL_REVIEW, no Muse wording).
+
+### TS543-R3-C001 [SOL-R3-C001] — 自然さ得点 → Naturalness MOS（自然さMOS） [REPLACE]
+- canonical: Naturalness MOS | meaning: Capstone L1108 | before: 1 / residual: 0 | evidence: btd110,btd111,btd112,btd113,btd114,btd115,btd116
+### TS543-R3-C002 [SOL-R3-C002] — 群化後継 → VALL-E 2 / Grouped Code Modeling＋Repetition Aware Sampling [REPLACE]
+- canonical: VALL-E 2 / Grouped Code Modeling / Repetition Aware Sampling | meaning: L499+L535 | before: 2 / residual: 0 | evidence: btd059
+### TS543-R3-C003 [SOL-R3-C003] — AudioLDM generics → FD/IS/KL/FAD/OVL [REPLACE]
+- canonical: FD/IS/KL/FAD/OVL | meaning: btd067 L589+L607+L660+L685 | before: 5 / residual: 0 | evidence: btd067
+### TS543-R3-C004 [SOL-R3-C004] — Stable Audio Open generics → FD_openl3/KL_passt/CLAP score [REPLACE]
+- canonical: FD_openl3/KL_passt/CLAP score | meaning: btd068 | before: 5 / residual: 0 | evidence: btd068
+### TS543-R3-C005 [SOL-R3-C005] — MuSTANGO generics → FD/KL/PCM [REPLACE]
+- canonical: FD/KL/PCM | meaning: btd069 | before: 5 / residual: 0 | evidence: btd069
+### TS543-R3-C006 [SOL-R3-C006] — 集合 variants → datasets [REPLACE]
+- canonical: datasets | meaning: StyleGAN/SVD/FID | before: 10 / residual: 0 | evidence: btd015,btd016,btd075,btd083,btd084
+### TS543-R3-C007 [SOL-R3-C007] — 周辺場/標本ごとの条件付き場 → 周辺ベクトル場/条件付きベクトル場 [REPLACE]
+- canonical: vector fields | meaning: btd027 L233 | before: 3 / residual: 0 | evidence: btd027
+### TS543-R3-C008 [SOL-R3-C008] — 開放重みの混合専門家配置 → 開放重みのMixture-of-Experts（MoE） [REPLACE]
+- canonical: Mixture-of-Experts | meaning: L705 | before: 1 / residual: 0 | evidence: btd077,btd124,btd138
+### TS543-R3-C009 [SOL-R3-C009] — 一括要点標本 → 高品質動画のサンプリング [REPLACE]
+- canonical: video sampling cost | meaning: btd073 L722 | before: 1 / residual: 0 | evidence: btd073
+### TS543-R3-C010 [SOL-R3-C010] — 開放凍結 → lifecycle wording [REPLACE]
+- canonical: lifecycle | meaning: L1101 | before: 1 / residual: 0 | evidence: btd123,btd126,btd127,btd128
+### TS543-R3-C011 [SOL-R3-C011+SOL-CIT-002] — 公開系列の線引き → Wan2.2 boundary+btd124 [REPLACE]
+- canonical: Wan2.2 open-weight boundary | meaning: L158 | before: 1 / residual: 0 | evidence: btd124
+### TS543-R3-C012 [SOL-R3-C012] — 平滑化/過度の平滑化 → RETAIN [RETAIN]
+- canonical: smoothing | meaning: btd028/btd046/btd081 6件 | before: 6 / residual: 6 | evidence: btd028,btd046,btd081
+### TS543-R3-C013 [SOL-R3-C013] — 開放線 → 開放重み系 [REPLACE]
+- canonical: open-weight lineage | meaning: L39+L688 | before: 2 / residual: 0 | evidence: btd125,btd068
+### TS543-R3-C014 [SOL-R3-C014] — Seed-TTS variants → unification [REPLACE]
+- canonical: Seed-TTS | meaning: L520+L553+L538 | before: 3 / residual: 0 | evidence: btd061,btd062,btd134
+### TS543-R3-S001 [SOL-R3-S001] — 端末間 → End-to-End [REPLACE]
+- canonical: End-to-End | meaning: VITS L489+L533 | before: 2 / residual: 0 | evidence: btd056,btd057
+### TS543-R3-S002 [SOL-R3-S002] — 区画因果 → chunk-aware causal Flow Matching [REPLACE]
+- canonical: chunk-aware causal flow matching | meaning: btd133 | before: 6 / residual: 0 | evidence: btd133
+### TS543-R3-S003 [SOL-R3-S003] — 分割残差符号化/神経符号 → split RVQ/ニューラルコーデック符号 [REPLACE]
+- canonical: split RVQ / neural codec codes | meaning: btd134+synthesis | before: 6 / residual: 0 | evidence: btd134,btd058
+### TS543-R3-S004 [SOL-R3-S004] — 残差12帳/各帳 → RVQコードブック [REPLACE]
+- canonical: RVQ codebooks | meaning: btd065/btd066 | before: 2 / residual: 0 | evidence: btd065,btd066
+### TS543-R3-S005 [SOL-R3-S005] — 浮動32 → float32 [REPLACE]
+- canonical: float32 | meaning: btd064 | before: 1 / residual: 0 | evidence: btd064
+### TS543-R3-S006 [SOL-R3-S006] — 声素材/帯域メル/対数メル → audio/mel terminology [REPLACE]
+- canonical: audio/mel | meaning: TTS/audio | before: 10 / residual: 0 | evidence: btd052,btd053,btd060,btd064,btd088,btd090
+### TS543-R3-S007 [SOL-R3-S007] — 画素再帰網 → PixelRNN/PixelCNN系 [REPLACE]
+- canonical: PixelRNN/PixelCNN | meaning: btd017/btd018 | before: 3 / residual: 0 | evidence: btd017,btd018
+### TS543-R3-S008 [SOL-R3-S008] — 〜網 → networks [REPLACE]
+- canonical: networks | meaning: bound ML contexts | before: 6 / residual: 0 | evidence: btd029,btd064,btd069,btd043
+### TS543-R3-S009 [SOL-R3-S009] — 連合学習 → 共同学習 [REPLACE]
+- canonical: joint training | meaning: btd070 | before: 5 / residual: 0 | evidence: btd070
+### TS543-R3-S010 [SOL-R3-S010] — VDM numbers → FID/IS/FVD [REPLACE]
+- canonical: FID/IS/FVD | meaning: btd070 numbers unchanged | before: 6 / residual: 0 | evidence: btd070
+### TS543-R3-S011 [SOL-R3-S011] — 振動誘導/整合 → oscillating guidance/CLIP Score/Sampling Time [REPLACE]
+- canonical: oscillating guidance/CLIP Score/Sampling Time | meaning: btd071 | before: 8 / residual: 0 | evidence: btd071
+### TS543-R3-S012 [SOL-R3-S012] — Make-A-Video numbers → CLIP-FID/CLIPSIM/FVD/IS [REPLACE]
+- canonical: CLIP-FID/CLIPSIM/FVD/IS | meaning: btd073 | before: 5 / residual: 0 | evidence: btd073
+### TS543-R3-S013 [SOL-R3-S013] — 文章 compounds → テキスト [REPLACE]
+- canonical: text modality | meaning: bound list ~30 | before: 30 / residual: 0 | evidence: btd073,btd067,btd069
+### TS543-R3-S014 [SOL-R3-S014] — 対照言語音響整合/音響のみ混合 → CLAP/mixup [REPLACE]
+- canonical: CLAP/mixup | meaning: btd067 | before: 4 / residual: 0 | evidence: btd067
+### TS543-R3-S015 [SOL-R3-S015] — 塗り足し/浅い逆行 → inpainting/shallow reverse [REPLACE]
+- canonical: inpainting/shallow reverse | meaning: btd067 | before: 6 / residual: 0 | evidence: btd067
+### TS543-R3-S016 [SOL-R3-S016] — joint → 統合/同時生成 [REPLACE]
+- canonical: video/audio integration | meaning: capstone | before: 2 / residual: 0 | evidence: btd070,btd071,btd073
+### TS543-R3-S017 [SOL-R3-S017] — keyframe → キーフレーム [REPLACE]
+- canonical: keyframes | meaning: btd122 | before: 2 / residual: 0 | evidence: btd122
+### TS543-R3-S018 [SOL-R3-S018] — reception prose → workflow/dedup [REPLACE]
+- canonical: reception prose | meaning: btd139 | before: 3 / residual: 0 | evidence: btd139
+### TS543-R3-S019 [SOL-R3-S019] — synthesis residuals → canonical [REPLACE]
+- canonical: synthesis | meaning: conclusion | before: 3 / residual: 0 | evidence: btd002
+### TS543-R3-S020 [SOL-R3-S020] — product/lifecycle → canonical [REPLACE]
+- canonical: product/lifecycle | meaning: capstone | before: 6 / residual: 0 | evidence: btd106,btd121,btd122
+### TS543-R3-CIT001 [SOL-CIT-001] — DAC binding → btd008 [REPLACE]
+- canonical: citation | meaning: maintained from r8 | before: 1 / residual: 0 | evidence: btd008,btd007
+### TS543-R3-CIT002 [SOL-CIT-002] — Wan2.2 binding → btd124 [REPLACE]
+- canonical: citation | meaning: L158 | before: 1 / residual: 0 | evidence: btd124
