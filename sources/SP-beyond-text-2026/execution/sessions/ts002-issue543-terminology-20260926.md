@@ -35,9 +35,19 @@ Branch: `special/beyond-text-2026-work` (existing only)
 - Units: no removals; FID/IS/MOS/SNR acronym introductions are intended normalizations.
 - Numerics: +128 one (百二十八→128, value-preserved).
 
+## Completion (2026-09-26)
+
+- Tex commits 719087934 + 35ee3c4f (touch-ups: ancestral gloss, prompt spacing, upsampling, pose split) pushed FF.
+- CI `Build Special survey PDF` run 36228667251 PASS: 76pp (+1 from katakana/English widening; within 64–96 envelope, not a blocker), 0 blocking, 0 hbox-layout. PDF `94f6b211b190edd5c5eb685052631be445b50119e3aa3125fe32f007a4f16014` (1094786 bytes), source-bound to 35ee3c4f.
+- Audit `pdf-build-audit-issue543.json`; `build_validation_issue543.py` all PASS; prose guard re-run PASS.
+- `advance_validation_issue543.py`: DRAFT_COMPLETE → VALIDATED_DRAFT. `advance_candidate_issue543.py`: candidate `77d6be816aaec5a17ddf176cf741d6d563ebaa308f05ccfe9c719f499b1aab7c` READY_FOR_PUBLICATION_PREVIEW → RELEASE_CANDIDATE, publication_preview pending, HUMAN_GATE_REACHED.
+- 139/139 binding revalidated. Rendered-PDF broad scan on exact bytes: zero unexpected residuals; designed residuals at expected levels; all new canonical terms present.
+- All-page text verification: 76 pages, min 442 chars (p76 refs tail), no blanks. Visual QA (TOC/renamed headings/tables/speech tables/metric+network names/biblio transition/tail): no clipping/overflow/broken glyphs. Bibliography regression PASS.
+- Final Core state: RELEASE_CANDIDATE / PUBLICATION_PREVIEW pending. Architecture preserved. No approval/Freeze/Release/merge.
+
 ## Next steps (same session)
 
-1. Commit + push tex/ledger (FF only).
-2. CI PDF rebuild + artifact audit.
-3. build/advance validation (issue543 variants) + rendered-PDF broad scan + all-page visual QA + candidate.
-4. Commit + push; stop at PUBLICATION_PREVIEW pending. No approval/Freeze/Release.
+1. Commit + push tex/ledger (FF only). — DONE
+2. CI PDF rebuild + artifact audit. — DONE (run 36228667251)
+3. build/advance validation (issue543 variants) + rendered-PDF broad scan + all-page visual QA + candidate. — DONE
+4. Commit + push; stop at PUBLICATION_PREVIEW / AWAITING_HUMAN_PUBLICATION_PREVIEW_DECISION. No approval, no Freeze/Release. — validation/candidate commit below; final report stops at pending.
