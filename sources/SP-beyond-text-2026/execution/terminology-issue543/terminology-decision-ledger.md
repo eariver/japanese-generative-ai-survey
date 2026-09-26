@@ -1,15 +1,15 @@
 # Terminology decision ledger — TS-002 Issue #543 (final broad normalization)
 
-Canonical: `terminology-decision-ledger.json` (178 rows, generated; this MD is a synced view).
+Canonical: `terminology-decision-ledger.json` (201 rows, generated; this MD is a synced view).
 Scope: reader-facing terminology only. Blind global replace prohibited; semantic-risk terms verified by primary/Evidence read-back.
 
 ## Summary
 - ISSUE_SEED decisions: 45
 - BROAD_SCAN added candidates: 45
-- REPLACE rows: 164
+- REPLACE rows: 187
 - RETAIN rows: 14
 - ESCALATE rows: 0
-- Unresolved terms: none (r1 ESCALATE ×4 resolved by Sol r2/r3; r8 candidates resolved by Sol r3; new r9 candidates in muse-candidates-for-sol-review-r9.md if any).
+- Unresolved terms: r4 leftovers in muse-candidates-for-sol-review-r9-next.md (if any); no Muse wording.
 
 ## Decisions
 ### TS543-S01 [ISSUE_SEED] — 端末間統合 → End-to-End（エンドツーエンド）統合/End-to-End [REPLACE]
@@ -1125,3 +1125,65 @@ r2 frozen retained; r3 prevails only where explicitly conflicting. Numbers/units
 - canonical: citation | meaning: maintained from r8 | before: 1 / residual: 0 | evidence: btd008,btd007
 ### TS543-R3-CIT002 [SOL-CIT-002] — Wan2.2 binding → btd124 [REPLACE]
 - canonical: citation | meaning: L158 | before: 1 / residual: 0 | evidence: btd124
+
+# r4 supplement — Sol r9-candidate resolution (same Human r9 authority, DRAFT_COMPLETE continuation)
+
+r4 rows: 23 with provenance SOL_AUTHORITATIVE_R4_R9_CONTINUATION (discovery_source SOL_R9_R4_RESOLUTION).
+No new Human revision (no r10). Same-source grammatical variants per r4 s4 only. Numbers/units unchanged (kanji->arabic numerals per map: 二兆->2兆, 四層->4層, values preserved). Citations: no change (SOL-CIT-001/002 only).
+## Summary (all rows)
+- ISSUE_SEED / REPLACE: 43
+- ISSUE_SEED / RETAIN: 2
+- BROAD_SCAN / REPLACE: 37
+- BROAD_SCAN / RETAIN: 8
+- SOL_MAP_R2 / REPLACE: 52
+- SOL_FINAL_RESIDUAL_R3 / REPLACE: 35
+- SOL_FINAL_RESIDUAL_R3 / RETAIN: 1
+- SOL_R9_R4_RESOLUTION / REPLACE: 23
+- ESCALATE: 0
+
+### TS543-R4-C001 [SOL-R4-C001] — 文章事前分布 → テキスト由来の事前分布 [REPLACE]
+- canonical: text prior (VITS) | meaning: btd056 L456 | before: 1 / residual: 0 | evidence: btd056
+### TS543-R4-C002 [SOL-R4-C002] — 文章精緻化層 → ConvNeXtによるテキスト表現精緻化 [REPLACE]
+- canonical: ConvNeXt text-feature refinement (F5-TTS) | meaning: btd132 L476+L509+L511 | before: 3 / residual: 0 | evidence: btd132
+### TS543-R4-C003 [SOL-R4-C003] — 文章接頭辞 → Inner Monologue wording [REPLACE]
+- canonical: time-aligned text prefix (Moshi) | meaning: btd134 L518 | before: 1 / residual: 0 | evidence: btd134
+### TS543-R4-C004 [SOL-R4-C004] — 文章と音楽の整合 → テキスト・音楽整合 [REPLACE]
+- canonical: text-music alignment | meaning: L559 | before: 1 / residual: 0 | evidence: btd063,btd065
+### TS543-R4-C005 [SOL-R4-C005] — 結合音楽文章符号 → MuLanのテキスト・音楽共同埋め込み [REPLACE]
+- canonical: MuLan joint embedding | meaning: L563+L569+L604 | before: 3 / residual: 0 | evidence: btd063,btd065
+### TS543-R4-C006 [SOL-R4-C006] — 文章側 → テキスト側のMuLan埋め込み [REPLACE]
+- canonical: text-side MuLan | meaning: L573 | before: 1 / residual: 0 | evidence: btd065
+### TS543-R4-C007 [SOL-R4-C007] — 文章クロスアテンション → テキストクロスアテンション [REPLACE]
+- canonical: text cross-attention | meaning: L580+L605 | before: 2 / residual: 0 | evidence: btd066
+### TS543-R4-C008 [SOL-R4-C008] — 文章のみ → テキストのみ [REPLACE]
+- canonical: text-only (MusicGen) | meaning: L580 | before: 1 / residual: 0 | evidence: btd066
+### TS543-R4-C009 [SOL-R4-C009] — 文章と音響の整合間隙 → テキスト・音響整合のギャップ [REPLACE]
+- canonical: text-audio gap | meaning: L595 | before: 1 / residual: 0 | evidence: btd067
+### TS543-R4-C010 [SOL-R4-C010] — 文章と拍と和音 → テキスト・拍・和音へ [REPLACE]
+- canonical: text-beat-chord | meaning: L613+L617 | before: 2 / residual: 0 | evidence: btd069
+### TS543-R4-C011 [SOL-R4-C011] — 三軸 → text alignment/domain similarity/motion smoothness [REPLACE]
+- canonical: AnimateDiff axes | meaning: L753+L759 | before: 2 / residual: 0 | evidence: btd074
+### TS543-R4-C012 [SOL-R4-C012] — 文章拡張 → prompt extension [REPLACE]
+- canonical: prompt extension (Wan2.2) | meaning: L804 | before: 1 / residual: 0 | evidence: btd124
+### TS543-R4-C013 [SOL-R4-C013] — 動画文章/画像文章 → ペア [REPLACE]
+- canonical: video-text/image-text pairs | meaning: L822 | before: 2 / residual: 0 | evidence: btd071
+### TS543-R4-C014 [SOL-R4-C014] — 文章と画像の条件付け → テキスト・画像条件付け [REPLACE]
+- canonical: text-image conditioning | meaning: L926 | before: 1 / residual: 0 | evidence: btd081
+### TS543-R4-C015 [SOL-R4-C015] — 文章映像 → テキスト・動画 [REPLACE]
+- canonical: text-video (VBench) | meaning: L995 | before: 1 / residual: 0 | evidence: btd092
+### TS543-R4-C016 [SOL-R4-C016] — SentencePiece指示/濃密地図 → rewrite [REPLACE]
+- canonical: Unified-IO tokens | meaning: L1026 | before: 1 / residual: 0 | evidence: btd094
+### TS543-R4-C017 [SOL-R4-C017] — 往復 umbrella → 双方向変換 [REPLACE]
+- canonical: speech-text bidirectional (AudioPaLM) | meaning: L1023+L1028+L1029+L1039+L1054 | before: 8 / residual: 0 | evidence: btd095
+### TS543-R4-C018 [SOL-R4-C018] — 画像文章 → 画像・テキスト [REPLACE]
+- canonical: image-text tasks | meaning: L1038+L1054+L1026 | before: 3 / residual: 0 | evidence: btd094
+### TS543-R4-C019 [SOL-R4-C019] — 文章橋渡し → split by source [REPLACE]
+- canonical: text-centric alignment / bridging alignment | meaning: L1040+L1050 | before: 5 / residual: 0 | evidence: btd096,btd097
+### TS543-R4-C020 [SOL-R4-C020] — 二兆文章トークン → 2兆テキストトークン [REPLACE]
+- canonical: two-trillion text tokens | meaning: L1050 | before: 3 / residual: 0 | evidence: btd096
+### TS543-R4-C021 [SOL-R4-C021] — 文章音声/映像音声 → テキスト・音声/動画・音声 [REPLACE]
+- canonical: text-audio/video-audio pairs | meaning: L1050 | before: 9 / residual: 0 | evidence: btd097
+### TS543-R4-C022 [SOL-R4-C022] — 四者リスト → テキスト・音声・画像・動画 [REPLACE]
+- canonical: modality list (Suno) | meaning: L1095 | before: 1 / residual: 0 | evidence: btd114
+### TS543-R4-C023 [SOL-R4-C023] — 対照の文章・音響間隙 → 対照学習におけるギャップ [REPLACE]
+- canonical: contrastive text-audio gap | meaning: L697 | before: 1 / residual: 0 | evidence: btd067
