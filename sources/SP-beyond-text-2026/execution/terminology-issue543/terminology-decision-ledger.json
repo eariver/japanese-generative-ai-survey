@@ -1,0 +1,3046 @@
+{
+ "schema_version": "2.0-rc1",
+ "issue": "TS-002 Issue #543",
+ "decisions": [
+  {
+   "id": "TS543-S01",
+   "discovery_source": "ISSUE_SEED",
+   "original_term": "端末間統合",
+   "canonical_source_term": "End-to-End",
+   "semantic_meaning": "VITS系joint学習14件",
+   "decision": "REPLACE",
+   "final_reader_term": "End-to-End（エンドツーエンド）統合/End-to-End",
+   "rationale": "§6表題と整合; endpoint別義なし",
+   "section_occurrences": [
+    "L439",
+    "L441",
+    "L453",
+    "L454",
+    "L456",
+    "L458",
+    "L470",
+    "L476",
+    "L497",
+    "L504",
+    "L550"
+   ],
+   "section_context": [
+    "L435 \\section{音声・声の系譜：波形からEnd-to-End、ニューラルコーデック言語モデル、全二重へ}\\sectionkicker{SPEECH}\\la",
+    "L453 \\subsection{並列化とニューラルボコーダと端末間統合：遅さと注意破綻への応答}",
+    "L475 \\subsection{何を何で表すか：言語・意味・音響・符号・波形の分担}",
+    "L496 \\subsection{ゼロショット話者複製とニューラルコーデック言語モデル：未知話者への拡張}",
+    "L503 \\subsection{ニューラルコーデック言語モデルの生成方式とゼロショットの条件づけ}",
+    "L520 \\subsection{Seed-TTS（多用途・高忠実音声生成）・翻訳・全二重対話：実環境と遅延の両立}"
+   ],
+   "evidence_ids": [
+    "btd051",
+    "btd052",
+    "btd053",
+    "btd057",
+    "btd058",
+    "btd061"
+   ],
+   "before_count": 14,
+   "after_original_residual": 0
+  },
+  {
+   "id": "TS543-S02",
+   "discovery_source": "ISSUE_SEED",
+   "original_term": "量保存流れ",
+   "canonical_source_term": "normalizing flow",
+   "semantic_meaning": "VITS prior flow 3件",
+   "decision": "REPLACE",
+   "final_reader_term": "normalizing flow（正規化フロー）",
+   "rationale": "一次資料read-back(arXiv 2106.06103 abstract: variational inference augmented with normalizing flows); Evidence内volume-preserving記述は誤読と確定",
+   "section_occurrences": [
+    "L454",
+    "L470",
+    "L489"
+   ],
+   "section_context": [
+    "L453 \\subsection{並列化とニューラルボコーダと端末間統合：遅さと注意破綻への応答}",
+    "L475 \\subsection{何を何で表すか：言語・意味・音響・符号・波形の分担}"
+   ],
+   "evidence_ids": [
+    "btd054",
+    "btd055",
+    "btd056",
+    "btd057"
+   ],
+   "before_count": 3,
+   "after_original_residual": 0
+  },
+  {
+   "id": "TS543-S03",
+   "discovery_source": "ISSUE_SEED",
+   "original_term": "集合同期",
+   "canonical_source_term": "Batch Normalization",
+   "semantic_meaning": "DCGAN batch norm 2件",
+   "decision": "REPLACE",
+   "final_reader_term": "バッチ正規化（Batch Normalization）",
+   "rationale": "設計ガイドライン文脈",
+   "section_occurrences": [
+    "L190"
+   ],
+   "section_context": [
+    "L189 \\subsection{敵対的生成の系譜：暗黙分布から様式分離へ}"
+   ],
+   "evidence_ids": [
+    "btd013",
+    "btd014"
+   ],
+   "before_count": 2,
+   "after_original_residual": 0
+  },
+  {
+   "id": "TS543-S04",
+   "discovery_source": "ISSUE_SEED",
+   "original_term": "日程",
+   "canonical_source_term": "(noise/guidance) schedule",
+   "semantic_meaning": "schedule 6件",
+   "decision": "REPLACE",
+   "final_reader_term": "線形ノイズスケジュール/誘導スケジュール/スケジュール",
+   "rationale": "暦日程なし",
+   "section_occurrences": [
+    "L166",
+    "L213",
+    "L223",
+    "L239",
+    "L260"
+   ],
+   "section_context": [
+    "L160 \\section{生成パラダイムと目的関数：自己回帰・敵対・拡散・フロー}",
+    "L212 \\subsection{雑音除去の転換：拡散と短縮抽出}",
+    "L220 \\subsection{連続時間への統一と潜在への移行}",
+    "L238 \\subsection{本節の読解上の境界}",
+    "L257 \\subsection{推論時誘導への転換：分類器なし誘導と文誘導拡散}"
+   ],
+   "evidence_ids": [
+    "btd013",
+    "btd019",
+    "btd023",
+    "btd022",
+    "btd030",
+    "btd014"
+   ],
+   "before_count": 6,
+   "after_original_residual": 0
+  },
+  {
+   "id": "TS543-S05",
+   "discovery_source": "ISSUE_SEED",
+   "original_term": "祖先抽出",
+   "canonical_source_term": "ancestral sampling",
+   "semantic_meaning": "ancestral sampling 4件",
+   "decision": "REPLACE",
+   "final_reader_term": "ancestral sampling（祖先サンプリング）/祖先サンプリング",
+   "rationale": "L114初出にcanonical English",
+   "section_occurrences": [
+    "L114",
+    "L172",
+    "L215",
+    "L218"
+   ],
+   "section_context": [
+    "L113 \\subsection{連続潜在から離散符号へ：推論の償却化と量子化}",
+    "L171 \\subsection{六軸分離の読み方：表現・骨格・目的・経路・抽出・短縮}",
+    "L212 \\subsection{雑音除去の転換：拡散と短縮抽出}",
+    "L217 \\subsection{条件誘導の分岐：分類器誘導と分類器なし誘導}"
+   ],
+   "evidence_ids": [
+    "btd001",
+    "btd017",
+    "btd023",
+    "btd026",
+    "btd013",
+    "btd014"
+   ],
+   "before_count": 4,
+   "after_original_residual": 0
+  },
+  {
+   "id": "TS543-S06",
+   "discovery_source": "ISSUE_SEED",
+   "original_term": "祖先サンプリング",
+   "canonical_source_term": "ancestral sampling",
+   "semantic_meaning": "既正規形1件(L569)",
+   "decision": "RETAIN",
+   "final_reader_term": "祖先サンプリング",
+   "rationale": "既にcanonical; after=5は retained 1 + S05正規化4の合流",
+   "section_occurrences": [
+    "L569"
+   ],
+   "section_context": [
+    "L568 \\subsection{階層的自己回帰と意味・音響段階化：分単位楽曲への第一歩}"
+   ],
+   "evidence_ids": [
+    "btd063",
+    "btd065"
+   ],
+   "before_count": 1,
+   "after_original_residual": 5
+  },
+  {
+   "id": "TS543-S07",
+   "discovery_source": "ISSUE_SEED",
+   "original_term": "得点整合",
+   "canonical_source_term": "score matching",
+   "semantic_meaning": "denoising score matching 3件",
+   "decision": "REPLACE",
+   "final_reader_term": "score matching（スコアマッチング）",
+   "rationale": "btd019/btd021",
+   "section_occurrences": [
+    "L213",
+    "L221"
+   ],
+   "section_context": [
+    "L212 \\subsection{雑音除去の転換：拡散と短縮抽出}",
+    "L220 \\subsection{連続時間への統一と潜在への移行}"
+   ],
+   "evidence_ids": [
+    "btd019",
+    "btd030",
+    "btd021"
+   ],
+   "before_count": 3,
+   "after_original_residual": 0
+  },
+  {
+   "id": "TS543-S08",
+   "discovery_source": "ISSUE_SEED",
+   "original_term": "得点蒸留",
+   "canonical_source_term": "score distillation",
+   "semantic_meaning": "NFSD score蒸留2件",
+   "decision": "REPLACE",
+   "final_reader_term": "score distillation（スコア蒸留）/スコア蒸留",
+   "rationale": "btd081",
+   "section_occurrences": [
+    "L926"
+   ],
+   "section_context": [
+    "L925 \\subsection{写実性を別系統の損失で補う敵対的蒸留}"
+   ],
+   "evidence_ids": [
+    "btd081"
+   ],
+   "before_count": 2,
+   "after_original_residual": 0
+  },
+  {
+   "id": "TS543-S09",
+   "discovery_source": "ISSUE_SEED",
+   "original_term": "得点導出",
+   "canonical_source_term": "score derivation",
+   "semantic_meaning": "SiT速度-スコア2件",
+   "decision": "REPLACE",
+   "final_reader_term": "スコア導出",
+   "rationale": "btd026",
+   "section_occurrences": [
+    "L228"
+   ],
+   "section_context": [
+    "L227 \\subsection{Transformer denoiserと流れ・整合性モデルへの分岐}"
+   ],
+   "evidence_ids": [
+    "btd025",
+    "btd026"
+   ],
+   "before_count": 2,
+   "after_original_residual": 0
+  },
+  {
+   "id": "TS543-S10",
+   "discovery_source": "ISSUE_SEED",
+   "original_term": "識別得点",
+   "canonical_source_term": "Inception Score",
+   "semantic_meaning": "IS 4件",
+   "decision": "REPLACE",
+   "final_reader_term": "Inception Score（IS）",
+   "rationale": "CIFAR/ADM/CFG数値文脈",
+   "section_occurrences": [
+    "L215",
+    "L258",
+    "L260"
+   ],
+   "section_context": [
+    "L212 \\subsection{雑音除去の転換：拡散と短縮抽出}",
+    "L257 \\subsection{推論時誘導への転換：分類器なし誘導と文誘導拡散}"
+   ],
+   "evidence_ids": [
+    "btd030",
+    "btd020",
+    "btd019",
+    "btd032",
+    "btd033"
+   ],
+   "before_count": 4,
+   "after_original_residual": 0
+  },
+  {
+   "id": "TS543-S11",
+   "discovery_source": "ISSUE_SEED",
+   "original_term": "分類得点",
+   "canonical_source_term": "Inception Score(statistical)",
+   "semantic_meaning": "IS 2件+曖昧1件",
+   "decision": "REPLACE",
+   "final_reader_term": "Inception Score（IS）",
+   "rationale": "L218/L239はADM数値で確定; L158(btd003)はIS/精度曖昧のためESCALATE(残存1)",
+   "section_occurrences": [
+    "L158",
+    "L218",
+    "L239"
+   ],
+   "section_context": [
+    "L157 \\subsection{本節の読解上の境界}",
+    "L217 \\subsection{条件誘導の分岐：分類器誘導と分類器なし誘導}",
+    "L238 \\subsection{本節の読解上の境界}"
+   ],
+   "evidence_ids": [
+    "btd006",
+    "btd008",
+    "btd001",
+    "btd004",
+    "btd002",
+    "btd007"
+   ],
+   "before_count": 3,
+   "after_original_residual": 1
+  },
+  {
+   "id": "TS543-S12",
+   "discovery_source": "ISSUE_SEED",
+   "original_term": "知覚経路",
+   "canonical_source_term": "Perceptual Path Length",
+   "semantic_meaning": "PPL 2件",
+   "decision": "REPLACE",
+   "final_reader_term": "Perceptual Path Length（PPL／知覚経路長）",
+   "rationale": "StyleGAN文脈; 残存1はgloss内",
+   "section_occurrences": [
+    "L192",
+    "L239"
+   ],
+   "section_context": [
+    "L189 \\subsection{敵対的生成の系譜：暗黙分布から様式分離へ}",
+    "L238 \\subsection{本節の読解上の境界}"
+   ],
+   "evidence_ids": [
+    "btd015",
+    "btd016",
+    "btd013",
+    "btd014",
+    "btd019",
+    "btd020"
+   ],
+   "before_count": 2,
+   "after_original_residual": 1
+  },
+  {
+   "id": "TS543-S13",
+   "discovery_source": "ISSUE_SEED",
+   "original_term": "分布距離",
+   "canonical_source_term": "FID/FVD/FAD",
+   "semantic_meaning": "named 27件+generic 6件",
+   "decision": "REPLACE",
+   "final_reader_term": "FID/FVD/FAD",
+   "rationale": "数値改善主張はnamed; 方法論総括6件はRETAIN(別掲S13b)",
+   "section_occurrences": [
+    "L121",
+    "L150",
+    "L158",
+    "L166",
+    "L192",
+    "L213",
+    "L215",
+    "L218",
+    "L223",
+    "L225",
+    "L230",
+    "L233",
+    "L239",
+    "L255",
+    "L260",
+    "L278",
+    "L283",
+    "L310",
+    "L312",
+    "L340",
+    "L353"
+   ],
+   "section_context": [
+    "L118 \\subsection{階層と知覚：高解像度への二つの道}",
+    "L147 \\subsection{意味と音響の分離、映像の時空間短縮}",
+    "L157 \\subsection{本節の読解上の境界}",
+    "L160 \\section{生成パラダイムと目的関数：自己回帰・敵対・拡散・フロー}",
+    "L189 \\subsection{敵対的生成の系譜：暗黙分布から様式分離へ}",
+    "L212 \\subsection{雑音除去の転換：拡散と短縮抽出}",
+    "L217 \\subsection{条件誘導の分岐：分類器誘導と分類器なし誘導}",
+    "L220 \\subsection{連続時間への統一と潜在への移行}",
+    "L227 \\subsection{Transformer denoiserと流れ・整合性モデルへの分岐}",
+    "L232 \\subsection{流れへの再定式化：simulation-free回帰（シミュレーション不要の回帰）と直線化}",
+    "L238 \\subsection{本節の読解上の境界}",
+    "L252 \\subsection{凍結符号器による文条件づけ：対照事前学習の継承}",
+    "L257 \\subsection{推論時誘導への転換：分類器なし誘導と文誘導拡散}",
+    "L275 \\subsection{段階専門家への分岐：共有 denoiser の分割}",
+    "L280 \\subsection{音響の言語整合と空間制御の適合}",
+    "L309 \\subsection{配置の前史と軽量適合：洗い流さない工夫}",
+    "L337 \\subsection{時間信号の分離制御：映像の動きと音楽の変化}",
+    "L352 \\subsection{本節の読解上の境界}"
+   ],
+   "evidence_ids": [
+    "btd004",
+    "btd003",
+    "btd009",
+    "btd010",
+    "btd012",
+    "btd006"
+   ],
+   "before_count": 33,
+   "after_original_residual": 6
+  },
+  {
+   "id": "TS543-S13b",
+   "discovery_source": "ISSUE_SEED",
+   "original_term": "分布距離(generic)",
+   "canonical_source_term": "distribution distance",
+   "semantic_meaning": "方法論総括6件",
+   "decision": "RETAIN",
+   "final_reader_term": "分布距離",
+   "rationale": "数値主張でない対応整理",
+   "section_occurrences": [],
+   "section_context": [],
+   "evidence_ids": [],
+   "before_count": 0,
+   "after_original_residual": 0
+  },
+  {
+   "id": "TS543-S14",
+   "discovery_source": "ISSUE_SEED",
+   "original_term": "平均意見値",
+   "canonical_source_term": "Mean Opinion Score",
+   "semantic_meaning": "MOS 8件",
+   "decision": "REPLACE",
+   "final_reader_term": "Mean Opinion Score（MOS）",
+   "rationale": "自然さ軸; VITS abstractもMOS",
+   "section_occurrences": [
+    "L441",
+    "L447",
+    "L454",
+    "L497",
+    "L589"
+   ],
+   "section_context": [
+    "L435 \\section{音声・声の系譜：波形からEnd-to-End、ニューラルコーデック言語モデル、全二重へ}\\sectionkicker{SPEECH}\\la",
+    "L446 \\subsection{波形自己回帰と系列変換：素片結合なしの出発点}",
+    "L453 \\subsection{並列化とニューラルボコーダと端末間統合：遅さと注意破綻への応答}",
+    "L496 \\subsection{ゼロショット話者複製とニューラルコーデック言語モデル：未知話者への拡張}",
+    "L588 \\subsection{波形拡散と潜在拡散：局所忠実度と一般音響化の二系統}"
+   ],
+   "evidence_ids": [
+    "btd051",
+    "btd052",
+    "btd053",
+    "btd054",
+    "btd055",
+    "btd056"
+   ],
+   "before_count": 8,
+   "after_original_residual": 0
+  },
+  {
+   "id": "TS543-S15",
+   "discovery_source": "ISSUE_SEED",
+   "original_term": "類似度意見値",
+   "canonical_source_term": "speaker similarity MOS",
+   "semantic_meaning": "話者性2件",
+   "decision": "REPLACE",
+   "final_reader_term": "話者類似度主観評価（SMOS相当）",
+   "rationale": "YourTTS話者性",
+   "section_occurrences": [
+    "L441",
+    "L497"
+   ],
+   "section_context": [
+    "L435 \\section{音声・声の系譜：波形からEnd-to-End、ニューラルコーデック言語モデル、全二重へ}\\sectionkicker{SPEECH}\\la",
+    "L496 \\subsection{ゼロショット話者複製とニューラルコーデック言語モデル：未知話者への拡張}"
+   ],
+   "evidence_ids": [
+    "btd051",
+    "btd052",
+    "btd053",
+    "btd054",
+    "btd055",
+    "btd056"
+   ],
+   "before_count": 2,
+   "after_original_residual": 0
+  },
+  {
+   "id": "TS543-S16",
+   "discovery_source": "ISSUE_SEED",
+   "original_term": "類似意見",
+   "canonical_source_term": "speaker similarity MOS",
+   "semantic_meaning": "SMOS表記ゆれ1件",
+   "decision": "REPLACE",
+   "final_reader_term": "話者類似度主観評価（SMOS相当）",
+   "rationale": "L533数値がL497と同一実体",
+   "section_occurrences": [
+    "L533"
+   ],
+   "section_context": [
+    "L520 \\subsection{Seed-TTS（多用途・高忠実音声生成）・翻訳・全二重対話：実環境と遅延の両立}"
+   ],
+   "evidence_ids": [
+    "btd057"
+   ],
+   "before_count": 1,
+   "after_original_residual": 0
+  },
+  {
+   "id": "TS543-S17",
+   "discovery_source": "ISSUE_SEED",
+   "original_term": "可知度",
+   "canonical_source_term": "intelligibility",
+   "semantic_meaning": "明瞭度18件",
+   "decision": "REPLACE",
+   "final_reader_term": "intelligibility（明瞭度）/明瞭度",
+   "rationale": "音声三軸の可知度",
+   "section_occurrences": [
+    "L378",
+    "L439",
+    "L441",
+    "L447",
+    "L451",
+    "L466",
+    "L468",
+    "L488",
+    "L490",
+    "L497",
+    "L501",
+    "L513",
+    "L525",
+    "L533",
+    "L550",
+    "L553"
+   ],
+   "section_context": [
+    "L373 \\subsection{潜在局所合成：前景と背景の分離}",
+    "L435 \\section{音声・声の系譜：波形からEnd-to-End、ニューラルコーデック言語モデル、全二重へ}\\sectionkicker{SPEECH}\\la",
+    "L446 \\subsection{波形自己回帰と系列変換：素片結合なしの出発点}",
+    "L453 \\subsection{並列化とニューラルボコーダと端末間統合：遅さと注意破綻への応答}",
+    "L475 \\subsection{何を何で表すか：言語・意味・音響・符号・波形の分担}",
+    "L496 \\subsection{ゼロショット話者複製とニューラルコーデック言語モデル：未知話者への拡張}",
+    "L508 \\subsection{流れ補完と実時間化：非自己回帰と前後文脈の統一}",
+    "L520 \\subsection{Seed-TTS（多用途・高忠実音声生成）・翻訳・全二重対話：実環境と遅延の両立}",
+    "L552 \\subsection*{読解上の境界}"
+   ],
+   "evidence_ids": [
+    "btd046",
+    "btd047",
+    "btd051",
+    "btd052",
+    "btd053",
+    "btd057"
+   ],
+   "before_count": 18,
+   "after_original_residual": 0
+  },
+  {
+   "id": "TS543-S18",
+   "discovery_source": "ISSUE_SEED",
+   "original_term": "比較意見値",
+   "canonical_source_term": "comparative MOS",
+   "semantic_meaning": "比較MOS 2件",
+   "decision": "REPLACE",
+   "final_reader_term": "比較MOS",
+   "rationale": "CMOS頭字語は原典未確認のためassertせず",
+   "section_occurrences": [
+    "L521",
+    "L544"
+   ],
+   "section_context": [
+    "L520 \\subsection{Seed-TTS（多用途・高忠実音声生成）・翻訳・全二重対話：実環境と遅延の両立}"
+   ],
+   "evidence_ids": [
+    "btd061",
+    "btd062",
+    "btd134"
+   ],
+   "before_count": 2,
+   "after_original_residual": 0
+  },
+  {
+   "id": "TS543-S19",
+   "discovery_source": "ISSUE_SEED",
+   "original_term": "意見値(bare)",
+   "canonical_source_term": "Mean Opinion Score",
+   "semantic_meaning": "MOS 12件",
+   "decision": "REPLACE",
+   "final_reader_term": "MOS",
+   "rationale": "自然さ軸のbare MOS",
+   "section_occurrences": [
+    "L441",
+    "L447",
+    "L454",
+    "L456",
+    "L466",
+    "L467",
+    "L469",
+    "L470",
+    "L497",
+    "L521",
+    "L533",
+    "L544",
+    "L589",
+    "L591",
+    "L606",
+    "L660"
+   ],
+   "section_context": [
+    "L435 \\section{音声・声の系譜：波形からEnd-to-End、ニューラルコーデック言語モデル、全二重へ}\\sectionkicker{SPEECH}\\la",
+    "L446 \\subsection{波形自己回帰と系列変換：素片結合なしの出発点}",
+    "L453 \\subsection{並列化とニューラルボコーダと端末間統合：遅さと注意破綻への応答}",
+    "L496 \\subsection{ゼロショット話者複製とニューラルコーデック言語モデル：未知話者への拡張}",
+    "L520 \\subsection{Seed-TTS（多用途・高忠実音声生成）・翻訳・全二重対話：実環境と遅延の両立}",
+    "L588 \\subsection{波形拡散と潜在拡散：局所忠実度と一般音響化の二系統}",
+    "L657 \\subsection{評価の四分割：音質・整合・構造・人間選好}"
+   ],
+   "evidence_ids": [
+    "btd051",
+    "btd052",
+    "btd053",
+    "btd054",
+    "btd055",
+    "btd056"
+   ],
+   "before_count": 24,
+   "after_original_residual": 0
+  },
+  {
+   "id": "TS543-S20",
+   "discovery_source": "ISSUE_SEED",
+   "original_term": "真値",
+   "canonical_source_term": "ground truth",
+   "semantic_meaning": "GT比較10件",
+   "decision": "REPLACE",
+   "final_reader_term": "ground truth",
+   "rationale": "9件自然音声GT+1件実データGT(L713修飾)",
+   "section_occurrences": [
+    "L454",
+    "L467",
+    "L469",
+    "L470",
+    "L497",
+    "L589",
+    "L591",
+    "L606",
+    "L660",
+    "L713"
+   ],
+   "section_context": [
+    "L453 \\subsection{並列化とニューラルボコーダと端末間統合：遅さと注意破綻への応答}",
+    "L496 \\subsection{ゼロショット話者複製とニューラルコーデック言語モデル：未知話者への拡張}",
+    "L588 \\subsection{波形拡散と潜在拡散：局所忠実度と一般音響化の二系統}",
+    "L657 \\subsection{評価の四分割：音質・整合・構造・人間選好}",
+    "L712 \\subsection{分解型拡散と多重超解像：時間整合の出発点}"
+   ],
+   "evidence_ids": [
+    "btd054",
+    "btd055",
+    "btd056",
+    "btd052",
+    "btd053",
+    "btd057"
+   ],
+   "before_count": 10,
+   "after_original_residual": 0
+  },
+  {
+   "id": "TS543-S21",
+   "discovery_source": "ISSUE_SEED",
+   "original_term": "呼び水",
+   "canonical_source_term": "priming",
+   "semantic_meaning": "Jukebox priming 4件",
+   "decision": "REPLACE",
+   "final_reader_term": "プライミング",
+   "rationale": "prompt senseなし",
+   "section_occurrences": [
+    "L569",
+    "L603",
+    "L630",
+    "L643"
+   ],
+   "section_context": [
+    "L568 \\subsection{階層的自己回帰と意味・音響段階化：分単位楽曲への第一歩}",
+    "L588 \\subsection{波形拡散と潜在拡散：局所忠実度と一般音響化の二系統}",
+    "L627 \\subsection{生成・継続・編集・制御の分離：課題設定の区別}"
+   ],
+   "evidence_ids": [
+    "btd063",
+    "btd065"
+   ],
+   "before_count": 4,
+   "after_original_residual": 0
+  },
+  {
+   "id": "TS543-S22",
+   "discovery_source": "ISSUE_SEED",
+   "original_term": "立体化",
+   "canonical_source_term": "stereo",
+   "semantic_meaning": "stereo 2件",
+   "decision": "REPLACE",
+   "final_reader_term": "ステレオ微調整/ステレオ化",
+   "rationale": "3D用法なし",
+   "section_occurrences": [
+    "L580",
+    "L584"
+   ],
+   "section_context": [
+    "L579 \\subsection{一段階可制御符号音楽：多段階層の低速への応答}"
+   ],
+   "evidence_ids": [
+    "btd066",
+    "btd067",
+    "btd069"
+   ],
+   "before_count": 2,
+   "after_original_residual": 0
+  },
+  {
+   "id": "TS543-S23",
+   "discovery_source": "ISSUE_SEED",
+   "original_term": "流れ補完",
+   "canonical_source_term": "Flow Matching/infilling",
+   "semantic_meaning": "flow/infilling 10件",
+   "decision": "REPLACE",
+   "final_reader_term": "Flow Matching/インフィリング系(節別)",
+   "rationale": "目的/課題の節別分割; 節表題含む",
+   "section_occurrences": [
+    "L439",
+    "L476",
+    "L501",
+    "L508",
+    "L509",
+    "L511",
+    "L513",
+    "L536",
+    "L550",
+    "L553"
+   ],
+   "section_context": [
+    "L435 \\section{音声・声の系譜：波形からEnd-to-End、ニューラルコーデック言語モデル、全二重へ}\\sectionkicker{SPEECH}\\la",
+    "L475 \\subsection{何を何で表すか：言語・意味・音響・符号・波形の分担}",
+    "L496 \\subsection{ゼロショット話者複製とニューラルコーデック言語モデル：未知話者への拡張}",
+    "L508 \\subsection{流れ補完と実時間化：非自己回帰と前後文脈の統一}",
+    "L520 \\subsection{Seed-TTS（多用途・高忠実音声生成）・翻訳・全二重対話：実環境と遅延の両立}",
+    "L552 \\subsection*{読解上の境界}"
+   ],
+   "evidence_ids": [
+    "btd051",
+    "btd052",
+    "btd053",
+    "btd057",
+    "btd058",
+    "btd061"
+   ],
+   "before_count": 10,
+   "after_original_residual": 0
+  },
+  {
+   "id": "TS543-S24",
+   "discovery_source": "ISSUE_SEED",
+   "original_term": "管線",
+   "canonical_source_term": "pipeline",
+   "semantic_meaning": "pipeline 6件",
+   "decision": "REPLACE",
+   "final_reader_term": "パイプライン",
+   "rationale": "FluxPipeline gloss含め全件",
+   "section_occurrences": [
+    "L932",
+    "L939",
+    "L942",
+    "L946"
+   ],
+   "section_context": [
+    "L931 \\subsection{機材の天井を押さえる独立計測}"
+   ],
+   "evidence_ids": [
+    "btd137",
+    "btd078",
+    "btd079",
+    "btd080",
+    "btd081",
+    "btd082"
+   ],
+   "before_count": 6,
+   "after_original_residual": 0
+  },
+  {
+   "id": "TS543-S25",
+   "discovery_source": "ISSUE_SEED",
+   "original_term": "零初期化",
+   "canonical_source_term": "zero initialization",
+   "semantic_meaning": "zero-init 9件",
+   "decision": "REPLACE",
+   "final_reader_term": "ゼロ初期化(zero convolution gloss 1件)",
+   "rationale": "DiT/ControlNet/LoRA",
+   "section_occurrences": [
+    "L228",
+    "L249",
+    "L283",
+    "L288",
+    "L290",
+    "L333"
+   ],
+   "section_context": [
+    "L227 \\subsection{Transformer denoiserと流れ・整合性モデルへの分岐}",
+    "L241 \\section{条件づけとアライメント}",
+    "L280 \\subsection{音響の言語整合と空間制御の適合}",
+    "L285 \\subsection{四区分の使い分け：条件と誘導と適合と参照}",
+    "L332 \\subsection{主体の焼付けと低階数：少数画像と効率切替え}"
+   ],
+   "evidence_ids": [
+    "btd025",
+    "btd026",
+    "btd031",
+    "btd011",
+    "btd032",
+    "btd033"
+   ],
+   "before_count": 9,
+   "after_original_residual": 0
+  },
+  {
+   "id": "TS543-S26",
+   "discovery_source": "ISSUE_SEED",
+   "original_term": "零終端SNR",
+   "canonical_source_term": "zero-terminal SNR",
+   "semantic_meaning": "ZT-SNR 3件",
+   "decision": "REPLACE",
+   "final_reader_term": "zero-terminal SNR（ゼロ終端SNR）",
+   "rationale": "蒸留条件",
+   "section_occurrences": [
+    "L926"
+   ],
+   "section_context": [
+    "L925 \\subsection{写実性を別系統の損失で補う敵対的蒸留}"
+   ],
+   "evidence_ids": [
+    "btd081"
+   ],
+   "before_count": 3,
+   "after_original_residual": 0
+  },
+  {
+   "id": "TS543-S27",
+   "discovery_source": "ISSUE_SEED",
+   "original_term": "写像網",
+   "canonical_source_term": "mapping network",
+   "semantic_meaning": "StyleGAN mapping 2件",
+   "decision": "REPLACE",
+   "final_reader_term": "マッピングネットワーク（mapping network）",
+   "rationale": "named component",
+   "section_occurrences": [
+    "L192"
+   ],
+   "section_context": [
+    "L189 \\subsection{敵対的生成の系譜：暗黙分布から様式分離へ}"
+   ],
+   "evidence_ids": [
+    "btd015",
+    "btd016"
+   ],
+   "before_count": 2,
+   "after_original_residual": 0
+  },
+  {
+   "id": "TS543-S28",
+   "discovery_source": "ISSUE_SEED",
+   "original_term": "合成網",
+   "canonical_source_term": "synthesis network",
+   "semantic_meaning": "StyleGAN synthesis 2件",
+   "decision": "REPLACE",
+   "final_reader_term": "合成ネットワーク（synthesis network）",
+   "rationale": "named component",
+   "section_occurrences": [
+    "L192"
+   ],
+   "section_context": [
+    "L189 \\subsection{敵対的生成の系譜：暗黙分布から様式分離へ}"
+   ],
+   "evidence_ids": [
+    "btd015",
+    "btd016"
+   ],
+   "before_count": 2,
+   "after_original_residual": 0
+  },
+  {
+   "id": "TS543-S29",
+   "discovery_source": "ISSUE_SEED",
+   "original_term": "復元網",
+   "canonical_source_term": "decoder post-net",
+   "semantic_meaning": "Tacotron2 post-net 8件",
+   "decision": "REPLACE",
+   "final_reader_term": "ポストネット系",
+   "rationale": "CBHG後段処理網と区別",
+   "section_occurrences": [
+    "L441",
+    "L447",
+    "L449",
+    "L467",
+    "L476",
+    "L487"
+   ],
+   "section_context": [
+    "L435 \\section{音声・声の系譜：波形からEnd-to-End、ニューラルコーデック言語モデル、全二重へ}\\sectionkicker{SPEECH}\\la",
+    "L446 \\subsection{波形自己回帰と系列変換：素片結合なしの出発点}",
+    "L453 \\subsection{並列化とニューラルボコーダと端末間統合：遅さと注意破綻への応答}",
+    "L475 \\subsection{何を何で表すか：言語・意味・音響・符号・波形の分担}"
+   ],
+   "evidence_ids": [
+    "btd051",
+    "btd052",
+    "btd053",
+    "btd054",
+    "btd055",
+    "btd056"
+   ],
+   "before_count": 8,
+   "after_original_residual": 0
+  },
+  {
+   "id": "TS543-S30",
+   "discovery_source": "ISSUE_SEED",
+   "original_term": "後段処理網",
+   "canonical_source_term": "post-processing net",
+   "semantic_meaning": "Tacotron CBHG 2件",
+   "decision": "REPLACE",
+   "final_reader_term": "ポストプロセシングネットワーク",
+   "rationale": "復元網と区別",
+   "section_occurrences": [
+    "L447",
+    "L449"
+   ],
+   "section_context": [
+    "L446 \\subsection{波形自己回帰と系列変換：素片結合なしの出発点}"
+   ],
+   "evidence_ids": [
+    "btd051",
+    "btd052",
+    "btd053"
+   ],
+   "before_count": 2,
+   "after_original_residual": 0
+  },
+  {
+   "id": "TS543-S31",
+   "discovery_source": "ISSUE_SEED",
+   "original_term": "空間制御網",
+   "canonical_source_term": "ControlNet",
+   "semantic_meaning": "named ControlNet 7件",
+   "decision": "REPLACE",
+   "final_reader_term": "ControlNet（空間制御ネットワーク）",
+   "rationale": "固定U-Net+複写+zero-conv定義",
+   "section_occurrences": [
+    "L249",
+    "L270",
+    "L283",
+    "L286",
+    "L290",
+    "L343"
+   ],
+   "section_context": [
+    "L241 \\section{条件づけとアライメント}",
+    "L257 \\subsection{推論時誘導への転換：分類器なし誘導と文誘導拡散}",
+    "L280 \\subsection{音響の言語整合と空間制御の適合}",
+    "L285 \\subsection{四区分の使い分け：条件と誘導と適合と参照}",
+    "L342 \\subsection{適合器の系譜：凍結本体に触れず足す}"
+   ],
+   "evidence_ids": [
+    "btd031",
+    "btd011",
+    "btd032",
+    "btd033",
+    "btd034",
+    "btd035"
+   ],
+   "before_count": 7,
+   "after_original_residual": 0
+  },
+  {
+   "id": "TS543-S32",
+   "discovery_source": "ISSUE_SEED",
+   "original_term": "音楽制御網",
+   "canonical_source_term": "Music ControlNet-type",
+   "semantic_meaning": "music adapter 3件",
+   "decision": "REPLACE",
+   "final_reader_term": "音楽制御ネットワーク",
+   "rationale": "ControlNet-like",
+   "section_occurrences": [
+    "L306",
+    "L340",
+    "L343"
+   ],
+   "section_context": [
+    "L298 \\section{制御と参照：空間・参照・主体性の保存}",
+    "L337 \\subsection{時間信号の分離制御：映像の動きと音楽の変化}",
+    "L342 \\subsection{適合器の系譜：凍結本体に触れず足す}"
+   ],
+   "evidence_ids": [
+    "btd037",
+    "btd041",
+    "btd038",
+    "btd039",
+    "btd040",
+    "btd042"
+   ],
+   "before_count": 3,
+   "after_original_residual": 0
+  },
+  {
+   "id": "TS543-S33",
+   "discovery_source": "ISSUE_SEED",
+   "original_term": "基底路",
+   "canonical_source_term": "base channels",
+   "semantic_meaning": "128ch 1件",
+   "decision": "REPLACE",
+   "final_reader_term": "128ベースチャンネル（base channels）",
+   "rationale": "百二十八→128は値同一",
+   "section_occurrences": [
+    "L213"
+   ],
+   "section_context": [
+    "L212 \\subsection{雑音除去の転換：拡散と短縮抽出}"
+   ],
+   "evidence_ids": [
+    "btd019",
+    "btd030"
+   ],
+   "before_count": 1,
+   "after_original_residual": 0
+  },
+  {
+   "id": "TS543-S34",
+   "discovery_source": "ISSUE_SEED",
+   "original_term": "残差組立て",
+   "canonical_source_term": "residual blocks",
+   "semantic_meaning": "ADM残差ブロック1件",
+   "decision": "REPLACE",
+   "final_reader_term": "残差ブロック（residual blocks）",
+   "rationale": "適応正規化対",
+   "section_occurrences": [
+    "L213"
+   ],
+   "section_context": [
+    "L212 \\subsection{雑音除去の転換：拡散と短縮抽出}"
+   ],
+   "evidence_ids": [
+    "btd019",
+    "btd030"
+   ],
+   "before_count": 1,
+   "after_original_residual": 0
+  },
+  {
+   "id": "TS543-S35",
+   "discovery_source": "ISSUE_SEED",
+   "original_term": "整流化線形",
+   "canonical_source_term": "ReLU/LeakyReLU",
+   "semantic_meaning": "DCGAN活性化2件",
+   "decision": "REPLACE",
+   "final_reader_term": "ReLU/LeakyReLU（リーキーReLU）",
+   "rationale": "生成器/識別器で区別",
+   "section_occurrences": [
+    "L190"
+   ],
+   "section_context": [
+    "L189 \\subsection{敵対的生成の系譜：暗黙分布から様式分離へ}"
+   ],
+   "evidence_ids": [
+    "btd013",
+    "btd014"
+   ],
+   "before_count": 2,
+   "after_original_residual": 0
+  },
+  {
+   "id": "TS543-S36",
+   "discovery_source": "ISSUE_SEED",
+   "original_term": "中央処理装置",
+   "canonical_source_term": "CPU",
+   "semantic_meaning": "HiFi-GAN軽量版1件",
+   "decision": "REPLACE",
+   "final_reader_term": "CPU",
+   "rationale": "GPU対比",
+   "section_occurrences": [
+    "L454"
+   ],
+   "section_context": [
+    "L453 \\subsection{並列化とニューラルボコーダと端末間統合：遅さと注意破綻への応答}"
+   ],
+   "evidence_ids": [
+    "btd054",
+    "btd055",
+    "btd056"
+   ],
+   "before_count": 1,
+   "after_original_residual": 0
+  },
+  {
+   "id": "TS543-S37",
+   "discovery_source": "ISSUE_SEED",
+   "original_term": "多巡回",
+   "canonical_source_term": "multi-turn",
+   "semantic_meaning": "対話multi-turn 4件",
+   "decision": "REPLACE",
+   "final_reader_term": "マルチターン（multi-turn）",
+   "rationale": "Moshi btd134",
+   "section_occurrences": [
+    "L525",
+    "L547",
+    "L553"
+   ],
+   "section_context": [
+    "L520 \\subsection{Seed-TTS（多用途・高忠実音声生成）・翻訳・全二重対話：実環境と遅延の両立}",
+    "L552 \\subsection*{読解上の境界}"
+   ],
+   "evidence_ids": [
+    "btd134",
+    "btd061",
+    "btd062",
+    "btd059",
+    "btd051",
+    "btd057"
+   ],
+   "before_count": 4,
+   "after_original_residual": 0
+  },
+  {
+   "id": "TS543-S38",
+   "discovery_source": "ISSUE_SEED",
+   "original_term": "区切評価",
+   "canonical_source_term": "turn-segmentation-dependent evaluation",
+   "semantic_meaning": " multi-turn評価依存2件",
+   "decision": "REPLACE",
+   "final_reader_term": "ターン区切り評価",
+   "rationale": "btd134 PARTIALのため措辞は候補; 意味は確定",
+   "section_occurrences": [
+    "L525",
+    "L553"
+   ],
+   "section_context": [
+    "L520 \\subsection{Seed-TTS（多用途・高忠実音声生成）・翻訳・全二重対話：実環境と遅延の両立}",
+    "L552 \\subsection*{読解上の境界}"
+   ],
+   "evidence_ids": [
+    "btd134",
+    "btd061",
+    "btd062",
+    "btd051",
+    "btd057",
+    "btd058"
+   ],
+   "before_count": 2,
+   "after_original_residual": 0
+  },
+  {
+   "id": "TS543-S39a",
+   "discovery_source": "ISSUE_SEED",
+   "original_term": "得点(score-side)",
+   "canonical_source_term": "score",
+   "semantic_meaning": "生成score 5件",
+   "decision": "REPLACE",
+   "final_reader_term": "score",
+   "rationale": "SDE文脈",
+   "section_occurrences": [
+    "L166",
+    "L221",
+    "L239"
+   ],
+   "section_context": [
+    "L160 \\section{生成パラダイムと目的関数：自己回帰・敵対・拡散・フロー}",
+    "L220 \\subsection{連続時間への統一と潜在への移行}",
+    "L238 \\subsection{本節の読解上の境界}"
+   ],
+   "evidence_ids": [
+    "btd013",
+    "btd019",
+    "btd023",
+    "btd022",
+    "btd021",
+    "btd014"
+   ],
+   "before_count": 5,
+   "after_original_residual": 0
+  },
+  {
+   "id": "TS543-S39b",
+   "discovery_source": "ISSUE_SEED",
+   "original_term": "得点(general)",
+   "canonical_source_term": "score/value",
+   "semantic_meaning": "普通名詞16件",
+   "decision": "RETAIN",
+   "final_reader_term": "得点",
+   "rationale": "指標総称・方法論・X境界",
+   "section_occurrences": [
+    "L33",
+    "L145",
+    "L783",
+    "L867",
+    "L889",
+    "L968",
+    "L1093",
+    "L1128",
+    "L1132",
+    "L1143",
+    "L1149"
+   ],
+   "section_context": [
+    "L1092 \\subsection{音楽：制作手順としてのworkflow記録}",
+    "L1122 \\section{受容とcounter-signal：現場の27件の記録}",
+    "L1142 \\subsection{境界と未決laneの保持}",
+    "L142 \\subsection{音の残差量子化：低速度と遅延の両立}",
+    "L30 \\section*{本巻の問いと読み方}",
+    "L774 \\subsection{閉鎖頂点・開放混合専門家と編集基準測定：基盤への到達}",
+    "L866 \\subsection{単発の主張を長時間の証拠に格上げしない}",
+    "L967 \\subsection{全体点から分離診断への移動}"
+   ],
+   "evidence_ids": [
+    "btd006",
+    "btd007",
+    "btd008",
+    "btd077",
+    "btd124",
+    "btd131"
+   ],
+   "before_count": 17,
+   "after_original_residual": 17
+  },
+  {
+   "id": "TS543-S39c",
+   "discovery_source": "ISSUE_SEED",
+   "original_term": "自然さ得点(vendor)",
+   "canonical_source_term": "MOS?",
+   "semantic_meaning": "ベンダー自然さ2件",
+   "decision": "ESCALATE",
+   "final_reader_term": "自然さ得点(維持)",
+   "rationale": "MOS束縛は原典未確認",
+   "section_occurrences": [
+    "L1090",
+    "L1108"
+   ],
+   "section_context": [
+    "L1089 \\subsection{音声・対話：実時間利用と版バインドの機能集合}",
+    "L1103 \\subsection{横断の読み方：capstoneを大きく見せない}"
+   ],
+   "evidence_ids": [
+    "btd107",
+    "btd108",
+    "btd109",
+    "btd110",
+    "btd111",
+    "btd114"
+   ],
+   "before_count": 2,
+   "after_original_residual": 2
+  },
+  {
+   "id": "TS543-S40a",
+   "discovery_source": "ISSUE_SEED",
+   "original_term": "抽出(sampling)",
+   "canonical_source_term": "sampling",
+   "semantic_meaning": "sampling 29件",
+   "decision": "REPLACE",
+   "final_reader_term": "サンプリング",
+   "rationale": "暗黙的1件含む; 節表題含む",
+   "section_occurrences": [
+    "L108",
+    "L114",
+    "L121",
+    "L158",
+    "L168",
+    "L171",
+    "L172",
+    "L184",
+    "L192",
+    "L197",
+    "L207",
+    "L212",
+    "L215",
+    "L218",
+    "L223",
+    "L228",
+    "L236",
+    "L239",
+    "L249",
+    "L276",
+    "L312",
+    "L340",
+    "L345",
+    "L350",
+    "L499",
+    "L617",
+    "L619",
+    "L655",
+    "L664",
+    "L678",
+    "L804"
+   ],
+   "section_context": [
+    "L100 \\section{表現と圧縮：生成可能にする短縮の歴史}",
+    "L113 \\subsection{連続潜在から離散符号へ：推論の償却化と量子化}",
+    "L118 \\subsection{階層と知覚：高解像度への二つの道}",
+    "L157 \\subsection{本節の読解上の境界}",
+    "L160 \\section{生成パラダイムと目的関数：自己回帰・敵対・拡散・フロー}",
+    "L171 \\subsection{六軸分離の読み方：表現・骨格・目的・経路・抽出・短縮}",
+    "L189 \\subsection{敵対的生成の系譜：暗黙分布から様式分離へ}",
+    "L194 \\subsection{完全自己回帰：画素の同時分布を捉える}",
+    "L212 \\subsection{雑音除去の転換：拡散と短縮抽出}",
+    "L217 \\subsection{条件誘導の分岐：分類器誘導と分類器なし誘導}",
+    "L220 \\subsection{連続時間への統一と潜在への移行}",
+    "L227 \\subsection{Transformer denoiserと流れ・整合性モデルへの分岐}",
+    "L235 \\subsection{短縮と蒸留から実行費用への接続}",
+    "L238 \\subsection{本節の読解上の境界}",
+    "L241 \\section{条件づけとアライメント}",
+    "L275 \\subsection{段階専門家への分岐：共有 denoiser の分割}",
+    "L309 \\subsection{配置の前史と軽量適合：洗い流さない工夫}",
+    "L337 \\subsection{時間信号の分離制御：映像の動きと音楽の変化}",
+    "L342 \\subsection{適合器の系譜：凍結本体に触れず足す}",
+    "L347 \\subsection{保存と編集への橋渡し：制御忠実度と標本品質の分離}",
+    "L496 \\subsection{ゼロショット話者複製とニューラルコーデック言語モデル：未知話者への拡張}",
+    "L612 \\subsection{時間条件・楽理制御と人間選好検証：開放重みと評価境界}",
+    "L650 \\subsection{持続の延長と構造の維持：時間の二軸}",
+    "L657 \\subsection{評価の四分割：音質・整合・構造・人間選好}",
+    "L803 \\subsection{参照・条件づけ・編集と基準測定の配置}"
+   ],
+   "evidence_ids": [
+    "btd006",
+    "btd008",
+    "btd009",
+    "btd010",
+    "btd001",
+    "btd004"
+   ],
+   "before_count": 42,
+   "after_original_residual": 9
+  },
+  {
+   "id": "TS543-S40b",
+   "discovery_source": "ISSUE_SEED",
+   "original_term": "抽出(info-extraction)",
+   "canonical_source_term": "extraction",
+   "semantic_meaning": "情報抽出8件",
+   "decision": "RETAIN",
+   "final_reader_term": "抽出",
+   "rationale": "特徴/拍/計測の抽出",
+   "section_occurrences": [
+    "L340",
+    "L350",
+    "L617",
+    "L619",
+    "L655",
+    "L664",
+    "L678"
+   ],
+   "section_context": [
+    "L337 \\subsection{時間信号の分離制御：映像の動きと音楽の変化}",
+    "L347 \\subsection{保存と編集への橋渡し：制御忠実度と標本品質の分離}",
+    "L612 \\subsection{時間条件・楽理制御と人間選好検証：開放重みと評価境界}",
+    "L650 \\subsection{持続の延長と構造の維持：時間の二軸}",
+    "L657 \\subsection{評価の四分割：音質・整合・構造・人間選好}"
+   ],
+   "evidence_ids": [
+    "btd043",
+    "btd039",
+    "btd038",
+    "btd040",
+    "btd042",
+    "btd069"
+   ],
+   "before_count": 8,
+   "after_original_residual": 8
+  },
+  {
+   "id": "TS543-S40c",
+   "discovery_source": "ISSUE_SEED",
+   "original_term": "全帯域抽出",
+   "canonical_source_term": "sampling?",
+   "semantic_meaning": "btd007曖昧1件",
+   "decision": "ESCALATE",
+   "final_reader_term": "全帯域抽出(維持)",
+   "rationale": "評価sampling/特徴抽出の区別に本文要確認",
+   "section_occurrences": [
+    "L158"
+   ],
+   "section_context": [
+    "L157 \\subsection{本節の読解上の境界}"
+   ],
+   "evidence_ids": [
+    "btd006",
+    "btd008",
+    "btd001",
+    "btd004",
+    "btd002",
+    "btd007"
+   ],
+   "before_count": 1,
+   "after_original_residual": 1
+  },
+  {
+   "id": "TS543-B01",
+   "discovery_source": "BROAD_SCAN",
+   "original_term": "覆い",
+   "canonical_source_term": "mask",
+   "semantic_meaning": "マスク13件",
+   "decision": "REPLACE",
+   "final_reader_term": "マスク",
+   "rationale": "意味覆い/覆い外し/prior/対画像/区間/潜在内外/VLM判定の全件mask",
+   "section_occurrences": [
+    "L158",
+    "L306",
+    "L310",
+    "L340",
+    "L632",
+    "L804",
+    "L819"
+   ],
+   "section_context": [
+    "L157 \\subsection{本節の読解上の境界}",
+    "L298 \\section{制御と参照：空間・参照・主体性の保存}",
+    "L309 \\subsection{配置の前史と軽量適合：洗い流さない工夫}",
+    "L337 \\subsection{時間信号の分離制御：映像の動きと音楽の変化}",
+    "L627 \\subsection{生成・継続・編集・制御の分離：課題設定の区別}",
+    "L803 \\subsection{参照・条件づけ・編集と基準測定の配置}"
+   ],
+   "evidence_ids": [
+    "btd006",
+    "btd008",
+    "btd001",
+    "btd004",
+    "btd002",
+    "btd007"
+   ],
+   "before_count": 13,
+   "after_original_residual": 0
+  },
+  {
+   "id": "TS543-B02",
+   "discovery_source": "BROAD_SCAN",
+   "original_term": "整列",
+   "canonical_source_term": "alignment",
+   "semantic_meaning": "アライメント32件",
+   "decision": "REPLACE",
+   "final_reader_term": "アライメント",
+   "rationale": "教師/単調/標識付き/注意/CLIP/分割/橋渡し/対比の全件alignment; §3表題と整合",
+   "section_occurrences": [
+    "L39",
+    "L454",
+    "L456",
+    "L458",
+    "L468",
+    "L470",
+    "L476",
+    "L487",
+    "L488",
+    "L489",
+    "L509",
+    "L511",
+    "L518",
+    "L549",
+    "L550",
+    "L553",
+    "L589",
+    "L932",
+    "L945",
+    "L992",
+    "L1014",
+    "L1040",
+    "L1050"
+   ],
+   "section_context": [
+    "L1028 \\subsection{話し言葉と文章の往復を一つの復号器に畳む}",
+    "L1049 \\subsection{構造不変のデータ側工夫と合成拡散の対比}",
+    "L38 \\subsection*{本巻の限界の要約}",
+    "L453 \\subsection{並列化とニューラルボコーダと端末間統合：遅さと注意破綻への応答}",
+    "L475 \\subsection{何を何で表すか：言語・意味・音響・符号・波形の分担}",
+    "L508 \\subsection{流れ補完と実時間化：非自己回帰と前後文脈の統一}",
+    "L515 \\subsection{因果性と遅延と全二重：速さと同時性の分離}",
+    "L520 \\subsection{Seed-TTS（多用途・高忠実音声生成）・翻訳・全二重対話：実環境と遅延の両立}",
+    "L552 \\subsection*{読解上の境界}",
+    "L588 \\subsection{波形拡散と潜在拡散：局所忠実度と一般音響化の二系統}",
+    "L931 \\subsection{機材の天井を押さえる独立計測}",
+    "L991 \\subsection{耳と話し言葉の土台を切り分ける}",
+    "L994 \\subsection{映像の多次元化と単一値の拒否}"
+   ],
+   "evidence_ids": [
+    "btd022",
+    "btd059",
+    "btd083",
+    "btd089",
+    "btd098",
+    "btd106"
+   ],
+   "before_count": 32,
+   "after_original_residual": 0
+  },
+  {
+   "id": "TS543-B03",
+   "discovery_source": "BROAD_SCAN",
+   "original_term": "適合器",
+   "canonical_source_term": "adapter",
+   "semantic_meaning": "アダプター30件",
+   "decision": "REPLACE",
+   "final_reader_term": "アダプター",
+   "rationale": "軽量/参照/prompt適合器+系譜節; seed ControlNet系と整合",
+   "section_occurrences": [
+    "L247",
+    "L270",
+    "L278",
+    "L283",
+    "L286",
+    "L288",
+    "L290",
+    "L306",
+    "L312",
+    "L328",
+    "L330",
+    "L340",
+    "L342",
+    "L343",
+    "L350",
+    "L759"
+   ],
+   "section_context": [
+    "L241 \\section{条件づけとアライメント}",
+    "L257 \\subsection{推論時誘導への転換：分類器なし誘導と文誘導拡散}",
+    "L275 \\subsection{段階専門家への分岐：共有 denoiser の分割}",
+    "L280 \\subsection{音響の言語整合と空間制御の適合}",
+    "L285 \\subsection{四区分の使い分け：条件と誘導と適合と参照}",
+    "L298 \\section{制御と参照：空間・参照・主体性の保存}",
+    "L309 \\subsection{配置の前史と軽量適合：洗い流さない工夫}",
+    "L327 \\subsection{画像参照の分離注意：文能力を壊さない足し方}",
+    "L337 \\subsection{時間信号の分離制御：映像の動きと音楽の変化}",
+    "L342 \\subsection{適合器の系譜：凍結本体に触れず足す}",
+    "L347 \\subsection{保存と編集への橋渡し：制御忠実度と標本品質の分離}",
+    "L752 \\subsection{動作接続器と厳選潜在動画：個人化の動作化と段階学習}"
+   ],
+   "evidence_ids": [
+    "btd011",
+    "btd032",
+    "btd034",
+    "btd036",
+    "btd031",
+    "btd033"
+   ],
+   "before_count": 30,
+   "after_original_residual": 0
+  },
+  {
+   "id": "TS543-B04",
+   "discovery_source": "BROAD_SCAN",
+   "original_term": "符号帳",
+   "canonical_source_term": "codebook",
+   "semantic_meaning": "コードブック26件",
+   "decision": "REPLACE",
+   "final_reader_term": "コードブック",
+   "rationale": "VQ codebook/崩壊/損失; glossary含む",
+   "section_occurrences": [
+    "L63",
+    "L106",
+    "L110",
+    "L116",
+    "L119",
+    "L121",
+    "L130",
+    "L132",
+    "L140",
+    "L145",
+    "L153",
+    "L158",
+    "L197",
+    "L571",
+    "L580",
+    "L584",
+    "L1160"
+   ],
+   "section_context": [
+    "L100 \\section{表現と圧縮：生成可能にする短縮の歴史}",
+    "L113 \\subsection{連続潜在から離散符号へ：推論の償却化と量子化}",
+    "L1152 \\section{結び──座標として読むメディア生成史}",
+    "L118 \\subsection{階層と知覚：高解像度への二つの道}",
+    "L137 \\subsection{文と画像の単一列：大規模条件づけの前の短縮}",
+    "L142 \\subsection{音の残差量子化：低速度と遅延の両立}",
+    "L152 \\subsection{三軸のまとめ：何を削り何を残したか}",
+    "L157 \\subsection{本節の読解上の境界}",
+    "L194 \\subsection{完全自己回帰：画素の同時分布を捉える}",
+    "L568 \\subsection{階層的自己回帰と意味・音響段階化：分単位楽曲への第一歩}",
+    "L579 \\subsection{一段階可制御符号音楽：多段階層の低速への応答}",
+    "L62 \\subsection*{記号と表記の約束}"
+   ],
+   "evidence_ids": [
+    "btd001",
+    "btd002",
+    "btd003",
+    "btd004",
+    "btd005",
+    "btd006"
+   ],
+   "before_count": 26,
+   "after_original_residual": 0
+  },
+  {
+   "id": "TS543-B05",
+   "discovery_source": "BROAD_SCAN",
+   "original_term": "持続長",
+   "canonical_source_term": "duration",
+   "semantic_meaning": "デュレーション20件",
+   "decision": "REPLACE",
+   "final_reader_term": "デュレーション",
+   "rationale": "TTS duration全件; 持続長モデルと整合",
+   "section_occurrences": [
+    "L441",
+    "L454",
+    "L456",
+    "L458",
+    "L468",
+    "L476",
+    "L488",
+    "L491",
+    "L509",
+    "L511",
+    "L523",
+    "L549",
+    "L550",
+    "L553"
+   ],
+   "section_context": [
+    "L435 \\section{音声・声の系譜：波形からEnd-to-End、ニューラルコーデック言語モデル、全二重へ}\\sectionkicker{SPEECH}\\la",
+    "L453 \\subsection{並列化とニューラルボコーダと端末間統合：遅さと注意破綻への応答}",
+    "L475 \\subsection{何を何で表すか：言語・意味・音響・符号・波形の分担}",
+    "L508 \\subsection{流れ補完と実時間化：非自己回帰と前後文脈の統一}",
+    "L520 \\subsection{Seed-TTS（多用途・高忠実音声生成）・翻訳・全二重対話：実環境と遅延の両立}",
+    "L552 \\subsection*{読解上の境界}"
+   ],
+   "evidence_ids": [
+    "btd051",
+    "btd052",
+    "btd053",
+    "btd054",
+    "btd055",
+    "btd056"
+   ],
+   "before_count": 20,
+   "after_original_residual": 0
+  },
+  {
+   "id": "TS543-B06",
+   "discovery_source": "BROAD_SCAN",
+   "original_term": "色度",
+   "canonical_source_term": "chroma",
+   "semantic_meaning": "クロマ18件",
+   "decision": "REPLACE",
+   "final_reader_term": "クロマ",
+   "rationale": "音楽chroma全件; 測色用法なし",
+   "section_occurrences": [
+    "L580",
+    "L582",
+    "L584",
+    "L605",
+    "L613",
+    "L617",
+    "L634",
+    "L645",
+    "L664",
+    "L677",
+    "L678",
+    "L685",
+    "L697"
+   ],
+   "section_context": [
+    "L579 \\subsection{一段階可制御符号音楽：多段階層の低速への応答}",
+    "L588 \\subsection{波形拡散と潜在拡散：局所忠実度と一般音響化の二系統}",
+    "L612 \\subsection{時間条件・楽理制御と人間選好検証：開放重みと評価境界}",
+    "L627 \\subsection{生成・継続・編集・制御の分離：課題設定の区別}",
+    "L657 \\subsection{評価の四分割：音質・整合・構造・人間選好}",
+    "L696 \\subsection*{読解上の境界}"
+   ],
+   "evidence_ids": [
+    "btd066",
+    "btd067",
+    "btd069",
+    "btd068",
+    "btd063",
+    "btd065"
+   ],
+   "before_count": 18,
+   "after_original_residual": 0
+  },
+  {
+   "id": "TS543-B07",
+   "discovery_source": "BROAD_SCAN",
+   "original_term": "低階数/階数(rank)",
+   "canonical_source_term": "(low-)rank",
+   "semantic_meaning": "LoRA rank 24件",
+   "decision": "REPLACE",
+   "final_reader_term": "低ランク/ランク",
+   "rationale": "低階数17+調整2+切替え2+精度2+倍率1(重複注記); 段階数は対象外",
+   "section_occurrences": [
+    "L290",
+    "L304",
+    "L306",
+    "L322",
+    "L330",
+    "L332",
+    "L333",
+    "L335",
+    "L343",
+    "L345",
+    "L350",
+    "L353",
+    "L932"
+   ],
+   "section_context": [
+    "L285 \\subsection{四区分の使い分け：条件と誘導と適合と参照}",
+    "L298 \\section{制御と参照：空間・参照・主体性の保存}",
+    "L309 \\subsection{配置の前史と軽量適合：洗い流さない工夫}",
+    "L327 \\subsection{画像参照の分離注意：文能力を壊さない足し方}",
+    "L332 \\subsection{主体の焼付けと低階数：少数画像と効率切替え}",
+    "L342 \\subsection{適合器の系譜：凍結本体に触れず足す}",
+    "L347 \\subsection{保存と編集への橋渡し：制御忠実度と標本品質の分離}",
+    "L352 \\subsection{本節の読解上の境界}",
+    "L931 \\subsection{機材の天井を押さえる独立計測}"
+   ],
+   "evidence_ids": [
+    "btd036",
+    "btd037",
+    "btd039",
+    "btd042",
+    "btd041",
+    "btd038"
+   ],
+   "before_count": 25,
+   "after_original_residual": 0
+  },
+  {
+   "id": "TS543-B08",
+   "discovery_source": "BROAD_SCAN",
+   "original_term": "脱落(dropout)",
+   "canonical_source_term": "dropout",
+   "semantic_meaning": "ドロップアウト26件",
+   "decision": "REPLACE",
+   "final_reader_term": "ドロップアウト",
+   "rationale": "層/条件づけ/文/画像/誘導/prompt/独立/学習時/割合法/率; 高周波細部2件は信号損失のためB08b",
+   "section_occurrences": [
+    "L143",
+    "L145",
+    "L153",
+    "L158",
+    "L249",
+    "L255",
+    "L258",
+    "L260",
+    "L276",
+    "L283",
+    "L286",
+    "L288",
+    "L293",
+    "L296",
+    "L328",
+    "L333",
+    "L335",
+    "L340",
+    "L345",
+    "L580"
+   ],
+   "section_context": [
+    "L142 \\subsection{音の残差量子化：低速度と遅延の両立}",
+    "L152 \\subsection{三軸のまとめ：何を削り何を残したか}",
+    "L157 \\subsection{本節の読解上の境界}",
+    "L241 \\section{条件づけとアライメント}",
+    "L252 \\subsection{凍結符号器による文条件づけ：対照事前学習の継承}",
+    "L257 \\subsection{推論時誘導への転換：分類器なし誘導と文誘導拡散}",
+    "L275 \\subsection{段階専門家への分岐：共有 denoiser の分割}",
+    "L280 \\subsection{音響の言語整合と空間制御の適合}",
+    "L285 \\subsection{四区分の使い分け：条件と誘導と適合と参照}",
+    "L292 \\subsection{符号器規模と誘導尺度：報告された交換の整理}",
+    "L295 \\subsection{本節の読解上の境界}",
+    "L327 \\subsection{画像参照の分離注意：文能力を壊さない足し方}",
+    "L332 \\subsection{主体の焼付けと低階数：少数画像と効率切替え}",
+    "L337 \\subsection{時間信号の分離制御：映像の動きと音楽の変化}",
+    "L342 \\subsection{適合器の系譜：凍結本体に触れず足す}",
+    "L579 \\subsection{一段階可制御符号音楽：多段階層の低速への応答}"
+   ],
+   "evidence_ids": [
+    "btd006",
+    "btd007",
+    "btd008",
+    "btd001",
+    "btd002",
+    "btd003"
+   ],
+   "before_count": 28,
+   "after_original_residual": 2
+  },
+  {
+   "id": "TS543-B08b",
+   "discovery_source": "BROAD_SCAN",
+   "original_term": "周波細部の脱落",
+   "canonical_source_term": "detail loss",
+   "semantic_meaning": "量子化の高域損失2件",
+   "decision": "RETAIN",
+   "final_reader_term": "周波細部の脱落",
+   "rationale": "dropout正則化ではなく情報損失",
+   "section_occurrences": [
+    "L153",
+    "L158"
+   ],
+   "section_context": [
+    "L152 \\subsection{三軸のまとめ：何を削り何を残したか}",
+    "L157 \\subsection{本節の読解上の境界}"
+   ],
+   "evidence_ids": [
+    "btd001",
+    "btd002",
+    "btd003",
+    "btd004",
+    "btd005",
+    "btd006"
+   ],
+   "before_count": 2,
+   "after_original_residual": 2
+  },
+  {
+   "id": "TS543-B09",
+   "discovery_source": "BROAD_SCAN",
+   "original_term": "多層知覚器",
+   "canonical_source_term": "multilayer perceptron",
+   "semantic_meaning": "MLP 4件",
+   "decision": "REPLACE",
+   "final_reader_term": "多層パーセプトロン",
+   "rationale": "版内表記と統一",
+   "section_occurrences": [
+    "L306",
+    "L340",
+    "L343",
+    "L353"
+   ],
+   "section_context": [
+    "L298 \\section{制御と参照：空間・参照・主体性の保存}",
+    "L337 \\subsection{時間信号の分離制御：映像の動きと音楽の変化}",
+    "L342 \\subsection{適合器の系譜：凍結本体に触れず足す}",
+    "L352 \\subsection{本節の読解上の境界}"
+   ],
+   "evidence_ids": [
+    "btd037",
+    "btd041",
+    "btd038",
+    "btd039",
+    "btd040",
+    "btd042"
+   ],
+   "before_count": 4,
+   "after_original_residual": 0
+  },
+  {
+   "id": "TS543-B10",
+   "discovery_source": "BROAD_SCAN",
+   "original_term": "自己符号化器",
+   "canonical_source_term": "(conditional variational) autoencoder",
+   "semantic_meaning": "CVAE/VAE 4件",
+   "decision": "REPLACE",
+   "final_reader_term": "条件付き変分オートエンコーダ/変分オートエンコーダ",
+   "rationale": "版内オートエンコーダ表記と統一",
+   "section_occurrences": [
+    "L376",
+    "L441",
+    "L454",
+    "L470"
+   ],
+   "section_context": [
+    "L373 \\subsection{潜在局所合成：前景と背景の分離}",
+    "L435 \\section{音声・声の系譜：波形からEnd-to-End、ニューラルコーデック言語モデル、全二重へ}\\sectionkicker{SPEECH}\\la",
+    "L453 \\subsection{並列化とニューラルボコーダと端末間統合：遅さと注意破綻への応答}"
+   ],
+   "evidence_ids": [
+    "btd046",
+    "btd051",
+    "btd052",
+    "btd053",
+    "btd054",
+    "btd055"
+   ],
+   "before_count": 4,
+   "after_original_residual": 0
+  },
+  {
+   "id": "TS543-B11",
+   "discovery_source": "BROAD_SCAN",
+   "original_term": "発音素",
+   "canonical_source_term": "phoneme",
+   "semantic_meaning": "G2Pフロントエンド4件",
+   "decision": "REPLACE",
+   "final_reader_term": "音素",
+   "rationale": "同一文内の音素表記と統一",
+   "section_occurrences": [
+    "L458",
+    "L550",
+    "L553"
+   ],
+   "section_context": [
+    "L453 \\subsection{並列化とニューラルボコーダと端末間統合：遅さと注意破綻への応答}",
+    "L520 \\subsection{Seed-TTS（多用途・高忠実音声生成）・翻訳・全二重対話：実環境と遅延の両立}",
+    "L552 \\subsection*{読解上の境界}"
+   ],
+   "evidence_ids": [
+    "btd056",
+    "btd055",
+    "btd054",
+    "btd060",
+    "btd132",
+    "btd133"
+   ],
+   "before_count": 4,
+   "after_original_residual": 0
+  },
+  {
+   "id": "TS543-B12",
+   "discovery_source": "BROAD_SCAN",
+   "original_term": "尖頭",
+   "canonical_source_term": "peak (PSNR)",
+   "semantic_meaning": "ピーク2件",
+   "decision": "REPLACE",
+   "final_reader_term": "ピーク",
+   "rationale": "benchmark表のmetric label",
+   "section_occurrences": [
+    "L777",
+    "L804"
+   ],
+   "section_context": [
+    "L774 \\subsection{閉鎖頂点・開放混合専門家と編集基準測定：基盤への到達}",
+    "L803 \\subsection{参照・条件づけ・編集と基準測定の配置}"
+   ],
+   "evidence_ids": [
+    "btd138",
+    "btd070",
+    "btd071",
+    "btd073",
+    "btd075",
+    "btd074"
+   ],
+   "before_count": 2,
+   "after_original_residual": 0
+  },
+  {
+   "id": "TS543-B13",
+   "discovery_source": "BROAD_SCAN",
+   "original_term": "様式崩壊",
+   "canonical_source_term": "mode collapse",
+   "semantic_meaning": "GAN mode collapse 2件",
+   "decision": "REPLACE",
+   "final_reader_term": "モード崩壊",
+   "rationale": "DCGAN文脈で確定",
+   "section_occurrences": [
+    "L190",
+    "L239"
+   ],
+   "section_context": [
+    "L189 \\subsection{敵対的生成の系譜：暗黙分布から様式分離へ}",
+    "L238 \\subsection{本節の読解上の境界}"
+   ],
+   "evidence_ids": [
+    "btd013",
+    "btd014",
+    "btd015",
+    "btd016",
+    "btd019",
+    "btd020"
+   ],
+   "before_count": 2,
+   "after_original_residual": 0
+  },
+  {
+   "id": "TS543-B14",
+   "discovery_source": "BROAD_SCAN",
+   "original_term": "濾波崩壊",
+   "canonical_source_term": "filter collapse?",
+   "semantic_meaning": "長期学習2件",
+   "decision": "ESCALATE",
+   "final_reader_term": "濾波崩壊(維持)",
+   "rationale": "canonical termを原典未確認のため推測せず; モード崩壊との関係も含めSolへ",
+   "section_occurrences": [
+    "L190",
+    "L239"
+   ],
+   "section_context": [
+    "L189 \\subsection{敵対的生成の系譜：暗黙分布から様式分離へ}",
+    "L238 \\subsection{本節の読解上の境界}"
+   ],
+   "evidence_ids": [
+    "btd013",
+    "btd014",
+    "btd015",
+    "btd016",
+    "btd019",
+    "btd020"
+   ],
+   "before_count": 2,
+   "after_original_residual": 2
+  },
+  {
+   "id": "TS543-B15",
+   "discovery_source": "BROAD_SCAN",
+   "original_term": "滑動窓",
+   "canonical_source_term": "sliding window",
+   "semantic_meaning": "sliding window 2件",
+   "decision": "REPLACE",
+   "final_reader_term": "スライディングウィンドウ",
+   "rationale": "backbone文脈",
+   "section_occurrences": [
+    "L119",
+    "L158"
+   ],
+   "section_context": [
+    "L118 \\subsection{階層と知覚：高解像度への二つの道}",
+    "L157 \\subsection{本節の読解上の境界}"
+   ],
+   "evidence_ids": [
+    "btd003",
+    "btd004",
+    "btd006",
+    "btd008",
+    "btd001",
+    "btd002"
+   ],
+   "before_count": 2,
+   "after_original_residual": 0
+  },
+  {
+   "id": "TS543-B16",
+   "discovery_source": "BROAD_SCAN",
+   "original_term": "歩幅/分数歩幅",
+   "canonical_source_term": "(fractionally-)strided",
+   "semantic_meaning": "DCGAN stride 4件",
+   "decision": "REPLACE",
+   "final_reader_term": "ストライド畳み込み/分数ストライド",
+   "rationale": "識別器/生成器",
+   "section_occurrences": [
+    "L190"
+   ],
+   "section_context": [
+    "L189 \\subsection{敵対的生成の系譜：暗黙分布から様式分離へ}"
+   ],
+   "evidence_ids": [
+    "btd013",
+    "btd014"
+   ],
+   "before_count": 4,
+   "after_original_residual": 0
+  },
+  {
+   "id": "TS543-B17",
+   "discovery_source": "BROAD_SCAN",
+   "original_term": "鍵語",
+   "canonical_source_term": "keyword",
+   "semantic_meaning": "CLAP keyword 2件",
+   "decision": "REPLACE",
+   "final_reader_term": "キーワード",
+   "rationale": "評価境界文",
+   "section_occurrences": [
+    "L281",
+    "L296"
+   ],
+   "section_context": [
+    "L280 \\subsection{音響の言語整合と空間制御の適合}",
+    "L295 \\subsection{本節の読解上の境界}"
+   ],
+   "evidence_ids": [
+    "btd035",
+    "btd011",
+    "btd032",
+    "btd033",
+    "btd036",
+    "btd031"
+   ],
+   "before_count": 2,
+   "after_original_residual": 0
+  },
+  {
+   "id": "TS543-B18",
+   "discovery_source": "BROAD_SCAN",
+   "original_term": "試料",
+   "canonical_source_term": "sample/stem",
+   "semantic_meaning": "生成sample+stem分離2件",
+   "decision": "REPLACE",
+   "final_reader_term": "サンプル/ステム分離",
+   "rationale": "L32定義文+Sunno stemsで節別",
+   "section_occurrences": [
+    "L33",
+    "L1095"
+   ],
+   "section_context": [
+    "L1092 \\subsection{音楽：制作手順としてのworkflow記録}",
+    "L30 \\section*{本巻の問いと読み方}"
+   ],
+   "evidence_ids": [
+    "btd114",
+    "btd115",
+    "btd116"
+   ],
+   "before_count": 2,
+   "after_original_residual": 0
+  },
+  {
+   "id": "TS543-B19",
+   "discovery_source": "BROAD_SCAN",
+   "original_term": "問合せ",
+   "canonical_source_term": "query",
+   "semantic_meaning": "attention/GE2E query 5件",
+   "decision": "REPLACE",
+   "final_reader_term": "クエリ",
+   "rationale": "Q共有/値/重心",
+   "section_occurrences": [
+    "L306",
+    "L328",
+    "L333",
+    "L992"
+   ],
+   "section_context": [
+    "L298 \\section{制御と参照：空間・参照・主体性の保存}",
+    "L327 \\subsection{画像参照の分離注意：文能力を壊さない足し方}",
+    "L332 \\subsection{主体の焼付けと低階数：少数画像と効率切替え}",
+    "L991 \\subsection{耳と話し言葉の土台を切り分ける}"
+   ],
+   "evidence_ids": [
+    "btd037",
+    "btd041",
+    "btd038",
+    "btd039",
+    "btd040",
+    "btd042"
+   ],
+   "before_count": 5,
+   "after_original_residual": 0
+  },
+  {
+   "id": "TS543-B20",
+   "discovery_source": "BROAD_SCAN",
+   "original_term": "跳躍",
+   "canonical_source_term": "skip",
+   "semantic_meaning": "skip系5件",
+   "decision": "REPLACE",
+   "final_reader_term": "スキップ生成器/スキップ変数化/スキップ接続",
+   "rationale": "StyleGAN2/consistency/WaveNetで節別",
+   "section_occurrences": [
+    "L192",
+    "L230",
+    "L236",
+    "L449"
+   ],
+   "section_context": [
+    "L189 \\subsection{敵対的生成の系譜：暗黙分布から様式分離へ}",
+    "L227 \\subsection{Transformer denoiserと流れ・整合性モデルへの分岐}",
+    "L235 \\subsection{短縮と蒸留から実行費用への接続}",
+    "L446 \\subsection{波形自己回帰と系列変換：素片結合なしの出発点}"
+   ],
+   "evidence_ids": [
+    "btd015",
+    "btd016",
+    "btd027",
+    "btd028",
+    "btd029",
+    "btd025"
+   ],
+   "before_count": 5,
+   "after_original_residual": 0
+  },
+  {
+   "id": "TS543-B21",
+   "discovery_source": "BROAD_SCAN",
+   "original_term": "遅延配置",
+   "canonical_source_term": "delay pattern",
+   "semantic_meaning": "MusicGen delay 4件",
+   "decision": "REPLACE",
+   "final_reader_term": "遅延パターン",
+   "rationale": "named architectural pattern",
+   "section_occurrences": [
+    "L563",
+    "L580",
+    "L582",
+    "L605"
+   ],
+   "section_context": [
+    "L555 \\section{音楽・一般音響の系譜：コーデック言語モデルと潜在拡散}\\sectionkicker{MUSIC}\\label{sec:music}",
+    "L579 \\subsection{一段階可制御符号音楽：多段階層の低速への応答}",
+    "L588 \\subsection{波形拡散と潜在拡散：局所忠実度と一般音響化の二系統}"
+   ],
+   "evidence_ids": [
+    "btd063",
+    "btd065",
+    "btd066",
+    "btd064",
+    "btd067",
+    "btd068"
+   ],
+   "before_count": 4,
+   "after_original_residual": 0
+  },
+  {
+   "id": "TS543-B22",
+   "discovery_source": "BROAD_SCAN",
+   "original_term": "流れ化",
+   "canonical_source_term": "flow-ize",
+   "semantic_meaning": "部分入力フロー4件",
+   "decision": "REPLACE",
+   "final_reader_term": "フロー化",
+   "rationale": "非標準動詞の最小正規化; 流れ補完と整合",
+   "section_occurrences": [
+    "L516",
+    "L518",
+    "L523"
+   ],
+   "section_context": [
+    "L515 \\subsection{因果性と遅延と全二重：速さと同時性の分離}",
+    "L520 \\subsection{Seed-TTS（多用途・高忠実音声生成）・翻訳・全二重対話：実環境と遅延の両立}"
+   ],
+   "evidence_ids": [
+    "btd060",
+    "btd133",
+    "btd132",
+    "btd062",
+    "btd134",
+    "btd061"
+   ],
+   "before_count": 4,
+   "after_original_residual": 0
+  },
+  {
+   "id": "TS543-B23",
+   "discovery_source": "BROAD_SCAN",
+   "original_term": "素片結合",
+   "canonical_source_term": "concatenative synthesis",
+   "semantic_meaning": "非連結合成3件",
+   "decision": "REPLACE",
+   "final_reader_term": "連結合成",
+   "rationale": "§6テーゼ+表題含む",
+   "section_occurrences": [
+    "L441",
+    "L446",
+    "L447"
+   ],
+   "section_context": [
+    "L435 \\section{音声・声の系譜：波形からEnd-to-End、ニューラルコーデック言語モデル、全二重へ}\\sectionkicker{SPEECH}\\la",
+    "L446 \\subsection{波形自己回帰と系列変換：素片結合なしの出発点}"
+   ],
+   "evidence_ids": [
+    "btd051",
+    "btd052",
+    "btd053",
+    "btd054",
+    "btd055",
+    "btd056"
+   ],
+   "before_count": 3,
+   "after_original_residual": 0
+  },
+  {
+   "id": "TS543-B24",
+   "discovery_source": "BROAD_SCAN",
+   "original_term": "力学(music)",
+   "canonical_source_term": "dynamics",
+   "semantic_meaning": "楽曲ダイナミクス2件",
+   "decision": "REPLACE",
+   "final_reader_term": "ダイナミクス",
+   "rationale": "旋律/拍文脈",
+   "section_occurrences": [
+    "L340"
+   ],
+   "section_context": [
+    "L337 \\subsection{時間信号の分離制御：映像の動きと音楽の変化}"
+   ],
+   "evidence_ids": [
+    "btd043"
+   ],
+   "before_count": 2,
+   "after_original_residual": 0
+  },
+  {
+   "id": "TS543-B24b",
+   "discovery_source": "BROAD_SCAN",
+   "original_term": "力学(physics)",
+   "canonical_source_term": "mechanics",
+   "semantic_meaning": "力学検証3件",
+   "decision": "RETAIN",
+   "final_reader_term": "力学",
+   "rationale": "simulator検証の力学",
+   "section_occurrences": [
+    "L835",
+    "L889"
+   ],
+   "section_context": [
+    "L834 \\subsection{物理的妥当性を二値で問う手順とその天井}",
+    "L866 \\subsection{単発の主張を長時間の証拠に格上げしない}"
+   ],
+   "evidence_ids": [
+    "btd131"
+   ],
+   "before_count": 3,
+   "after_original_residual": 3
+  },
+  {
+   "id": "TS543-B25",
+   "discovery_source": "BROAD_SCAN",
+   "original_term": "可変束縛",
+   "canonical_source_term": "variable binding",
+   "semantic_meaning": "T2I-CompBench 2件",
+   "decision": "REPLACE",
+   "final_reader_term": "変数束縛",
+   "rationale": "属性binding",
+   "section_occurrences": [
+    "L140",
+    "L158"
+   ],
+   "section_context": [
+    "L137 \\subsection{文と画像の単一列：大規模条件づけの前の短縮}",
+    "L157 \\subsection{本節の読解上の境界}"
+   ],
+   "evidence_ids": [
+    "btd005",
+    "btd002",
+    "btd006",
+    "btd008",
+    "btd001",
+    "btd004"
+   ],
+   "before_count": 2,
+   "after_original_residual": 0
+  },
+  {
+   "id": "TS543-B26",
+   "discovery_source": "BROAD_SCAN",
+   "original_term": "段階専門家/専門家集成",
+   "canonical_source_term": "(noise-level) expert/ensemble",
+   "semantic_meaning": "eDiff-i系9件(段階専門家集成1件は両pat重複)",
+   "decision": "REPLACE",
+   "final_reader_term": "段階エキスパート/エキスパートアンサンブル",
+   "rationale": "denoiser expert; 節表題含む",
+   "section_occurrences": [
+    "L247",
+    "L249",
+    "L270",
+    "L275",
+    "L276",
+    "L278",
+    "L286"
+   ],
+   "section_context": [
+    "L241 \\section{条件づけとアライメント}",
+    "L257 \\subsection{推論時誘導への転換：分類器なし誘導と文誘導拡散}",
+    "L275 \\subsection{段階専門家への分岐：共有 denoiser の分割}",
+    "L285 \\subsection{四区分の使い分け：条件と誘導と適合と参照}"
+   ],
+   "evidence_ids": [
+    "btd011",
+    "btd032",
+    "btd031",
+    "btd033",
+    "btd034",
+    "btd035"
+   ],
+   "before_count": 10,
+   "after_original_residual": 0
+  },
+  {
+   "id": "TS543-B27",
+   "discovery_source": "BROAD_SCAN",
+   "original_term": "凍結文符号器",
+   "canonical_source_term": "frozen text encoder",
+   "semantic_meaning": "Imagen系3件",
+   "decision": "REPLACE",
+   "final_reader_term": "凍結テキストエンコーダ",
+   "rationale": "#539文章符号器の綴り違い; 同一実体",
+   "section_occurrences": [
+    "L255",
+    "L268",
+    "L286"
+   ],
+   "section_context": [
+    "L252 \\subsection{凍結符号器による文条件づけ：対照事前学習の継承}",
+    "L257 \\subsection{推論時誘導への転換：分類器なし誘導と文誘導拡散}",
+    "L285 \\subsection{四区分の使い分け：条件と誘導と適合と参照}"
+   ],
+   "evidence_ids": [
+    "btd011",
+    "btd031",
+    "btd032",
+    "btd033",
+    "btd034",
+    "btd035"
+   ],
+   "before_count": 3,
+   "after_original_residual": 0
+  },
+  {
+   "id": "TS543-B28",
+   "discovery_source": "BROAD_SCAN",
+   "original_term": "雛形(prompt/集合/UI)",
+   "canonical_source_term": "prompt template/set/draft",
+   "semantic_meaning": "template 8件",
+   "decision": "REPLACE",
+   "final_reader_term": "プロンプトテンプレート/テンプレート集合/下書き",
+   "rationale": "CLIP文脈6+集合1+UI draft1で節別",
+   "section_occurrences": [
+    "L249",
+    "L253",
+    "L281",
+    "L293",
+    "L1087"
+   ],
+   "section_context": [
+    "L1084 \\subsection{画像：生成と反復編集のworkflow表面}",
+    "L241 \\section{条件づけとアライメント}",
+    "L252 \\subsection{凍結符号器による文条件づけ：対照事前学習の継承}",
+    "L280 \\subsection{音響の言語整合と空間制御の適合}",
+    "L292 \\subsection{符号器規模と誘導尺度：報告された交換の整理}"
+   ],
+   "evidence_ids": [
+    "btd031",
+    "btd011",
+    "btd032",
+    "btd033",
+    "btd034",
+    "btd035"
+   ],
+   "before_count": 8,
+   "after_original_residual": 0
+  },
+  {
+   "id": "TS543-B29",
+   "discovery_source": "BROAD_SCAN",
+   "original_term": "畳み込み/安定化/設計指針",
+   "canonical_source_term": "(DCGAN) guidelines",
+   "semantic_meaning": "設計指針5件",
+   "decision": "REPLACE",
+   "final_reader_term": "畳み込み/安定化/設計ガイドライン",
+   "rationale": "named guidelines",
+   "section_occurrences": [
+    "L168",
+    "L172",
+    "L181",
+    "L190",
+    "L205"
+   ],
+   "section_context": [
+    "L160 \\section{生成パラダイムと目的関数：自己回帰・敵対・拡散・フロー}",
+    "L171 \\subsection{六軸分離の読み方：表現・骨格・目的・経路・抽出・短縮}",
+    "L189 \\subsection{敵対的生成の系譜：暗黙分布から様式分離へ}",
+    "L194 \\subsection{完全自己回帰：画素の同時分布を捉える}"
+   ],
+   "evidence_ids": [
+    "btd013",
+    "btd014",
+    "btd015",
+    "btd016",
+    "btd017",
+    "btd018"
+   ],
+   "before_count": 5,
+   "after_original_residual": 0
+  },
+  {
+   "id": "TS543-B29b",
+   "discovery_source": "BROAD_SCAN",
+   "original_term": "指針(general)",
+   "canonical_source_term": "guideline",
+   "semantic_meaning": "一般指針6件",
+   "decision": "RETAIN",
+   "final_reader_term": "指針",
+   "rationale": "使い分け/結び等の一般語",
+   "section_occurrences": [
+    "L69",
+    "L91",
+    "L168",
+    "L172",
+    "L181",
+    "L190",
+    "L205",
+    "L288",
+    "L345",
+    "L348",
+    "L1170"
+   ],
+   "section_context": [
+    "L1170 \\subsection{立場別の指針}",
+    "L160 \\section{生成パラダイムと目的関数：自己回帰・敵対・拡散・フロー}",
+    "L171 \\subsection{六軸分離の読み方：表現・骨格・目的・経路・抽出・短縮}",
+    "L189 \\subsection{敵対的生成の系譜：暗黙分布から様式分離へ}",
+    "L194 \\subsection{完全自己回帰：画素の同時分布を捉える}",
+    "L285 \\subsection{四区分の使い分け：条件と誘導と適合と参照}",
+    "L342 \\subsection{適合器の系譜：凍結本体に触れず足す}",
+    "L347 \\subsection{保存と編集への橋渡し：制御忠実度と標本品質の分離}",
+    "L68 \\subsection*{読者への道案内}"
+   ],
+   "evidence_ids": [
+    "btd013",
+    "btd014",
+    "btd015",
+    "btd016",
+    "btd017",
+    "btd018"
+   ],
+   "before_count": 11,
+   "after_original_residual": 6
+  },
+  {
+   "id": "TS543-B30",
+   "discovery_source": "BROAD_SCAN",
+   "original_term": "照合",
+   "canonical_source_term": "matching/verification",
+   "semantic_meaning": "照合12件",
+   "decision": "REPLACE",
+   "final_reader_term": "マッチング/検証/フローマッチング",
+   "rationale": "cosine/多数決/勝率/flow/話者/手順で節別",
+   "section_occurrences": [
+    "L249",
+    "L281",
+    "L835",
+    "L867",
+    "L932",
+    "L962",
+    "L992",
+    "L995",
+    "L997",
+    "L1006"
+   ],
+   "section_context": [
+    "L241 \\section{条件づけとアライメント}",
+    "L280 \\subsection{音響の言語整合と空間制御の適合}",
+    "L834 \\subsection{物理的妥当性を二値で問う手順とその天井}",
+    "L866 \\subsection{単発の主張を長時間の証拠に格上げしない}",
+    "L931 \\subsection{機材の天井を押さえる独立計測}",
+    "L956 \\section{評価の方法論：指標は交換可能ではない}",
+    "L991 \\subsection{耳と話し言葉の土台を切り分ける}",
+    "L994 \\subsection{映像の多次元化と単一値の拒否}"
+   ],
+   "evidence_ids": [
+    "btd031",
+    "btd011",
+    "btd032",
+    "btd033",
+    "btd034",
+    "btd035"
+   ],
+   "before_count": 12,
+   "after_original_residual": 0
+  },
+  {
+   "id": "TS543-B31",
+   "discovery_source": "BROAD_SCAN",
+   "original_term": "札",
+   "canonical_source_term": "tag/label",
+   "semantic_meaning": "タグ11件",
+   "decision": "REPLACE",
+   "final_reader_term": "タグ条件/タグ事前学習/タグのみ文/タグ付き混合/副次タグ",
+   "rationale": "音楽+AudioPaLM+受容の三 sense を統一",
+   "section_occurrences": [
+    "L306",
+    "L340",
+    "L353",
+    "L1029",
+    "L1039",
+    "L1130",
+    "L1132",
+    "L1138"
+   ],
+   "section_context": [
+    "L1028 \\subsection{話し言葉と文章の往復を一つの復号器に畳む}",
+    "L1122 \\section{受容とcounter-signal：現場の27件の記録}",
+    "L1134 \\subsection{台帳の読み方：確定側と未決側の分離}",
+    "L298 \\section{制御と参照：空間・参照・主体性の保存}",
+    "L337 \\subsection{時間信号の分離制御：映像の動きと音楽の変化}",
+    "L352 \\subsection{本節の読解上の境界}"
+   ],
+   "evidence_ids": [
+    "btd037",
+    "btd041",
+    "btd038",
+    "btd039",
+    "btd040",
+    "btd042"
+   ],
+   "before_count": 11,
+   "after_original_residual": 0
+  },
+  {
+   "id": "TS543-B32",
+   "discovery_source": "BROAD_SCAN",
+   "original_term": "供給者",
+   "canonical_source_term": "provider",
+   "semantic_meaning": "提供元と同役17件",
+   "decision": "REPLACE",
+   "final_reader_term": "提供元",
+   "rationale": "ベンダー(商業)と区別し提供元へ統一",
+   "section_occurrences": [
+    "L513",
+    "L521",
+    "L525",
+    "L538",
+    "L543",
+    "L544",
+    "L553",
+    "L621",
+    "L707",
+    "L775",
+    "L783",
+    "L813",
+    "L822"
+   ],
+   "section_context": [
+    "L508 \\subsection{流れ補完と実時間化：非自己回帰と前後文脈の統一}",
+    "L520 \\subsection{Seed-TTS（多用途・高忠実音声生成）・翻訳・全二重対話：実環境と遅延の両立}",
+    "L552 \\subsection*{読解上の境界}",
+    "L612 \\subsection{時間条件・楽理制御と人間選好検証：開放重みと評価境界}",
+    "L699 \\section{映像の系譜：時間的一貫性からメディア基盤へ}\\sectionkicker{VIDEO}\\label{sec:video}",
+    "L774 \\subsection{閉鎖頂点・開放混合専門家と編集基準測定：基盤への到達}",
+    "L803 \\subsection{参照・条件づけ・編集と基準測定の配置}",
+    "L821 \\subsection*{読解上の境界}"
+   ],
+   "evidence_ids": [
+    "btd132",
+    "btd133",
+    "btd060",
+    "btd061",
+    "btd062",
+    "btd134"
+   ],
+   "before_count": 17,
+   "after_original_residual": 0
+  },
+  {
+   "id": "TS543-B33a",
+   "discovery_source": "BROAD_SCAN",
+   "original_term": "膨張(inflation)",
+   "canonical_source_term": "inflation",
+   "semantic_meaning": "2D→3D inflation 7件",
+   "decision": "REPLACE",
+   "final_reader_term": "拡張初期化/拡張",
+   "rationale": "dilationと区別",
+   "section_occurrences": [
+    "L148",
+    "L407",
+    "L705",
+    "L727",
+    "L732",
+    "L746",
+    "L765"
+   ],
+   "section_context": [
+    "L147 \\subsection{意味と音響の分離、映像の時空間短縮}",
+    "L402 \\subsection{指示追従学習と一段階動画編集：手続きの隠蔽と時間への拡張}",
+    "L699 \\section{映像の系譜：時間的一貫性からメディア基盤へ}\\sectionkicker{VIDEO}\\label{sec:video}",
+    "L726 \\subsection{因子分解の設計差：二次元＋時間と時空間とTransformer}",
+    "L731 \\subsection{潜在と圧縮の軸：空間潜在と時間圧縮}",
+    "L752 \\subsection{動作接続器と厳選潜在動画：個人化の動作化と段階学習}"
+   ],
+   "evidence_ids": [
+    "btd009",
+    "btd010",
+    "btd012",
+    "btd050",
+    "btd070",
+    "btd071"
+   ],
+   "before_count": 7,
+   "after_original_residual": 0
+  },
+  {
+   "id": "TS543-B33b",
+   "discovery_source": "BROAD_SCAN",
+   "original_term": "膨張(dilated)",
+   "canonical_source_term": "dilated convolution",
+   "semantic_meaning": "dilated 9件",
+   "decision": "RETAIN",
+   "final_reader_term": "膨張畳み込み/因果/循環/モデル",
+   "rationale": "定着したdilated訳",
+   "section_occurrences": [
+    "L418",
+    "L441",
+    "L447",
+    "L449",
+    "L466",
+    "L589",
+    "L591",
+    "L606",
+    "L777"
+   ],
+   "section_context": [
+    "L402 \\subsection{指示追従学習と一段階動画編集：手続きの隠蔽と時間への拡張}",
+    "L435 \\section{音声・声の系譜：波形からEnd-to-End、ニューラルコーデック言語モデル、全二重へ}\\sectionkicker{SPEECH}\\la",
+    "L446 \\subsection{波形自己回帰と系列変換：素片結合なしの出発点}",
+    "L453 \\subsection{並列化とニューラルボコーダと端末間統合：遅さと注意破綻への応答}",
+    "L588 \\subsection{波形拡散と潜在拡散：局所忠実度と一般音響化の二系統}",
+    "L774 \\subsection{閉鎖頂点・開放混合専門家と編集基準測定：基盤への到達}"
+   ],
+   "evidence_ids": [
+    "btd050",
+    "btd051",
+    "btd052",
+    "btd053",
+    "btd054",
+    "btd055"
+   ],
+   "before_count": 9,
+   "after_original_residual": 9
+  },
+  {
+   "id": "TS543-B33c",
+   "discovery_source": "BROAD_SCAN",
+   "original_term": "膨張形式",
+   "canonical_source_term": "dilation/mask format?",
+   "semantic_meaning": "編集条件1件",
+   "decision": "ESCALATE",
+   "final_reader_term": "膨張形式(維持)",
+   "rationale": "mask dilationか形式か原典未確認",
+   "section_occurrences": [
+    "L427"
+   ],
+   "section_context": [
+    "L402 \\subsection{指示追従学習と一段階動画編集：手続きの隠蔽と時間への拡張}"
+   ],
+   "evidence_ids": [
+    "btd044",
+    "btd045",
+    "btd046",
+    "btd047",
+    "btd048",
+    "btd049"
+   ],
+   "before_count": 1,
+   "after_original_residual": 1
+  },
+  {
+   "id": "TS543-B34",
+   "discovery_source": "BROAD_SCAN",
+   "original_term": "版バインド",
+   "canonical_source_term": "version binding",
+   "semantic_meaning": "lifecycle版束縛16件",
+   "decision": "RETAIN",
+   "final_reader_term": "版バインド",
+   "rationale": "版-family統一語彙; 16件churn回避; Sol判断に委ねる",
+   "section_occurrences": [
+    "L39",
+    "L1089",
+    "L1090",
+    "L1093",
+    "L1098",
+    "L1101",
+    "L1106",
+    "L1110",
+    "L1113",
+    "L1119",
+    "L1171"
+   ],
+   "section_context": [
+    "L1089 \\subsection{音声・対話：実時間利用と版バインドの機能集合}",
+    "L1092 \\subsection{音楽：制作手順としてのworkflow記録}",
+    "L1097 \\subsection{映像：joint化と短区間・長距離の分離}",
+    "L1100 \\subsection{lifecycle：提供終了・廃止・凍結の事実}",
+    "L1103 \\subsection{横断の読み方：capstoneを大きく見せない}",
+    "L1170 \\subsection{立場別の指針}",
+    "L38 \\subsection*{本巻の限界の要約}"
+   ],
+   "evidence_ids": [
+    "btd022",
+    "btd059",
+    "btd083",
+    "btd089",
+    "btd098",
+    "btd106"
+   ],
+   "before_count": 16,
+   "after_original_residual": 16
+  },
+  {
+   "id": "TS543-B35",
+   "discovery_source": "BROAD_SCAN",
+   "original_term": "検査点",
+   "canonical_source_term": "(version) checkpoint",
+   "semantic_meaning": "版検査点6件",
+   "decision": "RETAIN",
+   "final_reader_term": "検査点",
+   "rationale": "版と検査点の固定句; 版family統一",
+   "section_occurrences": [
+    "L703",
+    "L705",
+    "L775",
+    "L822",
+    "L824"
+   ],
+   "section_context": [
+    "L699 \\section{映像の系譜：時間的一貫性からメディア基盤へ}\\sectionkicker{VIDEO}\\label{sec:video}",
+    "L774 \\subsection{閉鎖頂点・開放混合専門家と編集基準測定：基盤への到達}",
+    "L821 \\subsection*{読解上の境界}"
+   ],
+   "evidence_ids": [
+    "btd070",
+    "btd071",
+    "btd073",
+    "btd074",
+    "btd075",
+    "btd077"
+   ],
+   "before_count": 6,
+   "after_original_residual": 6
+  },
+  {
+   "id": "TS543-B36",
+   "discovery_source": "BROAD_SCAN",
+   "original_term": "誘導(guidance)",
+   "canonical_source_term": "guidance/steering",
+   "semantic_meaning": "guidance 118件",
+   "decision": "RETAIN",
+   "final_reader_term": "誘導",
+   "rationale": "#539 K01凍結(ガイダンス8件)と役割分担; 版内 steering 語彙",
+   "section_occurrences": [
+    "L213",
+    "L215",
+    "L217",
+    "L218",
+    "L225",
+    "L228",
+    "L230",
+    "L239",
+    "L247",
+    "L249",
+    "L255",
+    "L257",
+    "L258",
+    "L260",
+    "L269",
+    "L285",
+    "L286",
+    "L288",
+    "L292",
+    "L293",
+    "L296",
+    "L330",
+    "L340",
+    "L359",
+    "L367",
+    "L369",
+    "L393",
+    "L403",
+    "L433",
+    "L580",
+    "L584",
+    "L697",
+    "L713",
+    "L715",
+    "L717",
+    "L727",
+    "L729",
+    "L732",
+    "L742",
+    "L759",
+    "L765",
+    "L766",
+    "L801",
+    "L804",
+    "L816",
+    "L819",
+    "L822",
+    "L898",
+    "L904",
+    "L926",
+    "L953",
+    "L971",
+    "L1053"
+   ],
+   "section_context": [
+    "L1052 \\subsection{来歴機構の頁限定と開かれた問い}",
+    "L212 \\subsection{雑音除去の転換：拡散と短縮抽出}",
+    "L217 \\subsection{条件誘導の分岐：分類器誘導と分類器なし誘導}",
+    "L220 \\subsection{連続時間への統一と潜在への移行}",
+    "L227 \\subsection{Transformer denoiserと流れ・整合性モデルへの分岐}",
+    "L238 \\subsection{本節の読解上の境界}",
+    "L241 \\section{条件づけとアライメント}",
+    "L252 \\subsection{凍結符号器による文条件づけ：対照事前学習の継承}",
+    "L257 \\subsection{推論時誘導への転換：分類器なし誘導と文誘導拡散}",
+    "L285 \\subsection{四区分の使い分け：条件と誘導と適合と参照}",
+    "L292 \\subsection{符号器規模と誘導尺度：報告された交換の整理}",
+    "L295 \\subsection{本節の読解上の境界}",
+    "L327 \\subsection{画像参照の分離注意：文能力を壊さない足し方}",
+    "L337 \\subsection{時間信号の分離制御：映像の動きと音楽の変化}",
+    "L355 \\section{生成から編集へ：保存を伴う改変の系譜}\\sectionkicker{EDITING}\\label{sec:editing}",
+    "L366 \\subsection{部分拡散とマスク合成：再学習なしの保存手続き}",
+    "L380 \\subsection{注意写像と最適化編集：内部表現を界面にする}",
+    "L402 \\subsection{指示追従学習と一段階動画編集：手続きの隠蔽と時間への拡張}",
+    "L432 \\subsection*{読解上の境界}",
+    "L579 \\subsection{一段階可制御符号音楽：多段階層の低速への応答}",
+    "L696 \\subsection*{読解上の境界}",
+    "L712 \\subsection{分解型拡散と多重超解像：時間整合の出発点}",
+    "L726 \\subsection{因子分解の設計差：二次元＋時間と時空間とTransformer}",
+    "L731 \\subsection{潜在と圧縮の軸：空間潜在と時間圧縮}",
+    "L752 \\subsection{動作接続器と厳選潜在動画：個人化の動作化と段階学習}",
+    "L800 \\subsection{短断片の壁と長域・同一性・同期の未確立領域}",
+    "L803 \\subsection{参照・条件づけ・編集と基準測定の配置}",
+    "L821 \\subsection*{読解上の境界}",
+    "L892 \\section{実行と配備：サンプリング・遅延・記憶・公開性}",
+    "L903 \\subsection{潜在整合蒸留と低負担のLoRA化}",
+    "L925 \\subsection{写実性を別系統の損失で補う敵対的蒸留}",
+    "L931 \\subsection{機材の天井を押さえる独立計測}",
+    "L970 \\subsection{人手選好を公開資産化する手順と母集団の天井}"
+   ],
+   "evidence_ids": [
+    "btd019",
+    "btd030",
+    "btd020",
+    "btd032",
+    "btd023",
+    "btd025"
+   ],
+   "before_count": 118,
+   "after_original_residual": 118
+  },
+  {
+   "id": "TS543-B37",
+   "discovery_source": "BROAD_SCAN",
+   "original_term": "符号器/復号器",
+   "canonical_source_term": "encoder/decoder",
+   "semantic_meaning": "符号器/復号器系",
+   "decision": "RETAIN",
+   "final_reader_term": "符号器/復号器",
+   "rationale": "#539 H凍結: genericは対象外; 凍結文符号器3件のみB27で正規化(112→109の差)",
+   "section_occurrences": [
+    "L108",
+    "L114",
+    "L116",
+    "L119",
+    "L121",
+    "L138",
+    "L143",
+    "L145",
+    "L148",
+    "L150",
+    "L155",
+    "L158",
+    "L168",
+    "L190",
+    "L195",
+    "L225",
+    "L239",
+    "L247",
+    "L249",
+    "L252",
+    "L253",
+    "L255",
+    "L268",
+    "L276",
+    "L278",
+    "L281",
+    "L283",
+    "L286",
+    "L288",
+    "L292",
+    "L293",
+    "L296",
+    "L306",
+    "L310",
+    "L312",
+    "L320",
+    "L321",
+    "L328",
+    "L343",
+    "L374",
+    "L378",
+    "L395",
+    "L427",
+    "L441",
+    "L447",
+    "L449",
+    "L497",
+    "L504",
+    "L563",
+    "L580",
+    "L582",
+    "L605",
+    "L743",
+    "L929",
+    "L1026",
+    "L1028",
+    "L1029"
+   ],
+   "section_context": [
+    "L100 \\section{表現と圧縮：生成可能にする短縮の歴史}",
+    "L1025 \\subsection{課題別頭部を持たない多課題統合の射程}",
+    "L1028 \\subsection{話し言葉と文章の往復を一つの復号器に畳む}",
+    "L113 \\subsection{連続潜在から離散符号へ：推論の償却化と量子化}",
+    "L118 \\subsection{階層と知覚：高解像度への二つの道}",
+    "L137 \\subsection{文と画像の単一列：大規模条件づけの前の短縮}",
+    "L142 \\subsection{音の残差量子化：低速度と遅延の両立}",
+    "L147 \\subsection{意味と音響の分離、映像の時空間短縮}",
+    "L152 \\subsection{三軸のまとめ：何を削り何を残したか}",
+    "L157 \\subsection{本節の読解上の境界}",
+    "L160 \\section{生成パラダイムと目的関数：自己回帰・敵対・拡散・フロー}",
+    "L189 \\subsection{敵対的生成の系譜：暗黙分布から様式分離へ}",
+    "L194 \\subsection{完全自己回帰：画素の同時分布を捉える}",
+    "L220 \\subsection{連続時間への統一と潜在への移行}",
+    "L238 \\subsection{本節の読解上の境界}",
+    "L241 \\section{条件づけとアライメント}",
+    "L252 \\subsection{凍結符号器による文条件づけ：対照事前学習の継承}",
+    "L257 \\subsection{推論時誘導への転換：分類器なし誘導と文誘導拡散}",
+    "L275 \\subsection{段階専門家への分岐：共有 denoiser の分割}",
+    "L280 \\subsection{音響の言語整合と空間制御の適合}",
+    "L285 \\subsection{四区分の使い分け：条件と誘導と適合と参照}",
+    "L292 \\subsection{符号器規模と誘導尺度：報告された交換の整理}",
+    "L295 \\subsection{本節の読解上の境界}",
+    "L298 \\section{制御と参照：空間・参照・主体性の保存}",
+    "L309 \\subsection{配置の前史と軽量適合：洗い流さない工夫}",
+    "L327 \\subsection{画像参照の分離注意：文能力を壊さない足し方}",
+    "L342 \\subsection{適合器の系譜：凍結本体に触れず足す}",
+    "L373 \\subsection{潜在局所合成：前景と背景の分離}",
+    "L380 \\subsection{注意写像と最適化編集：内部表現を界面にする}",
+    "L402 \\subsection{指示追従学習と一段階動画編集：手続きの隠蔽と時間への拡張}",
+    "L435 \\section{音声・声の系譜：波形からEnd-to-End、ニューラルコーデック言語モデル、全二重へ}\\sectionkicker{SPEECH}\\la",
+    "L446 \\subsection{波形自己回帰と系列変換：素片結合なしの出発点}",
+    "L496 \\subsection{ゼロショット話者複製とニューラルコーデック言語モデル：未知話者への拡張}",
+    "L503 \\subsection{ニューラルコーデック言語モデルの生成方式とゼロショットの条件づけ}",
+    "L555 \\section{音楽・一般音響の系譜：コーデック言語モデルと潜在拡散}\\sectionkicker{MUSIC}\\label{sec:music}",
+    "L579 \\subsection{一段階可制御符号音楽：多段階層の低速への応答}",
+    "L588 \\subsection{波形拡散と潜在拡散：局所忠実度と一般音響化の二系統}",
+    "L731 \\subsection{潜在と圧縮の軸：空間潜在と時間圧縮}",
+    "L928 \\subsection{構造自体を圧縮する携帯級の再設計}"
+   ],
+   "evidence_ids": [
+    "btd006",
+    "btd008",
+    "btd009",
+    "btd010",
+    "btd001",
+    "btd002"
+   ],
+   "before_count": 112,
+   "after_original_residual": 109
+  },
+  {
+   "id": "TS543-B38",
+   "discovery_source": "BROAD_SCAN",
+   "original_term": "上位サンプリング",
+   "canonical_source_term": "upsampling",
+   "semantic_meaning": "upsample 1件",
+   "decision": "REPLACE",
+   "final_reader_term": "アップサンプリング",
+   "rationale": "上位/下位hierarchy自体は対象外",
+   "section_occurrences": [
+    "L580"
+   ],
+   "section_context": [
+    "L579 \\subsection{一段階可制御符号音楽：多段階層の低速への応答}"
+   ],
+   "evidence_ids": [
+    "btd066"
+   ],
+   "before_count": 1,
+   "after_original_residual": 0
+  }
+ ]
+}
