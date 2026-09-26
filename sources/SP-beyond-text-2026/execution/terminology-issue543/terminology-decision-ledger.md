@@ -729,3 +729,306 @@ Scope: reader-facing terminology only. Blind global replace prohibited; semantic
 - occurrences: L835,L838,L1053,L1054
 - sections: evaluation/capstone/lifecycle/synthesis
 - before: 4 / residual: 4
+
+
+# r2 supplement — Sol authoritative map application (Human r8 authority)
+
+r2 rows: 51 with provenance SOL_AUTHORITATIVE_R2.
+## Summary (all rows)
+- BROAD_SCAN / ESCALATE: 2
+- BROAD_SCAN / REPLACE: 34
+- BROAD_SCAN / RETAIN: 9
+- ISSUE_SEED / ESCALATE: 2
+- ISSUE_SEED / REPLACE: 39
+- ISSUE_SEED / RETAIN: 4
+- SOL_MAP_R2 / REPLACE: 51
+- r1 ESCALATE resolutions: S39c partial (L1090→Naturalness MOS; L1108→C-001), S40c (SOL-R-002/CIT-001), B14 (SOL-P-001), B33c (SOL-E-001).
+- Unresolved: muse-candidates-for-sol-review-r2.md (C-001…C-011).
+
+### TS543-R2-CIT001 [SOL-CIT-001] — 均衡ある全帯域抽出+btd007 binding → EnCodec境界+btd007 / DAC Balanced data sampling（均衡データサンプリング）+btd008 [REPLACE]
+- canonical: Balanced data sampling | meaning: EnCodec/DAC split passage
+- rationale: sole authorized citation change; autocite 1259→1260 (+1 btd008), keys stay 139
+- occurrences: L158 | before: 1 / residual: 0
+- evidence: btd006, btd008, btd001, btd004, btd002, btd007
+
+### TS543-R2-G001 [SOL-G-001] — 標本(generated) → サンプル/生成例 [REPLACE]
+- canonical: sample | meaning: 生成標本19件
+- rationale: statistical 19 + L233 CAND + 一括要点 variant untouched
+- occurrences: L33,L69,L168,L190,L213,L283,L304,L340,L347,L348… | before: 19 / residual: 0
+- evidence: btd013, btd014, btd015, btd016, btd017, btd018
+
+### TS543-R2-G002 [SOL-G-002] — 消費者用図形処理装置/図形処理装置 → 民生GPU/GPU [REPLACE]
+- canonical: consumer GPU/GPU | meaning: HW 3件
+- rationale: 中央処理装置は既に0
+- occurrences: L148,L197,L239 | before: 4 / residual: 0
+- evidence: btd009, btd010, btd012, btd017, btd018, btd013
+
+### TS543-R2-G003 [SOL-G-003] — 検査点/基準測定/多回合 → チェックポイント/ベンチマーク評価/マルチターン [REPLACE]
+- canonical: checkpoint/benchmark/multi-turn | meaning: V-007/C-002系
+- rationale: 通貨拘束→0; 版バインドはSol retain
+- occurrences: L33,L703,L705,L707,L774,L775,L779,L803,L804,L822… | before: 17 / residual: 0
+- evidence: btd070, btd071, btd073, btd074, btd075, btd077
+
+### TS543-R2-F001 [SOL-F-001] — raw系列 → 生の系列 [REPLACE]
+- canonical: raw sequence | meaning: 1件
+- rationale: L1160
+- occurrences: L1160 | before: 1 / residual: 0
+- evidence: btd002, btd023, btd032, btd039, btd049
+
+### TS543-R2-F002 [SOL-F-002] — adapter → アダプター [REPLACE]
+- canonical: adapter | meaning: bare English 1件
+- rationale: L1160; bib対象外
+- occurrences: L1160 | before: 1 / residual: 0
+- evidence: btd002, btd023, btd032, btd039, btd049
+
+### TS543-R2-F003 [SOL-F-003] — 集合(dataset) → データセット [REPLACE]
+- canonical: dataset | meaning: 34件
+- rationale: 数学集合6+候補10は不変
+- occurrences: L720,L724,L838,L861,L901,L926,L929,L965,L992,L1014… | before: 31 / residual: 0
+- evidence: btd073, btd129, btd130, btd078, btd081, btd082
+
+### TS543-R2-F004 [SOL-F-004] — 生徒 → student model（生徒モデル）/生徒モデル [REPLACE]
+- canonical: student model | meaning: 蒸留student 3件
+- rationale: 文脈別初出
+- occurrences: L901,L926 | before: 3 / residual: 0
+- evidence: btd078, btd081
+
+### TS543-R2-P001 [SOL-P-001] — 濾波崩壊 → 一部フィルタの単一振動モードへの崩壊 [REPLACE]
+- canonical: filter collapse (DCGAN) | meaning: 2件
+- rationale: generic mode collapseにせず
+- occurrences: L190,L239 | before: 2 / residual: 0
+- evidence: btd013, btd014, btd015, btd016, btd019, btd020
+
+### TS543-R2-P002 [SOL-P-002] — 予測子修正子/修正子 → predictor-corrector（予測子・修正子）/corrector（修正子） [REPLACE]
+- canonical: predictor-corrector | meaning: btd021 4件
+- rationale: 同文脈のみ
+- occurrences: L221,L239 | before: 5 / residual: 4
+- evidence: btd021, btd013, btd014, btd015, btd016, btd019
+
+### TS543-R2-P003 [SOL-P-003] — 規模則 → スケーリング則 [REPLACE]
+- canonical: scaling law | meaning: DiT 2件
+- occurrences: L228,L239 | before: 2 / residual: 0
+- evidence: btd025, btd026, btd013, btd014, btd015, btd016
+
+### TS543-R2-P004 [SOL-P-004] — 再流 → reflow（再フロー） [REPLACE]
+- canonical: reflow | meaning: Rectified Flow 10件
+- occurrences: L230,L233,L239 | before: 10 / residual: 0
+- evidence: btd027, btd028, btd029, btd025, btd026, btd013
+
+### TS543-R2-P005 [SOL-P-005] — 一致性 → 整合性 [REPLACE]
+- canonical: Consistency | meaning: family 1件
+- rationale: front-matter
+- occurrences: L63 | before: 1 / residual: 0
+
+### TS543-R2-P006 [SOL-P-006] — 単一網/級上げ器/級上げ → 単一ネットワーク/アップサンプラー/アップサンプリング [REPLACE]
+- canonical: network/upsampler | meaning: ML network/upsampler 4件
+- occurrences: L218,L239,L258 | before: 4 / residual: 0
+- evidence: btd030, btd032, btd023, btd025, btd013, btd014
+
+### TS543-R2-P007 [SOL-P-007] — 問い合わせ行列 → クエリ射影行列（W^Q） [REPLACE]
+- canonical: query projection matrix | meaning: TAV 1件
+- rationale: btd050
+- occurrences: L407 | before: 1 / residual: 0
+- evidence: btd050
+
+### TS543-R2-R001 [SOL-R-001] — 分類得点 → Classification Accuracy Score（CAS） [REPLACE]
+- canonical: CAS | meaning: btd003 1件
+- rationale: r1 ESCALATE解消
+- occurrences: L158 | before: 1 / residual: 0
+- evidence: btd006, btd008, btd001, btd004, btd002, btd007
+
+### TS543-R2-R003 [SOL-R-003] — 長い結構/鍵盤継続 → 長期構造/ピアノ継続 [REPLACE]
+- canonical: long-term structure/piano continuation | meaning: btd009 2件
+- rationale: ['長い結構', '鍵盤継続']
+- occurrences:  | before: 0 / residual: 0
+
+### TS543-R2-R004 [SOL-R-004] — 多峰入出力 → マルチモーダル入出力 [REPLACE]
+- canonical: multimodal I/O | meaning: 1件
+- rationale: ['多峰入出力']
+- occurrences:  | before: 0 / residual: 0
+
+### TS543-R2-S001 [SOL-S-001] — 位置鋭敏注意/近似波形合成/三膨張循環/十要素混合 → location-sensitive attention/Griffin-Lim/dilation cycle/logistic mixture [REPLACE]
+- canonical: Tacotron canonicals | meaning: 7件
+- occurrences: L447,L449,L451,L467,L487 | before: 7 / residual: 0
+- evidence: btd051, btd052, btd053, btd054
+
+### TS543-R2-S002 [SOL-S-002] — 系列網 → LSTM-RNNパラメトリック音声合成 [REPLACE]
+- canonical: WaveNet RNN baseline | meaning: 1件
+- rationale: 他文脈なし
+- occurrences: L447 | before: 1 / residual: 0
+- evidence: btd051, btd052, btd053
+
+### TS543-R2-S003 [SOL-S-003] — 群化符号/群化 → Grouped Code Modeling（グループ化コードモデリング） [REPLACE]
+- canonical: Grouped Code Modeling | meaning: VALL-E2 7件
+- rationale: 群化後継2件は候補
+- occurrences: L443,L499,L535,L547 | before: 12 / residual: 2
+- evidence: btd059, btd134
+
+### TS543-R2-S004 [SOL-S-004] — 多能高忠実モデル → Seed-TTS（多用途・高品質音声生成モデル） [REPLACE]
+- canonical: Seed-TTS | meaning: 4件
+- rationale: 初出gloss+略称
+- occurrences: L441,L521,L523,L544 | before: 4 / residual: 0
+- evidence: btd051, btd052, btd053, btd054, btd055, btd056
+
+### TS543-R2-S005 [SOL-S-005] — 自然さ得点(btd110) → Naturalness MOS（自然さMOS） [REPLACE]
+- canonical: Naturalness MOS | meaning: 1件
+- rationale: L1108は文脈外で候補C-001
+- occurrences: L1090 | before: 1 / residual: 0
+- evidence: btd107, btd108, btd109, btd110
+
+### TS543-R2-M001 [SOL-M-001] — 音楽 caps/音響 caps → MusicCaps/AudioCaps [REPLACE]
+- canonical: MusicCaps/AudioCaps | meaning: 13件
+- rationale: 既存英語は維持
+- occurrences: L561,L563,L569,L580,L589,L604,L607,L613,L685,L688 | before: 13 / residual: 0
+- evidence: btd136, btd063, btd065, btd066, btd067, btd068
+
+### TS543-R2-M002 [SOL-M-002] — 距離/乖離/整合(btd065) → FAD/KLD/MCC [REPLACE]
+- canonical: FAD/KLD/MCC | meaning: 10 labels/16 numbers
+- rationale: btd065数値のみ; 他は候補C-003
+- occurrences: L569,L573,L604,L662 | before: 10 / residual: 0
+- evidence: btd063, btd065, btd066, btd068, btd067
+
+### TS543-R2-M003 [SOL-M-003] — 距離/乖離/整合/全体/関係性(btd066) → FAD/KLD/CLAP score/OVL/REL [REPLACE]
+- canonical: FAD/KLD/CLAP/OVL/REL | meaning: pure btd066のみ
+- rationale: 混合引用は候補
+- occurrences: L580,L586,L605,L685 | before: 8 / residual: 1
+- evidence: btd066, btd069, btd067, btd068, btd065, btd063
+
+### TS543-R2-M004 [SOL-M-004] — 23.31/65.91(btd067) → FD $23.31$/OVL $65.91$ [REPLACE]
+- canonical: FD/OVL | meaning: 3件
+- rationale: 他数値は候補
+- occurrences: L589,L607,L660,L685 | before: 6 / residual: 3
+- evidence: btd064, btd067, btd063, btd068, btd065, btd136
+
+### TS543-R2-M005 [SOL-M-005] — 開放距離78.24(btd068) → FD_openl3 $78.24$ [REPLACE]
+- canonical: FD_openl3 | meaning: 1件
+- rationale: 他数値は候補
+- occurrences: L613,L660,L685 | before: 3 / residual: 2
+- evidence: btd068, btd069, btd063, btd064, btd067, btd065
+
+### TS543-R2-M006 [SOL-M-006] — 帯域収束(btd063 metric) → spectral convergence（スペクトル収束） [REPLACE]
+- canonical: spectral convergence | meaning: 3件
+- rationale: L577 genericは維持
+- occurrences: L569,L577,L603,L660 | before: 4 / residual: 1
+- evidence: btd063, btd065, btd064, btd067, btd068, btd136
+
+### TS543-R2-M007 [SOL-M-007] — 節/副歌(music) → ヴァース/コーラス [REPLACE]
+- canonical: verse/chorus | meaning: 26件
+- rationale: 132節は非音楽で維持
+- occurrences: L569,L571,L573,L575,L603,L630,L651,L653,L655,L691… | before: 28 / residual: 0
+- evidence: btd063, btd065, btd066, btd068, btd069, btd136
+
+### TS543-R2-M008 [SOL-M-008] — 流派/刈込/続成 → ジャンル/トリミング/continuation（継続生成） [REPLACE]
+- canonical: genre/trim/continuation | meaning: 5件
+- rationale: ['流派・気分', '刈込', '続成']
+- occurrences:  | before: 0 / residual: 0
+
+### TS543-R2-M009 [SOL-M-009] — 人文系 → 人間によるside-by-side評価/人間評価・自動評価/ベンダーによる人間評価への言及 [REPLACE]
+- canonical: human eval wording | meaning: 4件
+- rationale: ['人文横並べ', '人文・自動評価', 'ベンダー人文言及']
+- occurrences:  | before: 0 / residual: 0
+
+### TS543-R2-V001 [SOL-V-001] — 外観凍結/網データ/長多場面 → 外観と運動の分離学習/Webデータ/長尺・マルチシーン [REPLACE]
+- canonical: separation/Web/マルチシーン | meaning: 11件
+- rationale: L719表題は逐語適用で冗長化(ledger注記)
+- occurrences: L719,L722,L724,L744,L767,L807,L819,L822 | before: 11 / residual: 0
+- evidence: btd073, btd074, btd075, btd070, btd071, btd124
+
+### TS543-R2-V002 [SOL-V-002] — 動作接続器/運動LoRA/領域接続器/平滑/深度clause → Motion Module/Motion LoRA/Domain Adapter/motion smoothness/定性clause [REPLACE]
+- canonical: AnimateDiff canonicals | meaning: 26件
+- rationale: 平滑化は数学用法で候補
+- occurrences: L233,L239,L376,L395,L433,L703,L705,L727,L732,L752… | before: 30 / residual: 6
+- evidence: btd027, btd028, btd013, btd014, btd015, btd016
+
+### TS543-R2-V003 [SOL-V-003] — 厳選潜在動画/LVD/人間序列 → SVD/LVD-10M-F/人間選好評価 [REPLACE]
+- canonical: SVD/LVD-F/選好 | meaning: 14件
+- rationale: 変異形は候補
+- occurrences: L703,L705,L722,L727,L732,L752,L753,L759,L768,L807 | before: 13 / residual: 0
+- evidence: btd070, btd071, btd073, btd074, btd075, btd077
+
+### TS543-R2-V004 [SOL-V-004] — 動作接続器と厳選潜在動画表題 → AnimateDiffのMotion ModuleとStable Video Diffusion表題 [REPLACE]
+- canonical: heading | meaning: 1件
+- rationale: ['動作接続器と厳選潜在動画：']
+- occurrences:  | before: 0 / residual: 0
+
+### TS543-R2-V005 [SOL-V-005] — 閉鎖頂点 → 非公開モデル(表題はMoE+ベンチマーク形) [REPLACE]
+- canonical: non-public models | meaning: 12件
+- occurrences: L703,L705,L707,L708,L774,L775,L783,L810,L819,L822 | before: 12 / residual: 0
+- evidence: btd070, btd071, btd073, btd074, btd075, btd077
+
+### TS543-R2-V006 [SOL-V-006] — 開放混合専門家 → 開放重みのMixture-of-Experts（MoE）/開放重みMoE [REPLACE]
+- canonical: MoE | meaning: 3件
+- rationale: の-variantは候補
+- occurrences: L703,L755,L774 | before: 3 / residual: 0
+- evidence: btd070, btd071, btd073, btd074, btd075, btd077
+
+### TS543-R2-V007 [SOL-V-007] — 基準測定/検査点/通貨拘束 → ベンチマーク評価/チェックポイント/固定句 [REPLACE]
+- canonical: benchmark/checkpoint | meaning: 17件
+- rationale: 通貨拘束→0
+- occurrences: L703,L705,L707,L774,L775,L779,L803,L804,L822,L824 | before: 17 / residual: 0
+- evidence: btd070, btd071, btd073, btd074, btd075, btd077
+
+### TS543-R2-V008 [SOL-V-008] — 開放線2.2凍結4文 → Wan2.2確認境界文 [REPLACE]
+- canonical: Wan2.2 boundary | meaning: 4件
+- rationale: L39/L688別義は維持
+- occurrences: L705,L734,L775,L822 | before: 4 / residual: 0
+- evidence: btd070, btd071, btd073, btd075, btd074, btd077
+
+### TS543-R2-V009 [SOL-V-009] — 単一良標本/低速高記憶/乱雑音/要点一括標本 → 生成例/低速高メモリ/ランダムノイズ/高品質動画のサンプリング [REPLACE]
+- canonical: sampling wording | meaning: 22件
+- rationale: ['単一良標本', '低速高記憶サンプリング', '乱雑音', '要点一括標本']
+- occurrences:  | before: 0 / residual: 0
+
+### TS543-R2-V010 [SOL-V-010] — 鋳造 → メディア基盤モデル群 [REPLACE]
+- canonical: media foundation models | meaning: 1件
+- rationale: abstract権威内
+- occurrences: L1098 | before: 1 / residual: 0
+- evidence: btd076, btd117, btd118, btd119
+
+### TS543-R2-V011 [SOL-V-011] — 単走/多回合延長 → single pass（1回の生成）/multi-round extension（複数回の延長） [REPLACE]
+- canonical: single pass/multi-round | meaning: 4件
+- rationale: ['単走', '多回合延長']
+- occurrences:  | before: 0 / residual: 0
+
+### TS543-R2-V012 [SOL-V-012] — 首尾frame/外側描画 → 開始・終了フレーム/outpainting（アウトペインティング） [REPLACE]
+- canonical: start-end frames/outpainting | meaning: 4件
+- rationale: ['首尾frame', '外側描画']
+- occurrences:  | before: 0 / residual: 0
+
+### TS543-R2-C001 [SOL-C-001] — 並列道具 → 並列ツール呼び出し [REPLACE]
+- canonical: parallel tool calls | meaning: 1件
+- rationale: ['並列道具']
+- occurrences:  | before: 0 / residual: 0
+
+### TS543-R2-C002 [SOL-C-002] — 多回合振る舞い → マルチターン挙動 [REPLACE]
+- canonical: multi-turn | meaning: 1件
+- rationale: 延長2件はV-011
+- occurrences: L33 | before: 1 / residual: 0
+
+### TS543-R2-C003 [SOL-C-003] — 磁碟/局所実行/bench → ディスク/ローカル実行/ベンチマーク [REPLACE]
+- canonical: disk/local/benchmark | meaning: 9件
+- rationale: 英語benchmark3件は維持
+- occurrences: L705,L777,L1093,L1098,L1108,L1130,L1132,L1135,L1143 | before: 12 / residual: 3
+- evidence: btd070, btd071, btd073, btd075, btd074, btd077
+
+### TS543-R2-C004 [SOL-C-004] — 流派(Lyria)/音声言語流派音響 → ジャンル/ジャンル・ムード・楽器・歌声などの制御 [REPLACE]
+- canonical: genre | meaning: 3件
+- rationale: ['流派', '音声言語流派音響']
+- occurrences:  | before: 0 / residual: 0
+
+### TS543-R2-C005 [SOL-C-005] — 包絡(capability) → 対応範囲 [REPLACE]
+- canonical: envelope | meaning: 3件
+- rationale: 数理包絡なし
+- occurrences: L708,L740,L1110 | before: 3 / residual: 0
+- evidence: btd070, btd071, btd075, btd124, btd073, btd074
+
+### TS543-R2-C006 [SOL-C-006] — 多shot → マルチショット [REPLACE]
+- canonical: multi-shot | meaning: 1件
+- rationale: ['多shot']
+- occurrences:  | before: 0 / residual: 0
+
+### TS543-R2-E001 [SOL-E-001] — 膨張形式 → 擬似3D畳み込みへのnetwork inflation（3×3→1×3×3） [REPLACE]
+- canonical: network inflation | meaning: 1件
+- rationale: r1 ESCALATE解消
+- occurrences: L427 | before: 1 / residual: 0
+- evidence: btd044, btd045, btd046, btd047, btd048, btd049
