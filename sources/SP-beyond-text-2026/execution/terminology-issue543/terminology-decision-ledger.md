@@ -1,15 +1,15 @@
 # Terminology decision ledger — TS-002 Issue #543 (final broad normalization)
 
-Canonical: `terminology-decision-ledger.json` (88 rows, generated; this MD is a synced view).
+Canonical: `terminology-decision-ledger.json` (90 rows, generated; this MD is a synced view).
 Scope: reader-facing terminology only. Blind global replace prohibited; semantic-risk terms verified by primary/Evidence read-back.
 
 ## Summary
 - ISSUE_SEED decisions: 45
-- BROAD_SCAN added candidates: 43
-- REPLACE rows: 72
-- RETAIN rows: 12
+- BROAD_SCAN added candidates: 45
+- REPLACE rows: 73
+- RETAIN rows: 13
 - ESCALATE rows: 4
-- Unresolved terms (ESCALATE, text unchanged, returned to Sol): 分類得点 L158 (btd003 IS/精度曖昧); 自然さ得点 L1090/L1108 (vendor MOS束縛未確認); 全帯域抽出 L158 (btd007 sampling/extraction区別に本文要確認); 濾波崩壊×2 (canonical未確定); 膨張形式×1 (mask/format未確定).
+- Unresolved terms (ESCALATE, text unchanged, returned to Sol): 分類得点 L158; 自然さ得点 L1090/L1108; 全帯域抽出 L158; 濾波崩壊×2; 膨張形式×1.
 
 ## Decisions
 ### TS543-S01 [ISSUE_SEED] — 端末間統合 → End-to-End（エンドツーエンド）統合/End-to-End [REPLACE]
@@ -715,5 +715,17 @@ Scope: reader-facing terminology only. Blind global replace prohibited; semantic
 - evidence: btd066
 - before: 1 / residual: 0
 
-## Frozen regression: #533 (17 terms) + #539 (模型/模型票/U網/波形網/得点網/枠間/民生画像処理装置/文章符号器/交叉注意/交差注意) all remain 0.
-## Invariants: autocite 1259 identical; keys 139 identical; labels identical; PARTIAL 12; bib byte-identical. Section titles updated by terminology only (order/count 116 unchanged). Acronym introductions (FID/IS/MOS/SNR) are intended normalizations. Numeric +128 one (百二十八→128, value-preserved).
+### TS543-B39 [BROAD_SCAN] — 姿勢(pose) → ポーズ [REPLACE]
+- canonical: pose | meaning: motion pose 9件
+- rationale: 姿勢注釈/注入/軌跡/誤差のpose用法; stance 4件はB39b
+- occurrences: L338,L342
+- sections: motion control
+- evidence: btd042, btd124
+- before: 9 / residual: 0
+
+### TS543-B39b [BROAD_SCAN] — 姿勢(stance) → 姿勢 [RETAIN]
+- canonical: stance/attitude | meaning: 編集姿勢4件
+- rationale: 一般語の姿勢(態度)として正しい
+- occurrences: L835,L838,L1053,L1054
+- sections: evaluation/capstone/lifecycle/synthesis
+- before: 4 / residual: 4
