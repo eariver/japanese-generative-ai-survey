@@ -1,0 +1,61 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-beyond-text-2026",
+  "from_state": "FROZEN",
+  "to_state": "RELEASED",
+  "checkpoints": [
+    "release"
+  ],
+  "recorded_at": "2026-09-27T16:41:47Z",
+  "implementation": {
+    "repository_commit_sha": "4a54f07755984c1f7f56830b43fe24cfafd628a6",
+    "orchestrator_version": "survey-production-core-v2/0.15-postintegration-transport-thematic"
+  },
+  "contract": {
+    "pipeline_contract_version": "2.0-rc1",
+    "pipeline_contract_sha256": "ee89796245c22072cec98f34931180214a4928c24f399280793cd6420a4c8e71",
+    "quality_contract_version": "2.0-rc1",
+    "quality_contract_sha256": "b5b955d524fb438c0f1b2c9490bea1da2083e79028d67a55ca424bbfc20f2958",
+    "research_profile_version": "2.0-rc1",
+    "research_profile_sha256": "0f575e6d97caec72b2bf8b7f6b78a562d97ca67b2071193417b968ba3d73e6e8",
+    "publication_profile_version": "2.0-rc1",
+    "publication_profile_sha256": "a6859559dd1b9d42ab8fb4402b74b7bdd8611dbe65c8e02a7b022b545c20f4eb"
+  },
+  "artifacts": [
+    {
+      "name": "merge-verification",
+      "path": "sources/SP-beyond-text-2026/publication/v2/merge-verification-v2.json",
+      "sha256": "6c2dc3d8fda43d67e5b2b51a8a217a7199811e7e7021ab61f5620ddabb90589e"
+    },
+    {
+      "name": "release-record",
+      "path": "sources/SP-beyond-text-2026/publication/v2/release-record-v2.json",
+      "sha256": "2bbd9f5eab070b10e7c36885e97f2fc18dfa87594e645eebafb5881d2914ebf7"
+    }
+  ],
+  "reviews": [
+    {
+      "check_id": "CORE_STAGE_CONTRACT",
+      "kind": "DETERMINISTIC",
+      "status": "PASS",
+      "executor": "survey-production-v2-release.yml",
+      "evidence": "Exact pre-transition Production State, Production Profile, Core contract identity, implementation identity, and stage release artifacts were verified before release adoption.",
+      "result": {
+        "path": "sources/SP-beyond-text-2026/publication/v2/core-stage-contract-v2.json",
+        "sha256": "cc7cac3787b33b213dcec426bed596f6506302f8f646161d026bada22edeff62"
+      }
+    },
+    {
+      "check_id": "RELEASE_EXACT_BYTE_RECONCILIATION",
+      "kind": "DETERMINISTIC",
+      "status": "PASS",
+      "executor": "survey-production-v2-release.yml",
+      "evidence": "Public issue-only Release identity, target and downloaded asset bytes were reconciled against the frozen Release Manifest before adoption.",
+      "result": {
+        "path": "sources/SP-beyond-text-2026/publication/v2/release-record-v2.json",
+        "sha256": "2bbd9f5eab070b10e7c36885e97f2fc18dfa87594e645eebafb5881d2914ebf7"
+      }
+    }
+  ],
+  "summary": "Exact frozen publication bytes were released or reconciled idempotently, CORE_STAGE_CONTRACT was verified, and the immutable Release Record was validated."
+}
