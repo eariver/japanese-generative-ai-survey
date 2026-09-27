@@ -1,0 +1,122 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-beyond-text-2026",
+  "evidence_task_id": "evidence:SP-beyond-text-2026:9bebb7872e77505e",
+  "basis": {
+    "task_sha256": "b99854314f0195d11640adf75d6d830ed6a5b6a71b824a4ef9d5acd5bbc5280c",
+    "screening_acceptance_sha256": "826833e88e851f69e5bd76a3d2558f0bb4a659aed49bf25e404e0cda1bf6be79",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "evr2-btd059",
+      "canonical_name": "VALL-E 2: Neural Codec Language Models are Human Parity Zero-Shot TTS (Chen et al.)",
+      "entity_type": "PAPER",
+      "organization": null,
+      "canonical_url": "https://arxiv.org/abs/2406.05370"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "evr2-btd059",
+    "artifact_type": "PAPER",
+    "canonical_name": "VALL-E 2: Neural Codec Language Models are Human Parity Zero-Shot TTS (Chen et al.)",
+    "canonical_url": "https://arxiv.org/abs/2406.05370"
+  },
+  "temporal": {
+    "observed_at": "2026-09-24T14:30:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2024-06",
+        "subject_id": "evr2-btd059",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2406.05370",
+      "source_class": "PRIMARY_PAPER",
+      "title": "VALL-E 2: Neural Codec Language Models are Human Parity Zero-Shot TTS (Chen et al.)",
+      "published_at": "2024-06",
+      "accessed_at": "2026-09-24T14:30:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "The consumed sections define VALL-E 2: grouped-code language modelling (group size 1/2/4/8 with autoregressive group embedding/prediction plus non-autoregressive remaining codes) with repetition-aware sampling (nucleus sampling then random fallback on repetition-ratio threshold); parity defined as word-error-rate-reduction / CMOS / SMOS deltas above ground truth on LibriSpeech/VCTK.",
+      "subject_id": "evr2-btd059",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Correct body §§1-4.1; title/authors verified."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Prior recorded locator 2406.05358 was a transcription defect; canonical Discovery provenance was rebound to 2406.05370 (partially consumed) during the 2026-09-24 provenance repair (see provenance-repair-manifest.json). Claims rest on the verified-correct body.",
+      "subject_id": "evr2-btd059",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "Exact parity margins, latency speedups, and hard-sentence stability numbers NOT established (result tables truncated); prompt length/quality/noise dependence; misuse/spoofing risk noted in-text.",
+      "subject_id": "evr2-btd059",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "UNRESOLVED",
+        "finding": "Full body not consumed: Correct body 2406.05370 consumed partially (Abstract, §§1-3, §4.1; §4.2-4.3 result tables truncated). Prior recorded locator 2406.05358 resolved to unrelated RL paper before the 2026-09-24 provenance repair.",
+        "subject_ids": [
+          "evr2-btd059"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "vendor-claim quarantine",
+        "status": "UNRESOLVED",
+        "finding": "Not established: body access PARTIAL (Correct body 2406.05370 consumed partially (Abstract, §§1-3, §4.1; §4.2-4.3 result tables truncated). Prior recorded locator 2406.05358 resolved to unrelated RL paper) before the 2026-09-24 provenance repair.",
+        "subject_ids": [
+          "evr2-btd059"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      "Evidence-stage full-body verification: Full body not consumed: Correct body 2406.05370 consumed partially (Abstract, §§1-3, §4.1; §4.2-4.3 result tables truncated). Prior recorded locator 2406.05358 resolved to unrelated RL paper before the 2026-09-24 provenance repair.",
+      "vendor-claim quarantine: Not established: body access PARTIAL (Correct body 2406.05370 consumed partially (Abstract, §§1-3, §4.1; §4.2-4.3 result tables truncated). Prior recorded locator 2406.05358 resolved to unrelated RL paper) before the 2026-09-24 provenance repair."
+    ],
+    "contradictions": []
+  }
+}

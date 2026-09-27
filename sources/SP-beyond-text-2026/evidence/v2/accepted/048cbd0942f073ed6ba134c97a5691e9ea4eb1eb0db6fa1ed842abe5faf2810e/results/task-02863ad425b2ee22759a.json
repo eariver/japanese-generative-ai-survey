@@ -1,0 +1,130 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-beyond-text-2026",
+  "evidence_task_id": "evidence:SP-beyond-text-2026:51f782caf75f7dd6",
+  "basis": {
+    "task_sha256": "830e360fe820aab818a789dba7cb73acf65f172b065956d26df163f8a68e68a0",
+    "screening_acceptance_sha256": "d8eaabe990ab3420e30bb852909afc684b1339ae9779dab0519c04dacd9ecc1a",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "evr2-btd061",
+      "canonical_name": "Seed-TTS: Versatile and High-Fidelity Speech Generation (ByteDance)",
+      "entity_type": "BENCHMARK",
+      "organization": "ByteDance",
+      "canonical_url": "https://arxiv.org/abs/2406.02430"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "evr2-btd061",
+    "artifact_type": "BENCHMARK",
+    "canonical_name": "Seed-TTS: Versatile and High-Fidelity Speech Generation (ByteDance)",
+    "canonical_url": "https://arxiv.org/abs/2406.02430"
+  },
+  "temporal": {
+    "observed_at": "2026-09-24T14:30:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2024-06",
+        "subject_id": "evr2-btd061",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2406.02430",
+      "source_class": "PRIMARY_PAPER",
+      "title": "Seed-TTS: Versatile and High-Fidelity Speech Generation (ByteDance)",
+      "published_at": "2024-06",
+      "accessed_at": "2026-09-24T14:30:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "The source defines Seed-TTS: autoregressive Transformer token language model (speech tokeniser to tokens to diffusion Transformer to vocoder) with instruction/supervised finetuning plus reinforcement post-training (REINFORCE on similarity/word-error/speaker-embedding objectives) plus self-distilled factorisation and a diffusion-Transformer non-autoregressive variant without phoneme-duration module; streaming via causal diffusion with consistency/flow-matching distillation.",
+      "subject_id": "evr2-btd061",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "§§2-3."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Reported numbers: in-context-learning objective English WER 2.249, similarity 0.762, CMOS −0.07 vs human (2.143/0.730); supervised finetune CMOS +0.37; reinforcement CMOS +0.14, hard-word-error 7.585 to 6.423; deployed latency 0.028x real-time-factor 0.132x with CMOS −0.02.",
+      "subject_id": "evr2-btd061",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "§4/conditions."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Hard-accent prompts weaker (15 s prompt insufficient); reward-hacking (slower/cleaner but less natural); vendor-authored evaluations.",
+      "subject_id": "evr2-btd061",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "Model/data scale details and independent reproduction not established.",
+      "subject_id": "evr2-btd061",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Source body consumed (arXiv abs + HTML 2406.02430: Abstract, §§1-4). No claim above rests on Discovery summary alone.",
+        "subject_ids": [
+          "evr2-btd061"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "vendor-claim quarantine",
+        "status": "VERIFIED",
+        "finding": "Consumed body claims attributed to vendor/author with stated configs; no undisclosed mechanism inferred; limits recorded.",
+        "subject_ids": [
+          "evr2-btd061"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

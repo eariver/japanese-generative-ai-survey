@@ -1,0 +1,119 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-beyond-text-2026",
+  "evidence_task_id": "evidence:SP-beyond-text-2026:a316dd740b530926",
+  "basis": {
+    "task_sha256": "46194d2c9ef78ea748d92617e638ee991406508ed75afc17e88ed3ad33cc9ed3",
+    "screening_acceptance_sha256": "826833e88e851f69e5bd76a3d2558f0bb4a659aed49bf25e404e0cda1bf6be79",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "evr2-btd070",
+      "canonical_name": "Video Diffusion Models (Ho et al.)",
+      "entity_type": "PAPER",
+      "organization": null,
+      "canonical_url": "https://arxiv.org/abs/2204.03458"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "evr2-btd070",
+    "artifact_type": "PAPER",
+    "canonical_name": "Video Diffusion Models (Ho et al.)",
+    "canonical_url": "https://arxiv.org/abs/2204.03458"
+  },
+  "temporal": {
+    "observed_at": "2026-09-24T14:30:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2022-04",
+        "subject_id": "evr2-btd070",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2204.03458",
+      "source_class": "PRIMARY_PAPER",
+      "title": "Video Diffusion Models (Ho et al.)",
+      "published_at": "2022-04",
+      "accessed_at": "2026-09-24T14:30:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "The source extends image diffusion to video with a factorized 3D U-Net (2D convolution 1x3x3 plus per-frame spatial attention plus temporal attention with relative positions; images run by masking temporal attention) and reconstruction guidance (gradient of masked-region error, weight wr) extended to spatial super-resolution and block-autoregressive extension.",
+      "subject_id": "evr2-btd070",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "§3."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Reported numbers: UCF-101 16x64x64 unconditional FID 295±3, IS 57±0.62 vs real 60.2; BAIR 1-to-15 frames FVD 68.19 ancestral (512 steps) / 66.92 Langevin (256 steps); Kinetics-600 5-to-11 frames FVD 18.6 ancestral / 16.2±0.34 Langevin; text-video joint training FVD 202.28/205.42 (0 images) to 57.84/60.72 (8 images); 64-frame extension FVD with reconstruction guidance 136.22/134.55 vs replacement 451.45/436.16.",
+      "subject_id": "evr2-btd070",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "§4/conditions."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Trains only 16-frame blocks at 64x64/128x128; long video only via autoregressive/temporal-SR guidance; models reflect dataset bias, not released.",
+      "subject_id": "evr2-btd070",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "Short-range motion fidelity shown; identity/object permanence beyond 64 frames, long-horizon story structure, AV sync, editing preservation not established.",
+      "subject_id": "evr2-btd070",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Source body consumed (arXiv abs + HTML 2204.03458: Abstract, §1-3 (factorized 3D U-Net, reconstruction guidance), §4.1-4.3 experiments, §6). No claim above rests on Discovery summary alone.",
+        "subject_ids": [
+          "evr2-btd070"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

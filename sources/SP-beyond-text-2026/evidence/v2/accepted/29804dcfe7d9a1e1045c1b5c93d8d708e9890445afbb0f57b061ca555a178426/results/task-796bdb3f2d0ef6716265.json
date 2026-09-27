@@ -1,0 +1,119 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-beyond-text-2026",
+  "evidence_task_id": "evidence:SP-beyond-text-2026:7f27c6de1127907d",
+  "basis": {
+    "task_sha256": "9034eaff489dc02a9ab9a0c48bc3a30011b2623c1162524cced341efd780891a",
+    "screening_acceptance_sha256": "826833e88e851f69e5bd76a3d2558f0bb4a659aed49bf25e404e0cda1bf6be79",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "evr2-btd028",
+      "canonical_name": "Flow Straight and Fast: Learning to Generate and Transfer Data with Rectified Flow (Liu et al.)",
+      "entity_type": "PAPER",
+      "organization": null,
+      "canonical_url": "https://arxiv.org/abs/2209.03003"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "evr2-btd028",
+    "artifact_type": "PAPER",
+    "canonical_name": "Flow Straight and Fast: Learning to Generate and Transfer Data with Rectified Flow (Liu et al.)",
+    "canonical_url": "https://arxiv.org/abs/2209.03003"
+  },
+  "temporal": {
+    "observed_at": "2026-09-24T14:30:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2022-09",
+        "subject_id": "evr2-btd028",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2209.03003",
+      "source_class": "PRIMARY_PAPER",
+      "title": "Flow Straight and Fast: Learning to Generate and Transfer Data with Rectified Flow (Liu et al.)",
+      "published_at": "2022-09",
+      "accessed_at": "2026-09-24T14:30:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "The source defines Rectified Flow: least-squares regression of neural velocity v_theta on linear-interpolation directions (X1-X0); rectification rewires couplings deterministically with identical marginals and non-increasing convex transport cost; reflow straightens further; one-step distillation only at the end; VP/VE nonlinear extensions recover PF-ODE/DDIM.",
+      "subject_id": "evr2-btd028",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "§2-3."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Reported numbers: CIFAR-10 one-step FID 4.85, recall 0.51 (claimed one-step SOTA); transport cost/straightness approach 0 with reflows at O(1/K); 1-rectified good at ≥2 steps, 2-rectified near-straight at 1 step.",
+      "subject_id": "evr2-btd028",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "§5 tables/conditions."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Exact theory needs exact velocity field + unique ODE; estimation error accumulates over many reflows (1 reflow recommended); density smoothing needed for ill-behaved fields.",
+      "subject_id": "evr2-btd028",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "Reflow cost vs LCM/consistency comparison and optimal-vs-straight coupling beyond 1D not established.",
+      "subject_id": "evr2-btd028",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Source body consumed (arXiv abs + HTML: Abstract, §1-5 (transport problem, rectification properties/theory, related, toy/uncond/translation/adaptation exps)). No claim above rests on Discovery summary alone.",
+        "subject_ids": [
+          "evr2-btd028"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-beyond-text-2026",
+  "from_state": "DISCOVERY_COLLECTED",
+  "to_state": "CANDIDATES_NORMALIZED",
+  "checkpoints": [
+    "screening"
+  ],
+  "recorded_at": "2026-09-24T16:37:18Z",
+  "implementation": {
+    "repository_commit_sha": "1e6679011bf33b0353bfae06cde8991415935abf",
+    "orchestrator_version": "survey-production-core-v2/0.15-postintegration-transport-thematic"
+  },
+  "contract": {
+    "pipeline_contract_version": "2.0-rc1",
+    "pipeline_contract_sha256": "ee89796245c22072cec98f34931180214a4928c24f399280793cd6420a4c8e71",
+    "quality_contract_version": "2.0-rc1",
+    "quality_contract_sha256": "b5b955d524fb438c0f1b2c9490bea1da2083e79028d67a55ca424bbfc20f2958",
+    "research_profile_version": "2.0-rc1",
+    "research_profile_sha256": "0f575e6d97caec72b2bf8b7f6b78a562d97ca67b2071193417b968ba3d73e6e8",
+    "publication_profile_version": "2.0-rc1",
+    "publication_profile_sha256": "a6859559dd1b9d42ab8fb4402b74b7bdd8611dbe65c8e02a7b022b545c20f4eb"
+  },
+  "artifacts": [
+    {
+      "name": "screening-acceptance",
+      "path": "sources/SP-beyond-text-2026/screening/v2/accepted/7d608d55a3f5498e97a9e44ce63e28328aefe3c0fe1470cffafc1a8cd91280e9/screening-accepted.json",
+      "sha256": "826833e88e851f69e5bd76a3d2558f0bb4a659aed49bf25e404e0cda1bf6be79"
+    }
+  ],
+  "reviews": [
+    {
+      "check_id": "CORE_STAGE_CONTRACT",
+      "kind": "DETERMINISTIC",
+      "status": "PASS",
+      "executor": "Survey Production Core v2 survey_stage_validation_v2.py",
+      "evidence": "Screening stage-contract validation passed against the replayed 139-decision acceptance (semantics unchanged: 134/3/2/0) over rebound Discovery basis. Machine validation only.",
+      "result": {
+        "path": "sources/SP-beyond-text-2026/execution/provenance-rebind-20260924/validation/screening-stage-validation-rebind.json",
+        "sha256": "9854e8b9dafb8a9af21b6998dcf842cc8299a11d0ae02e70600b40ac707da578"
+      }
+    }
+  ],
+  "summary": "Screening replayed over rebound Discovery (same 139 decisions 134/3/2/0); rebased to CANDIDATES_NORMALIZED for Evidence rebind. Evidence not yet rebuilt."
+}

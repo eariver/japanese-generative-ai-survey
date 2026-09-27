@@ -1,0 +1,130 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-beyond-text-2026",
+  "evidence_task_id": "evidence:SP-beyond-text-2026:26723d9e173e2673",
+  "basis": {
+    "task_sha256": "b1fb6d3cdc26bb7e73288fa5ba9f11af0a73ec0112900c7a35252390525f5e76",
+    "screening_acceptance_sha256": "d8eaabe990ab3420e30bb852909afc684b1339ae9779dab0519c04dacd9ecc1a",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "evr2-btd092",
+      "canonical_name": "VBench: Comprehensive Benchmark Suite for Video Generative Models (Huang et al.)",
+      "entity_type": "BENCHMARK",
+      "organization": null,
+      "canonical_url": "https://arxiv.org/abs/2311.17982"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "evr2-btd092",
+    "artifact_type": "BENCHMARK",
+    "canonical_name": "VBench: Comprehensive Benchmark Suite for Video Generative Models (Huang et al.)",
+    "canonical_url": "https://arxiv.org/abs/2311.17982"
+  },
+  "temporal": {
+    "observed_at": "2026-09-24T14:30:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2023-11",
+        "subject_id": "evr2-btd092",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2311.17982",
+      "source_class": "PRIMARY_PAPER",
+      "title": "VBench: Comprehensive Benchmark Suite for Video Generative Models (Huang et al.)",
+      "published_at": "2023-11",
+      "accessed_at": "2026-09-24T14:30:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "The source defines VBench: 16 disentangled dimensions (~100 prompts each) plus 8 content categories; video quality via DINO/CLIP cross-frame consistency, motion-adaptive flicker, interpolation-prior motion smoothness, RAFT dynamics, LAION aesthetics, MUSIQ imaging; condition consistency via GRiT (object/multi/colour/rule-based spatial), UMT action, Tag2Text scene, CLIP/ViCLIP style; pairwise human win-ratio alignment check per dimension.",
+      "subject_id": "evr2-btd092",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "§§2-3."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Reported numbers: 4-model table (subject consistency 86-92%, spatial 18-37%, dynamic degree 42-90%); empirical min/max plus WebVid-average baselines included.",
+      "subject_id": "evr2-btd092",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "§4 Table 1/conditions."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Pipelines inherit backbone biases; static videos can cheat consistency dimensions; text-to-video trails text-to-image (especially SDXL) on multi-object/spatial compositionality.",
+      "subject_id": "evr2-btd092",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "Cross-dimension weighting not established (no single score by design).",
+      "subject_id": "evr2-btd092",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Source body consumed (arXiv abs + HTML: Abstract, §§1-5 plus Table 1 (supplement G-M method details partially consumed)). No claim above rests on Discovery summary alone.",
+        "subject_ids": [
+          "evr2-btd092"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "metric-validity context binding",
+        "status": "VERIFIED",
+        "finding": "Hardware/version/condition/methodology binding recorded from consumed body sections for downstream reuse.",
+        "subject_ids": [
+          "evr2-btd092"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

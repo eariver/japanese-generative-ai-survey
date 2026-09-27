@@ -1,0 +1,130 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-beyond-text-2026",
+  "evidence_task_id": "evidence:SP-beyond-text-2026:e7504748f57444e1",
+  "basis": {
+    "task_sha256": "706232a160b121a87d8353528c60996b136b0a8356afc8d645d6d8eac3efae06",
+    "screening_acceptance_sha256": "d8eaabe990ab3420e30bb852909afc684b1339ae9779dab0519c04dacd9ecc1a",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "evr2-btd068",
+      "canonical_name": "Stable Audio Open (Evans et al.)",
+      "entity_type": "PAPER",
+      "organization": null,
+      "canonical_url": "https://arxiv.org/abs/2402.10046"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "evr2-btd068",
+    "artifact_type": "PAPER",
+    "canonical_name": "Stable Audio Open (Evans et al.)",
+    "canonical_url": "https://arxiv.org/abs/2402.10046"
+  },
+  "temporal": {
+    "observed_at": "2026-09-24T14:30:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2024-02",
+        "subject_id": "evr2-btd068",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2402.10046",
+      "source_class": "PRIMARY_PAPER",
+      "title": "Stable Audio Open (Evans et al.)",
+      "published_at": "2024-02",
+      "accessed_at": "2026-09-24T14:30:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "The source defines Stable Audio Open: variational autoencoder (5 convolutional blocks, dilated ResNet + Snake, 64-dim continuous latent at 21.5 Hz, 156M) plus T5-base text encoder (109M, not CLAP) plus diffusion-Transformer (1057M, rotary-half positions, prepended timing+timestep, cross-attention timing+text) generating up to 47 s variable-length by silence-fill plus trim; trained on 486,492 Creative-Commons clips (7330 h) with random metadata-concat prompts; DPM-Solver++ 100 steps, guidance 7.0.",
+      "subject_id": "evr2-btd068",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Correct body §§2-4; title/authors verified."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Reported numbers: AudioCaps FD-openl3 78.24 vs SA-1.0 103.66 vs AudioLDM2-48k 101.11, KL 2.14, CLAP-score 0.29; SongDescriber-instrumental FD 96.51 vs MusicGen-stereo 190.47, KL 0.55, CLAP 0.41; autoencoder SI-SDR −0.93 sounds / 6.28 music; speed 8 steps/s RTX3090 (11 A6000, 20 H100), diffusion-Transformer 5.9 GB / decode 14.5 GB; memorisation audit: 3693+856 repeats found, top candidates listened, none found.",
+      "subject_id": "evr2-btd068",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Correct body §5/conditions."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Recorded locator 2402.10046 is a transcription defect; claims rest on verified-correct 2407.14358. Future Discovery repair should correct the locator.",
+      "subject_id": "evr2-btd068",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "Creative-Commons data limits music quality vs closed models; fails connectors and intelligible speech/singing; English-only.",
+      "subject_id": "evr2-btd068",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Source body consumed (Correct body 2407.14358v2 consumed (Abstract, §1-2 arch, §3 CC data, §4 training, §5 Tables 1-4 + memorisation + speed, §6.1 limits). Recorded locator 2402.10046 resolves to unrelated ECE-calibration paper.). No claim above rests on Discovery summary alone.",
+        "subject_ids": [
+          "evr2-btd068"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "license/version binding at Evidence",
+        "status": "VERIFIED",
+        "finding": "Hardware/version/condition/methodology binding recorded from consumed body sections for downstream reuse.",
+        "subject_ids": [
+          "evr2-btd068"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

@@ -1,0 +1,130 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-beyond-text-2026",
+  "evidence_task_id": "evidence:SP-beyond-text-2026:2e6d710855a5cd83",
+  "basis": {
+    "task_sha256": "dd01b3eea7665276c8d4f43193788f0fb233d9233c37767f9c52ada97cf600ff",
+    "screening_acceptance_sha256": "d8eaabe990ab3420e30bb852909afc684b1339ae9779dab0519c04dacd9ecc1a",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "evr2-btd094",
+      "canonical_name": "Unified-IO: A Unified Model for Vision, Language, and Multi-Modal Tasks (Lu et al.)",
+      "entity_type": "PAPER",
+      "organization": null,
+      "canonical_url": "https://arxiv.org/abs/2206.08916"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "evr2-btd094",
+    "artifact_type": "PAPER",
+    "canonical_name": "Unified-IO: A Unified Model for Vision, Language, and Multi-Modal Tasks (Lu et al.)",
+    "canonical_url": "https://arxiv.org/abs/2206.08916"
+  },
+  "temporal": {
+    "observed_at": "2026-09-24T14:30:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2022-06",
+        "subject_id": "evr2-btd094",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2206.08916",
+      "source_class": "PRIMARY_PAPER",
+      "title": "Unified-IO: A Unified Model for Vision, Language, and Multi-Modal Tasks (Lu et al.)",
+      "published_at": "2022-06",
+      "accessed_at": "2026-09-24T14:30:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "The source defines Unified-IO: one seq2seq Transformer for 7+ vision/language tasks without task/modality heads (generation-relevant: text-to-image, inpainting, segmentation-to-image); all input/output homogenised to discrete tokens (text via SentencePiece prompts, dense maps/images via VQ-GAN codebooks, boxes/points via 1000 location tokens) fed to a pure T5 encoder-decoder with 2D patches and positional encodings; span-denoise 15% plus image-denoise 75% pretraining, then temperature-mixed multitask training on 80+ datasets without benchmark finetuning.",
+      "subject_id": "evr2-btd094",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "§3."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Reported numbers (generation-relevant scope): GRIT-test average 64.3 (XL) vs GPV-2 32.0, first to cover 7/7; NYUv2 RMSE 0.385 (VQVAE-limited); ImageNet 79.1; COCO CIDEr 126.8; scale Small to XL monotonic, no saturation.",
+      "subject_id": "evr2-btd094",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "§4-5/conditions."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "VQ-GAN caps dense-output precision; pure Transformer lacks pyramid/loss priors; GRIT Unrestricted-track only.",
+      "subject_id": "evr2-btd094",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "Audio/music generation or any-to-any audio conditioning not established (image/text generation tasks only; TS-002/TS-003 boundary).",
+      "subject_id": "evr2-btd094",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Source body consumed (arXiv abs + HTML 2206.08916v1: Abstract, §1-4 (goal, unified tokens, encoder-decoder, pretraining, tasks, GRIT), §5.1/5.3). No claim above rests on Discovery summary alone.",
+        "subject_ids": [
+          "evr2-btd094"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "TS-002/TS-003 boundary: generation-relevant only",
+        "status": "VERIFIED",
+        "finding": "Scope discipline verified against consumed body: generation-relevant machinery only.",
+        "subject_ids": [
+          "evr2-btd094"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

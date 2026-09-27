@@ -1,0 +1,119 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-beyond-text-2026",
+  "evidence_task_id": "evidence:SP-beyond-text-2026:776d6f5934d1a311",
+  "basis": {
+    "task_sha256": "3707eb47d2de37b6bbf3dfbce6f7dedeb565927c002ce9c0eda157329cb0883b",
+    "screening_acceptance_sha256": "d8eaabe990ab3420e30bb852909afc684b1339ae9779dab0519c04dacd9ecc1a",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "evr2-btd052",
+      "canonical_name": "Tacotron: Towards End-to-End Speech Synthesis (Wang et al.)",
+      "entity_type": "PAPER",
+      "organization": "Alibaba",
+      "canonical_url": "https://arxiv.org/abs/1703.10135"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "evr2-btd052",
+    "artifact_type": "PAPER",
+    "canonical_name": "Tacotron: Towards End-to-End Speech Synthesis (Wang et al.)",
+    "canonical_url": "https://arxiv.org/abs/1703.10135"
+  },
+  "temporal": {
+    "observed_at": "2026-09-24T14:30:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2017-03",
+        "subject_id": "evr2-btd052",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/1703.10135",
+      "source_class": "PRIMARY_PAPER",
+      "title": "Tacotron: Towards End-to-End Speech Synthesis (Wang et al.)",
+      "published_at": "2017-03",
+      "accessed_at": "2026-09-24T14:30:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "The source defines Tacotron: end-to-end char-to-speech seq2seq with attention (CBHG encoder, content-tanh attention GRU decoder, 80-band mel target, multi-frame rate 2, CBHG post-net); waveform via 50-iteration Griffin-Lim (not neural vocoder); frame-level inference faster than sample-AR but attention-fragile.",
+      "subject_id": "evr2-btd052",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "§§2-3."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Reported numbers: MOS 3.82±0.085 vs parametric 3.69±0.109 vs concatenative 4.09±0.119 (100 US-English phrases, 8 ratings each, 24 kHz, 24.6h single female speaker).",
+      "subject_id": "evr2-btd052",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "§4/conditions."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Vanilla seq2seq misalignments/repetitions; GRU encoder noisier than CBHG; Griffin-Lim artefacts cap quality.",
+      "subject_id": "evr2-btd052",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "Robustness rates and inference-latency numbers vs later non-AR systems not established.",
+      "subject_id": "evr2-btd052",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Source body consumed (arXiv abs + HTML 1703.10135: Abstract, §§1-6). No claim above rests on Discovery summary alone.",
+        "subject_ids": [
+          "evr2-btd052"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

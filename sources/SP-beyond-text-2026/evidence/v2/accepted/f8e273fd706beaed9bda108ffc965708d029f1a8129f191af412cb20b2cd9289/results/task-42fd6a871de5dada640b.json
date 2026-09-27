@@ -1,0 +1,119 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-beyond-text-2026",
+  "evidence_task_id": "evidence:SP-beyond-text-2026:0d49b9158ebe9b9b",
+  "basis": {
+    "task_sha256": "b4d464f0ea1da5db6fb2b6870f259aa8e48ee6fe986fcffc1fe2e76bedc745da",
+    "screening_acceptance_sha256": "826833e88e851f69e5bd76a3d2558f0bb4a659aed49bf25e404e0cda1bf6be79",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "evr2-btd073",
+      "canonical_name": "Make-A-Video: Text-to-Video Generation without Text-Video Data (Singer et al.)",
+      "entity_type": "PAPER",
+      "organization": null,
+      "canonical_url": "https://arxiv.org/abs/2209.14792"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "evr2-btd073",
+    "artifact_type": "PAPER",
+    "canonical_name": "Make-A-Video: Text-to-Video Generation without Text-Video Data (Singer et al.)",
+    "canonical_url": "https://arxiv.org/abs/2209.14792"
+  },
+  "temporal": {
+    "observed_at": "2026-09-24T14:30:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2022-09",
+        "subject_id": "evr2-btd073",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2209.14792",
+      "source_class": "PRIMARY_PAPER",
+      "title": "Make-A-Video: Text-to-Video Generation without Text-Video Data (Singer et al.)",
+      "published_at": "2022-09",
+      "accessed_at": "2026-09-24T14:30:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "The source reuses text-to-image appearance/text alignment and learns motion from unlabeled video: text-to-image UNet extended with pseudo-3D convolutions (2D pretrained plus 1D identity-initialised) and pseudo-3D attention (spatial pretrained plus temporal zero/identity-initialised) plus fps conditioning; inference runs prior to 16x64x64 temporal decoder to masked interpolation (76 frames) to temporal+spatial super-resolution (shared noise); image prior trained on 2.3B filtered pairs with prior frozen, motion on videos-only sets.",
+      "subject_id": "evr2-btd073",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Correct body §3; title/authors verified."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Reported numbers: MSR-VTT zero-shot 16x256x256 all 59,794 test captions FID 13.17 / CLIPSIM 0.3049 vs CogVideo-EN 23.59/0.2631; UCF-101 zero-shot 256px class-conditional IS 33.00 / FVD 367.23, finetuned IS 82.55 / FVD 81.25; human preference 76x256x256 vs prior video-diffusion work 84.38% quality / 78.13% faithfulness.",
+      "subject_id": "evr2-btd073",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Correct body §4/conditions."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Prior recorded locator 2209.14755 was a transcription defect; canonical Discovery provenance was rebound to 2209.14792 during the 2026-09-24 provenance repair (see provenance-repair-manifest.json). Claims rest on the verified-correct body.",
+      "subject_id": "evr2-btd073",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "Cannot learn text-to-phenomena observable only in video; longer multi-scene/story videos future; web-data social biases exaggerated.",
+      "subject_id": "evr2-btd073",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Source body consumed (Correct body 2209.14792 consumed (Abstract, §1, §2 prev work, §3.1 T2I backbone, §3.2 pseudo-3D conv/attention, §3.3 interpolation, §3.4 training, §4.1 datasets/settings, §4.2 quant, §4.3 qual, §5). Recorded locator 2209). No claim above rests on Discovery summary alone.",
+        "subject_ids": [
+          "evr2-btd073"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

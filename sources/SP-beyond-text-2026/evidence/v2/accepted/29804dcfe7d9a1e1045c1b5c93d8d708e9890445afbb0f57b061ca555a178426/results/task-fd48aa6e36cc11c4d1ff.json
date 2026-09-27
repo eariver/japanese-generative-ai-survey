@@ -1,0 +1,119 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-beyond-text-2026",
+  "evidence_task_id": "evidence:SP-beyond-text-2026:60151262951af28d",
+  "basis": {
+    "task_sha256": "2c59bce04d7a7462d1521b81838ea188668ade517737fff9f36751d7c93df74a",
+    "screening_acceptance_sha256": "826833e88e851f69e5bd76a3d2558f0bb4a659aed49bf25e404e0cda1bf6be79",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "evr2-btd004",
+      "canonical_name": "Taming Transformers for High-Resolution Image Synthesis (VQGAN) (Esser et al.)",
+      "entity_type": "PAPER",
+      "organization": null,
+      "canonical_url": "https://arxiv.org/abs/2012.09841"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "evr2-btd004",
+    "artifact_type": "PAPER",
+    "canonical_name": "Taming Transformers for High-Resolution Image Synthesis (VQGAN) (Esser et al.)",
+    "canonical_url": "https://arxiv.org/abs/2012.09841"
+  },
+  "temporal": {
+    "observed_at": "2026-09-24T14:30:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2020-12",
+        "subject_id": "evr2-btd004",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2012.09841",
+      "source_class": "PRIMARY_PAPER",
+      "title": "Taming Transformers for High-Resolution Image Synthesis (VQGAN) (Esser et al.)",
+      "published_at": "2020-12",
+      "accessed_at": "2026-09-24T14:30:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "The source builds a CNN VQGAN codebook (|Z|=1024 typical; 256x256 to 16x16=256 indices) with perceptual + patch-discriminator losses, then models code sequences with a GPT-2-medium latent transformer (307M, sliding window for megapixel).",
+      "subject_id": "evr2-btd004",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Correct body §§3-4; title/authors verified."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Reported numbers: same-representation NLL favours Transformer over PixelSNAIL on RIN/LSUN-CT/IN/D-RIN/S-FLCKR; CIFAR-10 +18.63% FID at 14.08x faster sampling vs pixels; COCO-Stuff FID 22.4, ADE20K 35.5.",
+      "subject_id": "evr2-btd004",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Correct body §4 tables."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Recorded locator 2012.09812 is a transcription defect (resolves to unrelated paper); claims above rest on verified-correct 2012.09841. Future Discovery repair should correct the locator.",
+      "subject_id": "evr2-btd004",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "Sliding-window generation needs spatial invariance/conditioning; fixed 16x16 transformer context.",
+      "subject_id": "evr2-btd004",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Source body consumed (Correct body 2012.09841 HTML v3 consumed (Abstract, §1, §2, §3 VQGAN codebook + latent transformer, §4, §5, App). Recorded locator 2012.09812 resolves to unrelated ViNG robotics paper.). No claim above rests on Discovery summary alone.",
+        "subject_ids": [
+          "evr2-btd004"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

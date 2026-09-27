@@ -80,7 +80,7 @@ Open Weightは末尾の補足論点ではなく、中国勢の成長と国際的
 
 ## TS-002 — Beyond Text: Generative Media
 
-**Status:** `SCOPED`
+**Status:** `ACTIVE`
 
 ### 仮題
 
@@ -195,7 +195,7 @@ image / video generationとmultimodal understandingが融合する領域では�
 
 ## TS-001-REISSUE-2026 — Efficient Intelligence (TS-001 reissue/successor, standalone Thematic)
 
-**Status:** `SELECTED`
+**Status:** `RELEASED`
 
 **Planning identifier:** `TS-001-REISSUE-2026`
 

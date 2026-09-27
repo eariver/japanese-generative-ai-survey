@@ -1,0 +1,130 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-beyond-text-2026",
+  "evidence_task_id": "evidence:SP-beyond-text-2026:b3f1f434491a6f94",
+  "basis": {
+    "task_sha256": "1af7dd247b49e37b75aaa02f2a16eb2fba74d92f0944dbb470a89a2eb3892082",
+    "screening_acceptance_sha256": "d8eaabe990ab3420e30bb852909afc684b1339ae9779dab0519c04dacd9ecc1a",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "evr2-btd085",
+      "canonical_name": "GenEval: An Object-Focused Alignment and Compositional Evaluation (Ghosh et al.)",
+      "entity_type": "BENCHMARK",
+      "organization": null,
+      "canonical_url": "https://arxiv.org/abs/2310.11513"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "evr2-btd085",
+    "artifact_type": "BENCHMARK",
+    "canonical_name": "GenEval: An Object-Focused Alignment and Compositional Evaluation (Ghosh et al.)",
+    "canonical_url": "https://arxiv.org/abs/2310.11513"
+  },
+  "temporal": {
+    "observed_at": "2026-09-24T14:30:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2023-10",
+        "subject_id": "evr2-btd085",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2310.11513",
+      "source_class": "PRIMARY_PAPER",
+      "title": "GenEval: An Object-Focused Alignment and Compositional Evaluation (Ghosh et al.)",
+      "published_at": "2023-10",
+      "accessed_at": "2026-09-24T14:30:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "The source defines GenEval: 6 tasks x 553 templated prompts (COCO-80 objects, 11 Berlin-Kay colours); Mask2Former detector (confidence 0.3, 0.9 for counting) for presence/count/centroid-position plus CLIP ViT-L/14 on masked crops for colour; binary per-image correctness averaged per task.",
+      "subject_id": "evr2-btd085",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "§§2-3."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Reported numbers: human agreement 83% overall (inter-annotator 88%), 91% on unanimous subset vs CLIPScore 80%/87%; IF-XL overall 0.61, SD-v2.1 0.50; position subtasks at most 15%, binding at most 35%.",
+      "subject_id": "evr2-btd085",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "§4 Tables 1-2/conditions."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Closed COCO-80 vocabulary; photo-trained detector fails on holes/overlaps/clipart; ignores aesthetics/realism.",
+      "subject_id": "evr2-btd085",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "Open-vocabulary generalisation beyond tested models not established.",
+      "subject_id": "evr2-btd085",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Source body consumed (arXiv abs + HTML: Abstract, §§1-6, App C-D, Tables 1-2). No claim above rests on Discovery summary alone.",
+        "subject_ids": [
+          "evr2-btd085"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "metric-validity context binding",
+        "status": "VERIFIED",
+        "finding": "Hardware/version/condition/methodology binding recorded from consumed body sections for downstream reuse.",
+        "subject_ids": [
+          "evr2-btd085"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

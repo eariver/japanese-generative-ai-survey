@@ -1,0 +1,130 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-beyond-text-2026",
+  "evidence_task_id": "evidence:SP-beyond-text-2026:1f7f23f114838638",
+  "basis": {
+    "task_sha256": "36628dfdf71aac876df86ee533d6900ebf1f2b8c8753360e25df5fb012a03a9f",
+    "screening_acceptance_sha256": "826833e88e851f69e5bd76a3d2558f0bb4a659aed49bf25e404e0cda1bf6be79",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "evr2-btd129",
+      "canonical_name": "Wav2Lip: A Lip Sync Expert Is All You Need for Speech to Lip Generation In The Wild (Prajwal et al., ACM MM 2020)",
+      "entity_type": "BENCHMARK",
+      "organization": null,
+      "canonical_url": "https://arxiv.org/abs/2008.10010"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "evr2-btd129",
+    "artifact_type": "BENCHMARK",
+    "canonical_name": "Wav2Lip: A Lip Sync Expert Is All You Need for Speech to Lip Generation In The Wild (Prajwal et al., ACM MM 2020)",
+    "canonical_url": "https://arxiv.org/abs/2008.10010"
+  },
+  "temporal": {
+    "observed_at": "2026-09-24T14:30:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2020-08",
+        "subject_id": "evr2-btd129",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2008.10010",
+      "source_class": "PRIMARY_PAPER",
+      "title": "Wav2Lip: A Lip Sync Expert Is All You Need for Speech to Lip Generation In The Wild (Prajwal et al., ACM MM 2020)",
+      "published_at": "2020-08",
+      "accessed_at": "2026-09-24T14:30:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "The source defines Wav2Lip: freeze an expert SyncNet discriminator (colour, residual, cosine plus binary-cross-entropy, 5-frame window, 91% on LRS2 vs LipGAN 56%) and penalise the generator with expert-sync loss plus L1 (weight 0.03) plus visual GAN loss (weight 0.07); generator trained on LRS2 only, batch 80, Adam 1e-4.",
+      "subject_id": "evr2-btd129",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "§§2-3."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Reported numbers: LRS2/LRW/LRS3 random-audio pairs lip-sync distance 6.512/6.386/6.652 and confidence 7.490/7.789/7.887 vs real 7.012/6.931, 6.736/7.838, 6.956/7.592; ReSyncED dubbed/random/TTS preference for Wav2Lip+GAN 60.2%/64.5%/51.2%, combined over 90% vs unsynced.",
+      "subject_id": "evr2-btd129",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "§4 Tables 1-2/conditions."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Metric uses public SyncNet (different data); inherits SyncNet instability; talking-face only.",
+      "subject_id": "evr2-btd129",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "Cross-condition lip-sync-distance comparability and general sound-event timing not established.",
+      "subject_id": "evr2-btd129",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Source body consumed (arXiv abs + HTML: Abstract, §§1-5, Tables 1-2, Eq 1-6). No claim above rests on Discovery summary alone.",
+        "subject_ids": [
+          "evr2-btd129"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "metric-validity context binding",
+        "status": "VERIFIED",
+        "finding": "Hardware/version/condition/methodology binding recorded from consumed body sections for downstream reuse.",
+        "subject_ids": [
+          "evr2-btd129"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

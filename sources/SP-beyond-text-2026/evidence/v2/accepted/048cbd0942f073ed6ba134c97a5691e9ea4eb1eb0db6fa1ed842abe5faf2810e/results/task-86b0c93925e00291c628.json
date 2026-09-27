@@ -1,0 +1,110 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-beyond-text-2026",
+  "evidence_task_id": "evidence:SP-beyond-text-2026:6f984c64901b37f1",
+  "basis": {
+    "task_sha256": "8ec809554c695b7627cacc939a6f52e331cedb42e39083ab0761f5e564f697cc",
+    "screening_acceptance_sha256": "d8eaabe990ab3420e30bb852909afc684b1339ae9779dab0519c04dacd9ecc1a",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "NEEDS_MORE",
+  "entities": [
+    {
+      "entity_id": "evr2-btd024",
+      "canonical_name": "Stable Diffusion public implementation (Stability-AI/stablediffusion)",
+      "entity_type": "FRAMEWORK",
+      "organization": "Stability AI",
+      "canonical_url": "https://github.com/Stability-AI/stablediffusion"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "evr2-btd024",
+    "artifact_type": "FRAMEWORK",
+    "canonical_name": "Stable Diffusion public implementation (Stability-AI/stablediffusion)",
+    "canonical_url": "https://github.com/Stability-AI/stablediffusion"
+  },
+  "temporal": {
+    "observed_at": "2026-09-24T14:30:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2022-08",
+        "subject_id": "evr2-btd024",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://github.com/Stability-AI/stablediffusion",
+      "source_class": "PRIMARY_REPOSITORY",
+      "title": "Stable Diffusion public implementation (Stability-AI/stablediffusion)",
+      "published_at": "2022-08",
+      "accessed_at": "2026-09-24T14:30:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Body blocked: the recorded repository locator is not retrievable (GitHub API 404); reference open implementation/weights, versioned tag/commit binding, and deployment/ecosystem claims are NOT established from body.",
+      "subject_id": "evr2-btd024",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "Latent-diffusion mechanism weight in this edition rests on BT-D023 (paper) and BT-D025; this record is retained as NEEDS_MORE pending successful retrieval.",
+      "subject_id": "evr2-btd024",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "UNRESOLVED",
+        "finding": "Full body not consumed: Barrier: https://github.com/Stability-AI/stablediffusion returns 404 via webfetch (markdown+text); raw README 404; api.github.com/repos returns 404 Not Found as of access date. No README/tag/commit bytes consumed.",
+        "subject_ids": [
+          "evr2-btd024"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "version/content binding at Evidence",
+        "status": "UNRESOLVED",
+        "finding": "Not established: body access BLOCKED (Barrier: https://github.com/Stability-AI/stablediffusion returns 404 via webfetch (markdown+text); raw README 404; api.github.com/repos returns 404 Not Found as).",
+        "subject_ids": [
+          "evr2-btd024"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      "Evidence-stage full-body verification: Full body not consumed: Barrier: https://github.com/Stability-AI/stablediffusion returns 404 via webfetch (markdown+text); raw README 404; api.github.com/repos returns 404 Not Found as of access date. No README/tag/commit bytes consumed.",
+      "version/content binding at Evidence: Not established: body access BLOCKED (Barrier: https://github.com/Stability-AI/stablediffusion returns 404 via webfetch (markdown+text); raw README 404; api.github.com/repos returns 404 Not Found as)."
+    ],
+    "contradictions": []
+  }
+}

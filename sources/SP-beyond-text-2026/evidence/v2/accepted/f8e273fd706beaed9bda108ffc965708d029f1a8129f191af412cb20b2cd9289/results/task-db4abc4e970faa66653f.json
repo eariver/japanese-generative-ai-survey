@@ -1,0 +1,119 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-beyond-text-2026",
+  "evidence_task_id": "evidence:SP-beyond-text-2026:4e1527a200f7a79c",
+  "basis": {
+    "task_sha256": "0b04c013114a0abaceff04191e6ec7174f6d027f2900c17da64c67227d92d0e2",
+    "screening_acceptance_sha256": "826833e88e851f69e5bd76a3d2558f0bb4a659aed49bf25e404e0cda1bf6be79",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "evr2-btd045",
+      "canonical_name": "RePaint: Inpainting using Denoising Diffusion Probabilistic Models (Lugmayr et al.)",
+      "entity_type": "PAPER",
+      "organization": null,
+      "canonical_url": "https://arxiv.org/abs/2201.09865"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "evr2-btd045",
+    "artifact_type": "PAPER",
+    "canonical_name": "RePaint: Inpainting using Denoising Diffusion Probabilistic Models (Lugmayr et al.)",
+    "canonical_url": "https://arxiv.org/abs/2201.09865"
+  },
+  "temporal": {
+    "observed_at": "2026-09-24T14:30:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2022-01",
+        "subject_id": "evr2-btd045",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2201.09865",
+      "source_class": "PRIMARY_PAPER",
+      "title": "RePaint: Inpainting using Denoising Diffusion Probabilistic Models (Lugmayr et al.)",
+      "published_at": "2022-01",
+      "accessed_at": "2026-09-24T14:30:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "The source defines RePaint inpainting: each reverse step samples the known region from forward-noised input and the unknown region from the model, then mask-combines; resampling diffuses back-and-forth (T=250, jump 10, 10 resamples) to harmonise; preservation target is exact unmasked pixels with mask-defined locality including extreme Half/Expand masks.",
+      "subject_id": "evr2-btd045",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "§§3-4."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Reported numbers: 256px CelebA-HQ/ImageNet, 1000 votes per comparison, 95% preference for RePaint on Wide/Narrow/thin/thick masks; ablation 32-image Wide LPIPS 0.168 (1 resample) to 0.134 (4 resamples) at slowdown cost; jump-10/resample-10 LPIPS 0.068 with 56.25% votes vs LaMa.",
+      "subject_id": "evr2-btd045",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "§5/conditions."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Slow (250x10 evaluations); LPIPS penalises valid diverse fills; thin-structure artefacts; failure cases in App F.",
+      "subject_id": "evr2-btd045",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "Wall-clock/VRAM/quantisation and RTF not reported in consumed body.",
+      "subject_id": "evr2-btd045",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Source body consumed (arXiv abs + HTML 2201.09865v4: Abstract, §§1-4 method, §5.1-5.6 experiments, App). No claim above rests on Discovery summary alone.",
+        "subject_ids": [
+          "evr2-btd045"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

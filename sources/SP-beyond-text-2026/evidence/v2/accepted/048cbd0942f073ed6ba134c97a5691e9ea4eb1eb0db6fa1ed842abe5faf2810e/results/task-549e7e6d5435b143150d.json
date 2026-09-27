@@ -1,0 +1,130 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-beyond-text-2026",
+  "evidence_task_id": "evidence:SP-beyond-text-2026:92055b4359e7930e",
+  "basis": {
+    "task_sha256": "1c1a0ffd0a8ccf097598bf5e778889dcc520821ac90b7387a33f5c3b8fd8c5f7",
+    "screening_acceptance_sha256": "d8eaabe990ab3420e30bb852909afc684b1339ae9779dab0519c04dacd9ecc1a",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "evr2-btd031",
+      "canonical_name": "Learning Transferable Visual Models (CLIP) (Radford et al.)",
+      "entity_type": "PAPER",
+      "organization": null,
+      "canonical_url": "https://arxiv.org/abs/2103.00020"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "evr2-btd031",
+    "artifact_type": "PAPER",
+    "canonical_name": "Learning Transferable Visual Models (CLIP) (Radford et al.)",
+    "canonical_url": "https://arxiv.org/abs/2103.00020"
+  },
+  "temporal": {
+    "observed_at": "2026-09-24T14:30:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2021-02",
+        "subject_id": "evr2-btd031",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2103.00020",
+      "source_class": "PRIMARY_PAPER",
+      "title": "Learning Transferable Visual Models (CLIP) (Radford et al.)",
+      "published_at": "2021-02",
+      "accessed_at": "2026-09-24T14:30:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "The source defines CLIP: joint ResNet/ViT image + Transformer text encoders trained by symmetric cross-entropy over NxN pairs on WIT-400M with learned temperature; text encoder synthesises zero-shot classifiers via prompt templates + embedding ensembling (in-context reference, not diffusion).",
+      "subject_id": "evr2-btd031",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "§2-3."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Reported numbers: zero-shot ImageNet 76.2% (matches ResNet-50), aYahoo 98.4, SUN 58.5; wins 16/27 vs ResNet-50 linear probe; STL10 99.3%.",
+      "subject_id": "evr2-btd031",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "§3 tables/conditions."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Fails counting; fine-grained gaps (Flowers102/Aircraft ~-10%); bias/surveillance risks stated.",
+      "subject_id": "evr2-btd031",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "Generation-relevance only; perception history belongs to TS-003; no generative conditioning quality established.",
+      "subject_id": "evr2-btd031",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Source body consumed (arXiv abs + HTML: Abstract, §1, §2.1-2.5 (WIT/CLIP objective/architecture/training), §3.1-3.3 (zero-shot/transfer/robustness), §6 limitations). No claim above rests on Discovery summary alone.",
+        "subject_ids": [
+          "evr2-btd031"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "TS-002/TS-003 boundary: conditioning/evaluation machinery only",
+        "status": "VERIFIED",
+        "finding": "Scope discipline verified against consumed body: generation-relevant machinery only.",
+        "subject_ids": [
+          "evr2-btd031"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

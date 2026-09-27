@@ -1,0 +1,130 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-beyond-text-2026",
+  "evidence_task_id": "evidence:SP-beyond-text-2026:cf83aa08f79d93dc",
+  "basis": {
+    "task_sha256": "c917172d64eab919c34d227b1410d94b0c5411f3698a831398b43fab1fc911df",
+    "screening_acceptance_sha256": "826833e88e851f69e5bd76a3d2558f0bb4a659aed49bf25e404e0cda1bf6be79",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "evr2-btd093",
+      "canonical_name": "VBench-2.0: Advancing Intrinsic Faithfulness (Zheng et al.)",
+      "entity_type": "PAPER",
+      "organization": null,
+      "canonical_url": "https://arxiv.org/abs/2503.21755"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "evr2-btd093",
+    "artifact_type": "PAPER",
+    "canonical_name": "VBench-2.0: Advancing Intrinsic Faithfulness (Zheng et al.)",
+    "canonical_url": "https://arxiv.org/abs/2503.21755"
+  },
+  "temporal": {
+    "observed_at": "2026-09-24T14:30:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2025-03",
+        "subject_id": "evr2-btd093",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2503.21755",
+      "source_class": "PRIMARY_PAPER",
+      "title": "VBench-2.0: Advancing Intrinsic Faithfulness (Zheng et al.)",
+      "published_at": "2025-03",
+      "accessed_at": "2026-09-24T14:30:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "The source defines VBench-2.0: 5 groups/18 dimensions (~70 prompts each); text-description alignment via LLaVA-Video-7B caption plus Qwen2.5-7B judge for complex semantics plus multi-question visual QA for surface visuals; specialists: ViT anomaly detectors (body/hand/face via YOLO-World patches), ArcFace identity, CoTracker camera heuristics, SIFT/FLANN/RANSAC plus RAFT geometry, LoRA-tuned Qwen2.5-VL-3B instance preservation; uniform prompt refiner (except Sora).",
+      "subject_id": "evr2-btd093",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "§§II-IV."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Reported numbers: 4-state-of-the-art table: complex plot ~10-11%, dynamic spatial ~20%, motion order 15-29% (all low); anatomy 60-89%; 284 annotator-hours quality assurance at 95% bar.",
+      "subject_id": "evr2-btd093",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "§V Table II/conditions."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Vision-LLM hallucination only mitigated (pre-filtering, redundant questions); per-evaluation model-version snapshots required.",
+      "subject_id": "evr2-btd093",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "Longitudinal stability and minute-level plot-summarisation errors (flagged in-text) not established.",
+      "subject_id": "evr2-btd093",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Source body consumed (arXiv abs + HTML: Abstract, §§I-V plus Table II (later-experiment detail partially consumed)). No claim above rests on Discovery summary alone.",
+        "subject_ids": [
+          "evr2-btd093"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "metric-validity context binding",
+        "status": "VERIFIED",
+        "finding": "Hardware/version/condition/methodology binding recorded from consumed body sections for downstream reuse.",
+        "subject_ids": [
+          "evr2-btd093"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

@@ -1,0 +1,708 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-beyond-text-2026",
+  "batch_id": "batch-001",
+  "basis": {
+    "package_sha256": "072b2633752465d06226319d0b89b31dd9d50f6584421313b5d3e4f96f1517b8",
+    "batch_sha256": "ba6dabedb0446d53ae4f6d1ac12a98a236eef19c58092710a360e32db638ef60",
+    "profile_sha256": "9fb37cbf9c8401f80f898e2c2a62e7e24cd44ec0819fec9e1b1732dbc27a2bdb",
+    "state_sha256": "b9cb4607f85463689e43be6ba04cbcbefd11960c188f6a81569e7bf90732017f",
+    "prompt_sha256": "3e45900ead73688eab8734036e6e476c1ec4f1a7ce38da42d5ca52a68ef0a862",
+    "result_contract_sha256": "a05b65b41efbcaf654df5c3c5944254a76d93d8a28cab961f2c06f6d580da5a2"
+  },
+  "decisions": [
+    {
+      "discovery_id": "BT-D001",
+      "decision": "KEEP",
+      "reason": "VAE origin for the latent-variable/thread that makes continuous media tractable; required D01/D02 anchor.",
+      "scope_tags": [
+        "BT-O01",
+        "BT-O02"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "BT-D002",
+      "decision": "KEEP",
+      "reason": "VQ-VAE discrete-latent origin; intentional discard/preserve tradeoff anchor for image/audio/video tokenizers.",
+      "scope_tags": [
+        "BT-O01",
+        "BT-O02"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "BT-D003",
+      "decision": "KEEP",
+      "reason": "VQ-VAE-2 hierarchy/scale anchor showing discrete latents reaching high-fidelity images.",
+      "scope_tags": [
+        "BT-O01",
+        "BT-O02"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "BT-D004",
+      "decision": "KEEP",
+      "reason": "VQGAN transformer-over-discrete-latents anchor; direct parent of latent-diffusion-era token practice.",
+      "scope_tags": [
+        "BT-O01",
+        "BT-O02"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "BT-D005",
+      "decision": "KEEP",
+      "reason": "dVAE text-to-image anchor binding discrete representation to text conditioning (D01/D03).",
+      "scope_tags": [
+        "BT-O01",
+        "BT-O03"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "BT-D006",
+      "decision": "KEEP",
+      "reason": "SoundStream end-to-end neural codec origin; RVQ/streamable-representation anchor for speech/audio.",
+      "scope_tags": [
+        "BT-O01",
+        "BT-O07"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "BT-D007",
+      "decision": "KEEP",
+      "reason": "EnCodec high-fidelity codec anchor; RVQ/latency/quality tradeoff reference for codec-LM era.",
+      "scope_tags": [
+        "BT-O01",
+        "BT-O07",
+        "BT-O08"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "BT-D008",
+      "decision": "KEEP",
+      "reason": "Descript/DAC improved-RVQGAN anchor; reconstruction-quality bound on downstream generation.",
+      "scope_tags": [
+        "BT-O01",
+        "BT-O08"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "BT-D009",
+      "decision": "KEEP",
+      "reason": "AudioLM semantic+acoustic tokenization anchor; the split that structures codec-LM music/speech work.",
+      "scope_tags": [
+        "BT-O01",
+        "BT-O07",
+        "BT-O08"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "BT-D010",
+      "decision": "KEEP",
+      "reason": "MAGVIT language-neutral video tokenizer anchor; compressed discrete variable-length video representation.",
+      "scope_tags": [
+        "BT-O01",
+        "BT-O06",
+        "BT-O09"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "BT-D011",
+      "decision": "KEEP",
+      "reason": "Imagen T5-conditioning anchor; deep language understanding as generation conditioner (not TS-003 perception).",
+      "scope_tags": [
+        "BT-O01",
+        "BT-O03"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification",
+        "TS-002/TS-003 boundary: conditioning machinery only"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "BT-D012",
+      "decision": "KEEP",
+      "reason": "Wan2.2-VAE high-compression video VAE anchor; latent-rate/compute consequence for open video.",
+      "scope_tags": [
+        "BT-O01",
+        "BT-O09",
+        "BT-O10"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification",
+        "hardware/configuration binding at Evidence"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "BT-D013",
+      "decision": "KEEP",
+      "reason": "GAN origin; adversarial generation/thread retained for vocoders, autoencoders, post-training hybrids.",
+      "scope_tags": [
+        "BT-O02"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "BT-D014",
+      "decision": "KEEP",
+      "reason": "DCGAN convolutional-GAN anchor for stable high-fidelity image generation practice.",
+      "scope_tags": [
+        "BT-O02"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "BT-D015",
+      "decision": "KEEP",
+      "reason": "StyleGAN generator/control landmark; fidelity plus style/control separation for image lineage.",
+      "scope_tags": [
+        "BT-O02",
+        "BT-O04"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "BT-D016",
+      "decision": "KEEP",
+      "reason": "StyleGAN2 quality anchor; artifact/control refinement in the GAN image lineage.",
+      "scope_tags": [
+        "BT-O02"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "BT-D017",
+      "decision": "KEEP",
+      "reason": "PixelRNN autoregressive-pixels origin; raw-sequence cost motivation for latent/token compression.",
+      "scope_tags": [
+        "BT-O02"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "BT-D018",
+      "decision": "KEEP",
+      "reason": "Image Transformer autoregressive anchor; attention over pixels before latent-era scaling.",
+      "scope_tags": [
+        "BT-O02"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "BT-D019",
+      "decision": "KEEP",
+      "reason": "DDPM diffusion origin; tractable training plus sequential-sampling-cost thread start.",
+      "scope_tags": [
+        "BT-O02",
+        "BT-O10"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "BT-D020",
+      "decision": "KEEP",
+      "reason": "DDIM deterministic/implicit sampling anchor; first major sampling-cost reduction on diffusion.",
+      "scope_tags": [
+        "BT-O02",
+        "BT-O10"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "BT-D021",
+      "decision": "KEEP",
+      "reason": "Score-SDE continuous-time anchor unifying diffusion/score modeling with solver implications.",
+      "scope_tags": [
+        "BT-O02"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "BT-D022",
+      "decision": "KEEP",
+      "reason": "EDM design-space anchor; preconditioning/schedule/solver choices that later systems inherit.",
+      "scope_tags": [
+        "BT-O02",
+        "BT-O10"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "BT-D023",
+      "decision": "KEEP",
+      "reason": "Latent Diffusion anchor; compression plus diffusion composition that underpins SD lineage.",
+      "scope_tags": [
+        "BT-O01",
+        "BT-O02"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "BT-D024",
+      "decision": "KEEP",
+      "reason": "Stable Diffusion public implementation anchor; open reproduction/runtime half of latent diffusion.",
+      "scope_tags": [
+        "BT-O02",
+        "BT-O10"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification",
+        "version/content binding at Evidence"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "BT-D025",
+      "decision": "KEEP",
+      "reason": "DiT transformer-denoiser anchor; backbone/objective separation (U-Net vs Transformer).",
+      "scope_tags": [
+        "BT-O02"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "BT-D026",
+      "decision": "KEEP",
+      "reason": "SiT interpolant-transformer anchor; flow/interpolant view on transformer denoisers.",
+      "scope_tags": [
+        "BT-O02"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "BT-D027",
+      "decision": "KEEP",
+      "reason": "Flow Matching anchor; continuous-flow objective distinct from score/diffusion.",
+      "scope_tags": [
+        "BT-O02",
+        "BT-O10"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "BT-D028",
+      "decision": "KEEP",
+      "reason": "Rectified Flow anchor; straight/fast transfer path reused by editing/video comparisons.",
+      "scope_tags": [
+        "BT-O02",
+        "BT-O10"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "BT-D029",
+      "decision": "KEEP",
+      "reason": "Consistency Models anchor; few-step/inference-acceleration thread distinct from training objective.",
+      "scope_tags": [
+        "BT-O02",
+        "BT-O10"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "BT-D030",
+      "decision": "KEEP",
+      "reason": "ADM diffusion-beats-GAN anchor with classifier guidance; quality/diversity/stability comparison point.",
+      "scope_tags": [
+        "BT-O02",
+        "BT-O03"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "BT-D031",
+      "decision": "KEEP",
+      "reason": "CLIP conditioning/evaluation machinery anchor; semantic conditioning distinct from perception history.",
+      "scope_tags": [
+        "BT-O03",
+        "BT-O11"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification",
+        "TS-002/TS-003 boundary: conditioning/evaluation machinery only"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "BT-D032",
+      "decision": "KEEP",
+      "reason": "Classifier-free guidance anchor; training-time conditioning plus inference-time guidance distinction.",
+      "scope_tags": [
+        "BT-O03"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "BT-D033",
+      "decision": "KEEP",
+      "reason": "GLIDE text-guided diffusion anchor; text-conditioning plus editing precursor.",
+      "scope_tags": [
+        "BT-O03",
+        "BT-O05"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "BT-D034",
+      "decision": "KEEP",
+      "reason": "eDiff-I expert-denoiser ensemble anchor; conditioning capacity/specialization direction.",
+      "scope_tags": [
+        "BT-O03"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "BT-D035",
+      "decision": "KEEP",
+      "reason": "CLAP text-audio alignment anchor; audio-side counterpart to CLIP for alignment metrics.",
+      "scope_tags": [
+        "BT-O03",
+        "BT-O08",
+        "BT-O11"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "BT-D036",
+      "decision": "KEEP",
+      "reason": "ControlNet spatial-control transition anchor; generation-control separation landmark.",
+      "scope_tags": [
+        "BT-O04"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "BT-D037",
+      "decision": "KEEP",
+      "reason": "T2I-Adapter lightweight-control anchor; adapter path distinct from full ControlNet.",
+      "scope_tags": [
+        "BT-O04"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "BT-D038",
+      "decision": "KEEP",
+      "reason": "IP-Adapter image-prompt adapter anchor; reference conditioning plus editing bridge.",
+      "scope_tags": [
+        "BT-O04",
+        "BT-O05"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "BT-D039",
+      "decision": "KEEP",
+      "reason": "DreamBooth personalization anchor; subject/identity preservation problem start.",
+      "scope_tags": [
+        "BT-O04",
+        "BT-O05"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "BT-D040",
+      "decision": "KEEP",
+      "reason": "LoRA adapter anchor; efficient adaptation reused across image/video acceleration stacks.",
+      "scope_tags": [
+        "BT-O04"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "BT-D041",
+      "decision": "KEEP",
+      "reason": "SPADE/GauGAN spatial-normalization anchor; segmentation-signal as generation control (not perception history).",
+      "scope_tags": [
+        "BT-O04"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification",
+        "TS-002/TS-003 boundary: control signals only"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "BT-D042",
+      "decision": "KEEP",
+      "reason": "MotionCtrl camera/object-motion control anchor for video; control-fidelity separation case.",
+      "scope_tags": [
+        "BT-O04",
+        "BT-O06",
+        "BT-O09"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "BT-D043",
+      "decision": "KEEP",
+      "reason": "Music ControlNet anchor; melody/rhythm/timing control in the audio lane.",
+      "scope_tags": [
+        "BT-O04",
+        "BT-O08"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "BT-D044",
+      "decision": "KEEP",
+      "reason": "SDEdit image-to-image/editing origin; de-novo vs edit distinction anchor.",
+      "scope_tags": [
+        "BT-O05"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "BT-D045",
+      "decision": "KEEP",
+      "reason": "RePaint diffusion-inpainting anchor; masked preservation plus resampling mechanism.",
+      "scope_tags": [
+        "BT-O05"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "BT-D046",
+      "decision": "KEEP",
+      "reason": "Blended Latent Diffusion anchor; locality/preservation handling in latent editing.",
+      "scope_tags": [
+        "BT-O05"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "BT-D047",
+      "decision": "KEEP",
+      "reason": "Prompt-to-Prompt cross-attention editing anchor; attention-control edit locality mechanism.",
+      "scope_tags": [
+        "BT-O03",
+        "BT-O05"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "BT-D048",
+      "decision": "KEEP",
+      "reason": "Imagic real-image editing anchor; embedding-optimization edit path with preservation limits.",
+      "scope_tags": [
+        "BT-O05"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "BT-D049",
+      "decision": "KEEP",
+      "reason": "InstructPix2Pix instruction-editing anchor; language-instruction edit lineage start.",
+      "scope_tags": [
+        "BT-O05"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "BT-D050",
+      "decision": "KEEP",
+      "reason": "Tune-A-Video one-shot video-editing anchor; image-diffusion to video-edit transfer.",
+      "scope_tags": [
+        "BT-O05",
+        "BT-O06",
+        "BT-O09"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    }
+  ]
+}

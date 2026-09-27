@@ -1,0 +1,66 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-beyond-text-2026",
+  "from_state": "RELEASE_CANDIDATE",
+  "to_state": "FROZEN",
+  "checkpoints": [
+    "freeze"
+  ],
+  "recorded_at": "2026-09-27T16:36:46Z",
+  "implementation": {
+    "repository_commit_sha": "b3e6a37ab0f9894eb2ec432056b7adbaa02fd0ee",
+    "orchestrator_version": "survey-production-core-v2/0.15-postintegration-transport-thematic"
+  },
+  "contract": {
+    "pipeline_contract_version": "2.0-rc1",
+    "pipeline_contract_sha256": "ee89796245c22072cec98f34931180214a4928c24f399280793cd6420a4c8e71",
+    "quality_contract_version": "2.0-rc1",
+    "quality_contract_sha256": "b5b955d524fb438c0f1b2c9490bea1da2083e79028d67a55ca424bbfc20f2958",
+    "research_profile_version": "2.0-rc1",
+    "research_profile_sha256": "0f575e6d97caec72b2bf8b7f6b78a562d97ca67b2071193417b968ba3d73e6e8",
+    "publication_profile_version": "2.0-rc1",
+    "publication_profile_sha256": "a6859559dd1b9d42ab8fb4402b74b7bdd8611dbe65c8e02a7b022b545c20f4eb"
+  },
+  "artifacts": [
+    {
+      "name": "freeze-record",
+      "path": "sources/SP-beyond-text-2026/publication/v2/freeze-record-v2.json",
+      "sha256": "234de61f80217a5177121aa6114f892a9916fd1069a94cbc6bfbada6bab92dcd"
+    },
+    {
+      "name": "release-manifest",
+      "path": "sources/SP-beyond-text-2026/publication/v2/release-manifest-v2.json",
+      "sha256": "81a3e3975a6596a07588ec6699102913134d1e126f4c95ba951bf1ee512fecdc"
+    },
+    {
+      "name": "visual-review-record",
+      "path": "sources/SP-beyond-text-2026/publication/v2/visual-review-v2.json",
+      "sha256": "56db5134f3829c6a7d2ac9e8f92fb7f4a54e04b80efc9c6ccc1c3edd2468c94e"
+    }
+  ],
+  "reviews": [
+    {
+      "check_id": "CORE_STAGE_CONTRACT",
+      "kind": "DETERMINISTIC",
+      "status": "PASS",
+      "executor": "survey_stage_validation_v2 with bounded Freeze/Human-Gate artifact admission correction",
+      "evidence": "Canonical RELEASE_CANDIDATE -> FROZEN semantics validated against the exact approved TS-002 Publication Candidate (candidate file 4d2c01ab, internal 79c3a4fd), Human Publication Preview r12 approval (5e121516), candidate-bound pre-preview VISUAL review, Freeze record and Release Manifest. Bounded Freeze/Human-Gate artifact admission correction applied runtime-only per W34-W38 precedent (CV2-DM-001/002/003 recurrence); release identity uses the profile-derived public identity special/beyond-text-2026 enforced by the frozen release workflow (CV2-DM-019); no shared-Core change.",
+      "result": {
+        "path": "sources/SP-beyond-text-2026/execution/validation/freeze-stage-validation.json",
+        "sha256": "ca055ad6c271e45eef79eeaf2fefc24549e19e6a7aec7fe9486f6bd131c5f96d"
+      }
+    },
+    {
+      "check_id": "stage:freeze",
+      "kind": "DETERMINISTIC",
+      "status": "PASS",
+      "executor": "survey_publication_v2.build_freeze + profile identity validation",
+      "evidence": "Freeze binds exact PDF SHA-256 4e2250677716fba5cbfe3ea0e57d9f2174e83a93a15a361d8fbae164bf45089d, 1106143 bytes, 78 pages. Freeze Record is byte-identical to the canonical build_freeze reference; Release Manifest differs only in release_identity (special/beyond-text-2026). visual-review-record is the already candidate-bound pre-preview VISUAL review; no post-approval review was invented. Production Profile and Quality Bundle bind LONGFORM_SPECIAL and release identity special/beyond-text-2026.",
+      "result": {
+        "path": "sources/SP-beyond-text-2026/execution/validation/freeze-stage-validation.json",
+        "sha256": "ca055ad6c271e45eef79eeaf2fefc24549e19e6a7aec7fe9486f6bd131c5f96d"
+      }
+    }
+  ],
+  "summary": "TS-002: freeze exact Human-approved Publication Preview r12 bytes (78pp PDF 4e225067, 1106143 bytes; candidate 4d2c01ab; source d3543075) using canonical candidate-bound pre-preview VISUAL review and profile-derived release identity special/beyond-text-2026; bounded runtime-only compat for CV2-DM-001/002/003 recurrence and CV2-DM-019 identity; no shared-Core change, no reader-byte change."
+}

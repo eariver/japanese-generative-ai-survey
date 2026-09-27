@@ -1,0 +1,728 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-beyond-text-2026",
+  "batch_id": "batch-002",
+  "basis": {
+    "package_sha256": "3e2b479604a0b8d11c235ebdd2eed7279b0ff7590b285a9623c23d050d74e39b",
+    "batch_sha256": "64f93ff43d3cf6d86a94ec40b6771129eff5b1bb7b42d82e0d5efc3e18e267db",
+    "profile_sha256": "9fb37cbf9c8401f80f898e2c2a62e7e24cd44ec0819fec9e1b1732dbc27a2bdb",
+    "state_sha256": "3b9460eadb10dc88b8edf3a5f3396a3864bbb032d0994ebb912d8280bb713d21",
+    "prompt_sha256": "3e45900ead73688eab8734036e6e476c1ec4f1a7ce38da42d5ca52a68ef0a862",
+    "result_contract_sha256": "a05b65b41efbcaf654df5c3c5944254a76d93d8a28cab961f2c06f6d580da5a2"
+  },
+  "decisions": [
+    {
+      "discovery_id": "BT-D051",
+      "decision": "KEEP",
+      "reason": "WaveNet raw-waveform autoregression origin; speech-history anchor never collapsed into music.",
+      "scope_tags": [
+        "BT-O02",
+        "BT-O07"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "BT-D052",
+      "decision": "KEEP",
+      "reason": "Tacotron end-to-end TTS decomposition-change anchor.",
+      "scope_tags": [
+        "BT-O07"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "BT-D053",
+      "decision": "KEEP",
+      "reason": "Tacotron 2 mel-conditioning anchor; naturalness/intelligibility step in TTS lineage.",
+      "scope_tags": [
+        "BT-O07"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "BT-D054",
+      "decision": "KEEP",
+      "reason": "FastSpeech parallel/controllable-TTS anchor; latency/control thread in speech.",
+      "scope_tags": [
+        "BT-O07",
+        "BT-O10"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "BT-D055",
+      "decision": "KEEP",
+      "reason": "HiFi-GAN efficient neural-vocoder anchor; GAN retained as vocoder/post-training mechanism.",
+      "scope_tags": [
+        "BT-O07",
+        "BT-O10"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "BT-D056",
+      "decision": "KEEP",
+      "reason": "VITS end-to-end latent+flow+adversarial TTS anchor; intelligibility/naturalness/speaker thread.",
+      "scope_tags": [
+        "BT-O07"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "BT-D057",
+      "decision": "KEEP",
+      "reason": "YourTTS multispeaker-transfer anchor; speaker/identity preservation in TTS.",
+      "scope_tags": [
+        "BT-O04",
+        "BT-O07"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "BT-D058",
+      "decision": "KEEP",
+      "reason": "VALL-E codec-LM zero-shot TTS anchor; neural-codec plus language-modeling transition.",
+      "scope_tags": [
+        "BT-O01",
+        "BT-O07"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "BT-D059",
+      "decision": "KEEP",
+      "reason": "VALL-E 2 human-parity codec-LM anchor; vendor parity claim quarantined at Evidence.",
+      "scope_tags": [
+        "BT-O07",
+        "BT-O11"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification",
+        "vendor-claim quarantine"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "BT-D060",
+      "decision": "KEEP",
+      "reason": "Voicebox flow-matching multilingual speech generation/editing anchor; non-autoregressive path.",
+      "scope_tags": [
+        "BT-O02",
+        "BT-O05",
+        "BT-O07"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "BT-D061",
+      "decision": "KEEP",
+      "reason": "Seed-TTS versatile speech anchor; expressiveness/coverage in current speech lineage.",
+      "scope_tags": [
+        "BT-O06",
+        "BT-O07"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification",
+        "vendor-claim quarantine"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "BT-D062",
+      "decision": "KEEP",
+      "reason": "SeamlessM4T-v2 expressive multilingual/streaming anchor; translation-adjacent speech kept to generation boundary.",
+      "scope_tags": [
+        "BT-O06",
+        "BT-O07"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "BT-D063",
+      "decision": "KEEP",
+      "reason": "Jukebox raw/discrete music-modeling origin; long-form structure problem start.",
+      "scope_tags": [
+        "BT-O02",
+        "BT-O06",
+        "BT-O08"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "BT-D064",
+      "decision": "KEEP",
+      "reason": "DiffWave versatile diffusion-audio anchor; diffusion in the waveform lane.",
+      "scope_tags": [
+        "BT-O02",
+        "BT-O07",
+        "BT-O08"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "BT-D065",
+      "decision": "KEEP",
+      "reason": "MusicLM text-to-music anchor; semantic/musical-structure thread.",
+      "scope_tags": [
+        "BT-O06",
+        "BT-O08"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "BT-D066",
+      "decision": "KEEP",
+      "reason": "MusicGen controllable-music anchor; melody/chroma/lyrics conditioning practice.",
+      "scope_tags": [
+        "BT-O04",
+        "BT-O08"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "BT-D067",
+      "decision": "KEEP",
+      "reason": "AudioLDM latent-diffusion text-to-audio anchor; DiT/latent path in general audio.",
+      "scope_tags": [
+        "BT-O02",
+        "BT-O08"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "BT-D068",
+      "decision": "KEEP",
+      "reason": "Stable Audio Open anchor; open-weight mechanism comparator for latent-diffusion audio.",
+      "scope_tags": [
+        "BT-O08",
+        "BT-O10"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification",
+        "license/version binding at Evidence"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "BT-D069",
+      "decision": "KEEP",
+      "reason": "MuSTANGO controllable text-to-music anchor; control-fidelity case in music.",
+      "scope_tags": [
+        "BT-O04",
+        "BT-O08"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "BT-D070",
+      "decision": "KEEP",
+      "reason": "Video Diffusion Models anchor; temporal diffusion problem start for video.",
+      "scope_tags": [
+        "BT-O02",
+        "BT-O06",
+        "BT-O09"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "BT-D071",
+      "decision": "KEEP",
+      "reason": "Imagen Video cascaded spatial+temporal super-resolution anchor.",
+      "scope_tags": [
+        "BT-O06",
+        "BT-O09"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "BT-D072",
+      "decision": "KEEP",
+      "reason": "Phenaki variable-length discrete-video anchor; tokenizer plus temporal-structure thread.",
+      "scope_tags": [
+        "BT-O01",
+        "BT-O06",
+        "BT-O09"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "BT-D073",
+      "decision": "KEEP",
+      "reason": "Make-A-Video text-video-data-free anchor; joint image-video training direction.",
+      "scope_tags": [
+        "BT-O03",
+        "BT-O09"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "BT-D074",
+      "decision": "KEEP",
+      "reason": "AnimateDiff personalized video anchor; reference/personalization transfer to video.",
+      "scope_tags": [
+        "BT-O05",
+        "BT-O09"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "BT-D075",
+      "decision": "KEEP",
+      "reason": "Stable Video Diffusion latent-video scaling anchor; open image-to-video reference.",
+      "scope_tags": [
+        "BT-O09",
+        "BT-O10"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "BT-D076",
+      "decision": "KEEP",
+      "reason": "Movie Gen media-foundation anchor; scaled video plus synchronized-audio direction.",
+      "scope_tags": [
+        "BT-O06",
+        "BT-O09"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification",
+        "vendor-claim quarantine"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "BT-D077",
+      "decision": "KEEP",
+      "reason": "Sora historical turning-point anchor; research impact distinct from 2026 product longevity.",
+      "scope_tags": [
+        "BT-O06",
+        "BT-O09"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification",
+        "lifecycle dates verified 2026-09-23"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "BT-D078",
+      "decision": "KEEP",
+      "reason": "Progressive distillation anchor; few-step sampling thread start.",
+      "scope_tags": [
+        "BT-O02",
+        "BT-O10"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "BT-D079",
+      "decision": "KEEP",
+      "reason": "Latent Consistency Models anchor; consistency/distillation inference acceleration.",
+      "scope_tags": [
+        "BT-O02",
+        "BT-O10"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "BT-D080",
+      "decision": "KEEP",
+      "reason": "LCM-LoRA universal-acceleration anchor; adapter plus consistency composition.",
+      "scope_tags": [
+        "BT-O04",
+        "BT-O10"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "BT-D081",
+      "decision": "KEEP",
+      "reason": "SDXL-Turbo/ADD adversarial-distillation anchor; few-step quality/speed tradeoff case.",
+      "scope_tags": [
+        "BT-O02",
+        "BT-O10"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "BT-D082",
+      "decision": "KEEP",
+      "reason": "MobileDiffusion subsecond-mobile anchor; on-device deployability bound.",
+      "scope_tags": [
+        "BT-O10"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification",
+        "hardware/configuration binding at Evidence"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "BT-D083",
+      "decision": "KEEP",
+      "reason": "FID/TTUR distribution-metric origin; limitations must be preserved at Evidence.",
+      "scope_tags": [
+        "BT-O11"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification",
+        "metric-validity context binding"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "BT-D084",
+      "decision": "KEEP",
+      "reason": "Inception Score anchor; early quality/diversity metric with known limits.",
+      "scope_tags": [
+        "BT-O11"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification",
+        "metric-validity context binding"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "BT-D085",
+      "decision": "KEEP",
+      "reason": "GenEval compositional-alignment diagnostic anchor; prompt-adherence separation case.",
+      "scope_tags": [
+        "BT-O03",
+        "BT-O11"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification",
+        "metric-validity context binding"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "BT-D086",
+      "decision": "KEEP",
+      "reason": "T2I-CompBench compositional benchmark anchor; binding/attribute diagnostic.",
+      "scope_tags": [
+        "BT-O03",
+        "BT-O11"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification",
+        "metric-validity context binding"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "BT-D087",
+      "decision": "KEEP",
+      "reason": "Pick-a-Pic human-preference dataset anchor; preference-study methodology case.",
+      "scope_tags": [
+        "BT-O11"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification",
+        "metric-validity context binding"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "BT-D088",
+      "decision": "KEEP",
+      "reason": "Fréchet Audio Distance anchor; embedding-dependence limit must be preserved.",
+      "scope_tags": [
+        "BT-O11"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification",
+        "metric-validity context binding"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "BT-D089",
+      "decision": "KEEP",
+      "reason": "LibriSpeech corpus anchor; intelligibility/WER evaluation substrate.",
+      "scope_tags": [
+        "BT-O07",
+        "BT-O11"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "BT-D090",
+      "decision": "KEEP",
+      "reason": "GE2E speaker-verification loss anchor; speaker-similarity evaluation substrate.",
+      "scope_tags": [
+        "BT-O07",
+        "BT-O11"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "BT-D091",
+      "decision": "KEEP",
+      "reason": "MUSHRA listening-protocol anchor; human audio-evaluation methodology.",
+      "scope_tags": [
+        "BT-O11"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification",
+        "metric-validity context binding"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "BT-D092",
+      "decision": "KEEP",
+      "reason": "VBench multidimensional video-evaluation anchor; consistency/motion/adherence split.",
+      "scope_tags": [
+        "BT-O09",
+        "BT-O11"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification",
+        "metric-validity context binding"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "BT-D093",
+      "decision": "KEEP",
+      "reason": "VBench-2.0 intrinsic-faithfulness anchor; physics/commonsense/human-fidelity extension.",
+      "scope_tags": [
+        "BT-O09",
+        "BT-O11"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification",
+        "metric-validity context binding"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "BT-D094",
+      "decision": "KEEP",
+      "reason": "Unified-IO unified vision-language anchor; convergence case kept to generation-relevant scope.",
+      "scope_tags": [
+        "BT-O12"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification",
+        "TS-002/TS-003 boundary: generation-relevant only"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "BT-D095",
+      "decision": "KEEP",
+      "reason": "AudioPaLM speak-and-listen anchor; native-audio multimodal boundary case.",
+      "scope_tags": [
+        "BT-O07",
+        "BT-O12"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification",
+        "TS-002/TS-003 boundary: generation-relevant only"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "BT-D096",
+      "decision": "KEEP",
+      "reason": "AnyGPT discrete-multimodal anchor; unified-token convergence hypothesis case.",
+      "scope_tags": [
+        "BT-O12"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification",
+        "TS-002/TS-003 boundary: generation-relevant only"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "BT-D097",
+      "decision": "KEEP",
+      "reason": "CoDi any-to-any diffusion anchor; compositing-diffusion convergence mechanism.",
+      "scope_tags": [
+        "BT-O02",
+        "BT-O12"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "BT-D098",
+      "decision": "KEEP",
+      "reason": "C2PA provenance-specification anchor; watermark/credential deployment-trust mechanism.",
+      "scope_tags": [
+        "BT-O11",
+        "BT-O12"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "BT-D099",
+      "decision": "KEEP",
+      "reason": "SynthID watermarking anchor; generated-media verification mechanism.",
+      "scope_tags": [
+        "BT-O12"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "BT-D100",
+      "decision": "KEEP",
+      "reason": "FLUX.2 [klein] interactive-visual-intelligence capstone; open/local plus few-step runtime case.",
+      "scope_tags": [
+        "BT-O02",
+        "BT-O05",
+        "BT-O10"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification",
+        "vendor-claim quarantine; architecture non-inference; hardware/configuration binding"
+      ],
+      "confidence": "high"
+    }
+  ]
+}

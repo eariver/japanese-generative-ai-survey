@@ -1,0 +1,121 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-beyond-text-2026",
+  "evidence_task_id": "evidence:SP-beyond-text-2026:a802cfdfe0f9a978",
+  "basis": {
+    "task_sha256": "f3ac79ab8b5dd9c3c71ed1e5f6580ada4c3bcb04d03d9af404ea0778ddab3d5c",
+    "screening_acceptance_sha256": "826833e88e851f69e5bd76a3d2558f0bb4a659aed49bf25e404e0cda1bf6be79",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "evr2-btd076",
+      "canonical_name": "Movie Gen: A Cast of Media Foundation Models (Meta)",
+      "entity_type": "PAPER",
+      "organization": "Meta",
+      "canonical_url": "https://ai.meta.com/research/publications/movie-gen-a-cast-of-media-foundation-models/"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "evr2-btd076",
+    "artifact_type": "PAPER",
+    "canonical_name": "Movie Gen: A Cast of Media Foundation Models (Meta)",
+    "canonical_url": "https://ai.meta.com/research/publications/movie-gen-a-cast-of-media-foundation-models/"
+  },
+  "temporal": {
+    "observed_at": "2026-09-24T14:30:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2024-10",
+        "subject_id": "evr2-btd076",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://ai.meta.com/research/publications/movie-gen-a-cast-of-media-foundation-models/",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "Movie Gen: A Cast of Media Foundation Models (Meta)",
+      "published_at": "2024-10",
+      "accessed_at": "2026-09-24T14:30:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "The page abstract states: cast of foundation models generating 1080p HD videos with aspect ratios and synchronised audio, plus instruction-based video editing and personalised videos from a user image; claimed state-of-the-art on text-to-video, personalisation, editing, video-to-audio, text-to-audio; largest video model 30B-parameter transformer, 73K video-token context (16 s at 16 fps); innovations claimed across architecture, latent spaces, objectives, data, evaluation, parallelisation, inference; all videos at a linked gallery.",
+      "subject_id": "evr2-btd076",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Page static abstract; method/eval sections not consumed."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Abstract-level only: 30B/73K/16 s figures are vendor claims without consumed method/eval sections; JavaScript-gated body is an access barrier.",
+      "subject_id": "evr2-btd076",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "Synchronised-AV fidelity, identity permanence, long-horizon structure, continuation, editing preservation not established.",
+      "subject_id": "evr2-btd076",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "UNRESOLVED",
+        "finding": "Full body not consumed: Static HTML of the Meta research page consumed (title, date October 16 2024, full abstract, author list). Method/evaluation sections are JavaScript-gated (only 2 renderable text lines); no architecture/latent/training/ev",
+        "subject_ids": [
+          "evr2-btd076"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "vendor-claim quarantine",
+        "status": "VERIFIED",
+        "finding": "Page abstract quarantined as vendor claim: 30B/73K/SOTA statements attributed to Meta with no independent reproduction; no mechanism inferred beyond page wording.",
+        "subject_ids": [
+          "evr2-btd076"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      "Evidence-stage full-body verification: Full body not consumed: Static HTML of the Meta research page consumed (title, date October 16 2024, full abstract, author list). Method/evaluation sections are JavaScript-gated (only 2 renderable text lines); no architecture/latent/training/ev"
+    ],
+    "contradictions": []
+  }
+}

@@ -1,0 +1,108 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-beyond-text-2026",
+  "evidence_task_id": "evidence:SP-beyond-text-2026:c33e504687f977f0",
+  "basis": {
+    "task_sha256": "d4561566416aac7607a6ffb5f99667fd6a8d66cf84bdc251d461a573553106c3",
+    "screening_acceptance_sha256": "826833e88e851f69e5bd76a3d2558f0bb4a659aed49bf25e404e0cda1bf6be79",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "evr2-btd114",
+      "canonical_name": "Suno release notes",
+      "entity_type": "PRODUCT",
+      "organization": "Suno",
+      "canonical_url": "https://suno.com/release-notes"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "evr2-btd114",
+    "artifact_type": "PRODUCT",
+    "canonical_name": "Suno release notes",
+    "canonical_url": "https://suno.com/release-notes"
+  },
+  "temporal": {
+    "observed_at": "2026-09-24T14:30:00Z",
+    "events": []
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://suno.com/release-notes",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "Suno release notes",
+      "published_at": null,
+      "accessed_at": "2026-09-24T14:30:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "The index documents the closed song workflow: Create (text/audio/image/video), Song Editor/Replace/Crop/Stems/Extend/Remix/Covers/Personas, Studio DAW (MIDI/FX/wavetable/automation), playlists/social/mobile/car integration; v6 entry retires prior models.",
+      "subject_id": "evr2-btd114",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Index entries; changelog descriptions, no eval claims."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Capability/workflow role only; no architecture/eval authority; entry dates bind per-entry only.",
+      "subject_id": "evr2-btd114",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "Model mechanism, training, evaluation not established.",
+      "subject_id": "evr2-btd114",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Source body consumed (Release-notes index consumed (individually dated entries: Studio MIDI Sep 17 2026; v6 Sep 9 2026; Studio 2.0 Aug 13 2026; v5.5 Mar 26 2026; v5 Sep 23 2025). Index page itself undated.). No claim above rests on Discovery summary alone.",
+        "subject_ids": [
+          "evr2-btd114"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "version-fluid; workflow case only; architecture non-inference",
+        "status": "VERIFIED",
+        "finding": "Consumed body claims attributed to vendor/author with stated configs; no undisclosed mechanism inferred; limits recorded.",
+        "subject_ids": [
+          "evr2-btd114"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

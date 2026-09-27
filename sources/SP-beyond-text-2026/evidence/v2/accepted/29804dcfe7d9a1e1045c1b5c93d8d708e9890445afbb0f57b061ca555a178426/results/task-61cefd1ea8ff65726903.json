@@ -1,0 +1,110 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-beyond-text-2026",
+  "evidence_task_id": "evidence:SP-beyond-text-2026:9ca57ba1364731bc",
+  "basis": {
+    "task_sha256": "45ca6ff8ed4a43ddc6f4e9d5761218e08f1cc30ad81e06f47ad8e6bab64d8cd6",
+    "screening_acceptance_sha256": "826833e88e851f69e5bd76a3d2558f0bb4a659aed49bf25e404e0cda1bf6be79",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "evr2-btd098",
+      "canonical_name": "C2PA Specifications (content provenance)",
+      "entity_type": "OTHER",
+      "organization": "C2PA",
+      "canonical_url": "https://c2pa.org/"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "evr2-btd098",
+    "artifact_type": "OTHER",
+    "canonical_name": "C2PA Specifications (content provenance)",
+    "canonical_url": "https://c2pa.org/"
+  },
+  "temporal": {
+    "observed_at": "2026-09-24T14:30:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2024-01",
+        "subject_id": "evr2-btd098",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://c2pa.org/",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "C2PA Specifications (content provenance)",
+      "published_at": "2024-01",
+      "accessed_at": "2026-09-24T14:30:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Per the homepage, the organisation publishes an open provenance standard with Content-Credentials history (nutrition-label analogy) verifiable by consumers at any time, governed by a multi-stakeholder steering committee (listed members include Adobe/Amazon/BBC/Google/Meta/Microsoft/OpenAI/Sony/TikTok/Truepic).",
+      "subject_id": "evr2-btd098",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Homepage body; spec-level construction not present on page."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Marketing-page scope; no technical manifest, trust-list, or audio/music-binding details; deployment evidence needs vendor/spec sources.",
+      "subject_id": "evr2-btd098",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "Any generation-relevant provenance guarantee (signing, tamper-evidence, audio binding, detector robustness) not established.",
+      "subject_id": "evr2-btd098",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "UNRESOLVED",
+        "finding": "Full body not consumed: https://c2pa.org/ homepage body consumed (hero, how-it-works pointer, adopt-spec link, steering-committee list). Full C2PA specification (manifest/assertions/hash/signing/binding, audio-specific) NOT consumed.",
+        "subject_ids": [
+          "evr2-btd098"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      "Evidence-stage full-body verification: Full body not consumed: https://c2pa.org/ homepage body consumed (hero, how-it-works pointer, adopt-spec link, steering-committee list). Full C2PA specification (manifest/assertions/hash/signing/binding, audio-specific) NOT consumed."
+    ],
+    "contradictions": []
+  }
+}

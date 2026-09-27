@@ -1,0 +1,908 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-beyond-text-2026",
+  "research_profile": "THEMATIC",
+  "publication_profile": "LONGFORM_SPECIAL",
+  "package_id": "arch-paradigms",
+  "draft_version": "v1.0",
+  "status": "ESTABLISHED",
+  "basis": {
+    "draft_package_sha256": "137d083e2996e9d522b7c13884456207786f8c164deb9f571afd1ef139d3b4e0",
+    "prompt_id": "article-drafting-v2",
+    "prompt_sha256": "b687313312a23025228c16c3f10cb68f669b910cd7215e41886d4dd91f44fe11"
+  },
+  "runner": {
+    "provider": "Muse Spark",
+    "model": "muse-spark-1.3",
+    "invocation": "TS-002 drafting-synthesis: 14-package Japanese long-form synthesis from approved Architecture r1 (Human APPROVED 2026-09-25); evidence-bounded prose with PARTIAL/NEEDS_MORE/LOW_SIGNAL guards, closed-system and X boundaries",
+    "generated_at": "2026-09-26T01:50:00+09:00",
+    "run_reference": "ts002-drafting-v1-20260926"
+  },
+  "headline": "生成パラダイムと目的関数：敵対・自己回帰・拡散・フローの分岐",
+  "deck": "敵対的生成と自己回帰画素から出発し、雑音除去拡散と暗黙的短縮、得点の連続時間 framing、潜在拡散、変換器雑音除去器、流れ整合と整流と無撞着への分岐を、アーキテクチャと目的関数と抽出推論の三層で区別してたどる。要旨のみの報告は本文未検証として限定する。",
+  "deck_attribution_mode": "MIXED",
+  "deck_evidence_refs": [
+    {
+      "evidence_task_id": "evidence:SP-beyond-text-2026:8d1355d65ce3939a",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1",
+      "subject_id": "evr2-btd013",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-beyond-text-2026:8d1355d65ce3939a",
+      "kind": "CLAIM",
+      "evidence_id": "claim-2",
+      "subject_id": "evr2-btd013",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-beyond-text-2026:f656ae413808ecc4",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1",
+      "subject_id": "evr2-btd019",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-beyond-text-2026:f656ae413808ecc4",
+      "kind": "CLAIM",
+      "evidence_id": "claim-2",
+      "subject_id": "evr2-btd019",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-beyond-text-2026:ecd7ac2d0f60933d",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1",
+      "subject_id": "evr2-btd023",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-beyond-text-2026:ecd7ac2d0f60933d",
+      "kind": "CLAIM",
+      "evidence_id": "claim-2",
+      "subject_id": "evr2-btd023",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-beyond-text-2026:9c0aac72eef54cd4",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1",
+      "subject_id": "evr2-btd022",
+      "subject_role": "PRIMARY_SUBJECT"
+    }
+  ],
+  "blocks": [
+    {
+      "block_id": "arch-paradigms-b01",
+      "block_type": "PARAGRAPH",
+      "text": "尤度に基づく学習が扱いやすい密度や連鎖を要求したことが、逆伝播に親和的な暗黙的生成の不在という隘路となった。敵対的生成はこの隘路に対し、生成器の標本だけからなる暗黙分布を置き、識別器との競合で分布一致を目指す転換を示した。アーキテクチャとしては多層パーセプトロンの生成器と識別器を交互に更新する構成が出発点であり、後に歩幅畳み込み識別器と分数歩幅生成器、集合同期や生成出力への正規化除外などの設計指針が加わった。目的関数は競合損失であり、一致時に識別が偶然水準となることが理論上の帰着として述べられ、生成器の非飽和損失が実用上の工夫とされた。サンプリングは潜在からの単一順伝播であり、連鎖を必要としない点が機構上の利点とされた。改善としては分布類似の代理評価や、下流分類のプローブで同学構成の教師ありを上回ることが条件付きで報告された。代償として、明示密度を持たないこと、識別器の同期が崩れると様式崩壊を招くこと、高次元での代理評価の分散が大きいことが残る。長期学習での濾波崩壊と対数尤度の不在も記録される。条件別の代理尤度と分類プローブの対応、同期条件と崩壊の関係が整理され、安定な畳み込み構成は後の音声 vocoder や符号器の敵対項へ継承される。事後学習の混合利用へ接続し、単独の画像系譜としては後の拡散系へ座を譲る。代理評価の分散と様式崩壊の条件、畳み込み指針の寄与分離が整理され、敵対項の混合利用は音声と画像の符号器へ継承される。密度不在の代償と単一順伝播の利点の交換がここに定まる。",
+      "attribution_mode": "FACTUAL",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-beyond-text-2026:8d1355d65ce3939a",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "evr2-btd013",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-beyond-text-2026:8d1355d65ce3939a",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "evr2-btd013",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-beyond-text-2026:e07c7cc2504015af",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "evr2-btd014",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-beyond-text-2026:e07c7cc2504015af",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "evr2-btd014",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "arch-paradigms-b02",
+      "block_type": "PARAGRAPH",
+      "text": "初期の敵対的生成では絡み合った潜在と水滴状や blob 状の作画上の乱れ、位置選好が隘路となった。様式生成器はこの隘路に対し、入力潜在を中間空間へ写像し、層ごとに様式と確率的雑音図で制御する分離を導入した。アーキテクチャとしては八層写像網と学習済み定数からの合成網、層別適応正規化と尺度別混合が中核であり、改訂版では外的ばらつきと雑音の配置を見直し、標準偏差のみ変調と重み復調、跳躍生成器と残差識別器へ整理され、漸進成長を廃した点が異なる。目的関数は二潜在の混合正則化に、遅延付き正則化と経路長正則化を組み合わせ、ヤコビの直交性を促す方向へ進んだ。サンプリングは尺度別様式混合と打切り、雑音の再抽出による確率的細部制御で行われ、帰属のための射影最適化が伴った。改善としては分布距離と経路長の同時低下が条件付きで報告され、線形分離性の向上が伴った。代償として、混合正則化が経路長をわずかに歪めること、入力空間が絡んだままであることが残る。分布距離と知覚経路の質感偏りや非構造集合での相反も記録される。条件別の分布距離と経路長の対応、構成別の乱れ解消の寄与が整理され、この制御と品質改訂の系譜は後の参照適合や個人化の制御へ継承される。品質上限自体は後の拡散系の比較対象となる。条件別の解像度と分布距離の対応、写像深度と分離度の関係、改訂前後の乱れ解消の寄与が整理され、中間空間の制御概念は参照適合の先駆けとして位置づく。混合と経路長の交換がここに定まる。",
+      "attribution_mode": "FACTUAL",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-beyond-text-2026:a9b93a109cb4a5ff",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "evr2-btd015",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-beyond-text-2026:a9b93a109cb4a5ff",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "evr2-btd015",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-beyond-text-2026:9c5f26b79574c5a5",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "evr2-btd016",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-beyond-text-2026:9c5f26b79574c5a5",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "evr2-btd016",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "arch-paradigms-b03",
+      "block_type": "PARAGRAPH",
+      "text": "潜在推論の扱いにくさを避けて完全な同時分布を扱い、画素間の長距離依存を捉えることが隘路となった。画素再帰網は行優先と色分解による完全自己回帰分解を置き、画素値を多値分類として扱う表現を選んだ。画像変換器はこの系統を変換器へ置き換え、画素埋め込みと二次元座標で系列を扱い、遮蔽付き局所多頭注意で計算を抑えた。アーキテクチャとしては行方向や対角方向の再帰層と遮蔽畳み込みの多重解像度版、前者に対して復号器専用変換器と超解像用符号器復号器が対応し、無条件と類別条件と超解像の三形態が用意された。目的関数は離散負対数尤度であり、ビット毎次元の尺度で比較され、位置和の最尤として整理される。サンプリングは学習時は並列だが生成時は画素逐次であり、条件付き標本化による塗りつぶしや、温度付き逐次抽出と低解像からの超解像復号が採られた。改善としては桁規模での尤度向上と超解像の騙し率が条件付きで報告され、画素単位の忠実な分布捕捉が示された。代償として逐次生成の費用が大きく単一尺度では大域構造が弱いことが残る。局所注意の文脈切詰めと小解像への限定も記録される。条件別の尤度と騙し率の対応、規模と記憶時間の律速が整理され、この自己回帰 prior の考えは符号帳 prior や音響言語模型へ継承される。条件別の層数と尤度の対応、注意範囲と大域構造の交換、逐次費用と並列学習の対比が整理され、完全同時分布の捕捉は符号帳系列の事前分布設計へ引き継がれる。超解像接続の考えも後継へ残る。",
+      "attribution_mode": "FACTUAL",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-beyond-text-2026:cad54176c861c7b5",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "evr2-btd017",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-beyond-text-2026:cad54176c861c7b5",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "evr2-btd017",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-beyond-text-2026:800b978ff6ec707c",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "evr2-btd018",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-beyond-text-2026:800b978ff6ec707c",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "evr2-btd018",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "arch-paradigms-b04",
+      "block_type": "PARAGRAPH",
+      "text": "拡散模型が良質標本を示せず、画像の品質主導が敵対的生成にあったことが隘路となった。雑音除去拡散は固定ガウス前向き過程と学習逆過程を置き、雑音予測の簡易目的が変分下界の小時刻項を抑える機構を示した。別系統の大規模化は百二十八基底路と多解像注意、残差組立てと適応正規化による時刻と類別の条件づけで品質を押し上げ、分類器誘導を組み合わせた。アーキテクチャの改良と目的関数の簡易化は区別されるべきであり、ここでは画素変換器類似のU網が時刻埋め込みと共有される点が前者、重みなし雑音予測と混合変分項と学習分散補間が後者である。サンプリングは千段階の祖先抽出が出発点であり、二百五十段階や二十五段階への短縮、後に非マルコフ前向き過程で周辺を保ったまま軌道を間引く implicit 法が導入された。改善としては簡易目的での識別得点と分布距離の向上、敵対的生成を下回る分布距離が条件付きで報告された。代償として尤度は競争的でなく情報の多くが知覚困難な細部に割かれることが残る。千段階抽出の日単位費用と短軌道化での品質低下も記録される。条件別の段階数と分布距離の対応、誘導尺度と適合再現の交換が整理され、この簡易目的と間引き抽出の考えは潜在拡散と蒸留へ継承される。条件別の軌道間引き数と分布距離の対応、決定論的軌道と確率的軌道の交換、符号化潜在の再構成可能性が整理され、周辺保存の間引き概念は後継の高速抽出へ引き継がれる。誘導併用の設計も残る。",
+      "attribution_mode": "FACTUAL",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-beyond-text-2026:f656ae413808ecc4",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "evr2-btd019",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-beyond-text-2026:f656ae413808ecc4",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "evr2-btd019",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-beyond-text-2026:4ce9c8d88d8d8e70",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "evr2-btd020",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-beyond-text-2026:4ce9c8d88d8d8e70",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "evr2-btd020",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-beyond-text-2026:aef4ce32df2d9308",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "evr2-btd030",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-beyond-text-2026:aef4ce32df2d9308",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "evr2-btd030",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "arch-paradigms-b05",
+      "block_type": "PARAGRAPH",
+      "text": "離散時刻の拡散と得点整合が別定式化であり、新しい解法や厳密尤度や制御生成の拡張が阻まれていたことが隘路となった。連続時間の確率微分方程式 framing は両者を統一し、時間依存得点網と予測子修正子の解法、確率流常微分方程式による適応積分と厳密尤度、無条件得点からの条件生成を導入した。アーキテクチャとしては過程別の得点網と修正子、目的関数としては連続雑音除去得点整合、サンプリングとしては逆過程解法と適応積分が区別される。設計空間整理の報告は、前処理と日程と解法の部品化で三十五回評価の抽出と分布距離の低下を示すが、ここは要旨のみの消費であり、前処理や日程や解法の内訳と backbone 対目的の分離や他 modality への主張は本文未検証として扱う限定が必要である。画素拡散の費用が次の隘路となり、知覚学習済み符号器で一度圧縮して潜在で拡散し一度だけ復号する転換が置かれた。アーキテクチャは知覚と敵対項の符号器、時刻条件U網、文や配置の交叉注意であり、目的関数は潜在雑音整合である。サンプリングは十から二百段階の implicit 軌道で行われ、畳み込み拡張で千画素級へ伸ばす。改善として分布距離の低下が報告された。細部の第一段階律速と過圧縮の停滞、逐次費用も記録される。要旨限定の主張は後継の本文検証へ引き継がれる。過程別の得点網と修正子の組合せ、連続整合と離散目的の対応、潜在圧縮率と細部保存の交換が整理され、統一 framing の概念は流れ整合の比較軸へ引き継がれる。本文検証の完了が後継課題として残る。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-beyond-text-2026:da4771f3120d07d1",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "evr2-btd021",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-beyond-text-2026:da4771f3120d07d1",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "evr2-btd021",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-beyond-text-2026:9c0aac72eef54cd4",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "evr2-btd022",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-beyond-text-2026:ecd7ac2d0f60933d",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "evr2-btd023",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-beyond-text-2026:ecd7ac2d0f60933d",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "evr2-btd023",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "arch-paradigms-b06",
+      "block_type": "PARAGRAPH",
+      "text": "U網の帰納バイアスが必須という仮定と、目的関数の比較が backbone と絡んでいたことが隘路となった。拡散変換器は雑音除去器を変換器へ置き換え、凍結変分符号潜在のパッチ化と適応正規化による零初期化で規模則を示した。補間変換器は同一 backbone で前向き結合を補間へ置き換え、速度目的と得点導出を整え、拡散と補間の差を分離し、確率流と逆過程の二解法を比べた。アーキテクチャの交代と目的関数の交代はここで明確に区別される。流れ整合は常微分方程式模擬を要する最尤の費用に対し、条件付き場への回帰で模擬なし学習を可能とし、最適輸送版で軌道を直線化し、訓練費一定で解法費を下げた。整流流れは線形補間の方向への最小二乗回帰で結合を直し、再流で輸送費と直線性を下げ、一段階蒸留へ接続した。サンプリングは適応解法やオイラー段階で実行され、直線軌道ほど少数段階で足りる。無撞着模型は軌道上の任意点を起点へ写す自己無撞着関数を置き、境界条件と跳躍変数化で既存拡散網を再利用し、蒸留と単独学習の二経路を示した。改善として規模別の分布距離低下や評価数削減、一段階での距離低下が条件付きで報告された。装置依存と端点特異性、再流誤差の蓄積も記録される。条件別の規模と距離の対応、直線性と段階数の交換が整理され、映像編集側の比較へ引き継ぐ。同一 backbone での目的関数比較の方法、補間係数の特異点と正則化の対応、再流回数と誤差蓄積の交換が整理され、 backbone 対目的の分離概念は後継の評価設計へ引き継がれる。",
+      "attribution_mode": "FACTUAL",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-beyond-text-2026:e92a603c08131eb8",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "evr2-btd025",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-beyond-text-2026:e92a603c08131eb8",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "evr2-btd025",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-beyond-text-2026:03d83a1b654568f6",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "evr2-btd026",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-beyond-text-2026:03d83a1b654568f6",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "evr2-btd026",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-beyond-text-2026:5b0ffada7797575b",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "evr2-btd027",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-beyond-text-2026:5b0ffada7797575b",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "evr2-btd027",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-beyond-text-2026:7f27c6de1127907d",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "evr2-btd028",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-beyond-text-2026:7f27c6de1127907d",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "evr2-btd028",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-beyond-text-2026:f23c7d1fdb041142",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "evr2-btd029",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-beyond-text-2026:f23c7d1fdb041142",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "evr2-btd029",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "arch-paradigms-boundaries",
+      "block_type": "CLAIM_BOUNDARY",
+      "text": "この節の読解上の境界: U-Net vs Transformer is architecture; diffusion vs flow is objective; solver/distillation is inference. No cross-condition ranking. / No explicit density; discriminator must stay synchronised (mode collapse risk); Parzen evaluation high-variance in high dimensions. / Modern role is vocoder/autoencoder/post-training hybrid, not standalone SOTA. / Prior recorded locator 1812.04958 was a transcription defect; canonical Discovery provenance was rebound to 1812.04948 during the 2026-09-24 provenance repair (see provenance-repair-manifest.json). Claims rest on the verified-correct body. / Mixing regularisation slightly distorts W path length; Z input space stays entangled. / FID/perceptual-path metrics are texture-biased; FID-PPL trade-off on unstructured sets; larger models may help further. / Matched-resolution/budget GAN-vs-diffusion comparison needs discipline. / NLL uncompetitive vs other likelihood models; most bits describe imperceptible detail; 1000-step sampling costly (~5 days/50k A100). / Step-cost reduction requires DDIM/distillation successors. / FID degrades as trajectory shortens; DDPM-implementation sigma collapses at short trajectories; ODE-vs-probability-flow gap at few steps. / Few-step SOTA vs LCM/consistency successors not compared here. / Solver cost still high (1000-2000 evals); VE/VP/sub-VP trade-offs and corrector steps need tuning; architecture gains entangled with sampler gains. / Solver optimality vs EDM successor and audio/video transfer beyond images. / Pixel-level detail still limited by first stage; LDM-32 over-compression stagnates; sequential sampling still costly; misuse/bias noted. / Cross-attention conditioning role needs D03 sources; autoencoder-vs-prior error attribution needs ablations. / JAX TPU-v3 throughput figures are hardware-bound; FID sensitive to eval suite; pixel-space DiT not tested. / Scaling vs SiT/flow successors and text-to-image transfer need successor sources. / CIFAR FID higher than tuned literature (backbone not CIFAR-optimised); adaptive-solver NFE still 100+; marginal field not OT-optimal despite conditional OT. / Trajectory-straightness vs rectified-flow reflow and high-res text-conditional transfer not established. / Exact theory needs exact velocity field + unique ODE; estimation error accumulates over many reflows (1 reflow recommended); density smoothing needed for ill-behaved fields. / Reflow cost vs LCM/consistency comparison and optimal-vs-straight coupling beyond 1D not established. / Needs Lipschitz + higher-order solver for theorem error rates; continuous-time needs forward-mode JVP; greedy tau search assumes unimodal FID. / Few-step quality vs LCM/ADD successors and guidance interaction beyond reported tables not established. / 250-step sampling (25-step viable) still slower than GANs; classifier + large-upsample compute heavy; FID/IS/precision/recall imperfect proxies. / Guidance mechanism vs classifier-free successor and API-scale text conditioning beyond class labels not established. / Occasional filter-collapse with longer training; no log-likelihood; global-average-pooling stability/speed trade-off noted. / Stability analysis superseded by StyleGAN-era engineering. / Sequential generation expensive; 64x64 single-scale weak global structure; size capped by GPU memory/time. / Cost argument vs Image-Transformer follow-ups. / Local attention still truncates full context; largest generation 32x32 plus super-resolution only. / Full-attention DiT-scale comparison needed. / Abstract-only consumption: preconditioning/schedule/solver ablations, backbone-vs-objective separation, and cross-modal claims are NOT body-established. / Image-domain ablations and audio/video transfer need full-body plus modality sources. / Evidence-stage full-body verification: Full body not consumed: arXiv abs consumed (Heusel-style abstract verified: Karras et al., 2022). Full-text HTML 404 + ar5iv LaTeXML fatal; PDF/TeX only, not body-consumed. / wKL singular as t→1 for Linear/GVP (eta regularisation needed); velocity-score singularity at t=0; sampler discretisation heuristic. / Flow-vs-diffusion gap vs rectified-flow reflow needs comparison.",
+      "attribution_mode": "INFERENCE",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-beyond-text-2026:8d1355d65ce3939a",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "evr2-btd013",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-beyond-text-2026:8d1355d65ce3939a",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "evr2-btd013",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-beyond-text-2026:a9b93a109cb4a5ff",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "evr2-btd015",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-beyond-text-2026:a9b93a109cb4a5ff",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "evr2-btd015",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-beyond-text-2026:9c5f26b79574c5a5",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "evr2-btd016",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-beyond-text-2026:9c5f26b79574c5a5",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "evr2-btd016",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-beyond-text-2026:f656ae413808ecc4",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "evr2-btd019",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-beyond-text-2026:f656ae413808ecc4",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "evr2-btd019",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-beyond-text-2026:4ce9c8d88d8d8e70",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "evr2-btd020",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-beyond-text-2026:4ce9c8d88d8d8e70",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "evr2-btd020",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-beyond-text-2026:da4771f3120d07d1",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "evr2-btd021",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-beyond-text-2026:da4771f3120d07d1",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "evr2-btd021",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-beyond-text-2026:ecd7ac2d0f60933d",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "evr2-btd023",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-beyond-text-2026:ecd7ac2d0f60933d",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "evr2-btd023",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-beyond-text-2026:e92a603c08131eb8",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "evr2-btd025",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-beyond-text-2026:e92a603c08131eb8",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "evr2-btd025",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-beyond-text-2026:5b0ffada7797575b",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "evr2-btd027",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-beyond-text-2026:5b0ffada7797575b",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "evr2-btd027",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-beyond-text-2026:7f27c6de1127907d",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "evr2-btd028",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-beyond-text-2026:7f27c6de1127907d",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "evr2-btd028",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-beyond-text-2026:f23c7d1fdb041142",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "evr2-btd029",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-beyond-text-2026:f23c7d1fdb041142",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "evr2-btd029",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-beyond-text-2026:aef4ce32df2d9308",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "evr2-btd030",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-beyond-text-2026:aef4ce32df2d9308",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "evr2-btd030",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-beyond-text-2026:e07c7cc2504015af",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "evr2-btd014",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-beyond-text-2026:e07c7cc2504015af",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "evr2-btd014",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-beyond-text-2026:cad54176c861c7b5",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "evr2-btd017",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-beyond-text-2026:cad54176c861c7b5",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "evr2-btd017",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-beyond-text-2026:800b978ff6ec707c",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "evr2-btd018",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-beyond-text-2026:800b978ff6ec707c",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "evr2-btd018",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-beyond-text-2026:9c0aac72eef54cd4",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "evr2-btd022",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-beyond-text-2026:9c0aac72eef54cd4",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "evr2-btd022",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-beyond-text-2026:03d83a1b654568f6",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "evr2-btd026",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-beyond-text-2026:03d83a1b654568f6",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "evr2-btd026",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    }
+  ],
+  "must_cover_coverage": [
+    {
+      "requirement": "BT-O02",
+      "block_ids": [
+        "arch-paradigms-b01",
+        "arch-paradigms-b02",
+        "arch-paradigms-b03",
+        "arch-paradigms-b04",
+        "arch-paradigms-b05",
+        "arch-paradigms-b06",
+        "arch-paradigms-boundaries"
+      ]
+    }
+  ],
+  "boundary_dispositions": [
+    {
+      "boundary": "U-Net vs Transformer is architecture; diffusion vs flow is objective; solver/distillation is inference. No cross-condition ranking.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "arch-paradigms-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "No explicit density; discriminator must stay synchronised (mode collapse risk); Parzen evaluation high-variance in high dimensions.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "arch-paradigms-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Modern role is vocoder/autoencoder/post-training hybrid, not standalone SOTA.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "arch-paradigms-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Prior recorded locator 1812.04958 was a transcription defect; canonical Discovery provenance was rebound to 1812.04948 during the 2026-09-24 provenance repair (see provenance-repair-manifest.json). Claims rest on the verified-correct body.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "arch-paradigms-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Mixing regularisation slightly distorts W path length; Z input space stays entangled.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "arch-paradigms-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "FID/perceptual-path metrics are texture-biased; FID-PPL trade-off on unstructured sets; larger models may help further.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "arch-paradigms-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Matched-resolution/budget GAN-vs-diffusion comparison needs discipline.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "arch-paradigms-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "NLL uncompetitive vs other likelihood models; most bits describe imperceptible detail; 1000-step sampling costly (~5 days/50k A100).",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "arch-paradigms-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Step-cost reduction requires DDIM/distillation successors.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "arch-paradigms-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "FID degrades as trajectory shortens; DDPM-implementation sigma collapses at short trajectories; ODE-vs-probability-flow gap at few steps.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "arch-paradigms-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Few-step SOTA vs LCM/consistency successors not compared here.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "arch-paradigms-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Solver cost still high (1000-2000 evals); VE/VP/sub-VP trade-offs and corrector steps need tuning; architecture gains entangled with sampler gains.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "arch-paradigms-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Solver optimality vs EDM successor and audio/video transfer beyond images.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "arch-paradigms-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Pixel-level detail still limited by first stage; LDM-32 over-compression stagnates; sequential sampling still costly; misuse/bias noted.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "arch-paradigms-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Cross-attention conditioning role needs D03 sources; autoencoder-vs-prior error attribution needs ablations.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "arch-paradigms-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "JAX TPU-v3 throughput figures are hardware-bound; FID sensitive to eval suite; pixel-space DiT not tested.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "arch-paradigms-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Scaling vs SiT/flow successors and text-to-image transfer need successor sources.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "arch-paradigms-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "CIFAR FID higher than tuned literature (backbone not CIFAR-optimised); adaptive-solver NFE still 100+; marginal field not OT-optimal despite conditional OT.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "arch-paradigms-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Trajectory-straightness vs rectified-flow reflow and high-res text-conditional transfer not established.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "arch-paradigms-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Exact theory needs exact velocity field + unique ODE; estimation error accumulates over many reflows (1 reflow recommended); density smoothing needed for ill-behaved fields.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "arch-paradigms-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Reflow cost vs LCM/consistency comparison and optimal-vs-straight coupling beyond 1D not established.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "arch-paradigms-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Needs Lipschitz + higher-order solver for theorem error rates; continuous-time needs forward-mode JVP; greedy tau search assumes unimodal FID.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "arch-paradigms-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Few-step quality vs LCM/ADD successors and guidance interaction beyond reported tables not established.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "arch-paradigms-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "250-step sampling (25-step viable) still slower than GANs; classifier + large-upsample compute heavy; FID/IS/precision/recall imperfect proxies.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "arch-paradigms-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Guidance mechanism vs classifier-free successor and API-scale text conditioning beyond class labels not established.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "arch-paradigms-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Occasional filter-collapse with longer training; no log-likelihood; global-average-pooling stability/speed trade-off noted.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "arch-paradigms-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Stability analysis superseded by StyleGAN-era engineering.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "arch-paradigms-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Sequential generation expensive; 64x64 single-scale weak global structure; size capped by GPU memory/time.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "arch-paradigms-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Cost argument vs Image-Transformer follow-ups.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "arch-paradigms-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Local attention still truncates full context; largest generation 32x32 plus super-resolution only.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "arch-paradigms-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Full-attention DiT-scale comparison needed.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "arch-paradigms-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Abstract-only consumption: preconditioning/schedule/solver ablations, backbone-vs-objective separation, and cross-modal claims are NOT body-established.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "arch-paradigms-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Image-domain ablations and audio/video transfer need full-body plus modality sources.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "arch-paradigms-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Evidence-stage full-body verification: Full body not consumed: arXiv abs consumed (Heusel-style abstract verified: Karras et al., 2022). Full-text HTML 404 + ar5iv LaTeXML fatal; PDF/TeX only, not body-consumed.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "arch-paradigms-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "wKL singular as t→1 for Linear/GVP (eta regularisation needed); velocity-score singularity at t=0; sampler discretisation heuristic.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "arch-paradigms-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Flow-vs-diffusion gap vs rectified-flow reflow needs comparison.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "arch-paradigms-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    }
+  ],
+  "profile_extensions": {},
+  "publication_extensions": {}
+}

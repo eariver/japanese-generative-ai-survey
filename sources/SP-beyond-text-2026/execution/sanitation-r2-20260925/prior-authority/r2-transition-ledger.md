@@ -1,0 +1,751 @@
+# TS-002 semantic transition ledger (Layer B synthesis)
+
+Cross-source historical synthesis lives only here — never in Layer A factual cards. `NOT_ESTABLISHED` marks fields the sources do not support. `OPEN_QUESTION` marks convergence/residual items. Vendor claims are attributed, never ranked.
+
+## T-REP-01 — Intractable posteriors to amortized continuous latents to discrete codebooks
+
+- Modality: crossmodal (image origin; audio/video heirs)
+- Bottleneck: Directed generative models with continuous latents had intractable posteriors and required per-datapoint inference, blocking large-data training (D001).
+- Changed representation: Amortized Gaussian encoder q(z|x) with continuous latent code (D001); then discrete codebook latents via nearest-neighbour quantisation with straight-through gradients (D002).
+- Changed architecture: MLP encoder/decoder with reparameterised sampling (D001); strided-conv encoder plus residual blocks plus autoregressive decoder with EMA codebook updates (D002).
+- Changed objective: ELBO/SGVB with analytic KL (D001); log-likelihood given quantised codes plus codebook plus commitment losses (D002).
+- Changed sampling/inference: Ancestral sampling via recognition model without MCMC (D001); MAP quantisation plus ancestral sampling from a separately fitted PixelCNN/WaveNet prior (D002).
+- Conditioning/control: NOT_ESTABLISHED
+- Improvement: AEVB beats wake-sleep on lower bounds (D001); discrete codes avoid posterior collapse under powerful decoders and reach 49.3% phoneme mapping at ~25 Hz speech (D002).
+- Trade-off/failure: Gaussian-posterior example only, discrete latents excluded (D001); no joint prior training, uniform prior during representation learning, MSE pixel blur (D002).
+- Succession: VQ-VAE discrete thesis inherited by VQGAN/codecs/video tokenisers (see T-REP-02, T-REP-04, T-REP-06).
+- Support: BT-D001, BT-D002
+- Tasks: evidence:SP-beyond-text-2026:b32e84eec2a1b15c, evidence:SP-beyond-text-2026:2c20d89c805be2c6
+- Type: MULTI_SOURCE_SYNTHESIS (confidence high)
+- Open: Downstream compression-fidelity quantification needs first-stage autoencoder sources.
+
+## T-REP-02 — Single-scale discrete codes to hierarchical and perceptual-adversarial tokenizers
+
+- Modality: image
+- Bottleneck: Single-scale VQ-VAE latents could not reach high-fidelity large-image generation (D002).
+- Changed representation: Two-level discrete maps (256px: 32x32 top plus 64x64 bottom conditioned on top; FFHQ-1024 adds 128x128) (D003); CNN VQGAN codebook (|Z|=1024; 256x256 to 16x16 indices) with perceptual plus patch-discriminator losses (D004).
+- Changed architecture: Feed-forward conv encoder/decoder with PixelSnail priors (D003); VQGAN encoder-decoder plus GPT-2-medium latent transformer with sliding window (D004).
+- Changed objective: Stage-1 VQ reconstruction plus codebook plus commitment, stage-2 PixelCNN NLL on frozen codes, classifier rejection sampling (D003); VQ objective plus adaptive-weight GAN plus transformer NLL (D004).
+- Changed sampling/inference: Top-prior then bottom-conditioned sampling with single feed-forward decode ~30x faster than pixel-space (D003); autoregressive next-index prediction with sliding window, temperature/top-k (D004).
+- Conditioning/control: NOT_ESTABLISHED
+- Improvement: CAS Top-1 54.83 (58.74 after reconstruction) vs BigGAN-deep 42.65; FID ~30 to ~10 with rejection (D003); CIFAR-10 +18.63% FID at 14.08x faster sampling vs pixels; COCO-Stuff FID 22.4 (D004).
+- Trade-off/failure: Latent-space likelihood not comparable across encoders; rejection trades diversity (D003); sliding window needs spatial invariance; fixed 16x16 context (D004).
+- Succession: Tokenizer quality bar inherited by latent-diffusion first stages (see T-PAR-07).
+- Support: BT-D002, BT-D003, BT-D004
+- Tasks: evidence:SP-beyond-text-2026:2c20d89c805be2c6, evidence:SP-beyond-text-2026:4591d019262ceefb, evidence:SP-beyond-text-2026:60151262951af28d
+- Type: MULTI_SOURCE_SYNTHESIS (confidence high)
+- Open: Recorded D004 locator 2012.09812 is a transcription defect; body consumed at verified-correct 2012.09841.
+- Open: Reconstruction-vs-generation split needs first-stage vs prior ablations.
+
+## T-REP-03 — Unconditional discrete tokens to text-conditioned visual tokens
+
+- Modality: image
+- Bottleneck: Discrete representation learning lacked joint text conditioning at scale (D002-D004).
+- Changed representation: dVAE 256x256 RGB to 32x32=1024 tokens x8192 vocabulary concatenated with BPE text (<=256 tokens) as a single stream (D005).
+- Changed architecture: dVAE conv encoder/decoder with bottleneck plus Gumbel-softmax; 12B sparse decoder-only transformer (64 layers, row/column/conv masks, distributed sharding) (D005).
+- Changed objective: Joint evidence lower bound with KL weight 6.6; prior cross-entropy weighted text 1/8 plus image 7/8 on argmax tokens (D005).
+- Changed sampling/inference: Autoregressive sampling plus CLIP-contrastive best-of-512 rerank, gains plateauing after ~32 (D005).
+- Conditioning/control: Text conditioning via joint token stream (training-time); CLIP rerank at inference (D005).
+- Improvement: MS-COCO zero-shot human vote 90.0% realism plus 93.3% caption match vs DF-GAN; FID within ~2 pts of best prior; 21% COCO / 12% CUB train overlap with no result change (D005).
+- Trade-off/failure: Heavy compression loses high-frequency detail; CUB specialist gap; rerank-dependent; variable binding/text rendering inconsistent (D005).
+- Succession: Text-conditioned discrete precedent displaced by VQGAN/CLIP-latent successors for fidelity (unresolved in consumed body).
+- Support: BT-D002, BT-D005
+- Tasks: evidence:SP-beyond-text-2026:2c20d89c805be2c6, evidence:SP-beyond-text-2026:f8058a6617c7aca4
+- Type: MULTI_SOURCE_SYNTHESIS (confidence high)
+- Open: dVAE ceiling vs VQGAN/CLIP-latent successors needs successor sources.
+
+## T-REP-04 — Speech codecs to residual-vector-quantised neural audio codecs
+
+- Modality: speech/audio
+- Bottleneck: Single-codec single-rate designs could not serve speech/music/general audio at speech-codec bitrates with on-device latency (D006).
+- Changed representation: Causal convolutional embeddings downsampled 320x (75 frames/s at 24 kHz) quantised by residual vector quantisation with constant-D additive refinement enabling variable layer counts (D006); multistream RVQ with adversarial/perceptual losses (D007); stride-512 embeddings at 86 Hz with 9x10-bit factorised normalised RVQ at ~91x compression (D008).
+- Changed architecture: SEANet-like causal conv encoder/decoder with FiLM denoising conditioning (D006); streaming conv encoder-decoder plus LSTM plus per-bandwidth multi-scale STFT discriminator plus optional Transformer LM with arithmetic coding (D007); SoundStream-style encoder/decoder with Snake activations plus multi-period plus complex-STFT discriminator, no k-means/restarts (D008).
+- Changed objective: Hinge adversarial plus feature-matching plus mel-spectral reconstruction end-to-end (D006); L1 time plus multi-scale mel plus hinge GAN plus relative feature-matching plus commitment via gradient balancer (D007); multi-scale log-mel L1 plus HingeGAN plus feature-match plus codebook/commitment with quantiser dropout (D008).
+- Changed sampling/inference: Streamable causal inference with selectable layer count for target rate (D006); 13.3 ms initial latency, RTF ~9.8 enc/10.4 dec (D007); variable-rate first-n codebooks coarse-to-fine (D008).
+- Conditioning/control: NOT_ESTABLISHED
+- Improvement: MUSHRA 3 kbps beats Opus 12 kbps and Lyra 3 kbps, nears EVS 9.6 kbps (D006); streamable MUSHRA 1.5-12 kbps from 49.2 to 90.6 with 25-40% entropy trims (D007); 8 kbps mel/STFT/ViSQOL/SI-SDR beats EnCodec-12k on all four; matched-24 kHz 12 kbps bests EnCodec (D008).
+- Trade-off/failure: Crowdsourced (not strict) MUSHRA; constant-rate operation; music hardest (D006); discriminator-overpower handling; 48 kHz plus entropy coding slower than real-time (D007); still below reference MUSHRA; balanced full-band sampling required (D008).
+- Succession: RVQ codec thesis inherited by codec language models (see T-SP-03) and controllable music (T-MU-02).
+- Support: BT-D006, BT-D007, BT-D008
+- Tasks: evidence:SP-beyond-text-2026:11151f85df2600ae, evidence:SP-beyond-text-2026:35162a0531c5e3da, evidence:SP-beyond-text-2026:5b38cf1833bd2ba7
+- Type: MULTI_SOURCE_SYNTHESIS (confidence high)
+- Open: Matched rate/quality frontier across the three codecs needs a single matched comparison.
+
+## T-REP-05 — Acoustic-only tokens to semantic-plus-acoustic hierarchy
+
+- Modality: audio
+- Bottleneck: Acoustic-only modelling babbles; semantic-only tokens cannot vocode (D009).
+- Changed representation: Hybrid semantic tokens (self-supervised audio encoder layer-7 k-means K=1024 at 25 Hz, ~250 bps) plus acoustic SoundStream tokens (12x1024 RVQ at 50 Hz, 6000 bps; 4 coarse=2000 bps plus 8 fine) (D009).
+- Changed architecture: Frozen tokenisers plus three 0.3B decoder-only Transformers in stages (semantic, coarse-acoustic, fine) (D009).
+- Changed objective: Next-token likelihood per stage (semantic, then coarse acoustic flattened row-major, then fine on short chunks) (D009).
+- Changed sampling/inference: Continuation from 3-second prompt (semantic extend plus coarse-acoustic extend plus fine pass plus codec decode) with staged temperatures; acoustic-generation and unconditional modes (D009).
+- Conditioning/control: NOT_ESTABLISHED
+- Improvement: Semantic-250 bps ABX 6.7/7.6 vs acoustic-2000 bps 22.4/28.7; acoustic continuation ASR CER 3.4/WER 6.0; speaker accuracy 92.6% on continuation vs 3.2% on resampled semantics (D009).
+- Trade-off/failure: Proper-noun/background-noise ASR errors; piano beyond-speech only continuations (D009).
+- Succession: Separation thesis inherited by MusicLM semantic/acoustic staging (see T-MU-02) and VALL-E codec-LM speech (see T-SP-03).
+- Support: BT-D007, BT-D009
+- Tasks: evidence:SP-beyond-text-2026:35162a0531c5e3da, evidence:SP-beyond-text-2026:3405930c416cbd61
+- Type: MULTI_SOURCE_SYNTHESIS (confidence high)
+- Open: Long-form structure beyond continuations needs MusicLM/MusicGen successors.
+
+## T-REP-06 — Image tokenizers to spatiotemporal video tokenizers
+
+- Modality: video
+- Bottleneck: Image tokenizers lack temporal compression; video generation needed short discrete sequences for long clips (D002, D010).
+- Changed representation: 3D-VQ video to 4x16x16=1024 tokens for 16x128x128 frames (codebook 1024) with inflated 2D-VQ initialisation (D010).
+- Changed architecture: BERT transformer (128M/464M variants; task-prompt plus class plus 1024 visual tokens) trained with COMMIT multivariate masks (D010).
+- Changed objective: Multi-task cross-entropy sum over 10 tasks (frame prediction, interpolation, inpainting variants, class-conditional) (D010).
+- Changed sampling/inference: Non-autoregressive COMMIT decoding in 12 steps (16x128x128 in 12 steps, 0.25 s on TPU, 37 fps on V100) (D010).
+- Conditioning/control: NOT_ESTABLISHED
+- Improvement: UCF-101 FVD 332 to 76(L)/159(B); BAIR frame-prediction FVD 84 to 62 (31 debiased); Kinetics-600 frame-prediction 16.2 to 9.9 (~39% cut); ~100x diffusion sampling efficiency (D010).
+- Trade-off/failure: VQ fidelity bounds generation; fixed 16-frame training; naive unmasking fails (COMMIT motivation) (D010).
+- Succession: Compressed discrete video thesis feeds variable-length generation claims; masked-prior vs diffusion-prior comparison unresolved.
+- Support: BT-D002, BT-D010
+- Tasks: evidence:SP-beyond-text-2026:2c20d89c805be2c6, evidence:SP-beyond-text-2026:510ca885a3badd95
+- Type: MULTI_SOURCE_SYNTHESIS (confidence medium)
+- Open: Masked-prior vs diffusion-prior comparison needs successor coverage.
+
+## T-REP-07 — Research video VAEs to high-compression open video VAE with consumer-GPU execution
+
+- Modality: video
+- Bottleneck: Video VAEs imposed VRAM/latency walls blocking consumer-GPU high-definition generation (D010, D012).
+- Changed representation: High-compression 4x16x16 temporal-height-width VAE (64x) plus patchification to 4x32x32 total (D012).
+- Changed architecture: 2-expert mixture-of-experts layout plus TI2V-5B dense unified model; diffusion training with FSDP/Ulysses (README-level disclosure) (D012).
+- Changed objective: NOT_ESTABLISHED (no training loss in consumed README bytes).
+- Changed sampling/inference: TI2V-5B 5 s 720P at 24 fps in under 9 min on a single 24 GB consumer GPU with offload flags; larger models need 80 GB single or 8-GPU multi-GPU (D012).
+- Conditioning/control: NOT_ESTABLISHED
+- Improvement: Vendor-reported +65.6% images / +83.2% videos vs prior line; fastest-class 720p@24fps claim (vendor-attributed) (D012).
+- Trade-off/failure: Open line stops at 2.2; later versions API-only; README gives no VAE reconstruction/ablation numbers (D012).
+- Succession: Open-weight runtime lane anchor; 4x16x16 fidelity vs downstream motion/aesthetic gain unresolved.
+- Support: BT-D010, BT-D012
+- Tasks: evidence:SP-beyond-text-2026:510ca885a3badd95, evidence:SP-beyond-text-2026:7bf81f16b93d5b2b
+- Type: MULTI_SOURCE_SYNTHESIS (confidence medium)
+- Open: VAE fidelity vs downstream motion/aesthetic gain needs paper/weights evidence, not README claims alone.
+
+## T-PAR-01 — Intractable likelihood to adversarial implicit models to stable convolutional GANs
+
+- Modality: image
+- Bottleneck: Likelihood-based training needed tractable densities or MCMC; backprop-friendly implicit modelling was missing (D013).
+- Changed representation: Implicit generator distribution via samples G(z) with no explicit density, evaluated via Parzen windows (D013); 100-dim uniform noise to convolutional stacks (D014).
+- Changed architecture: MLP generator plus MLP discriminator with alternating SGD (D013); strided-convolution discriminator / fractional-strided generator, no pooling/FC, batchnorm, Adam 0.0002 (D014).
+- Changed objective: Minimax with non-saturating generator loss; optimum at matched distributions (D013); standard adversarial minimax with deduplicated LSUN (D014).
+- Changed sampling/inference: Single forward pass G(z), no Markov chain (D013); discriminator conv features reused for downstream classification (D014).
+- Conditioning/control: NOT_ESTABLISHED
+- Improvement: Parzen MNIST 225±2 vs DBN 138±2 (D013); CIFAR-10 82.8% classifier probe; SVHN-1000 22.48% error vs 28.87% supervised same-architecture (D014).
+- Trade-off/failure: No explicit density; synchronisation requirement with mode-collapse risk; high-variance Parzen eval (D013); occasional filter-collapse with longer training (D014).
+- Succession: Adversarial thesis retained in vocoders/autoencoders/post-training hybrids (see T-SP-02, T-RT-01); displaced as standalone image SOTA by diffusion (see T-PAR-04).
+- Support: BT-D013, BT-D014
+- Tasks: evidence:SP-beyond-text-2026:8d1355d65ce3939a, evidence:SP-beyond-text-2026:e07c7cc2504015af
+- Type: MULTI_SOURCE_SYNTHESIS (confidence high)
+- Open: Long-run stability fix and video/audio transfer only proposed in D014, not demonstrated.
+
+## T-PAR-02 — Unconditional GANs to style control to quality redesign
+
+- Modality: image
+- Bottleneck: Early GANs lacked disentangled control and carried droplet/blob and location-preference artefacts (D015, D016).
+- Changed representation: Mapping network z to intermediate space W with per-layer styles plus stochastic noise maps (D015).
+- Changed architecture: 8-layer MLP to W with AdaIN from learned constant (D015); revised synthesis with bias/noise outside style block, std-only modulation, weight demodulation, skip-generator plus residual-discriminator, no progressive growing (D016).
+- Changed objective: Mixing regularisation across two latents (D015); logistic plus lazy R1 plus path-length regularisation encouraging orthogonal Jacobians (D016).
+- Changed sampling/inference: Scale-specific style mixing, W-space truncation, fresh noise resampling for stochastic detail (D015); single forward generation with projection optimisation for attribution (D016).
+- Conditioning/control: Style-mixing control at scales; truncation as fidelity-diversity knob (D015).
+- Improvement: FFHQ FID 8.04 to 4.40 with path-length 412 to 200 (D015); redesign FID 4.40 to 2.84, path-length 212 to 145 (D016).
+- Trade-off/failure: Mixing regularisation slightly distorts W path length; Z stays entangled (D015); FID/perceptual-path texture bias; FID-quality trade-off on unstructured sets (D016).
+- Succession: Style/control lineage inherited by personalization and reference adapters (see T-CTRL-02); GAN quality ceiling later beaten by diffusion (see T-PAR-04).
+- Support: BT-D015, BT-D016
+- Tasks: evidence:SP-beyond-text-2026:a9b93a109cb4a5ff, evidence:SP-beyond-text-2026:9c5f26b79574c5a5
+- Type: MULTI_SOURCE_SYNTHESIS (confidence high)
+- Open: Recorded D015 locator 1812.04958 is a transcription defect; body consumed at verified-correct 1812.04948.
+
+## T-PAR-03 — Latent-variable images to fully autoregressive pixels to transformer autoregression
+
+- Modality: image
+- Bottleneck: Tractable full joint p(x) without latent-inference intractability; capturing long-range pixel dependencies scalably (D017).
+- Changed representation: Row-major factorisation with RGB split and 256-way multinomial per channel (D017); raster autoregression with 256-value embeddings per channel plus 2D coordinates, categorical or discretised-mixture densities (D018).
+- Changed architecture: Row-LSTM / Diagonal-BiLSTM up to 12 layers plus masked-conv PixelCNN and multi-scale variants (D017); decoder-only Transformer (unconditional/class) and encoder-decoder for super-resolution with masked local multi-head self-attention (D018).
+- Changed objective: Discrete negative log-likelihood in bits/dim (D017); maximum likelihood sum over positions (D018).
+- Changed sampling/inference: Parallel training, sequential pixel-by-pixel generation with inpainting by conditional sampling (D017); sequential categorical sampling with temperature 0.8-1.0; class-conditional and 8x8-to-32x32 super-resolution decoding (D018).
+- Conditioning/control: NOT_ESTABLISHED
+- Improvement: MNIST 79.20 nats; CIFAR-10 3.00 bits/dim; ImageNet-32 3.86 / ImageNet-64 3.63 (D017); CIFAR-10 2.90 bits/dim; ImageNet average 3.77; super-resolution fooled rate 36.11±2.5% (D018).
+- Trade-off/failure: Sequential generation expensive; 64x64 single-scale weak global structure (D017); local attention truncates full context; largest generation 32x32 plus super-resolution (D018).
+- Succession: Autoregressive prior thesis inherited by VQGAN/PixelSnail priors and codec language models (see T-REP-02, T-SP-03); displaced for images by diffusion on cost grounds.
+- Support: BT-D017, BT-D018
+- Tasks: evidence:SP-beyond-text-2026:cad54176c861c7b5, evidence:SP-beyond-text-2026:800b978ff6ec707c
+- Type: MULTI_SOURCE_SYNTHESIS (confidence high)
+- Open: Full-attention DiT-scale comparison beyond local attention not established.
+
+## T-PAR-04 — GAN dominance to diffusion quality with score-matching equivalence
+
+- Modality: image
+- Bottleneck: Diffusion models lacked high-quality-sample demonstration; GANs led on ImageNet/LSUN (D019, D030).
+- Changed representation: Latents x1:T same dimensionality as data with discrete decoder integral for 0-255 data; progressive reconstruction estimate (D019).
+- Changed architecture: Pixel UNet like unmasked PixelCNN++ with group normalisation, Transformer sinusoidal time embedding, self-attention at 16x16, shared across t=1000 linear-schedule steps (D019); improved UNet with 128 base channels, multi-resolution attention, BigGAN resblocks, AdaGN timestep-plus-class conditioning (D030).
+- Changed objective: Simplified unweighted epsilon-prediction objective down-weighting small-t terms vs true variational bound (D019); Nichol hybrid simple-plus-variational-bound with learned variance interpolation (D030).
+- Changed sampling/inference: Ancestral Langevin-like sampling, 1000 evaluations; interpolation via stochastic encoder latents (D019); 250-step ancestral or 25-step DDIM sampling (D030).
+- Conditioning/control: Classifier-guided ancestral/DDIM sampling with scale trading precision vs recall (D030).
+- Improvement: CIFAR-10 IS 9.46±0.11, FID 3.17 with simplified objective vs 7.67/13.51 on true bound; LSUN-Bedroom 4.90, Church 7.89 (D019); ImageNet-128 guided FID 2.97 vs BigGAN 6.02; ImageNet-256 4.59 vs 6.95; LSUN sets beat StyleGAN (D030).
+- Trade-off/failure: NLL uncompetitive; most bits describe imperceptible detail; 1000-step sampling ~5 days/50k on A100 (D019); 250-step sampling still slower than GANs; metrics imperfect proxies (D030).
+- Succession: Epsilon-prediction plus simplified-objective thesis inherited by latent diffusion and guided sampling (see T-PAR-05, T-PAR-07, T-COND-02).
+- Support: BT-D019, BT-D030
+- Tasks: evidence:SP-beyond-text-2026:f656ae413808ecc4, evidence:SP-beyond-text-2026:aef4ce32df2d9308
+- Type: MULTI_SOURCE_SYNTHESIS (confidence high)
+- Open: Step-cost reduction requires DDIM/distillation successors (see T-PAR-05, T-RT-01).
+
+## T-PAR-05 — Markov-chain diffusion sampling to implicit non-Markovian few-step sampling
+
+- Modality: image
+- Bottleneck: DDPM needs a 1000-step Markov chain (~20 h/50k CIFAR-32, ~1000 h/50k 256px on stated GPU) (D020).
+- Changed representation: Same marginals with non-Markovian joint via sigma vector; predicted clean sample from noisy input (D020).
+- Changed architecture: Reuses pretrained epsilon UNet with no new parameters; subset trajectory over original timesteps (D020).
+- Changed objective: Same DDPM training objective; sampling varies the stochasticity parameter (0 deterministic, 1 DDPM-like) (D020).
+- Changed sampling/inference: Generalised update with subsampled 10-100-step trajectories; deterministic path exposes an ODE view with encodable latents (D020).
+- Conditioning/control: NOT_ESTABLISHED
+- Improvement: CIFAR-10 deterministic FID 13.36 at 10 steps, 6.84 at 20, 4.67 at 50, 4.16 at 100 vs stochastic 41.07 at 10; 10-50x speedup with 20-100 steps matching 1000-step quality; reconstruction MSE 0.014 at 10 steps to 0.0001 at 1000 (D020).
+- Trade-off/failure: FID degrades as trajectory shortens; reference-implementation sigma collapses at short trajectories; ODE-vs-flow gap at few steps (D020).
+- Succession: Subsampled-deterministic-sampling thesis inherited by latent-diffusion DDIM schedules and consistency/distillation work (see T-PAR-07, T-RT-01).
+- Support: BT-D019, BT-D020
+- Tasks: evidence:SP-beyond-text-2026:f656ae413808ecc4, evidence:SP-beyond-text-2026:4ce9c8d88d8d8e70
+- Type: MULTI_SOURCE_SYNTHESIS (confidence high)
+- Open: Few-step state-of-the-art vs consistency successors not compared in D020.
+
+## T-PAR-06 — Discrete-time diffusion to continuous score-SDE framing to design-space engineering
+
+- Modality: image
+- Bottleneck: Score-matching and diffusion formulations were separate, blocking new samplers, exact likelihood, and controllable generation (D021).
+- Changed representation: Continuous state over time with data prior at t=0 and Gaussian prior at t=T; perturbation kernels define time-dependent scores (D021).
+- Changed architecture: Time-dependent score networks for variance-exploding/variance-preserving/sub-VP processes with predictor plus corrector (D021).
+- Changed objective: Continuous denoising score-matching with time weighting (D021). EDM claims modular preconditioning/schedule/solver improvements (abstract-level only) (D022).
+- Changed sampling/inference: Reverse-SDE solvers plus predictor-corrector plus probability-flow ODE with adaptive black-box integration and exact likelihood; conditional generation from unconditional scores (D021); EDM reports 35-evaluation sampling (abstract-level) (D022).
+- Conditioning/control: Conditional inpainting/colourisation/class synthesis from unconditional scores (D021).
+- Improvement: CIFAR-10 IS 9.89, FID 2.20, NLL 2.99 bits/dim; predictor-corrector-1000 VE-FID 3.24 vs predictor-only 4.98; first 1024px samples from a score model (D021); EDM abstract reports CIFAR-10 conditional 1.79 / unconditional 1.97 and ImageNet-64 1.36 retrained (D022, abstract-level).
+- Trade-off/failure: Solver cost still 1000-2000 evaluations; process trade-offs and corrector tuning (D021); D022 ablations not body-verified.
+- Succession: Continuous-time framing feeds flow-matching and rectified-flow work (see T-PAR-08, T-PAR-09).
+- Support: BT-D021, BT-D022
+- Tasks: evidence:SP-beyond-text-2026:da4771f3120d07d1, evidence:SP-beyond-text-2026:9c0aac72eef54cd4
+- Type: MULTI_SOURCE_SYNTHESIS (confidence medium)
+- Open: D022 full-text HTML 404 plus ar5iv conversion failure: preconditioning/schedule/solver ablations and cross-modal claims NOT body-established.
+
+## T-PAR-07 — Pixel diffusion cost to perceptual-latent diffusion with open implementation
+
+- Modality: image
+- Bottleneck: Pixel diffusion needed 150-1000 V100-days training plus ~5 days/50k-sample A100 inference (D023).
+- Changed representation: Perceptually trained autoencoder compresses once and is reused (KL-regularised toward standard normal or VQ-regularised with decoder-side quantisation); diffusion runs on latents, decoded once (D023).
+- Changed architecture: Perceptual plus patch-GAN autoencoder plus time-conditional UNet epsilon model plus domain encoder with cross-attention for text/boxes/layout (D023).
+- Changed objective: Latent epsilon-matching objective and conditional variant jointly training domain encoder plus epsilon model (D023).
+- Changed sampling/inference: DDIM 10-200 steps; convolution beyond 256px to ~1024px for super-resolution/inpainting/semantic synthesis; guidance scales 1.5-10 over 200-250 text steps (D023).
+- Conditioning/control: Cross-attention domain conditioning for text/boxes/layout (D023).
+- Improvement: Unconditional-256 FID CelebA-HQ 5.11, FFHQ 4.98, Church 4.02, Bedroom 2.95; COCO-256 FID 12.63, IS 30.29±0.42 (D023).
+- Trade-off/failure: Pixel-level detail still limited by first stage; over-compression stagnates; sequential sampling still costly (D023). Open-implementation tag/commit binding blocked (D024 barrier).
+- Succession: Latent-diffusion thesis underpins the Stable Diffusion ecosystem and DiT/flow successors (see T-PAR-08, T-RT-01).
+- Support: BT-D023, BT-D024
+- Tasks: evidence:SP-beyond-text-2026:ecd7ac2d0f60933d, evidence:SP-beyond-text-2026:6f984c64901b37f1
+- Type: MULTI_SOURCE_SYNTHESIS (confidence medium)
+- Open: D024 repository body blocked (GitHub API 404 as of access date): implementation/weights/version claims NOT body-established.
+
+## T-PAR-08 — UNet inductive bias to transformer denoisers to interpolant objectives
+
+- Modality: image
+- Bottleneck: UNet inductive bias assumed crucial for diffusion; transformer replacement plus scaling laws untested (D025).
+- Changed representation: Stable-Diffusion VAE latents patchified to tokens with sine-cosine positions (D025); interpolants between data and noise with time in [0,1] (D026).
+- Changed architecture: DiT-S/B/L/XL with adaptive layer-norm-zero best; VAE frozen (D025); identical DiT backbone for interpolant study for fair comparison (D026).
+- Changed objective: ADM-style simplified epsilon objective plus full KL for variance; AdamW with EMA, class-dropout for guidance (D025); velocity objective with score derived, continuous-time, no time weights (D026).
+- Changed sampling/inference: 250-step ancestral sampling with classifier-free guidance; sampling-compute cannot compensate model-compute (D025); probability-flow ODE (Heun) and reverse-SDE samplers with tunable coefficient, 250 evaluations (D026).
+- Conditioning/control: Class conditioning with null-class dropout for guidance (D025).
+- Improvement: ImageNet-256 XL/2-guided FID 2.27 vs LDM-4-G 3.60, ADM-G 4.59 (D025); interpolant XL 400K 17.2 vs DiT 19.5, XL 7M 8.3 vs 9.6, guided 256px 2.06 vs 2.27 (D026).
+- Trade-off/failure: Throughput figures hardware-bound; FID suite-sensitive; pixel-space DiT untested (D025); coefficient singular at t=1 for some interpolants; score singularity at t=0 (D026).
+- Succession: Backbone-vs-objective separation feeds flow-matching comparisons (see T-PAR-09).
+- Support: BT-D025, BT-D026
+- Tasks: evidence:SP-beyond-text-2026:e92a603c08131eb8, evidence:SP-beyond-text-2026:03d83a1b654568f6
+- Type: MULTI_SOURCE_SYNTHESIS (confidence high)
+- Open: Flow-vs-diffusion gap vs rectified-flow reflow needs comparison.
+
+## T-PAR-09 — Diffusion/score objectives to simulation-free flow matching to rectified straightening
+
+- Modality: image
+- Bottleneck: Continuous-normalising-flow maximum likelihood needs expensive ODE simulation; prior simulation-free variants biased/intractable (D027).
+- Changed representation: Marginal path as integral over Gaussian conditionals with optimal-transport variant giving straight trajectories (D027); linear interpolation couplings with deterministic rectification preserving marginals (D028).
+- Changed architecture: ADM UNet (minimal changes) for the vector field, same architecture across losses for ablation (D027); neural velocity with any backbone, optional reflow data plus one-step distill (D028).
+- Changed objective: Flow matching with intractable field replaced by conditional flow matching (equal gradients); optimal-transport conditional target (D027); least-squares regression on interpolation directions with time symmetry (D028).
+- Changed sampling/inference: ODE integration with adaptive/regular solvers; straight trajectories need fewer steps, training cost constant (D027); forward/backward ODE with Euler steps; 1-rectified good at 2+ steps, 2-rectified near-straight at 1 step (D028).
+- Conditioning/control: NOT_ESTABLISHED
+- Improvement: CIFAR-10 FM-OT NLL 2.99, FID 6.35, NFE 142 vs DDPM 3.12/7.48/274 (D027); CIFAR-10 one-step FID 4.85, recall 0.51 claimed one-step SOTA (D028).
+- Trade-off/failure: CIFAR FID higher than tuned literature; adaptive NFE still 100+ (D027); exact theory needs exact field plus unique ODE; estimation error accumulates over many reflows (D028).
+- Succession: Straight-trajectory thesis feeds video-editing flow-vs-diffusion comparison (see T-VI-05).
+- Support: BT-D027, BT-D028
+- Tasks: evidence:SP-beyond-text-2026:5b0ffada7797575b, evidence:SP-beyond-text-2026:7f27c6de1127907d
+- Type: MULTI_SOURCE_SYNTHESIS (confidence high)
+- Open: Trajectory-straightness vs reflow metric and high-res text-conditional transfer not established.
+
+## T-RT-01 — Thousand-step sampling to distilled few-step and mobile one-step generation
+
+- Modality: image (methods transfer to video/audio with modality-specific validation)
+- Bottleneck: DDPM-class sampling needs 100-1000 network evaluations per image (~20 h/50k CIFAR-32 at 1000 steps on stated GPU) (D019, D020).
+- Changed representation: NOT_ESTABLISHED (sampler-side transition; representation unchanged).
+- Changed architecture: Same-architecture student with stable parameterisations (D078); latent consistency function reusing diffusion UNet (D079); LoRA acceleration plus style vectors (D080); student plus frozen DINOv2 discriminator heads (D081); UViT redesign with bottleneck transformers and shared key-value (D082).
+- Changed objective: Halving distillation via inverted targets (D078); consistency distillation plus isolated consistency training (D079); latent consistency distillation into LoRA (D080); hinge adversarial plus score-distillation loss (D081).
+- Changed sampling/inference: N-to-N/2 halving to 4-8 steps (D078); 1-4-step latent consistency inference (D079); 4-step plug-in with guidance (D080); 1-4-step adversarial sampling without guidance (D081); 1-step 0.2 s 512px on phone with 238 ms staged timing (D082).
+- Conditioning/control: NOT_ESTABLISHED
+- Improvement: CIFAR-10 FID 3.0 at 4 steps vs DDIM 4.16 at 100 (D078); 512px guidance-8 FID 11.10 4-step vs DDIM 22.38 (D079); COCO 1-step FID 19.7 vs UFOGen 22.5 with 0.09 s vs 0.88 s 25-step (D081); COCO-30k 1-step FID 11.67 vs UFOGen 12.78 (D082).
+- Trade-off/failure: Degrades at 1-2 steps; no architecture compression (D078); 1-step gap remains; solver/guidance sensitive (D079); report-only, combination weights heuristic (D080); lower diversity than teacher (D081); search cost 512 TPUs x 15 days (D082).
+- Succession: Few-step thesis inherited by open video sampling and flow straightening (see T-VI-05, T-PAR-09); distilled stochastic sampling sits between distilled DDIM and undistilled stochastic (D078).
+- Support: BT-D019, BT-D020, BT-D078, BT-D079, BT-D080, BT-D081, BT-D082
+- Tasks: evidence:SP-beyond-text-2026:f656ae413808ecc4, evidence:SP-beyond-text-2026:4ce9c8d88d8d8e70, evidence:SP-beyond-text-2026:8bdca5c7211e2751, evidence:SP-beyond-text-2026:085de9780503ab83, evidence:SP-beyond-text-2026:0ae0205f62fa560f, evidence:SP-beyond-text-2026:3c81215cd8df30ac, evidence:SP-beyond-text-2026:ecdef20e7d799163
+- Type: MULTI_SOURCE_SYNTHESIS (confidence high)
+- Open: Latency/VRAM/quantisation bindings mostly absent from consumed bodies; hardware-bound comparison prohibited.
+
+## T-COND-01 — CLIP pretraining to frozen-encoder text-to-image conditioning
+
+- Modality: image
+- Bottleneck: Text-to-image needed deep language understanding in the conditioner without training it jointly (D011, D031).
+- Changed representation: Joint image-text embedding space from contrastive pretraining on 400M pairs (D031); T5-XXL sequence plus pooled embeddings (D011).
+- Changed architecture: Joint ResNet/ViT image plus Transformer text encoders with learned temperature (D031); frozen encoder with cross-attention in 64px base plus text-conditional super-resolutions (D011).
+- Changed objective: Symmetric cross-entropy over NxN pairs (D031); diffusion training with 10% text-dropout joint conditional/unconditional objective (D011).
+- Changed sampling/inference: Zero-shot classifier synthesis via prompt templates plus embedding ensembling (D031); classifier-free scale with static/dynamic thresholding plus noise-augmented cascade (D011).
+- Conditioning/control: Training-time frozen-encoder conditioning; inference-time guidance plus thresholding (D011).
+- Improvement: Zero-shot ImageNet 76.2% matching ResNet-50 (D031); COCO zero-shot FID-30K 7.27; human alignment 91.4 vs 91.9 reference; DrawBench preference over four baselines (D011).
+- Trade-off/failure: Counting failures; fine-grained gaps; bias/surveillance risks (D031); weak photorealistic people; era-specific encoder finding (D011).
+- Succession: Frozen-encoder conditioning thesis inherited by latent-diffusion cross-attention and audio CLAP conditioning (see T-PAR-07, T-COND-04).
+- Support: BT-D011, BT-D031
+- Tasks: evidence:SP-beyond-text-2026:6cc7c8626b0bd4e8, evidence:SP-beyond-text-2026:92055b4359e7930e
+- Type: MULTI_SOURCE_SYNTHESIS (confidence high)
+- Open: Super-resolution text-utility ablations beyond reported sweeps not established.
+
+## T-COND-02 — Classifier guidance to classifier-free guidance to text-guided editing
+
+- Modality: image
+- Bottleneck: Fidelity-diversity control needed a separately trained noisy classifier (D030, D032).
+- Changed representation: NOT_ESTABLISHED (guidance-side transition).
+- Changed architecture: 3.5B diffusion (2.3B visual plus 1.2B text Transformer) plus 1.5B upsampler (D033).
+- Changed objective: Joint conditional/unconditional training via conditioning dropout (D032); 20% empty-caption finetune plus separate inpaint finetune (D033).
+- Changed sampling/inference: Guidance extrapolation with swept scale at 2x forward-pass cost (D032); classifier-free extrapolation vs noised-CLIP-gradient guidance; inpainting and SDEdit reuse (D033).
+- Conditioning/control: Inference-time guidance only, no separate classifier (D032); text-guided inpainting/editing extension (D033).
+- Improvement: 64px FID 1.55 at scale 0.1; 128px FID 2.43 at 0.3 beating ADM-Guided 2.97 (D032); human Elo photorealism/caption 82.7/110.9 vs CLIP-guided negative scores; vs DALL-E wins 87%/69%; zero-shot FID 12.24 (D033).
+- Trade-off/failure: Saturated colours at high scale; 2 forward passes; diversity loss (D032); unusual-object failures; filtered-data bias retention (D033).
+- Succession: Guidance thesis inherited by latent-diffusion and video guidance schedules (see T-PAR-07, T-VI-01).
+- Support: BT-D030, BT-D032, BT-D033
+- Tasks: evidence:SP-beyond-text-2026:aef4ce32df2d9308, evidence:SP-beyond-text-2026:6d8e8a14407ac19d, evidence:SP-beyond-text-2026:fda3aae9f7febab0
+- Type: MULTI_SOURCE_SYNTHESIS (confidence high)
+- Open: Recorded D033 locator 2112.02092 is a transcription defect; body consumed at verified-correct 2112.10741.
+
+## T-COND-03 — Shared denoisers to stage-expert ensembles with multi-encoder conditioning
+
+- Modality: image
+- Bottleneck: Shared-denoiser bottleneck across sampling stages; single-encoder conditioning limits (D034).
+- Changed representation: NOT_ESTABLISHED (conditioning/ensemble-side transition).
+- Changed architecture: One shared EDM denoiser binary-tree split into stage experts (final 3-expert), conditioned on T5-XXL plus CLIP-text plus CLIP-image with independent dropout (D034).
+- Changed objective: Pretrain shared denoiser on log-normal noise, then finetune stage experts (D034).
+- Changed sampling/inference: Same per-step cost (one expert per sigma) over base plus two super-resolution cascades; training-free paint-with-words via cross-attention bias (D034).
+- Conditioning/control: Multi-encoder conditioning with independent dropout; paint-with-words inference control (D034).
+- Improvement: Zero-shot FID-30K 256px Config-B 7.26 beating Imagen, Config-D best 7.04; 4-expert at 600k beats shared baseline at 800k across FID-CLIP curve (D034).
+- Trade-off/failure: Expert count grows training cost; intermediate-interval experts added little; CLIP-only lacks compositionality (D034).
+- Succession: Expert-ensemble thesis stands alongside guidance and adapter conditionings; exact SOTA margins need Evidence-stage binding.
+- Support: BT-D011, BT-D034
+- Tasks: evidence:SP-beyond-text-2026:6cc7c8626b0bd4e8, evidence:SP-beyond-text-2026:9ade644a385f3167
+- Type: MULTI_SOURCE_SYNTHESIS (confidence high)
+- Open: Recorded D034 locator 2211.12572 is a transcription defect; body consumed at verified-correct 2211.01324.
+
+## T-COND-04 — Image-text alignment to text-audio alignment for conditioning and evaluation
+
+- Modality: audio
+- Bottleneck: Audio lacked flexible natural-language supervision for prediction and conditioning (D035).
+- Changed representation: Joint 1024-d audio-text space from 128k pairs (D035).
+- Changed architecture: CNN14 audio plus BERT text encoders with linear projections and learned temperature (D035).
+- Changed objective: Symmetric contrastive loss (D035).
+- Changed sampling/inference: Cosine similarity against templated prompts; no diffusion (D035).
+- Conditioning/control: Text-audio joint embedding for conditioning and alignment evaluation (D035).
+- Improvement: Zero-shot ESC50 82.6% (human 81%); US8K 73.24%; FSD50K 30.24% mAP vs 3% baseline; Music-vs-Speech 100%; supervised best on 5/16 tasks (D035).
+- Trade-off/failure: Speech/emotion/keyword tasks near-random; caption-quality bottleneck; AudioSet augmentation hurts (D035).
+- Succession: Audio-alignment thesis feeds AudioLDM CLAP conditioning and music metric validation (see T-MU-03, T-EV-03).
+- Support: BT-D035
+- Tasks: evidence:SP-beyond-text-2026:bb925f0ba2ddf674
+- Type: DIRECT_SOURCE_STATEMENT (confidence high)
+- Open: Conditioning use in generative audio diffusion and FAD/human alignment validity not established.
+
+## T-CTRL-01 — Uncontrolled frozen diffusion to zero-initialised spatial control to lightweight adapters
+
+- Modality: image
+- Bottleneck: Adding spatial control to frozen large diffusion risked forgetting and cost (D036, D037).
+- Changed representation: NOT_ESTABLISHED (control-side transition).
+- Changed architecture: Locked UNet plus trainable copy of encoder/middle blocks linked by zero-convolutions growing from zero, tiny condition encoder (D036); lightweight adapter (~77M down to 5M) injecting 4-scale features into frozen encoder (D037).
+- Changed objective: Conditioned training with 50% prompt dropout (D036); adapter training with cubic timestep sampling emphasising early steps (D037).
+- Changed sampling/inference: Composable additive controls with resolution weighting (D036); weighted adapter sums with no retraining, generalising across SD derivatives (D037).
+- Conditioning/control: Training-time adapter; inference-time composition (D036, D037).
+- Improvement: Sketch quality 4.22/fidelity 4.28; ADE20K IoU 0.35, FID 15.27; sudden convergence under 10k steps (D036); COCO FID 16.78/17.36 vs PITI 19.36/21.21 vs SD 24.68 (D037).
+- Trade-off/failure: Ambiguous inputs need prompts; multi-control weighting manual; single-control framing (D036); fusion manual; coarse-sketch variance (D037).
+- Succession: Adapter-control thesis inherited by reference adapters and video motion control (see T-CTRL-02, T-CTRL-03).
+- Support: BT-D036, BT-D037
+- Tasks: evidence:SP-beyond-text-2026:6f948682e58e2473, evidence:SP-beyond-text-2026:6826b342cb8c65e7
+- Type: MULTI_SOURCE_SYNTHESIS (confidence high)
+- Open: Direct ControlNet-capacity comparison beyond concurrent-work citation not established.
+
+## T-CTRL-02 — Text-only conditioning to image-prompt reference to few-shot identity to low-rank adaptation
+
+- Modality: image
+- Bottleneck: Image-prompt capability without destroying text-to-image ability; subject-consistent personalisation; parameter-efficient adaptation without latency (D038-D040).
+- Changed representation: Reference images as 4-token embeddings (D038); rare-token identifier plus class noun captions (D039); low-rank update matrices (D040).
+- Changed architecture: Frozen diffusion plus frozen vision encoder with decoupled cross-attention image branches, ~22M trained (D038); full-layer finetune of frozen diffusion with prior-preservation (D039); frozen base with merged low-rank factors at inference (D040).
+- Changed objective: Image-dropout training for reference control (D038); identifier finetuning with autogenous class loss (D039); low-rank factor training with scaling (D040).
+- Changed sampling/inference: Lambda-weighted image attention, reusable and ControlNet-compatible (D038); identifier-prompt sampling for recontextualisation/view-synthesis/art-rendition (D039); zero-latency merged weights with swappable factors (D040).
+- Conditioning/control: In-context reference conditioning (D038); few-shot identity conditioning (D039); parameter-efficient task switching (D040).
+- Improvement: COCO CLIP-I 0.828 / CLIP-T 0.588 (D038); 30-subject DINO 0.696/CLIP-I 0.812/CLIP-T 0.306 with user-study subject 68% vs 22% over Textual-Inversion (D039); GPT-3 adaptation 10,000x fewer params with 25% speedup (D040).
+- Trade-off/failure: Content/style resemblance only, not subject-consistent (D038); rare-context failures, entanglement, overfitting near training settings (D039); cross-task batching hard if merged (D040).
+- Succession: Reference/identity/adapter thesis inherited by video motion adapters and music control adapters (see T-VI-03, T-MU-03).
+- Support: BT-D038, BT-D039, BT-D040
+- Tasks: evidence:SP-beyond-text-2026:043f23e0c09b27d1, evidence:SP-beyond-text-2026:7dee88a6372371f5, evidence:SP-beyond-text-2026:1fa08e985fab44a7
+- Type: MULTI_SOURCE_SYNTHESIS (confidence high)
+- Open: Recorded D039 locator 2208.04111 is a transcription defect; body consumed at verified-correct 2208.12242.
+- Open: Identity-preservation metrics vs DreamBooth for IP-Adapter; diffusion-LoRA media behaviour beyond LLM evidence.
+
+## T-CTRL-03 — Layout precursors to diffusion spatial control to video and music control signals
+
+- Modality: crossmodal (image precursor; video and music heirs)
+- Bottleneck: Semantic-mask to photorealistic control washed layout through normalisation; diffusion-era transfer and temporal/audio control missing (D041-D043).
+- Changed representation: Spatially-varying normalisation parameters from masks (D041); camera poses and sparse trajectories as control signals (D042); melody/dynamics/rhythm extracted signals (D043).
+- Changed architecture: Encoder-free ResNet generator with multi-scale discriminator and VAE style encoder, GAN-era (D041); frozen video backbone with lightweight camera module then object module (D042); pretrained convolutional UNet plus ControlNet-style adapter with per-control MLP and zero-convolutions (D043).
+- Changed objective: Paired mask-image training (D041); staged camera-then-object training (D042); tag pretraining then control finetuning with full-drop plus random-span masking (D043).
+- Changed sampling/inference: Layout-plus-style control at inference (D041); appearance-free pose/trajectory conditioning alone or jointly (D042); 100-step DDIM with global-style guidance, partial spans improvise (D043).
+- Conditioning/control: Spatially-adaptive normalisation (D041); decoupled camera/object conditioning (D042); any-subset partial-time music conditioning (D043).
+- Improvement: COCO mIoU 37.4 / FID 22.6 vs pix2pixHD 14.6/111.5; human preference 79-86% (D041); camera-basic 0.0289 vs AnimateDiff 0.0548; object 28.877 vs 36.8351 (D042); melody-full created 82.6% vs MusicGen 55.2% (D043).
+- Trade-off/failure: Needs paired data; SIMS better FID via retrieval but worse alignment (D041); joint complex control low success rate; order matters (D042); 6 s window; monotonous created controls; instrumental-only (D043).
+- Succession: Control-signal thesis spans modalities; perception-side signal histories stay in TS-003.
+- Support: BT-D041, BT-D042, BT-D043
+- Tasks: evidence:SP-beyond-text-2026:74740783418f7a3a, evidence:SP-beyond-text-2026:620c54b8c44401e4, evidence:SP-beyond-text-2026:4051c39a7614ee17
+- Type: MULTI_SOURCE_SYNTHESIS (confidence high)
+- Open: Recorded D042/D043 locators are transcription defects; bodies consumed at verified-correct IDs.
+- Open: D041 diffusion-era transfer needs ControlNet linkage beyond precursor status.
+
+## T-EDIT-01 — Stroke guidance to mask-conditioned inpainting to latent local editing
+
+- Modality: image
+- Bottleneck: Stroke/edit/composite without task training; free-form inpainting generalising to any mask; local text-driven editing without pixel artefacts (D044-D046).
+- Changed representation: Noised guide plus masked channel (D044); mask-combined known/unknown regions (D045); LDM latent at 8x downsampling with downsampled mask (D046).
+- Changed architecture: Pretrained score model reused (D044); pretrained unconditional DDPM reused (D045); latent diffusion with optional per-image decoder finetune (D046).
+- Changed objective: No new training; guide-time tradeoff (D044); no mask-specific training (D045); text-conditioned foreground plus noised background blending (D046).
+- Changed sampling/inference: Noise-to-t0 then reverse SDE with t0 in [0.3,0.6] (D044); per-step mask-combine with back-and-forth resampling T=250/jump-10/10-resamples (D045); per-step latent blend with dilated-to-thin mask shrinking plus CLIP-ranked predictions (D046).
+- Conditioning/control: Masked-channel preservation (D044); mask-defined locality including extreme masks (D045); text-conditioned local foreground (D046).
+- Improvement: Human-stroke L2 32.55 vs 53.76-101.18, realism preference 80-98%, satisfaction 75-91% (D044); 95% preference on four mask classes; jump-10/resample-10 LPIPS 0.068 with 56.25% votes vs LaMa (D045); order-of-magnitude faster than ~25-min pixel baseline with better precision (D046).
+- Trade-off/failure: Guide/t0 search; white-pixel guides lose faithfulness (D044); slow 250x10 evals; LPIPS penalises valid diverse fills (D045); lossy VAE seams/colour-shift; thin masks fail fine details (D046).
+- Succession: Partial-diffusion editing thesis inherited by attention/optimisation/instruction editors (see T-EDIT-02).
+- Support: BT-D044, BT-D045, BT-D046
+- Tasks: evidence:SP-beyond-text-2026:88f2354f17f87ab2, evidence:SP-beyond-text-2026:4e1527a200f7a79c, evidence:SP-beyond-text-2026:32d082adf07c3508
+- Type: MULTI_SOURCE_SYNTHESIS (confidence high)
+- Open: Recorded D044 locator 2108.01049 is a transcription defect; body consumed at verified-correct 2108.01073.
+- Open: Exact NFE/latency/VRAM numbers not reported in consumed bodies.
+
+## T-EDIT-02 — Attention-map editing to optimisation editing to instruction editing to one-shot video editing
+
+- Modality: image-to-video
+- Bottleneck: Small prompt changes regenerated whole images; complex non-rigid real-image edits; instruction following without masks; one-shot text-driven video editing (D047-D050).
+- Changed representation: Cross-attention maps as edit interface (D047); optimised target embeddings (D048); image-condition channels in SD (D049); inflated 3D UNet with sparse spatio-temporal attention (D050).
+- Changed architecture: Fixed-seed injection at 64x64 stage (D047); embedding optimisation plus UNet-plus-super-resolution finetune (D048); GPT-3-generated instruction pairs training SD with zero-init channels (D049); inflated SD with finetuned query matrices plus temporal attention (D050).
+- Changed objective: No training/mask (D047); denoising-loss embedding optimisation (D048); instruction-pair training with directional filtering (D049); one-shot 500-step finetune on single video (D050).
+- Changed sampling/inference: Word-swap/add-phrase/re-weight controls; DDIM inversion with mask fallback (D047); eta-interpolation 0.6-0.8 with 8-seed selection (D048); dual image/text guidance with multi-turn chaining (D049); DDIM-inversion unconditional then edited-prompt sampling (D050).
+- Conditioning/control: Attention-as-interface (D047); embedding interpolation dial (D048); instruction conditioning (D049); first-plus-previous-frame querying (D050).
+- Improvement: Qualitative prompt-driven local edits with fader control (D047); TEdBench >70% preference over three baselines (D048); CLIP trade-off beats SDEdit at matched directional values (D049); frame consistency 92.40 vs 90.64/88.89 with user preference 87.86%/62.14% consistency (D050).
+- Trade-off/failure: Inversion distortion; cannot move objects (D047); eta/seed sensitive; slow per-image optimisation (D048); viewpoint/spatial-reasoning failures (D049); occlusion mixing; drift/flicker ablations (D050).
+- Succession: Instruction/multi-turn editing thesis feeds current unified generation-plus-editing products (capability-level; see closed-system entries).
+- Support: BT-D047, BT-D048, BT-D049, BT-D050
+- Tasks: evidence:SP-beyond-text-2026:e23ad6f5d9131845, evidence:SP-beyond-text-2026:f1ad7b0d39fc9086, evidence:SP-beyond-text-2026:456c8363ab66a08b, evidence:SP-beyond-text-2026:7daea26dba61b172
+- Type: MULTI_SOURCE_SYNTHESIS (confidence high)
+- Open: Recorded D048/D049 locators are transcription defects; bodies consumed at verified-correct IDs.
+- Open: Quantitative fidelity scores and runtime/VRAM not reported in consumed bodies.
+
+## T-SP-01 — Raw waveform autoregression to attention TTS to parallel synthesis plus neural vocoding
+
+- Modality: speech
+- Bottleneck: Direct raw-waveform generation at 16k samples/s without vocoder features; pipeline TTS stacks; slow sequential mel generation with attention fragility (D051-D054).
+- Changed representation: Raw waveform samples with mu-law quantisation (D051); 80-band mel spectrograms (D052-D054).
+- Changed architecture: Dilated-causal autoregressive CNN with gated units and residual/skip stacks (D051); seq2seq with attention plus CBHG encoder/decoder plus Griffin-Lim (D052); Tacotron-style encoder with location-sensitive attention plus LSTM decoder plus post-net plus modified 30-layer WaveNet vocoder (D053); feed-forward Transformer with duration predictor plus length regulator plus external WaveGlow vocoder (D054).
+- Changed objective: Waveform likelihood with linguistic conditioning (D051); end-to-end text-to-spectrogram (D052); mel prediction plus vocoder likelihood (D053); duration MSE plus mel reconstruction with teacher alignments and sequence distillation (D054).
+- Changed sampling/inference: Sequential sample-by-sample (slow) (D051); frame-level Griffin-Lim synthesis (D052); neural vocoder synthesis (D053); parallel non-autoregressive synthesis: mel 0.025 s vs 6.735 s (269x), end-to-end 0.180 s vs 6.895 s (38x) (D054).
+- Conditioning/control: Global/local conditioning (D051); text attention (D052); location-sensitive attention (D053); duration/rate control via length regulator (D054).
+- Improvement: TTS MOS 4.21/4.08 vs LSTM 3.67/3.79 (D051); end-to-end MOS 3.82 vs parametric 3.69 (D052); MOS 4.526 vs ground truth 4.582 (D053); MOS 3.84 with 0 errors on 50 hard sentences vs Transformer 7/15/17 (D054).
+- Trade-off/failure: Receptive field ~240-300 ms misses prosody; sequential cost (D051); misalignments/repetitions; Griffin-Lim artefacts (D052); mispronunciation/prosody errors; out-of-domain names weak (D053); teacher-alignment dependence; duration error propagation (D054).
+- Succession: Waveform/attention/parallel thesis inherited by end-to-end VAE/flow hybrids and GAN vocoders (see T-SP-02).
+- Support: BT-D051, BT-D052, BT-D053, BT-D054
+- Tasks: evidence:SP-beyond-text-2026:32e4f613d2bbe357, evidence:SP-beyond-text-2026:776d6f5934d1a311, evidence:SP-beyond-text-2026:c2495d9d2a6d26b8, evidence:SP-beyond-text-2026:b98e7fea6b480c2c
+- Type: MULTI_SOURCE_SYNTHESIS (confidence high)
+- Open: Recorded D053 locator 1712.05862 is a transcription defect; body consumed at verified-correct 1712.05884.
+- Open: Robustness rates and waveform-level fidelity vs GAN/diffusion vocoders not established.
+
+## T-SP-02 — Two-stage parallel TTS to end-to-end VAE-flow-adversarial synthesis to zero-shot multispeaker cloning
+
+- Modality: speech
+- Bottleneck: Two-stage parallel TTS needs sequential training/finetuning on fixed mels; single-speaker limits; zero-shot multispeaker/multilingual synthesis missing (D056, D057).
+- Changed representation: Linear-spectrogram posterior plus Transformer text prior (D056); raw characters with speaker/language embeddings (D057).
+- Changed architecture: Conditional VAE plus volume-preserving flow plus monotonic alignment plus HiFi-GAN V1 decoder with multi-period discriminator (D056); VITS backbone plus speaker-identity conditioning plus language embeddings plus optional consistency loss (D057).
+- Changed objective: Mel reconstruction plus KL plus adversarial plus feature-matching with stochastic duration predictor (D056); same plus speaker-consistency loss (D057).
+- Changed sampling/inference: Windowed generator training; 1480 kHz (67x real-time) (D056); zero-shot synthesis plus voice conversion with <60 s adaptation finetune (D057).
+- Conditioning/control: Stochastic duration modelling (D056); speaker-embedding and language-embedding conditioning (D057).
+- Improvement: MOS 4.43 (≈GT 4.46) vs Glow+HiFiGAN-finetuned 4.32; VCTK 4.38 = GT (D056); unseen-speaker similarity 0.864, MOS 4.21, similarity-MOS 4.16 (≈GT); voice-conversion MOS 4.20/similarity 4.07 (D057).
+- Trade-off/failure: Flow prior essential; phonemiser preprocessing remains (D056); duration instability; mispronunciations without phonemes; gender/language imbalance (D057).
+- Succession: End-to-end/zero-shot thesis inherited by codec language models (see T-SP-03).
+- Support: BT-D056, BT-D057
+- Tasks: evidence:SP-beyond-text-2026:76ec3cb6dc9be578, evidence:SP-beyond-text-2026:06e2c9b7599db250
+- Type: MULTI_SOURCE_SYNTHESIS (confidence high)
+- Open: Zero-shot scores delegated to successor in D056; streaming latency not established in D057.
+
+## T-SP-03 — Mel-regression TTS to codec language models to grouped codes to flow infilling
+
+- Modality: speech
+- Bottleneck: Zero-shot TTS generalised poorly from small clean studio data; sampling instability; fixed high codec frame rates; slow past-only autoregressive models needing labels (D058-D060).
+- Changed representation: EnCodec 24 kHz to 75 Hz 8x1024 RVQ codec tokens (D058); grouped codes (D059); 80-dim log-mel plus frame-aligned phones for flow path (D060).
+- Changed architecture: Decoder-only autoregressive first-quantiser plus non-autoregressive remaining-quantiser model with shared layers (D058); grouped-code LM with repetition-aware sampling (D059); non-autoregressive continuous normalising flow Transformer vector field plus duration model plus HiFi-GAN-class vocoder (D060).
+- Changed objective: Next-token codec likelihood with phoneme plus 3-second acoustic prompting (D058); grouped-code likelihood (D059); optimal-transport conditional flow matching with infill conditioning plus classifier-free guidance (D060).
+- Changed sampling/inference: Sampling decode with EnCodec synthesis (D058); nucleus-then-random fallback on repetition threshold (D059); ODE solver under 10 evaluations; up to 20x faster than VALL-E (D060).
+- Conditioning/control: Acoustic prompting (D058); infill conditioning on past+future audio+text (D060).
+- Improvement: LibriSpeech WER 5.9 vs YourTTS 7.7, similarity 0.580 vs 0.337; SMOS 4.38 vs 3.45 (D058); zero-shot vs VALL-E WER 5.9% to 1.9%, similarity 0.580 to 0.681; cross-lingual vs YourTTS WER 10.9% to 5.2% (D060).
+- Trade-off/failure: Sampling instability/infinite loops; 3-second prompt needed; noisy labels; no streaming (D058); prompt dependence; misuse risk (D059); forced-alignment dependence; vocoder dependence (D060).
+- Succession: Codec-LM thesis inherited by versatile/in-the-wild systems (see T-SP-04).
+- Support: BT-D058, BT-D059, BT-D060
+- Tasks: evidence:SP-beyond-text-2026:a2f53eef541327a9, evidence:SP-beyond-text-2026:9bebb7872e77505e, evidence:SP-beyond-text-2026:4421fbd60440fab7
+- Type: MULTI_SOURCE_SYNTHESIS (confidence high)
+- Open: Recorded D059 locator 2406.05358 is a transcription defect; body consumed at verified-correct 2406.05370 (partial: result tables truncated).
+- Open: Exact VALL-E 2 parity margins and latency speedups not established.
+
+## T-SP-04 — Studio TTS to in-the-wild controllable TTS to streaming and full-duplex dialogue
+
+- Modality: speech
+- Bottleneck: Human-level in-the-wild zero-shot synthesis with controllability and deployable latency; pipeline dialogue with seconds of latency and text bottlenecks ignoring overlap (D061, D062, D132-D135).
+- Changed representation: Speech tokens to diffusion Transformer to vocoder (D061); w2v-BERT plus mined alignments plus unit representations (D062 v1); padded character-filler inputs (D132); supervised semantic tokens (D133); streaming codec frames at 12.5 Hz/80 ms (D134).
+- Changed architecture: Autoregressive token LM plus instruction/SFT plus RL post-training plus self-distilled factorisation plus non-autoregressive variant with causal diffusion distillation (D061); multitask encoder-decoder with unit vocoder v1 (D062); DiT with text refinement (D132); text-speech LM plus chunk-aware causal flow-matching UNet plus vocoder (D133); Helium-7B backbone plus Mimi codec plus hierarchical depth-Transformer (D134).
+- Changed objective: Instruction/SFT plus REINFORCE on similarity/word-error/speaker objectives (D061); multitask translation objectives (D062); optimal-transport conditional flow matching (D132); chunk-aware flow matching (D133).
+- Changed sampling/inference: Streaming via causal diffusion with distillation; deployed 0.028x real-time-factor (D061); offline non-streaming (D132); latency model L=M·(d_lm+d_fm+d_voc) with near-lossless streaming variant (D133); theoretical 160 ms / practical ~200 ms full-duplex latency (D134); turn-segmented multi-round benchmark with latency in seconds (D135).
+- Conditioning/control: Prompt timing and voice design without per-speaker training (vendor D110 context); text/reference/combined voice design (D061); turn/interruption modelling (D134, D135).
+- Improvement: In-context WER 2.249/similarity 0.762 near human; SFT +0.37 CMOS; RL +0.14 CMOS with hard-WER 7.585 to 6.423 (D061); F5-TTS 32-step WER 2.42/RTF 0.31, 16-step 2.53/RTF 0.15 (D132); CosyVoice2 LibriSpeech WER 2.47 near human with streaming near-lossless (D133); DuplexBench smooth 73.00% round-1 to 57.40% rounds-1-10 (D135).
+- Trade-off/failure: Hard-accent prompts weaker; reward-hacking; vendor-authored evals (D061); v1 lacks expressive/streaming eval (D062); offline only (D132); config-bound latency; English weaker (D133); research system; eval numbers partially consumed (D134); judge/segmentation dependence (D135).
+- Succession: Versatile/streaming/full-duplex thesis is the current speech frontier; production figures need independent measurement; closed realtime capstones (D107-D110) are capability-level heirs.
+- Support: BT-D061, BT-D062, BT-D132, BT-D133, BT-D134, BT-D135
+- Tasks: evidence:SP-beyond-text-2026:51f782caf75f7dd6, evidence:SP-beyond-text-2026:c0fb87ae414255fb, evidence:SP-beyond-text-2026:1ffa583eef7305dc, evidence:SP-beyond-text-2026:82f663cebcc213cc, evidence:SP-beyond-text-2026:7f63a28d9d9bf8e1, evidence:SP-beyond-text-2026:193424afc7da74ed
+- Type: MULTI_SOURCE_SYNTHESIS (confidence medium)
+- Open: Recorded D062 locator covers the v1 family; v2 expressive/streaming claims need the v2 body (2312.05187, not fetched).
+- Open: D134 evaluation section not consumed; production deployment figures need independent measurement.
+
+## T-MU-01 — Raw-audio hierarchical autoregression to semantic-acoustic staged generation
+
+- Modality: music
+- Bottleneck: Direct minutes-long song synthesis as raw audio with singing; unconditioned models babble; semantic tokens alone cannot vocode (D063, D065, D009).
+- Changed representation: Three hierarchical VQ code levels with hops 8/32/128 (D063); frozen SoundStream acoustic tokens (50 Hz, RVQ 12x1024) plus w2v-BERT semantic tokens (25 Hz) plus MuLan joint text-music tokens (D065).
+- Changed architecture: Three separate VQ-VAEs plus 5B sparse-Transformer top prior plus 1B upsamplers (D063); three 430M decoder-only Transformers in stages with temperature schedule (D065).
+- Changed objective: VQ reconstruction plus prior NLL (D063); semantic conditioned on MuLan-audio tokens and acoustic on both, swapped to MuLan-text at inference (D065).
+- Changed sampling/inference: Windowed/primed ancestral sampling (D063); story-mode 15-second-stride continuation and melody-condition extension (D065).
+- Conditioning/control: Artist/genre/timing plus encoder-decoder unaligned-lyrics conditioning with decoder-pretraining surgery (D063); MuLan text/music conditioning (D065).
+- Improvement: Spectral convergence bottom −23.0 dB with restarts (D063); MusicCaps FAD-VGG 4.0 vs Mubert 9.6, KLD 1.01, MCC 0.51, human wins 312 vs 158/97; memorisation exact <0.2% (D065).
+- Trade-off/failure: Coherence ~24 s then drifts; no repeating chorus/melody memory; novel-style generalisation weak (D063); MuLan negation/temporal-ordering failures; 30 s training extended autoregressively, no verse/chorus model (D065).
+- Succession: Hierarchical/staged thesis inherited by single-stage controllable and latent-diffusion music (see T-MU-02).
+- Support: BT-D063, BT-D065, BT-D009
+- Tasks: evidence:SP-beyond-text-2026:7ddc744f74cd0a5a, evidence:SP-beyond-text-2026:c3df2238d3b245f4, evidence:SP-beyond-text-2026:3405930c416cbd61
+- Type: MULTI_SOURCE_SYNTHESIS (confidence high)
+- Open: Long-form structure metrics and motif-level controllability beyond artist/genre/lyrics-window conditioning not established.
+
+## T-MU-02 — Cascaded hierarchies to single-stage controllable codec music to latent-diffusion audio with music-theory control
+
+- Modality: music/audio
+- Bottleneck: Cascaded hierarchies are slow and weakly controllable; text-to-music needs melody/chord/beat control with open weights and timing conditioning (D066-D069, D064, D067).
+- Changed representation: EnCodec 32 kHz mono stride-640 to 50 Hz RVQ 4x2048 with delay pattern (D066); mel-VAE spectrogram compression ratio 4 with CLAP alignment (D067); 64-dim continuous latent at 21.5 Hz (D068); Tango/AudioLDM-VAE latent with beat/chord encodings (D069).
+- Changed architecture: Single Transformer decoder with T5 cross-attention and chroma prefix; stereo fine-tune doubling codebooks (D066); mel-VAE plus CLAP-aligned LDM plus HiFiGAN (D067); VAE plus T5-base plus diffusion-Transformer with timing prepend (D068); Tango LDM plus MuNet UNet with sequential text/beat/chord cross-attentions (D069).
+- Changed objective: Delay-pattern next-token likelihood with guidance drop 0.2 (D066); CLAP-aligned latent diffusion with audio-only mixup (D067); timing-conditioned diffusion training on Creative-Commons clips (D068); beat-first control training with MusicBench enrichment/augmentation (D069).
+- Changed sampling/inference: Top-k sampling with guidance scale 3.0; stereo-delay/partial-delay at same step count (D066); 100-step DPM-Solver++ guidance 7.0 with silence-fill variable-length (D068); 200-step DDPM guidance 3 with predicted beats/chords from text (D069); shallow-reverse style transfer and masked inpainting (D067).
+- Conditioning/control: Chroma-argmax prefix (D066); text/music conditioning (D067); timing conditioning (D068); DeBERTa-beat plus FLAN-chord predictors from text (D069).
+- Improvement: MusicCaps FAD-VGG 3.1 vs Mousai 7.5; melody chroma-similarity 0.66 vs 0.10 text-only (D066); AudioCaps FD 23.31 vs DiffSound 47.68 (D067); AudioCaps FD-openl3 78.24 vs SA-1.0 103.66 (D068); controllability beat-chroma 11.64-17.99 vs Tango 6.61 vs MusicGen-M 3.97; experts musicality 5.76-6.10/7 vs Tango 2.75 (D069).
+- Trade-off/failure: Guidance-only fine control; chroma degrades objective metrics (D066); CLAP text/audio gap (D067); CC-data limits music quality; connector/speech failures (D068); tempo/beat near-parity; 10 s clips only (D069).
+- Succession: Controllable codec vs latent-diffusion paths frame the closed commercial systems (capability-level heirs D111-D116); long-form song structure remains open.
+- Support: BT-D064, BT-D066, BT-D067, BT-D068, BT-D069
+- Tasks: evidence:SP-beyond-text-2026:ce956702dad9fbc1, evidence:SP-beyond-text-2026:6fdf129b83003d86, evidence:SP-beyond-text-2026:dcf8774dcceba98e, evidence:SP-beyond-text-2026:e7504748f57444e1, evidence:SP-beyond-text-2026:1107baec9003328f
+- Type: MULTI_SOURCE_SYNTHESIS (confidence high)
+- Open: Recorded D068/D069 locators are transcription defects; bodies consumed at verified-correct 2407.14358 / 2311.08355.
+- Open: Long-form song structure and lyrics singing beyond chord/beat/key/tempo control not established.
+
+## T-MU-03 — Automatic music metrics to human-preference validation
+
+- Modality: music
+- Bottleneck: Music quality/alignment metrics unvalidated against human preference; local fidelity vs long-form structure conflated (D136, D088, D035).
+- Changed representation: NOT_ESTABLISHED (evaluation-side transition).
+- Changed architecture: NOT_ESTABLISHED.
+- Changed objective: Pairwise binary preference/alignment judgements with Elo plus Bradley-Terry vs Fréchet/CLAP variants (D136).
+- Changed sampling/inference: Tag-triple track combinations to 12 models x 500 10-second instrumental clips; 15600 judgements from 2500+ raters (D136).
+- Conditioning/control: NOT_ESTABLISHED
+- Improvement: Suno v3.5 top Elo both axes; Stable v2 +5pp over v1; Fréchet-CLAP music-audio best quality correlation, music-trained LAION variants best alignment (exact magnitudes figure-bound) (D136).
+- Trade-off/failure: v3/v3.5-era not v5/v6; 10-second instrumental only; ElevenLabs thin (D136).
+- Succession: Human-preference validation thesis must gate any ranking of closed music systems; automatic-metric claims stay proxy-level.
+- Support: BT-D136, BT-D088, BT-D035
+- Tasks: evidence:SP-beyond-text-2026:0c8a3b039995d7a4, evidence:SP-beyond-text-2026:eda826a6b6ff64e9, evidence:SP-beyond-text-2026:bb925f0ba2ddf674
+- Type: OPEN_QUESTION (confidence medium)
+- Open: Exact correlation magnitudes not text-extracted; newer commercial models not covered; long-form/lyrics dimensions unmeasured. NOTE: locator list replaced at build time by recorded Discovery locators (3 IDs).
+
+## T-VI-01 — Image diffusion to factorized video diffusion to cascaded HD to data-efficient T2V
+
+- Modality: video
+- Bottleneck: Standard image diffusion lacked temporal coherence; HD long-video needed scaling; paired text-video data scarce (D070, D071, D073).
+- Changed representation: NOT_ESTABLISHED (architecture-side transition; tokenizer path see T-REP-06).
+- Changed architecture: Factorized 3D U-Net with per-frame spatial plus temporal attention; images via masked temporal attention (D070); frozen T5-XXL plus base plus 3 spatial-SR plus 3 temporal-SR models 11.6B with temporal attention/conv split (D071); T2I UNet extended with pseudo-3D conv/attention plus fps conditioning (D073).
+- Changed objective: Joint image-video training (D070); v-prediction with noise-conditioning augmentation (D071); image-prior frozen, motion learned from videos-only sets (D073).
+- Changed sampling/inference: Reconstruction guidance for replacement/imputation, spatial SR, block-autoregressive extension (D070); oscillating guidance with two-stage guided progressive distillation to 8 steps (D071); prior to temporal decoder to masked interpolation to temporal+spatial SR with shared noise (D073).
+- Conditioning/control: Text-video joint conditioning (D070); classifier-free plus oscillating guidance (D071); fps conditioning (D073).
+- Improvement: BAIR FVD 68.19/Kinetics 18.6; joint text-video training FVD 202 to 57.84 with 8 images (D070); distilled 8+8-step CLIP 25.03 vs original 25.19 at ~18x faster (D071); MSR-VTT zero-shot FID 13.17/CLIPSIM 0.3049 vs CogVideo 23.59/0.2631 (D073).
+- Trade-off/failure: 16-frame blocks only; dataset bias, unreleased (D070); cascade cost; rotation inconsistency (D071); phenomena observable only in video unlearnable; social-bias exaggeration (D073).
+- Succession: Factorized/cascaded/data-efficient thesis inherited by latent video scaling and open MoE systems (see T-VI-02).
+- Support: BT-D070, BT-D071, BT-D073
+- Tasks: evidence:SP-beyond-text-2026:a316dd740b530926, evidence:SP-beyond-text-2026:fee3ed39d2856267, evidence:SP-beyond-text-2026:0d49b9158ebe9b9b
+- Type: MULTI_SOURCE_SYNTHESIS (confidence high)
+- Open: Recorded D073 locator 2209.14755 is a transcription defect; body consumed at verified-correct 2209.14792.
+
+## T-VI-02 — Personalized image models to motion adapters to curated latent video to open MoE video
+
+- Modality: video
+- Bottleneck: Animating personalised text-to-image models without per-model tuning while preserving domain quality; unifying curation with staged training; open high-quality video at fixed inference cost (D074, D075, D124).
+- Changed representation: 5D inflated latents (D074); SD2.1 spatial initialisation with inserted temporal modules (D075); 4x16x16 VAE plus patchify to 4x32x32 (D124).
+- Changed architecture: Frozen SD-V1.5 plus temporal Transformer self-attention plus LoRA domain adapter plus MotionLoRA (D074); SD2.1 plus temporal conv/attention, full finetune, with camera LoRA variants (D075); 2-expert MoE plus dense TI2V model (D124).
+- Changed objective: No motion retraining of base; adapter scaling at inference (D074); three-stage image/video/high-quality training (D075).
+- Changed sampling/inference: Temporal attention sampling with adapter scale alpha (D074); 25-frame image-to-video preferred over commercial systems (D075); 5 s 720P@24fps under 9 min on single 24 GB GPU (D124).
+- Conditioning/control: MotionLoRA shot-type conditioning; ControlNet-depth demo (D074); CLIP-image plus noise-augmented frame concatenation with increasing guidance (D075).
+- Improvement: Smoothness ratings 2.825 vs Tune-a-Video 1.615 (D074); UCF-101 zero-shot FVD 242.02 vs Make-A-Video 367.23; curation Elo advantages persisting after finetune (D075); vendor-reported +65.6%/+83.2% vs prior line (D124, vendor-attributed).
+- Trade-off/failure: Video-data quality gap; MotionLoRA needs ~50 references (D074); short-clip focus; slow/high-VRAM sampling (D075); open line frozen at 2.2 (D124).
+- Succession: Adapter/curation/open-MoE thesis is the deployable-video lane; closed joint-AV systems are capability-level heirs (see T-VI-03).
+- Support: BT-D074, BT-D075, BT-D124
+- Tasks: evidence:SP-beyond-text-2026:3f342e4b559930db, evidence:SP-beyond-text-2026:856d307d2b975989, evidence:SP-beyond-text-2026:e84001a0c2b8d88a
+- Type: MULTI_SOURCE_SYNTHESIS (confidence high)
+- Open: Recorded D074 locator 2307.04790 is a transcription defect; body consumed at verified-correct 2307.04725.
+- Open: D124 hyperparams/corpus beyond README undisclosed.
+
+## T-VI-03 — Research video models to closed joint audio-video storytelling capstones
+
+- Modality: video
+- Bottleneck: Clip-level generation to creative-work storytelling with synchronized audio, multi-round extension, reference control, and production workflows (D117-D123 vendor bodies).
+- Changed representation: NOT_ESTABLISHED (undisclosed in consumed bodies).
+- Changed architecture: Functionally described unified multimodal joint-generation architectures; no backbone/loss/params disclosed in consumed bodies (vendor boundary).
+- Changed objective: NOT_ESTABLISHED (undisclosed).
+- Changed sampling/inference: 30 s single-pass plus multi-round extension to multi-minute (D117, vendor); 20 s single plus native audio with agentic chaining (D119, vendor); up to 20 s 1080p frame-level control (D123, vendor); 10 s/720p production envelope (D121, vendor).
+- Conditioning/control: Multimodal reference (images/video/audio), timestamp/green-screen/camera/reference editing (D117); reference ingredients/style/character, first-last frame, outpainting (D118); keyframe/character-ref/annotation controls (D122, D123).
+- Improvement: Vendor-claimed continuity/AV-sync/polish vs typical AI video (D117); benchmark leads on 1,003-sample text-to-video plus 355-sample image-to-video plus 527-sample audio-video sets (D118, vendor); preliminary preference percentages over named competitors (D119, vendor).
+- Trade-off/failure: Vendor acknowledges physical-plausibility and multi-subject stability room (D117); short-segment spoken-audio sync issues (D118); early/preliminary harness (D119); subversion drift Ray3 vs 3.14 banner (D122); single-snapshot status (D123); Kling body blocked, Wan-hub body blocked (D120, D125 barriers).
+- Succession: Closed capstones succeed as workflow evidence, not architecture parents; open question whether media generation converges to unified models or orchestrated specialists.
+- Support: BT-D117, BT-D118, BT-D119, BT-D121, BT-D122, BT-D123
+- Tasks: evidence:SP-beyond-text-2026:28d1f19d5eee7e83, evidence:SP-beyond-text-2026:f63e92a1365366f7, evidence:SP-beyond-text-2026:c07ab75823a32443, evidence:SP-beyond-text-2026:0db0650a2d1641ed, evidence:SP-beyond-text-2026:8457086a5d671f95, evidence:SP-beyond-text-2026:f944cb2c3e3a12b6
+- Type: MULTI_SOURCE_SYNTHESIS (confidence medium)
+- Open: All architecture/training claims undisclosed in consumed bodies; independent verification open.
+- Open: D120/D125 bodies blocked; D106 hub redirect. NOTE: locator list replaced at build time by recorded Discovery locators (6 IDs).
+
+## T-VI-04 — One-shot video editing to standardized object-level editing benchmark with rectified-flow comparison
+
+- Modality: video
+- Bottleneck: One-shot text-driven video editing without large video training; no standardized fine-grained object-level benchmark for diffusion vs rectified-flow editing (D050, D138).
+- Changed representation: Inflated 3D latents (D050); SAM2 masks plus vision-LLM judgements (D138).
+- Changed architecture: Inflated SD with sparse spatio-temporal attention (D050); Pyramid-Flow plus Wan2.1 adapted via training/inversion-free FlowEdit (D138).
+- Changed objective: One-shot 500-step finetune (D050); benchmark measurement, no new training (D138).
+- Changed sampling/inference: DDIM-inversion unconditional then edited-prompt sampling (D050); 15-metric evaluation over 100 videos/420 pairs (D138).
+- Conditioning/control: First-plus-previous-frame querying (D050); colour/material/substitution/add/remove prompt pairs (D138).
+- Improvement: Frame consistency 92.40 with user preference 87.86% consistency (D050); Wan-Edit LPIPS 94.61/SSIM 82.55/PSNR 25.57 at 3.07 s/frame vs Pyramid-Edit 1.44 s/frame vs DMT 25.98 s/frame; FiVE-Accuracy Wan 46.97 vs Pyramid 43.84 vs DMT 48.42 (D138).
+- Trade-off/failure: Occlusion mixing; drift/flicker ablations (D050); editing-domain only; pure-generation ablations thin (D138).
+- Succession: Flow-vs-diffusion comparison evidenced inside video-editing domain; no superiority claim outside evidenced domains.
+- Support: BT-D050, BT-D138
+- Tasks: evidence:SP-beyond-text-2026:7daea26dba61b172, evidence:SP-beyond-text-2026:a2cba296950dfb43
+- Type: MULTI_SOURCE_SYNTHESIS (confidence high)
+- Open: Pure-generation flow-vs-diffusion ablations remain thin.
+
+## T-VI-05 — Short-range video quality to identity permanence, AV sync, physics, and long-horizon evaluation
+
+- Modality: video
+- Bottleneck: Single-valued metrics misaligned with humans; lip-sync training signals unstable; physics simulation unknown; multi-round turn effects unmeasured (D092, D093, D129-D131, D135).
+- Changed representation: NOT_ESTABLISHED (evaluation-side transition).
+- Changed architecture: NOT_ESTABLISHED.
+- Changed objective: Decomposed video-quality plus condition-consistency dimensions with human win-ratio alignment (D092); intrinsic-faithfulness groups with caption-plus-judge and specialist detectors (D093); expert-sync penalised generation (D129); lip-reading-feature objective with new AV metrics (D130); curated physics benchmark with human plus auto judgements (D131).
+- Changed sampling/inference: NOT_ESTABLISHED.
+- Conditioning/control: NOT_ESTABLISHED
+- Improvement: 4-model subject consistency 86-92% vs spatial 18-37% (D092); complex plot ~10-11%, motion order 15-29% (D093); combined dubbed/random/TTS preference over 90% vs unsynced (D129); user study 3.92-4.02 vs Wav2Lip 2.91 (D130); best joint physics 39.6% with auto ROC-AUC 82/73 vs Gemini 73/58 (D131).
+- Trade-off/failure: Backbone biases; static-video cheating (D092); VLM hallucination mitigated only (D093); public-SyncNet instability; talking-face only (D129, D130); 2024 model set; binary judgements conflate quality/motion (D131).
+- Succession: Decomposed/validity-bounded evaluation thesis must gate any cross-model ranking; one good sample is not long-horizon evidence.
+- Support: BT-D092, BT-D093, BT-D129, BT-D130, BT-D131
+- Tasks: evidence:SP-beyond-text-2026:26723d9e173e2673, evidence:SP-beyond-text-2026:cf83aa08f79d93dc, evidence:SP-beyond-text-2026:1f7f23f114838638, evidence:SP-beyond-text-2026:2b47521eba7d13e0, evidence:SP-beyond-text-2026:b730c76a9016ddbb
+- Type: MULTI_SOURCE_SYNTHESIS (confidence high)
+- Open: Longitudinal stability and minute-level summarisation errors flagged in-text.
+- Open: Cross-dimension weighting intentionally absent (no single score by design).
+
+## T-EV-01 — Holistic image metrics to compositional and preference-grounded evaluation
+
+- Modality: image
+- Bottleneck: GAN image evaluation lacked distribution-similarity metrics; holistic scores missed fine-grained compositional failures; preference data locked in companies (D083-D087).
+- Changed representation: NOT_ESTABLISHED (evaluation-side transition).
+- Changed architecture: NOT_ESTABLISHED.
+- Changed objective: Fréchet distance between embedding Gaussians with update-rule analysis (D083, abstract-level); objectness-diversity score requiring ~50k samples (D084); 6-task templated detector-plus-CLIP protocol (D085); 4-category disentangled VQA/detector/MLLM protocol (D086); web-app pairwise preference with fine-tuned scorer (D087).
+- Changed sampling/inference: NOT_ESTABLISHED.
+- Conditioning/control: NOT_ESTABLISHED
+- Improvement: Real-data Inception Score 11.24±0.12 as reference (D084); human agreement 83% vs CLIPScore 80%; IF-XL 0.61 vs SD-v2.1 0.50 with position ≤15%/binding ≤35% (D085); preference accuracy 70.5% vs experts 68.0% with win-rate correlation 0.917 vs FID −0.900 (D087).
+- Trade-off/failure: Embedding/sample-size/preprocessing unverified for D083 (abstract-level); optimisation-gaming and objectness bias (D084); closed vocabulary; detector failures on holes/clipart (D085); detector/VQA bounds and MLLM instability (D086); self-selected users; NSFW residue (D087).
+- Succession: Distribution-quality vs prompt-compositionality vs human-preference separation thesis; no cross-condition leaderboard.
+- Support: BT-D083, BT-D084, BT-D085, BT-D086, BT-D087
+- Tasks: evidence:SP-beyond-text-2026:ea3f679dd7fa0b7d, evidence:SP-beyond-text-2026:2cd41ce2ed2802f6, evidence:SP-beyond-text-2026:b3f1f434491a6f94, evidence:SP-beyond-text-2026:b14194dc66ac0c75, evidence:SP-beyond-text-2026:3bc8bb2e2d39a29a
+- Type: MULTI_SOURCE_SYNTHESIS (confidence medium)
+- Open: Recorded D084 locator 1606.03461 is a transcription defect; body consumed at verified-correct 1606.03498.
+- Open: D083 full-text HTML 404 plus ar5iv failure: values/sample-size/embedding dependence NOT body-established.
+- Open: D086 per-model score tables not fully consumed.
+
+## T-EV-02 — Reference-based audio quality to perceptual distances to corpus and protocol grounding
+
+- Modality: audio/speech
+- Bottleneck: Sample-level distortion metrics penalise perceptually better reconstructions and need references; large free read-speech corpus and subjective protocols needed grounding (D088-D091).
+- Changed representation: VGGish 128-d embeddings on 1-second windows (D088); 40-d log-mel with LSTM d-vectors (D090).
+- Changed architecture: NOT_ESTABLISHED (metric-side transition).
+- Changed objective: Fréchet distance between eval/background Gaussians across distortion sweeps (D088); batch softmax/contrast speaker loss with multi-reader weighting (D090).
+- Changed sampling/inference: Usable from ~300 clips/25 min (D088); sliding-window inference with overlap (D090).
+- Conditioning/control: NOT_ESTABLISHED
+- Improvement: Human correlation 0.52 vs SDR 0.39 (69,300 pairs, 20 raters) (D088); text-dependent equal-error 3.55→3.10 (no multi-reader), 2.67→2.38 (multi-reader) (D090).
+- Trade-off/failure: Phase-blind log-mel input; 1-second windows miss long-term structure (D088); internal training sets; similarity ≠ naturalness; no listening tests (D090); D089 corpus facts snippet-only; D091 Recommendation text gated.
+- Succession: Perceptual/protocol grounding thesis; embedding-dependence and population limits must travel with any score reuse.
+- Support: BT-D088, BT-D089, BT-D090, BT-D091
+- Tasks: evidence:SP-beyond-text-2026:eda826a6b6ff64e9, evidence:SP-beyond-text-2026:d1bdaeadd90a3dca, evidence:SP-beyond-text-2026:46b202089abc860a, evidence:SP-beyond-text-2026:be763f39a26e1cee
+- Type: MULTI_SOURCE_SYNTHESIS (confidence medium)
+- Open: Recorded D089 locator 1507.08211 does not resolve to the corpus paper; splits/alignment/baselines NOT body-established.
+- Open: D091 full text gated: all protocol details NOT established. NOTE: locator list replaced at build time by recorded Discovery locators (4 IDs).
+
+## T-CV-01 — Separated generators to unified multimodal models vs orchestrated specialists
+
+- Modality: crossmodal
+- Bottleneck: One Transformer for many vision/language tasks without heads; single LLM for interleaved speech+text; stable any-to-any conversation without architecture changes; joint video+audio without exponential paired data; trustworthy provenance (D094-D099).
+- Changed representation: Homogenised discrete tokens (SentencePiece plus VQ-GAN codebooks plus location tokens) (D094); expanded vocabulary with 1024 audio tokens (D095); data-level discretisation only across image/speech/music tokenisers (D096); per-modality latents with text-bridged fusion (D097); content credentials (D098, homepage-level); watermarks in pixels/frames/waveform/token probabilities (D099).
+- Changed architecture: Pure T5 encoder-decoder multitask (D094); decoder-only LLM with tagged mixtures plus parallel neural decoding (D095); frozen LLaMA-2-7B with text-bridge alignment (D096); independent per-modality LDMs with cross-attention plus environment encoders trained linearly (D097).
+- Changed objective: Span/image denoise plus temperature-mixed multitask (D094); tagged-mixture training including single-decode chain-of-thought (D095); next-token training with alignment plus instruction set (D096); staged text-image→text-audio→video-audio extension (D097).
+- Changed sampling/inference: No benchmark finetune (D094); 100x-faster parallel decoding with voice-prompt transfer (D095); diffusion/SoundStorm/Encodec de-tokenisers (D096).
+- Conditioning/control: Text-bridged prompt fusion enabling unseen combinations (D097).
+- Improvement: GRIT average 64.3 vs 32.0, first 7/7 coverage (D094); zero-shot ASR-observed 20.7 BLEU vs Whisper 19.6 with voice-preservation wins (D095); audio FD 22.90 vs 23.31 with joint coherence gains (D097).
+- Trade-off/failure: VQ-GAN precision caps; no pyramid priors (D094); speech+text only, synthetic targets (D095); higher multimodal loss; 5 s music cap; no any-to-any benchmark (D096); caption-gap inheritance; coherence-not-fidelity joint metric (D097); spec-level provenance not consumed (D098); no detection rates on page (D099).
+- Succession: OPEN_QUESTION: whether media generation moves to one unified representation/model or tightly connected modality-specialized generators orchestrated by reasoning/agents. Perception-side history stays in TS-003.
+- Support: BT-D094, BT-D095, BT-D096, BT-D097, BT-D098, BT-D099
+- Tasks: evidence:SP-beyond-text-2026:2e6d710855a5cd83, evidence:SP-beyond-text-2026:f34ee398fc32ecd5, evidence:SP-beyond-text-2026:4597e9ed0d3475f1, evidence:SP-beyond-text-2026:9d70cd8f171b370c, evidence:SP-beyond-text-2026:9ca57ba1364731bc, evidence:SP-beyond-text-2026:5c18c6ef8dceb9ca
+- Type: MULTI_SOURCE_SYNTHESIS (confidence medium)
+- Open: Recorded D095/D096/D097 locators are transcription defects; bodies consumed at verified-correct IDs.
+- Open: D098 full specification NOT consumed (homepage only). NOTE: locator list replaced at build time by recorded Discovery locators (6 IDs).
+
+## T-X-01 — Vendor/paper evidence to community reception, deployment friction, and counter-signals
+
+- Modality: crossmodal (reception-only)
+- Bottleneck: Vendor/paper sources cannot supply practical reception, local deployment friction, workflow adoption, or visible failure modes (D139).
+- Changed representation: NOT_ESTABLISHED (reception-side record; no technical representation claim).
+- Changed architecture: NOT_ESTABLISHED.
+- Changed objective: NOT_ESTABLISHED.
+- Changed sampling/inference: NOT_ESTABLISHED.
+- Conditioning/control: NOT_ESTABLISHED
+- Improvement: 27/27/27 Sol-audited ledger: local FLUX.2-klein friction, Seedream consistency reception, Seedance/Kling comparisons, Wan2.2 GGUF constraints, edit identity damage, drift/lip-sync failures; sparse lanes explicitly LOW_SIGNAL.
+- Trade-off/failure: Single bounded pass; 27 posts are one record, not 27 technical authorities; duplex/measurement/music-structure lanes LOW_SIGNAL.
+- Succession: Reception record informs deployment/runtime reading of technical anchors; any technical follow-up must be rebound to primary/independent authority; no popularity ranking derived.
+- Support: BT-D139
+- Tasks: evidence:SP-beyond-text-2026:6224f85fed3960ee
+- Type: DIRECT_SOURCE_STATEMENT (confidence high)
+- Open: Technical leads from X remain leads until primary-rebound; sparse-lane inflation prohibited.
+
+## T-CLOSED-01 — Dedicated generators to native-multimodal convergence with open-vs-closed runtime boundary
+
+- Modality: crossmodal (lifecycle synthesis, vendor-quarantined)
+- Bottleneck: Dedicated-generator vs native-multimodal product direction; open-weight freezing vs API-only flagships; closed commercial workflows without mechanism disclosure (D106, D114, D116, D122-D128, D124, D125).
+- Changed representation: NOT_ESTABLISHED (undisclosed).
+- Changed architecture: NOT_ESTABLISHED (only vendor-disclosed fragments: D100 flow+embedder/distillation, D111 latent-diffusion-over-temporal-latents, D113 autoencoder+diffusion+adversarial post-training, D124 MoE+VAE).
+- Changed objective: NOT_ESTABLISHED (undisclosed).
+- Changed sampling/inference: Vendor-stated envelopes only: sub-second local image (D100), 30 s single-pass plus extension video (D117), 20 s 1080p frame control (D123), 10 s/720p production (D121), 5 s 720P@24fps consumer-GPU open video (D124).
+- Conditioning/control: Documented control surfaces only (references, keyframes, annotation, audio reference, section edit).
+- Improvement: Lifecycle facts: Imagen deprecation toward Nano Banana hub (D106, hub-redirect); Sora product end 2026-04-26 plus API removal 2026-09-24 (D126-D128); Wan open line frozen at 2.2 (D124); Suno/ElevenLabs workflow surfaces without mechanism (D114-D116).
+- Trade-off/failure: Lifecycle direction is not architectural inevitability; version fluidity (Ray3 drift, Suno entries, Luma banner); D120/D125 bodies blocked; D106 hub redirect.
+- Succession: OPEN_QUESTION: unified native-multimodal models vs specialized generators plus reasoning/agents orchestration. Closed products succeed as workflow evidence, never as architecture parents.
+- Support: BT-D100, BT-D106, BT-D113, BT-D114, BT-D116, BT-D122, BT-D123, BT-D124, BT-D125, BT-D126, BT-D127, BT-D128
+- Tasks: evidence:SP-beyond-text-2026:15ae2666f78137ec, evidence:SP-beyond-text-2026:a787e213d0c07c2f, evidence:SP-beyond-text-2026:095729b21086caab, evidence:SP-beyond-text-2026:c33e504687f977f0, evidence:SP-beyond-text-2026:c6ede16bb38266f0, evidence:SP-beyond-text-2026:8457086a5d671f95, evidence:SP-beyond-text-2026:f944cb2c3e3a12b6, evidence:SP-beyond-text-2026:e84001a0c2b8d88a, evidence:SP-beyond-text-2026:e9c5f26ad3ff6ec4, evidence:SP-beyond-text-2026:4ce2e6c46d4ec36f, evidence:SP-beyond-text-2026:08bf420a4b9ec574, evidence:SP-beyond-text-2026:cbb1a82cf54501c2
+- Type: MULTI_SOURCE_SYNTHESIS (confidence medium)
+- Open: All undisclosed mechanisms explicitly marked; independent verification open.
+- Open: NOTE: locator list replaced at build time by recorded Discovery locators (12 IDs).

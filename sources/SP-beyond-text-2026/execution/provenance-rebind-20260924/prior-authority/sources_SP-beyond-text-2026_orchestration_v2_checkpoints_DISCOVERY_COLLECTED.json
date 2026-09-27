@@ -1,0 +1,45 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-beyond-text-2026",
+  "from_state": "DISCOVERY_COLLECTED",
+  "to_state": "CANDIDATES_NORMALIZED",
+  "checkpoints": [
+    "screening"
+  ],
+  "recorded_at": "2026-09-24T12:40:35Z",
+  "implementation": {
+    "repository_commit_sha": "d2234bfe350c20e7c91859df9088af50f36b92d0",
+    "orchestrator_version": "survey-production-core-v2/0.15-postintegration-transport-thematic"
+  },
+  "contract": {
+    "pipeline_contract_version": "2.0-rc1",
+    "pipeline_contract_sha256": "ee89796245c22072cec98f34931180214a4928c24f399280793cd6420a4c8e71",
+    "quality_contract_version": "2.0-rc1",
+    "quality_contract_sha256": "b5b955d524fb438c0f1b2c9490bea1da2083e79028d67a55ca424bbfc20f2958",
+    "research_profile_version": "2.0-rc1",
+    "research_profile_sha256": "0f575e6d97caec72b2bf8b7f6b78a562d97ca67b2071193417b968ba3d73e6e8",
+    "publication_profile_version": "2.0-rc1",
+    "publication_profile_sha256": "a6859559dd1b9d42ab8fb4402b74b7bdd8611dbe65c8e02a7b022b545c20f4eb"
+  },
+  "artifacts": [
+    {
+      "name": "screening-acceptance",
+      "path": "sources/SP-beyond-text-2026/screening/v2/accepted/2a3e28dacadf9496db9109ff5dde58663767f280766c56b08c7bc03e72689966/screening-accepted.json",
+      "sha256": "d8eaabe990ab3420e30bb852909afc684b1339ae9779dab0519c04dacd9ecc1a"
+    }
+  ],
+  "reviews": [
+    {
+      "check_id": "CORE_STAGE_CONTRACT",
+      "kind": "DETERMINISTIC",
+      "status": "PASS",
+      "executor": "Survey Production Core v2 survey_stage_validation_v2.py",
+      "evidence": "Current Core Screening stage-contract validation passed against the 139-record Screening acceptance (134 KEEP / 3 MAYBE / 2 INSPECT / 0 DROP; non-DROP 139) over canonical Discovery 139 (128 BASE + 10 GAP_FILL + 1 X-bound BT-D139). Machine validation only; fresh Sol Evidence Semantic Review is the required next supervisory boundary before Materiality/Completeness/Selection/Architecture.",
+      "result": {
+        "path": "sources/SP-beyond-text-2026/execution/x-import-screening-evidence-20260924/validation/screening-stage-validation.json",
+        "sha256": "92c9514d04a1c70a7170de220274e1b2ad4c8b1ada7993d62b7f3cc2af556551"
+      }
+    }
+  ],
+  "summary": "TS-002 Screening complete over 139-record canonical Discovery (128 BASE + 10 GAP_FILL + 1 X-bound BT-D139): 134 KEEP / 3 MAYBE / 2 INSPECT / 0 DROP; non-DROP 139. Primary authorities, X reception, LOW_SIGNAL lanes, modality balance, and TS-002/TS-003 boundary preserved; closed products retained as capability cases. Proceed to Evidence, then stop for Sol Evidence Semantic Review."
+}

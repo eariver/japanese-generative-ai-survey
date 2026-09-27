@@ -1,0 +1,1348 @@
+{
+ "schema_version": "2.0-rc1",
+ "issue_id": "SP-beyond-text-2026",
+ "basis": {
+  "transition_ledger": "sources/SP-beyond-text-2026/execution/evidence-semantic-depth-r2/transition-ledger.json",
+  "manuscript": "surveys/special/beyond-text-2026/main.tex (r1, pre-r2-repair)",
+  "architecture": "sources/SP-beyond-text-2026/architecture-v2.json"
+ },
+ "counts": {
+  "SUBSTANTIVE": 24,
+  "COMPRESSED_BUT_SUFFICIENT": 16,
+  "BOUNDARY_ONLY": 3
+ },
+ "transitions": [
+  {
+   "transition_id": "T-REP-01",
+   "destination_package": "arch-representation",
+   "supporting_ids": [
+    "BT-D001",
+    "BT-D002"
+   ],
+   "manuscript_sections": [
+    1
+   ],
+   "bottleneck": "yes",
+   "representation_change": "yes",
+   "architecture_change": "yes",
+   "objective_change": "yes",
+   "sampling_change": "yes",
+   "conditioning_control_change": "na",
+   "improvement": "yes",
+   "tradeoff": "yes",
+   "succession": "yes",
+   "mechanism_detail": "yes",
+   "condition_detail": "yes",
+   "classification": "SUBSTANTIVE",
+   "repair_action": null,
+   "rationale": "Sec 1 states the per-datapoint posterior bottleneck, amortized q(z|x) with analytic KL plus reparameterisation, then discrete codebooks with straight-through gradients under a uniform prior, with wake-sleep-beating bounds and 49.3% phoneme mapping conditioned in-text."
+  },
+  {
+   "transition_id": "T-REP-02",
+   "destination_package": "arch-representation",
+   "supporting_ids": [
+    "BT-D002",
+    "BT-D003",
+    "BT-D004"
+   ],
+   "manuscript_sections": [
+    1,
+    2
+   ],
+   "bottleneck": "yes",
+   "representation_change": "yes",
+   "architecture_change": "yes",
+   "objective_change": "yes",
+   "sampling_change": "yes",
+   "conditioning_control_change": "na",
+   "improvement": "yes",
+   "tradeoff": "yes",
+   "succession": "yes",
+   "mechanism_detail": "yes",
+   "condition_detail": "yes",
+   "classification": "SUBSTANTIVE",
+   "repair_action": null,
+   "rationale": "Sec 1 gives two-level discrete maps with top-conditioned bottom sampling and VQGAN perceptual plus patch-discriminator compression to 16x16 indices, with CAS/FID gains, rejection-diversity and likelihood-incomparability tradeoffs, and inheritance to latent-diffusion first stages in Sec 2."
+  },
+  {
+   "transition_id": "T-REP-03",
+   "destination_package": "arch-representation",
+   "supporting_ids": [
+    "BT-D002",
+    "BT-D005"
+   ],
+   "manuscript_sections": [
+    1
+   ],
+   "bottleneck": "yes",
+   "representation_change": "yes",
+   "architecture_change": "yes",
+   "objective_change": "yes",
+   "sampling_change": "yes",
+   "conditioning_control_change": "yes",
+   "improvement": "yes",
+   "tradeoff": "yes",
+   "succession": "yes",
+   "mechanism_detail": "yes",
+   "condition_detail": "yes",
+   "classification": "SUBSTANTIVE",
+   "repair_action": null,
+   "rationale": "Sec 1 covers the dVAE 32x32 plus BPE single-stream representation, sparse decoder-only transformer, text/image-weighted joint ELBO, CLIP best-of-512 rerank with post-32 plateau, human-vote gains, and high-frequency-detail plus rerank-dependence costs."
+  },
+  {
+   "transition_id": "T-REP-04",
+   "destination_package": "arch-representation",
+   "supporting_ids": [
+    "BT-D006",
+    "BT-D007",
+    "BT-D008"
+   ],
+   "manuscript_sections": [
+    1
+   ],
+   "bottleneck": "yes",
+   "representation_change": "yes",
+   "architecture_change": "yes",
+   "objective_change": "yes",
+   "sampling_change": "yes",
+   "conditioning_control_change": "na",
+   "improvement": "yes",
+   "tradeoff": "yes",
+   "succession": "yes",
+   "mechanism_detail": "yes",
+   "condition_detail": "yes",
+   "classification": "SUBSTANTIVE",
+   "repair_action": null,
+   "rationale": "Sec 1 traces three RVQ generations (320x causal, multistream plus STFT discriminator, factorised normalised RVQ at ~91x) with adversarial plus mel objectives, streamable inference at stated latencies, MUSHRA gains, and crowdsourced-evaluation plus music-difficulty bounds."
+  },
+  {
+   "transition_id": "T-REP-05",
+   "destination_package": "arch-representation",
+   "supporting_ids": [
+    "BT-D007",
+    "BT-D009"
+   ],
+   "manuscript_sections": [
+    1
+   ],
+   "bottleneck": "yes",
+   "representation_change": "yes",
+   "architecture_change": "yes",
+   "objective_change": "yes",
+   "sampling_change": "yes",
+   "conditioning_control_change": "na",
+   "improvement": "yes",
+   "tradeoff": "yes",
+   "succession": "yes",
+   "mechanism_detail": "yes",
+   "condition_detail": "yes",
+   "classification": "COMPRESSED_BUT_SUFFICIENT",
+   "repair_action": null,
+   "rationale": "Sec 1 states the babble-vs-unvocodable bottleneck, k-means semantic plus RVQ acoustic hierarchy with three-stage transformers, ABX/CER/speaker-accuracy numbers and proper-noun/noise failures; shares one subsection with T-REP-06/07 so compressed but all five points present."
+  },
+  {
+   "transition_id": "T-REP-06",
+   "destination_package": "arch-representation",
+   "supporting_ids": [
+    "BT-D002",
+    "BT-D010"
+   ],
+   "manuscript_sections": [
+    1,
+    2
+   ],
+   "bottleneck": "yes",
+   "representation_change": "yes",
+   "architecture_change": "yes",
+   "objective_change": "yes",
+   "sampling_change": "yes",
+   "conditioning_control_change": "na",
+   "improvement": "yes",
+   "tradeoff": "yes",
+   "succession": "yes",
+   "mechanism_detail": "yes",
+   "condition_detail": "yes",
+   "classification": "COMPRESSED_BUT_SUFFICIENT",
+   "repair_action": null,
+   "rationale": "Sec 1 gives 3D-VQ 16-frame to 1024-token compression with inflated 2D init, COMMIT 12-step non-autoregressive decoding, FVD cuts with ~100x diffusion efficiency, and VQ-fidelity plus fixed-length bounds; subsection shared, mechanism and conditions intact."
+  },
+  {
+   "transition_id": "T-REP-07",
+   "destination_package": "arch-representation",
+   "supporting_ids": [
+    "BT-D010",
+    "BT-D012"
+   ],
+   "manuscript_sections": [
+    1
+   ],
+   "bottleneck": "yes",
+   "representation_change": "yes",
+   "architecture_change": "yes",
+   "objective_change": "na",
+   "sampling_change": "yes",
+   "conditioning_control_change": "na",
+   "improvement": "yes",
+   "tradeoff": "yes",
+   "succession": "yes",
+   "mechanism_detail": "yes",
+   "condition_detail": "yes",
+   "classification": "COMPRESSED_BUT_SUFFICIENT",
+   "repair_action": null,
+   "rationale": "Sec 1 correctly gives README-level treatment only: 4x16x16 64x VAE plus MoE runtime with consumer-GPU timing, vendor-attributed gains, and explicit no-reconstruction-numbers plus no-training-loss bounds; ledger objective is NOT_ESTABLISHED so na is correct, not a defect."
+  },
+  {
+   "transition_id": "T-PAR-01",
+   "destination_package": "arch-paradigms",
+   "supporting_ids": [
+    "BT-D013",
+    "BT-D014"
+   ],
+   "manuscript_sections": [
+    2
+   ],
+   "bottleneck": "yes",
+   "representation_change": "yes",
+   "architecture_change": "yes",
+   "objective_change": "yes",
+   "sampling_change": "yes",
+   "conditioning_control_change": "na",
+   "improvement": "yes",
+   "tradeoff": "yes",
+   "succession": "yes",
+   "mechanism_detail": "yes",
+   "condition_detail": "yes",
+   "classification": "SUBSTANTIVE",
+   "repair_action": null,
+   "rationale": "Sec 2 states the tractable-density/MCMC bottleneck, implicit G(z) distribution with minimax plus non-saturating loss, DCGAN convolutional stabilisation, Parzen/probe gains, and mode-collapse plus no-explicit-density costs with hybrid-role succession."
+  },
+  {
+   "transition_id": "T-PAR-02",
+   "destination_package": "arch-paradigms",
+   "supporting_ids": [
+    "BT-D015",
+    "BT-D016"
+   ],
+   "manuscript_sections": [
+    2
+   ],
+   "bottleneck": "yes",
+   "representation_change": "yes",
+   "architecture_change": "yes",
+   "objective_change": "yes",
+   "sampling_change": "yes",
+   "conditioning_control_change": "yes",
+   "improvement": "yes",
+   "tradeoff": "yes",
+   "succession": "yes",
+   "mechanism_detail": "yes",
+   "condition_detail": "yes",
+   "classification": "SUBSTANTIVE",
+   "repair_action": null,
+   "rationale": "Sec 2 covers mapping-network W-space with per-layer styles and noise maps, AdaIN-to-demodulation redesign, mixing plus path-length regularisation, style-mixing/truncation control, FID 8.04 to 4.40 to 2.84 with path-length numbers, and texture-bias tradeoffs."
+  },
+  {
+   "transition_id": "T-PAR-03",
+   "destination_package": "arch-paradigms",
+   "supporting_ids": [
+    "BT-D017",
+    "BT-D018"
+   ],
+   "manuscript_sections": [
+    2
+   ],
+   "bottleneck": "yes",
+   "representation_change": "yes",
+   "architecture_change": "yes",
+   "objective_change": "yes",
+   "sampling_change": "yes",
+   "conditioning_control_change": "na",
+   "improvement": "yes",
+   "tradeoff": "yes",
+   "succession": "yes",
+   "mechanism_detail": "yes",
+   "condition_detail": "yes",
+   "classification": "SUBSTANTIVE",
+   "repair_action": null,
+   "rationale": "Sec 2 gives row-major RGB-split factorisation, Row-LSTM/Diagonal-BiLSTM and masked-conv variants, decoder-only Transformer with masked local attention, bits/dim gains with fooled-rate super-resolution, and sequential-cost plus local-context truncation costs."
+  },
+  {
+   "transition_id": "T-PAR-04",
+   "destination_package": "arch-paradigms",
+   "supporting_ids": [
+    "BT-D019",
+    "BT-D030"
+   ],
+   "manuscript_sections": [
+    2
+   ],
+   "bottleneck": "yes",
+   "representation_change": "yes",
+   "architecture_change": "yes",
+   "objective_change": "yes",
+   "sampling_change": "yes",
+   "conditioning_control_change": "yes",
+   "improvement": "yes",
+   "tradeoff": "yes",
+   "succession": "yes",
+   "mechanism_detail": "yes",
+   "condition_detail": "yes",
+   "classification": "COMPRESSED_BUT_SUFFICIENT",
+   "repair_action": null,
+   "rationale": "Sec 2 separates UNet architecture gains from simplified-epsilon plus hybrid-bound objective gains, covers classifier-guided sampling with precision-recall scale tradeoff, ImageNet FID beats over BigGAN with NLL and 1000-step cost bounds; shares a subsection with T-PAR-05."
+  },
+  {
+   "transition_id": "T-PAR-05",
+   "destination_package": "arch-paradigms",
+   "supporting_ids": [
+    "BT-D019",
+    "BT-D020"
+   ],
+   "manuscript_sections": [
+    2
+   ],
+   "bottleneck": "yes",
+   "representation_change": "yes",
+   "architecture_change": "yes",
+   "objective_change": "yes",
+   "sampling_change": "yes",
+   "conditioning_control_change": "na",
+   "improvement": "yes",
+   "tradeoff": "yes",
+   "succession": "yes",
+   "mechanism_detail": "yes",
+   "condition_detail": "yes",
+   "classification": "COMPRESSED_BUT_SUFFICIENT",
+   "repair_action": null,
+   "rationale": "Sec 2 states the 1000-step chain bottleneck, same-marginal non-Markovian joint with sigma vector reusing the pretrained UNet, subsampled 10-100-step trajectories with deterministic ODE view, step-conditioned FID table, and short-trajectory degradation bounds."
+  },
+  {
+   "transition_id": "T-PAR-06",
+   "destination_package": "arch-paradigms",
+   "supporting_ids": [
+    "BT-D021",
+    "BT-D022"
+   ],
+   "manuscript_sections": [
+    2
+   ],
+   "bottleneck": "yes",
+   "representation_change": "yes",
+   "architecture_change": "yes",
+   "objective_change": "yes",
+   "sampling_change": "yes",
+   "conditioning_control_change": "yes",
+   "improvement": "yes",
+   "tradeoff": "yes",
+   "succession": "yes",
+   "mechanism_detail": "yes",
+   "condition_detail": "yes",
+   "classification": "COMPRESSED_BUT_SUFFICIENT",
+   "repair_action": null,
+   "rationale": "Sec 2 gives continuous-time unification with time-dependent score nets, predictor-corrector plus probability-flow ODE with exact likelihood, conditional-from-unconditional generation, and treats BT-D022 strictly at abstract level (35-eval claim, no ablation prose), which per rules is correct rather than UNDER_EXPLAINED."
+  },
+  {
+   "transition_id": "T-PAR-07",
+   "destination_package": "arch-paradigms",
+   "supporting_ids": [
+    "BT-D023",
+    "BT-D024"
+   ],
+   "manuscript_sections": [
+    1,
+    2
+   ],
+   "bottleneck": "yes",
+   "representation_change": "yes",
+   "architecture_change": "yes",
+   "objective_change": "yes",
+   "sampling_change": "yes",
+   "conditioning_control_change": "yes",
+   "improvement": "yes",
+   "tradeoff": "yes",
+   "succession": "yes",
+   "mechanism_detail": "yes",
+   "condition_detail": "yes",
+   "classification": "COMPRESSED_BUT_SUFFICIENT",
+   "repair_action": null,
+   "rationale": "Sec 2 covers once-compress-then-diffuse with KL/VQ-regularised autoencoders, latent epsilon-matching plus cross-attention domain conditioning, 10-200-step DDIM with convolutional extension, unconditional and COCO FID numbers, first-stage-detail limits, with the D024 implementation-binding barrier recorded as boundary."
+  },
+  {
+   "transition_id": "T-PAR-08",
+   "destination_package": "arch-paradigms",
+   "supporting_ids": [
+    "BT-D025",
+    "BT-D026"
+   ],
+   "manuscript_sections": [
+    2
+   ],
+   "bottleneck": "yes",
+   "representation_change": "yes",
+   "architecture_change": "yes",
+   "objective_change": "yes",
+   "sampling_change": "yes",
+   "conditioning_control_change": "yes",
+   "improvement": "yes",
+   "tradeoff": "yes",
+   "succession": "yes",
+   "mechanism_detail": "yes",
+   "condition_detail": "yes",
+   "classification": "COMPRESSED_BUT_SUFFICIENT",
+   "repair_action": null,
+   "rationale": "Sec 2 separates backbone swap (DiT patchified latents, adaLN-zero, scaling to XL/2 FID 2.27) from objective swap (interpolant velocity objective on identical backbone, guided 2.06 vs 2.27), with hardware-bound throughput and endpoint-singularity bounds; shares a subsection with T-PAR-09."
+  },
+  {
+   "transition_id": "T-PAR-09",
+   "destination_package": "arch-paradigms",
+   "supporting_ids": [
+    "BT-D027",
+    "BT-D028"
+   ],
+   "manuscript_sections": [
+    2
+   ],
+   "bottleneck": "yes",
+   "representation_change": "yes",
+   "architecture_change": "yes",
+   "objective_change": "yes",
+   "sampling_change": "yes",
+   "conditioning_control_change": "na",
+   "improvement": "yes",
+   "tradeoff": "yes",
+   "succession": "yes",
+   "mechanism_detail": "yes",
+   "condition_detail": "yes",
+   "classification": "COMPRESSED_BUT_SUFFICIENT",
+   "repair_action": null,
+   "rationale": "Sec 2 states the ODE-simulation cost bottleneck, conditional-flow-matching equal-gradient mechanism with OT-straightened paths, rectified least-squares plus reflow with one-step distill, NFE/FID comparisons, and exact-field plus reflow-accumulation bounds."
+  },
+  {
+   "transition_id": "T-RT-01",
+   "destination_package": "arch-runtime",
+   "supporting_ids": [
+    "BT-D019",
+    "BT-D020",
+    "BT-D078",
+    "BT-D079",
+    "BT-D080",
+    "BT-D081",
+    "BT-D082"
+   ],
+   "manuscript_sections": [
+    "Section 10"
+   ],
+   "bottleneck": "yes",
+   "representation_change": "na",
+   "architecture_change": "yes",
+   "objective_change": "yes",
+   "sampling_change": "yes",
+   "conditioning_control_change": "na",
+   "improvement": "yes",
+   "tradeoff": "yes",
+   "succession": "yes",
+   "mechanism_detail": "Sec.10 separates procedure-shortening (progressive halving distillation N-to-N/2; latent consistency distillation plus isolated training; LoRA acceleration plus style vectors; hinge-adversarial plus score-distillation 1-4-step sampling) from structure-compression (mobile UVT-class redesign to 386M/182GFLOPs with distilled decoder), with an independent H100 measurement ceiling kept as a separate bound layer.",
+   "condition_detail": "Every number hardware/step/pixel/budget-bound in-text (CIFAR-10 FID 3.0 at 4 steps with staged 8/4/2/1 degradation ladder; 512px guidance-8 FID 11.10; COCO 1-step 19.7 at 0.09s vs 0.88s 25-step on stated precision; mobile 1-step 0.2s 512px on stated phone; 512-TPU 15-day search cost); cross-hardware speed ranking prohibited; latency/VRAM/quantisation bindings marked absent from consumed bodies.",
+   "classification": "SUBSTANTIVE",
+   "repair_action": "none",
+   "rationale": "Sampler-side transition with correctly absent representation/conditioning claims; three-layer reading (procedure shortening vs structure compression vs measurement ceiling) prevents the forbidden single-speed-ranking; 1-2-step degradation, guidance sensitivity, diversity loss, and search-cost tradeoffs are recorded per method with budget bindings."
+  },
+  {
+   "transition_id": "T-COND-01",
+   "destination_package": "arch-conditioning",
+   "supporting_ids": [
+    "BT-D011",
+    "BT-D031"
+   ],
+   "manuscript_sections": [
+    "Section 3"
+   ],
+   "bottleneck": "yes",
+   "representation_change": "yes",
+   "architecture_change": "yes",
+   "objective_change": "yes",
+   "sampling_change": "yes",
+   "conditioning_control_change": "yes",
+   "improvement": "yes",
+   "tradeoff": "yes",
+   "succession": "yes",
+   "mechanism_detail": "Sec.3 traces contrastive joint-space pretraining (dual ResNet/ViT plus Transformer encoders, symmetric cross-entropy, learned temperature) into frozen-encoder diffusion conditioning (T5-XXL sequence plus pooled embeddings via cross-attention in 64px base plus text-conditional super-resolutions), distinguishing training-time conditioning from inference-time guidance.",
+   "condition_detail": "Zero-shot conditions bound to 400M-pair joint space with prompt templates plus ensembling (D031); diffusion side bound to 10% text-dropout joint objective, static/dynamic thresholding, noise-augmented cascade; encoder-scale findings marked era-bound, not transferable to later encoders.",
+   "classification": "SUBSTANTIVE",
+   "repair_action": "none",
+   "rationale": "Ledger bottleneck, dual-encoder architecture, dropout objective, thresholded sampling, zero-shot/FID/human-alignment gains, counting/bias/photorealism tradeoffs, and inheritance to latent-diffusion cross-attention plus CLAP conditioning are all present in Sec.3 prose with condition bindings and an explicit era-bound encoder caveat. No evidence-supported omission."
+  },
+  {
+   "transition_id": "T-COND-02",
+   "destination_package": "arch-conditioning",
+   "supporting_ids": [
+    "BT-D030",
+    "BT-D032",
+    "BT-D033"
+   ],
+   "manuscript_sections": [
+    "Section 3"
+   ],
+   "bottleneck": "yes",
+   "representation_change": "na",
+   "architecture_change": "yes",
+   "objective_change": "yes",
+   "sampling_change": "yes",
+   "conditioning_control_change": "yes",
+   "improvement": "yes",
+   "tradeoff": "yes",
+   "succession": "yes",
+   "mechanism_detail": "Sec.3 frames classifier-free guidance as a training-plus-inference change (conditioning-dropout joint conditional/unconditional learning, inference-time extrapolation with swept scale), not an architecture change, and extends it to the text-guided diffusion branch (noised-CLIP-gradient comparison, inpainting and SDEdit reuse).",
+   "condition_detail": "All gains bound to swept-scale, stated resolutions (64px FID 1.55 at w=0.1; 128px 2.43), and stated dropout/finetune configs (10-20% dropout, 20% empty-caption plus inpaint finetune); 2x NFE cost and diversity loss recorded as the price of extrapolation; transfer beyond verified dropout/scale values explicitly unestablished.",
+   "classification": "SUBSTANTIVE",
+   "repair_action": "none",
+   "rationale": "Guidance-side transition with correctly absent representation claim; architecture-unchanged status, joint-training objective, 2-pass sampling cost, FID/Elo/zero-shot gains, saturation/diversity/unusual-object tradeoffs, and inheritance to latent-diffusion and video guidance schedules are all covered with per-condition bindings."
+  },
+  {
+   "transition_id": "T-COND-03",
+   "destination_package": "arch-conditioning",
+   "supporting_ids": [
+    "BT-D011",
+    "BT-D034"
+   ],
+   "manuscript_sections": [
+    "Section 3"
+   ],
+   "bottleneck": "yes",
+   "representation_change": "na",
+   "architecture_change": "yes",
+   "objective_change": "yes",
+   "sampling_change": "yes",
+   "conditioning_control_change": "yes",
+   "improvement": "yes",
+   "tradeoff": "yes",
+   "succession": "yes",
+   "mechanism_detail": "Sec.3 covers the shared-EDM-denoiser to stage-expert split (log-normal pretraining, binary-tree sigma split, final 3-expert) with triple-encoder conditioning (T5-XXL plus CLIP-text plus CLIP-image, independent dropout) and the two-phase pretrain-then-finetune objective.",
+   "condition_detail": "Gains bound to zero-shot 256px Config-B/D conditions (FID 7.26/7.04) and stated step budgets (4-expert at 600k vs shared baseline at 800k across the FID-CLIP curve); per-step cost invariance (one expert per sigma) plus paint-with-words stated as training-free; expert-count training cost recorded.",
+   "classification": "SUBSTANTIVE",
+   "repair_action": "none",
+   "rationale": "Ensemble-side transition with correctly absent representation claim; stage-split architecture, multi-encoder conditioning with independent dropout, two-phase objective, same-per-step-cost sampling, FID-curve gains, expert-count cost and CLIP-only compositionality tradeoffs are all present with condition bindings. Provenance-rebound locator noted in ledger, body consumed."
+  },
+  {
+   "transition_id": "T-COND-04",
+   "destination_package": "arch-conditioning",
+   "supporting_ids": [
+    "BT-D035"
+   ],
+   "manuscript_sections": [
+    "Section 3"
+   ],
+   "bottleneck": "yes",
+   "representation_change": "yes",
+   "architecture_change": "yes",
+   "objective_change": "yes",
+   "sampling_change": "yes",
+   "conditioning_control_change": "yes",
+   "improvement": "yes",
+   "tradeoff": "yes",
+   "succession": "yes",
+   "mechanism_detail": "Sec.3 subsection compresses the single-source CLAP transition (CNN14 audio plus BERT text encoders, linear projections, learned temperature, symmetric contrastive loss on 128k pairs, 1024-d joint space) into conditioning-plus-evaluation framing, separating retrieval-style cosine inference (no diffusion) from downstream generative use.",
+   "condition_detail": "Zero-shot gains bound to stated tasks and templated-prompt cosine protocol (ESC50 82.6%, US8K 73.24%, FSD50K mAP 30.24%); speech/emotion/keyword near-chance results, caption-quality bottleneck, and augmentation harm recorded; generative-audio diffusion conditioning use and FAD/human-alignment validity explicitly marked unestablished.",
+   "classification": "COMPRESSED_BUT_SUFFICIENT",
+   "repair_action": "none",
+   "rationale": "Single-discovery transition necessarily compressed, but all nine dimensions are present and the key validity boundary (conditioning use in generative audio diffusion unestablished) is explicitly marked rather than elided; succession pointers to AudioLDM conditioning and music-metric validation are stated as verification axes, not established facts."
+  },
+  {
+   "transition_id": "T-CTRL-01",
+   "destination_package": "arch-control",
+   "supporting_ids": [
+    "BT-D036",
+    "BT-D037"
+   ],
+   "manuscript_sections": [
+    "Section 4"
+   ],
+   "bottleneck": "yes",
+   "representation_change": "na",
+   "architecture_change": "yes",
+   "objective_change": "yes",
+   "sampling_change": "yes",
+   "conditioning_control_change": "yes",
+   "improvement": "yes",
+   "tradeoff": "yes",
+   "succession": "yes",
+   "mechanism_detail": "Sec.4 covers zero-initialised control injection (locked UNet plus trainable encoder/middle copy via zero-convolutions growing from zero, tiny condition encoder) and the lightweight-adapter successor (~77M down to 5M, 4-scale feature injection), with composable additive controls and cross-derivative generalisation.",
+   "condition_detail": "ControlNet gains bound (sketch quality 4.22/fidelity 4.28, ADE20K IoU 0.35/FID 15.27, sub-10k sudden convergence; adapter COCO FID 16.78/17.36 vs PITI/SD baselines) with 50% prompt dropout and cubic timestep-sampling configs stated; ambiguous-input prompt need, manual multi-control weighting, and single-control framing recorded; direct capacity comparison beyond concurrent-work citation marked unestablished.",
+   "classification": "SUBSTANTIVE",
+   "repair_action": "none",
+   "rationale": "Control-side transition with correctly absent representation claim; frozen-copy architecture, dropout/cubic-sampling objectives, composable sampling, conditioned gains, manual-weighting tradeoffs, and inheritance to reference adapters and video motion control are all present. Bridge from Sec.3 conditioning (adapter framing) is explicit."
+  },
+  {
+   "transition_id": "T-CTRL-02",
+   "destination_package": "arch-control",
+   "supporting_ids": [
+    "BT-D038",
+    "BT-D039",
+    "BT-D040"
+   ],
+   "manuscript_sections": [
+    "Section 4"
+   ],
+   "bottleneck": "yes",
+   "representation_change": "yes",
+   "architecture_change": "yes",
+   "objective_change": "yes",
+   "sampling_change": "yes",
+   "conditioning_control_change": "yes",
+   "improvement": "yes",
+   "tradeoff": "yes",
+   "succession": "yes",
+   "mechanism_detail": "Sec.4 separates three adaptation mechanisms: decoupled cross-attention image branches over frozen diffusion plus frozen vision encoder (~22M trained, 4-token reference projection, lambda-weighted image attention); full-layer identifier finetuning with prior-preservation; frozen-base low-rank factor updates with zero-latency merging.",
+   "condition_detail": "IP-Adapter gains bound to stated training scale and 50-step-class implicit trajectory plus guidance conditions (COCO CLIP-I 0.828/CLIP-T 0.588); DreamBooth gains bound to 30-subject, 3-5 image, identifier-plus-class-noun protocol with stated DINO/CLIP/user-study numbers; LoRA gains bound to the LLM evidence domain with diffusion-media behaviour explicitly left in the language domain.",
+   "classification": "SUBSTANTIVE",
+   "repair_action": "none",
+   "rationale": "All three legs (reference, identity, low-rank) carry mechanism, objective, sampling, conditioned gains, and distinct failure modes (resemblance-only vs entanglement/overfit vs merged-batch limits); identity claims are procedure-bound and the diffusion-LoRA evidence gap is explicitly marked, matching the ledger unresolved items."
+  },
+  {
+   "transition_id": "T-CTRL-03",
+   "destination_package": "arch-control",
+   "supporting_ids": [
+    "BT-D041",
+    "BT-D042",
+    "BT-D043"
+   ],
+   "manuscript_sections": [
+    "Section 4"
+   ],
+   "bottleneck": "yes",
+   "representation_change": "yes",
+   "architecture_change": "yes",
+   "objective_change": "yes",
+   "sampling_change": "yes",
+   "conditioning_control_change": "yes",
+   "improvement": "yes",
+   "tradeoff": "yes",
+   "succession": "yes",
+   "mechanism_detail": "Sec.4 traces layout control from GAN-era spatially-adaptive normalisation (SPADE, encoder-free ResNet, multi-scale discriminator) through diffusion-era transfer to decoupled video camera/object modules and music time-varying signals (melody/dynamics/rhythm via control-specific MLPs plus zero-convolution adapters), keeping perception-side signal histories out of scope per TS-003.",
+   "condition_detail": "SPADE gains bound to paired mask-image training (COCO mIoU 37.4/FID 22.6, 79-86% human preference); camera/object gains bound to staged camera-then-object training with stated error deltas; music-control gains bound to 6s window and stated tag-then-control protocol with DDIM-100 plus global-style guidance; joint-complex-control low success, order dependence, instrumental-only scope recorded.",
+   "classification": "SUBSTANTIVE",
+   "repair_action": "none",
+   "rationale": "Cross-modal control transition fully covered: precursor bottleneck, per-modality representations and staged objectives, inference-time conditioning forms, conditioned gains, and paired-data/window/monotony tradeoffs are present; the SPADE-to-ControlNet linkage limit and transcription-defect locators are disclosed, not hidden."
+  },
+  {
+   "transition_id": "T-EDIT-01",
+   "destination_package": "arch-editing",
+   "supporting_ids": [
+    "BT-D044",
+    "BT-D045",
+    "BT-D046"
+   ],
+   "manuscript_sections": [
+    "Section 5"
+   ],
+   "bottleneck": "yes",
+   "representation_change": "yes",
+   "architecture_change": "yes",
+   "objective_change": "yes",
+   "sampling_change": "yes",
+   "conditioning_control_change": "yes",
+   "improvement": "yes",
+   "tradeoff": "yes",
+   "succession": "yes",
+   "mechanism_detail": "Sec.5 establishes the no-retraining preservation procedures (partial diffusion to t0 plus reverse SDE; per-step mask-combine of noised-known plus predicted-unknown with resampling) and the latent-local move (text-conditioned foreground plus noised-background blending at 8x-downsampled latent resolution, optional per-image decoder finetune), fixing preservation-target/locality/failure-condition vocabulary for the chapter.",
+   "condition_detail": "SDEdit tradeoff bound to t0 in [0.3,0.6] with guide-validity caveat (white-pixel guides lose faithfulness); RePaint bound to T=250/jump-10/10-resample protocol (LPIPS 0.068, 56.25% votes) with 250x10-eval slowness; latent blending bound to 8x latent resolution with dilated-to-thin mask schedule; LPIPS-diversity penalty and VAE seam/colour-shift recorded; exact NFE/latency/VRAM marked not reported in consumed bodies.",
+   "classification": "SUBSTANTIVE",
+   "repair_action": "none",
+   "rationale": "All nine dimensions present with unusual depth: per-method preservation targets, locality mechanisms, exchange coefficients, conditioned human/LPIPS gains, and mask-bound validity limits are tabulated in-text; the unresolved NFE/VRAM gap is explicitly marked as a consumed-body absence, i.e. evidence-bound, not an authorial omission."
+  },
+  {
+   "transition_id": "T-EDIT-02",
+   "destination_package": "arch-editing",
+   "supporting_ids": [
+    "BT-D047",
+    "BT-D048",
+    "BT-D049",
+    "BT-D050"
+   ],
+   "manuscript_sections": [
+    "Section 5"
+   ],
+   "bottleneck": "yes",
+   "representation_change": "yes",
+   "architecture_change": "yes",
+   "objective_change": "yes",
+   "sampling_change": "yes",
+   "conditioning_control_change": "yes",
+   "improvement": "yes",
+   "tradeoff": "yes",
+   "succession": "yes",
+   "mechanism_detail": "Sec.5 covers attention-map injection (fixed-seed cross-attention maps at 64x64, word-swap/add/re-weight, DDIM inversion with mask fallback), optimisation editing (target-embedding denoising-loss optimisation plus UNet-plus-super-resolution finetune, eta interpolation), instruction-pair training (GPT-3-generated pairs, zero-init image-condition channels, multi-turn chaining), and one-shot video inflation (1x3x3 inflated conv, sparse first-plus-previous spatio-temporal attention, ~500-step finetune).",
+   "condition_detail": "Prompt-to-Prompt qualitative scope separated from Imagic quantitative scope (TEdBench >70% over three baselines, 9000+ 2AFC, eta 0.6-0.8 with 8-seed selection); InstructPix2Pix bound to 450k+ instruction pairs with directional filtering and dual-guidance conditions; Tune-A-Video bound to 42-video/140-instruction short-span conditions (frame consistency 92.40) with occlusion/drift/flicker limits; fidelity scores and runtime/VRAM marked not reported in consumed bodies.",
+   "classification": "SUBSTANTIVE",
+   "repair_action": "none",
+   "rationale": "Deepest-cited transition in the batch (88 cites) with full mechanism/condition/ tradeoff coverage including ablation-separated roles (sparse-attention drift, inversion stall, no-finetune flicker) and explicit qualitative-vs-quantitative evidence separation; inversion distortion, seed sensitivity, viewpoint failures, and per-image optimisation cost are all recorded."
+  },
+  {
+   "transition_id": "T-SP-01",
+   "destination_package": "arch-speech",
+   "supporting_ids": [
+    "BT-D051",
+    "BT-D052",
+    "BT-D053",
+    "BT-D054"
+   ],
+   "manuscript_sections": [
+    "6"
+   ],
+   "bottleneck": "yes",
+   "representation_change": null,
+   "architecture_change": null,
+   "objective_change": null,
+   "sampling_change": null,
+   "conditioning_control_change": null,
+   "improvement": "yes",
+   "tradeoff": "yes",
+   "succession": "yes",
+   "mechanism_detail": "Dilated-causal AR CNN (mu-law) -> seq2seq attention+CBHG+Griffin-Lim -> location-sensitive attention+post-net+WaveNet vocoder -> FFP Transformer+duration predictor+length regulator+WaveGlow; MOS 4.21/4.08, 3.82, 4.526 vs 4.582; parallel 0.025s/0.180s (269x/38x), 0 hard-sentence errors.",
+   "condition_detail": "MOS/latency/error numbers condition-bound (language, hard-sentence set, kHz/CPU class); receptive-field and sequential-cost limits bound to stated configs.",
+   "classification": "SUBSTANTIVE",
+   "repair_action": "none",
+   "rationale": "All 9 dimensions evidenced with axis separation (MOS=naturalness only) and tradeoff/succession chains; no supported detail omitted."
+  },
+  {
+   "transition_id": "T-SP-02",
+   "destination_package": "arch-speech",
+   "supporting_ids": [
+    "BT-D056",
+    "BT-D057"
+   ],
+   "manuscript_sections": [
+    "6"
+   ],
+   "bottleneck": "yes",
+   "representation_change": null,
+   "architecture_change": null,
+   "objective_change": null,
+   "sampling_change": null,
+   "conditioning_control_change": null,
+   "improvement": "yes",
+   "tradeoff": "yes",
+   "succession": "yes",
+   "mechanism_detail": "CVAE+volume-preserving flow+MAS+HiFi-GAN end-to-end (MOS 4.43~GT 4.46, 67x RT) -> VITS+speaker/language embeddings+consistency loss (unseen-sim 0.864, MOS 4.21, VC 4.20/4.07); stochastic duration modelling.",
+   "condition_detail": "MOS/similarity/RTF bound to stated speaker sets and configs; zero-shot scores on unseen speakers; phonemiser/duration limits stated as intelligibility constraints.",
+   "classification": "SUBSTANTIVE",
+   "repair_action": "none",
+   "rationale": "Full bottleneck->mechanism->improvement->tradeoff->succession arc present; WER/naturalness/speaker axes distinct; vocoder separated as fidelity-not-control layer."
+  },
+  {
+   "transition_id": "T-SP-03",
+   "destination_package": "arch-speech",
+   "supporting_ids": [
+    "BT-D058",
+    "BT-D059",
+    "BT-D060"
+   ],
+   "manuscript_sections": [
+    "6"
+   ],
+   "bottleneck": "yes",
+   "representation_change": null,
+   "architecture_change": null,
+   "objective_change": null,
+   "sampling_change": null,
+   "conditioning_control_change": null,
+   "improvement": "yes",
+   "tradeoff": "yes",
+   "succession": "yes",
+   "mechanism_detail": "EnCodec-75Hz-8x1024 codec LM (AR first quantizer + NAR rest, 3s prompt; WER 5.9 vs 7.7, sim 0.580 vs 0.337) -> grouped codes + repetition-aware sampling (BT-D059 mechanism-only, tables truncated) -> OT-CFM NAR flow + infill + CFG (WER 5.9%->1.9%, 20x faster).",
+   "condition_detail": "WER/sim/SMOS improvements bound to LibriSpeech zero-shot and cross-lingual conditions; prompt-length/noise dependence and misuse risk stated; VALL-E 2 numeric margins withheld as PARTIAL.",
+   "classification": "COMPRESSED_BUT_SUFFICIENT",
+   "repair_action": "none",
+   "rationale": "BT-D059 PARTIAL handled correctly per rule (mechanism recorded, tables not claimed); every Evidence-supported dimension present, so not UNDER_EXPLAINED."
+  },
+  {
+   "transition_id": "T-SP-04",
+   "destination_package": "arch-speech",
+   "supporting_ids": [
+    "BT-D061",
+    "BT-D062",
+    "BT-D132",
+    "BT-D133",
+    "BT-D134",
+    "BT-D135"
+   ],
+   "manuscript_sections": [
+    "6"
+   ],
+   "bottleneck": "yes",
+   "representation_change": null,
+   "architecture_change": null,
+   "objective_change": null,
+   "sampling_change": null,
+   "conditioning_control_change": null,
+   "improvement": "yes",
+   "tradeoff": "yes",
+   "succession": "yes",
+   "mechanism_detail": "Instruction/SFT/RL versatile TTS (WER 2.249/sim 0.762, SFT +0.37, RL +0.14, hard-WER 7.585->6.423) + multitask translation speech + F5-TTS DiT (WER 2.42/RTF 0.31) + chunk-flow streaming (WER 2.47 near-lossless) + Moshi full-duplex framework (160ms theory/~200ms practice, BT-D134 PARTIAL) + DuplexBench turn-segmented measurement.",
+   "condition_detail": "In-context WER/sim near-human with vendor-authorship quarantine; F5-TTS/CosyVoice2 latency config-bound with English-weakness and SV-metric dependence; Moshi latency-only, no quality ranking.",
+   "classification": "COMPRESSED_BUT_SUFFICIENT",
+   "repair_action": "none",
+   "rationale": "BT-D134 PARTIAL handled correctly (framework + latency only, quality withheld); vendor evals quarantined; dense but complete, no supported omission."
+  },
+  {
+   "transition_id": "T-MU-01",
+   "destination_package": "arch-music",
+   "supporting_ids": [
+    "BT-D063",
+    "BT-D065",
+    "BT-D009"
+   ],
+   "manuscript_sections": [
+    "7"
+   ],
+   "bottleneck": "yes",
+   "representation_change": null,
+   "architecture_change": null,
+   "objective_change": null,
+   "sampling_change": null,
+   "conditioning_control_change": null,
+   "improvement": "yes",
+   "tradeoff": "yes",
+   "succession": "yes",
+   "mechanism_detail": "3-level hierarchical VQ (hops 8/32/128, SC -23.0dB, 24s coherence then drift) -> frozen SoundStream + w2v-BERT semantic + MuLan staging (3x430M, story-mode 15s-stride; FAD-VGG 4.0 vs 9.6, MCC 0.51, wins 312 vs 158/97, mem <0.2%).",
+   "condition_detail": "FAD/KLD/MCC bound to MusicCaps-10s; memorisation bound to stated scan; 24s-context/15s-stride/30s-train kept as distinct conditions; no cross-condition ranking.",
+   "classification": "SUBSTANTIVE",
+   "repair_action": "none",
+   "rationale": "Both legs fully mechanism-traced with condition-bound numbers and explicit long-form/motif limits; fidelity/alignment/form axes separated."
+  },
+  {
+   "transition_id": "T-MU-02",
+   "destination_package": "arch-music",
+   "supporting_ids": [
+    "BT-D064",
+    "BT-D066",
+    "BT-D067",
+    "BT-D068",
+    "BT-D069"
+   ],
+   "manuscript_sections": [
+    "7"
+   ],
+   "bottleneck": "yes",
+   "representation_change": null,
+   "architecture_change": null,
+   "objective_change": null,
+   "sampling_change": null,
+   "conditioning_control_change": null,
+   "improvement": "yes",
+   "tradeoff": "yes",
+   "succession": "yes",
+   "mechanism_detail": "Single-stage delay-pattern codec music (50Hz 4x2048, T5 cross-attn, chroma prefix; FAD 3.1 vs 7.5, chroma-sim 0.66 vs 0.10) vs waveform diffusion (local fidelity MOS 4.44, 2.1x) vs CLAP latent diffusion (FD 23.31 vs 47.68) vs timing-conditioned open weights (FD-openl3 78.24) vs beat/chord sequential cross-attention (beat-chroma 11.64-17.99, musicality 5.76-6.10/7).",
+   "condition_detail": "MusicCaps-10s vs AudioCaps vs openl3 conditions never cross-ranked; chroma/beat gains bound to verification conditions; CC-data and 10s-clip limits explicit; tempo near-parity with extractor-noise caveat.",
+   "classification": "SUBSTANTIVE",
+   "repair_action": "none",
+   "rationale": "Both codec and diffusion paths plus theory-control fully traced with FAD/CLAP limits preserved and control-vs-quality exchanges stated."
+  },
+  {
+   "transition_id": "T-MU-03",
+   "destination_package": "arch-music",
+   "supporting_ids": [
+    "BT-D136",
+    "BT-D088",
+    "BT-D035"
+   ],
+   "manuscript_sections": [
+    "7"
+   ],
+   "bottleneck": "yes",
+   "representation_change": null,
+   "architecture_change": null,
+   "objective_change": null,
+   "sampling_change": null,
+   "conditioning_control_change": null,
+   "improvement": "yes",
+   "tradeoff": "yes",
+   "succession": "yes",
+   "mechanism_detail": "Evaluation-side transition (representation/architecture na by design): pairwise binary preference/alignment + Elo/Bradley-Terry vs FAD/CLAP variants over 12 models x 500 clips / 15600 judgements; FAD-music-audio best quality correlation, music-trained LAION-CLAP best alignment.",
+   "condition_detail": "Elo/BT findings bound to 10s-instrumental, v3/v3.5-era, 2500-rater population; exact correlation magnitudes withheld as figure-bound; no extrapolation to v5/v6, singing, or long-form.",
+   "classification": "COMPRESSED_BUT_SUFFICIENT",
+   "repair_action": "none",
+   "rationale": "Correctly compressed: method and boundary findings fully stated while figure-bound magnitudes are withheld (not-supported), not omitted; proxy-level discipline explicit."
+  },
+  {
+   "transition_id": "T-VI-01",
+   "destination_package": "arch-video",
+   "supporting_ids": [
+    "BT-D070",
+    "BT-D071",
+    "BT-D073"
+   ],
+   "manuscript_sections": [
+    "8"
+   ],
+   "bottleneck": "yes",
+   "representation_change": null,
+   "architecture_change": null,
+   "objective_change": null,
+   "sampling_change": null,
+   "conditioning_control_change": null,
+   "improvement": "yes",
+   "tradeoff": "yes",
+   "succession": "yes",
+   "mechanism_detail": "Factorized 3D U-Net + reconstruction guidance + joint image-video training (FVD 68.19, 202->57.84) -> 11.6B 7-model cascade + v-prediction + oscillating guidance + 8-step distillation (CLIP 25.03 vs 25.19, ~18x) -> frozen-T2I + pseudo-3D + fps conditioning, motion-only learning (FID 13.17 vs 23.59, CLIPSIM 0.3049).",
+   "condition_detail": "FVD/FID/CLIPSIM bound to BAIR/Kinetics/UCF-101/MSR-VTT-zero-shot conditions; joint-training gains bound to image-count condition; 16-frame-block limit and unreleased status explicit; duration != coherence enforced.",
+   "classification": "SUBSTANTIVE",
+   "repair_action": "none",
+   "rationale": "All three legs mechanism-traced with representation na correctly (tokenizer path in T-REP-06); sampling/conditioning/improvement/tradeoff condition-bound and complete."
+  },
+  {
+   "transition_id": "T-VI-02",
+   "destination_package": "arch-video",
+   "supporting_ids": [
+    "BT-D074",
+    "BT-D075",
+    "BT-D124"
+   ],
+   "manuscript_sections": [
+    "8"
+   ],
+   "bottleneck": "yes",
+   "representation_change": null,
+   "architecture_change": null,
+   "objective_change": null,
+   "sampling_change": null,
+   "conditioning_control_change": null,
+   "improvement": "yes",
+   "tradeoff": "yes",
+   "succession": "yes",
+   "mechanism_detail": "Frozen-SD + temporal attention + LoRA/MotionLoRA adapter-scale alpha (smoothness 2.825 vs 1.615, ~50 refs) + 3-stage curated latent video (FVD 242.02 vs 367.23) + open 2-expert MoE + 4x16x16 VAE (5s 720p24 <9min on 24GB; +65.6%/+83.2% vendor-attributed).",
+   "condition_detail": "Smoothness/FVD/Elo bound to stated zero-shot/curation conditions; curation advantage persists after finetune without dissolving population bias; vendor gains attributed; open line frozen at 2.2; 5.3s+ continuation unquantified.",
+   "classification": "SUBSTANTIVE",
+   "repair_action": "none",
+   "rationale": "Adapter/curation/open-MoE lanes fully traced with identity-permanence and duration-vs-coherence limits; vendor numbers quarantined, not ranked."
+  },
+  {
+   "transition_id": "T-VI-03",
+   "destination_package": "arch-video",
+   "supporting_ids": [
+    "BT-D117",
+    "BT-D118",
+    "BT-D119",
+    "BT-D121",
+    "BT-D122",
+    "BT-D123"
+   ],
+   "manuscript_sections": [
+    "8"
+   ],
+   "bottleneck": "yes",
+   "representation_change": null,
+   "architecture_change": null,
+   "objective_change": null,
+   "sampling_change": null,
+   "conditioning_control_change": null,
+   "improvement": "yes",
+   "tradeoff": "yes",
+   "succession": "yes",
+   "mechanism_detail": "NOT_ESTABLISHED by design: unified joint-AV architectures functionally described only; no backbone/loss/params disclosed in consumed bodies; manuscript records capability/workflow/lifecycle with zero hidden-architecture inference.",
+   "condition_detail": "Durations (30s single-pass, 20s native-audio, 20s 1080p control, 10s/720p envelope) vendor-attributed only; benchmark leads preliminary/vendor-harness; max-duration explicitly not coherence; lifecycle facts recorded.",
+   "classification": "BOUNDARY_ONLY",
+   "repair_action": "none",
+   "rationale": "Closed/vendor boundary respected per rule: representation/architecture/objective na (undisclosed), functional sampling/conditioning and quarantined claims present; demanding mechanism inference would violate the boundary. Vendor-claim detail continues in Sec.13 capstones."
+  },
+  {
+   "transition_id": "T-VI-04",
+   "destination_package": "arch-video",
+   "supporting_ids": [
+    "BT-D050",
+    "BT-D138"
+   ],
+   "manuscript_sections": [
+    "8"
+   ],
+   "bottleneck": "yes",
+   "representation_change": null,
+   "architecture_change": null,
+   "objective_change": null,
+   "sampling_change": null,
+   "conditioning_control_change": null,
+   "improvement": "yes",
+   "tradeoff": "yes",
+   "succession": "yes",
+   "mechanism_detail": "Inflated-SD sparse-ST-attention 500-step one-shot + DDIM-inversion editing (consistency 92.40, pref 87.86%) -> FiVE benchmark (SAM2 masks + VLLM judges; Pyramid-Flow/Wan2.1 FlowEdit; LPIPS 94.61/SSIM 82.55/PSNR 25.57; 3.07 vs 1.44 vs 25.98 s/frame; acc 46.97 vs 43.84 vs 48.42).",
+   "condition_detail": "Consistency/preference bound to one-shot protocol with occlusion/drift/flicker ablations; FiVE numbers bound to 100-video/420-pair/15-metric editing-domain protocol; no pure-generation superiority claimed.",
+   "classification": "SUBSTANTIVE",
+   "repair_action": "none",
+   "rationale": "One-shot->benchmark transition fully traced with editing-domain binding and thin pure-generation ablations explicitly fenced; no outside-domain ranking."
+  },
+  {
+   "transition_id": "T-VI-05",
+   "destination_package": "arch-video",
+   "supporting_ids": [
+    "BT-D092",
+    "BT-D093",
+    "BT-D129",
+    "BT-D130",
+    "BT-D131"
+   ],
+   "manuscript_sections": [
+    "8"
+   ],
+   "bottleneck": "yes",
+   "representation_change": null,
+   "architecture_change": null,
+   "objective_change": null,
+   "sampling_change": null,
+   "conditioning_control_change": null,
+   "improvement": "yes",
+   "tradeoff": "yes",
+   "succession": "yes",
+   "mechanism_detail": "Evaluation-side transition (representation/architecture/sampling na by design): decomposed quality+consistency dims + human win-ratio alignment; faithfulness groups + caption-judge + detectors; expert-sync-penalised generation; lip-reading-feature objective + new AV metrics; curated physics benchmark + human/auto judgements.",
+   "condition_detail": "Subject 86-92% vs spatial 18-37%, plot ~10-11%, >90% sync preference, 3.92-4.02 vs 2.91, physics 39.6% + ROC-AUC 82/73 — all bound to stated backbones/populations; backbone bias, static-video cheating, talking-face-only, 2024-set ceilings explicit; no single score by design.",
+   "classification": "SUBSTANTIVE",
+   "repair_action": "none",
+   "rationale": "Axes table plus validity ceilings in Sec.8 fully cover the transition; cross-dimension weighting refusal and single-sample-vs-long-horizon rule explicit (full temporal treatment continues in Sec.9)."
+  },
+  {
+   "transition_id": "T-EV-01",
+   "destination_package": "arch-evaluation",
+   "supporting_ids": [
+    "BT-D083",
+    "BT-D084",
+    "BT-D085",
+    "BT-D086",
+    "BT-D087"
+   ],
+   "manuscript_sections": [
+    "Section 11"
+   ],
+   "bottleneck": "yes",
+   "representation_change": "na",
+   "architecture_change": "na",
+   "objective_change": "yes",
+   "sampling_change": "na",
+   "conditioning_control_change": "na",
+   "improvement": "yes",
+   "tradeoff": "yes",
+   "succession": "yes",
+   "mechanism_detail": "Sec.11 covers the evaluation-side mechanisms available in evidence (Fréchet-of-Gaussians distance with update-rule analysis at abstract level; objectness-diversity score with ~50k-sample requirement; 6-task templated detector-plus-CLIP protocol; PickScore CLIP-H finetune with preference objective) while explicitly refusing cross-condition leaderboards.",
+   "condition_detail": "GenEval conditions bound (6 tasks x 553 prompts, Mask2Former thresholds 0.3/0.9, 83% human agreement, position/binding walls); Pick-a-Pic bound to stated backbone/split/population (70.5% accuracy, self-selected users, NSFW residue, non-requester comparison); FID values, sample sizes, and embedding dependence explicitly marked not body-established (abstract-level consumption after HTML-404/ar5iv failure); T2I-CompBench §5-6 tables explicitly marked unconsumed with no rank inference.",
+   "classification": "COMPRESSED_BUT_SUFFICIENT",
+   "repair_action": null,
+   "rationale": "Depth limitation is Evidence-supported, not authorial: D083 full text unreachable (abstract plus FAD §2 cross-description only, values/sample-size/embedding unverified) and D086 per-model tables unconsumed. The manuscript correctly marks these consumption levels and refuses rank inference, so the residual thinness traces to evidence barriers. No manuscript prose repair is warranted; the repair is evidence-side. [r2 adjudication: reclassified from UNDER_EXPLAINED because the residual gap traces to absent Evidence (abstract-only/snippet-only/gated bodies), and §8 permits expansion only where active Evidence already supports it. Manuscript boundaries already mark consumption levels; prose repair would require new retrieval, which is out of scope. Evidence-side re-consumption noted as future work.]"
+  },
+  {
+   "transition_id": "T-EV-02",
+   "destination_package": "arch-evaluation",
+   "supporting_ids": [
+    "BT-D088",
+    "BT-D089",
+    "BT-D090",
+    "BT-D091"
+   ],
+   "manuscript_sections": [
+    "Section 11"
+   ],
+   "bottleneck": "yes",
+   "representation_change": "yes",
+   "architecture_change": "na",
+   "objective_change": "yes",
+   "sampling_change": "yes",
+   "conditioning_control_change": "na",
+   "improvement": "yes",
+   "tradeoff": "yes",
+   "succession": "yes",
+   "mechanism_detail": "Sec.11 covers the consumable audio-metric mechanisms (Fréchet distance between eval/background embedding Gaussians across distortion sweeps; batch softmax/contrast speaker loss with multi-reader weighting) and the non-substitution Buddha of the three legs (perceptual distance vs public read-speech corpus vs speaker-verification loss), with embedding-dependence and population limits travelling alongside any score reuse.",
+   "condition_detail": "FAD bound to VGGish 128-d 1s-window/0.5s-stride protocol with stated human-correlation procedure (0.52 vs SDR 0.39, 69,300 pairs/20 raters) and ~300-clip/25-min usability floor; GE2E bound to stated 64-speaker/10-utterance training and sliding-window inference with internal-set and no-listening-test limits; D089 corpus splits/alignment/baselines and D091 protocol details explicitly marked not body-established (snippet-only and gated text).",
+   "classification": "COMPRESSED_BUT_SUFFICIENT",
+   "repair_action": null,
+   "rationale": "Depth limitation is Evidence-supported: D089 recorded locator does not resolve to the corpus paper (splits/alignment/baselines snippet-only) and D091 full text is gated. The manuscript marks both at fragment/gated consumption levels and refuses corpus-fact-to-baseline promotion, so residual thinness traces to evidence barriers. No manuscript prose repair is warranted; the repair is evidence-side. [r2 adjudication: reclassified from UNDER_EXPLAINED because the residual gap traces to absent Evidence (abstract-only/snippet-only/gated bodies), and §8 permits expansion only where active Evidence already supports it. Manuscript boundaries already mark consumption levels; prose repair would require new retrieval, which is out of scope. Evidence-side re-consumption noted as future work.]"
+  },
+  {
+   "transition_id": "T-CV-01",
+   "destination_package": "arch-convergence",
+   "supporting_ids": [
+    "BT-D094",
+    "BT-D095",
+    "BT-D096",
+    "BT-D097",
+    "BT-D098",
+    "BT-D099"
+   ],
+   "manuscript_sections": [
+    "Section 12"
+   ],
+   "bottleneck": "yes",
+   "representation_change": "yes",
+   "architecture_change": "yes",
+   "objective_change": "yes",
+   "sampling_change": "yes",
+   "conditioning_control_change": "yes",
+   "improvement": "yes",
+   "tradeoff": "yes",
+   "succession": "yes",
+   "mechanism_detail": "Sec.12 presents four conditional unification stances (head-free multitask homogenised tokens; vocabulary-expanded single-decoder speech-text folding; data-level discretisation with frozen-LLM text-bridge alignment; independent per-modality LDMs with text-bridged prompt fusion) plus page-scoped provenance mechanisms, and procedurally withholds closure via a five-step open-question discipline.",
+   "condition_detail": "Each stance bound to its reported regime (GRIT 64.3 average with VQ-GAN cap and Unrestricted-track limit; AudioPaLM observed-procedure BLEU deltas with synthetic-target and short-transfer caveats; AnyGPT zero-shot-skeleton values with 5s music cap and higher-than-single-modality loss; CoDi same-set FD/FID deltas with coherence-not-fidelity joint metric); C2PA assertions bound to homepage scope (committee/operation posture only, spec/signature/binding un-consumed); SynthID bound to product-page scope (no independent robustness evaluation, rates/capacity/music-specific validity unestablished).",
+   "classification": "COMPRESSED_BUT_SUFFICIENT",
+   "repair_action": "none",
+   "rationale": "Open question with no predetermined conclusion, as required: the manuscript refuses the unified-vs-orchestrated verdict, keeps TS-002/TS-003 perception-history separation, and records BT-D098 (C2PA homepage-only) PARTIAL handling correctly by scoping all C2PA claims to homepage consumption with spec/signature/deployment evidence explicitly unestablished. Compression is dense but sufficient because every stance carries its ceiling alongside its gain."
+  },
+  {
+   "transition_id": "T-X-01",
+   "destination_package": "arch-reception",
+   "supporting_ids": [
+    "BT-D139"
+   ],
+   "manuscript_sections": [
+    "Section 14"
+   ],
+   "bottleneck": "yes",
+   "representation_change": "na",
+   "architecture_change": "na",
+   "objective_change": "na",
+   "sampling_change": "na",
+   "conditioning_control_change": "na",
+   "improvement": "yes",
+   "tradeoff": "yes",
+   "succession": "yes",
+   "mechanism_detail": "Context chapter by design: no technical representation, architecture, objective, sampling, or conditioning mechanism is posited (all na/not-supported). Sec.14 records community reception, local deployment friction, workflow adoption, and visible failure modes as one bounded reception record (27/27/27 ledger), informing deployment/runtime reading of technical anchors without becoming a technical authority.",
+   "condition_detail": "All reception claims bound to the single bounded pass (27 posts, 27 sections/URLs, stated account/instance arithmetic) with sparse lanes held LOW_SIGNAL; technical leads held as leads pending primary-authority rebound; popularity ranking and cross-condition score comparison prohibited in-text.",
+   "classification": "BOUNDARY_ONLY",
+   "repair_action": "none — context chapter by design; no mechanism depth required",
+   "rationale": "Reception-side record with mechanism dimensions na by design; manuscript enforces the X boundary (no architecture/date/licence/price/score/causation authority, no popularity ranking, rebound requirement for technical follow-ups) and keeps LOW_SIGNAL lanes open rather than inflating them. BOUNDARY_ONLY is the correct terminal classification."
+  },
+  {
+   "transition_id": "T-CLOSED-01",
+   "destination_package": "arch-capstones",
+   "supporting_ids": [
+    "BT-D100",
+    "BT-D106",
+    "BT-D113",
+    "BT-D114",
+    "BT-D116",
+    "BT-D122",
+    "BT-D123",
+    "BT-D124",
+    "BT-D125",
+    "BT-D126",
+    "BT-D127",
+    "BT-D128"
+   ],
+   "manuscript_sections": [
+    "Section 13"
+   ],
+   "bottleneck": "yes",
+   "representation_change": "na",
+   "architecture_change": "na",
+   "objective_change": "na",
+   "sampling_change": "na",
+   "conditioning_control_change": "yes",
+   "improvement": "yes",
+   "tradeoff": "yes",
+   "succession": "yes",
+   "mechanism_detail": "Context chapter by design: undisclosed mechanisms explicitly marked (only vendor-disclosed fragments: flow-plus-embedder/distillation, latent-diffusion-over-temporal-latents, autoencoder-plus-diffusion-plus-adversarial post-training, MoE-plus-VAE). Sec.13 records capability/workflow/lifecycle surfaces with attribution, performing no hidden-architecture inference and no cross-condition ranking.",
+   "condition_detail": "All envelopes vendor-stated and version/date-bound (sub-second local image, 30s single-pass plus extension video, 20s 1080p frame control, 10s/720p production, 5s 720p@24fps consumer-GPU operation); vendor charts quarantined; lifecycle facts (Imagen deprecation to hub, Sora end 2026-04-26 plus API removal 2026-09-24, Wan open line frozen at 2.2) recorded as product-direction facts, never as architectural inevitability.",
+   "classification": "BOUNDARY_ONLY",
+   "repair_action": "none — context chapter by design; no mechanism depth required",
+   "rationale": "Capability/workflow/lifecycle chapter with mechanism dimensions na/not-supported by design; manuscript holds the closed-system contract (attributed vendor claims, version/date binding, PARTIAL-scope discipline for abstract-only and lifecycle-only authorities, lifecycle-direction-is-not-inevitability rule) and leaves the unified-vs-orchestrated question open. BOUNDARY_ONLY is the correct terminal classification."
+  }
+ ],
+ "package_audits": [
+  {
+   "package_id": "arch-paradigms",
+   "questions": [
+    {
+     "evidence": "Sec 2 states epsilon-prediction vs simplified objective, minimax vs NLL vs flow-matching losses, UNet vs DiT backbones, and DDIM/solver/distillation sampling as separate columns with a dedicated three-column table.",
+     "question": "mechanisms-not-names?",
+     "verdict": "yes"
+    },
+    {
+     "evidence": "Sec 2 three-layer contract table plus per-transition arch/objective/sampling separation (e.g. DiT backbone swap vs interpolant objective swap on identical backbone).",
+     "question": "arch/obj/inference separated?",
+     "verdict": "yes"
+    },
+    {
+     "evidence": "FID/IS/NLL values bound to resolution and step budgets (e.g. 250-step vs 25-step DDIM, guidance scales, 10-200 latent steps); no cross-condition ranking.",
+     "question": "quantitative conditions?",
+     "verdict": "yes"
+    },
+    {
+     "evidence": "Per-transition costs recorded: 1000-step day-scale sampling, few-step degradation, saturated colours at high guidance, reflow error accumulation, texture-biased metrics.",
+     "question": "tradeoffs?",
+     "verdict": "yes"
+    },
+    {
+     "evidence": "Each transition closes with inheritance (adversarial hybrids, AR priors to codec LMs, epsilon-thesis to latent diffusion, straight-trajectory to video editing); D022 abstract-only and D024 blocked-body successors correctly left open.",
+     "question": "succession?",
+     "verdict": "yes"
+    },
+    {
+     "evidence": "GAN, PixelRNN, Image Transformer, DDPM, ADM-guided, DDIM, score-SDE, LDM, DiT, SiT, flow matching, rectified flow each get mechanism sentences, not bare citations.",
+     "question": "one-line majors?",
+     "verdict": "yes"
+    },
+    {
+     "evidence": "Image-domain core is explicit with audio/video transfer marked as needing modality sources; EDM cross-modal claims quarantined as abstract-only rather than compressed into image prose.",
+     "question": "modality compression?",
+     "verdict": "yes"
+    }
+   ]
+  },
+  {
+   "package_id": "arch-representation",
+   "questions": [
+    {
+     "evidence": "Sec 1 gives reparameterised ELBO, straight-through quantisation, EMA codebooks, RVQ additive refinement, semantic/acoustic split, 3D-VQ COMMIT masks as mechanisms with arch/objective/sampling in separate clauses.",
+     "question": "mechanisms-not-names?",
+     "verdict": "yes"
+    },
+    {
+     "evidence": "Sec 1 fixes the three-column reading contract and applies it per transition (e.g. VQ-VAE discrete-thesis is representation change, not joint prior training; uniform prior during representation learning stated).",
+     "question": "arch/obj/inference separated?",
+     "verdict": "yes"
+    },
+    {
+     "evidence": "Compression claims bound to configs (256px to 16x16 indices, 320x downsample at 75 frames/s, 4x16x16 64x VAE, 1000-step vs 12-step sampling); Sec 1 boundary restates config-binding.",
+     "question": "quantitative conditions?",
+     "verdict": "yes"
+    },
+    {
+     "evidence": "Each transition records costs: MSE blur, codebook-collapse risk, rejection-diversity loss, crowdsourced MUSHRA limits, fixed-16-frame training, README-only disclosure for D012.",
+     "question": "tradeoffs?",
+     "verdict": "yes"
+    },
+    {
+     "evidence": "Succession lines explicit: VQ-VAE to VQGAN/codecs/video tokenisers, tokenizer bar to latent-diffusion first stage, RVQ to codec LMs, semantic/acoustic split to music staging.",
+     "question": "succession?",
+     "verdict": "yes"
+    },
+    {
+     "evidence": "VAE, VQ-VAE, hierarchical VQ, VQGAN, dVAE/DALL-E, SoundStream/EnCodec/DAC, AudioLM staging, video 3D-VQ, Wan VAE each get mechanism sentences with numbers.",
+     "question": "one-line majors?",
+     "verdict": "yes"
+    },
+    {
+     "evidence": "Image, speech/audio, and video each get dedicated subsections with modality-specific rates and evaluators (phoneme mapping, MUSHRA, FVD); no modality collapsed into a shared paragraph.",
+     "question": "modality compression?",
+     "verdict": "yes"
+    }
+   ]
+  },
+  {
+   "package_id": "arch-music",
+   "questions": [
+    {
+     "answer": "yes",
+     "evidence": "Sec.7 states分-unit coherence bottleneck (btd063) and MuLan negation/ordering limits; staged→single-stage→diffusion→preference-validation lineage explicit.",
+     "id": "Q1 bottleneck stated per transition?"
+    },
+    {
+     "answer": "yes",
+     "evidence": "Codec delay-pattern decoder vs mel-VAE LDM vs waveform diffusion vs beat/chord cross-attention mechanisms distinguished; architecture/objective/sampling kept separate (T-MU-01..03).",
+     "id": "Q2 mechanism explained beyond naming?"
+    },
+    {
+     "answer": "yes",
+     "evidence": "FAD 4.0/3.1, MCC 0.51, FD 23.31, FD-openl3 78.24, beat-chroma 11.64-17.99, human wins 312 vs 158/97 — each bound to MusicCaps/AudioCaps/10s conditions.",
+     "id": "Q3 improvements source-bound with conditions?"
+    },
+    {
+     "answer": "yes",
+     "evidence": "24s drift/no-chorus-memory, MuLan failure inheritance, chroma-vs-objective exchange, CC-data limits, 10s-only tempo parity, v3/v3.5-era limits all stated.",
+     "id": "Q4 tradeoffs/failures stated?"
+    },
+    {
+     "answer": "yes",
+     "evidence": "Hierarchical→single-stage→diffusion→theory-control→preference-validation inheritance chain explicit; closed systems framed as capability heirs only.",
+     "id": "Q5 succession stated?"
+    },
+    {
+     "answer": "yes",
+     "evidence": "MusicCaps-10s vs AudioCaps vs openl3 never cross-ranked; FAD/CLAP limits table explicit; durations (15s-stride/30s-train/24s-context) kept distinct.",
+     "id": "Q6 no cross-condition ranking; axes distinct?"
+    },
+    {
+     "answer": "yes",
+     "evidence": "Correlation magnitudes withheld as figure-bound (btd136); no hidden inference on closed music systems; open-vs-closed comparisons condition-gated.",
+     "id": "Q7 PARTIAL/closed boundaries respected?"
+    }
+   ]
+  },
+  {
+   "package_id": "arch-speech",
+   "questions": [
+    {
+     "answer": "yes",
+     "evidence": "Sec.6 states 16k-sample raw bottleneck (T-SP-01), two-stage/single-speaker limits (T-SP-02), studio-data zero-shot gaps (T-SP-03), in-the-wild latency/control gaps (T-SP-04).",
+     "id": "Q1 bottleneck stated per transition?"
+    },
+    {
+     "answer": "yes",
+     "evidence": "Dilated-causal CNN vs seq2seq+CBHG vs duration-predictor Transformer vs CVAE+flow+MAS vs codec-LM vs OT-CFM distinguished; architecture/objective/sampling separated with tables.",
+     "id": "Q2 mechanism explained beyond naming?"
+    },
+    {
+     "answer": "yes",
+     "evidence": "MOS 4.21/4.08, 4.526 vs 4.582, 4.43 vs 4.46, WER 5.9 vs 7.7, sim 0.580 vs 0.337, 5.9%->1.9%, RTF 0.31/0.15, WER 2.249/sim 0.762 — each condition-bound.",
+     "id": "Q3 improvements source-bound with conditions?"
+    },
+    {
+     "answer": "yes",
+     "evidence": "240-300ms receptive field, Griffin-Lim artefacts, teacher-alignment dependence, flow-prior necessity, 3s-prompt dependence, reward-hacking, vendor-eval quarantine all stated.",
+     "id": "Q4 tradeoffs/failures stated?"
+    },
+    {
+     "answer": "yes",
+     "evidence": "Waveform/attention/parallel -> end-to-end/zero-shot -> codec-LM -> versatile/streaming/duplex chain explicit in Sec.6 overview and subsection closings.",
+     "id": "Q5 succession stated?"
+    },
+    {
+     "answer": "yes",
+     "evidence": "WER=intelligibility, MOS=naturalness, encoder-sim/SMOS=speaker, RTF/steps=latency kept distinct (Sec.6 intro + tables); vendor evals quarantined (btd061/btd062).",
+     "id": "Q6 no cross-condition ranking; axes distinct?"
+    },
+    {
+     "answer": "yes",
+     "evidence": "BT-D059 mechanism-only (tables truncated) and BT-D134 framework-only (eval section unconsumed) explicitly marked PARTIAL with no numeric claims (btd059/btd134).",
+     "id": "Q7 PARTIAL/closed boundaries respected?"
+    }
+   ]
+  },
+  {
+   "package_id": "arch-video",
+   "questions": [
+    {
+     "answer": "yes",
+     "evidence": "Sec.8 states temporal-coherence/HD-scaling bottleneck (T-VI-01), T2V-data scarcity (T-VI-01/02), tuning-free animation + curation gaps (T-VI-02), object-edit benchmark absence (T-VI-04).",
+     "id": "Q1 bottleneck stated per transition?"
+    },
+    {
+     "answer": "yes",
+     "evidence": "Factorized 3D U-Net vs 11.6B cascade vs frozen-prior motion learning vs MotionLoRA adapters vs MoE VAE vs FlowEdit benchmark distinguished; 16-frame/5.3s/64-frame bounds explicit.",
+     "id": "Q2 mechanism explained beyond naming?"
+    },
+    {
+     "answer": "yes",
+     "evidence": "FVD 68.19, 202->57.84, CLIP 25.03 vs 25.19 (~18x), FID 13.17 vs 23.59, FVD 242.02 vs 367.23, smoothness 2.825 vs 1.615, FiVE LPIPS 94.61/acc 46.97 — condition-bound.",
+     "id": "Q3 improvements source-bound with conditions?"
+    },
+    {
+     "answer": "yes",
+     "evidence": "16-frame-only training, cascade cost/inexact rotation, video-only phenomena unlearnable, 50-ref MotionLoRA, short-clip/high-VRAM sampling, editing-domain-only ablation thinness stated.",
+     "id": "Q4 tradeoffs/failures stated?"
+    },
+    {
+     "answer": "yes",
+     "evidence": "Factorized/cascade -> data-efficient -> adapter/curation/open-MoE -> workflow-evidence chain explicit; one-shot editing -> FiVE benchmark transition stated.",
+     "id": "Q5 succession stated?"
+    },
+    {
+     "answer": "yes",
+     "evidence": "Max supported duration never equated with demonstrated coherence (Sec.8 intro + boundary); local fidelity/short-range/identity/AV-sync/long-horizon/continuation axes table-separated.",
+     "id": "Q6 no cross-condition ranking; axes distinct?"
+    },
+    {
+     "answer": "yes",
+     "evidence": "T-VI-03 closed capstones capability/workflow/lifecycle only, no architecture inference (btd077); Wan gains vendor-attributed (btd124); open line frozen at 2.2 enforced.",
+     "id": "Q7 PARTIAL/closed boundaries respected?"
+    }
+   ]
+  }
+ ],
+ "adjudication": "T-EV-01/T-EV-02 reclassified UNDER_EXPLAINED->COMPRESSED_BUT_SUFFICIENT (see rationale); 0 UNDER_EXPLAINED remain; no prose expansion warranted; body kept substantially unchanged per §8."
+}
