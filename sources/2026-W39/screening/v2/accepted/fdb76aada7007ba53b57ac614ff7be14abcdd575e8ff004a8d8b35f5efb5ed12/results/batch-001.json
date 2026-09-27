@@ -1,0 +1,233 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W39",
+  "batch_id": "batch-001",
+  "basis": {
+    "package_sha256": "4f989e362a2e4108f409f2a67e1947d93a0108a7cecde11c16759e4437b8444e",
+    "batch_sha256": "4e1b7052447a8627e2e23a76989f5740136190f7a7e68d34355b5105222c6731",
+    "profile_sha256": "29faefb0cbb8d2251ab05935b3f472e45dd01566144742ad46ff623d23fac96a",
+    "state_sha256": "6e19f724ed1250d41d0cae39f188f010ca4767a8696318955a5f45195cee111f",
+    "prompt_sha256": "3e45900ead73688eab8734036e6e476c1ec4f1a7ce38da42d5ca52a68ef0a862",
+    "result_contract_sha256": "a05b65b41efbcaf654df5c3c5944254a76d93d8a28cab961f2c06f6d580da5a2"
+  },
+  "decisions": [
+    {
+      "discovery_id": "w39-grok-r3-26-url-ledger",
+      "decision": "KEEP",
+      "reason": "Sol-accepted r3 ledger is the required X-bound community-signal seed: 19 ordinary URLs across 12 accounts plus 7 late rows; binds all X provenance for C1/C2/C3/C10 and late-only C5/C8/C9. Proto-candidates still need primary verification, but the ledger itself is retained as observation authority.",
+      "scope_tags": [
+        "community-signal",
+        "x-provenance"
+      ],
+      "verification_targets": [
+        "primary-verification-C1-C2-C3"
+      ],
+      "duplicate_group": null,
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "w39-primary-gpt6-solluna-20260922",
+      "decision": "KEEP",
+      "reason": "First-party release with price card, availability, and benchmark/factuality claims consumed at claim level; central to C1 ordinary-window materiality. Vendor-run figures stay attributed.",
+      "scope_tags": [
+        "frontier-model",
+        "cost-efficiency"
+      ],
+      "verification_targets": [
+        "openai-gpt6-announcement",
+        "pricing-availability"
+      ],
+      "duplicate_group": null,
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "w39-primary-gpt6-caching-20260922",
+      "decision": "KEEP",
+      "reason": "First-party GPT-6 caching system + tooling; distinct technical surface (cache breakpoints, diagnostics, 30-min discounts) supporting the agent-cost theme; kept alongside Sol/Luna record, not merged, to preserve claim traceability.",
+      "scope_tags": [
+        "inference",
+        "agent-cost"
+      ],
+      "verification_targets": [
+        "openai-caching-docs"
+      ],
+      "duplicate_group": null,
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "w39-primary-opus55-20260922",
+      "decision": "KEEP",
+      "reason": "First-party Opus 5.5 release with price card, availability incl. Claude Code limits update, disclosed benchmark caveats, and safeguard architecture; central to C2. Vendor-run figures stay attributed.",
+      "scope_tags": [
+        "frontier-model",
+        "cost-efficiency",
+        "safety"
+      ],
+      "verification_targets": [
+        "anthropic-opus55-announcement",
+        "system-card"
+      ],
+      "duplicate_group": null,
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "w39-primary-enzyme-art-20260923",
+      "decision": "KEEP",
+      "reason": "First-party scientific-discovery result (ART system, pre-print, function unknown) with explicit autonomy boundary; distinct science-workflow materiality beyond model-release news.",
+      "scope_tags": [
+        "science",
+        "agents"
+      ],
+      "verification_targets": [
+        "anthropic-enzyme-preprint"
+      ],
+      "duplicate_group": null,
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "w39-primary-hf-gguf-20260922",
+      "decision": "KEEP",
+      "reason": "First-party local-inference integration with disclosed benchmark asymmetry and explicit limitations (MPS-only, arch coverage, llama.cpp still recommended); central to C3.",
+      "scope_tags": [
+        "open-weight",
+        "local-inference"
+      ],
+      "verification_targets": [
+        "hf-gguf-blog",
+        "kernel-docs"
+      ],
+      "duplicate_group": null,
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "w39-primary-cursor-efficiency-20260923",
+      "decision": "KEEP",
+      "reason": "First-party harness-efficiency program with vendor-measured production figures (-7%, prompt trim, dynamic tools, cache breakpoints); distinct agent-operations materiality.",
+      "scope_tags": [
+        "agents",
+        "harness"
+      ],
+      "verification_targets": [
+        "cursor-efficiency-blog"
+      ],
+      "duplicate_group": null,
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "w39-primary-cursor-rollouts-20260923",
+      "decision": "KEEP",
+      "reason": "First-party post-PR deployment/security bots launch with availability and measured-effect claims kept vendor-bound; distinct ship-operations materiality.",
+      "scope_tags": [
+        "agents",
+        "security"
+      ],
+      "verification_targets": [
+        "cursor-rollouts-blog"
+      ],
+      "duplicate_group": null,
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "w39-primary-grok47-20260921",
+      "decision": "KEEP",
+      "reason": "First-party Grok 4.7 release with price card and effort-asymmetric benchmarks; mixed third-party checks recorded; zero X ledger rows so no community-momentum claim. Kept for primary-authority coverage, not X momentum.",
+      "scope_tags": [
+        "frontier-model",
+        "coding"
+      ],
+      "verification_targets": [
+        "xai-grok47-announcement",
+        "model-card"
+      ],
+      "duplicate_group": null,
+      "confidence": "medium"
+    },
+    {
+      "discovery_id": "w39-primary-google-memory-20260923",
+      "decision": "KEEP",
+      "reason": "First-party privacy-architecture disclosure (persistent server-side memory, device-held keys); forward-looking, no availability claim; distinct privacy-architecture materiality.",
+      "scope_tags": [
+        "memory",
+        "privacy",
+        "security"
+      ],
+      "verification_targets": [
+        "google-memory-brief",
+        "audit-results"
+      ],
+      "duplicate_group": null,
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "w39-primary-mentalhealthbench-20260923",
+      "decision": "KEEP",
+      "reason": "Open benchmark release with expert-cohort design consumed including grader-circularity boundary (GPT-5.6 Sol grader); distinct evaluation materiality.",
+      "scope_tags": [
+        "evaluation",
+        "safety"
+      ],
+      "verification_targets": [
+        "mentalhealthbench-paper"
+      ],
+      "duplicate_group": null,
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "w39-primary-dolphinbench-20260921",
+      "decision": "KEEP",
+      "reason": "Peer-track paper (arXiv abs-level) for task-grounded agent-memory eval with cost/latency reporting; elevates C7 from X-unverified to paper-authority candidate; PDF body not consumed (limitation recorded).",
+      "scope_tags": [
+        "evaluation",
+        "memory",
+        "agents"
+      ],
+      "verification_targets": [
+        "dolphinbench-pdf"
+      ],
+      "duplicate_group": null,
+      "confidence": "medium"
+    },
+    {
+      "discovery_id": "w39-primary-tbc-aws-20260922",
+      "decision": "KEEP",
+      "reason": "Commercial partnership launch is first-party fact; 5x/80%/<0.1% figures kept strictly vendor-bound without independent authority; retained with explicit verification flag, not as validated optimization.",
+      "scope_tags": [
+        "video",
+        "inference"
+      ],
+      "verification_targets": [
+        "independent-technical-corroboration"
+      ],
+      "duplicate_group": null,
+      "confidence": "medium"
+    },
+    {
+      "discovery_id": "w39-carryover-deepseek-docs-20260927",
+      "decision": "KEEP",
+      "reason": "W38 HOLD/CARRY_OVER resolved at docs level: official Models & Pricing captured (V4.1-Flash + V4-Pro-0813 + routing footnote); no V4.1-Pro launch claim; Cheepseek pricing unverified. Kept as resolved carry-over with primary authority.",
+      "scope_tags": [
+        "carry-over",
+        "serving"
+      ],
+      "verification_targets": [
+        "deepseek-changelog"
+      ],
+      "duplicate_group": null,
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "w39-lateonly-pixelcanary-codex-20260925",
+      "decision": "KEEP",
+      "reason": "Post-cutoff context only: Pixel Canary stealth launch (excerpt-level) + Codex outage X notice; ordinary metrics forced to 0. Kept as late-breaking context for W40 precursor tracking, not ordinary-window materiality.",
+      "scope_tags": [
+        "late-breaking"
+      ],
+      "verification_targets": [
+        "pixel-canary-identity",
+        "codex-status"
+      ],
+      "duplicate_group": null,
+      "confidence": "medium"
+    }
+  ]
+}
