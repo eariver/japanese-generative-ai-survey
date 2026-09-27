@@ -1,15 +1,22 @@
 # Terminology decision ledger — TS-002 Issue #543 (final broad normalization)
 
-Canonical: `terminology-decision-ledger.json` (257 rows, generated; this MD is a synced view).
+Canonical: `terminology-decision-ledger.json` (269 rows, generated; this MD is a synced view).
 Scope: reader-facing terminology only. Blind global replace prohibited; semantic-risk terms verified by primary/Evidence read-back.
 
-## Summary
-- ISSUE_SEED decisions: 45
-- BROAD_SCAN added candidates: 45
-- REPLACE rows: 187
+## Summary (recomputed from JSON actual row set, 269 rows)
+- REPLACE rows: 255
 - RETAIN rows: 14
 - ESCALATE rows: 0
-- Unresolved terms: r4 leftovers in muse-candidates-for-sol-review-r9-next.md (if any); no Muse wording.
+- BROAD_SCAN: 45
+- ISSUE_SEED: 45
+- SOL_FINAL_RESIDUAL_R3: 36
+- SOL_MAP_R2: 52
+- SOL_R10_R7_INDEPENDENT_FULLSCAN: 49
+- SOL_R10_R8_CANDIDATE_RESOLUTION: 12
+- SOL_R9_R4_RESOLUTION: 23
+- SOL_R9_R5_RESOLUTION: 6
+- SOL_R9_R6_RESOLUTION: 1
+- Unresolved terms: none pending — r10 12 candidates resolved by Sol r8 (post-r8 closure scan: 0 unresolved; 画像参照 ordinary senses retained by design).
 
 ## Decisions
 ### TS543-S01 [ISSUE_SEED] — 端末間統合 → End-to-End（エンドツーエンド）統合/End-to-End [REPLACE]
@@ -1394,3 +1401,44 @@ No new Human revision beyond r10. Citations: SOL-CIT-003/004 applied context-bou
 
 ### TS543-R7-CIT4 [SOL-CIT-004] — T2I-Adapter claims bound to btd041 → btd037 (bib-verified Mou et al.; L304 mixed cites both) [REPLACE]
 - canonical: T2I-Adapter btd037 | meaning: Section 4 | before: 8 / residual: 0 | evidence: btd037
+
+# r8 supplement — Sol r10-candidate resolution (same Human r10 authority, DRAFT_COMPLETE continuation)
+
+r8 rows: 12 with provenance SOL_AUTHORITATIVE_R8_R10_CONTINUATION (discovery_source SOL_R10_R8_CANDIDATE_RESOLUTION).
+No new Human revision (no r11). r10 candidates file retained as provenance. Citations: no change (SOL-CIT-001–004 only); copy-edit 、、 fixed per Sol r8 s4.
+
+### TS543-R8-C001 [SOL-R8-C001] — 条件と誘導と適合と参照 → 四区分の使い分け：条件づけ・ガイダンス・アダプター・参照 [REPLACE]
+- canonical: four categories | meaning: conditioning heading L285 | before: 1 / residual: 0 | evidence: 
+
+### TS543-R8-C002 [SOL-R8-C002] — 軽量適合 → 軽量制御アダプター [REPLACE]
+- canonical: lightweight adapter (T2I) | meaning: T2I lineage L304/L309/L353 | before: 3 / residual: 0 | evidence: btd037,btd041
+
+### TS543-R8-C003 [SOL-R8-C003] — 画像参照 → SPLIT: enum L304 to 画像参照アダプター; ordinary L290/L327/L353 RETAIN [REPLACE]
+- canonical: image reference (IP-Adapter) | meaning: IP-Adapter lineage | before: 1 / residual: 0 | evidence: btd038
+
+### TS543-R8-C004 [SOL-R8-C004] — 適合の視点 → アダプター／適応の視点 [REPLACE]
+- canonical: adaptation viewpoint | meaning: control summary L343 | before: 1 / residual: 0 | evidence: 
+
+### TS543-R8-C005 [SOL-R8-C005] — 訓練や反転なしの適合の条件 → 学習・反転不要の編集条件で [REPLACE]
+- canonical: training/inversion-free editing | meaning: FiVE btd138 L804 | before: 1 / residual: 0 | evidence: btd138
+
+### TS543-R8-C006 [SOL-R8-C006] — 誘導尺度の掃引 → ガイダンススケールのスイープ [REPLACE]
+- canonical: guidance-scale sweep | meaning: CFG btd032 L260 | before: 1 / residual: 0 | evidence: btd032
+
+### TS543-R8-C007 [SOL-R8-C007] — 画像と文 → 画像とテキスト [REPLACE]
+- canonical: image and text | meaning: DALLE btd005/CLIP btd031 | before: 2 / residual: 0 | evidence: btd005,btd031
+
+### TS543-R8-C008 [SOL-R8-C008] — 二百五十六トークン以内のバイト対符号化文 → 最大256トークンのBPE符号化テキスト [REPLACE]
+- canonical: BPE text tokens | meaning: DALL-E btd005 L138 | before: 1 / residual: 0 | evidence: btd005
+
+### TS543-R8-C009 [SOL-R8-C009] — 文や配置 → テキストやレイアウト [REPLACE]
+- canonical: text-or-layout conditioning | meaning: LDM btd023 L225 | before: 2 / residual: 0 | evidence: btd023
+
+### TS543-R8-C010 [SOL-R8-C010] — 文から絵や音を生むとき → テキストから画像や音を生成するとき [REPLACE]
+- canonical: rhetorical modality intro | meaning: conditioning intro L247 | before: 1 / residual: 0 | evidence: btd005
+
+### TS543-R8-C011 [SOL-R8-C011] — 稀少識別子と類名詞の文 → 稀少識別子とクラス名詞を含むプロンプト [REPLACE]
+- canonical: a [identifier] [class noun] | meaning: DreamBooth btd039 | before: 2 / residual: 0 | evidence: btd039
+
+### TS543-R8-C012 [SOL-R8-C012] — テキスト・画像多層網 → 事前学習済みText-to-Image（T2I）モデルに擬似3D畳み込みと時間方向のアテンション [REPLACE]
+- canonical: pretrained T2I + modules | meaning: Make-A-Video btd073 L720 | before: 1 / residual: 0 | evidence: btd073
