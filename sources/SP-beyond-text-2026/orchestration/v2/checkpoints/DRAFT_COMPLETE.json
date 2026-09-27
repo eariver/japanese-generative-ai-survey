@@ -1,0 +1,75 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-beyond-text-2026",
+  "from_state": "DRAFT_COMPLETE",
+  "to_state": "VALIDATED_DRAFT",
+  "checkpoints": [
+    "validation"
+  ],
+  "recorded_at": "2026-09-27T09:54:50Z",
+  "implementation": {
+    "repository_commit_sha": "6620cacec5e189ae4e7a6d4988d1a06d44f5da46",
+    "orchestrator_version": "survey-production-core-v2/0.15-postintegration-transport-thematic"
+  },
+  "contract": {
+    "pipeline_contract_version": "2.0-rc1",
+    "pipeline_contract_sha256": "ee89796245c22072cec98f34931180214a4928c24f399280793cd6420a4c8e71",
+    "quality_contract_version": "2.0-rc1",
+    "quality_contract_sha256": "b5b955d524fb438c0f1b2c9490bea1da2083e79028d67a55ca424bbfc20f2958",
+    "research_profile_version": "2.0-rc1",
+    "research_profile_sha256": "0f575e6d97caec72b2bf8b7f6b78a562d97ca67b2071193417b968ba3d73e6e8",
+    "publication_profile_version": "2.0-rc1",
+    "publication_profile_sha256": "a6859559dd1b9d42ab8fb4402b74b7bdd8611dbe65c8e02a7b022b545c20f4eb"
+  },
+  "artifacts": [
+    {
+      "name": "publication-pdf",
+      "path": "surveys/special/beyond-text-2026/main.pdf",
+      "sha256": "75bc73275b045da2fb1a471b96792b1e2e5fbc7861df0528208b222033d26886"
+    },
+    {
+      "name": "quality-regression-bundle",
+      "path": "sources/SP-beyond-text-2026/publication/v2/quality-regression-bundle-v2.json",
+      "sha256": "f64f1e3d64afff0b20fbb93094bc19d5555c70714e463da21e0fa9826b55ec48"
+    },
+    {
+      "name": "reader-manuscript",
+      "path": "sources/SP-beyond-text-2026/publication/v2/reader-manuscript-v2.json",
+      "sha256": "382abb97c7f2f5dc090dc680b8bb7ccf93015d06d1122ceed0fa8cf997656f16"
+    },
+    {
+      "name": "reader-surface-gate",
+      "path": "sources/SP-beyond-text-2026/publication/v2/reader-surface-gate-v2.json",
+      "sha256": "cf5b5187213c49780a3a2c7a5cdf6e77f769f6ffac30f80a18d8467a9d03c25e"
+    },
+    {
+      "name": "semantic-review",
+      "path": "sources/SP-beyond-text-2026/publication/v2/semantic-editorial-review-v2.json",
+      "sha256": "99900fee6d21374f2b4e081a31bb07d8d37756ef386ef4d6b385869ae3a00746"
+    },
+    {
+      "name": "validated-source",
+      "path": "surveys/special/beyond-text-2026/main.tex",
+      "sha256": "faffd967e77633424238ed4f037655d89dbe47817bf132431816c2f728845bde"
+    },
+    {
+      "name": "visual-review",
+      "path": "sources/SP-beyond-text-2026/publication/v2/visual-review-v2.json",
+      "sha256": "53af25070e96e67f1785b2f3492537b886dc56e0467e4a62d6c85ecc0c2a8f62"
+    }
+  ],
+  "reviews": [
+    {
+      "check_id": "CORE_STAGE_CONTRACT",
+      "kind": "DETERMINISTIC",
+      "status": "PASS",
+      "executor": "Survey Production Core v2 survey_stage_validation_v2.py",
+      "evidence": "Reader-publication stage-contract validation passed: 78-page validated source/PDF with quality bundle, semantic/visual reviews, and reader-surface gate. Machine validation only; Human Publication Preview decision pending downstream.",
+      "result": {
+        "path": "sources/SP-beyond-text-2026/execution/draft-through-preview-20260925/validation/reader-publication-stage-validation-issue543-r10.json",
+        "sha256": "1ae222c2264043292f459f2d6e5e51d499ec7b7642a7844dc4c1f3609b7c03fb"
+      }
+    }
+  ],
+  "summary": "TS-002 Validated draft: 78-page Issue-#543-normalized reader-facing source/PDF validated (deterministic QA + semantic/editorial + visual QA of exact rendered PDF). Proceed to Publication Candidate; Human Publication Preview pending."
+}
