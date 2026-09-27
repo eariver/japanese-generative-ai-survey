@@ -1,0 +1,119 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W39",
+  "evidence_task_id": "evidence:2026-W39:5d86adaa81941c81",
+  "basis": {
+    "task_sha256": "305daac2d9b9195e515f7a94080cf6f168d5d57292a9a882b8e14273fc278bf9",
+    "screening_acceptance_sha256": "aee84b5afdc469cbe86acb8bec70eb0967af67e19970667178631f8e3d1aac36",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "cursor-agent-harness",
+      "canonical_name": "Cursor agent harness efficiency program",
+      "entity_type": "FRAMEWORK",
+      "organization": "Cursor",
+      "canonical_url": "https://cursor.com/blog/improved-token-efficiency"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "cursor-agent-harness",
+    "artifact_type": "FRAMEWORK",
+    "canonical_name": "Cursor agent harness efficiency program",
+    "canonical_url": "https://cursor.com/blog/improved-token-efficiency"
+  },
+  "temporal": {
+    "observed_at": "2026-09-27T18:52:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-09-23T12:00:00Z",
+        "subject_id": "cursor-agent-harness",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "primary:cursor.com/blog/improved-token-efficiency",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "Cursor: token efficiency for longer agent runs (Sep 23)",
+      "published_at": "2026-09-23T12:00:00Z",
+      "accessed_at": "2026-09-27T18:52:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Cursor published harness-efficiency results: -7% user token costs without quality reduction, vendor-measured via production A/B.",
+      "subject_id": "cursor-agent-harness",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Vendor production measurement; independent reproduction absent."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Levers: system prompt trimmed ~66%; built-in tool defs offloaded to dynamic context (-60% static description tokens; MCP precedent -46.9%); explicit cache breakpoints with phantom-user-message stabilization (-20% cold misses); line numbers every 10th line (-1.6% cache-read tokens); subagent prompting rebalanced and model selection tightened.",
+      "subject_id": "cursor-agent-harness",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Vendor-measured production figures with disclosed A/B method and eval-representativeness caveat."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "7% is Cursor-production-specific; not transferable to other harnesses.",
+      "subject_id": "cursor-agent-harness",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "Quality-neutrality is vendor-measured.",
+      "subject_id": "cursor-agent-harness",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "cursor-efficiency-blog",
+        "status": "VERIFIED",
+        "finding": "Research blog consumed; program existence and lever descriptions verified as vendor-published; savings magnitude vendor-bound.",
+        "subject_ids": [
+          "cursor-agent-harness"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

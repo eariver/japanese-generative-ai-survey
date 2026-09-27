@@ -1,0 +1,121 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W39",
+  "evidence_task_id": "evidence:2026-W39:d95a99028a37050e",
+  "basis": {
+    "task_sha256": "c92f96b5b8ad3b32c540dd65214ffbcab554f55690424c2a9e7d628b1c431e2d",
+    "screening_acceptance_sha256": "aee84b5afdc469cbe86acb8bec70eb0967af67e19970667178631f8e3d1aac36",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "dolphinbench",
+      "canonical_name": "DolphinBench",
+      "entity_type": "BENCHMARK",
+      "organization": "mem0",
+      "canonical_url": "https://arxiv.org/abs/2609.24971"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "dolphinbench",
+    "artifact_type": "BENCHMARK",
+    "canonical_name": "DolphinBench",
+    "canonical_url": "https://arxiv.org/abs/2609.24971"
+  },
+  "temporal": {
+    "observed_at": "2026-09-27T18:52:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-09-21T17:54:35Z",
+        "subject_id": "dolphinbench",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "primary:arxiv.org/abs/2609.24971",
+      "source_class": "PRIMARY_PAPER",
+      "title": "mem0: DolphinBench agent-memory benchmark (Sep 21)",
+      "published_at": "2026-09-21T17:54:35Z",
+      "accessed_at": "2026-09-27T18:52:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "mem0 (Rathi/Yadav/Singh) released DolphinBench Sep 21 (v2 Sep 22): agent-memory benchmark evaluating memory through task completion; 3 knowledge-work personas x ~500k history tokens x 200 tasks; history-necessity verified; cost and latency reported alongside accuracy; 6 pages; dataset and code at dolphinbench.ai.",
+      "subject_id": "dolphinbench",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "arXiv abs page consumed; release facts and design claims at abs level."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "\"No existing memory benchmark combines all three\" is an author positioning claim.",
+      "subject_id": "dolphinbench",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Comparison-table correctness not verified; PDF body not consumed."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "PDF body not consumed: no verdict on task quality, baselines, or comparison table.",
+      "subject_id": "dolphinbench",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "X ledger has ZERO rows for DolphinBench (r3 C7 UNVERIFIED): paper authority stands alone without community momentum.",
+      "subject_id": "dolphinbench",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "dolphinbench-pdf",
+        "status": "UNRESOLVED",
+        "finding": "Only arXiv abs consumed; PDF body (task quality, baselines, comparison table) not verified.",
+        "subject_ids": [
+          "dolphinbench"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      "dolphinbench-pdf: Only arXiv abs consumed; PDF body (task quality, baselines, comparison table) not verified."
+    ],
+    "contradictions": []
+  }
+}

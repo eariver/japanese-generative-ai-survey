@@ -1,0 +1,130 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W39",
+  "evidence_task_id": "evidence:2026-W39:49b3df5d65054f56",
+  "basis": {
+    "task_sha256": "02495f03a242a55a5b54ed9ed64e20cce01aacc070947518d1c6beed4626e47b",
+    "screening_acceptance_sha256": "aee84b5afdc469cbe86acb8bec70eb0967af67e19970667178631f8e3d1aac36",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "deepseek-api-models-pricing",
+      "canonical_name": "DeepSeek API Models & Pricing",
+      "entity_type": "API",
+      "organization": "DeepSeek",
+      "canonical_url": "https://api-docs.deepseek.com/quick_start/pricing/"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "deepseek-api-models-pricing",
+    "artifact_type": "API",
+    "canonical_name": "DeepSeek API Models & Pricing",
+    "canonical_url": "https://api-docs.deepseek.com/quick_start/pricing/"
+  },
+  "temporal": {
+    "observed_at": "2026-09-27T18:52:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-09-27T18:42:00Z",
+        "subject_id": "deepseek-api-models-pricing",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "primary:api-docs.deepseek.com/quick_start/pricing",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "Carry-over resolved: DeepSeek official Models & Pricing (V4.1-Flash + V4-Pro-0813)",
+      "published_at": "2026-09-27T18:42:00Z",
+      "accessed_at": "2026-09-27T18:52:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Official Models & Pricing lists deepseek-flash (= DeepSeek-V4.1-Flash) and deepseek-v4-pro (= DeepSeek-V4-Pro-0813) with an explicit routing footnote: legacy deepseek-v4-flash and deepseek-v4-flash-vision-exp retired, served by V4.1-Flash at Flash price. This is the routing-cutover primary evidence W38 lacked.",
+      "subject_id": "deepseek-api-models-pricing",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Official docs captured 2026-09-27; W38 primary gap resolved at docs level."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Official rate card per 1M: flash cache-hit off-peak $0.003/peak $0.006, cache-miss $0.15/$0.3, output $0.6/$1.2; pro cache-hit $0.022/$0.044, cache-miss $0.66/$1.32, output $1.98/$3.96; off-peak half of peak with stated UTC windows; 1M context, 384K max output, concurrency 2500/500.",
+      "subject_id": "deepseek-api-models-pricing",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Official rate card; production billing independently unverified."
+    },
+    {
+      "statement_id": "claim-3",
+      "text": "No V4.1-Pro model appears on the page; Pro remains V4-Pro-0813. The W38 no-claim boundary on V4.1-Pro launch/pricing/weight-retirement is preserved and now primary-backed.",
+      "subject_id": "deepseek-api-models-pricing",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Negative observation on official page."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Page is current-state (post-window); the exact in-window cutover instant is not established from this page alone.",
+      "subject_id": "deepseek-api-models-pricing",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "Cheepseek third-party shell pricing unverified; late-only X rows stay late-only context.",
+      "subject_id": "deepseek-api-models-pricing",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "deepseek-changelog",
+        "status": "VERIFIED",
+        "finding": "Official Models & Pricing captured 2026-09-27: V4.1-Flash + V4-Pro-0813 identity, routing footnote, rate card verified as vendor-published; in-window cutover instant not established from current-state page.",
+        "subject_ids": [
+          "deepseek-api-models-pricing"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

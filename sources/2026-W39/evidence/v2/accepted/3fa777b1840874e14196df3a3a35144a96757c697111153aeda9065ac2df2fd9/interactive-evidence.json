@@ -1,0 +1,808 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W39",
+  "runner": {
+    "provider": "muse-spark",
+    "model": "opencode/muse-spark-1.3-contributor-free",
+    "invocation": "run_evidence_v2_interactive records for 15 non-DROP screening tasks",
+    "generated_at": "2026-09-27T18:52:00Z"
+  },
+  "records": [
+    {
+      "discovery_id": "w39-grok-r3-26-url-ledger",
+      "status": "PARTIAL",
+      "entity": {
+        "entity_id": "x-ledger-w39-r3",
+        "canonical_name": "W39 Grok/X r3 direct-X ledger",
+        "entity_type": "OTHER",
+        "organization": null,
+        "canonical_url": null
+      },
+      "artifact_type": "OTHER",
+      "claims": [
+        {
+          "text": "The r3 ledger persists 26 exact direct X status URLs with Snowflake-derived canonical classes: 19 ORDINARY_WINDOW, 0 PRE_WINDOW_CARRY_IN, 7 LATE_BREAKING, 0 TIME_UNVERIFIED; 0 + 19 + 7 + 0 = 26; LEDGER_COUNT_CONSISTENCY PASS.",
+          "evidence_class": "PRIMARY_FACT",
+          "context": "Verifiable by recounting the 26-row Final direct-X ledger against UTC window [2026-09-18T22:00Z, 2026-09-25T22:00Z)."
+        },
+        {
+          "text": "Ordinary signal covers C1 GPT-6 family (5 URLs / 2 accounts), C2 Opus 5.5 (9 / 5), C3 HF GGUF walkthroughs (3 / 3), C10 W38 carry-in context (2 / 2); 12 ordinary unique accounts = 4 OFFICIAL + 6 INDEPENDENT + 2 COMMUNITY; late-only C5/C8/C9 and unverified C4/C6/C7 carry zero ordinary rows.",
+          "evidence_class": "SOCIAL_OBSERVATION",
+          "context": "Sol recount of r3 candidate table and per-candidate ordinary OFF/IND/COM splits."
+        },
+        {
+          "text": "No release identity, benchmark value, price, license, architecture, availability, or safety property is established by X alone; all technical facts await primary verification in the linked primary Discovery records.",
+          "evidence_class": "SOCIAL_OBSERVATION",
+          "context": "Evidence boundary; X remains Raw Observation."
+        }
+      ],
+      "limitations": [
+        "X search is volume-limited and recency-biased; low-engagement long tail incomplete.",
+        "Seed items MentalHealthBench, Private AI Compute, TBC/AWS neuron claim, Grok 4.7, Cursor harness, DolphinBench produced no recoverable ordinary-window multi-account X cluster with concrete status IDs."
+      ],
+      "verification": [
+        {
+          "target": "primary-verification-C1-C2-C3",
+          "status": "VERIFIED",
+          "finding": "Sol recomputed 26 = 0 + 19 + 7 + 0 with ordinary accounts 12 (4 OFFICIAL + 6 INDEPENDENT + 2 COMMUNITY); candidate bindings C1 5+1, C2 9+2, C3 3+0, C5 0+2, C8 0+1, C9 0+1, C10 2+0; both W38 carry-over rows present as ORDINARY_WINDOW bound only to C10."
+        }
+      ],
+      "materiality": "MATERIAL",
+      "materiality_rationale": "Required X-bound community-signal seed for all W39 candidates; binds every X provenance row used downstream.",
+      "scope_dimensions": [
+        "current relevance",
+        "technical significance",
+        "carry-over obligations"
+      ],
+      "window_relation": "MAIN_EVENT",
+      "carry_over": false
+    },
+    {
+      "discovery_id": "w39-primary-gpt6-solluna-20260922",
+      "status": "VERIFIED",
+      "entity": {
+        "entity_id": "gpt-6-sol-luna",
+        "canonical_name": "GPT-6 Sol / GPT-6 Luna",
+        "entity_type": "MODEL_FAMILY",
+        "organization": "OpenAI",
+        "canonical_url": "https://openai.com/index/introducing-gpt-6-sol-and-luna"
+      },
+      "artifact_type": "MODEL_UPDATE",
+      "claims": [
+        {
+          "text": "OpenAI released GPT-6 Sol and GPT-6 Luna on 2026-09-22 as cost-efficiency frontier models trained with GPT-6 Astra methods; API names gpt-6-sol and gpt-6-luna.",
+          "evidence_class": "PRIMARY_FACT",
+          "context": "First-party announcement page; release event, identity, date."
+        },
+        {
+          "text": "API prices cut 50% vs GPT-5.6 promotional pricing: Sol $4->$2 input and $20->$10 output; Luna $0.20->$0.10 input and $1.20->$0.50 output per 1M tokens.",
+          "evidence_class": "PRIMARY_FACT",
+          "context": "Vendor price card on announcement page; billing independently unverified."
+        },
+        {
+          "text": "Available in ChatGPT Work and Codex for Plus/Pro/Business/Enterprise/Edu from Sep 22; Luna also in desktop app for Free/Go; not in Chat at launch with gradual rollout.",
+          "evidence_class": "PRIMARY_FACT",
+          "context": "Vendor availability statement with stated rollout caveat."
+        },
+        {
+          "text": "Vendor-run evals: AutomationBench Sol xhigh 33.2% at $0.27/task; Agents Last Exam Sol max 56.4%; FrontierCode improvement matching Fable 5.1 xhigh at lower cost; DeepSWE v1.1 Sol max 68.8%; OSWorld 2.0 offline Sol xhigh 60.5%; internal factuality eval ~half the predecessor mistakes.",
+          "evidence_class": "VENDOR_CLAIM",
+          "context": "Vendor-run benchmarks with competitor figures from public reports; effort and cost-accounting asymmetries disclosed on page."
+        },
+        {
+          "text": "X community signal is mixed: price reception positive; independent long-task stability complaints (xiaomovps ordinary row) present and neither confirmed nor refuted by the announcement.",
+          "evidence_class": "SOCIAL_OBSERVATION",
+          "context": "r3 C1 rows; community signal only."
+        }
+      ],
+      "limitations": [
+        "Competitor benchmark figures are vendor-reported; independent reproduction absent.",
+        "Long-context/long-task performance specifics beyond cited evals not established.",
+        "Voice availability detail lives outside this page body."
+      ],
+      "verification": [
+        {
+          "target": "openai-gpt6-announcement",
+          "status": "VERIFIED",
+          "finding": "Announcement page body consumed at claim level; release event, model identity, availability statements verified as vendor-published 2026-09-22."
+        },
+        {
+          "target": "pricing-availability",
+          "status": "UNRESOLVED",
+          "finding": "Price card verified as vendor-published but billing not independently verified; gradual-rollout caveat noted; benchmark figures stay vendor-bound."
+        }
+      ],
+      "materiality": "MATERIAL",
+      "materiality_rationale": "In-window frontier cost-efficiency release with price card and availability; central ordinary-window package with X community counter-signal.",
+      "scope_dimensions": [
+        "current relevance",
+        "technical significance",
+        "carry-over obligations"
+      ],
+      "window_relation": "MAIN_EVENT",
+      "carry_over": false
+    },
+    {
+      "discovery_id": "w39-primary-gpt6-caching-20260922",
+      "status": "VERIFIED",
+      "entity": {
+        "entity_id": "gpt-6-prompt-caching",
+        "canonical_name": "GPT-6 prompt caching system",
+        "entity_type": "PRODUCT",
+        "organization": "OpenAI",
+        "canonical_url": "https://openai.com/index/better-prompt-caching-for-gpt-6/"
+      },
+      "artifact_type": "PRODUCT",
+      "claims": [
+        {
+          "text": "GPT-6 ships an improved prompt caching system with higher default hit rates and cache discounts for eligible shared prefixes reused within a 30-minute window.",
+          "evidence_class": "PRIMARY_FACT",
+          "context": "First-party product announcement 2026-09-22."
+        },
+        {
+          "text": "New tooling: Prompt Caching Dashboard, cache-miss diagnostics, explicit prefix breakpoints, mid-conversation reasoning-effort/tool-availability change without cache invalidation.",
+          "evidence_class": "PRIMARY_FACT",
+          "context": "Vendor feature statements on announcement page."
+        },
+        {
+          "text": "Up to 90% cached-input-read discounts; GitHub reports >50% reduction in fresh-processing share across billions of requests.",
+          "evidence_class": "VENDOR_CLAIM",
+          "context": "Vendor figures plus cited third-party operational observation; independent measurement absent."
+        }
+      ],
+      "limitations": [
+        "Persistent-agent cost/latency implications are vendor projections.",
+        "API-docs mechanism detail (minimum lengths, write multipliers) not consumed from this page."
+      ],
+      "verification": [
+        {
+          "target": "openai-caching-docs",
+          "status": "VERIFIED",
+          "finding": "Caching announcement excerpts consumed; 30-min discounts, dashboard, diagnostics, breakpoints verified as vendor-published; savings magnitude stays vendor-bound."
+        }
+      ],
+      "materiality": "MATERIAL",
+      "materiality_rationale": "Distinct agent-cost technical surface supporting the W39 efficiency theme; kept separate from Sol/Luna record for claim traceability.",
+      "scope_dimensions": [
+        "current relevance",
+        "technical significance",
+        "carry-over obligations"
+      ],
+      "window_relation": "MAIN_EVENT",
+      "carry_over": false
+    },
+    {
+      "discovery_id": "w39-primary-opus55-20260922",
+      "status": "VERIFIED",
+      "entity": {
+        "entity_id": "claude-opus-5-5",
+        "canonical_name": "Claude Opus 5.5",
+        "entity_type": "MODEL",
+        "organization": "Anthropic",
+        "canonical_url": "https://www.anthropic.com/claude-opus-5-5"
+      },
+      "artifact_type": "MODEL_UPDATE",
+      "claims": [
+        {
+          "text": "Anthropic released Claude Opus 5.5 on 2026-09-22, first of the 5.5 family, positioned at Fable 5.1 level on most work at 40% lower run cost than Opus 5; pre-release external eval by Frontier Design and METR.",
+          "evidence_class": "PRIMARY_FACT",
+          "context": "First-party announcement; release event, identity, date; external-eval occurrence vendor-stated."
+        },
+        {
+          "text": "Pricing per 1M: input $4 (was $5), output $20 (was $25), cache reads $0.20 (was $0.50), cache writes $5 (was $6.25); ~40% lower typical cost; 30%+ faster output; fast mode 2.5x at $8/$40.",
+          "evidence_class": "PRIMARY_FACT",
+          "context": "Vendor price card; billing independently unverified."
+        },
+        {
+          "text": "Available on all platforms incl. AWS/Google Cloud/Azure as claude-opus-5-5; five-hour limits increased on Pro/Max/Team/seat-Enterprise with bankable rate-limit reset; Claude Code graceful-stop update Sep 25 corroborated by in-window @ClaudeDevs X row.",
+          "evidence_class": "PRIMARY_FACT",
+          "context": "Vendor availability statement; graceful-stop corroborated by ledger ordinary row 2103561342057943314 (Sep 25 19:04 UTC); tier split from post-cutoff secondary."
+        },
+        {
+          "text": "Vendor-run benchmarks: Terminal-Bench 4.0 66.4% xhigh; FrontierCode 54.4% default-effort beating Astra top at ~1/5 cost; CursorBench 57.8%; GDPval-AA v2.1 1846 Elo; AutomationBench 40.0% with safeguard-interventions-counted-as-failures caveat; OSWorld 2.0 81.8% partial.",
+          "evidence_class": "VENDOR_CLAIM",
+          "context": "Vendor-run evals with disclosed effort asymmetries and safeguard caveats."
+        },
+        {
+          "text": "Safety: best automated-behavioral-audit scores to date; containment-circumvention attempts ~85% below Opus 5/Mythos 5.1; eval-awareness limitation explicitly disclosed; Fable-5.1-class cyber/bio/distillation safeguards with Opus 4.8 fallback and verification programs.",
+          "evidence_class": "VENDOR_CLAIM",
+          "context": "Vendor safety claims with explicitly disclosed measurement limits."
+        }
+      ],
+      "limitations": [
+        "\"Beats Astra\" cost-parity claims depend on vendor cost accounting.",
+        "Opus 5.5 System Card not separately retrieved.",
+        "Early-tester quotes are vendor-selected testimonials, not independent evidence."
+      ],
+      "verification": [
+        {
+          "target": "anthropic-opus55-announcement",
+          "status": "VERIFIED",
+          "finding": "Announcement page consumed at claim level; release, price card, availability, graceful-stop X corroboration verified as vendor-published."
+        },
+        {
+          "target": "system-card",
+          "status": "UNRESOLVED",
+          "finding": "Opus 5.5 System Card not separately retrieved; benchmark-condition detail beyond page not consumed; figures stay vendor-bound."
+        }
+      ],
+      "materiality": "MATERIAL",
+      "materiality_rationale": "In-window frontier release with price card, availability, safeguards, and strong X demo signal; central ordinary-window package.",
+      "scope_dimensions": [
+        "current relevance",
+        "technical significance",
+        "carry-over obligations"
+      ],
+      "window_relation": "MAIN_EVENT",
+      "carry_over": false
+    },
+    {
+      "discovery_id": "w39-primary-enzyme-art-20260923",
+      "status": "PARTIAL",
+      "entity": {
+        "entity_id": "array-associated-reverse-transcriptases",
+        "canonical_name": "Array-associated reverse transcriptases (ART)",
+        "entity_type": "OTHER",
+        "organization": "Anthropic",
+        "canonical_url": "https://www.anthropic.com/news/claude-discovers-novel-enzyme-system"
+      },
+      "artifact_type": "OTHER",
+      "claims": [
+        {
+          "text": "Anthropic formed a life-sciences research group with a Bay Area wet lab (BSL-1/2, human scientists) and on Sep 23 reported Claude agents discovering ART, a previously uncharacterized phage enzyme system with CRISPR-like repeat arrays.",
+          "evidence_class": "PRIMARY_FACT",
+          "context": "First-party research announcement; lab existence and discovery report."
+        },
+        {
+          "text": "Vendor-described method: ~950 agents, 21 hours, 210M tokens over DNA databases; 200k+ RTs to 3,500 candidates to 20 reports to 1 discovery; lab validation shows ART array expressed as short RNAs; function explicitly UNKNOWN; pre-print released, not peer-reviewed.",
+          "evidence_class": "PRIMARY_FACT",
+          "context": "Process facts vendor-stated; pre-review status and unknown function explicitly disclosed."
+        },
+        {
+          "text": "Feng Zhang reviewed the pre-print and called the RNA-repeat/RT association genuinely intriguing and worth investigation.",
+          "evidence_class": "AUTHOR_CLAIM",
+          "context": "Cited third-party expert assessment, not independent replication."
+        }
+      ],
+      "limitations": [
+        "Pre-print paper body not consumed; no verdict on evidence quality beyond announcement.",
+        "\"Autonomous discovery\" is vendor framing: initial prompt and all lab work were human.",
+        "No general scientific-capability inference beyond this single case; ART function unknown, no gene-editing utility established."
+      ],
+      "verification": [
+        {
+          "target": "anthropic-enzyme-preprint",
+          "status": "UNRESOLVED",
+          "finding": "Pre-print paper body not consumed; announcement-level facts verified but biological validity unreviewed; ART function unknown."
+        }
+      ],
+      "materiality": "MATERIAL",
+      "materiality_rationale": "First-party agentic-science result with explicit autonomy boundary; distinct science-workflow materiality beyond model-release news.",
+      "scope_dimensions": [
+        "current relevance",
+        "technical significance",
+        "carry-over obligations"
+      ],
+      "window_relation": "MAIN_EVENT",
+      "carry_over": false
+    },
+    {
+      "discovery_id": "w39-primary-hf-gguf-20260922",
+      "status": "VERIFIED",
+      "entity": {
+        "entity_id": "transformers-gguf-execution",
+        "canonical_name": "Transformers GGUF execution support",
+        "entity_type": "PRODUCT",
+        "organization": "Hugging Face",
+        "canonical_url": "https://huggingface.co/blog/transformers-llama-cpp-quants"
+      },
+      "artifact_type": "INTEGRATION",
+      "claims": [
+        {
+          "text": "Hugging Face added efficient GGUF execution in Transformers via from_pretrained gguf_file loading, transformers serve OpenAI-compatible endpoint, ggml Metal kernels through the kernels library, and generate-loop optimizations (mask drop, deferred stopping).",
+          "evidence_class": "PRIMARY_FACT",
+          "context": "First-party technical article 2026-09-22."
+        },
+        {
+          "text": "Vendor benchmarks show Transformers close to llama.cpp across three checkpoints on MacBook Pro M2 Max; llama-bench decode-only vs generate-including-prefill asymmetry explicitly disclosed.",
+          "evidence_class": "VENDOR_CLAIM",
+          "context": "Vendor-run benchmarks with disclosed method asymmetry."
+        },
+        {
+          "text": "Explicit limitations: packed inference path MPS-only; padded batches lower performance; arch coverage limited to Qwen3.5 dense/MoE plus compatible Qwen3.8; llama.cpp remains the recommended engine for pure efficient local inference.",
+          "evidence_class": "PRIMARY_FACT",
+          "context": "Vendor-stated scope and caveats."
+        }
+      ],
+      "limitations": [
+        "Parity is approximate and hardware-bound (M2 Max only); no cross-platform claim.",
+        "X walkthroughs (markfenner INDEPENDENT; EfemeraTt/viralai_jp COMMUNITY) are consistent but not proof."
+      ],
+      "verification": [
+        {
+          "target": "hf-gguf-blog",
+          "status": "VERIFIED",
+          "finding": "Technical article consumed at claim level; API, kernels, MPS-only limits verified as vendor-published."
+        },
+        {
+          "target": "kernel-docs",
+          "status": "UNRESOLVED",
+          "finding": "Kernel-level performance parity not independently measured; retained with disclosed bench asymmetry."
+        }
+      ],
+      "materiality": "MATERIAL",
+      "materiality_rationale": "In-window local-inference integration with disclosed limits; central open-weight package with independent X walkthrough signal.",
+      "scope_dimensions": [
+        "current relevance",
+        "technical significance",
+        "carry-over obligations"
+      ],
+      "window_relation": "MAIN_EVENT",
+      "carry_over": false
+    },
+    {
+      "discovery_id": "w39-primary-cursor-efficiency-20260923",
+      "status": "VERIFIED",
+      "entity": {
+        "entity_id": "cursor-agent-harness",
+        "canonical_name": "Cursor agent harness efficiency program",
+        "entity_type": "FRAMEWORK",
+        "organization": "Cursor",
+        "canonical_url": "https://cursor.com/blog/improved-token-efficiency"
+      },
+      "artifact_type": "FRAMEWORK",
+      "claims": [
+        {
+          "text": "Cursor published harness-efficiency results: -7% user token costs without quality reduction, vendor-measured via production A/B.",
+          "evidence_class": "VENDOR_CLAIM",
+          "context": "Vendor production measurement; independent reproduction absent."
+        },
+        {
+          "text": "Levers: system prompt trimmed ~66%; built-in tool defs offloaded to dynamic context (-60% static description tokens; MCP precedent -46.9%); explicit cache breakpoints with phantom-user-message stabilization (-20% cold misses); line numbers every 10th line (-1.6% cache-read tokens); subagent prompting rebalanced and model selection tightened.",
+          "evidence_class": "VENDOR_CLAIM",
+          "context": "Vendor-measured production figures with disclosed A/B method and eval-representativeness caveat."
+        }
+      ],
+      "limitations": [
+        "7% is Cursor-production-specific; not transferable to other harnesses.",
+        "Quality-neutrality is vendor-measured."
+      ],
+      "verification": [
+        {
+          "target": "cursor-efficiency-blog",
+          "status": "VERIFIED",
+          "finding": "Research blog consumed; program existence and lever descriptions verified as vendor-published; savings magnitude vendor-bound."
+        }
+      ],
+      "materiality": "MATERIAL",
+      "materiality_rationale": "Distinct agent-operations materiality: measured harness economics for longer agent runs.",
+      "scope_dimensions": [
+        "current relevance",
+        "technical significance",
+        "carry-over obligations"
+      ],
+      "window_relation": "MAIN_EVENT",
+      "carry_over": false
+    },
+    {
+      "discovery_id": "w39-primary-cursor-rollouts-20260923",
+      "status": "VERIFIED",
+      "entity": {
+        "entity_id": "cursor-rollouts-security-reviewer",
+        "canonical_name": "Cursor Rollouts + Security Reviewer",
+        "entity_type": "PRODUCT",
+        "organization": "Cursor",
+        "canonical_url": "https://cursor.com/blog/rollouts-and-security-reviewer"
+      },
+      "artifact_type": "PRODUCT",
+      "claims": [
+        {
+          "text": "Cursor launched Rollouts (PR-to-production deploy monitoring with ping/pause/revert-PR actions; no autonomous merge/rollback today) and Security Reviewer (per-PR vuln reports with severity/attack-path/one-click fix) on Sep 23 for Teams/Enterprise via automations tab with 10-day Rollouts trial credits.",
+          "evidence_class": "PRIMARY_FACT",
+          "context": "First-party launch post; product existence, availability, scope."
+        },
+        {
+          "text": "Security Reviewer reduced average review time 4.8 to 3.8 minutes and raised comment acceptance 45-50% to 60-70% per vendor chart.",
+          "evidence_class": "VENDOR_CLAIM",
+          "context": "Vendor-reported measured effects; independent reproduction absent."
+        }
+      ],
+      "limitations": [
+        "Measured review effects are vendor-reported.",
+        "Feature-flag integration and release-train awareness are coming-soon, not shipped.",
+        "Distinct from March open-source security-agent templates."
+      ],
+      "verification": [
+        {
+          "target": "cursor-rollouts-blog",
+          "status": "VERIFIED",
+          "finding": "Launch post consumed; products, plans, trial, scope verified as vendor-published; review-effect metrics vendor-bound."
+        }
+      ],
+      "materiality": "MATERIAL",
+      "materiality_rationale": "Distinct ship-operations materiality: post-PR deployment and security bots as product surface.",
+      "scope_dimensions": [
+        "current relevance",
+        "technical significance",
+        "carry-over obligations"
+      ],
+      "window_relation": "MAIN_EVENT",
+      "carry_over": false
+    },
+    {
+      "discovery_id": "w39-primary-grok47-20260921",
+      "status": "PARTIAL",
+      "entity": {
+        "entity_id": "grok-4-7",
+        "canonical_name": "Grok 4.7",
+        "entity_type": "MODEL",
+        "organization": "SpaceXAI",
+        "canonical_url": "https://x.ai/news/grok-4-7"
+      },
+      "artifact_type": "MODEL_UPDATE",
+      "claims": [
+        {
+          "text": "SpaceXAI released Grok 4.7 on Sep 21 for coding and knowledge work with a larger base model than 4.6, longer RL on harder multi-hour mixes, native Grok Bot harness understanding, and a new safeguard stack; available in Cursor all tiers, Grok Build free, Grok API, routers/clouds.",
+          "evidence_class": "PRIMARY_FACT",
+          "context": "First-party announcement; release event, availability."
+        },
+        {
+          "text": "Priced $2 input / $6 output per 1M, same as 4.6; fast variant 2x speed at 2x price.",
+          "evidence_class": "PRIMARY_FACT",
+          "context": "Vendor price card."
+        },
+        {
+          "text": "Vendor-run benchmarks with disclosed effort asymmetry (4.7 xhigh vs 4.6 high vs Sol max vs Fable max): CursorBench 4.0 46.3%; DeepSWE 71.0% high-effort; Terminal-Bench 4.0 37.6% internal harness; GDPval 1695 Elo xhigh.",
+          "evidence_class": "VENDOR_CLAIM",
+          "context": "Effort-asymmetric vendor table; third-party checks mixed (Vals Index costs; Artificial Analysis Terminal-Bench 26% vs internal 38% harness discrepancy)."
+        }
+      ],
+      "limitations": [
+        "\"Larger base / longer RL / harness-awareness\" lack independently checkable artifacts.",
+        "X ledger has ZERO retained rows for Grok 4.7 (r3 C4 UNVERIFIED): no community-momentum claim.",
+        "Harness-dependence visible in Terminal-Bench discrepancy."
+      ],
+      "verification": [
+        {
+          "target": "xai-grok47-announcement",
+          "status": "VERIFIED",
+          "finding": "Announcement consumed; release event, price card, channels verified as vendor-published."
+        },
+        {
+          "target": "model-card",
+          "status": "UNRESOLVED",
+          "finding": "Model-card supplemental-training disclosure noted via excerpts; capability standing blocked by effort asymmetry and harness discrepancy."
+        }
+      ],
+      "materiality": "MATERIAL",
+      "materiality_rationale": "In-window frontier coding-model release kept for primary-authority coverage despite absent X momentum; vendor claims quarantined.",
+      "scope_dimensions": [
+        "current relevance",
+        "technical significance",
+        "carry-over obligations"
+      ],
+      "window_relation": "MAIN_EVENT",
+      "carry_over": false
+    },
+    {
+      "discovery_id": "w39-primary-google-memory-20260923",
+      "status": "PARTIAL",
+      "entity": {
+        "entity_id": "private-ai-compute-server-memory",
+        "canonical_name": "Private AI Compute secure server-side memory",
+        "entity_type": "PRODUCT",
+        "organization": "Google",
+        "canonical_url": "https://deepmind.google/blog/advancing-private-ai-compute-with-secure-server-side-memory/"
+      },
+      "artifact_type": "PRODUCT",
+      "claims": [
+        {
+          "text": "Google disclosed a Private AI Compute architecture update enabling persistent cross-device server-side memory: device-held keys, secure enclaves, encrypted channels, per-user encrypted stores, tamper-proof public software record, independent audit cited.",
+          "evidence_class": "PRIMARY_FACT",
+          "context": "First-party architecture announcement 2026-09-23."
+        },
+        {
+          "text": "Announcement language is forward-looking (\"will enable\"); independent community note (post-cutoff) reads the feature as still planned, not generally available.",
+          "evidence_class": "PRIMARY_FACT",
+          "context": "Status boundary from vendor wording plus post-cutoff community note."
+        }
+      ],
+      "limitations": [
+        "Security/architecture properties are vendor-described; audit firm and results not independently verified here.",
+        "Technical brief PDF referenced but not claim-level consumed.",
+        "No memory-capability or product-availability claim made."
+      ],
+      "verification": [
+        {
+          "target": "google-memory-brief",
+          "status": "VERIFIED",
+          "finding": "Architecture blog consumed; enclave/key design and forward-looking status verified as vendor-published."
+        },
+        {
+          "target": "audit-results",
+          "status": "UNRESOLVED",
+          "finding": "Independent audit firm and results not verified; technical brief PDF not claim-level consumed; GA must not be claimed."
+        }
+      ],
+      "materiality": "MATERIAL",
+      "materiality_rationale": "Distinct privacy-architecture materiality with explicit no-availability boundary.",
+      "scope_dimensions": [
+        "current relevance",
+        "technical significance",
+        "carry-over obligations"
+      ],
+      "window_relation": "MAIN_EVENT",
+      "carry_over": false
+    },
+    {
+      "discovery_id": "w39-primary-mentalhealthbench-20260923",
+      "status": "VERIFIED",
+      "entity": {
+        "entity_id": "mentalhealthbench",
+        "canonical_name": "MentalHealthBench",
+        "entity_type": "BENCHMARK",
+        "organization": "OpenAI",
+        "canonical_url": "https://openai.com/index/introducing-mentalhealthbench"
+      },
+      "artifact_type": "BENCHMARK",
+      "claims": [
+        {
+          "text": "OpenAI released MentalHealthBench on Sep 23: open benchmark for AI responses in realistic mental-health conversations, co-created with 80+ licensed psychologists/psychiatrists across 22 countries, 19 languages, ~20 subspecialties.",
+          "evidence_class": "PRIMARY_FACT",
+          "context": "First-party publication announcement."
+        },
+        {
+          "text": "Design: 1,215 synthetic privacy-preserving conversations; acuity spectrum non-acute/high-acuity/emergencies; personas adults/teens/caregivers/clinicians, multilingual; rubric criteria weights -10..+10, each reviewed by >=3 experts, retained on >=2-expert agreement without third-expert contradiction.",
+          "evidence_class": "PRIMARY_FACT",
+          "context": "Vendor-described design facts."
+        },
+        {
+          "text": "Automated grader is GPT-5.6 Sol (OpenAI model grading OpenAI benchmark): methodology circularity risk explicitly flagged; side study of 44 adults (non-acute only) found users value tone/next-steps while experts emphasize context-seeking.",
+          "evidence_class": "PRIMARY_FACT",
+          "context": "Grader identity vendor-disclosed; circularity is an analytical boundary, not a vendor admission."
+        }
+      ],
+      "limitations": [
+        "Paper-level methodology (agreement stats, grader validation) not consumed: no deep methodological verdict.",
+        "Comparative model readings are vendor-framed given grader overlap."
+      ],
+      "verification": [
+        {
+          "target": "mentalhealthbench-paper",
+          "status": "UNRESOLVED",
+          "finding": "Announcement-level design verified; paper-level methodology (agreement stats, grader validation) not consumed; grader circularity blocks score acceptance."
+        }
+      ],
+      "materiality": "MATERIAL",
+      "materiality_rationale": "Distinct evaluation materiality: expert-informed open benchmark with stated grader boundary.",
+      "scope_dimensions": [
+        "current relevance",
+        "technical significance",
+        "carry-over obligations"
+      ],
+      "window_relation": "MAIN_EVENT",
+      "carry_over": false
+    },
+    {
+      "discovery_id": "w39-primary-dolphinbench-20260921",
+      "status": "PARTIAL",
+      "entity": {
+        "entity_id": "dolphinbench",
+        "canonical_name": "DolphinBench",
+        "entity_type": "BENCHMARK",
+        "organization": "mem0",
+        "canonical_url": "https://arxiv.org/abs/2609.24971"
+      },
+      "artifact_type": "BENCHMARK",
+      "claims": [
+        {
+          "text": "mem0 (Rathi/Yadav/Singh) released DolphinBench Sep 21 (v2 Sep 22): agent-memory benchmark evaluating memory through task completion; 3 knowledge-work personas x ~500k history tokens x 200 tasks; history-necessity verified; cost and latency reported alongside accuracy; 6 pages; dataset and code at dolphinbench.ai.",
+          "evidence_class": "PRIMARY_FACT",
+          "context": "arXiv abs page consumed; release facts and design claims at abs level."
+        },
+        {
+          "text": "\"No existing memory benchmark combines all three\" is an author positioning claim.",
+          "evidence_class": "AUTHOR_CLAIM",
+          "context": "Comparison-table correctness not verified; PDF body not consumed."
+        }
+      ],
+      "limitations": [
+        "PDF body not consumed: no verdict on task quality, baselines, or comparison table.",
+        "X ledger has ZERO rows for DolphinBench (r3 C7 UNVERIFIED): paper authority stands alone without community momentum."
+      ],
+      "verification": [
+        {
+          "target": "dolphinbench-pdf",
+          "status": "UNRESOLVED",
+          "finding": "Only arXiv abs consumed; PDF body (task quality, baselines, comparison table) not verified."
+        }
+      ],
+      "materiality": "MATERIAL",
+      "materiality_rationale": "Elevates C7 from X-unverified to paper-authority candidate; distinct agent-memory evaluation materiality.",
+      "scope_dimensions": [
+        "current relevance",
+        "technical significance",
+        "carry-over obligations"
+      ],
+      "window_relation": "MAIN_EVENT",
+      "carry_over": false
+    },
+    {
+      "discovery_id": "w39-primary-tbc-aws-20260922",
+      "status": "PARTIAL",
+      "entity": {
+        "entity_id": "tbc-neuron-video-model",
+        "canonical_name": "TBC neuron-derived video model",
+        "entity_type": "MODEL",
+        "organization": "The Biological Computing Co.",
+        "canonical_url": "https://press.aboutamazon.com/aws/2026/9/the-biological-computing-co-partners-with-aws-to-bring-worlds-first-neuron-derived-ai-video-model-to-market"
+      },
+      "artifact_type": "MODEL_UPDATE",
+      "claims": [
+        {
+          "text": "TBC x AWS announced Sep 22 a collaboration to commercialize a neuron-derived text-to-video model: built on an open-source video model plus a <0.1% software layer from living-neuron measurements; runs on conventional infra with Trainium/SageMaker/Marketplace path; no biological hardware required.",
+          "evidence_class": "PRIMARY_FACT",
+          "context": "Partnership and launch facts from AWS press page."
+        },
+        {
+          "text": "Claimed 5x faster inference, 80% lower cost, improved quality vs the unnamed base open-source model.",
+          "evidence_class": "VENDOR_CLAIM",
+          "context": "High-verification-needed vendor figures; no independent or technical corroboration found; base model unnamed."
+        }
+      ],
+      "limitations": [
+        "Technical mechanism unverifiable from announcement; no independent authority located.",
+        "Executive quotes are marketing statements.",
+        "Treat as commercial-launch fact with vendor figures, not a validated optimization result."
+      ],
+      "verification": [
+        {
+          "target": "independent-technical-corroboration",
+          "status": "UNRESOLVED",
+          "finding": "No independent or technical authority located for 5x/80%/<0.1% figures; partnership occurrence verified but optimization unvalidated."
+        }
+      ],
+      "materiality": "CONTEXT",
+      "materiality_rationale": "Commercial-launch context without independent technical authority; figures quarantined rather than packaged as validated result.",
+      "scope_dimensions": [
+        "current relevance",
+        "technical significance",
+        "carry-over obligations"
+      ],
+      "window_relation": "MAIN_EVENT",
+      "carry_over": false
+    },
+    {
+      "discovery_id": "w39-carryover-deepseek-docs-20260927",
+      "status": "VERIFIED",
+      "entity": {
+        "entity_id": "deepseek-api-models-pricing",
+        "canonical_name": "DeepSeek API Models & Pricing",
+        "entity_type": "API",
+        "organization": "DeepSeek",
+        "canonical_url": "https://api-docs.deepseek.com/quick_start/pricing/"
+      },
+      "artifact_type": "API",
+      "claims": [
+        {
+          "text": "Official Models & Pricing lists deepseek-flash (= DeepSeek-V4.1-Flash) and deepseek-v4-pro (= DeepSeek-V4-Pro-0813) with an explicit routing footnote: legacy deepseek-v4-flash and deepseek-v4-flash-vision-exp retired, served by V4.1-Flash at Flash price. This is the routing-cutover primary evidence W38 lacked.",
+          "evidence_class": "PRIMARY_FACT",
+          "context": "Official docs captured 2026-09-27; W38 primary gap resolved at docs level."
+        },
+        {
+          "text": "Official rate card per 1M: flash cache-hit off-peak $0.003/peak $0.006, cache-miss $0.15/$0.3, output $0.6/$1.2; pro cache-hit $0.022/$0.044, cache-miss $0.66/$1.32, output $1.98/$3.96; off-peak half of peak with stated UTC windows; 1M context, 384K max output, concurrency 2500/500.",
+          "evidence_class": "PRIMARY_FACT",
+          "context": "Official rate card; production billing independently unverified."
+        },
+        {
+          "text": "No V4.1-Pro model appears on the page; Pro remains V4-Pro-0813. The W38 no-claim boundary on V4.1-Pro launch/pricing/weight-retirement is preserved and now primary-backed.",
+          "evidence_class": "PRIMARY_FACT",
+          "context": "Negative observation on official page."
+        }
+      ],
+      "limitations": [
+        "Page is current-state (post-window); the exact in-window cutover instant is not established from this page alone.",
+        "Cheepseek third-party shell pricing unverified; late-only X rows stay late-only context."
+      ],
+      "verification": [
+        {
+          "target": "deepseek-changelog",
+          "status": "VERIFIED",
+          "finding": "Official Models & Pricing captured 2026-09-27: V4.1-Flash + V4-Pro-0813 identity, routing footnote, rate card verified as vendor-published; in-window cutover instant not established from current-state page."
+        }
+      ],
+      "materiality": "CONTEXT",
+      "materiality_rationale": "Resolved W38 HOLD/CARRY_OVER at docs level; routing context without V4.1-Pro claims.",
+      "scope_dimensions": [
+        "current relevance",
+        "technical significance",
+        "carry-over obligations"
+      ],
+      "window_relation": "CARRY_OVER",
+      "carry_over": true
+    },
+    {
+      "discovery_id": "w39-lateonly-pixelcanary-codex-20260925",
+      "status": "PARTIAL",
+      "entity": {
+        "entity_id": "pixel-canary-stealth",
+        "canonical_name": "Pixel Canary stealth model",
+        "entity_type": "MODEL",
+        "organization": "Vercel",
+        "canonical_url": "vercel.com/changelog/pixel-canary-is-now-available-in-stealth-for-free-on-ai-gateway"
+      },
+      "artifact_type": "PRODUCT",
+      "claims": [
+        {
+          "text": "Vercel changelog lists stealth/pixel-canary as a free-stealth anonymous coding model on AI Gateway with adjustable reasoning effort (excerpt-level signal; body not consumed).",
+          "evidence_class": "PRIMARY_FACT",
+          "context": "Excerpt-level official signal only."
+        },
+        {
+          "text": "Third-party reports (Sep 26, post-cutoff): evening-Sep-25 stealth launch; free limited-time; Next.js Agent Evals 90.3% baseline (28/31) tying GPT-6 Astra high and 96.8% (30/31) with Next.js docs; pass@4; identity confidential; no ZDR.",
+          "evidence_class": "PROJECT_CLAIM",
+          "context": "Secondary reports; eval figures high-verification-needed; X ledger OFFICIAL late row corroborates existence only."
+        },
+        {
+          "text": "Codex outage notice exists only as X ledger late row (thsottiaux OFFICIAL, Sep 25 22:58 UTC); no status-page retrieval performed.",
+          "evidence_class": "SOCIAL_OBSERVATION",
+          "context": "X observation only; LOW_CONFIDENCE."
+        }
+      ],
+      "limitations": [
+        "Both items are POST-CUTOFF by construction: ordinary metrics forced to 0.",
+        "Pixel Canary identity, eval methodology, and ZDR/training-use terms unverified.",
+        "Codex outage lacks primary corroboration."
+      ],
+      "verification": [
+        {
+          "target": "pixel-canary-identity",
+          "status": "UNRESOLVED",
+          "finding": "Changelog excerpt plus post-cutoff third-party eval reports; identity, methodology, ZDR terms unverified; W40 precursor only."
+        },
+        {
+          "target": "codex-status",
+          "status": "UNRESOLVED",
+          "finding": "Outage exists only as late X ledger row; no status-page retrieval performed."
+        }
+      ],
+      "materiality": "CONTEXT",
+      "materiality_rationale": "Late-breaking context for W40 precursor tracking; no ordinary-window materiality.",
+      "scope_dimensions": [
+        "current relevance",
+        "technical significance",
+        "carry-over obligations"
+      ],
+      "window_relation": "POST_CUTOFF",
+      "carry_over": false
+    }
+  ],
+  "completeness": {
+    "obligations": [
+      {
+        "obligation_id": "weekly:current-relevance",
+        "status": "SATISFIED",
+        "rationale": "W39 belonging established: GPT-6 Sol/Luna + caching Sep 22, Opus 5.5 Sep 22, ART enzyme Sep 23, HF GGUF Sep 22, Cursor efficiency + Rollouts/Security Sep 23, Grok 4.7 Sep 21, Google memory Sep 23, MentalHealthBench Sep 23, DolphinBench Sep 21, TBC x AWS Sep 22 are ordinary MAIN_EVENT; DeepSeek docs close the W38 carry-over; Pixel Canary/Codex held POST_CUTOFF; E/F/D lanes honestly quiet with explicit negative record."
+      },
+      {
+        "obligation_id": "weekly:technical-significance",
+        "status": "SATISFIED",
+        "rationale": "Significance verified per candidate without timing alone: cost-efficiency releases with price cards, agent-harness economics, local-inference integration with limits, privacy architecture without availability claim, expert benchmark with grader boundary, paper-level memory eval, quarantined vendor video figures; X never promoted to technical authority."
+      },
+      {
+        "obligation_id": "weekly:carry-over",
+        "status": "SATISFIED",
+        "rationale": "W38 RELEASED authority scanned: DeepSeek V4-Pro routing HOLD re-resolved at official docs level (VERIFIED/CONTEXT/CARRY_OVER, no V4.1-Pro claims); W38 late-breaking lrogersaz/ophtaka rows revalidated as W39 ordinary and bound to C10 context; no other W38 HOLD items outstanding."
+      }
+    ],
+    "residual_limitations": [
+      "Vendor benchmark figures (OpenAI, Anthropic, Cursor, xAI, TBC) retained attributed without independent reproduction.",
+      "DolphinBench consumed at abs level only; PDF body not verified.",
+      "DeepSeek in-window cutover instant not established; current-state docs only.",
+      "Pixel Canary eval methodology and identity unverified; Codex outage lacks status-page corroboration.",
+      "E (video generation), F (speech/audio/music), D (image) lanes quiet: no material primary found after search; recorded as negative result, not a gap.",
+      "C (multimodal foundation) sparse; K (safety) has no new primary release beyond Opus 5.5 safeguards and Google memory architecture."
+    ],
+    "closure": null
+  }
+}

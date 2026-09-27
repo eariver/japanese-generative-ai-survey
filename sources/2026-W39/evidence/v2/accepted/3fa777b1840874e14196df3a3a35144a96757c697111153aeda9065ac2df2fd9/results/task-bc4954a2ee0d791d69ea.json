@@ -1,0 +1,154 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W39",
+  "evidence_task_id": "evidence:2026-W39:90a0ddb99b0c43b6",
+  "basis": {
+    "task_sha256": "b2bc7d69cd498547f1fc6363cffdcbe212dc072f381685db6075113e04314a03",
+    "screening_acceptance_sha256": "aee84b5afdc469cbe86acb8bec70eb0967af67e19970667178631f8e3d1aac36",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "grok-4-7",
+      "canonical_name": "Grok 4.7",
+      "entity_type": "MODEL",
+      "organization": "SpaceXAI",
+      "canonical_url": "https://x.ai/news/grok-4-7"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "grok-4-7",
+    "artifact_type": "MODEL_UPDATE",
+    "canonical_name": "Grok 4.7",
+    "canonical_url": "https://x.ai/news/grok-4-7"
+  },
+  "temporal": {
+    "observed_at": "2026-09-27T18:52:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-09-21T12:00:00Z",
+        "subject_id": "grok-4-7",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "primary:x.ai/news/grok-4-7",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "SpaceXAI: Grok 4.7 for coding and knowledge work (Sep 21)",
+      "published_at": "2026-09-21T12:00:00Z",
+      "accessed_at": "2026-09-27T18:52:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "SpaceXAI released Grok 4.7 on Sep 21 for coding and knowledge work with a larger base model than 4.6, longer RL on harder multi-hour mixes, native Grok Bot harness understanding, and a new safeguard stack; available in Cursor all tiers, Grok Build free, Grok API, routers/clouds.",
+      "subject_id": "grok-4-7",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "First-party announcement; release event, availability."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Priced $2 input / $6 output per 1M, same as 4.6; fast variant 2x speed at 2x price.",
+      "subject_id": "grok-4-7",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Vendor price card."
+    },
+    {
+      "statement_id": "claim-3",
+      "text": "Vendor-run benchmarks with disclosed effort asymmetry (4.7 xhigh vs 4.6 high vs Sol max vs Fable max): CursorBench 4.0 46.3%; DeepSWE 71.0% high-effort; Terminal-Bench 4.0 37.6% internal harness; GDPval 1695 Elo xhigh.",
+      "subject_id": "grok-4-7",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Effort-asymmetric vendor table; third-party checks mixed (Vals Index costs; Artificial Analysis Terminal-Bench 26% vs internal 38% harness discrepancy)."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "\"Larger base / longer RL / harness-awareness\" lack independently checkable artifacts.",
+      "subject_id": "grok-4-7",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "X ledger has ZERO retained rows for Grok 4.7 (r3 C4 UNVERIFIED): no community-momentum claim.",
+      "subject_id": "grok-4-7",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-3",
+      "text": "Harness-dependence visible in Terminal-Bench discrepancy.",
+      "subject_id": "grok-4-7",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "xai-grok47-announcement",
+        "status": "VERIFIED",
+        "finding": "Announcement consumed; release event, price card, channels verified as vendor-published.",
+        "subject_ids": [
+          "grok-4-7"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "model-card",
+        "status": "UNRESOLVED",
+        "finding": "Model-card supplemental-training disclosure noted via excerpts; capability standing blocked by effort asymmetry and harness discrepancy.",
+        "subject_ids": [
+          "grok-4-7"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      "model-card: Model-card supplemental-training disclosure noted via excerpts; capability standing blocked by effort asymmetry and harness discrepancy."
+    ],
+    "contradictions": []
+  }
+}
