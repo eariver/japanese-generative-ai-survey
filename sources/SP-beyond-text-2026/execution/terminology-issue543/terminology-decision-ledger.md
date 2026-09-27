@@ -1,6 +1,6 @@
 # Terminology decision ledger — TS-002 Issue #543 (final broad normalization)
 
-Canonical: `terminology-decision-ledger.json` (207 rows, generated; this MD is a synced view).
+Canonical: `terminology-decision-ledger.json` (208 rows, generated; this MD is a synced view).
 Scope: reader-facing terminology only. Blind global replace prohibited; semantic-risk terms verified by primary/Evidence read-back.
 
 ## Summary
@@ -1141,6 +1141,7 @@ No new Human revision (no r10). Same-source grammatical variants per r4 s4 only.
 - SOL_FINAL_RESIDUAL_R3 / RETAIN: 1
 - SOL_R9_R4_RESOLUTION / REPLACE: 23
 - SOL_R9_R5_RESOLUTION / REPLACE: 6
+- SOL_R9_R6_RESOLUTION / REPLACE: 1
 - ESCALATE: 0
 
 ### TS543-R4-C001 [SOL-R4-C001] — 文章事前分布 → テキスト由来の事前分布 [REPLACE]
@@ -1204,6 +1205,7 @@ No new Human revision (no r10). r9-next.md retained as provenance. Citations: no
 - SOL_FINAL_RESIDUAL_R3 / RETAIN: 1
 - SOL_R9_R4_RESOLUTION / REPLACE: 23
 - SOL_R9_R5_RESOLUTION / REPLACE: 6
+- SOL_R9_R6_RESOLUTION / REPLACE: 1
 - ESCALATE: 0
 
 ### TS543-R5-N001 [SOL-R5-N001] — 文章と音楽の対応 → テキスト・音楽整合 [REPLACE]
@@ -1218,3 +1220,22 @@ No new Human revision (no r10). r9-next.md retained as provenance. Citations: no
 - canonical: text watermarking | meaning: L1053 | before: 1 / residual: 0 | evidence: btd099
 ### TS543-R5-N006 [SOL-R5-N006] — 文章・画像起点 → テキスト・画像入力 [REPLACE]
 - canonical: text-image inputs | meaning: L1101 | before: 1 / residual: 0 | evidence: btd122
+# r6 supplement — Sol r9-next2 resolution (same Human r9 authority, DRAFT_COMPLETE continuation)
+
+r6 rows: 1 with provenance SOL_AUTHORITATIVE_R6_R9_CONTINUATION (discovery_source SOL_R9_R6_RESOLUTION).
+No new Human revision (no r10). r9-next2.md retained as provenance. Citations: no change (SOL-CIT-001/002 only).
+## Summary (all rows)
+- ISSUE_SEED / REPLACE: 43
+- ISSUE_SEED / RETAIN: 2
+- BROAD_SCAN / REPLACE: 37
+- BROAD_SCAN / RETAIN: 8
+- SOL_MAP_R2 / REPLACE: 52
+- SOL_FINAL_RESIDUAL_R3 / REPLACE: 35
+- SOL_FINAL_RESIDUAL_R3 / RETAIN: 1
+- SOL_R9_R4_RESOLUTION / REPLACE: 23
+- SOL_R9_R5_RESOLUTION / REPLACE: 6
+- SOL_R9_R6_RESOLUTION / REPLACE: 1
+- ESCALATE: 0
+
+### TS543-R6-N2-001 [SOL-R6-N2-001] — joint化 → 音声・映像の同時生成 [REPLACE]
+- canonical: audio-video joint generation | meaning: L1098+L1113 | before: 2 / residual: 0 | evidence: btd076,btd139
