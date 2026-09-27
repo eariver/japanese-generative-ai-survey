@@ -13,16 +13,16 @@ This is the current human-readable navigation record for the edition. Machine li
 - Requested stop: `ARCHITECTURE_REVIEW`
 - Production Profile: `sources/2026-W39/production-profile.json`
 - Production State: `sources/2026-W39/production-state.json`
-- Current State SHA-256: `013c50c47dd843f0a54b22e08b8af37560c4f8432bb02b5655e1f032f003fe8f`
-- Current lifecycle: `ISSUE_INITIALIZED`
-- Current terminal reason: `none`
-- Current next action: `stage:discovery`
+- Current State SHA-256: `b6a49ab89b70b72bd98e42a10525c11b539ac55d12ee7fd4d0ba03cc78bfb852`
+- Current lifecycle: `ARCHITECTURE_ESTABLISHED`
+- Current terminal reason: `HUMAN_GATE_REACHED`
+- Current next action: `ARCHITECTURE_REVIEW`
 
 ## Human Gates
 
-- Architecture Review: `pending`
-- Publication Preview: `pending`
-- Detailed review records: none recorded yet
+- Architecture Review: `pending` (r1 shell + dossier at reviewed `9767d68e0d83aa667eaeeee6394806c612708682`; no decision recorded)
+- Publication Preview: `pending` (not reached; out of scope for this run)
+- Detailed review records: architecture r1 shell/dossier (current pending target)
 
 ## Publication Candidate
 
@@ -38,12 +38,23 @@ This is the current human-readable navigation record for the edition. Machine li
 - Latest Drive task-file path/reference: `Grok_X_SourseIntake/Weekly/2026-W39/weekly-x-2026-W39/grok-task.md`
 - Intended Drive result folder: `Grok_X_SourseIntake/Weekly/2026-W39/weekly-x-2026-W39`
 - Expected result filename: `grok-x-result.md`
-- Result: none yet. Manifest `sources/2026-W39/external/x/x-source-intake-v2.json` (SHA-256 `82c4e8fe7003988d468ff9411b809976234b8c26219ad9507825ff12468d14b9`) is `AWAITING_GROK`. No Drive access attempted from Muse; no connector searched for or installed.
+- Result: `grok-x-result-r3.md` (Drive file, Sol-accepted canonical Raw), imported exact repository Raw `sources/2026-W39/external/x/weekly-x-2026-W39/raw/grok-x-result-r3.md` (bytes `21321`, SHA-256 `c9fc67f86d4287e2305807604ab80567252407e301395749b92c8fd3ea7d030a`, revision `r3`)
+- Sol arithmetic: 26 unique status IDs = 0 pre + 19 ordinary + 7 late + 0 unverified; ordinary accounts 12 (4 OFFICIAL + 6 INDEPENDENT + 2 COMMUNITY); LEDGER_COUNT_CONSISTENCY PASS
+- Manifest `sources/2026-W39/external/x/x-source-intake-v2.json` status `COMPLETE` (run `weekly-x-2026-W39`, `SUCCESS`, `DISCOVERY_RECORDED` -> `w39-grok-r3-26-url-ledger`); Raw front-matter `observed_at` preserved exactly but NOT used as machine execution provenance
+- No Drive access attempted from Muse; no connector searched for or installed.
 
-## Carry-over obligations (explicit, fresh revalidation)
+## Discovery
 
-- `DeepSeek V4-Pro routing cutover` (`candidate:2026-W38:972afa1a15742036`, W38 HOLD/PARTIAL/CONTEXT/CARRY_OVER): staged as W39 fresh revalidation target; primary API docs gap open; V4.1-Pro no-claim boundary preserved. Not a copied conclusion.
-- W38 late-breaking rows inside W39 ordinary window (2 rows: `lrogersaz/2101098868368957483`, `ophtaka/2101098410933715051`): flagged for revalidation, not copied.
+- Discovery JSONL: `sources/2026-W39/discovery/discovery-v2.jsonl` (15 records: 1 X seed + 13 fresh primaries + 1 DeepSeek carry-over revalidation + 1 late-only context)
+- Discovery acceptance: `sources/2026-W39/discovery/discovery-accepted-v2.json` (graph validated; X integration validated)
+- Collector run: `w39-primary-20260927-r1` (15 webfetch-excerpt raws) + `w39-carryover-20260927-r1` (carry-over verification note)
+- Sol completeness review: `sources/2026-W39/execution/reviews/sol-w39-discovery-completeness-20260927.md` (`NON_BLOCKING_WITH_INDIVIDUAL_LIMITS`)
+- Lanes: A/B/G/H/J/L covered; C sparse; D image-inside-model-pages; E/F quiet (honest negative); I via DolphinBench + Google memory; K no new primary release
+
+## Carry-over obligations (explicit, resolved fresh)
+
+- `DeepSeek V4-Pro routing cutover` (W38 `candidate:2026-W38:972afa1a15742036`, HOLD/PARTIAL/CONTEXT/CARRY_OVER): RESOLVED at official docs level (`w39-carryover-deepseek-docs-20260927`, VERIFIED/CONTEXT/CARRY_OVER, SELECTED SUPPORTING in cost-frontier package); routing footnote + rate card captured; V4.1-Pro no-claim boundary preserved and now primary-backed.
+- W38 late-breaking rows (2 rows: `lrogersaz/2101098868368957483`, `ophtaka/2101098410933715051`): revalidated as W39 ORDINARY_WINDOW, bound to C10 context only, no elevation.
 
 ## Publication-stage inputs (no action now)
 
@@ -51,7 +62,9 @@ This is the current human-readable navigation record for the edition. Machine li
 
 ## Deviations
 
-- Contract-compliant blocking stop: Weekly Discovery acceptance requires a COMPLETE X manifest; formal advancement without the Grok result is prohibited. Recorded missing-input stop at `ISSUE_INITIALIZED`, not an Exception Gate.
+- Future-`imported_at` on first X `record-result` attempt: caught pre-acceptance, manifest restored from HEAD, re-recorded with actual wall clock. No committed bytes affected.
+- Validation/advance HEAD-treadmill (2x: discovery, screening): resolved via atomic validate→advance→commit with no history rewrite.
+- No edition-local data repairs needed (strict schema + source_type vocabulary correct from the start).
 
 ## Shared Core defects
 
@@ -61,7 +74,12 @@ This is the current human-readable navigation record for the edition. Machine li
 
 - `sessions/w39-sol-initialize-through-grok-handoff-20260927-r1.md`
 - `sessions/w39-pre-discovery-research-prep-20260927-r1.md` (non-authoritative pre-Discovery input, NOT Discovery)
+- `sessions/w39-sol-resume-grok-r3-through-architecture-review-20260927-r1.md` (r3 import + Discovery through Architecture r1)
 
 ## Final disposition
 
-`ISSUE_INITIALIZED / AWAITING_GROK_BLOCKED` (Formal Discovery not accepted; Architecture Review pending; Publication Preview pending; Human decisions 0; shared-Core changed paths 0)
+`ARCHITECTURE_ESTABLISHED / fresh Human Architecture Review r1 pending` (Discovery = 15, Screening = 15 KEEP / 0 DROP, Evidence = 8 VERIFIED + 7 PARTIAL, Selection = 13 SELECTED / 2 HOLD, Architecture = 7 packages PROPOSED, Human decisions = 0, shared-Core changed paths = 0)
+
+## Gate
+
+- Human Architecture Review r1: `execution/reviews/architecture-r1.md` + dossier `execution/reviews/architecture-r1-dossier.md` (current PENDING Human target bound to reviewed commit `9767d68e0d`; no decision recorded)
