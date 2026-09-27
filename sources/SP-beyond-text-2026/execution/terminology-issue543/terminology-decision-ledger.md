@@ -1,10 +1,10 @@
 # Terminology decision ledger — TS-002 Issue #543 (final broad normalization)
 
-Canonical: `terminology-decision-ledger.json` (269 rows, generated; this MD is a synced view).
+Canonical: `terminology-decision-ledger.json` (276 rows, generated; this MD is a synced view).
 Scope: reader-facing terminology only. Blind global replace prohibited; semantic-risk terms verified by primary/Evidence read-back.
 
-## Summary (recomputed from JSON actual row set, 269 rows)
-- REPLACE rows: 255
+## Summary (recomputed from JSON actual row set, 276 rows)
+- REPLACE rows: 262
 - RETAIN rows: 14
 - ESCALATE rows: 0
 - BROAD_SCAN: 45
@@ -13,10 +13,11 @@ Scope: reader-facing terminology only. Blind global replace prohibited; semantic
 - SOL_MAP_R2: 52
 - SOL_R10_R7_INDEPENDENT_FULLSCAN: 49
 - SOL_R10_R8_CANDIDATE_RESOLUTION: 12
+- SOL_R10_R9_FINAL_INDEPENDENT_AUDIT: 7
 - SOL_R9_R4_RESOLUTION: 23
 - SOL_R9_R5_RESOLUTION: 6
 - SOL_R9_R6_RESOLUTION: 1
-- Unresolved terms: none pending — r10 12 candidates resolved by Sol r8 (post-r8 closure scan: 0 unresolved; 画像参照 ordinary senses retained by design).
+- Unresolved terms: none pending — r10 12 candidates resolved by Sol r8; r9 7 residuals resolved by Sol r9 map (post-r9 closure scan: 0 unresolved).
 
 ## Decisions
 ### TS543-S01 [ISSUE_SEED] — 端末間統合 → End-to-End（エンドツーエンド）統合/End-to-End [REPLACE]
@@ -1442,3 +1443,29 @@ No new Human revision (no r11). r10 candidates file retained as provenance. Cita
 
 ### TS543-R8-C012 [SOL-R8-C012] — テキスト・画像多層網 → 事前学習済みText-to-Image（T2I）モデルに擬似3D畳み込みと時間方向のアテンション [REPLACE]
 - canonical: pretrained T2I + modules | meaning: Make-A-Video btd073 L720 | before: 1 / residual: 0 | evidence: btd073
+
+# r9 supplement — Sol final independent audit (same Human r10 authority, no r11)
+
+r9 rows: 7 with provenance SOL_AUTHORITATIVE_R9_FINAL_AUDIT (discovery_source SOL_R10_R9_FINAL_INDEPENDENT_AUDIT).
+No new Human revision. Citations: no change (SOL-CIT-001–004 only); references.bib frozen.
+
+### TS543-R9-C001 [SOL-R9-C001] — 恒等や零初期値 (Make-A-Video init) → 擬似3D畳み込みの時間1D畳み込みを恒等写像で初期化し、時間アテンションの時間方向射影をゼロ初期化 [REPLACE]
+- canonical: identity/zero init (btd073) | meaning: Make-A-Video init L720 | before: 1 / residual: 0 | evidence: btd073
+
+### TS543-R9-C002 [SOL-R9-C002] — 空間初期値 family → 事前学習済み画像モデル＋時間層挿入 forms [REPLACE]
+- canonical: pretrained spatial layers + temporal insert (SVD) | meaning: SVD btd075 x4 | before: 4 / residual: 0 | evidence: btd075
+
+### TS543-R9-C003 [SOL-R9-C003] — 零初期値残差 → 正弦位置符号化＋ゼロ初期化した出力射影と残差接続 [REPLACE]
+- canonical: zero-init output proj + residual (AnimateDiff) | meaning: AnimateDiff btd074 | before: 1 / residual: 0 | evidence: btd074
+
+### TS543-R9-C004 [SOL-R9-C004] — 係数を操作し零で除去 → 推論時の係数を0にすると除去 [REPLACE]
+- canonical: scaler 1→0 removal (AnimateDiff DA) | meaning: AnimateDiff btd074 | before: 1 / residual: 0 | evidence: btd074
+
+### TS543-R9-C005 [SOL-R9-C005] — 誤りは零 → 誤りは$0$ (NONSEMANTIC_COPY_EDIT) [REPLACE]
+- canonical: zero count (FastSpeech) | meaning: FastSpeech btd060 | before: 1 / residual: 0 | evidence: btd060
+
+### TS543-R9-C006 [SOL-R9-C006] — 難文誤り零 → 難文誤り$0$ (NONSEMANTIC_COPY_EDIT) [REPLACE]
+- canonical: zero count table (FastSpeech) | meaning: FastSpeech btd060 table | before: 1 / residual: 0 | evidence: btd060
+
+### TS543-R9-C007 [SOL-R9-C007] — 画像処理装置 (HiFi-GAN) → V100 GPUで$3701$キロヘルツ [REPLACE]
+- canonical: V100 GPU | meaning: HiFi-GAN btd055 | before: 1 / residual: 0 | evidence: btd055
