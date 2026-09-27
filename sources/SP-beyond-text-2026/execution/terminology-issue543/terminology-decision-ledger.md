@@ -1,6 +1,6 @@
 # Terminology decision ledger — TS-002 Issue #543 (final broad normalization)
 
-Canonical: `terminology-decision-ledger.json` (208 rows, generated; this MD is a synced view).
+Canonical: `terminology-decision-ledger.json` (257 rows, generated; this MD is a synced view).
 Scope: reader-facing terminology only. Blind global replace prohibited; semantic-risk terms verified by primary/Evidence read-back.
 
 ## Summary
@@ -1142,6 +1142,7 @@ No new Human revision (no r10). Same-source grammatical variants per r4 s4 only.
 - SOL_R9_R4_RESOLUTION / REPLACE: 23
 - SOL_R9_R5_RESOLUTION / REPLACE: 6
 - SOL_R9_R6_RESOLUTION / REPLACE: 1
+- SOL_R10_R7_INDEPENDENT_FULLSCAN / REPLACE: 49
 - ESCALATE: 0
 
 ### TS543-R4-C001 [SOL-R4-C001] — 文章事前分布 → テキスト由来の事前分布 [REPLACE]
@@ -1206,6 +1207,7 @@ No new Human revision (no r10). r9-next.md retained as provenance. Citations: no
 - SOL_R9_R4_RESOLUTION / REPLACE: 23
 - SOL_R9_R5_RESOLUTION / REPLACE: 6
 - SOL_R9_R6_RESOLUTION / REPLACE: 1
+- SOL_R10_R7_INDEPENDENT_FULLSCAN / REPLACE: 49
 - ESCALATE: 0
 
 ### TS543-R5-N001 [SOL-R5-N001] — 文章と音楽の対応 → テキスト・音楽整合 [REPLACE]
@@ -1235,7 +1237,160 @@ No new Human revision (no r10). r9-next2.md retained as provenance. Citations: n
 - SOL_R9_R4_RESOLUTION / REPLACE: 23
 - SOL_R9_R5_RESOLUTION / REPLACE: 6
 - SOL_R9_R6_RESOLUTION / REPLACE: 1
+- SOL_R10_R7_INDEPENDENT_FULLSCAN / REPLACE: 49
 - ESCALATE: 0
 
 ### TS543-R6-N2-001 [SOL-R6-N2-001] — joint化 → 音声・映像の同時生成 [REPLACE]
 - canonical: audio-video joint generation | meaning: L1098+L1113 | before: 2 / residual: 0 | evidence: btd076,btd139
+
+# r7 supplement — Sol final independent fullscan (Human r10 authority, DRAFT_COMPLETE)
+
+r7 rows: 49 with provenance SOL_AUTHORITATIVE_R7_FINAL_FULLSCAN (discovery_source SOL_R10_R7_INDEPENDENT_FULLSCAN; map records SOL_FINAL_INDEPENDENT_R7).
+No new Human revision beyond r10. Citations: SOL-CIT-003/004 applied context-bound; CIT-001/002 preserved.
+
+### TS543-R7-T01a [SOL-R7-T01] — 文条件づけ → テキスト条件づけ [REPLACE]
+- canonical: text conditioning | meaning: conditioning btd005/btd011/btd032 | before: 6 / residual: 0 | evidence: btd005,btd011,btd032
+
+### TS543-R7-T01b [SOL-R7-T01] — 大規模な文条件づけ → 大規模なテキスト条件づけ [REPLACE]
+- canonical: large-scale text conditioning | meaning: DALLE btd005 | before: 2 / residual: 0 | evidence: btd005
+
+### TS543-R7-T01c [SOL-R7-T01] — 文条件 → テキスト条件 [REPLACE]
+- canonical: text condition | meaning: guidance btd032 | before: 2 / residual: 0 | evidence: btd032
+
+### TS543-R7-T01d [SOL-R7-T01] — 文条件超解像/文条件生成/文条件転移 → テキスト条件付き超解像/テキスト条件生成/テキスト条件への転移 [REPLACE]
+- canonical: text-conditioned SR/generation/transfer | meaning: btd011/btd025/btd027 | before: 4 / residual: 0 | evidence: btd011,btd025,btd027
+
+### TS543-R7-T01e [SOL-R7-T01] — 文誘導拡散 → テキスト誘導拡散 [REPLACE]
+- canonical: text-guided diffusion | meaning: CFG btd032/btd033 | before: 3 / residual: 0 | evidence: btd032,btd033
+
+### TS543-R7-T01f [SOL-R7-T01] — 文ドロップアウト → テキスト条件ドロップアウト [REPLACE]
+- canonical: text-conditioning dropout | meaning: btd011/btd038 | before: 2 / residual: 0 | evidence: btd011,btd038
+
+### TS543-R7-T01g [SOL-R7-T01] — 空文割合 → 空テキスト条件の割合 [REPLACE]
+- canonical: empty text-condition rate | meaning: CFG btd032/btd033 | before: 2 / residual: 0 | evidence: btd032,btd033
+
+### TS543-R7-T01h [SOL-R7-T01] — 文整合 → テキスト整合 [REPLACE]
+- canonical: text-image alignment | meaning: btd005/btd011/btd032/btd042 | before: 6 / residual: 0 | evidence: btd005,btd011,btd032,btd042
+
+### TS543-R7-T01i [SOL-R7-T01] — 文への従順さ/文有用性 → テキスト条件への追従性/テキスト条件の有用性 [REPLACE]
+- canonical: text adherence/conditional usefulness | meaning: induction btd011/btd032 | before: 2 / residual: 0 | evidence: btd011,btd032
+
+### TS543-R7-T01j [SOL-R7-T01] — 凍結大規模文符号器/大規模文符号器 → 凍結大規模テキストエンコーダ (+eDiff rewrite) [REPLACE]
+- canonical: frozen/large text encoders | meaning: CLIP/eDiff-I | before: 3 / residual: 0 | evidence: btd031,btd034
+
+### TS543-R7-T01k [SOL-R7-T01] — 文符号器 (technical) → テキストエンコーダ [REPLACE]
+- canonical: text encoder | meaning: eDiff/CLAP/T2I | before: 4 / residual: 0 | evidence: btd034,btd035,btd041
+
+### TS543-R7-T01l [SOL-R7-T01] — 文のみ条件 → テキストのみの条件 [REPLACE]
+- canonical: text-only condition | meaning: IP-Adapter btd038 | before: 2 / residual: 0 | evidence: btd038
+
+### TS543-R7-T01m [SOL-R7-T01/A01] — 文能力 → テキストプロンプト能力 (A01 prevails in btd038; T01 generic unneeded) [REPLACE]
+- canonical: text(-prompt) capability | meaning: IP-Adapter btd038 | before: 4 / residual: 0 | evidence: btd038
+
+### TS543-R7-T01n [SOL-R7-T01/A01] — 文枝/文類似 → テキスト枝/テキスト類似度 [REPLACE]
+- canonical: text branch/similarity | meaning: IP-Adapter/DreamBooth | before: 7 / residual: 0 | evidence: btd038,btd039
+
+### TS543-R7-T01o [SOL-R7-T01] — 文品質 → テキスト記述の品質 [REPLACE]
+- canonical: text quality (CLAP) | meaning: CLAP btd035 | before: 4 / residual: 0 | evidence: btd035
+
+### TS543-R7-T01p [SOL-R7-T01] — 文から画像/文と画像 → テキストから画像/テキストと画像 [REPLACE]
+- canonical: text-to-image/text-image | meaning: DALLE/CFG | before: 7 / residual: 0 | evidence: btd005,btd032,btd033
+
+### TS543-R7-T02a [SOL-R7-T02] — プロンプトテンプレートと集成/埋め込み集成 → プロンプトテンプレートとアンサンブル/埋め込みアンサンブル [REPLACE]
+- canonical: prompt-template/embedding ensembling | meaning: CLIP btd031 | before: 4 / residual: 0 | evidence: btd031,btd011
+
+### TS543-R7-T02b [SOL-R7-T02] — joint 空間 (CLIP) → 共同埋め込み空間 [REPLACE]
+- canonical: joint embedding space | meaning: CLIP btd031/btd011 | before: 3 / residual: 0 | evidence: btd031,btd011
+
+### TS543-R7-T02c [SOL-R7-T02] — eDiff-I three-encoder wording → T5テキスト、CLIPテキスト、CLIP画像の3種の埋め込みを独立ドロップアウトで条件づける [REPLACE]
+- canonical: T5/CLIP-text/CLIP-image embeddings | meaning: eDiff-I btd034 | before: 1 / residual: 0 | evidence: btd034
+
+### TS543-R7-T02d [SOL-R7-T02] — 共有 baseline → 共有ベースライン [REPLACE]
+- canonical: shared baseline | meaning: eDiff-I btd034 | before: 1 / residual: 0 | evidence: btd034
+
+### TS543-R7-T02e [SOL-R7-T02] — CLAP encoder/batch wording → prescribed mechanism + 128ペアのバッチ [REPLACE]
+- canonical: contrastive audio-text encoders | meaning: CLAP btd035 | before: 3 / residual: 0 | evidence: btd035
+
+### TS543-R7-T02f [SOL-R7-T02] — joint 空間 (CLAP) → 共同マルチモーダル埋め込み空間 [REPLACE]
+- canonical: joint multimodal space | meaning: CLAP btd035 | before: 4 / residual: 0 | evidence: btd035
+
+### TS543-R7-T02g [SOL-R7-T02] — 束規模/対規模 → バッチサイズ (1) / 学習ペア数 (4) [REPLACE]
+- canonical: batch size/pair count | meaning: CLAP/IP-Adapter | before: 5 / residual: 0 | evidence: btd035,btd038
+
+### TS543-R7-T03a [SOL-R7-T03] — jointly (ML training) → 共同で/共同学習 [REPLACE]
+- canonical: joint training | meaning: btd005/btd011/btd031/btd032 | before: 8 / residual: 0 | evidence: btd005,btd011,btd031,btd032
+
+### TS543-R7-T03b [SOL-R7-T03] — jointly (MotionCtrl) → 同時に [REPLACE]
+- canonical: simultaneous use | meaning: MotionCtrl btd042 | before: 1 / residual: 0 | evidence: btd042
+
+### TS543-R7-T03c [SOL-R7-T03] — 尺度掃引 → ガイダンススケールのスイープ [REPLACE]
+- canonical: guidance-scale sweep | meaning: CFG | before: 2 / residual: 0 | evidence: btd032
+
+### TS543-R7-T03d [SOL-R7-T03] — framing (SDE) → 定式化 forms [REPLACE]
+- canonical: formulation | meaning: SDE btd021/btd022 | before: 6 / residual: 0 | evidence: btd021,btd022
+
+### TS543-R7-T03e [SOL-R7-T03] — 単一制御の framing → 単一制御という設定 [REPLACE]
+- canonical: single-control setting | meaning: ControlNet btd036 | before: 2 / residual: 0 | evidence: btd036
+
+### TS543-R7-ADa [SOL-R7-§4] — 音響の言語整合と空間制御の適合 → 音響の言語整合と空間制御アダプター [REPLACE]
+- canonical: spatial-control adapter | meaning: conditioning intro+heading | before: 2 / residual: 0 | evidence: btd011,btd032,btd036
+
+### TS543-R7-ADb [SOL-R7-§4] — 適合の系譜/適合の形 → アダプター／適応の系譜/拡張・適応の形 [REPLACE]
+- canonical: adapter lineage/table | meaning: control §4 | before: 2 / residual: 0 | evidence: btd037,btd038,btd039,btd042
+
+### TS543-R7-ADc [SOL-R7-§4] — 軽量配置適合/画像参照適合 → 軽量制御アダプター（T2I-Adapter）/画像参照アダプター（IP-Adapter） [REPLACE]
+- canonical: T2I/IP adapters | meaning: T2I btd041/IP btd038 | before: 4 / residual: 0 | evidence: btd041,btd038
+
+### TS543-R7-ADd [SOL-R7-§4] — 低ランク適合 → Low-Rank Adaptation（LoRA／低ランク適応） [REPLACE]
+- canonical: Low-Rank Adaptation | meaning: LoRA btd040 | before: 5 / residual: 0 | evidence: btd040
+
+### TS543-R7-ADe [SOL-R7-§4] — 多適合/適合規模/参照適合/空間適合 → 複数アダプター/アダプター規模/参照アダプター/空間制御アダプター [REPLACE]
+- canonical: adapter scale/reference/spatial | meaning: control §4 | before: 15 / residual: 0 | evidence: btd037,btd038,btd041
+
+### TS543-R7-ADf [SOL-R7-§4] — 動作適合/制御適合/効率適合 → モーション制御/制御アダプター/効率的な適応 [REPLACE]
+- canonical: motion/control/efficient adaptation | meaning: video/music/LoRA | before: 5 / residual: 0 | evidence: btd038,btd043,btd040,btd006
+
+### TS543-R7-C01 [SOL-R7-C01] — 微小条件符号器 → 条件入力を潜在解像度へ写像する小規模畳み込みネットワーク [REPLACE]
+- canonical: small condition-input convnet | meaning: ControlNet btd036 | before: 1 / residual: 0 | evidence: btd036
+
+### TS543-R7-C02 [SOL-R7-C02] — 零畳み込み/零から育てる → zero convolution（ゼロ畳み込み）/ゼロ初期化された重みから学習する [REPLACE]
+- canonical: zero conv / zero-init growth | meaning: ControlNet btd036/btd043 | before: 6 / residual: 0 | evidence: btd036,btd043
+
+### TS543-R7-C03 [SOL-R7-C03] — 類別 family → タスクプロンプトとクラスラベル/時刻とクラス/クラス条件を超えるテキスト条件 [REPLACE]
+- canonical: class labels | meaning: diffusion/class | before: 3 / residual: 0 | evidence: btd012,btd030,btd032
+
+### TS543-R7-AUD [SOL-R7-AUD01] — 群衆方式/聴取得点 → クラウドソーシングによる聴取評価/主観聴取評価スコア [REPLACE]
+- canonical: crowdsourced listening | meaning: codec btd006 | before: 3 / residual: 0 | evidence: btd006
+
+### TS543-R7-M01 [SOL-R7-M01] — 間引き率 → ダウンサンプリング率8・32・128 [REPLACE]
+- canonical: downsampling rates | meaning: Jukebox btd063 | before: 1 / residual: 0 | evidence: btd063
+
+### TS543-R7-M02 [SOL-R7-M02] — MusicGen tokenizer sentence → 32 kHzモノラル音声を総ストライド640のEnCodecで、50 Hz・4コードブックの離散トークン列へ符号化し [REPLACE]
+- canonical: EnCodec 50Hz/4-codebook | meaning: MusicGen btd066 | before: 1 / residual: 0 | evidence: btd066
+
+### TS543-R7-M03 [SOL-R7-M03] — 拍弦予測/タグのみ文 →  chord mechanism removed; ジャンル・ムード等のグローバルなテキスト条件/タグ条件 [REPLACE]
+- canonical: global text + time-varying control | meaning: Music ControlNet btd043 | before: 3 / residual: 0 | evidence: btd043
+
+### TS543-R7-M04 [SOL-R7-M04] — 対照音楽ネットワーク → MuNet（Music-Domain-Knowledge-Informed UNet） [REPLACE]
+- canonical: MuNet | meaning: MuSTANGO btd069 | before: 1 / residual: 0 | evidence: btd069
+
+### TS543-R7-M05 [SOL-R7-M05] — 標識三重 → 3種類のラベル情報を持つ楽曲組合せ [REPLACE]
+- canonical: triple-labelled pieces | meaning: human-pref btd136 | before: 1 / residual: 0 | evidence: btd136
+
+### TS543-R7-V01 [SOL-R7-V01] — 三次元回転整合/回転整合 → 物体回転中の3D一貫性は厳密ではなく/回転中の3D一貫性 [REPLACE]
+- canonical: 3D-consistency limitation | meaning: Imagen btd071 | before: 3 / residual: 0 | evidence: btd071
+
+### TS543-R7-V02 [SOL-R7-V02] — 背骨 family → バックボーン/3種類のバックボーン/バックボーン依存の偏り [REPLACE]
+- canonical: backbones | meaning: human-pref/VBench | before: 7 / residual: 0 | evidence: btd087,btd092
+
+### TS543-R7-V03 [SOL-R7-V03] — 自然文区間編集 → 自然言語による区間編集 [REPLACE]
+- canonical: NL-based segment edit | meaning: Suno btd115 | before: 1 / residual: 0 | evidence: btd115
+
+### TS543-R7-U09 [SOL-R7-§9] — 金字塔 sentence → 単一Transformerで多様な入出力を離散トークン列へ統一するため、密な予測もトークナイザ／VQ-GANの表現上限に依存する [REPLACE]
+- canonical: tokenizer bottleneck | meaning: Unified-IO btd094 | before: 1 / residual: 0 | evidence: btd094
+
+### TS543-R7-CIT3 [SOL-CIT-003] — SPADE claims bound to btd037 → btd041 (bib-verified Park et al.) [REPLACE]
+- canonical: SPADE/GauGAN btd041 | meaning: Section 4 | before: 6 / residual: 0 | evidence: btd041
+
+### TS543-R7-CIT4 [SOL-CIT-004] — T2I-Adapter claims bound to btd041 → btd037 (bib-verified Mou et al.; L304 mixed cites both) [REPLACE]
+- canonical: T2I-Adapter btd037 | meaning: Section 4 | before: 8 / residual: 0 | evidence: btd037
