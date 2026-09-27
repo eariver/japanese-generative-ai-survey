@@ -1,6 +1,6 @@
 # Terminology decision ledger — TS-002 Issue #543 (final broad normalization)
 
-Canonical: `terminology-decision-ledger.json` (201 rows, generated; this MD is a synced view).
+Canonical: `terminology-decision-ledger.json` (207 rows, generated; this MD is a synced view).
 Scope: reader-facing terminology only. Blind global replace prohibited; semantic-risk terms verified by primary/Evidence read-back.
 
 ## Summary
@@ -1118,6 +1118,7 @@ r2 frozen retained; r3 prevails only where explicitly conflicting. Numbers/units
 ### TS543-R3-S018 [SOL-R3-S018] — reception prose → workflow/dedup [REPLACE]
 - canonical: reception prose | meaning: btd139 | before: 3 / residual: 0 | evidence: btd139
 ### TS543-R3-S019 [SOL-R3-S019] — synthesis residuals → canonical [REPLACE]
+- note: L1158 media-list frame→フレーム applied late in r5 pass (same mapping; before total 4)
 - canonical: synthesis | meaning: conclusion | before: 3 / residual: 0 | evidence: btd002
 ### TS543-R3-S020 [SOL-R3-S020] — product/lifecycle → canonical [REPLACE]
 - canonical: product/lifecycle | meaning: capstone | before: 6 / residual: 0 | evidence: btd106,btd121,btd122
@@ -1139,6 +1140,7 @@ No new Human revision (no r10). Same-source grammatical variants per r4 s4 only.
 - SOL_FINAL_RESIDUAL_R3 / REPLACE: 35
 - SOL_FINAL_RESIDUAL_R3 / RETAIN: 1
 - SOL_R9_R4_RESOLUTION / REPLACE: 23
+- SOL_R9_R5_RESOLUTION / REPLACE: 6
 - ESCALATE: 0
 
 ### TS543-R4-C001 [SOL-R4-C001] — 文章事前分布 → テキスト由来の事前分布 [REPLACE]
@@ -1187,3 +1189,32 @@ No new Human revision (no r10). Same-source grammatical variants per r4 s4 only.
 - canonical: modality list (Suno) | meaning: L1095 | before: 1 / residual: 0 | evidence: btd114
 ### TS543-R4-C023 [SOL-R4-C023] — 対照の文章・音響間隙 → 対照学習におけるギャップ [REPLACE]
 - canonical: contrastive text-audio gap | meaning: L697 | before: 1 / residual: 0 | evidence: btd067
+
+# r5 supplement — Sol r9-next resolution (same Human r9 authority, DRAFT_COMPLETE continuation)
+
+r5 rows: 6 with provenance SOL_AUTHORITATIVE_R5_R9_CONTINUATION (discovery_source SOL_R9_R5_RESOLUTION).
+No new Human revision (no r10). r9-next.md retained as provenance. Citations: no change (SOL-CIT-001/002 only).
+## Summary (all rows)
+- ISSUE_SEED / REPLACE: 43
+- ISSUE_SEED / RETAIN: 2
+- BROAD_SCAN / REPLACE: 37
+- BROAD_SCAN / RETAIN: 8
+- SOL_MAP_R2 / REPLACE: 52
+- SOL_FINAL_RESIDUAL_R3 / REPLACE: 35
+- SOL_FINAL_RESIDUAL_R3 / RETAIN: 1
+- SOL_R9_R4_RESOLUTION / REPLACE: 23
+- SOL_R9_R5_RESOLUTION / REPLACE: 6
+- ESCALATE: 0
+
+### TS543-R5-N001 [SOL-R5-N001] — 文章と音楽の対応 → テキスト・音楽整合 [REPLACE]
+- canonical: text-music alignment | meaning: L563 | before: 1 / residual: 0 | evidence: btd063,btd065
+### TS543-R5-N002 [SOL-R5-N002] — LibriSpeech sentence → prescribed wording [REPLACE]
+- canonical: corpus text resources | meaning: L992 | before: 2 / residual: 0 | evidence: btd089
+### TS543-R5-N003 [SOL-R5-N003] — 発話音声と文章のみ → 音声とテキストのみ [REPLACE]
+- canonical: speech-and-text-only | meaning: L1029+L1039+L1071 | before: 3 / residual: 0 | evidence: btd095
+### TS543-R5-N004 [SOL-R5-N004] — 文章はOPTIMUS → テキスト系はOPTIMUS [REPLACE]
+- canonical: CoDi text branch | meaning: L1050 | before: 1 / residual: 0 | evidence: btd097
+### TS543-R5-N005 [SOL-R5-N005] — 文章透かし → テキスト向けSynthID [REPLACE]
+- canonical: text watermarking | meaning: L1053 | before: 1 / residual: 0 | evidence: btd099
+### TS543-R5-N006 [SOL-R5-N006] — 文章・画像起点 → テキスト・画像入力 [REPLACE]
+- canonical: text-image inputs | meaning: L1101 | before: 1 / residual: 0 | evidence: btd122
