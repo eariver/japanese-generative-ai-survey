@@ -17,7 +17,7 @@ Scope: reader-facing terminology only. Blind global replace prohibited; semantic
 - SOL_R9_R4_RESOLUTION: 23
 - SOL_R9_R5_RESOLUTION: 6
 - SOL_R9_R6_RESOLUTION: 1
-- Unresolved terms: r9 7 residuals REVERTED from reader source (forward revert to checkpoint-bound bytes) to preserve frozen-Core gate operability — lifecycle-neutral regeneration at RELEASE_CANDIDATE proved infeasible (see r9 section note). Awaiting proper round with new Human revision for r9 re-application; no Muse wording.
+- Unresolved terms: none pending — r9 7 residuals RE-APPLIED live under canonical Human r11@DRAFT_COMPLETE (post-r9 closure scan: 0 unresolved; 画像参照 ordinary senses retained by design).
 
 ## Decisions
 ### TS543-S01 [ISSUE_SEED] — 端末間統合 → End-to-End（エンドツーエンド）統合/End-to-End [REPLACE]
@@ -1448,7 +1448,7 @@ No new Human revision (no r11). r10 candidates file retained as provenance. Cita
 
 r9 rows: 7 with provenance SOL_AUTHORITATIVE_R9_FINAL_AUDIT (discovery_source SOL_R10_R9_FINAL_INDEPENDENT_AUDIT).
 No new Human revision. Citations: no change (SOL-CIT-001–004 only); references.bib frozen.
-REVERT NOTE: the 7 r9 replacements were applied, verified (closure scan 0 unresolved), then reverted from main.tex by forward commit because regenerating the candidate/PDF at RELEASE_CANDIDATE without a new Human revision leaves validate_agent_state with checkpoint drift that bricks every future Core op including Human Gate presentation (empirically confirmed via read-only _state_context probe). Row before/after counts below record the verified applied state, not the current reverted bytes. Re-apply from the Sol r9 map in a proper round.
+RE-APPLIED under canonical Human r11 REQUEST_CHANGES@DRAFT_COMPLETE (publication-r11 recorded): the 7 replacements below are live in main.tex. Prior revert note is superseded; row before/after counts describe this live application; closure scan 0 unresolved.
 
 ### TS543-R9-C001 [SOL-R9-C001] — 恒等や零初期値 (Make-A-Video init) → 擬似3D畳み込みの時間1D畳み込みを恒等写像で初期化し、時間アテンションの時間方向射影をゼロ初期化 [REPLACE]
 - canonical: identity/zero init (btd073) | meaning: Make-A-Video init L720 | before: 1 / residual: 0 | evidence: btd073
