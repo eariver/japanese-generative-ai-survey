@@ -2,8 +2,8 @@
 
 Status: `CORE_CHANGE_PAUSED / LIVING_DEFERRED_MAINTENANCE_INVENTORY`  
 Established: 2026-09-20 JST  
-Last reviewed edition: `2026-W38`  
-Last reviewed `main`: `0a0b0747ec6e21b120eb3bf4684d82e241f9d042`  
+Last reviewed edition: `SP-beyond-text-2026`  
+Last reviewed `main`: `f823befee578cf896a3e9c8e944017ebf2433d19`  
 Frozen Production Line: `774dd39a951c9ac3818e83dfffd4c7666efb0a20`  
 Frozen Production Line tree: `cd46a6f7a6dcc4031e76220cea4c52c7dd1fc481`  
 Update tracker: [Issue #515](https://github.com/eariver/japanese-generative-ai-survey/issues/515)
@@ -70,11 +70,11 @@ Status: `OPEN_CORE / EDITION_WORKAROUND`
 Category: Freeze / authority binding  
 Tracking: [Issue #497](https://github.com/eariver/japanese-generative-ai-survey/issues/497)  
 First post-freeze reproduction: `2026-W35`  
-Latest reproduction: `SP-efficient-llm-2026`
+Latest reproduction: `SP-beyond-text-2026`
 
 The profile-aware Freeze helper expects the legacy post-approval `visual-review-record-v2` shape while current Publication Candidate authority binds the pre-preview `publication-review-record-v2` VISUAL record.
 
-The two contracts are incompatible. W35-W38 therefore used the canonical lower-level `survey_publication_v2.build_freeze` compatibility path instead of repairing shared Core. TS-001 reissue recurred identically (candidate-bound pre-preview VISUAL `fae79e67...` vs legacy `pdf_path` schema) and used the same lower-level path plus the CV2-DM-019 identity correction below.
+The two contracts are incompatible. W35-W38 therefore used the canonical lower-level `survey_publication_v2.build_freeze` compatibility path instead of repairing shared Core. TS-001 reissue recurred identically (candidate-bound pre-preview VISUAL `fae79e67...` vs legacy `pdf_path` schema) and used the same lower-level path plus the CV2-DM-019 identity correction below. TS-002 (`SP-beyond-text-2026`) recurred identically (candidate-bound pre-preview VISUAL `56db5134...` vs legacy `pdf_path` schema) via edition-local `execution/ts002-freeze-compat-20260928.py`; no new ID.
 
 Evidence:
 
@@ -83,6 +83,7 @@ Evidence:
 - `sources/2026-W37/execution/defects/w37-freeze-core-defects-20260919.md`
 - `sources/2026-W38/execution/defects/w38-freeze-core-defects-20260919.md`
 - `sources/SP-efficient-llm-2026/execution/defects/ts001-reissue-freeze-core-defects-20260923.md`
+- `sources/SP-beyond-text-2026/execution/defects/ts002-freeze-core-defects-20260928.md`
 
 Required future Core direction:
 
@@ -98,7 +99,7 @@ Status: `OPEN_CORE / EDITION_WORKAROUND`
 Category: Freeze / provenance typing  
 Tracking: [Issue #497](https://github.com/eariver/japanese-generative-ai-survey/issues/497)  
 First post-freeze reproduction: `2026-W35`  
-Latest reproduction: `SP-efficient-llm-2026`
+Latest reproduction: `SP-beyond-text-2026`
 
 `survey_stage_validation_v2._prior_artifacts()` iterates non-null `checkpoint_provenance` entries and assumes they are Stage Checkpoints. After canonical Publication Preview approval, `checkpoint_provenance.publication_preview` is a Human Gate approval record, not a Stage Checkpoint.
 
@@ -106,7 +107,7 @@ Observed failure:
 
 `prior Stage Checkpoint fails ... stage-checkpoint-v2.schema.json: 'artifacts' is a required property`
 
-W35-W38 used an in-memory admission correction that excludes Human Gate provenance from Stage Checkpoint admission while still validating it through the dedicated Human Gate path. TS-001 reissue recurred identically (`gates/publication-preview-approval.json` `15b88fb2...`) and used the same bounded correction.
+W35-W38 used an in-memory admission correction that excludes Human Gate provenance from Stage Checkpoint admission while still validating it through the dedicated Human Gate path. TS-001 reissue recurred identically (`gates/publication-preview-approval.json` `15b88fb2...`) and used the same bounded correction. TS-002 recurred identically (`gates/publication-preview-approval.json` `5e121516...`) via the same bounded correction; no new ID.
 
 Required future Core direction:
 
@@ -123,16 +124,17 @@ Status: `OPEN_CORE / EDITION_WORKAROUND`
 Category: Stage validation / checkpoint provenance completeness  
 Tracking: no dedicated GitHub Issue yet  
 First reproduction: `2026-W38`  
-Latest reproduction: `SP-efficient-llm-2026`
+Latest reproduction: `SP-beyond-text-2026`
 
 W38 Freeze compatibility additionally had to admit the true `VALIDATED_DRAFT -> RELEASE_CANDIDATE` checkpoint record explicitly because the checkpoint file existed and matched the stage record, but the current stage configuration exposed no corresponding `checkpoint_provenance` pointer (`checkpoints: []`).
 
-TS-001 reissue recurred identically: `orchestration/v2/checkpoints/VALIDATED_DRAFT.json` carries the exact r2 `publication-candidate` artifact (`adf22516...`) but is unreferenced by `checkpoint_provenance`; the same bounded admission was applied.
+TS-001 reissue recurred identically: `orchestration/v2/checkpoints/VALIDATED_DRAFT.json` carries the exact r2 `publication-candidate` artifact (`adf22516...`) but is unreferenced by `checkpoint_provenance`; the same bounded admission was applied. TS-002 recurred identically: `orchestration/v2/checkpoints/VALIDATED_DRAFT.json` carries the exact r12 `publication-candidate` artifact (`4d2c01ab...`) but is unreferenced; the same bounded admission was applied. No new ID.
 
 Evidence:
 
 - `sources/2026-W38/execution/defects/w38-freeze-core-defects-20260919.md`
 - `sources/SP-efficient-llm-2026/execution/defects/ts001-reissue-freeze-core-defects-20260923.md`
+- `sources/SP-beyond-text-2026/execution/defects/ts002-freeze-core-defects-20260928.md`
 
 Required future Core direction:
 
@@ -148,7 +150,7 @@ Status: `OPEN_CORE / EDITION_WORKAROUND`
 Category: Release / post-release provenance closure  
 Tracking: no dedicated GitHub Issue yet  
 First confirmed reproduction: `2026-W36`  
-Latest reproduction: `SP-efficient-llm-2026`
+Latest reproduction: `SP-beyond-text-2026`
 
 The canonical release workflow successfully creates/reconciles the public Release and exact PDF bytes, then fails in the post-release provenance step because it invokes a non-existent `validate-state` CLI subcommand.
 
@@ -161,6 +163,10 @@ Confirmed recurrences:
   (`special/efficient-llm-2026` Release created and exact-byte reconciled before
   the sole `validate-state` failure; provenance recovered edition-locally via
   `survey_release_checkpoint_v2.py` + Python API `validate_agent_state`).
+- `SP-beyond-text-2026` workflow runs `36333979769` (created) / `36333984167` (reconciled)
+  (`special/beyond-text-2026` Release created and exact-byte reconciled before
+  the sole `validate-state` failure in both runs; provenance recovered edition-locally via
+  `survey_release_checkpoint_v2.py` + Python API `validate_agent_state` -> recovery PR #549).
 
 The bounded recovery does **not** recreate or re-upload the public Release. It writes the missing edition-local release provenance using existing canonical helpers and Python API validation.
 
@@ -208,20 +214,41 @@ Required future Core direction:
 
 Status: `OPEN_CORE`  
 Category: Semantic/editorial publication QA  
-Tracking: [Issue #501](https://github.com/eariver/japanese-generative-ai-survey/issues/501)  
+Tracking: [Issue #501](https://github.com/eariver/japanese-generative-ai-survey/issues/501) + [Issue #534](https://github.com/eariver/japanese-generative-ai-survey/issues/534)  
 First reproduction: `2026-W36`  
-Latest known reproduction: `2026-W36`
+Latest known reproduction: `SP-beyond-text-2026`
 
 W36 exposed mechanically or over-literally normalized Japanese that became semantically opaque to a technically literate reader.
 
-The edition was repaired, but the generic pre-publication language/semantic fidelity guard remains deferred.
+TS-002 (`SP-beyond-text-2026`) reproduced the same generic failure at larger scale across three bounded edition-local passes plus seed-independent Sol audits:
+
+- TS-002 evidence: [Issue #533](https://github.com/eariver/japanese-generative-ai-survey/issues/533) (first-pass: `零射影`/`声器`/`符号言語`/`無撞着`/`抽出推論`/Transformer literalization), [Issue #539](https://github.com/eariver/japanese-generative-ai-survey/issues/539) (second-pass: `模型`/`U 網`/`波形網`/frame/GPU/attention families), [Issue #543](https://github.com/eariver/japanese-generative-ai-survey/issues/543) + Sol authoritative maps r2–r10 and Muse candidate returns under `sources/SP-beyond-text-2026/execution/terminology-issue543/` plus `sol-terminology-readback-issue543-*.md` (final broad normalization + seed-independent residuals incl. VBench dimension identity loss).
+- The edition was repaired edition-locally (276-row terminology ledger at closure; exact 78pp PDF `4e225067...` released), but the generic pre-publication language/semantic fidelity guard remains deferred.
+- TS-002 demonstrates that a simple forbidden-word list is insufficient: seed-list zero counts did not imply closure (Sol r1/r3/r7/r10 each found seed-external residuals after worker zero), context-dependent terms require source-bound adjudication, and canonical model/metric/benchmark/dataset identities require entity-preservation scanning beyond lexical matching.
+
+Generic reusable seed corpus (authority seed for future read-only lint, no auto-rewrite):
+
+- `docs/editorial/ja-technical-terminology-overtranslation-seed.md` (100 H4 entries across 10 families + canonical-identity section + context-dependent section + snapshot-only counts; every entry `auto-rewrite allowed: false`; de-duplicates #533/#539/#543 + post-seed Sol/Muse findings).
+
+Required invariant:
+
+> technically established Japanese wording is allowed; the defect is forced, non-standard, or identity-destroying translation that makes a technically literate Japanese reader reconstruct the English source term.
+
+The scope of CV2-DM-006 is not “avoid kanji”. Established Japanese (`符号器`/`復号器`/`潜在`/`写像`/etc.) stays allowed; the defect is forced overtranslation.
 
 Required future Core direction:
 
 - add a bounded semantic/editorial QA contract before TeX/PDF publication;
 - do not solve this solely with forbidden-word substitution;
 - preserve conventional English/katakana terms when they are clearer than forced Japanese;
-- regression-test representative W36 failures.
+- regression-test representative W36 failures;
+- add known prohibited/review-required scan from the seed corpus;
+- add same-concept consistency scan (e.g. `zero-shot`/`ゼロショット`/`零射影` variants in one edition);
+- add canonical-name/entity preservation scan (model/architecture/method/metric/benchmark/dataset);
+- add benchmark/metric identity scan (incl. VBench/VBench-2.0 dimension identities);
+- add seed-independent suspicious-translation scan (broad scan must not stop at seed-list zero);
+- provide a reviewed exception mechanism (`REPLACE`/`RETAIN` with source/context reason);
+- prohibit auto-rewrite (detection + human/Sol review only).
 
 ---
 
@@ -558,7 +585,7 @@ Status: `OPEN_CORE / EDITION_WORKAROUND`
 Category: Freeze / public release identity  
 Tracking: [Issue #515](https://github.com/eariver/japanese-generative-ai-survey/issues/515)  
 First reproduction: `SP-efficient-llm-2026`  
-Latest reproduction: `SP-efficient-llm-2026`
+Latest reproduction: `SP-beyond-text-2026`
 
 `scripts/survey_publication_v2.py::build_freeze` derives the Release Manifest
 identity via `release_identity(publication_profile, issue_id)`. For
@@ -597,6 +624,9 @@ Direct evidence:
 - `sources/SP-efficient-llm-2026/execution/ts001-freeze-compat-20260923.py`
 - `sources/SP-efficient-llm-2026/execution/defects/ts001-reissue-freeze-core-defects-20260923.md`
 - workflow run `35863535480` (identity check passed; later failed only on CV2-DM-004)
+- TS-002 recurrence: `sources/SP-beyond-text-2026/execution/ts002-freeze-compat-20260928.py`
+- `sources/SP-beyond-text-2026/execution/defects/ts002-freeze-core-defects-20260928.md`
+- workflow runs `36333979769` / `36333984167` (identity check passed for `special/beyond-text-2026`; later failed only on CV2-DM-004; no new ID)
 
 Required future Core direction when maintenance resumes:
 
@@ -679,6 +709,7 @@ A batch repair may close multiple `CV2-DM` items, but each item must receive its
 | `SP-efficient-llm-2026` | Evidence-review update in r0.3 | DM-016, DM-017 | Source-class projection workaround validated; Completeness builder/validator obligation mismatch also exposed and handled edition-locally; shared Core remains frozen. |
 | `SP-efficient-llm-2026` | Publication Preview r2 repair update in r0.4 | DM-018 | Issue #520 gross Overfull/clipping PASS defect recorded as generic QA debt (edition fixed locally with overfull guard + full render); Issue #521 evaluated as EDITION_LOCAL, not added; shared Core implementation unchanged. |
 | `SP-efficient-llm-2026` | Final release closure review in r0.5 | DM-019; DM-001/002/003/004 recurred | New divergent-slug release-identity defect (build_freeze vs profile public slug) recorded with edition-local identity correction; Freeze/Release recurrences documented; DM-016/017/018 unchanged; edition RELEASED/COMPLETE with exact Human-approved PDF; shared Core implementation unchanged. |
+| `SP-beyond-text-2026` | Final release closure review in r0.6 | No new CV2-DM ID; DM-001/002/003/004/019 recurred; DM-006 materially updated | TS-002 Freeze/Release recurrences with edition-local compat (`ts002-freeze-compat-20260928.py`, recovery PR #549, runs 36333979769/36333984167); CV2-DM-006 latest reproduction + generic seed corpus `docs/editorial/ja-technical-terminology-overtranslation-seed.md` (#533/#539/#543 incorporated); edition RELEASED/COMPLETE with exact Human-approved 78pp PDF; shared Core implementation unchanged. |
 
 Next required update: the next Weekly/Special guarded stop or closure if it occurs first.
 
@@ -691,6 +722,7 @@ Next required update: the next Weekly/Special guarded stop or closure if it occu
 | `r0.3` | 2026-09-22 | `SP-efficient-llm-2026` Evidence review | Added CV2-DM-017 for the Completeness builder/validator obligation-materialization mismatch exposed when Discovery-added EFF-O13/O14/O15 reached the frozen Completeness stage. |
 | `r0.4` | 2026-09-23 | `SP-efficient-llm-2026` Publication Preview r2 repair | Added CV2-DM-018 for Longform Publication QA passing gross Overfull hbox / rendered clipping (Issue #520, r1 ~70pt p.56 glossary overflow with VISUAL PASS). Recorded edition-local layout fix + overfull guard + full-66pp visual disposition; Issue #521 explicitly EDITION_LOCAL, not added. |
 | `r0.5` | 2026-09-23 | `SP-efficient-llm-2026` final release closure | Added CV2-DM-019 for canonical Freeze builder deriving release identity from internal issue_id instead of the profile public slug (first divergent-slug LONGFORM_SPECIAL freeze; edition-local identity correction, workflow identity check passed). Recorded CV2-DM-001/002/003 Freeze recurrences and CV2-DM-004 Release recurrence (run 35863535480, recovery PR #524); DM-016/017/018 unchanged; edition RELEASED/COMPLETE. |
+| `r0.6` | 2026-09-28 | `SP-beyond-text-2026` final release closure | No new CV2-DM ID. Refreshed DM-001/002/003/004/019 latest reproductions to `SP-beyond-text-2026` with TS-002 evidence (`ts002-freeze-core-defects-20260928.md`, `ts002-release-recovery-20260928.md`, runs 36333979769/36333984167, PRs #548/#549). Materially updated DM-006 (tracking #501+#534, TS-002 #533/#539/#543 evidence, new generic seed corpus path, forbidden-list insufficiency, expanded future scan directions, established-Japanese invariant). Edition RELEASED/COMPLETE; shared Core implementation unchanged. |
 
 ## 11. Reference authority
 
@@ -707,11 +739,17 @@ Primary evidence for the current r0.1 inventory:
 - closed edition Issues #500, #502, #511, #512 for deferred generic hardening;
 - [Issue #434](https://github.com/eariver/japanese-generative-ai-survey/issues/434) as a pre-freeze carry-over;
 - W35-W38 edition-local defect records under `sources/<edition>/execution/defects/`;
-- release recovery PRs #504, #510, #514 and #524;
+- release recovery PRs #504, #510, #514, #524 and #549;
 - TS-001 reissue edition-local defect records
   (`ts001-reissue-freeze-core-defects-20260923.md`,
   `ts001-reissue-release-recovery-20260923.md`) and compat helper
   (`execution/ts001-freeze-compat-20260923.py`);
+- TS-002 edition-local defect records
+  (`sources/SP-beyond-text-2026/execution/defects/ts002-freeze-core-defects-20260928.md`,
+  `sources/SP-beyond-text-2026/execution/defects/ts002-release-recovery-20260928.md`) and compat helper
+  (`sources/SP-beyond-text-2026/execution/ts002-freeze-compat-20260928.py`);
+- generic terminology seed: `docs/editorial/ja-technical-terminology-overtranslation-seed.md`
+  (CV2-DM-006 authority seed; #533/#539/#543 + Sol/Muse findings; no auto-rewrite);
 - historical feedback authority: `docs/survey-production-core-v2-production-feedback-backlog.md`.
 
 When a later revision updates an item, cite the newest direct reproduction evidence while retaining the earlier history above.
