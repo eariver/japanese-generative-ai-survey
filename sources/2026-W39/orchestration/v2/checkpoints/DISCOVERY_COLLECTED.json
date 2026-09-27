@@ -1,19 +1,16 @@
 {
   "schema_version": "2.0-rc1",
-  "check_id": "CORE_STAGE_CONTRACT",
-  "status": "PASS",
   "issue_id": "2026-W39",
   "from_state": "DISCOVERY_COLLECTED",
   "to_state": "CANDIDATES_NORMALIZED",
-  "production_state": {
-    "path": "sources/2026-W39/production-state.json",
-    "sha256": "6e19f724ed1250d41d0cae39f188f010ca4767a8696318955a5f45195cee111f"
+  "checkpoints": [
+    "screening"
+  ],
+  "recorded_at": "2026-09-27T18:53:42Z",
+  "implementation": {
+    "repository_commit_sha": "441a88efcefcdbb099186d19fff1df6ea62c51c6",
+    "orchestrator_version": "survey-production-core-v2/0.15-postintegration-transport-thematic"
   },
-  "production_profile": {
-    "path": "sources/2026-W39/production-profile.json",
-    "sha256": "29faefb0cbb8d2251ab05935b3f472e45dd01566144742ad46ff623d23fac96a"
-  },
-  "implementation_commit_sha": "441a88efcefcdbb099186d19fff1df6ea62c51c6",
   "contract": {
     "pipeline_contract_version": "2.0-rc1",
     "pipeline_contract_sha256": "ee89796245c22072cec98f34931180214a4928c24f399280793cd6420a4c8e71",
@@ -31,5 +28,18 @@
       "sha256": "aee84b5afdc469cbe86acb8bec70eb0967af67e19970667178631f8e3d1aac36"
     }
   ],
-  "recorded_at": "2026-09-27T18:53:35Z"
+  "reviews": [
+    {
+      "check_id": "CORE_STAGE_CONTRACT",
+      "kind": "DETERMINISTIC",
+      "status": "PASS",
+      "executor": "Survey Production Core v2 survey_stage_validation_v2.py",
+      "evidence": "W39 Screening final: 15 KEEP / 0 DROP over strict-valid Discovery (15 records); package canonical; accepted.",
+      "result": {
+        "path": "sources/2026-W39/execution/validation/screening-stage-validation-r1.json",
+        "sha256": "a89d6496e178622b60df33e7a01d075c4e0156ba7f4873a3989a288c5189b979"
+      }
+    }
+  ],
+  "summary": "W39 Screening accepted: 15 KEEP / 0 DROP over 15 Discovery records; evidence next."
 }
