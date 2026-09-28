@@ -11,7 +11,7 @@
   - `sources/2026-W39/architecture-review-attention-v2.json` (sha256 `b27c98036b61a0cd0dd093c088ad496f8fb701b48831eb218de7827cc71bc32e`)
 - Production State: `sources/2026-W39/production-state.json` (sha256 `b6a49ab89b70b72bd98e42a10525c11b539ac55d12ee7fd4d0ba03cc78bfb852`)
 - Candidate Matrix: `sources/2026-W39/candidate-matrix-v2.json` (sha256 `b3f710bbcfb48095bd31686fe707d7a4e5ca4ed54b6bea5751a39116a9dda0e0`)
-- Candidate Selection: `sources/2026-W39/candidate-selection-v2.json` (sha256 `b6c53eedd1b20c6c35772da7009560f87fefcf76d7ea08b35a2a6`)
+- Candidate Selection: `sources/2026-W39/candidate-selection-v2.json` (sha256 `b6c53eedd1b20c6c35772da7009560f87fefcf76d7ea09b70e755ea08b35a2a6`)
 - Full r1 dossier: `sources/2026-W39/execution/reviews/architecture-r1-dossier.md` (12-element Sol dossier, same review binding)
 - Sol supervisory reviews (same reviewed commit):
   - `sources/2026-W39/execution/reviews/sol-w39-discovery-completeness-20260927.md`
