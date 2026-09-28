@@ -24,7 +24,8 @@ This is the current human-readable navigation record for the edition. Machine li
 - Publication Preview r1: `REQUEST_CHANGES` (revision 1, boundary `DRAFT_COMPLETE`, reviewed `bb6eacabc86e21da77a91d46d4daa2419be5c988`; record `gates/reviews/publication-r1.json`)
 - Publication Preview r2: `REQUEST_CHANGES` (revision 2, boundary `DRAFT_COMPLETE`, reviewed `d95a811abd014ad4476d8f305b792920aa6e87fe`; record `gates/reviews/publication-r2.json`)
 - Publication Preview r3: `REQUEST_CHANGES` (revision 3, boundary `DRAFT_COMPLETE`, reviewed `4463e80e1e01476adf12586a705006e7bbcda8a6`; record `gates/reviews/publication-r3.json`)
-- Publication Preview: `pending` (r4 shell + dossier at reviewed `eb3bb84fa72af02f30d8dfe888304c5988479013`; no decision recorded)
+- Publication Preview r4: `REQUEST_CHANGES` (revision 4, boundary `DRAFT_COMPLETE`, reviewed `eb3bb84fa72af02f30d8dfe888304c5988479013`; record `gates/reviews/publication-r4.json`, Issue #551)
+- Publication Preview: `pending` (r5 shell + dossier at reviewed `342adad3400bd6dee07fb920441f8e259f18eb15`; no decision recorded)
 - Detailed review records: architecture r1 shell/dossier (approved); preview r3 shell/dossier (current pending target)
 
 ## Publication Candidate
@@ -83,10 +84,11 @@ This is the current human-readable navigation record for the edition. Machine li
 - `sessions/w39-r3-residual-repair-blocked-20260928-r1.md` (r3 repair executed; BLOCKED on Core representation gap without Human decision; consistency restored)
 - `sessions/w39-r2-request-changes-resume-r3-20260929-r1.md` (Human r2 REQUEST_CHANGES recording + canonical r3 regen through Publication Preview r3)
 - `sessions/w39-r3-request-changes-resume-r4-20260929-r1.md` (Human r3 REQUEST_CHANGES recording + canonical r4 regen through Publication Preview r4)
+- `sessions/w39-r4-request-changes-issue551-through-r5-20260929-r1.md` (Human r4 REQUEST_CHANGES recording + Issue #551 source-fidelity repair through Publication Preview r5)
 
 ## Final disposition
 
-`RELEASE_CANDIDATE / fresh Human Publication Preview r4 pending` (Discovery = 15, Screening = 15 KEEP / 0 DROP, Evidence = 8 VERIFIED + 7 PARTIAL, Selection = 13 SELECTED / 2 HOLD, Architecture = 7 packages PROPOSED, Draft = 7/7, PDF r4 = 12 pages byte-bound, Candidate r4 READY_FOR_PUBLICATION_PREVIEW, Human decisions = 1 Architecture APPROVED + 3 Preview REQUEST_CHANGES + 0 Preview r4, terminology 406 forms: reader REPLACE 17 / RETAIN 46 / ZERO_HIT 215, shared-Core changed paths = 0)
+`RELEASE_CANDIDATE / fresh Human Publication Preview r5 pending` (Discovery = 15, Screening = 15 KEEP / 0 DROP, Evidence = 8 VERIFIED + 7 PARTIAL, Selection = 13 SELECTED / 2 HOLD, Architecture = 7 packages PROPOSED, Draft = 7/7, PDF r5 = 12 pages byte-bound, Candidate r5 READY_FOR_PUBLICATION_PREVIEW, Human decisions = 1 Architecture APPROVED + 4 Preview REQUEST_CHANGES + 0 Preview r5, Issue #551 source-fidelity repairs, shared-Core changed paths = 0)
 
 ## Gate
 
@@ -94,4 +96,5 @@ This is the current human-readable navigation record for the edition. Machine li
 - Human Publication Preview r1: `execution/reviews/publication-preview-r1.md` + dossier `execution/reviews/publication-preview-r1-dossier.md` (REQUEST_CHANGES revision 1, boundary DRAFT_COMPLETE, reviewed `bb6eacabc86e21da77a91d46d4daa2419be5c988`)
 - Human Publication Preview r2: `execution/reviews/publication-preview-r2.md` + dossier `execution/reviews/publication-preview-r2-dossier.md` (REQUEST_CHANGES revision 2, boundary DRAFT_COMPLETE, reviewed `d95a811abd014ad4476d8f305b792920aa6e87fe`)
 - Human Publication Preview r3: `execution/reviews/publication-preview-r3.md` + dossier `execution/reviews/publication-preview-r3-dossier.md` (REQUEST_CHANGES revision 3, boundary DRAFT_COMPLETE, reviewed `4463e80e1e01476adf12586a705006e7bbcda8a6`)
-- Human Publication Preview r4: `execution/reviews/publication-preview-r4.md` + dossier `execution/reviews/publication-preview-r4-dossier.md` (current PENDING Human target bound to reviewed commit `eb3bb84fa72af02f30d8dfe888304c5988479013`; no decision recorded)
+- Human Publication Preview r4: `execution/reviews/publication-preview-r4.md` + dossier `execution/reviews/publication-preview-r4-dossier.md` (REQUEST_CHANGES revision 4, boundary DRAFT_COMPLETE, reviewed `eb3bb84fa72af02f30d8dfe888304c5988479013`, Issue #551)
+- Human Publication Preview r5: `execution/reviews/publication-preview-r5.md` + dossier `execution/reviews/publication-preview-r5-dossier.md` (current PENDING Human target bound to reviewed commit `342adad3400bd6dee07fb920441f8e259f18eb15`; no decision recorded)
