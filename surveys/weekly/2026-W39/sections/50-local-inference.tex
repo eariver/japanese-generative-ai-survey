@@ -6,14 +6,14 @@
 {\color{SurveyMuted}9月22日のGGUF対応を、速さの留保と動く範囲とともに示す。}\par
 \end{wideflow}
 
-9月22日、Hugging Faceは手元のGGUFをTransformersでそのまま動かす道を開いた\cite{hfgguf}。from\_pretrainedにgguf\_fileを添えるだけで読み、OpenAI互換の給仕（transformers serve）にもつながる。速さの要はllama.cppの核（ggml）をkernelsの包みで呼び、作る輪（generate）の無駄な待ちを省く手直し（仮面の除去、止め目の後倒し）とされる。まずはApple SiliconのMacとQwen3.5の密・混合の器（合うQwen3.8を含む）が射程である。
+9月22日、Hugging Faceは手元のGGUFをTransformersでそのまま動かす道を開いた\cite{hfgguf}。from\_pretrainedにgguf\_fileを添えるだけで読み、OpenAI互換APIのserving（transformers serve）にもつながる。速さの要はllama.cppのカーネル（ggml）をkernelsパッケージ経由で呼び、生成ループの無駄な待ちを省く手直し（マスク除去、停止判定の遅延）とされる。まずはApple SiliconのMacとQwen3.5の高密度・MoEモデル（合うQwen3.8を含む）が対象である。
 
-速さ比べはllama.cppを相手に三つの器で寄せたとされ、MacBook Pro（M2 Max、32GB）での測りである。ただし相手が復号のみ、こちらは読み込みを含むなど条件は揃っておらず、その旨は書き手自身が断る。詰めた道は今のところMPSのみ、詰めた束ねはまだ手がかかり、器の広がりはこれからとされる。純粋に速く回すならllama.cppが薦めと書き手自身が書く。先の広がりとして、llama.cppにない器への核の持ち込みや、像・音への応用が示唆されるが、器ごとの結びと確かめはこれからである。
+速度比較はllama.cppを相手に三つのモデルで寄せたとされ、MacBook Pro（M2 Max、32GB）での測りである。ただし相手が復号のみ、こちらは読み込みを含むなど条件は揃っておらず、その旨は書き手自身が断る。最適化パスは今のところMPSのみ、バッチ処理の最適化はまだ途上で、対応モデルの広がりはこれからとされる。純粋に速く回すならllama.cppが薦めと書き手自身が書く。先の広がりとして、llama.cppにないモデルへのカーネルの持ち込みや、画像・音声モダリティへの応用が示唆されるが、モデルごとの対応付けと確かめはこれからである。
 
 \begin{claimboundary}[資料と評価の境界]
-寄せの速さは一台のMacでの近似であり、他の機械や器への一般化には使わない。独自の速さの測りは本号では行わない。器の広がりや他様式への応用は構想の段階である。
+llama.cppに対する速度の近さは一台のMacでの近似であり、他の機械やモデルへの一般化には使わない。独自の速さの測りは本号では行わない。モデルの広がりや他モダリティへの応用は構想の段階である。
 \end{claimboundary}
 
 \begin{communitynote}[X / Community observation --- context only]
-公開投稿では、手元のGGUFをTransformersで回す手ほどきが、単独の実演\cite{w39x-c3-walkthrough}と日本語を含むまとめ\cite{w39x-c3-jp,w39x-c3-summary}で重なる。書き手の向きと合うが、証しではなく景気として添える。締め切り後の言及は文脈資料であり、通常の集計には含めない。
+公開投稿では、手元のGGUFをTransformersで回す手ほどきが、単独の実演\cite{w39x-c3-walkthrough}と日本語を含むまとめ\cite{w39x-c3-jp,w39x-c3-summary}で重なる。書き手の向きと合うが、根拠ではなく動向として添える。締め切り後の言及は文脈資料であり、通常の集計には含めない。
 \end{communitynote}
