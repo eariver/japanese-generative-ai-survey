@@ -22,8 +22,9 @@ This is the current human-readable navigation record for the edition. Machine li
 
 - Architecture Review: `APPROVED` (r1, reviewed `9767d68e0d83aa667eaeeee6394806c612708682`, reviewed_at `2026-09-28T00:24:35Z`; record `gates/reviews/architecture-r1.json`, snapshot `gates/reviews/approvals/architecture-r1.json`)
 - Publication Preview r1: `REQUEST_CHANGES` (revision 1, boundary `DRAFT_COMPLETE`, reviewed `bb6eacabc86e21da77a91d46d4daa2419be5c988`; record `gates/reviews/publication-r1.json`)
-- Publication Preview: `pending` (r2 shell + dossier at reviewed `d95a811abd014ad4476d8f305b792920aa6e87fe`; no decision recorded)
-- Detailed review records: architecture r1 shell/dossier (current pending target)
+- Publication Preview r2: `REQUEST_CHANGES` (revision 2, boundary `DRAFT_COMPLETE`, reviewed `d95a811abd014ad4476d8f305b792920aa6e87fe`; record `gates/reviews/publication-r2.json`)
+- Publication Preview: `pending` (r3 shell + dossier at reviewed `4463e80e1e01476adf12586a705006e7bbcda8a6`; no decision recorded)
+- Detailed review records: architecture r1 shell/dossier (approved); preview r3 shell/dossier (current pending target)
 
 ## Publication Candidate
 
@@ -78,13 +79,16 @@ This is the current human-readable navigation record for the edition. Machine li
 - `sessions/w39-sol-resume-grok-r3-through-architecture-review-20260927-r1.md` (r3 import + Discovery through Architecture r1)
 - `sessions/w39-approved-through-publication-preview-20260928-r1.md` (APPROVED recording + Draft through Publication Preview r1)
 - `sessions/w39-publication-preview-r1-request-changes-r2-20260928-r1.md` (REQUEST_CHANGES recording + terminology + byte-bound PDF through Publication Preview r2)
+- `sessions/w39-r3-residual-repair-blocked-20260928-r1.md` (r3 repair executed; BLOCKED on Core representation gap without Human decision; consistency restored)
+- `sessions/w39-r2-request-changes-resume-r3-20260929-r1.md` (Human r2 REQUEST_CHANGES recording + canonical r3 regen through Publication Preview r3)
 
 ## Final disposition
 
-`RELEASE_CANDIDATE / fresh Human Publication Preview r2 pending` (Discovery = 15, Screening = 15 KEEP / 0 DROP, Evidence = 8 VERIFIED + 7 PARTIAL, Selection = 13 SELECTED / 2 HOLD, Architecture = 7 packages PROPOSED, Draft r1 = 7/7, PDF r2 = 12 pages byte-bound, Candidate r2 READY_FOR_PUBLICATION_PREVIEW, Human decisions = 1 Architecture APPROVED + 1 Preview REQUEST_CHANGES + 0 Preview r2, terminology REPLACE 335 / RETAIN 314 / ZERO_HIT 171, shared-Core changed paths = 0)
+`RELEASE_CANDIDATE / fresh Human Publication Preview r3 pending` (Discovery = 15, Screening = 15 KEEP / 0 DROP, Evidence = 8 VERIFIED + 7 PARTIAL, Selection = 13 SELECTED / 2 HOLD, Architecture = 7 packages PROPOSED, Draft = 7/7, PDF r3 = 12 pages byte-bound, Candidate r3 READY_FOR_PUBLICATION_PREVIEW, Human decisions = 1 Architecture APPROVED + 2 Preview REQUEST_CHANGES + 0 Preview r3, terminology 392 forms: reader REPLACE 59 / RETAIN 49 / ZERO_HIT 200, shared-Core changed paths = 0)
 
 ## Gate
 
 - Human Architecture Review r1: `execution/reviews/architecture-r1.md` + dossier `execution/reviews/architecture-r1-dossier.md` (APPROVED revision 1, reviewed `9767d68e0d`, reviewed_at `2026-09-28T00:24:35Z`)
 - Human Publication Preview r1: `execution/reviews/publication-preview-r1.md` + dossier `execution/reviews/publication-preview-r1-dossier.md` (REQUEST_CHANGES revision 1, boundary DRAFT_COMPLETE, reviewed `bb6eacabc86e21da77a91d46d4daa2419be5c988`)
-- Human Publication Preview r2: `execution/reviews/publication-preview-r2.md` + dossier `execution/reviews/publication-preview-r2-dossier.md` (current PENDING Human target bound to reviewed commit `d95a811abd014ad4476d8f305b792920aa6e87fe`; no decision recorded)
+- Human Publication Preview r2: `execution/reviews/publication-preview-r2.md` + dossier `execution/reviews/publication-preview-r2-dossier.md` (REQUEST_CHANGES revision 2, boundary DRAFT_COMPLETE, reviewed `d95a811abd014ad4476d8f305b792920aa6e87fe`)
+- Human Publication Preview r3: `execution/reviews/publication-preview-r3.md` + dossier `execution/reviews/publication-preview-r3-dossier.md` (current PENDING Human target bound to reviewed commit `4463e80e1e01476adf12586a705006e7bbcda8a6`; no decision recorded)
