@@ -13,15 +13,15 @@ This is the current human-readable navigation record for the edition. Machine li
 - Requested stop: `ARCHITECTURE_REVIEW`
 - Production Profile: `sources/2026-W39/production-profile.json`
 - Production State: `sources/2026-W39/production-state.json`
-- Current State SHA-256: `b6a49ab89b70b72bd98e42a10525c11b539ac55d12ee7fd4d0ba03cc78bfb852`
-- Current lifecycle: `ARCHITECTURE_ESTABLISHED`
+- Current State SHA-256: see session (RELEASE_CANDIDATE; exact bytes in reviewed commit `bb6eacabc86e21da77a91d46d4daa2419be5c988`)
+- Current lifecycle: `RELEASE_CANDIDATE`
 - Current terminal reason: `HUMAN_GATE_REACHED`
-- Current next action: `ARCHITECTURE_REVIEW`
+- Current next action: `PUBLICATION_PREVIEW`
 
 ## Human Gates
 
-- Architecture Review: `pending` (r1 shell + dossier at reviewed `9767d68e0d83aa667eaeeee6394806c612708682`; no decision recorded)
-- Publication Preview: `pending` (not reached; out of scope for this run)
+- Architecture Review: `APPROVED` (r1, reviewed `9767d68e0d83aa667eaeeee6394806c612708682`, reviewed_at `2026-09-28T00:24:35Z`; record `gates/reviews/architecture-r1.json`, snapshot `gates/reviews/approvals/architecture-r1.json`)
+- Publication Preview: `pending` (r1 shell + dossier at reviewed `bb6eacabc86e21da77a91d46d4daa2419be5c988`; no decision recorded)
 - Detailed review records: architecture r1 shell/dossier (current pending target)
 
 ## Publication Candidate
@@ -75,11 +75,13 @@ This is the current human-readable navigation record for the edition. Machine li
 - `sessions/w39-sol-initialize-through-grok-handoff-20260927-r1.md`
 - `sessions/w39-pre-discovery-research-prep-20260927-r1.md` (non-authoritative pre-Discovery input, NOT Discovery)
 - `sessions/w39-sol-resume-grok-r3-through-architecture-review-20260927-r1.md` (r3 import + Discovery through Architecture r1)
+- `sessions/w39-approved-through-publication-preview-20260928-r1.md` (APPROVED recording + Draft through Publication Preview r1)
 
 ## Final disposition
 
-`ARCHITECTURE_ESTABLISHED / fresh Human Architecture Review r1 pending` (Discovery = 15, Screening = 15 KEEP / 0 DROP, Evidence = 8 VERIFIED + 7 PARTIAL, Selection = 13 SELECTED / 2 HOLD, Architecture = 7 packages PROPOSED, Human decisions = 0, shared-Core changed paths = 0)
+`RELEASE_CANDIDATE / fresh Human Publication Preview r1 pending` (Discovery = 15, Screening = 15 KEEP / 0 DROP, Evidence = 8 VERIFIED + 7 PARTIAL, Selection = 13 SELECTED / 2 HOLD, Architecture = 7 packages PROPOSED, Draft r1 = 7/7, PDF = 12 pages, Candidate r1 READY_FOR_PUBLICATION_PREVIEW, Human decisions = 1 Architecture APPROVED + 0 Preview, shared-Core changed paths = 0)
 
 ## Gate
 
-- Human Architecture Review r1: `execution/reviews/architecture-r1.md` + dossier `execution/reviews/architecture-r1-dossier.md` (current PENDING Human target bound to reviewed commit `9767d68e0d`; no decision recorded)
+- Human Architecture Review r1: `execution/reviews/architecture-r1.md` + dossier `execution/reviews/architecture-r1-dossier.md` (APPROVED revision 1, reviewed `9767d68e0d`, reviewed_at `2026-09-28T00:24:35Z`)
+- Human Publication Preview r1: `execution/reviews/publication-preview-r1.md` + dossier `execution/reviews/publication-preview-r1-dossier.md` (current PENDING Human target bound to reviewed commit `bb6eacabc86e21da77a91d46d4daa2419be5c988`; no decision recorded)
