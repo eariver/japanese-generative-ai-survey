@@ -2,8 +2,8 @@
 
 Status: `CORE_CHANGE_PAUSED / LIVING_DEFERRED_MAINTENANCE_INVENTORY`  
 Established: 2026-09-20 JST  
-Last reviewed edition: `SP-beyond-text-2026`  
-Last reviewed `main`: `f823befee578cf896a3e9c8e944017ebf2433d19`  
+Last reviewed edition: `2026-W39`  
+Last reviewed `main`: `239ef2703a93fa802f232978c7166d04d6cc3d49`  
 Frozen Production Line: `774dd39a951c9ac3818e83dfffd4c7666efb0a20`  
 Frozen Production Line tree: `cd46a6f7a6dcc4031e76220cea4c52c7dd1fc481`  
 Update tracker: [Issue #515](https://github.com/eariver/japanese-generative-ai-survey/issues/515)
@@ -70,11 +70,11 @@ Status: `OPEN_CORE / EDITION_WORKAROUND`
 Category: Freeze / authority binding  
 Tracking: [Issue #497](https://github.com/eariver/japanese-generative-ai-survey/issues/497)  
 First post-freeze reproduction: `2026-W35`  
-Latest reproduction: `SP-beyond-text-2026`
+Latest reproduction: `2026-W39`
 
 The profile-aware Freeze helper expects the legacy post-approval `visual-review-record-v2` shape while current Publication Candidate authority binds the pre-preview `publication-review-record-v2` VISUAL record.
 
-The two contracts are incompatible. W35-W38 therefore used the canonical lower-level `survey_publication_v2.build_freeze` compatibility path instead of repairing shared Core. TS-001 reissue recurred identically (candidate-bound pre-preview VISUAL `fae79e67...` vs legacy `pdf_path` schema) and used the same lower-level path plus the CV2-DM-019 identity correction below. TS-002 (`SP-beyond-text-2026`) recurred identically (candidate-bound pre-preview VISUAL `56db5134...` vs legacy `pdf_path` schema) via edition-local `execution/ts002-freeze-compat-20260928.py`; no new ID.
+The two contracts are incompatible. W35-W38 therefore used the canonical lower-level `survey_publication_v2.build_freeze` compatibility path instead of repairing shared Core. TS-001 reissue recurred identically (candidate-bound pre-preview VISUAL `fae79e67...` vs legacy `pdf_path` schema) and used the same lower-level path plus the CV2-DM-019 identity correction below. TS-002 (`SP-beyond-text-2026`) recurred identically (candidate-bound pre-preview VISUAL `56db5134...` vs legacy `pdf_path` schema) via edition-local `execution/ts002-freeze-compat-20260928.py`; no new ID. W39 reproduced the same schema mismatch during `RELEASE_CANDIDATE -> FROZEN`; the lower-level canonical publication freeze path was again required with no shared-Core change.
 
 Evidence:
 
@@ -84,6 +84,7 @@ Evidence:
 - `sources/2026-W38/execution/defects/w38-freeze-core-defects-20260919.md`
 - `sources/SP-efficient-llm-2026/execution/defects/ts001-reissue-freeze-core-defects-20260923.md`
 - `sources/SP-beyond-text-2026/execution/defects/ts002-freeze-core-defects-20260928.md`
+- `sources/2026-W39/execution/defects/w39-freeze-compat-note-20260929.md`
 
 Required future Core direction:
 
@@ -99,7 +100,7 @@ Status: `OPEN_CORE / EDITION_WORKAROUND`
 Category: Freeze / provenance typing  
 Tracking: [Issue #497](https://github.com/eariver/japanese-generative-ai-survey/issues/497)  
 First post-freeze reproduction: `2026-W35`  
-Latest reproduction: `SP-beyond-text-2026`
+Latest reproduction: `2026-W39`
 
 `survey_stage_validation_v2._prior_artifacts()` iterates non-null `checkpoint_provenance` entries and assumes they are Stage Checkpoints. After canonical Publication Preview approval, `checkpoint_provenance.publication_preview` is a Human Gate approval record, not a Stage Checkpoint.
 
@@ -107,7 +108,11 @@ Observed failure:
 
 `prior Stage Checkpoint fails ... stage-checkpoint-v2.schema.json: 'artifacts' is a required property`
 
-W35-W38 used an in-memory admission correction that excludes Human Gate provenance from Stage Checkpoint admission while still validating it through the dedicated Human Gate path. TS-001 reissue recurred identically (`gates/publication-preview-approval.json` `15b88fb2...`) and used the same bounded correction. TS-002 recurred identically (`gates/publication-preview-approval.json` `5e121516...`) via the same bounded correction; no new ID.
+W35-W38 used an in-memory admission correction that excludes Human Gate provenance from Stage Checkpoint admission while still validating it through the dedicated Human Gate path. TS-001 reissue recurred identically (`gates/publication-preview-approval.json` `15b88fb2...`) and used the same bounded correction. TS-002 recurred identically (`gates/publication-preview-approval.json` `5e121516...`) via the same bounded correction. W39 reproduced the same Human-gate-as-checkpoint misclassification after canonical r6 approval and used the same bounded runtime admission; no new ID.
+
+Evidence:
+
+- `sources/2026-W39/execution/defects/w39-freeze-compat-note-20260929.md`
 
 Required future Core direction:
 
@@ -124,17 +129,18 @@ Status: `OPEN_CORE / EDITION_WORKAROUND`
 Category: Stage validation / checkpoint provenance completeness  
 Tracking: no dedicated GitHub Issue yet  
 First reproduction: `2026-W38`  
-Latest reproduction: `SP-beyond-text-2026`
+Latest reproduction: `2026-W39`
 
 W38 Freeze compatibility additionally had to admit the true `VALIDATED_DRAFT -> RELEASE_CANDIDATE` checkpoint record explicitly because the checkpoint file existed and matched the stage record, but the current stage configuration exposed no corresponding `checkpoint_provenance` pointer (`checkpoints: []`).
 
-TS-001 reissue recurred identically: `orchestration/v2/checkpoints/VALIDATED_DRAFT.json` carries the exact r2 `publication-candidate` artifact (`adf22516...`) but is unreferenced by `checkpoint_provenance`; the same bounded admission was applied. TS-002 recurred identically: `orchestration/v2/checkpoints/VALIDATED_DRAFT.json` carries the exact r12 `publication-candidate` artifact (`4d2c01ab...`) but is unreferenced; the same bounded admission was applied. No new ID.
+TS-001 reissue recurred identically: `orchestration/v2/checkpoints/VALIDATED_DRAFT.json` carries the exact r2 `publication-candidate` artifact (`adf22516...`) but is unreferenced by `checkpoint_provenance`; the same bounded admission was applied. TS-002 recurred identically: `orchestration/v2/checkpoints/VALIDATED_DRAFT.json` carries the exact r12 `publication-candidate` artifact (`4d2c01ab...`) but is unreferenced; the same bounded admission was applied. W39 again required explicit admission of the canonical sibling `VALIDATED_DRAFT` checkpoint during Freeze compatibility validation; no new ID.
 
 Evidence:
 
 - `sources/2026-W38/execution/defects/w38-freeze-core-defects-20260919.md`
 - `sources/SP-efficient-llm-2026/execution/defects/ts001-reissue-freeze-core-defects-20260923.md`
 - `sources/SP-beyond-text-2026/execution/defects/ts002-freeze-core-defects-20260928.md`
+- `sources/2026-W39/execution/defects/w39-freeze-compat-note-20260929.md`
 
 Required future Core direction:
 
@@ -150,7 +156,7 @@ Status: `OPEN_CORE / EDITION_WORKAROUND`
 Category: Release / post-release provenance closure  
 Tracking: no dedicated GitHub Issue yet  
 First confirmed reproduction: `2026-W36`  
-Latest reproduction: `SP-beyond-text-2026`
+Latest reproduction: `2026-W39`
 
 The canonical release workflow successfully creates/reconciles the public Release and exact PDF bytes, then fails in the post-release provenance step because it invokes a non-existent `validate-state` CLI subcommand.
 
@@ -158,15 +164,17 @@ Confirmed recurrences:
 
 - W36 workflow run `35345335385` -> recovery PR #504;
 - W37 workflow run `35418054523` -> recovery PR #510;
-- W38 workflow run `35438708696` -> recovery PR #514.
+- W38 workflow run `35438708696` -> recovery PR #514;
 - `SP-efficient-llm-2026` workflow run `35863535480` -> recovery PR #524
   (`special/efficient-llm-2026` Release created and exact-byte reconciled before
   the sole `validate-state` failure; provenance recovered edition-locally via
-  `survey_release_checkpoint_v2.py` + Python API `validate_agent_state`).
+  `survey_release_checkpoint_v2.py` + Python API `validate_agent_state`);
 - `SP-beyond-text-2026` workflow runs `36333979769` (created) / `36333984167` (reconciled)
   (`special/beyond-text-2026` Release created and exact-byte reconciled before
   the sole `validate-state` failure in both runs; provenance recovered edition-locally via
-  `survey_release_checkpoint_v2.py` + Python API `validate_agent_state` -> recovery PR #549).
+  `survey_release_checkpoint_v2.py` + Python API `validate_agent_state` -> recovery PR #549);
+- `2026-W39` workflow run `36581201216` -> recovery PR #557
+  (public `weekly/2026-W39` Release and exact approved PDF bytes were created/reconciled successfully; the workflow then failed in post-release provenance closure and the W38-style bounded recovery recorded the missing Release Record/checkpoint/state through a normal PR without recreating the public Release).
 
 The bounded recovery does **not** recreate or re-upload the public Release. It writes the missing edition-local release provenance using existing canonical helpers and Python API validation.
 
@@ -216,7 +224,7 @@ Status: `OPEN_CORE`
 Category: Semantic/editorial publication QA  
 Tracking: [Issue #501](https://github.com/eariver/japanese-generative-ai-survey/issues/501) + [Issue #534](https://github.com/eariver/japanese-generative-ai-survey/issues/534)  
 First reproduction: `2026-W36`  
-Latest known reproduction: `SP-beyond-text-2026`
+Latest known reproduction: `2026-W39`
 
 W36 exposed mechanically or over-literally normalized Japanese that became semantically opaque to a technically literate reader.
 
@@ -226,9 +234,15 @@ TS-002 (`SP-beyond-text-2026`) reproduced the same generic failure at larger sca
 - The edition was repaired edition-locally (276-row terminology ledger at closure; exact 78pp PDF `4e225067...` released), but the generic pre-publication language/semantic fidelity guard remains deferred.
 - TS-002 demonstrates that a simple forbidden-word list is insufficient: seed-list zero counts did not imply closure (Sol r1/r3/r7/r10 each found seed-external residuals after worker zero), context-dependent terms require source-bound adjudication, and canonical model/metric/benchmark/dataset identities require entity-preservation scanning beyond lexical matching.
 
+W39 then reproduced CV2-DM-006 again in a Weekly profile. Publication Preview r1-r4 required repeated edition-local terminology repair under Issue #501, including forced/literal forms such as `模型`, `符号`, `番付`, `腕前の物差し`, `値札`, `手ほどき`, `真としない`, and other seed-external residuals. Three W39-specific additive seed supplements plus a final seed-independent Sol reread were needed before the r6 reader bytes were accepted. This confirms that the defect is not confined to Longform Specials and that zero-hit completion against a fixed seed is not sufficient closure evidence.
+
 Generic reusable seed corpus (authority seed for future read-only lint, no auto-rewrite):
 
-- `docs/editorial/ja-technical-terminology-overtranslation-seed.md` (100 H4 entries across 10 families + canonical-identity section + context-dependent section + snapshot-only counts; every entry `auto-rewrite allowed: false`; de-duplicates #533/#539/#543 + post-seed Sol/Muse findings).
+- `docs/editorial/ja-technical-terminology-overtranslation-seed.md` (100 H4 entries across 10 families + canonical-identity section + context-dependent section + snapshot-only counts; every entry `auto-rewrite allowed: false`; de-duplicates #533/#539/#543 + post-seed Sol/Muse findings);
+- W39 additive review corpora:
+  - `docs/editorial/ja-technical-terminology-overtranslation-seed-w39-additions.md`;
+  - `docs/editorial/ja-technical-terminology-overtranslation-seed-w39-r2-residual-additions.md`;
+  - `docs/editorial/ja-technical-terminology-overtranslation-seed-w39-r3-residual-additions.md`.
 
 Required invariant:
 
@@ -241,7 +255,7 @@ Required future Core direction:
 - add a bounded semantic/editorial QA contract before TeX/PDF publication;
 - do not solve this solely with forbidden-word substitution;
 - preserve conventional English/katakana terms when they are clearer than forced Japanese;
-- regression-test representative W36 failures;
+- regression-test representative W36 and W39 failures;
 - add known prohibited/review-required scan from the seed corpus;
 - add same-concept consistency scan (e.g. `zero-shot`/`ゼロショット`/`零射影` variants in one edition);
 - add canonical-name/entity preservation scan (model/architecture/method/metric/benchmark/dataset);
@@ -373,23 +387,31 @@ Required future Core direction:
 
 ---
 
-### CV2-DM-013 — Source displayed date, collector date and later announcement date can be silently conflated
+### CV2-DM-013 — Distinct source/version/event dates can be silently conflated or diverge across reader surfaces
 
 Status: `EDITION_FIXED_CORE_DEFERRED`  
 Category: Temporal source authority  
-Tracking: closed edition Issue #511  
+Tracking: closed edition Issue #511 + closed W39 Issue #551  
 First reproduction: `2026-W38`  
-Latest reproduction: `2026-W38`
+Latest reproduction: `2026-W39`
 
 W38 TypeSafe/Jev showed a first-party blog displayed date different from a later founder launch announcement timestamp. The edition initially collapsed the dates into one interpretation.
 
-The edition now carries an append-only two-date correction authority, but the generic invariant is not in shared Core.
+W39 exposed the same generic temporal-authority weakness in two additional forms during Issue #551 review:
+
+- DolphinBench arXiv v1 (Sep.21) and v2 (Sep.22) were compressed into reader wording equivalent to `9月21日（改め22日）`, obscuring the distinct version events;
+- Claude Code source-note prose retained Sep.23 while the reader body, bibliography and accepted official `@ClaudeDevs` ledger authority all bound the behavior announcement to Sep.25.
+
+Both W39 instances were repaired edition-locally before r6 approval, but no generic cross-surface temporal consistency guard exists in shared Core.
 
 Required future Core direction:
 
-`source displayed date -> collector provenance -> Evidence temporal authority -> reader-facing date`
+`source displayed/version/event date -> collector provenance -> Evidence temporal authority -> reader-facing date(s)`
 
-A collector must not replace a first-party displayed date with an X/secondary date without explicitly modeling the distinct event/announcement authority.
+- model distinct source publication, source revision/version, announcement and collector timestamps explicitly rather than collapsing them;
+- prevent a later/secondary timestamp from replacing a first-party displayed date without an explicit distinct-event model;
+- check repeated reader/source-note/bibliography surfaces for contradictory dates bound to the same event identity;
+- regression-test W38 TypeSafe/Jev plus W39 DolphinBench and Claude Code date cases.
 
 ---
 
@@ -399,9 +421,11 @@ Status: `OPEN_CORE`
 Category: Execution-record closure / navigation consistency  
 Tracking: no dedicated GitHub Issue yet  
 First observed in final released state: `2026-W37`  
-Latest observed: `2026-W38`
+Latest observed: `2026-W39`
 
 The bounded release-provenance recovery intentionally changes only the minimum five Wxx provenance files. As a result, `sources/<edition>/execution/index.md` can still describe the pre-release `RELEASE_CANDIDATE / Publication Preview pending` state after canonical `production-state.json` is already `RELEASED / COMPLETE`.
+
+W39 reproduces this exactly after recovery PR #557: canonical `sources/2026-W39/production-state.json` is `RELEASED / COMPLETE`, while `sources/2026-W39/execution/index.md` still says `RELEASE_CANDIDATE`, Publication Preview r6 pending and `next action: PUBLICATION_PREVIEW`, and even retains the stale statement `Shared Core defects: None discovered in this run` despite the later Freeze/Release recurrences.
 
 Machine authority is correct, so this is not a release-integrity defect, but it violates the execution-record policy expectation that `index.md` remain concise and current.
 
@@ -492,7 +516,6 @@ Required future Core direction when maintenance resumes:
 - preserve unknown-source fail-closed behavior;
 - add cross-profile regression coverage proving every source type accepted into canonical Discovery/Screening is either Evidence-classifiable or rejected before Screening.
 
-
 ---
 
 ### CV2-DM-017 — Completeness builder omits Discovery-added obligations required by its validator
@@ -576,7 +599,6 @@ Required future Core direction when maintenance resumes:
 - add a regression fixture reproducing the p.56 glossary paragraph/table context;
 - prohibit VISUAL PASS when a materially clipped page exists.
 
-
 ---
 
 ### CV2-DM-019 — Canonical Freeze builder derives release identity from internal issue_id instead of the profile public slug
@@ -587,14 +609,9 @@ Tracking: [Issue #515](https://github.com/eariver/japanese-generative-ai-survey/
 First reproduction: `SP-efficient-llm-2026`  
 Latest reproduction: `SP-beyond-text-2026`
 
-`scripts/survey_publication_v2.py::build_freeze` derives the Release Manifest
-identity via `release_identity(publication_profile, issue_id)`. For
-`SP-efficient-llm-2026` (internal issue `SP-efficient-llm-2026`, public survey
-slug `efficient-llm-2026`) the reference canonical build yields
-`special/SP-efficient-llm-2026`.
+`scripts/survey_publication_v2.py::build_freeze` derives the Release Manifest identity via `release_identity(publication_profile, issue_id)`. For `SP-efficient-llm-2026` (internal issue `SP-efficient-llm-2026`, public survey slug `efficient-llm-2026`) the reference canonical build yields `special/SP-efficient-llm-2026`.
 
-The frozen release workflow
-(`.github/workflows/survey-production-v2-release.yml`, authority step) mandates:
+The frozen release workflow (`.github/workflows/survey-production-v2-release.yml`, authority step) mandates:
 
 ```text
 tag = manifest['release_identity']
@@ -602,22 +619,13 @@ expected_tag = profiled.release_identity(profile)  # paths.survey_root slug
 if tag != expected_tag: raise SystemExit('Release Manifest public identity mismatch')
 ```
 
-i.e. `special/efficient-llm-2026`. A bare-`build_freeze` manifest would therefore
-hard-fail the frozen release for every divergent-slug edition. SP001 never
-exposed this (slug `SP001` == issue_id `SP001`, convergent); divergent-slug
-retrospectives froze under the pre-v2 flow. TS-001 reissue is the first
-divergent-slug LONGFORM_SPECIAL freeze under Core v2.
+i.e. `special/efficient-llm-2026`. A bare-`build_freeze` manifest would therefore hard-fail the frozen release for every divergent-slug edition. SP001 never exposed this (slug `SP001` == issue_id `SP001`, convergent); divergent-slug retrospectives froze under the pre-v2 flow. TS-001 reissue is the first divergent-slug LONGFORM_SPECIAL freeze under Core v2.
 
 Edition-local compatibility (TS-001, runtime-only, no Core change):
 
-- Freeze Record written byte-identical to the canonical `build_freeze`
-  reference (same `frozen_at`);
-- Release Manifest byte-identical to the reference EXCEPT `release_identity`
-  (`special/efficient-llm-2026`, the exact value the frozen workflow enforces)
-  and the Freeze path rebound from the reference scratch path to the canonical
-  Freeze path (same SHA); re-validated via `validate_release_manifest`;
-- the resulting public Release (`special/efficient-llm-2026`, canonical run
-  `35863535480`) passed the workflow's identity check, confirming the diagnosis.
+- Freeze Record written byte-identical to the canonical `build_freeze` reference (same `frozen_at`);
+- Release Manifest byte-identical to the reference EXCEPT `release_identity` (`special/efficient-llm-2026`, the exact value the frozen workflow enforces) and the Freeze path rebound from the reference scratch path to the canonical Freeze path (same SHA); re-validated via `validate_release_manifest`;
+- the resulting public Release (`special/efficient-llm-2026`, canonical run `35863535480`) passed the workflow's identity check, confirming the diagnosis.
 
 Direct evidence:
 
@@ -630,14 +638,48 @@ Direct evidence:
 
 Required future Core direction when maintenance resumes:
 
-- derive the Freeze/Manifest release identity from the Production Profile
-  public slug (single authority with the release workflow), not the internal
-  issue_id;
-- prove profile-aware Freeze and canonical `build_freeze` produce identical
-  Freeze authority and identical Manifest bytes for both convergent and
-  divergent slugs (extends the CV2-DM-001 equivalence requirement);
-- add divergent-slug LONGFORM_SPECIAL regression coverage through the release
-  identity check.
+- derive the Freeze/Manifest release identity from the Production Profile public slug (single authority with the release workflow), not the internal issue_id;
+- prove profile-aware Freeze and canonical `build_freeze` produce identical Freeze authority and identical Manifest bytes for both convergent and divergent slugs (extends the CV2-DM-001 equivalence requirement);
+- add divergent-slug LONGFORM_SPECIAL regression coverage through the release identity check.
+
+---
+
+### CV2-DM-020 — Citation resolution does not guarantee claim-to-source semantic fidelity
+
+Status: `OPEN_CORE / EDITION_FIXED_CORE_DEFERRED`  
+Category: Publication QA / claim-source semantic binding  
+Tracking: closed W39 [Issue #551](https://github.com/eariver/japanese-generative-ai-survey/issues/551) + [Issue #515](https://github.com/eariver/japanese-generative-ai-survey/issues/515)  
+First reproduction: `2026-W39`  
+Latest reproduction: `2026-W39`
+
+W39 Publication Preview demonstrated a generic gap between deterministic citation/key resolution and **semantic correctness of the claim actually bound to that source**. All citation keys could resolve while reader prose still misrepresented novelty, strengthened a source beyond its stated conclusion, flattened conditional/attributed numbers, or bound the wrong source role.
+
+Issue #551 exposed several independent manifestations in one edition:
+
+- **ART novelty:** reader prose initially made the reverse transcriptase itself appear newly discovered, while primary-source read-back showed the RT was already known and the novelty was the system-level combination of RT + partner/accessory gene + long repeat array;
+- **Cursor proxy strength:** reader prose strengthened a source saying evals can be a fast/useful proxy with distributional limitations into an effectively categorical `当てにならず` conclusion;
+- **Claude Code source role:** a Sep.25 behavior-change claim was initially bound only to secondary material even though the accepted public ledger already contained the official `@ClaudeDevs` first-party announcement; behavior and plan-tier conditions required separate source bindings;
+- **Opus 5.5 conditions:** `typical workload` cost estimation and `up to 2.5x faster` were flattened into less-qualified reader wording until source read-back restored attribution/conditionality;
+- **source-boundary contradiction:** after binding the official X post as first-party evidence, `99-source-notes.tex` still categorically said public-post ledger material could not establish publication facts, requiring an explicit role-based exception limited to separately cited official first-party posts.
+
+The edition was repaired publication-locally and ultimately released exact Human-approved r6 bytes. No accepted Evidence or Architecture regeneration was required. The generic Core gap remains: citation existence/key resolution and source admission do not prove that the drafted claim preserves the source's subject, novelty, scope, strength, conditions, attribution, or authority role.
+
+This is related to but distinct from:
+
+- CV2-DM-006, which targets forced/identity-destroying Japanese terminology;
+- CV2-DM-013, which targets temporal authority/date identity;
+- CV2-DM-015, which targets the broader internal/public Publication Boundary.
+
+Required future Core direction when maintenance resumes:
+
+- add an explicit claim-to-source semantic-fidelity review contract before Publication Preview;
+- require claim decomposition where one sentence mixes behavior, plan/tier conditions, prices, benchmark results, or other claims supported by different source roles;
+- preserve source epistemic strength (`can`, `may`, `up to`, `typical`, estimated/attributed) through synthesis and reader serialization;
+- prefer/require admitted first-party authority for the exact first-party fact when available, while allowing separately bounded secondary support for details not present in the primary source;
+- validate source-role consistency between reader citations, bibliography/source notes and public/community ledgers;
+- distinguish `citation key resolved` from `claim semantically supported` in QA results;
+- add regression fixtures from W39 ART, Cursor, Claude Code and Opus 5.5;
+- fail closed or require explicit reviewed disposition when a semantic/source-role mismatch is found.
 
 ## 6. Items intentionally not treated as current shared-Core defects
 
@@ -647,6 +689,8 @@ The following edition issues are closed because their edition-level acceptance c
 - #502 — W36 community citation target;
 - #511 — W38 TypeSafe/Jev temporal authority;
 - #512 — W38 full community-ledger auditability.
+
+Issue #551 is closed at the edition level after W39 r6 approval/release, but its newly identified **generic** claim-to-source semantic-fidelity gap is retained above as CV2-DM-020.
 
 They remain referenced above only where their **generic Core hardening** has not been implemented.
 
@@ -710,6 +754,7 @@ A batch repair may close multiple `CV2-DM` items, but each item must receive its
 | `SP-efficient-llm-2026` | Publication Preview r2 repair update in r0.4 | DM-018 | Issue #520 gross Overfull/clipping PASS defect recorded as generic QA debt (edition fixed locally with overfull guard + full render); Issue #521 evaluated as EDITION_LOCAL, not added; shared Core implementation unchanged. |
 | `SP-efficient-llm-2026` | Final release closure review in r0.5 | DM-019; DM-001/002/003/004 recurred | New divergent-slug release-identity defect (build_freeze vs profile public slug) recorded with edition-local identity correction; Freeze/Release recurrences documented; DM-016/017/018 unchanged; edition RELEASED/COMPLETE with exact Human-approved PDF; shared Core implementation unchanged. |
 | `SP-beyond-text-2026` | Final release closure review in r0.6 | No new CV2-DM ID; DM-001/002/003/004/019 recurred; DM-006 materially updated | TS-002 Freeze/Release recurrences with edition-local compat (`ts002-freeze-compat-20260928.py`, recovery PR #549, runs 36333979769/36333984167); CV2-DM-006 latest reproduction + generic seed corpus `docs/editorial/ja-technical-terminology-overtranslation-seed.md` (#533/#539/#543 incorporated); edition RELEASED/COMPLETE with exact Human-approved 78pp PDF; shared Core implementation unchanged. |
+| `2026-W39` | Final release closure review in r0.7 | **DM-020 new**; DM-001/002/003/004/006/013/014 recurred or materially updated | Issue #551 exposed generic claim-to-source semantic-fidelity/source-role weakness (new DM-020); Issue #501 terminology defect recurred across multiple preview rounds (DM-006); DolphinBench/Claude Code temporal identity issues extend DM-013; Freeze compat repeated DM-001/002/003; release run `36581201216` repeated DM-004 and recovery PR #557; final `execution/index.md` remains stale after recovery (DM-014). Edition RELEASED/COMPLETE with exact Human-approved 12pp PDF; shared Core implementation unchanged. |
 
 Next required update: the next Weekly/Special guarded stop or closure if it occurs first.
 
@@ -723,33 +768,32 @@ Next required update: the next Weekly/Special guarded stop or closure if it occu
 | `r0.4` | 2026-09-23 | `SP-efficient-llm-2026` Publication Preview r2 repair | Added CV2-DM-018 for Longform Publication QA passing gross Overfull hbox / rendered clipping (Issue #520, r1 ~70pt p.56 glossary overflow with VISUAL PASS). Recorded edition-local layout fix + overfull guard + full-66pp visual disposition; Issue #521 explicitly EDITION_LOCAL, not added. |
 | `r0.5` | 2026-09-23 | `SP-efficient-llm-2026` final release closure | Added CV2-DM-019 for canonical Freeze builder deriving release identity from internal issue_id instead of the profile public slug (first divergent-slug LONGFORM_SPECIAL freeze; edition-local identity correction, workflow identity check passed). Recorded CV2-DM-001/002/003 Freeze recurrences and CV2-DM-004 Release recurrence (run 35863535480, recovery PR #524); DM-016/017/018 unchanged; edition RELEASED/COMPLETE. |
 | `r0.6` | 2026-09-28 | `SP-beyond-text-2026` final release closure | No new CV2-DM ID. Refreshed DM-001/002/003/004/019 latest reproductions to `SP-beyond-text-2026` with TS-002 evidence (`ts002-freeze-core-defects-20260928.md`, `ts002-release-recovery-20260928.md`, runs 36333979769/36333984167, PRs #548/#549). Materially updated DM-006 (tracking #501+#534, TS-002 #533/#539/#543 evidence, new generic seed corpus path, forbidden-list insufficiency, expanded future scan directions, established-Japanese invariant). Edition RELEASED/COMPLETE; shared Core implementation unchanged. |
+| `r0.7` | 2026-09-30 | `2026-W39` final release closure | Added CV2-DM-020 for claim-to-source semantic fidelity / source-role binding after Issue #551 (ART novelty, Cursor claim strength, Claude Code first-party binding, Opus conditionality, source-note role consistency). Refreshed DM-001/002/003 Freeze recurrences from `w39-freeze-compat-note-20260929.md`, DM-004 release recurrence (run `36581201216`, PR #557), DM-006 Weekly terminology recurrence (#501 + W39 supplements), DM-013 temporal/version/date recurrence (#551), and DM-014 stale execution index after recovery. W39 RELEASED/COMPLETE; shared Core implementation unchanged. |
 
 ## 11. Reference authority
 
-Primary evidence for the current r0.1 inventory:
+Primary evidence for the current inventory includes:
 
 - frozen Production Line: `774dd39a951c9ac3818e83dfffd4c7666efb0a20`;
-- current reviewed main at establishment: `0a0b0747ec6e21b120eb3bf4684d82e241f9d042`;
+- W39 closure-reviewed main: `239ef2703a93fa802f232978c7166d04d6cc3d49`;
 - [Issue #497](https://github.com/eariver/japanese-generative-ai-survey/issues/497);
 - [Issue #501](https://github.com/eariver/japanese-generative-ai-survey/issues/501);
 - [Issue #505](https://github.com/eariver/japanese-generative-ai-survey/issues/505);
 - [Issue #506](https://github.com/eariver/japanese-generative-ai-survey/issues/506);
 - [Issue #507](https://github.com/eariver/japanese-generative-ai-survey/issues/507);
 - [Issue #508](https://github.com/eariver/japanese-generative-ai-survey/issues/508);
+- [Issue #515](https://github.com/eariver/japanese-generative-ai-survey/issues/515);
+- closed W39 [Issue #551](https://github.com/eariver/japanese-generative-ai-survey/issues/551) for CV2-DM-020 and DM-013 W39 evidence;
 - closed edition Issues #500, #502, #511, #512 for deferred generic hardening;
 - [Issue #434](https://github.com/eariver/japanese-generative-ai-survey/issues/434) as a pre-freeze carry-over;
 - W35-W38 edition-local defect records under `sources/<edition>/execution/defects/`;
-- release recovery PRs #504, #510, #514, #524 and #549;
-- TS-001 reissue edition-local defect records
-  (`ts001-reissue-freeze-core-defects-20260923.md`,
-  `ts001-reissue-release-recovery-20260923.md`) and compat helper
-  (`execution/ts001-freeze-compat-20260923.py`);
-- TS-002 edition-local defect records
-  (`sources/SP-beyond-text-2026/execution/defects/ts002-freeze-core-defects-20260928.md`,
-  `sources/SP-beyond-text-2026/execution/defects/ts002-release-recovery-20260928.md`) and compat helper
-  (`sources/SP-beyond-text-2026/execution/ts002-freeze-compat-20260928.py`);
-- generic terminology seed: `docs/editorial/ja-technical-terminology-overtranslation-seed.md`
-  (CV2-DM-006 authority seed; #533/#539/#543 + Sol/Muse findings; no auto-rewrite);
+- release recovery PRs #504, #510, #514, #524, #549 and #557;
+- TS-001 reissue edition-local defect records (`ts001-reissue-freeze-core-defects-20260923.md`, `ts001-reissue-release-recovery-20260923.md`) and compat helper (`execution/ts001-freeze-compat-20260923.py`);
+- TS-002 edition-local defect records (`sources/SP-beyond-text-2026/execution/defects/ts002-freeze-core-defects-20260928.md`, `sources/SP-beyond-text-2026/execution/defects/ts002-release-recovery-20260928.md`) and compat helper (`sources/SP-beyond-text-2026/execution/ts002-freeze-compat-20260928.py`);
+- W39 Freeze compatibility: `sources/2026-W39/execution/defects/w39-freeze-compat-note-20260929.md`;
+- W39 Release workflow run `36581201216`, recovery PR #557, final `RELEASED / COMPLETE` state, and public tag `weekly/2026-W39`;
+- W39 stale navigation reproduction: `sources/2026-W39/execution/index.md` versus canonical `sources/2026-W39/production-state.json`;
+- generic terminology seed: `docs/editorial/ja-technical-terminology-overtranslation-seed.md` plus W39 additive supplements (CV2-DM-006 authority seeds; no auto-rewrite);
 - historical feedback authority: `docs/survey-production-core-v2-production-feedback-backlog.md`.
 
 When a later revision updates an item, cite the newest direct reproduction evidence while retaining the earlier history above.
