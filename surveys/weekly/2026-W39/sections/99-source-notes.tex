@@ -2,7 +2,7 @@
 \addcontentsline{toc}{section}{Sources \& Limitations}
 
 \subsection*{Primary sources consulted}
-9月22日のOpenAIのGPT-6 SolとLuna、同日のプロンプトキャッシュ改良、9月22日のAnthropicのOpus 5.5、9月23日のClaude Codeの動作変更（公式発表と対象期間後の二次資料の条件差）、9月23日のCursorのエージェント運用の二件、9月21日のSpaceXAIのGrok 4.7、9月22日のHugging FaceのGGUF対応、9月23日のAnthropicの酵素の報告、同日のOpenAIのMentalHealthBench、9月21日にv1・22日にv2が公開されたmem0のDolphinBench（要旨のみ）、9月23日のGoogleのプライバシー保護サーバー側メモリの発表、9月22日のAWSとTBCの提携の知らせ（提携の事実のみ）、DeepSeekの公式料金表（V4.1-FlashとV4-Pro-0813、旧aliasのルーティング先つき）を範囲として読んだ。本号では全文PDFや手法の細目、図表の詳細までは扱わず、その範囲を超える主張は行わない。
+9月22日のOpenAIのGPT-6 SolとLuna、同日のプロンプトキャッシュ改良、9月22日のAnthropicのOpus 5.5、9月25日のClaude Codeの動作変更（公式発表と対象期間後の二次資料の条件差）、9月23日のCursorのエージェント運用の二件、9月21日のSpaceXAIのGrok 4.7、9月22日のHugging FaceのGGUF対応、9月23日のAnthropicの酵素の報告、同日のOpenAIのMentalHealthBench、9月21日にv1・22日にv2が公開されたmem0のDolphinBench（要旨のみ）、9月23日のGoogleのプライバシー保護サーバー側メモリの発表、9月22日のAWSとTBCの提携の知らせ（提携の事実のみ）、DeepSeekの公式料金表（V4.1-FlashとV4-Pro-0813、旧aliasのルーティング先つき）を範囲として読んだ。本号では全文PDFや手法の細目、図表の詳細までは扱わず、その範囲を超える主張は行わない。
 
 \subsection*{Temporal boundary}
 通常の範囲は2026-09-18 18:00から2026-09-25 18:00（いずれもAmerica/New\_York、終了時刻は含まない）。締め切り後の速報7件は通常の集計には含めない。DeepSeekの料金表は対象期間後の今日の公式ページであり、正確な切替時刻の根拠には使わない。Claude Codeの条件差の細目は対象期間後の二次資料で押さえ、公式発表自体は対象期間内のものである。提携の知らせの日付は9月22日づけの日単位で押さえ、時刻レベルの断定はしない。
@@ -11,7 +11,7 @@
 測定値や比較、コスト、スループット、利用見通しの説明は、ベンダーやモデルカード、提携の報告として受け止め、独立した再現とは切り分ける。Solの33.2\%やOpus 5.5の66.4\%、Grok 4.7の46.3\%といった値はベンダー側の報告であり、ベンチマークのeffort設定やハーネスの違いを含めて本号の検証範囲外である。
 
 \subsection*{Community observation boundary}
-公開投稿の台帳（26件の直接URL：通常19件、速報7件）は関心の方向を示す背景であり、仕様やベンチマーク、日付、利用条件、価格、ライセンス、アーキテクチャ、公開事実の根拠にはならない。全26件の内訳は本号の公開台帳（community-observation-ledger.md）で直接確かめられる。行単位の台帳を正とし、要約文の数えに頼らない。
+公開投稿の台帳（26件の直接URL：通常19件、速報7件）は原則として関心の方向を示す背景にとどめる。ただし、一次発表として本文で明示的に引用した公式アカウントの投稿は、その発表内容に限って一次資料として扱う。台帳に載っているという事実だけでは、いかなる行も技術的な根拠に格上げしない。独立した投稿やコミュニティの反応は、仕様やベンチマーク、日付、利用条件、価格、ライセンス、アーキテクチャ、公開事実の根拠にはならない。全26件の内訳は本号の公開台帳（community-observation-ledger.md）で直接確かめられる。行単位の台帳を正とし、要約文の数えに頼らない。
 
 \subsection*{What was not elevated}
 stealth modelであるPixel Canaryの正体と評価の裏づけ\cite{w39x-c8-pixel}、Codexの障害報告\cite{w39x-c9-codex}、DeepSeek周辺の遅い言及\cite{w39x-c5-deepseek-eval}は、いずれも締め切り後の出来事として次号へ持ち越すこととし、今号の技術的な出来事としては取り上げない。提携の数字の裏づけのない最適化の主張\cite{tbcaws}は、本号の主張には載せない。噂の段階の話題は今週の技術的な出来事として取り上げない。

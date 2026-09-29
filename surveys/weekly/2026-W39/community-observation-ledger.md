@@ -7,9 +7,9 @@ Ordinary window (UTC, end exclusive): `[2026-09-18T22:00:00Z, 2026-09-25T22:00:0
 Counts: total rows **26**; `ORDINARY_WINDOW` **19**; `LATE_BREAKING` **7**; pre-window **0**; time-unverified **0**.
 Ordinary-window unique accounts: **12** (`OFFICIAL` 4 + `INDEPENDENT` 6 + `COMMUNITY` 2).
 
-These public posts are community observation and context only. They establish no technical
+These public posts are community observation and context only, with one narrow exception: an OFFICIAL first-party post that the article separately and explicitly cites for the exact announcement fact it supports may serve as primary announcement evidence for that fact alone. They otherwise establish no technical
 specifications, performance, price, license, availability, safety, or source-publication date by
-themselves. Late-breaking rows are excluded from ordinary-window totals. Row order follows the
+themselves, and ledger membership alone never elevates a row to technical evidence. Independent and community posts remain context-only in all cases. Late-breaking rows are excluded from ordinary-window totals. Row order follows the
 accepted Grok r3 Final direct-X ledger.
 
 | # | account | role | direct public post URL | Snowflake UTC | temporal class |
