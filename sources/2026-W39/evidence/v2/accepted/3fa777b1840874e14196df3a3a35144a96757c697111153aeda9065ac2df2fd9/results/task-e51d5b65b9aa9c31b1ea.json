@@ -1,0 +1,130 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W39",
+  "evidence_task_id": "evidence:2026-W39:f0630cfdceb6d0ba",
+  "basis": {
+    "task_sha256": "ef4da6e3423abef49ed8d2fd50f078de8df5962e6aa7da76ad761fd30f59fdb2",
+    "screening_acceptance_sha256": "aee84b5afdc469cbe86acb8bec70eb0967af67e19970667178631f8e3d1aac36",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "cursor-rollouts-security-reviewer",
+      "canonical_name": "Cursor Rollouts + Security Reviewer",
+      "entity_type": "PRODUCT",
+      "organization": "Cursor",
+      "canonical_url": "https://cursor.com/blog/rollouts-and-security-reviewer"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "cursor-rollouts-security-reviewer",
+    "artifact_type": "PRODUCT",
+    "canonical_name": "Cursor Rollouts + Security Reviewer",
+    "canonical_url": "https://cursor.com/blog/rollouts-and-security-reviewer"
+  },
+  "temporal": {
+    "observed_at": "2026-09-27T18:52:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-09-23T12:00:00Z",
+        "subject_id": "cursor-rollouts-security-reviewer",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "primary:cursor.com/blog/rollouts-and-security-reviewer",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "Cursor: Rollouts + Security Review bots (Sep 23)",
+      "published_at": "2026-09-23T12:00:00Z",
+      "accessed_at": "2026-09-27T18:52:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Cursor launched Rollouts (PR-to-production deploy monitoring with ping/pause/revert-PR actions; no autonomous merge/rollback today) and Security Reviewer (per-PR vuln reports with severity/attack-path/one-click fix) on Sep 23 for Teams/Enterprise via automations tab with 10-day Rollouts trial credits.",
+      "subject_id": "cursor-rollouts-security-reviewer",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "First-party launch post; product existence, availability, scope."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Security Reviewer reduced average review time 4.8 to 3.8 minutes and raised comment acceptance 45-50% to 60-70% per vendor chart.",
+      "subject_id": "cursor-rollouts-security-reviewer",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Vendor-reported measured effects; independent reproduction absent."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Measured review effects are vendor-reported.",
+      "subject_id": "cursor-rollouts-security-reviewer",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "Feature-flag integration and release-train awareness are coming-soon, not shipped.",
+      "subject_id": "cursor-rollouts-security-reviewer",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-3",
+      "text": "Distinct from March open-source security-agent templates.",
+      "subject_id": "cursor-rollouts-security-reviewer",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "cursor-rollouts-blog",
+        "status": "VERIFIED",
+        "finding": "Launch post consumed; products, plans, trial, scope verified as vendor-published; review-effect metrics vendor-bound.",
+        "subject_ids": [
+          "cursor-rollouts-security-reviewer"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

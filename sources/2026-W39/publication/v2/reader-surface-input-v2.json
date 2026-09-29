@@ -1,0 +1,140 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W39",
+  "publication_profile": "WEEKLY_MAGAZINE",
+  "closing_synthesis": "今週を読む軸は、最前線が安く運用しやすくなったことである。料金と提供の広がり、エージェント運用の道具立て、手元の動かし方、評価のベンチマークを、一次資料の範囲と留保とともに束ねる。数値と利用条件、報告主体を切り離さない読みが条件になる。",
+  "final_summary_paragraphs": [
+    "今週は、最前線が安く、運用しやすくなり、料金と提供の広がり、エージェント運用の道具立て、手元の動かし方、評価のベンチマークが同時に前景化した。",
+    "数値と利用条件、報告主体を切り離さない読みが条件になる。各節で示したベンダー報告にとどまる数値、日時帰属の精度、対象期間内外の切り分けは残した。",
+    "未確定の点は、次の公開更新や再現可能な評価で確かめるべき観測点として残る。取り上げなかった噂や裏づけのない最適化の主張を存在しないこととはせず、既存の不確実性を引き継ぐ。"
+  ],
+  "packages": [
+    {
+      "package_id": "w39-cost-frontier",
+      "headline": "値段の下がった最前線――SolとLuna、そしてプロンプトキャッシュの改善",
+      "deck": "9月22日のSol/Luna公開とキャッシュ改善を、半額の料金表と提供範囲、評価の留保と切り分けて示す。",
+      "blocks": [
+        {
+          "block_id": "p1-release",
+          "text": "9月22日、OpenAIはGPT-6の系列にSolとLunaを加えた。Astraと同じ流儀で鍛え、その高い性能を速く安い二つのモデルで届ける内容で、最上位モデルの交代ではない。料金は5.6世代の販促価格から半額。請求の実測は本号では確かめていない。"
+        },
+        {
+          "block_id": "p1-evals",
+          "text": "ベンチマーク結果は発表側の計測による。AutomationBench、Agents’ Last Exam、FrontierCode、DeepSWE、社内の factuality 評価はいずれも発表側の計測方法であり、相手の数は公開の報告からの引用である。"
+        },
+        {
+          "block_id": "p1-caching",
+          "text": "同じ日にプロンプトキャッシュの改良も出た。30分間の再利用窓での割引、ダッシュボード、キャッシュミス診断ツール、キャッシュ境界の指定、reasoning effort変更時のキャッシュ保持が添えられた。効果の大きさは発表側の引用である。"
+        },
+        {
+          "block_id": "p1-serving",
+          "text": "DeepSeekの公式料金表にdeepseek-flashとdeepseek-v4-proが並び、旧モデル名へのAPIリクエストの回し先が明記された。V4.1-Proモデルの登場は書かれていない。正確な切替時刻は公式ページからは読めない。"
+        }
+      ]
+    },
+    {
+      "package_id": "w39-frontier-challenger",
+      "headline": "挑む者――Opus 5.5",
+      "deck": "9月22日のOpus 5.5を、料金表と安全対策の仕組み、テスターの声と切り分けて示す。",
+      "blocks": [
+        {
+          "block_id": "p1-release",
+          "text": "9月22日、AnthropicはClaude 5.5ファミリーの第一弾としてOpus 5.5を出した。Fable 5.1にほとんどの仕事で並び、Opus 5より4割ほど軽い。外部評価機関の事前評価つき。料金表と5時間枠の底上げ、高速モードが添えられた。"
+        },
+        {
+          "block_id": "p1-evals",
+          "text": "ベンチマーク結果の読み方には発表側の評価条件に注意がいる。Terminal-Bench 4.0、FrontierCode、CursorBench、GDPvalの数値は発表側の計測で、AutomationBenchでは安全対策の作用分を失敗に数える留保がある。"
+        },
+        {
+          "block_id": "p1-safety",
+          "text": "安全対策はFable 5.1と同等の水準とされる。自動化された挙動評価でこれまで評価したモデルの中で最高の成績とされ、コンテインメント回避の試みは大幅に少ない。eval awarenessの限界は開発元自身が記す。テスターのコメントは選ばれた声である。"
+        },
+        {
+          "block_id": "p1-codex",
+          "text": "9月25日にはClaude Codeのgraceful stopが公式の場で示され、週の利用枠から少量を割いて後始末に充てるとされる。プラン別の条件差は対象期間後の二次資料が伝える。"
+        }
+      ]
+    },
+    {
+      "package_id": "w39-agent-operations",
+      "headline": "エージェント運用――ハーネス最適化とデプロイ・セキュリティボット",
+      "deck": "9月23日のCursorの二つの動きを、測定値の出所と切り分けて示す。",
+      "blocks": [
+        {
+          "block_id": "p1-harness",
+          "text": "Cursorは利用者のトークン代を7%ほど軽くしたと発表した。システムプロンプトの削減、ツール定義の動的読み込み、キャッシュ境界の安定化、コールドキャッシュミスの削減、行番号の間引き、サブエージェント利用の促しの取り外しが中身とされる。いずれもCursorの実運用環境での測定である。"
+        },
+        {
+          "block_id": "p1-shipops",
+          "text": "同じ日、RolloutsとSecurity Reviewerの二つのボットが出た。デプロイ監視とPRごとの脆弱性報告で、Teams・Enterpriseプラン、10日間のトライアルつき。効果の数値は開発元の測定である。機能フラグ操作やリリーストレイン対応はこれからとされる。"
+        }
+      ]
+    },
+    {
+      "package_id": "w39-coding-models",
+      "headline": "コーディングモデルの新顔――Grok 4.7",
+      "deck": "9月21日のGrok 4.7を、値とベンチマークの非対称の留保とともに示す。",
+      "blocks": [
+        {
+          "block_id": "p1-release",
+          "text": "9月21日、SpaceXAIはコーディングと知識労働向けにGrok 4.7を出した。ベースモデルの大型化、長い強化学習、Grok Bot harnessへのネイティブ対応とされる。Cursor各プラン、Grok Build、API、モデルルーター、クラウド各社に出る。追加学習の記録利用はモデルカードに書かれる。"
+        },
+        {
+          "block_id": "p1-evals",
+          "text": "ベンチマーク結果はeffort設定が揃っていない。CursorBench、DeepSWE、Terminal-Benchの数値は発表側の計測で、第三者の測定との乖離（harness依存）が見えるため優劣を言わない。該当する公開投稿は26件になく動向はうたわない。"
+        }
+      ]
+    },
+    {
+      "package_id": "w39-local-inference",
+      "headline": "手元で動かす――GGUFをTransformersで",
+      "deck": "9月22日のGGUF対応を、速さの留保と動く範囲とともに示す。",
+      "blocks": [
+        {
+          "block_id": "p1-integration",
+          "text": "Hugging Faceは手元のGGUFをTransformersでそのまま動かす道を開いた。gguf_file指定の読み込み、OpenAI互換APIのserving、ggmlカーネルの呼び出し、生成ループの手直しが中身とされる。まずはApple SiliconのMacとQwen3.5の高密度・MoEモデルが対象である。"
+        },
+        {
+          "block_id": "p1-benchmarks",
+          "text": "llama.cppに対する速度の近さは一台のMacでの近似で、条件の非対称は記事の著者自身が断る。最適化パスはMPSのみで、対応モデルの広がりはこれからとされる。速度を最優先するならllama.cppが推奨と著者自身が書く。"
+        }
+      ]
+    },
+    {
+      "package_id": "w39-science-eval",
+      "headline": "科学と評価――酵素の発見と二つのベンチマーク",
+      "deck": "9月21～23日の科学と評価の三件を、未検証の線引きとともに示す。",
+      "blocks": [
+        {
+          "block_id": "p1-enzyme",
+          "text": "Anthropicはライフサイエンス研究組織の立ち上げと最初の成果を示した。ベイエリアのwet labを添え、約950のClaudeエージェントがDNA配列データを探り、新規の逆転写酵素の傍らの反復配列からARTと名づけた。働きは不明、査読前のプレプリントと明言される。問いかけと実験は人の手で、探索はエージェントが担う。"
+        },
+        {
+          "block_id": "p1-mhb",
+          "text": "OpenAIは精神保健応答のベンチマークMentalHealthBenchを開いた。80人超の有資格の臨床家が作った1,215件の合成会話に-10から+10の採点基準をつける流儀とされる。採点はGPT-5.6 Solに委ねられ、同一系列モデルの循環性があるため点比べは真としない。"
+        },
+        {
+          "block_id": "p1-dolphin",
+          "text": "mem0からエージェント記憶ベンチマークDolphinBenchが出た。3種類の知識労働ペルソナに履歴を持たせ、200タスクずつの要否を確かめ、費用と待ち時間を添えて比べる仕組みとされる。要旨までしか読んでおらず、タスクの質やベースライン数は評価しない。"
+        }
+      ]
+    },
+    {
+      "package_id": "w39-memory-privacy",
+      "headline": "サーバー側メモリ、鍵は手元に",
+      "deck": "9月23日のPrivate AI Computeの構想を、提供の有無と切り分けて示す。",
+      "blocks": [
+        {
+          "block_id": "p1-arch",
+          "text": "GoogleはPrivate AI Computeにセッションをまたぐ永続メモリを持たせる構想を示した。鍵は利用者の手元に置き、セキュアエンクレーブでだけ解いて処理し、すぐ再暗号化する。attestationを確かめられる透明性ログも添えられる。四組織による共同開発とされる。"
+        },
+        {
+          "block_id": "p1-status",
+          "text": "発表ではこれからできるの構想であり、今日利用できる製品の知らせではない。監査の中身はこの発表からは確かめられず、technical briefも概要の確認に留める。提供時期やできることの広がりは言わない。"
+        }
+      ]
+    }
+  ],
+  "headline": "安くなる最前線、働くエージェント",
+  "deck": "GPT-6 SolとLunaの半額、Opus 5.5の4割減、エージェント運用の道具立て、手元のGGUF、評価のベンチマーク、プライバシーを保つサーバー側メモリの構想を、一次資料の範囲と留保とともに読む。"
+}

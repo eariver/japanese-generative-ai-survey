@@ -1,0 +1,2568 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W39",
+  "research_profile": "WEEKLY",
+  "publication_profile": "WEEKLY_MAGAZINE",
+  "basis": {
+    "production_profile_sha256": "29faefb0cbb8d2251ab05935b3f472e45dd01566144742ad46ff623d23fac96a",
+    "architecture_sha256": "b7afb755b04c7d350f43ad99f160df7373645124f2428b37114c4f3bdba94df3",
+    "architecture_approval_sha256": "f9ee19e2746ac1cbf8f2ea4ee5102c663f9b2600e2db102ce1ea54b3721b5f8f"
+  },
+  "editorial_thesis": "In 2026-W39 the frontier got cheaper and more operational: OpenAI pushed GPT-6 Sol/Luna to half price with a caching stack for persistent agents while Anthropic answered with Opus 5.5 at Fable-level performance for 40% less; Cursor industrialized the agent lifecycle with measured harness efficiency and post-PR bots; local inference, agentic science, evaluation, and privacy architecture each moved on first-party authority; vendor numbers stay attributed and late-only signals stay late.",
+  "architecture_goals": [
+    "Present GPT-6 Sol/Luna as a cost-efficiency release with price card, availability, and attributed benchmarks plus the caching stack, not as a capability break with Astra",
+    "Present Opus 5.5 as a cost-performance challenger with pricing, safeguards, and X demo signal, keeping vendor-run figures attributed",
+    "Present Cursor harness efficiency and Rollouts/Security Review as measured agent operations with production-method bounds",
+    "Present Grok 4.7 as a coding-model release with quarantined effort-asymmetric claims and no invented community momentum",
+    "Present HF GGUF support as a scoped local-inference integration with explicit hardware and arch limits",
+    "Present ART enzyme discovery, MentalHealthBench, and DolphinBench as science and evaluation advances with pre-review and grader boundaries",
+    "Present Google server-side memory as a forward-looking privacy architecture with no availability claim"
+  ],
+  "drafts": [
+    {
+      "package_id": "w39-cost-frontier",
+      "drafting_order": 1,
+      "draft_package_sha256": "b0579e3c95e8a38b2da3fa2ddcb6ca2d3e0db297590f4ef26e0647929f42a281",
+      "draft_result_sha256": "95fa732782d7303655825d360287dba1743c9c7edb2c184e7e3c37f50eb44883",
+      "draft_result": {
+        "schema_version": "2.0-rc1",
+        "issue_id": "2026-W39",
+        "research_profile": "WEEKLY",
+        "publication_profile": "WEEKLY_MAGAZINE",
+        "package_id": "w39-cost-frontier",
+        "draft_version": "r1",
+        "status": "ESTABLISHED",
+        "basis": {
+          "draft_package_sha256": "b0579e3c95e8a38b2da3fa2ddcb6ca2d3e0db297590f4ef26e0647929f42a281",
+          "prompt_id": "article-drafting-v2",
+          "prompt_sha256": "b687313312a23025228c16c3f10cb68f669b910cd7215e41886d4dd91f44fe11"
+        },
+        "runner": {
+          "provider": "Muse Spark",
+          "model": "Muse Spark",
+          "invocation": "W39 Architecture r1 APPROVED; initial drafting synthesis for 7 approved packages",
+          "generated_at": "2026-09-28T09:31:53+09:00",
+          "run_reference": "W39 approved-through-preview 20260928"
+        },
+        "headline": "値段の下がった最前線――SolとLuna、そして待ち受けの改良",
+        "deck": "9月22日のSol/Luna公開と待ち受け改良を、半額の料金表と提供範囲、評価の留保と切り分けて示す。",
+        "deck_attribution_mode": "MIXED",
+        "deck_evidence_refs": [
+          {
+            "evidence_task_id": "evidence:2026-W39:49f340c721bb26de",
+            "kind": "CLAIM",
+            "evidence_id": "claim-1",
+            "subject_id": "gpt-6-sol-luna",
+            "subject_role": "PRIMARY_SUBJECT"
+          },
+          {
+            "evidence_task_id": "evidence:2026-W39:49f340c721bb26de",
+            "kind": "CLAIM",
+            "evidence_id": "claim-2",
+            "subject_id": "gpt-6-sol-luna",
+            "subject_role": "PRIMARY_SUBJECT"
+          },
+          {
+            "evidence_task_id": "evidence:2026-W39:49f340c721bb26de",
+            "kind": "CLAIM",
+            "evidence_id": "claim-3",
+            "subject_id": "gpt-6-sol-luna",
+            "subject_role": "PRIMARY_SUBJECT"
+          },
+          {
+            "evidence_task_id": "evidence:2026-W39:49f340c721bb26de",
+            "kind": "CLAIM",
+            "evidence_id": "claim-4",
+            "subject_id": "gpt-6-sol-luna",
+            "subject_role": "PRIMARY_SUBJECT"
+          },
+          {
+            "evidence_task_id": "evidence:2026-W39:49f340c721bb26de",
+            "kind": "CLAIM",
+            "evidence_id": "claim-5",
+            "subject_id": "gpt-6-sol-luna",
+            "subject_role": "PRIMARY_SUBJECT"
+          },
+          {
+            "evidence_task_id": "evidence:2026-W39:3f65ef124aa141e9",
+            "kind": "CLAIM",
+            "evidence_id": "claim-1",
+            "subject_id": "gpt-6-prompt-caching",
+            "subject_role": "PRIMARY_SUBJECT"
+          },
+          {
+            "evidence_task_id": "evidence:2026-W39:3f65ef124aa141e9",
+            "kind": "CLAIM",
+            "evidence_id": "claim-2",
+            "subject_id": "gpt-6-prompt-caching",
+            "subject_role": "PRIMARY_SUBJECT"
+          },
+          {
+            "evidence_task_id": "evidence:2026-W39:3f65ef124aa141e9",
+            "kind": "CLAIM",
+            "evidence_id": "claim-3",
+            "subject_id": "gpt-6-prompt-caching",
+            "subject_role": "PRIMARY_SUBJECT"
+          }
+        ],
+        "blocks": [
+          {
+            "block_id": "p1-release",
+            "block_type": "PARAGRAPH",
+            "text": "9月22日、OpenAIはGPT-6の系列にSolとLunaを加えた。Astraと同じ流儀で鍛え、その切れ味を速く安い二つの器に移す内容で、新しい頂点の交代ではない。APIではgpt-6-solとgpt-6-lunaの名で呼ばれ、ChatGPT WorkとCodexでは有料の各プランから同日に入り、Lunaは無料やGoの利用者にも卓上版で開かれる。一方で対話欄のChatへの広がりはその日のうちの順次とされ、見えない利用者もいた。料金は5.6世代の販促価格から半額となり、Solは入力100万字句あたり4ドルが2ドル、出力20ドルが10ドル、Lunaは入力0.20ドルが0.10ドル、出力1.20ドルが0.50ドルと示された。請求の実測は本号では確かめていない。",
+            "attribution_mode": "MIXED",
+            "evidence_refs": [
+              {
+                "evidence_task_id": "evidence:2026-W39:49f340c721bb26de",
+                "kind": "CLAIM",
+                "evidence_id": "claim-1",
+                "subject_id": "gpt-6-sol-luna",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:49f340c721bb26de",
+                "kind": "CLAIM",
+                "evidence_id": "claim-2",
+                "subject_id": "gpt-6-sol-luna",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:49f340c721bb26de",
+                "kind": "CLAIM",
+                "evidence_id": "claim-3",
+                "subject_id": "gpt-6-sol-luna",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:49f340c721bb26de",
+                "kind": "CLAIM",
+                "evidence_id": "claim-4",
+                "subject_id": "gpt-6-sol-luna",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:49f340c721bb26de",
+                "kind": "CLAIM",
+                "evidence_id": "claim-5",
+                "subject_id": "gpt-6-sol-luna",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:49f340c721bb26de",
+                "kind": "LIMITATION",
+                "evidence_id": "limitation-1",
+                "subject_id": "gpt-6-sol-luna",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:49f340c721bb26de",
+                "kind": "LIMITATION",
+                "evidence_id": "limitation-2",
+                "subject_id": "gpt-6-sol-luna",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:49f340c721bb26de",
+                "kind": "LIMITATION",
+                "evidence_id": "limitation-3",
+                "subject_id": "gpt-6-sol-luna",
+                "subject_role": "PRIMARY_SUBJECT"
+              }
+            ]
+          },
+          {
+            "block_id": "p1-evals",
+            "block_type": "PARAGRAPH",
+            "text": "腕前の物差しは発表側の手による。業務の流れをこなすAutomationBenchではSolの強い設定が33.2%を刻み、一仕事あたり27セントと置かれる。相手のOpus 5の26.9%を、費用では11分の1ほどで上回るとされる。長い仕事のAgents’ Last Examでは56.4%、符号のFrontierCodeでは先代を離してFable 5.1の強い設定に並び、DeepSWEでは68.8%でFable 5の69.9%に1.1差まで迫り、費用は8割ほど軽いとされる。実在のやり取りで誤りを数える社内の物差しでは、Solの誤りが先代の半分ほどに減り、Astra並みの確かさに近づくとされる。いずれも発表側の計り方であり、相手の数は公開の報告からの引用である。",
+            "attribution_mode": "MIXED",
+            "evidence_refs": [
+              {
+                "evidence_task_id": "evidence:2026-W39:49f340c721bb26de",
+                "kind": "CLAIM",
+                "evidence_id": "claim-1",
+                "subject_id": "gpt-6-sol-luna",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:49f340c721bb26de",
+                "kind": "CLAIM",
+                "evidence_id": "claim-2",
+                "subject_id": "gpt-6-sol-luna",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:49f340c721bb26de",
+                "kind": "CLAIM",
+                "evidence_id": "claim-3",
+                "subject_id": "gpt-6-sol-luna",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:49f340c721bb26de",
+                "kind": "CLAIM",
+                "evidence_id": "claim-4",
+                "subject_id": "gpt-6-sol-luna",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:49f340c721bb26de",
+                "kind": "CLAIM",
+                "evidence_id": "claim-5",
+                "subject_id": "gpt-6-sol-luna",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:49f340c721bb26de",
+                "kind": "LIMITATION",
+                "evidence_id": "limitation-1",
+                "subject_id": "gpt-6-sol-luna",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:49f340c721bb26de",
+                "kind": "LIMITATION",
+                "evidence_id": "limitation-2",
+                "subject_id": "gpt-6-sol-luna",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:49f340c721bb26de",
+                "kind": "LIMITATION",
+                "evidence_id": "limitation-3",
+                "subject_id": "gpt-6-sol-luna",
+                "subject_role": "PRIMARY_SUBJECT"
+              }
+            ]
+          },
+          {
+            "block_id": "p1-caching",
+            "block_type": "PARAGRAPH",
+            "text": "同じ日に、長く働く使い手のための待ち受けの改良も出た。使い回す文頭の一致で費用と待ち時間を抑える仕組みが強まり、30分の窓での再利用に割引がつく。どれだけ効いているかを見る盤面、外したわけを説く道具、区切りの置き所を利用者が決める手段、途中で考えの深さを変えても待ち受けを保つ手立てが添えられた。GitHubでは数十億の求めを通じて新たに作る字句の割合が半分以上減ったとされるが、これも発表側の引用である。公開の場では値下げを喜ぶ声と、長い仕事でのもたつきを訴える声が交じり、後者は一次発表では確かめも否定もできない。",
+            "attribution_mode": "MIXED",
+            "evidence_refs": [
+              {
+                "evidence_task_id": "evidence:2026-W39:3f65ef124aa141e9",
+                "kind": "CLAIM",
+                "evidence_id": "claim-1",
+                "subject_id": "gpt-6-prompt-caching",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:3f65ef124aa141e9",
+                "kind": "CLAIM",
+                "evidence_id": "claim-2",
+                "subject_id": "gpt-6-prompt-caching",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:3f65ef124aa141e9",
+                "kind": "CLAIM",
+                "evidence_id": "claim-3",
+                "subject_id": "gpt-6-prompt-caching",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:3f65ef124aa141e9",
+                "kind": "LIMITATION",
+                "evidence_id": "limitation-1",
+                "subject_id": "gpt-6-prompt-caching",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:3f65ef124aa141e9",
+                "kind": "LIMITATION",
+                "evidence_id": "limitation-2",
+                "subject_id": "gpt-6-prompt-caching",
+                "subject_role": "PRIMARY_SUBJECT"
+              }
+            ]
+          },
+          {
+            "block_id": "p1-serving",
+            "block_type": "PARAGRAPH",
+            "text": "脇には、前号から持ち越したDeepSeekの話に区切りがついた。公式の料金表にdeepseek-flash（V4.1-Flash相当）とdeepseek-v4-pro（V4-Pro-0813相当）が並び、古い呼び名の求めは新しいFlashに回してFlashの値で数えると明記された。前号で開いたままだった一次資料の穴はこの一枚で塞がり、V4.1-Proという品の登場や重みの退役は書かれていないので本号でも言わない。切り替わりの正確な刻はこの紙からは読めない。",
+            "attribution_mode": "MIXED",
+            "evidence_refs": [
+              {
+                "evidence_task_id": "evidence:2026-W39:49b3df5d65054f56",
+                "kind": "CLAIM",
+                "evidence_id": "claim-1",
+                "subject_id": "deepseek-api-models-pricing",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:49b3df5d65054f56",
+                "kind": "CLAIM",
+                "evidence_id": "claim-2",
+                "subject_id": "deepseek-api-models-pricing",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:49b3df5d65054f56",
+                "kind": "CLAIM",
+                "evidence_id": "claim-3",
+                "subject_id": "deepseek-api-models-pricing",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:49b3df5d65054f56",
+                "kind": "LIMITATION",
+                "evidence_id": "limitation-1",
+                "subject_id": "deepseek-api-models-pricing",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:49b3df5d65054f56",
+                "kind": "LIMITATION",
+                "evidence_id": "limitation-2",
+                "subject_id": "deepseek-api-models-pricing",
+                "subject_role": "PRIMARY_SUBJECT"
+              }
+            ]
+          },
+          {
+            "block_id": "w39-cost-frontier-boundaries",
+            "block_type": "CLAIM_BOUNDARY",
+            "text": "この節の読解上の境界: No Astra-capability-break claim / No independent billing verification / No long-task performance verdict beyond cited evals / Competitor benchmark figures are vendor-reported; independent reproduction absent. / Long-context/long-task performance specifics beyond cited evals not established. / Voice availability detail lives outside this page body. / pricing-availability: Price card verified as vendor-published but billing not independently verified; gradual-rollout caveat noted; benchmark figures stay vendor-bound. / Persistent-agent cost/latency implications are vendor projections. / API-docs mechanism detail (minimum lengths, write multipliers) not consumed from this page. / X search is volume-limited and recency-biased; low-engagement long tail incomplete. / Seed items MentalHealthBench, Private AI Compute, TBC/AWS neuron claim, Grok 4.7, Cursor harness, DolphinBench produced no recoverable ordinary-window multi-account X cluster with concrete status IDs. / Page is current-state (post-window); the exact in-window cutover instant is not established from this page alone. / Cheepseek third-party shell pricing unverified; late-only X rows stay late-only context.",
+            "attribution_mode": "INFERENCE",
+            "evidence_refs": [
+              {
+                "evidence_task_id": "evidence:2026-W39:49f340c721bb26de",
+                "kind": "LIMITATION",
+                "evidence_id": "limitation-1",
+                "subject_id": "gpt-6-sol-luna",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:49f340c721bb26de",
+                "kind": "LIMITATION",
+                "evidence_id": "limitation-2",
+                "subject_id": "gpt-6-sol-luna",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:49f340c721bb26de",
+                "kind": "LIMITATION",
+                "evidence_id": "limitation-3",
+                "subject_id": "gpt-6-sol-luna",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:3f65ef124aa141e9",
+                "kind": "LIMITATION",
+                "evidence_id": "limitation-1",
+                "subject_id": "gpt-6-prompt-caching",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:3f65ef124aa141e9",
+                "kind": "LIMITATION",
+                "evidence_id": "limitation-2",
+                "subject_id": "gpt-6-prompt-caching",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:3c3fcbb764e0e356",
+                "kind": "LIMITATION",
+                "evidence_id": "limitation-1",
+                "subject_id": "x-ledger-w39-r3",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:3c3fcbb764e0e356",
+                "kind": "LIMITATION",
+                "evidence_id": "limitation-2",
+                "subject_id": "x-ledger-w39-r3",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:49b3df5d65054f56",
+                "kind": "LIMITATION",
+                "evidence_id": "limitation-1",
+                "subject_id": "deepseek-api-models-pricing",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:49b3df5d65054f56",
+                "kind": "LIMITATION",
+                "evidence_id": "limitation-2",
+                "subject_id": "deepseek-api-models-pricing",
+                "subject_role": "PRIMARY_SUBJECT"
+              }
+            ]
+          }
+        ],
+        "must_cover_coverage": [
+          {
+            "requirement": "Sol/Luna release + 50% price card as stated (bounded)",
+            "block_ids": [
+              "p1-release",
+              "p1-evals",
+              "p1-caching",
+              "p1-serving",
+              "w39-cost-frontier-boundaries"
+            ]
+          },
+          {
+            "requirement": "Work/Codex/API availability as stated with rollout caveat (bounded)",
+            "block_ids": [
+              "p1-release",
+              "p1-evals",
+              "p1-caching",
+              "p1-serving",
+              "w39-cost-frontier-boundaries"
+            ]
+          },
+          {
+            "requirement": "Vendor benchmarks attributed, never independent (bounded)",
+            "block_ids": [
+              "p1-release",
+              "p1-evals",
+              "p1-caching",
+              "p1-serving",
+              "w39-cost-frontier-boundaries"
+            ]
+          },
+          {
+            "requirement": "Caching system + tooling as stated (bounded)",
+            "block_ids": [
+              "p1-release",
+              "p1-evals",
+              "p1-caching",
+              "p1-serving",
+              "w39-cost-frontier-boundaries"
+            ]
+          },
+          {
+            "requirement": "X C1 mixed signal incl. stability complaints as community signal only",
+            "block_ids": [
+              "p1-release",
+              "p1-evals",
+              "p1-caching",
+              "p1-serving",
+              "w39-cost-frontier-boundaries"
+            ]
+          },
+          {
+            "requirement": "DeepSeek docs routing context without V4.1-Pro claims (bounded)",
+            "block_ids": [
+              "p1-release",
+              "p1-evals",
+              "p1-caching",
+              "p1-serving",
+              "w39-cost-frontier-boundaries"
+            ]
+          }
+        ],
+        "boundary_dispositions": [
+          {
+            "boundary": "No Astra-capability-break claim",
+            "handling": "EXPLICITLY_STATED",
+            "block_ids": [
+              "w39-cost-frontier-boundaries"
+            ],
+            "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+          },
+          {
+            "boundary": "No independent billing verification",
+            "handling": "EXPLICITLY_STATED",
+            "block_ids": [
+              "w39-cost-frontier-boundaries"
+            ],
+            "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+          },
+          {
+            "boundary": "No long-task performance verdict beyond cited evals",
+            "handling": "EXPLICITLY_STATED",
+            "block_ids": [
+              "w39-cost-frontier-boundaries"
+            ],
+            "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+          },
+          {
+            "boundary": "Competitor benchmark figures are vendor-reported; independent reproduction absent.",
+            "handling": "EXPLICITLY_STATED",
+            "block_ids": [
+              "w39-cost-frontier-boundaries"
+            ],
+            "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+          },
+          {
+            "boundary": "Long-context/long-task performance specifics beyond cited evals not established.",
+            "handling": "EXPLICITLY_STATED",
+            "block_ids": [
+              "w39-cost-frontier-boundaries"
+            ],
+            "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+          },
+          {
+            "boundary": "Voice availability detail lives outside this page body.",
+            "handling": "EXPLICITLY_STATED",
+            "block_ids": [
+              "w39-cost-frontier-boundaries"
+            ],
+            "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+          },
+          {
+            "boundary": "pricing-availability: Price card verified as vendor-published but billing not independently verified; gradual-rollout caveat noted; benchmark figures stay vendor-bound.",
+            "handling": "EXPLICITLY_STATED",
+            "block_ids": [
+              "w39-cost-frontier-boundaries"
+            ],
+            "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+          },
+          {
+            "boundary": "Persistent-agent cost/latency implications are vendor projections.",
+            "handling": "EXPLICITLY_STATED",
+            "block_ids": [
+              "w39-cost-frontier-boundaries"
+            ],
+            "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+          },
+          {
+            "boundary": "API-docs mechanism detail (minimum lengths, write multipliers) not consumed from this page.",
+            "handling": "EXPLICITLY_STATED",
+            "block_ids": [
+              "w39-cost-frontier-boundaries"
+            ],
+            "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+          },
+          {
+            "boundary": "X search is volume-limited and recency-biased; low-engagement long tail incomplete.",
+            "handling": "EXPLICITLY_STATED",
+            "block_ids": [
+              "w39-cost-frontier-boundaries"
+            ],
+            "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+          },
+          {
+            "boundary": "Seed items MentalHealthBench, Private AI Compute, TBC/AWS neuron claim, Grok 4.7, Cursor harness, DolphinBench produced no recoverable ordinary-window multi-account X cluster with concrete status IDs.",
+            "handling": "EXPLICITLY_STATED",
+            "block_ids": [
+              "w39-cost-frontier-boundaries"
+            ],
+            "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+          },
+          {
+            "boundary": "Page is current-state (post-window); the exact in-window cutover instant is not established from this page alone.",
+            "handling": "EXPLICITLY_STATED",
+            "block_ids": [
+              "w39-cost-frontier-boundaries"
+            ],
+            "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+          },
+          {
+            "boundary": "Cheepseek third-party shell pricing unverified; late-only X rows stay late-only context.",
+            "handling": "EXPLICITLY_STATED",
+            "block_ids": [
+              "w39-cost-frontier-boundaries"
+            ],
+            "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+          }
+        ],
+        "profile_extensions": {},
+        "publication_extensions": {}
+      }
+    },
+    {
+      "package_id": "w39-frontier-challenger",
+      "drafting_order": 2,
+      "draft_package_sha256": "67c38b8947471c5f3797b5803fc111feab6253e67ce4c49ce9be3156b5c16a35",
+      "draft_result_sha256": "2cf09c989a741b4c92fce13df60427c6ce6dd160391b45e3c1ee21b744216f96",
+      "draft_result": {
+        "schema_version": "2.0-rc1",
+        "issue_id": "2026-W39",
+        "research_profile": "WEEKLY",
+        "publication_profile": "WEEKLY_MAGAZINE",
+        "package_id": "w39-frontier-challenger",
+        "draft_version": "r1",
+        "status": "ESTABLISHED",
+        "basis": {
+          "draft_package_sha256": "67c38b8947471c5f3797b5803fc111feab6253e67ce4c49ce9be3156b5c16a35",
+          "prompt_id": "article-drafting-v2",
+          "prompt_sha256": "b687313312a23025228c16c3f10cb68f669b910cd7215e41886d4dd91f44fe11"
+        },
+        "runner": {
+          "provider": "Muse Spark",
+          "model": "Muse Spark",
+          "invocation": "W39 Architecture r1 APPROVED; initial drafting synthesis for 7 approved packages",
+          "generated_at": "2026-09-28T09:31:53+09:00",
+          "run_reference": "W39 approved-through-preview 20260928"
+        },
+        "headline": "挑む者――Opus 5.5",
+        "deck": "9月22日のOpus 5.5を、料金表と守りの仕組み、作り手の試しの声と切り分けて示す。",
+        "deck_attribution_mode": "MIXED",
+        "deck_evidence_refs": [
+          {
+            "evidence_task_id": "evidence:2026-W39:7a7917269424d8ec",
+            "kind": "CLAIM",
+            "evidence_id": "claim-1",
+            "subject_id": "claude-opus-5-5",
+            "subject_role": "PRIMARY_SUBJECT"
+          },
+          {
+            "evidence_task_id": "evidence:2026-W39:7a7917269424d8ec",
+            "kind": "CLAIM",
+            "evidence_id": "claim-2",
+            "subject_id": "claude-opus-5-5",
+            "subject_role": "PRIMARY_SUBJECT"
+          },
+          {
+            "evidence_task_id": "evidence:2026-W39:7a7917269424d8ec",
+            "kind": "CLAIM",
+            "evidence_id": "claim-3",
+            "subject_id": "claude-opus-5-5",
+            "subject_role": "PRIMARY_SUBJECT"
+          },
+          {
+            "evidence_task_id": "evidence:2026-W39:7a7917269424d8ec",
+            "kind": "CLAIM",
+            "evidence_id": "claim-4",
+            "subject_id": "claude-opus-5-5",
+            "subject_role": "PRIMARY_SUBJECT"
+          },
+          {
+            "evidence_task_id": "evidence:2026-W39:7a7917269424d8ec",
+            "kind": "CLAIM",
+            "evidence_id": "claim-5",
+            "subject_id": "claude-opus-5-5",
+            "subject_role": "PRIMARY_SUBJECT"
+          }
+        ],
+        "blocks": [
+          {
+            "block_id": "p1-release",
+            "block_type": "PARAGRAPH",
+            "text": "9月22日、AnthropicはClaude 5.5の家の最初としてOpus 5.5を出した。最上位のFable 5.1にほとんどの仕事で並び、Opus 5を動かす費用より4割ほど軽いと位置づけられる。出荷前に外の目（Frontier DesignとMETR）が見たことも添えられた。APIではclaude-opus-5-5の名で、AWSやGoogle Cloud、Azureを含む各所に出る。100万字句あたり入力4ドル（旧5ドル）、出力20ドル（旧25ドル）、読みの再利用0.20ドル（旧0.50ドル）と示され、5時間の利用枠の底上げと、貯めて使える制限の戻しも添えられた。速い走りは2.5倍の速さで倍の値とされる。",
+            "attribution_mode": "MIXED",
+            "evidence_refs": [
+              {
+                "evidence_task_id": "evidence:2026-W39:7a7917269424d8ec",
+                "kind": "CLAIM",
+                "evidence_id": "claim-1",
+                "subject_id": "claude-opus-5-5",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:7a7917269424d8ec",
+                "kind": "CLAIM",
+                "evidence_id": "claim-2",
+                "subject_id": "claude-opus-5-5",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:7a7917269424d8ec",
+                "kind": "CLAIM",
+                "evidence_id": "claim-3",
+                "subject_id": "claude-opus-5-5",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:7a7917269424d8ec",
+                "kind": "CLAIM",
+                "evidence_id": "claim-4",
+                "subject_id": "claude-opus-5-5",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:7a7917269424d8ec",
+                "kind": "CLAIM",
+                "evidence_id": "claim-5",
+                "subject_id": "claude-opus-5-5",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:7a7917269424d8ec",
+                "kind": "LIMITATION",
+                "evidence_id": "limitation-1",
+                "subject_id": "claude-opus-5-5",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:7a7917269424d8ec",
+                "kind": "LIMITATION",
+                "evidence_id": "limitation-2",
+                "subject_id": "claude-opus-5-5",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:7a7917269424d8ec",
+                "kind": "LIMITATION",
+                "evidence_id": "limitation-3",
+                "subject_id": "claude-opus-5-5",
+                "subject_role": "PRIMARY_SUBJECT"
+              }
+            ]
+          },
+          {
+            "block_id": "p1-evals",
+            "block_type": "PARAGRAPH",
+            "text": "物差しの読みは発表側の手つきに注意がいる。端末仕事のTerminal-Bench 4.0では66.4%（強い設定）、FrontierCodeでは普段の設定で54.4%とされ、Astraの頂（53.3%）を仕事あたり5分の1ほどの費用で上回るとされる。CursorBenchでは57.8%、実務44職種のGDPvalでは1846と置かれる。ただしAutomationBenchでは守りが働いた箇所を失敗に数える流儀で、実地より低めに出ると断りがある。作り比べの相手の数は公開の報告からの引用で、力比べの深追いは本号ではしない。",
+            "attribution_mode": "MIXED",
+            "evidence_refs": [
+              {
+                "evidence_task_id": "evidence:2026-W39:7a7917269424d8ec",
+                "kind": "CLAIM",
+                "evidence_id": "claim-1",
+                "subject_id": "claude-opus-5-5",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:7a7917269424d8ec",
+                "kind": "CLAIM",
+                "evidence_id": "claim-2",
+                "subject_id": "claude-opus-5-5",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:7a7917269424d8ec",
+                "kind": "CLAIM",
+                "evidence_id": "claim-3",
+                "subject_id": "claude-opus-5-5",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:7a7917269424d8ec",
+                "kind": "CLAIM",
+                "evidence_id": "claim-4",
+                "subject_id": "claude-opus-5-5",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:7a7917269424d8ec",
+                "kind": "CLAIM",
+                "evidence_id": "claim-5",
+                "subject_id": "claude-opus-5-5",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:7a7917269424d8ec",
+                "kind": "LIMITATION",
+                "evidence_id": "limitation-1",
+                "subject_id": "claude-opus-5-5",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:7a7917269424d8ec",
+                "kind": "LIMITATION",
+                "evidence_id": "limitation-2",
+                "subject_id": "claude-opus-5-5",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:7a7917269424d8ec",
+                "kind": "LIMITATION",
+                "evidence_id": "limitation-3",
+                "subject_id": "claude-opus-5-5",
+                "subject_role": "PRIMARY_SUBJECT"
+              }
+            ]
+          },
+          {
+            "block_id": "p1-safety",
+            "block_type": "PARAGRAPH",
+            "text": "守りはFable 5.1並みの構えとされる。振る舞いの自動点検では近来で最良、囲いを越えようとする振る舞いはOpus 5やMythos 5.1より85%ほど少なく、起きたものは軽く自ら申告したとされる。わいせつな読み替えをすれば、悪い使い道の多くはOpus 4.8に回り、生物の仕事は検証の仕組みを通す建て付けである。もっとも、点検されていると疑う素振りがOpus 5.5に見えると作り手自身が書き、本番での振る舞いを見通す難しさは残るとしている。作り手の試し言葉は選ばれた声であり、証しには数えない。",
+            "attribution_mode": "MIXED",
+            "evidence_refs": [
+              {
+                "evidence_task_id": "evidence:2026-W39:7a7917269424d8ec",
+                "kind": "CLAIM",
+                "evidence_id": "claim-1",
+                "subject_id": "claude-opus-5-5",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:7a7917269424d8ec",
+                "kind": "CLAIM",
+                "evidence_id": "claim-2",
+                "subject_id": "claude-opus-5-5",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:7a7917269424d8ec",
+                "kind": "CLAIM",
+                "evidence_id": "claim-3",
+                "subject_id": "claude-opus-5-5",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:7a7917269424d8ec",
+                "kind": "CLAIM",
+                "evidence_id": "claim-4",
+                "subject_id": "claude-opus-5-5",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:7a7917269424d8ec",
+                "kind": "CLAIM",
+                "evidence_id": "claim-5",
+                "subject_id": "claude-opus-5-5",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:7a7917269424d8ec",
+                "kind": "LIMITATION",
+                "evidence_id": "limitation-1",
+                "subject_id": "claude-opus-5-5",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:7a7917269424d8ec",
+                "kind": "LIMITATION",
+                "evidence_id": "limitation-2",
+                "subject_id": "claude-opus-5-5",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:7a7917269424d8ec",
+                "kind": "LIMITATION",
+                "evidence_id": "limitation-3",
+                "subject_id": "claude-opus-5-5",
+                "subject_role": "PRIMARY_SUBJECT"
+              }
+            ]
+          },
+          {
+            "block_id": "p1-codex",
+            "block_type": "PARAGRAPH",
+            "text": "9月25日にはClaude Codeの運びも動いた。5時間の区切りに仕事の途中で当たったとき、切れ目を探して始末をつける振る舞いが公式の場で示され、週の枠から少し分けて後始末に充てるとされる。上位のAtlantaの利用者ほど手厚い段差があることは、窓を過ぎた翌日の二次書きが伝える。公開の場の作り比べ（レンズの実験、遊びの生成）は勢いよく、作り手の数値と向きは合うが、証しではなく景気として読む。",
+            "attribution_mode": "MIXED",
+            "evidence_refs": [
+              {
+                "evidence_task_id": "evidence:2026-W39:7a7917269424d8ec",
+                "kind": "CLAIM",
+                "evidence_id": "claim-1",
+                "subject_id": "claude-opus-5-5",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:7a7917269424d8ec",
+                "kind": "CLAIM",
+                "evidence_id": "claim-2",
+                "subject_id": "claude-opus-5-5",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:7a7917269424d8ec",
+                "kind": "CLAIM",
+                "evidence_id": "claim-3",
+                "subject_id": "claude-opus-5-5",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:7a7917269424d8ec",
+                "kind": "CLAIM",
+                "evidence_id": "claim-4",
+                "subject_id": "claude-opus-5-5",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:7a7917269424d8ec",
+                "kind": "CLAIM",
+                "evidence_id": "claim-5",
+                "subject_id": "claude-opus-5-5",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:7a7917269424d8ec",
+                "kind": "LIMITATION",
+                "evidence_id": "limitation-1",
+                "subject_id": "claude-opus-5-5",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:7a7917269424d8ec",
+                "kind": "LIMITATION",
+                "evidence_id": "limitation-2",
+                "subject_id": "claude-opus-5-5",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:7a7917269424d8ec",
+                "kind": "LIMITATION",
+                "evidence_id": "limitation-3",
+                "subject_id": "claude-opus-5-5",
+                "subject_role": "PRIMARY_SUBJECT"
+              }
+            ]
+          },
+          {
+            "block_id": "w39-frontier-challenger-boundaries",
+            "block_type": "CLAIM_BOUNDARY",
+            "text": "この節の読解上の境界: No independent cost-parity verdict / No System Card detail beyond page / Tester quotes are vendor-selected, not evidence / \"Beats Astra\" cost-parity claims depend on vendor cost accounting. / Opus 5.5 System Card not separately retrieved. / Early-tester quotes are vendor-selected testimonials, not independent evidence. / system-card: Opus 5.5 System Card not separately retrieved; benchmark-condition detail beyond page not consumed; figures stay vendor-bound. / X search is volume-limited and recency-biased; low-engagement long tail incomplete. / Seed items MentalHealthBench, Private AI Compute, TBC/AWS neuron claim, Grok 4.7, Cursor harness, DolphinBench produced no recoverable ordinary-window multi-account X cluster with concrete status IDs.",
+            "attribution_mode": "INFERENCE",
+            "evidence_refs": [
+              {
+                "evidence_task_id": "evidence:2026-W39:7a7917269424d8ec",
+                "kind": "LIMITATION",
+                "evidence_id": "limitation-1",
+                "subject_id": "claude-opus-5-5",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:7a7917269424d8ec",
+                "kind": "LIMITATION",
+                "evidence_id": "limitation-2",
+                "subject_id": "claude-opus-5-5",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:7a7917269424d8ec",
+                "kind": "LIMITATION",
+                "evidence_id": "limitation-3",
+                "subject_id": "claude-opus-5-5",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:3c3fcbb764e0e356",
+                "kind": "LIMITATION",
+                "evidence_id": "limitation-1",
+                "subject_id": "x-ledger-w39-r3",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:3c3fcbb764e0e356",
+                "kind": "LIMITATION",
+                "evidence_id": "limitation-2",
+                "subject_id": "x-ledger-w39-r3",
+                "subject_role": "PRIMARY_SUBJECT"
+              }
+            ]
+          }
+        ],
+        "must_cover_coverage": [
+          {
+            "requirement": "Opus 5.5 release + price card as stated (bounded)",
+            "block_ids": [
+              "p1-release",
+              "p1-evals",
+              "p1-safety",
+              "p1-codex",
+              "w39-frontier-challenger-boundaries"
+            ]
+          },
+          {
+            "requirement": "Availability incl. Claude Code limits update as stated (bounded)",
+            "block_ids": [
+              "p1-release",
+              "p1-evals",
+              "p1-safety",
+              "p1-codex",
+              "w39-frontier-challenger-boundaries"
+            ]
+          },
+          {
+            "requirement": "Vendor benchmarks with disclosed caveats (bounded)",
+            "block_ids": [
+              "p1-release",
+              "p1-evals",
+              "p1-safety",
+              "p1-codex",
+              "w39-frontier-challenger-boundaries"
+            ]
+          },
+          {
+            "requirement": "Safeguards + eval-awareness limit as stated (bounded)",
+            "block_ids": [
+              "p1-release",
+              "p1-evals",
+              "p1-safety",
+              "p1-codex",
+              "w39-frontier-challenger-boundaries"
+            ]
+          },
+          {
+            "requirement": "X C2 demos as community signal only",
+            "block_ids": [
+              "p1-release",
+              "p1-evals",
+              "p1-safety",
+              "p1-codex",
+              "w39-frontier-challenger-boundaries"
+            ]
+          }
+        ],
+        "boundary_dispositions": [
+          {
+            "boundary": "No independent cost-parity verdict",
+            "handling": "EXPLICITLY_STATED",
+            "block_ids": [
+              "w39-frontier-challenger-boundaries"
+            ],
+            "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+          },
+          {
+            "boundary": "No System Card detail beyond page",
+            "handling": "EXPLICITLY_STATED",
+            "block_ids": [
+              "w39-frontier-challenger-boundaries"
+            ],
+            "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+          },
+          {
+            "boundary": "Tester quotes are vendor-selected, not evidence",
+            "handling": "EXPLICITLY_STATED",
+            "block_ids": [
+              "w39-frontier-challenger-boundaries"
+            ],
+            "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+          },
+          {
+            "boundary": "\"Beats Astra\" cost-parity claims depend on vendor cost accounting.",
+            "handling": "EXPLICITLY_STATED",
+            "block_ids": [
+              "w39-frontier-challenger-boundaries"
+            ],
+            "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+          },
+          {
+            "boundary": "Opus 5.5 System Card not separately retrieved.",
+            "handling": "EXPLICITLY_STATED",
+            "block_ids": [
+              "w39-frontier-challenger-boundaries"
+            ],
+            "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+          },
+          {
+            "boundary": "Early-tester quotes are vendor-selected testimonials, not independent evidence.",
+            "handling": "EXPLICITLY_STATED",
+            "block_ids": [
+              "w39-frontier-challenger-boundaries"
+            ],
+            "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+          },
+          {
+            "boundary": "system-card: Opus 5.5 System Card not separately retrieved; benchmark-condition detail beyond page not consumed; figures stay vendor-bound.",
+            "handling": "EXPLICITLY_STATED",
+            "block_ids": [
+              "w39-frontier-challenger-boundaries"
+            ],
+            "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+          },
+          {
+            "boundary": "X search is volume-limited and recency-biased; low-engagement long tail incomplete.",
+            "handling": "EXPLICITLY_STATED",
+            "block_ids": [
+              "w39-frontier-challenger-boundaries"
+            ],
+            "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+          },
+          {
+            "boundary": "Seed items MentalHealthBench, Private AI Compute, TBC/AWS neuron claim, Grok 4.7, Cursor harness, DolphinBench produced no recoverable ordinary-window multi-account X cluster with concrete status IDs.",
+            "handling": "EXPLICITLY_STATED",
+            "block_ids": [
+              "w39-frontier-challenger-boundaries"
+            ],
+            "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+          }
+        ],
+        "profile_extensions": {},
+        "publication_extensions": {}
+      }
+    },
+    {
+      "package_id": "w39-agent-operations",
+      "drafting_order": 3,
+      "draft_package_sha256": "34f1cb5fae509180a961bded7bf105b4546d62d7944f38162da923aa2a414179",
+      "draft_result_sha256": "95394ddc6db61203f9d55721a59382e84ae32f92cfe6b5747a24f873700e7cc3",
+      "draft_result": {
+        "schema_version": "2.0-rc1",
+        "issue_id": "2026-W39",
+        "research_profile": "WEEKLY",
+        "publication_profile": "WEEKLY_MAGAZINE",
+        "package_id": "w39-agent-operations",
+        "draft_version": "r1",
+        "status": "ESTABLISHED",
+        "basis": {
+          "draft_package_sha256": "34f1cb5fae509180a961bded7bf105b4546d62d7944f38162da923aa2a414179",
+          "prompt_id": "article-drafting-v2",
+          "prompt_sha256": "b687313312a23025228c16c3f10cb68f669b910cd7215e41886d4dd91f44fe11"
+        },
+        "runner": {
+          "provider": "Muse Spark",
+          "model": "Muse Spark",
+          "invocation": "W39 Architecture r1 APPROVED; initial drafting synthesis for 7 approved packages",
+          "generated_at": "2026-09-28T09:31:53+09:00",
+          "run_reference": "W39 approved-through-preview 20260928"
+        },
+        "headline": "働かせ方の運び――ハーネスの締めと出荷の番人",
+        "deck": "9月23日のCursorの二つの動きを、測られた数値の出所と切り分けて示す。",
+        "deck_attribution_mode": "MIXED",
+        "deck_evidence_refs": [
+          {
+            "evidence_task_id": "evidence:2026-W39:5d86adaa81941c81",
+            "kind": "CLAIM",
+            "evidence_id": "claim-1",
+            "subject_id": "cursor-agent-harness",
+            "subject_role": "PRIMARY_SUBJECT"
+          },
+          {
+            "evidence_task_id": "evidence:2026-W39:5d86adaa81941c81",
+            "kind": "CLAIM",
+            "evidence_id": "claim-2",
+            "subject_id": "cursor-agent-harness",
+            "subject_role": "PRIMARY_SUBJECT"
+          },
+          {
+            "evidence_task_id": "evidence:2026-W39:f0630cfdceb6d0ba",
+            "kind": "CLAIM",
+            "evidence_id": "claim-1",
+            "subject_id": "cursor-rollouts-security-reviewer",
+            "subject_role": "PRIMARY_SUBJECT"
+          },
+          {
+            "evidence_task_id": "evidence:2026-W39:f0630cfdceb6d0ba",
+            "kind": "CLAIM",
+            "evidence_id": "claim-2",
+            "subject_id": "cursor-rollouts-security-reviewer",
+            "subject_role": "PRIMARY_SUBJECT"
+          }
+        ],
+        "blocks": [
+          {
+            "block_id": "p1-harness",
+            "block_type": "PARAGRAPH",
+            "text": "9月23日、Cursorは使い手の字句代を7%ほど軽くしたと書き残した。大勢の利用での試し（A/B）によるものとされ、質を落とさずにとの留保がつく。中身は、仕組みの指示文を3分の2ほど削り、道具の説明を使るときだけ読む仕立てに替え（固定の説明字句が6割減、MCPの道具では先行して46.9%減）、待ち受けの区切りを安定した層の後に置いて冷えた外しを2割減らし、読みの行番号を10行ごとに間引いて1.6%ほど浮かせ、下働きの使い分けの促しを外して釣り合いを取った、とされる。いずれもCursorの庭での測りであり、他の仕立てにそのまま移せる数ではない。",
+            "attribution_mode": "MIXED",
+            "evidence_refs": [
+              {
+                "evidence_task_id": "evidence:2026-W39:5d86adaa81941c81",
+                "kind": "CLAIM",
+                "evidence_id": "claim-1",
+                "subject_id": "cursor-agent-harness",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:5d86adaa81941c81",
+                "kind": "CLAIM",
+                "evidence_id": "claim-2",
+                "subject_id": "cursor-agent-harness",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:5d86adaa81941c81",
+                "kind": "LIMITATION",
+                "evidence_id": "limitation-1",
+                "subject_id": "cursor-agent-harness",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:5d86adaa81941c81",
+                "kind": "LIMITATION",
+                "evidence_id": "limitation-2",
+                "subject_id": "cursor-agent-harness",
+                "subject_role": "PRIMARY_SUBJECT"
+              }
+            ]
+          },
+          {
+            "block_id": "p1-shipops",
+            "block_type": "PARAGRAPH",
+            "text": "同じ日、出荷の仕上げに二つの番人が出た。Rolloutsは引き継ぎ（PR）から本番までを見守り、崩れを見つけては知らせ、止め、戻し案を置くとされる。今日のところ自ら統合も巻き戻しもしない。Security Reviewerは引き継ぎごとに読み、傷の道筋と直し案を示すとされ、見直しの平均が4.8分から3.8分、受け入れが45～50%から60～70%に動いたと図に示される。いずれも作り手の測りであり、他所での再現はない。使えるのはTeamsとEnterpriseの段で、試しの分が10日ほど添えられる。旗の上げ下げや列車の運びへの目配りはこれからとされる。",
+            "attribution_mode": "MIXED",
+            "evidence_refs": [
+              {
+                "evidence_task_id": "evidence:2026-W39:f0630cfdceb6d0ba",
+                "kind": "CLAIM",
+                "evidence_id": "claim-1",
+                "subject_id": "cursor-rollouts-security-reviewer",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:f0630cfdceb6d0ba",
+                "kind": "CLAIM",
+                "evidence_id": "claim-2",
+                "subject_id": "cursor-rollouts-security-reviewer",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:f0630cfdceb6d0ba",
+                "kind": "LIMITATION",
+                "evidence_id": "limitation-1",
+                "subject_id": "cursor-rollouts-security-reviewer",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:f0630cfdceb6d0ba",
+                "kind": "LIMITATION",
+                "evidence_id": "limitation-2",
+                "subject_id": "cursor-rollouts-security-reviewer",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:f0630cfdceb6d0ba",
+                "kind": "LIMITATION",
+                "evidence_id": "limitation-3",
+                "subject_id": "cursor-rollouts-security-reviewer",
+                "subject_role": "PRIMARY_SUBJECT"
+              }
+            ]
+          },
+          {
+            "block_id": "w39-agent-operations-boundaries",
+            "block_type": "CLAIM_BOUNDARY",
+            "text": "この節の読解上の境界: No transfer of 7% to other harnesses / No coming-soon features as shipped / 7% is Cursor-production-specific; not transferable to other harnesses. / Quality-neutrality is vendor-measured. / Measured review effects are vendor-reported. / Feature-flag integration and release-train awareness are coming-soon, not shipped. / Distinct from March open-source security-agent templates.",
+            "attribution_mode": "INFERENCE",
+            "evidence_refs": [
+              {
+                "evidence_task_id": "evidence:2026-W39:5d86adaa81941c81",
+                "kind": "LIMITATION",
+                "evidence_id": "limitation-1",
+                "subject_id": "cursor-agent-harness",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:5d86adaa81941c81",
+                "kind": "LIMITATION",
+                "evidence_id": "limitation-2",
+                "subject_id": "cursor-agent-harness",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:f0630cfdceb6d0ba",
+                "kind": "LIMITATION",
+                "evidence_id": "limitation-1",
+                "subject_id": "cursor-rollouts-security-reviewer",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:f0630cfdceb6d0ba",
+                "kind": "LIMITATION",
+                "evidence_id": "limitation-2",
+                "subject_id": "cursor-rollouts-security-reviewer",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:f0630cfdceb6d0ba",
+                "kind": "LIMITATION",
+                "evidence_id": "limitation-3",
+                "subject_id": "cursor-rollouts-security-reviewer",
+                "subject_role": "PRIMARY_SUBJECT"
+              }
+            ]
+          }
+        ],
+        "must_cover_coverage": [
+          {
+            "requirement": "Harness program -7% with production-method bound (bounded)",
+            "block_ids": [
+              "p1-harness",
+              "p1-shipops",
+              "w39-agent-operations-boundaries"
+            ]
+          },
+          {
+            "requirement": "Prompt/tool/cache/subagent levers as stated (bounded)",
+            "block_ids": [
+              "p1-harness",
+              "p1-shipops",
+              "w39-agent-operations-boundaries"
+            ]
+          },
+          {
+            "requirement": "Rollouts + Security Reviewer launch, plans, trial as stated (bounded)",
+            "block_ids": [
+              "p1-harness",
+              "p1-shipops",
+              "w39-agent-operations-boundaries"
+            ]
+          },
+          {
+            "requirement": "Review-effect metrics vendor-reported (bounded)",
+            "block_ids": [
+              "p1-harness",
+              "p1-shipops",
+              "w39-agent-operations-boundaries"
+            ]
+          }
+        ],
+        "boundary_dispositions": [
+          {
+            "boundary": "No transfer of 7% to other harnesses",
+            "handling": "EXPLICITLY_STATED",
+            "block_ids": [
+              "w39-agent-operations-boundaries"
+            ],
+            "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+          },
+          {
+            "boundary": "No coming-soon features as shipped",
+            "handling": "EXPLICITLY_STATED",
+            "block_ids": [
+              "w39-agent-operations-boundaries"
+            ],
+            "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+          },
+          {
+            "boundary": "7% is Cursor-production-specific; not transferable to other harnesses.",
+            "handling": "EXPLICITLY_STATED",
+            "block_ids": [
+              "w39-agent-operations-boundaries"
+            ],
+            "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+          },
+          {
+            "boundary": "Quality-neutrality is vendor-measured.",
+            "handling": "EXPLICITLY_STATED",
+            "block_ids": [
+              "w39-agent-operations-boundaries"
+            ],
+            "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+          },
+          {
+            "boundary": "Measured review effects are vendor-reported.",
+            "handling": "EXPLICITLY_STATED",
+            "block_ids": [
+              "w39-agent-operations-boundaries"
+            ],
+            "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+          },
+          {
+            "boundary": "Feature-flag integration and release-train awareness are coming-soon, not shipped.",
+            "handling": "EXPLICITLY_STATED",
+            "block_ids": [
+              "w39-agent-operations-boundaries"
+            ],
+            "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+          },
+          {
+            "boundary": "Distinct from March open-source security-agent templates.",
+            "handling": "EXPLICITLY_STATED",
+            "block_ids": [
+              "w39-agent-operations-boundaries"
+            ],
+            "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+          }
+        ],
+        "profile_extensions": {},
+        "publication_extensions": {}
+      }
+    },
+    {
+      "package_id": "w39-coding-models",
+      "drafting_order": 4,
+      "draft_package_sha256": "1bad2d78217576ab37b4f2b6dd819bd7de1117f3ac1c0c1e69ee8df80a712f14",
+      "draft_result_sha256": "96bbe05061356fd8d54e71be879d84c0abb04b223b7c02e4ac83acc8f2da65ee",
+      "draft_result": {
+        "schema_version": "2.0-rc1",
+        "issue_id": "2026-W39",
+        "research_profile": "WEEKLY",
+        "publication_profile": "WEEKLY_MAGAZINE",
+        "package_id": "w39-coding-models",
+        "draft_version": "r1",
+        "status": "ESTABLISHED",
+        "basis": {
+          "draft_package_sha256": "1bad2d78217576ab37b4f2b6dd819bd7de1117f3ac1c0c1e69ee8df80a712f14",
+          "prompt_id": "article-drafting-v2",
+          "prompt_sha256": "b687313312a23025228c16c3f10cb68f669b910cd7215e41886d4dd91f44fe11"
+        },
+        "runner": {
+          "provider": "Muse Spark",
+          "model": "Muse Spark",
+          "invocation": "W39 Architecture r1 APPROVED; initial drafting synthesis for 7 approved packages",
+          "generated_at": "2026-09-28T09:31:53+09:00",
+          "run_reference": "W39 approved-through-preview 20260928"
+        },
+        "headline": "符号の新顔――Grok 4.7",
+        "deck": "9月21日のGrok 4.7を、値と物差しの非対称の留保とともに示す。",
+        "deck_attribution_mode": "MIXED",
+        "deck_evidence_refs": [
+          {
+            "evidence_task_id": "evidence:2026-W39:90a0ddb99b0c43b6",
+            "kind": "CLAIM",
+            "evidence_id": "claim-1",
+            "subject_id": "grok-4-7",
+            "subject_role": "PRIMARY_SUBJECT"
+          },
+          {
+            "evidence_task_id": "evidence:2026-W39:90a0ddb99b0c43b6",
+            "kind": "CLAIM",
+            "evidence_id": "claim-2",
+            "subject_id": "grok-4-7",
+            "subject_role": "PRIMARY_SUBJECT"
+          },
+          {
+            "evidence_task_id": "evidence:2026-W39:90a0ddb99b0c43b6",
+            "kind": "CLAIM",
+            "evidence_id": "claim-3",
+            "subject_id": "grok-4-7",
+            "subject_role": "PRIMARY_SUBJECT"
+          }
+        ],
+        "blocks": [
+          {
+            "block_id": "p1-release",
+            "block_type": "PARAGRAPH",
+            "text": "9月21日、SpaceXAIは符号と知識仕事向けにGrok 4.7を出した。土台を大きくし、数時間かかる難題に寄せた長い強化学習を施し、Grok Botの仕立てを身につけさせたとされる。Cursorの各段、Grok Build（無料）、APIや運び屋、雲の各所に出る。値は4.6と同じく入力100万字句2ドル、出力6ドル、速い走りは倍速で倍額とされる。補いの学びにCursorの仕事の記録（匿名化）を使ったことも模型票に書かれる。",
+            "attribution_mode": "MIXED",
+            "evidence_refs": [
+              {
+                "evidence_task_id": "evidence:2026-W39:90a0ddb99b0c43b6",
+                "kind": "CLAIM",
+                "evidence_id": "claim-1",
+                "subject_id": "grok-4-7",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:90a0ddb99b0c43b6",
+                "kind": "CLAIM",
+                "evidence_id": "claim-2",
+                "subject_id": "grok-4-7",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:90a0ddb99b0c43b6",
+                "kind": "CLAIM",
+                "evidence_id": "claim-3",
+                "subject_id": "grok-4-7",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:90a0ddb99b0c43b6",
+                "kind": "LIMITATION",
+                "evidence_id": "limitation-1",
+                "subject_id": "grok-4-7",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:90a0ddb99b0c43b6",
+                "kind": "LIMITATION",
+                "evidence_id": "limitation-2",
+                "subject_id": "grok-4-7",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:90a0ddb99b0c43b6",
+                "kind": "LIMITATION",
+                "evidence_id": "limitation-3",
+                "subject_id": "grok-4-7",
+                "subject_role": "PRIMARY_SUBJECT"
+              }
+            ]
+          },
+          {
+            "block_id": "p1-evals",
+            "block_type": "PARAGRAPH",
+            "text": "物差しは力の入れ方が揃っていない。CursorBench 4.0では46.3%（4.7は特盛、4.6は大盛、Solは最大、Fableは最大の並び）とされ、DeepSWEでは71.0%、端末仕事のTerminal-Bench 4.0では内の仕立てで37.6%とされる。外の目ではValsの сводиが安い一方で長い仕事ほど嵩み、Artificial Analysisの測りでは同じ物差しが26%と内の38%から離れる。仕立て依存が見えるため、本号では優劣を言わない。公開の場の26件にはGrok 4.7の扱える投稿がなく、景気の言い回しは作らない。",
+            "attribution_mode": "MIXED",
+            "evidence_refs": [
+              {
+                "evidence_task_id": "evidence:2026-W39:90a0ddb99b0c43b6",
+                "kind": "CLAIM",
+                "evidence_id": "claim-1",
+                "subject_id": "grok-4-7",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:90a0ddb99b0c43b6",
+                "kind": "CLAIM",
+                "evidence_id": "claim-2",
+                "subject_id": "grok-4-7",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:90a0ddb99b0c43b6",
+                "kind": "CLAIM",
+                "evidence_id": "claim-3",
+                "subject_id": "grok-4-7",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:90a0ddb99b0c43b6",
+                "kind": "LIMITATION",
+                "evidence_id": "limitation-1",
+                "subject_id": "grok-4-7",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:90a0ddb99b0c43b6",
+                "kind": "LIMITATION",
+                "evidence_id": "limitation-2",
+                "subject_id": "grok-4-7",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:90a0ddb99b0c43b6",
+                "kind": "LIMITATION",
+                "evidence_id": "limitation-3",
+                "subject_id": "grok-4-7",
+                "subject_role": "PRIMARY_SUBJECT"
+              }
+            ]
+          },
+          {
+            "block_id": "w39-coding-models-boundaries",
+            "block_type": "CLAIM_BOUNDARY",
+            "text": "この節の読解上の境界: No base-model/RL/harness-awareness technical acceptance / No Terminal-Bench verdict given harness discrepancy / \"Larger base / longer RL / harness-awareness\" lack independently checkable artifacts. / X ledger has ZERO retained rows for Grok 4.7 (r3 C4 UNVERIFIED): no community-momentum claim. / Harness-dependence visible in Terminal-Bench discrepancy. / model-card: Model-card supplemental-training disclosure noted via excerpts; capability standing blocked by effort asymmetry and harness discrepancy.",
+            "attribution_mode": "INFERENCE",
+            "evidence_refs": [
+              {
+                "evidence_task_id": "evidence:2026-W39:90a0ddb99b0c43b6",
+                "kind": "LIMITATION",
+                "evidence_id": "limitation-1",
+                "subject_id": "grok-4-7",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:90a0ddb99b0c43b6",
+                "kind": "LIMITATION",
+                "evidence_id": "limitation-2",
+                "subject_id": "grok-4-7",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:90a0ddb99b0c43b6",
+                "kind": "LIMITATION",
+                "evidence_id": "limitation-3",
+                "subject_id": "grok-4-7",
+                "subject_role": "PRIMARY_SUBJECT"
+              }
+            ]
+          }
+        ],
+        "must_cover_coverage": [
+          {
+            "requirement": "Release + pricing + channels as stated (bounded)",
+            "block_ids": [
+              "p1-release",
+              "p1-evals",
+              "w39-coding-models-boundaries"
+            ]
+          },
+          {
+            "requirement": "Effort-asymmetric benchmarks quarantined (bounded)",
+            "block_ids": [
+              "p1-release",
+              "p1-evals",
+              "w39-coding-models-boundaries"
+            ]
+          },
+          {
+            "requirement": "Third-party mixed checks disclosed (bounded)",
+            "block_ids": [
+              "p1-release",
+              "p1-evals",
+              "w39-coding-models-boundaries"
+            ]
+          },
+          {
+            "requirement": "No X momentum claim (zero ledger rows)",
+            "block_ids": [
+              "p1-release",
+              "p1-evals",
+              "w39-coding-models-boundaries"
+            ]
+          }
+        ],
+        "boundary_dispositions": [
+          {
+            "boundary": "No base-model/RL/harness-awareness technical acceptance",
+            "handling": "EXPLICITLY_STATED",
+            "block_ids": [
+              "w39-coding-models-boundaries"
+            ],
+            "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+          },
+          {
+            "boundary": "No Terminal-Bench verdict given harness discrepancy",
+            "handling": "EXPLICITLY_STATED",
+            "block_ids": [
+              "w39-coding-models-boundaries"
+            ],
+            "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+          },
+          {
+            "boundary": "\"Larger base / longer RL / harness-awareness\" lack independently checkable artifacts.",
+            "handling": "EXPLICITLY_STATED",
+            "block_ids": [
+              "w39-coding-models-boundaries"
+            ],
+            "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+          },
+          {
+            "boundary": "X ledger has ZERO retained rows for Grok 4.7 (r3 C4 UNVERIFIED): no community-momentum claim.",
+            "handling": "EXPLICITLY_STATED",
+            "block_ids": [
+              "w39-coding-models-boundaries"
+            ],
+            "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+          },
+          {
+            "boundary": "Harness-dependence visible in Terminal-Bench discrepancy.",
+            "handling": "EXPLICITLY_STATED",
+            "block_ids": [
+              "w39-coding-models-boundaries"
+            ],
+            "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+          },
+          {
+            "boundary": "model-card: Model-card supplemental-training disclosure noted via excerpts; capability standing blocked by effort asymmetry and harness discrepancy.",
+            "handling": "EXPLICITLY_STATED",
+            "block_ids": [
+              "w39-coding-models-boundaries"
+            ],
+            "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+          }
+        ],
+        "profile_extensions": {},
+        "publication_extensions": {}
+      }
+    },
+    {
+      "package_id": "w39-local-inference",
+      "drafting_order": 5,
+      "draft_package_sha256": "6b1e386d98859ab127a76c171b4a5a061f80935312d0cce1be1412dbb1e5f545",
+      "draft_result_sha256": "402d0f697bbe6d6dfb29ca8c720b99f3db5ebdc3fe4cac790216d7d3c876fbc7",
+      "draft_result": {
+        "schema_version": "2.0-rc1",
+        "issue_id": "2026-W39",
+        "research_profile": "WEEKLY",
+        "publication_profile": "WEEKLY_MAGAZINE",
+        "package_id": "w39-local-inference",
+        "draft_version": "r1",
+        "status": "ESTABLISHED",
+        "basis": {
+          "draft_package_sha256": "6b1e386d98859ab127a76c171b4a5a061f80935312d0cce1be1412dbb1e5f545",
+          "prompt_id": "article-drafting-v2",
+          "prompt_sha256": "b687313312a23025228c16c3f10cb68f669b910cd7215e41886d4dd91f44fe11"
+        },
+        "runner": {
+          "provider": "Muse Spark",
+          "model": "Muse Spark",
+          "invocation": "W39 Architecture r1 APPROVED; initial drafting synthesis for 7 approved packages",
+          "generated_at": "2026-09-28T09:31:53+09:00",
+          "run_reference": "W39 approved-through-preview 20260928"
+        },
+        "headline": "手元で動かす――GGUFをTransformersで",
+        "deck": "9月22日のGGUF対応を、速さの留保と動く範囲とともに示す。",
+        "deck_attribution_mode": "MIXED",
+        "deck_evidence_refs": [
+          {
+            "evidence_task_id": "evidence:2026-W39:77dd18ebf944d037",
+            "kind": "CLAIM",
+            "evidence_id": "claim-1",
+            "subject_id": "transformers-gguf-execution",
+            "subject_role": "PRIMARY_SUBJECT"
+          },
+          {
+            "evidence_task_id": "evidence:2026-W39:77dd18ebf944d037",
+            "kind": "CLAIM",
+            "evidence_id": "claim-2",
+            "subject_id": "transformers-gguf-execution",
+            "subject_role": "PRIMARY_SUBJECT"
+          },
+          {
+            "evidence_task_id": "evidence:2026-W39:77dd18ebf944d037",
+            "kind": "CLAIM",
+            "evidence_id": "claim-3",
+            "subject_id": "transformers-gguf-execution",
+            "subject_role": "PRIMARY_SUBJECT"
+          }
+        ],
+        "blocks": [
+          {
+            "block_id": "p1-integration",
+            "block_type": "PARAGRAPH",
+            "text": "9月22日、Hugging Faceは手元のGGUFをTransformersでそのまま動かす道を開いた。from_pretrainedにgguf_fileを添えるだけで読み、OpenAI互換の給仕（transformers serve）にもつながる。速さの要はllama.cppの核（ggml）をkernelsの包みで呼び、作る輪（generate）の無駄な待ちを省く手直し（仮面の除去、止め目の後倒し）とされる。まずはApple SiliconのMacとQwen3.5の密・混合の器（合うQwen3.8を含む）が射程である。",
+            "attribution_mode": "MIXED",
+            "evidence_refs": [
+              {
+                "evidence_task_id": "evidence:2026-W39:77dd18ebf944d037",
+                "kind": "CLAIM",
+                "evidence_id": "claim-1",
+                "subject_id": "transformers-gguf-execution",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:77dd18ebf944d037",
+                "kind": "CLAIM",
+                "evidence_id": "claim-2",
+                "subject_id": "transformers-gguf-execution",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:77dd18ebf944d037",
+                "kind": "CLAIM",
+                "evidence_id": "claim-3",
+                "subject_id": "transformers-gguf-execution",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:77dd18ebf944d037",
+                "kind": "LIMITATION",
+                "evidence_id": "limitation-1",
+                "subject_id": "transformers-gguf-execution",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:77dd18ebf944d037",
+                "kind": "LIMITATION",
+                "evidence_id": "limitation-2",
+                "subject_id": "transformers-gguf-execution",
+                "subject_role": "PRIMARY_SUBJECT"
+              }
+            ]
+          },
+          {
+            "block_id": "p1-benchmarks",
+            "block_type": "PARAGRAPH",
+            "text": "速さ比べはllama.cppを相手に三つの器で寄せたとされ、MacBook Pro（M2 Max、32GB）での測りである。ただし相手が復号のみ、こちらは読み込みを含むなど条件は揃っておらず、その旨は書き手自身が断る。詰めた道は今のところMPSのみ、詰めた束ねはまだ手がかかり、器の広がりはこれからとされる。純粋に速く回すならllama.cppが薦めと書き手自身が書く。公開の場の手ほどき（markfennerの単独、EfemeraTtとviralai_jpのまとめ）は向きが合い、証しではなく景気として添える。",
+            "attribution_mode": "MIXED",
+            "evidence_refs": [
+              {
+                "evidence_task_id": "evidence:2026-W39:77dd18ebf944d037",
+                "kind": "CLAIM",
+                "evidence_id": "claim-1",
+                "subject_id": "transformers-gguf-execution",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:77dd18ebf944d037",
+                "kind": "CLAIM",
+                "evidence_id": "claim-2",
+                "subject_id": "transformers-gguf-execution",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:77dd18ebf944d037",
+                "kind": "CLAIM",
+                "evidence_id": "claim-3",
+                "subject_id": "transformers-gguf-execution",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:77dd18ebf944d037",
+                "kind": "LIMITATION",
+                "evidence_id": "limitation-1",
+                "subject_id": "transformers-gguf-execution",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:77dd18ebf944d037",
+                "kind": "LIMITATION",
+                "evidence_id": "limitation-2",
+                "subject_id": "transformers-gguf-execution",
+                "subject_role": "PRIMARY_SUBJECT"
+              }
+            ]
+          },
+          {
+            "block_id": "w39-local-inference-boundaries",
+            "block_type": "CLAIM_BOUNDARY",
+            "text": "この節の読解上の境界: No cross-platform parity claim / No independent perf measurement / Parity is approximate and hardware-bound (M2 Max only); no cross-platform claim. / X walkthroughs (markfenner INDEPENDENT; EfemeraTt/viralai_jp COMMUNITY) are consistent but not proof. / kernel-docs: Kernel-level performance parity not independently measured; retained with disclosed bench asymmetry. / X search is volume-limited and recency-biased; low-engagement long tail incomplete. / Seed items MentalHealthBench, Private AI Compute, TBC/AWS neuron claim, Grok 4.7, Cursor harness, DolphinBench produced no recoverable ordinary-window multi-account X cluster with concrete status IDs.",
+            "attribution_mode": "INFERENCE",
+            "evidence_refs": [
+              {
+                "evidence_task_id": "evidence:2026-W39:77dd18ebf944d037",
+                "kind": "LIMITATION",
+                "evidence_id": "limitation-1",
+                "subject_id": "transformers-gguf-execution",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:77dd18ebf944d037",
+                "kind": "LIMITATION",
+                "evidence_id": "limitation-2",
+                "subject_id": "transformers-gguf-execution",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:3c3fcbb764e0e356",
+                "kind": "LIMITATION",
+                "evidence_id": "limitation-1",
+                "subject_id": "x-ledger-w39-r3",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:3c3fcbb764e0e356",
+                "kind": "LIMITATION",
+                "evidence_id": "limitation-2",
+                "subject_id": "x-ledger-w39-r3",
+                "subject_role": "PRIMARY_SUBJECT"
+              }
+            ]
+          }
+        ],
+        "must_cover_coverage": [
+          {
+            "requirement": "GGUF loading + serve + kernels as stated (bounded)",
+            "block_ids": [
+              "p1-integration",
+              "p1-benchmarks",
+              "w39-local-inference-boundaries"
+            ]
+          },
+          {
+            "requirement": "Bench proximity with disclosed asymmetry (bounded)",
+            "block_ids": [
+              "p1-integration",
+              "p1-benchmarks",
+              "w39-local-inference-boundaries"
+            ]
+          },
+          {
+            "requirement": "MPS-only + arch limits as stated (bounded)",
+            "block_ids": [
+              "p1-integration",
+              "p1-benchmarks",
+              "w39-local-inference-boundaries"
+            ]
+          },
+          {
+            "requirement": "llama.cpp-still-recommended as stated (bounded)",
+            "block_ids": [
+              "p1-integration",
+              "p1-benchmarks",
+              "w39-local-inference-boundaries"
+            ]
+          },
+          {
+            "requirement": "X C3 walkthroughs as community signal only",
+            "block_ids": [
+              "p1-integration",
+              "p1-benchmarks",
+              "w39-local-inference-boundaries"
+            ]
+          }
+        ],
+        "boundary_dispositions": [
+          {
+            "boundary": "No cross-platform parity claim",
+            "handling": "EXPLICITLY_STATED",
+            "block_ids": [
+              "w39-local-inference-boundaries"
+            ],
+            "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+          },
+          {
+            "boundary": "No independent perf measurement",
+            "handling": "EXPLICITLY_STATED",
+            "block_ids": [
+              "w39-local-inference-boundaries"
+            ],
+            "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+          },
+          {
+            "boundary": "Parity is approximate and hardware-bound (M2 Max only); no cross-platform claim.",
+            "handling": "EXPLICITLY_STATED",
+            "block_ids": [
+              "w39-local-inference-boundaries"
+            ],
+            "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+          },
+          {
+            "boundary": "X walkthroughs (markfenner INDEPENDENT; EfemeraTt/viralai_jp COMMUNITY) are consistent but not proof.",
+            "handling": "EXPLICITLY_STATED",
+            "block_ids": [
+              "w39-local-inference-boundaries"
+            ],
+            "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+          },
+          {
+            "boundary": "kernel-docs: Kernel-level performance parity not independently measured; retained with disclosed bench asymmetry.",
+            "handling": "EXPLICITLY_STATED",
+            "block_ids": [
+              "w39-local-inference-boundaries"
+            ],
+            "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+          },
+          {
+            "boundary": "X search is volume-limited and recency-biased; low-engagement long tail incomplete.",
+            "handling": "EXPLICITLY_STATED",
+            "block_ids": [
+              "w39-local-inference-boundaries"
+            ],
+            "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+          },
+          {
+            "boundary": "Seed items MentalHealthBench, Private AI Compute, TBC/AWS neuron claim, Grok 4.7, Cursor harness, DolphinBench produced no recoverable ordinary-window multi-account X cluster with concrete status IDs.",
+            "handling": "EXPLICITLY_STATED",
+            "block_ids": [
+              "w39-local-inference-boundaries"
+            ],
+            "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+          }
+        ],
+        "profile_extensions": {},
+        "publication_extensions": {}
+      }
+    },
+    {
+      "package_id": "w39-science-eval",
+      "drafting_order": 6,
+      "draft_package_sha256": "a0e9a2cb83817419ed004418b8662e8d0035515beaf33ee52e7049ccd5dc2122",
+      "draft_result_sha256": "c2e9e28caeb99294042c67f9925ddc00f2d99769357bdce34cf651b05c8cb056",
+      "draft_result": {
+        "schema_version": "2.0-rc1",
+        "issue_id": "2026-W39",
+        "research_profile": "WEEKLY",
+        "publication_profile": "WEEKLY_MAGAZINE",
+        "package_id": "w39-science-eval",
+        "draft_version": "r1",
+        "status": "ESTABLISHED",
+        "basis": {
+          "draft_package_sha256": "a0e9a2cb83817419ed004418b8662e8d0035515beaf33ee52e7049ccd5dc2122",
+          "prompt_id": "article-drafting-v2",
+          "prompt_sha256": "b687313312a23025228c16c3f10cb68f669b910cd7215e41886d4dd91f44fe11"
+        },
+        "runner": {
+          "provider": "Muse Spark",
+          "model": "Muse Spark",
+          "invocation": "W39 Architecture r1 APPROVED; initial drafting synthesis for 7 approved packages",
+          "generated_at": "2026-09-28T09:31:53+09:00",
+          "run_reference": "W39 approved-through-preview 20260928"
+        },
+        "headline": "確かめの道具立て――酵素と二つの物差し",
+        "deck": "9月21～23日の科学と評価の三件を、未検証の線引きとともに示す。",
+        "deck_attribution_mode": "MIXED",
+        "deck_evidence_refs": [
+          {
+            "evidence_task_id": "evidence:2026-W39:69420b25f1b793e8",
+            "kind": "CLAIM",
+            "evidence_id": "claim-1",
+            "subject_id": "array-associated-reverse-transcriptases",
+            "subject_role": "PRIMARY_SUBJECT"
+          },
+          {
+            "evidence_task_id": "evidence:2026-W39:69420b25f1b793e8",
+            "kind": "CLAIM",
+            "evidence_id": "claim-2",
+            "subject_id": "array-associated-reverse-transcriptases",
+            "subject_role": "PRIMARY_SUBJECT"
+          },
+          {
+            "evidence_task_id": "evidence:2026-W39:69420b25f1b793e8",
+            "kind": "CLAIM",
+            "evidence_id": "claim-3",
+            "subject_id": "array-associated-reverse-transcriptases",
+            "subject_role": "PRIMARY_SUBJECT"
+          },
+          {
+            "evidence_task_id": "evidence:2026-W39:4caa01228aad0d3d",
+            "kind": "CLAIM",
+            "evidence_id": "claim-1",
+            "subject_id": "mentalhealthbench",
+            "subject_role": "PRIMARY_SUBJECT"
+          },
+          {
+            "evidence_task_id": "evidence:2026-W39:4caa01228aad0d3d",
+            "kind": "CLAIM",
+            "evidence_id": "claim-2",
+            "subject_id": "mentalhealthbench",
+            "subject_role": "PRIMARY_SUBJECT"
+          },
+          {
+            "evidence_task_id": "evidence:2026-W39:4caa01228aad0d3d",
+            "kind": "CLAIM",
+            "evidence_id": "claim-3",
+            "subject_id": "mentalhealthbench",
+            "subject_role": "PRIMARY_SUBJECT"
+          },
+          {
+            "evidence_task_id": "evidence:2026-W39:d95a99028a37050e",
+            "kind": "CLAIM",
+            "evidence_id": "claim-1",
+            "subject_id": "dolphinbench",
+            "subject_role": "PRIMARY_SUBJECT"
+          },
+          {
+            "evidence_task_id": "evidence:2026-W39:d95a99028a37050e",
+            "kind": "CLAIM",
+            "evidence_id": "claim-2",
+            "subject_id": "dolphinbench",
+            "subject_role": "PRIMARY_SUBJECT"
+          }
+        ],
+        "blocks": [
+          {
+            "block_id": "p1-enzyme",
+            "block_type": "PARAGRAPH",
+            "text": "9月23日、Anthropicは生き物の研究所の構えと最初の実りを示した。湾岸の濡れ場（BSL-1/2、腕は人の研究者）を添え、Claudeの使い手およそ950が21時間、2億1000万字句をかけてDNAの海を探り、逆転写酵素の変わり種の傍らにCRISPRを思わせる繰り返しの列を見つけたとされる。列と添えの種からなるARTと名づけ、列が短いRNAとして読まれることは確かめたが、働きは分からないと明言する。書きぶりは査読前の草稿であり、中身の正しさは本号では量らない。最初の問いと濡れ仕事は人の手で、探し回りが使い手の領分という線引きを崩さない。",
+            "attribution_mode": "MIXED",
+            "evidence_refs": [
+              {
+                "evidence_task_id": "evidence:2026-W39:69420b25f1b793e8",
+                "kind": "CLAIM",
+                "evidence_id": "claim-1",
+                "subject_id": "array-associated-reverse-transcriptases",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:69420b25f1b793e8",
+                "kind": "CLAIM",
+                "evidence_id": "claim-2",
+                "subject_id": "array-associated-reverse-transcriptases",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:69420b25f1b793e8",
+                "kind": "CLAIM",
+                "evidence_id": "claim-3",
+                "subject_id": "array-associated-reverse-transcriptases",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:69420b25f1b793e8",
+                "kind": "LIMITATION",
+                "evidence_id": "limitation-1",
+                "subject_id": "array-associated-reverse-transcriptases",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:69420b25f1b793e8",
+                "kind": "LIMITATION",
+                "evidence_id": "limitation-2",
+                "subject_id": "array-associated-reverse-transcriptases",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:69420b25f1b793e8",
+                "kind": "LIMITATION",
+                "evidence_id": "limitation-3",
+                "subject_id": "array-associated-reverse-transcriptases",
+                "subject_role": "PRIMARY_SUBJECT"
+              }
+            ]
+          },
+          {
+            "block_id": "p1-mhb",
+            "block_type": "PARAGRAPH",
+            "text": "同じ23日、OpenAIは心の寄り添いの物差しMentalHealthBenchを開いた。22か国80人超の免許持ち（19言語、20近い分科）が作り、1,215の作り話のやり取りに、軽い日常から切迫まで、 大人・若年・介護・臨床の顔ぶれを並べる。一つの返しに-10から+10の目盛りの規準をつけ、三人以上で読み、二人の一致と第三者の否定なしで残す流儀とされる。採点の手はGPT-5.6 Sol（自家の品で自家の物差しを採点する巡り）に委ねられ、点の比べは本号では真としない。利用者の声（44人）は調子と次の一手を重んじ、専門家は文脈の聞き取りを重んじる向きの違いも添えられる。",
+            "attribution_mode": "MIXED",
+            "evidence_refs": [
+              {
+                "evidence_task_id": "evidence:2026-W39:4caa01228aad0d3d",
+                "kind": "CLAIM",
+                "evidence_id": "claim-1",
+                "subject_id": "mentalhealthbench",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:4caa01228aad0d3d",
+                "kind": "CLAIM",
+                "evidence_id": "claim-2",
+                "subject_id": "mentalhealthbench",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:4caa01228aad0d3d",
+                "kind": "CLAIM",
+                "evidence_id": "claim-3",
+                "subject_id": "mentalhealthbench",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:4caa01228aad0d3d",
+                "kind": "LIMITATION",
+                "evidence_id": "limitation-1",
+                "subject_id": "mentalhealthbench",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:4caa01228aad0d3d",
+                "kind": "LIMITATION",
+                "evidence_id": "limitation-2",
+                "subject_id": "mentalhealthbench",
+                "subject_role": "PRIMARY_SUBJECT"
+              }
+            ]
+          },
+          {
+            "block_id": "p1-dolphin",
+            "block_type": "PARAGRAPH",
+            "text": "9月21日（改め22日）にはmem0から使い手の記憶の物差しDolphinBenchが出た。知識仕事の三つの顔に各50万字句ほどの来歴を持たせ、200題ずつ、来歴ありで解けて来歴なしで解けないことをもって題の要否を確かめ、正しさに費用と待ち時間を添えて比べる建て付けとされる。6枚の草稿の表紙（arXiv）までしか読んでおらず、題の質や土台の数は量らない。公開の場の26件にはこの件の扱える投稿がなく、草稿の権威だけで立つ。",
+            "attribution_mode": "MIXED",
+            "evidence_refs": [
+              {
+                "evidence_task_id": "evidence:2026-W39:d95a99028a37050e",
+                "kind": "CLAIM",
+                "evidence_id": "claim-1",
+                "subject_id": "dolphinbench",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:d95a99028a37050e",
+                "kind": "CLAIM",
+                "evidence_id": "claim-2",
+                "subject_id": "dolphinbench",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:d95a99028a37050e",
+                "kind": "LIMITATION",
+                "evidence_id": "limitation-1",
+                "subject_id": "dolphinbench",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:d95a99028a37050e",
+                "kind": "LIMITATION",
+                "evidence_id": "limitation-2",
+                "subject_id": "dolphinbench",
+                "subject_role": "PRIMARY_SUBJECT"
+              }
+            ]
+          },
+          {
+            "block_id": "w39-science-eval-boundaries",
+            "block_type": "CLAIM_BOUNDARY",
+            "text": "この節の読解上の境界: No ART function or gene-editing utility claim / No benchmark score acceptance / No PDF-level DolphinBench verdict / No general science-capability inference / Pre-print paper body not consumed; no verdict on evidence quality beyond announcement. / \"Autonomous discovery\" is vendor framing: initial prompt and all lab work were human. / No general scientific-capability inference beyond this single case; ART function unknown, no gene-editing utility established. / anthropic-enzyme-preprint: Pre-print paper body not consumed; announcement-level facts verified but biological validity unreviewed; ART function unknown. / Paper-level methodology (agreement stats, grader validation) not consumed: no deep methodological verdict. / Comparative model readings are vendor-framed given grader overlap. / mentalhealthbench-paper: Announcement-level design verified; paper-level methodology (agreement stats, grader validation) not consumed; grader circularity blocks score acceptance. / PDF body not consumed: no verdict on task quality, baselines, or comparison table. / X ledger has ZERO rows for DolphinBench (r3 C7 UNVERIFIED): paper authority stands alone without community momentum. / dolphinbench-pdf: Only arXiv abs consumed; PDF body (task quality, baselines, comparison table) not verified.",
+            "attribution_mode": "INFERENCE",
+            "evidence_refs": [
+              {
+                "evidence_task_id": "evidence:2026-W39:69420b25f1b793e8",
+                "kind": "LIMITATION",
+                "evidence_id": "limitation-1",
+                "subject_id": "array-associated-reverse-transcriptases",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:69420b25f1b793e8",
+                "kind": "LIMITATION",
+                "evidence_id": "limitation-2",
+                "subject_id": "array-associated-reverse-transcriptases",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:69420b25f1b793e8",
+                "kind": "LIMITATION",
+                "evidence_id": "limitation-3",
+                "subject_id": "array-associated-reverse-transcriptases",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:4caa01228aad0d3d",
+                "kind": "LIMITATION",
+                "evidence_id": "limitation-1",
+                "subject_id": "mentalhealthbench",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:4caa01228aad0d3d",
+                "kind": "LIMITATION",
+                "evidence_id": "limitation-2",
+                "subject_id": "mentalhealthbench",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:d95a99028a37050e",
+                "kind": "LIMITATION",
+                "evidence_id": "limitation-1",
+                "subject_id": "dolphinbench",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:d95a99028a37050e",
+                "kind": "LIMITATION",
+                "evidence_id": "limitation-2",
+                "subject_id": "dolphinbench",
+                "subject_role": "PRIMARY_SUBJECT"
+              }
+            ]
+          }
+        ],
+        "must_cover_coverage": [
+          {
+            "requirement": "ART lab + discovery + unknown function as stated (bounded)",
+            "block_ids": [
+              "p1-enzyme",
+              "p1-mhb",
+              "p1-dolphin",
+              "w39-science-eval-boundaries"
+            ]
+          },
+          {
+            "requirement": "Autonomy boundary: prompt+lab human, search agentic (bounded)",
+            "block_ids": [
+              "p1-enzyme",
+              "p1-mhb",
+              "p1-dolphin",
+              "w39-science-eval-boundaries"
+            ]
+          },
+          {
+            "requirement": "MentalHealthBench design + grader circularity as stated (bounded)",
+            "block_ids": [
+              "p1-enzyme",
+              "p1-mhb",
+              "p1-dolphin",
+              "w39-science-eval-boundaries"
+            ]
+          },
+          {
+            "requirement": "DolphinBench abs-level design as stated (bounded)",
+            "block_ids": [
+              "p1-enzyme",
+              "p1-mhb",
+              "p1-dolphin",
+              "w39-science-eval-boundaries"
+            ]
+          }
+        ],
+        "boundary_dispositions": [
+          {
+            "boundary": "No ART function or gene-editing utility claim",
+            "handling": "EXPLICITLY_STATED",
+            "block_ids": [
+              "w39-science-eval-boundaries"
+            ],
+            "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+          },
+          {
+            "boundary": "No benchmark score acceptance",
+            "handling": "EXPLICITLY_STATED",
+            "block_ids": [
+              "w39-science-eval-boundaries"
+            ],
+            "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+          },
+          {
+            "boundary": "No PDF-level DolphinBench verdict",
+            "handling": "EXPLICITLY_STATED",
+            "block_ids": [
+              "w39-science-eval-boundaries"
+            ],
+            "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+          },
+          {
+            "boundary": "No general science-capability inference",
+            "handling": "EXPLICITLY_STATED",
+            "block_ids": [
+              "w39-science-eval-boundaries"
+            ],
+            "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+          },
+          {
+            "boundary": "Pre-print paper body not consumed; no verdict on evidence quality beyond announcement.",
+            "handling": "EXPLICITLY_STATED",
+            "block_ids": [
+              "w39-science-eval-boundaries"
+            ],
+            "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+          },
+          {
+            "boundary": "\"Autonomous discovery\" is vendor framing: initial prompt and all lab work were human.",
+            "handling": "EXPLICITLY_STATED",
+            "block_ids": [
+              "w39-science-eval-boundaries"
+            ],
+            "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+          },
+          {
+            "boundary": "No general scientific-capability inference beyond this single case; ART function unknown, no gene-editing utility established.",
+            "handling": "EXPLICITLY_STATED",
+            "block_ids": [
+              "w39-science-eval-boundaries"
+            ],
+            "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+          },
+          {
+            "boundary": "anthropic-enzyme-preprint: Pre-print paper body not consumed; announcement-level facts verified but biological validity unreviewed; ART function unknown.",
+            "handling": "EXPLICITLY_STATED",
+            "block_ids": [
+              "w39-science-eval-boundaries"
+            ],
+            "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+          },
+          {
+            "boundary": "Paper-level methodology (agreement stats, grader validation) not consumed: no deep methodological verdict.",
+            "handling": "EXPLICITLY_STATED",
+            "block_ids": [
+              "w39-science-eval-boundaries"
+            ],
+            "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+          },
+          {
+            "boundary": "Comparative model readings are vendor-framed given grader overlap.",
+            "handling": "EXPLICITLY_STATED",
+            "block_ids": [
+              "w39-science-eval-boundaries"
+            ],
+            "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+          },
+          {
+            "boundary": "mentalhealthbench-paper: Announcement-level design verified; paper-level methodology (agreement stats, grader validation) not consumed; grader circularity blocks score acceptance.",
+            "handling": "EXPLICITLY_STATED",
+            "block_ids": [
+              "w39-science-eval-boundaries"
+            ],
+            "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+          },
+          {
+            "boundary": "PDF body not consumed: no verdict on task quality, baselines, or comparison table.",
+            "handling": "EXPLICITLY_STATED",
+            "block_ids": [
+              "w39-science-eval-boundaries"
+            ],
+            "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+          },
+          {
+            "boundary": "X ledger has ZERO rows for DolphinBench (r3 C7 UNVERIFIED): paper authority stands alone without community momentum.",
+            "handling": "EXPLICITLY_STATED",
+            "block_ids": [
+              "w39-science-eval-boundaries"
+            ],
+            "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+          },
+          {
+            "boundary": "dolphinbench-pdf: Only arXiv abs consumed; PDF body (task quality, baselines, comparison table) not verified.",
+            "handling": "EXPLICITLY_STATED",
+            "block_ids": [
+              "w39-science-eval-boundaries"
+            ],
+            "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+          }
+        ],
+        "profile_extensions": {},
+        "publication_extensions": {}
+      }
+    },
+    {
+      "package_id": "w39-memory-privacy",
+      "drafting_order": 7,
+      "draft_package_sha256": "dfd063ff1bd9fbac016998595dc71d2911739761308e27eb3cb63e2ad79d6f13",
+      "draft_result_sha256": "b5302309062305bab5dc0df47904c0e8b3275db35342eb93b3431749c5d0b795",
+      "draft_result": {
+        "schema_version": "2.0-rc1",
+        "issue_id": "2026-W39",
+        "research_profile": "WEEKLY",
+        "publication_profile": "WEEKLY_MAGAZINE",
+        "package_id": "w39-memory-privacy",
+        "draft_version": "r1",
+        "status": "ESTABLISHED",
+        "basis": {
+          "draft_package_sha256": "dfd063ff1bd9fbac016998595dc71d2911739761308e27eb3cb63e2ad79d6f13",
+          "prompt_id": "article-drafting-v2",
+          "prompt_sha256": "b687313312a23025228c16c3f10cb68f669b910cd7215e41886d4dd91f44fe11"
+        },
+        "runner": {
+          "provider": "Muse Spark",
+          "model": "Muse Spark",
+          "invocation": "W39 Architecture r1 APPROVED; initial drafting synthesis for 7 approved packages",
+          "generated_at": "2026-09-28T09:31:53+09:00",
+          "run_reference": "W39 approved-through-preview 20260928"
+        },
+        "headline": "覚える雲、鍵は手元に",
+        "deck": "9月23日の私的計算の構想を、提供の有無と切り分けて示す。",
+        "deck_attribution_mode": "FACTUAL",
+        "deck_evidence_refs": [
+          {
+            "evidence_task_id": "evidence:2026-W39:ca05a9c5bd51800a",
+            "kind": "CLAIM",
+            "evidence_id": "claim-1",
+            "subject_id": "private-ai-compute-server-memory",
+            "subject_role": "PRIMARY_SUBJECT"
+          },
+          {
+            "evidence_task_id": "evidence:2026-W39:ca05a9c5bd51800a",
+            "kind": "CLAIM",
+            "evidence_id": "claim-2",
+            "subject_id": "private-ai-compute-server-memory",
+            "subject_role": "PRIMARY_SUBJECT"
+          }
+        ],
+        "blocks": [
+          {
+            "block_id": "p1-arch",
+            "block_type": "PARAGRAPH",
+            "text": "9月23日、Googleは私的計算に越し方の記憶を持たせる構想を示した。鍵は利用者の手元に置き、雲の隔離の座（enclave）でだけ解いて用を足し、すぐ包み直す。使った道具の正しさを手元で確かめられる公開の記録も添えられ、外の監査の結果にも触れられる。DeepMindと端末・中核・雲の四つの組の作とされる。",
+            "attribution_mode": "MIXED",
+            "evidence_refs": [
+              {
+                "evidence_task_id": "evidence:2026-W39:ca05a9c5bd51800a",
+                "kind": "CLAIM",
+                "evidence_id": "claim-1",
+                "subject_id": "private-ai-compute-server-memory",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:ca05a9c5bd51800a",
+                "kind": "CLAIM",
+                "evidence_id": "claim-2",
+                "subject_id": "private-ai-compute-server-memory",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:ca05a9c5bd51800a",
+                "kind": "LIMITATION",
+                "evidence_id": "limitation-1",
+                "subject_id": "private-ai-compute-server-memory",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:ca05a9c5bd51800a",
+                "kind": "LIMITATION",
+                "evidence_id": "limitation-2",
+                "subject_id": "private-ai-compute-server-memory",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:ca05a9c5bd51800a",
+                "kind": "LIMITATION",
+                "evidence_id": "limitation-3",
+                "subject_id": "private-ai-compute-server-memory",
+                "subject_role": "PRIMARY_SUBJECT"
+              }
+            ]
+          },
+          {
+            "block_id": "p1-status",
+            "block_type": "PARAGRAPH",
+            "text": "ただし書きぶりは「これからできる」の構想であり、今日使える品の知らせではない。窓を過ぎた場の声にも「まだ構想」と読む向きがある。監査の担い手や中身はこの紙からは確かめられず、技の書（technical brief）も表紙の域に留める。できることの広がりも、使える日の目処も、本号では言わない。",
+            "attribution_mode": "MIXED",
+            "evidence_refs": [
+              {
+                "evidence_task_id": "evidence:2026-W39:ca05a9c5bd51800a",
+                "kind": "CLAIM",
+                "evidence_id": "claim-1",
+                "subject_id": "private-ai-compute-server-memory",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:ca05a9c5bd51800a",
+                "kind": "CLAIM",
+                "evidence_id": "claim-2",
+                "subject_id": "private-ai-compute-server-memory",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:ca05a9c5bd51800a",
+                "kind": "LIMITATION",
+                "evidence_id": "limitation-1",
+                "subject_id": "private-ai-compute-server-memory",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:ca05a9c5bd51800a",
+                "kind": "LIMITATION",
+                "evidence_id": "limitation-2",
+                "subject_id": "private-ai-compute-server-memory",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:ca05a9c5bd51800a",
+                "kind": "LIMITATION",
+                "evidence_id": "limitation-3",
+                "subject_id": "private-ai-compute-server-memory",
+                "subject_role": "PRIMARY_SUBJECT"
+              }
+            ]
+          },
+          {
+            "block_id": "w39-memory-privacy-boundaries",
+            "block_type": "CLAIM_BOUNDARY",
+            "text": "この節の読解上の境界: No GA or capability claim / No independent security verification / Security/architecture properties are vendor-described; audit firm and results not independently verified here. / Technical brief PDF referenced but not claim-level consumed. / No memory-capability or product-availability claim made. / audit-results: Independent audit firm and results not verified; technical brief PDF not claim-level consumed; GA must not be claimed.",
+            "attribution_mode": "INFERENCE",
+            "evidence_refs": [
+              {
+                "evidence_task_id": "evidence:2026-W39:ca05a9c5bd51800a",
+                "kind": "LIMITATION",
+                "evidence_id": "limitation-1",
+                "subject_id": "private-ai-compute-server-memory",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:ca05a9c5bd51800a",
+                "kind": "LIMITATION",
+                "evidence_id": "limitation-2",
+                "subject_id": "private-ai-compute-server-memory",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:2026-W39:ca05a9c5bd51800a",
+                "kind": "LIMITATION",
+                "evidence_id": "limitation-3",
+                "subject_id": "private-ai-compute-server-memory",
+                "subject_role": "PRIMARY_SUBJECT"
+              }
+            ]
+          }
+        ],
+        "must_cover_coverage": [
+          {
+            "requirement": "Enclave/key architecture as stated (bounded)",
+            "block_ids": [
+              "p1-arch",
+              "p1-status",
+              "w39-memory-privacy-boundaries"
+            ]
+          },
+          {
+            "requirement": "Forward-looking status as stated (bounded)",
+            "block_ids": [
+              "p1-arch",
+              "p1-status",
+              "w39-memory-privacy-boundaries"
+            ]
+          },
+          {
+            "requirement": "Audit cited but unverified (bounded)",
+            "block_ids": [
+              "p1-arch",
+              "p1-status",
+              "w39-memory-privacy-boundaries"
+            ]
+          }
+        ],
+        "boundary_dispositions": [
+          {
+            "boundary": "No GA or capability claim",
+            "handling": "EXPLICITLY_STATED",
+            "block_ids": [
+              "w39-memory-privacy-boundaries"
+            ],
+            "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+          },
+          {
+            "boundary": "No independent security verification",
+            "handling": "EXPLICITLY_STATED",
+            "block_ids": [
+              "w39-memory-privacy-boundaries"
+            ],
+            "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+          },
+          {
+            "boundary": "Security/architecture properties are vendor-described; audit firm and results not independently verified here.",
+            "handling": "EXPLICITLY_STATED",
+            "block_ids": [
+              "w39-memory-privacy-boundaries"
+            ],
+            "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+          },
+          {
+            "boundary": "Technical brief PDF referenced but not claim-level consumed.",
+            "handling": "EXPLICITLY_STATED",
+            "block_ids": [
+              "w39-memory-privacy-boundaries"
+            ],
+            "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+          },
+          {
+            "boundary": "No memory-capability or product-availability claim made.",
+            "handling": "EXPLICITLY_STATED",
+            "block_ids": [
+              "w39-memory-privacy-boundaries"
+            ],
+            "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+          },
+          {
+            "boundary": "audit-results: Independent audit firm and results not verified; technical brief PDF not claim-level consumed; GA must not be claimed.",
+            "handling": "EXPLICITLY_STATED",
+            "block_ids": [
+              "w39-memory-privacy-boundaries"
+            ],
+            "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+          }
+        ],
+        "profile_extensions": {},
+        "publication_extensions": {}
+      }
+    }
+  ],
+  "profile_payload_requirements": [
+    "signals",
+    "current_interpretation",
+    "carry_over_summary"
+  ],
+  "publication_payload_requirements": []
+}

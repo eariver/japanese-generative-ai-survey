@@ -1,0 +1,45 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W39",
+  "from_state": "DISCOVERY_COLLECTED",
+  "to_state": "CANDIDATES_NORMALIZED",
+  "checkpoints": [
+    "screening"
+  ],
+  "recorded_at": "2026-09-27T18:53:42Z",
+  "implementation": {
+    "repository_commit_sha": "441a88efcefcdbb099186d19fff1df6ea62c51c6",
+    "orchestrator_version": "survey-production-core-v2/0.15-postintegration-transport-thematic"
+  },
+  "contract": {
+    "pipeline_contract_version": "2.0-rc1",
+    "pipeline_contract_sha256": "ee89796245c22072cec98f34931180214a4928c24f399280793cd6420a4c8e71",
+    "quality_contract_version": "2.0-rc1",
+    "quality_contract_sha256": "b5b955d524fb438c0f1b2c9490bea1da2083e79028d67a55ca424bbfc20f2958",
+    "research_profile_version": "2.0-rc1",
+    "research_profile_sha256": "666f8a064b190ffd35216e26d6fdf2dd0fa932cac7b1b0d6448e262ded77b9a8",
+    "publication_profile_version": "2.0-rc1",
+    "publication_profile_sha256": "99adff93ff443e02bdcce639ce5fc4d4c959ee45a804da70efc4277db57fdddb"
+  },
+  "artifacts": [
+    {
+      "name": "screening-acceptance",
+      "path": "sources/2026-W39/screening/v2/accepted/fdb76aada7007ba53b57ac614ff7be14abcdd575e8ff004a8d8b35f5efb5ed12/screening-accepted.json",
+      "sha256": "aee84b5afdc469cbe86acb8bec70eb0967af67e19970667178631f8e3d1aac36"
+    }
+  ],
+  "reviews": [
+    {
+      "check_id": "CORE_STAGE_CONTRACT",
+      "kind": "DETERMINISTIC",
+      "status": "PASS",
+      "executor": "Survey Production Core v2 survey_stage_validation_v2.py",
+      "evidence": "W39 Screening final: 15 KEEP / 0 DROP over strict-valid Discovery (15 records); package canonical; accepted.",
+      "result": {
+        "path": "sources/2026-W39/execution/validation/screening-stage-validation-r1.json",
+        "sha256": "a89d6496e178622b60df33e7a01d075c4e0156ba7f4873a3989a288c5189b979"
+      }
+    }
+  ],
+  "summary": "W39 Screening accepted: 15 KEEP / 0 DROP over 15 Discovery records; evidence next."
+}

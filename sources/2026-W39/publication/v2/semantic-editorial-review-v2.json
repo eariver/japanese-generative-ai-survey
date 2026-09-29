@@ -1,0 +1,130 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W39",
+  "research_profile": "WEEKLY",
+  "publication_profile": "WEEKLY_MAGAZINE",
+  "review_kind": "SEMANTIC_EDITORIAL",
+  "status": "PASSED",
+  "production_profile": {
+    "path": "sources/2026-W39/production-profile.json",
+    "sha256": "29faefb0cbb8d2251ab05935b3f472e45dd01566144742ad46ff623d23fac96a"
+  },
+  "reader_manuscript": {
+    "path": "sources/2026-W39/publication/v2/reader-manuscript-v2.json",
+    "sha256": "af7176f213883905f268f3249962f369f7bb1ab2442e256d79e9c3503a5895e6"
+  },
+  "source": {
+    "path": "surveys/weekly/2026-W39/main.tex",
+    "sha256": "f2f48c674457bd9379e8b511b0237a0ab9416edbfc9add231e2aeac100d7577d",
+    "byte_count": 1371
+  },
+  "pdf": {
+    "path": "surveys/weekly/2026-W39/main.pdf",
+    "sha256": "eb0e49233c8f7c04077d9abc04b2811a625597abda1c7340378b1c9f8cc3e121",
+    "byte_count": 335817
+  },
+  "page_count": 12,
+  "checks": [
+    {
+      "check_id": "SOURCE_SPECIFIC_FAIL_CLOSED_NOTES",
+      "status": "PASS",
+      "detail": "Source-notes section covers all 13 primaries with DeepSeek current-state caveat, temporal boundary with ordinary window, vendor-reported boundary, community observation boundary with 26-row ledger reference, and late-only/HOLD dispositions; no fail-closed note missing.",
+      "evidence_locations": [
+        "sections/99-source-notes.tex"
+      ]
+    },
+    {
+      "check_id": "BIBLIOGRAPHY_METADATA",
+      "status": "PASS",
+      "detail": "26 entries each with title, author or URL, urldate and bound note; 13 primaries plus 2 secondaries plus 11 public direct X status URLs; no internal Evidence tags or materiality leakage.",
+      "evidence_locations": [
+        "references.bib",
+        "subject-entity-property-binding.json"
+      ]
+    },
+    {
+      "check_id": "POST_TRANSFORM_SEMANTIC_REVALIDATION",
+      "status": "PASS",
+      "detail": "TeX prose rechecked against r1 Draft results package by package: 7 headlines and decks preserved, DeepSeek docs-level routing restated in section and source-notes, frontmatter axis and synthesis match approved thesis; no drift.",
+      "evidence_locations": [
+        "draft/v2/packages/*/draft-result.json",
+        "sections/10-cost-frontier.tex",
+        "sections/00-frontmatter.tex"
+      ]
+    },
+    {
+      "check_id": "WEEKLY_WHY_THIS_ISSUE",
+      "status": "PASS",
+      "detail": "Frontmatter reading axis and week-in-review state why each dated event belongs to W39 with in-window dates; DeepSeek belongs via current-state docs as resolved context; late items excluded by date.",
+      "evidence_locations": [
+        "sections/00-frontmatter.tex",
+        "sections/80-week-in-review.tex"
+      ]
+    },
+    {
+      "check_id": "WEEKLY_LATE_BREAKING_SINGLE_HOME",
+      "status": "PASS",
+      "detail": "7 post-cutoff X rows excluded from ordinary totals and never cited as ordinary facts; single home in source-notes temporal boundary plus per-section community notes and ledger rows 20-26.",
+      "evidence_locations": [
+        "sections/99-source-notes.tex",
+        "community-observation-ledger.md rows 20-26"
+      ]
+    },
+    {
+      "check_id": "WEEKLY_CARRY_OVER_DISPOSITION",
+      "status": "PASS",
+      "detail": "DeepSeek routing HOLD resolved at official docs level and carried as supporting context with cutover-instant caveat; W38 late-breaking rows revalidated as ordinary C10 context without elevation; no other W38 HOLD outstanding.",
+      "evidence_locations": [
+        "sections/99-source-notes.tex",
+        "profile-completeness-v2.json"
+      ]
+    },
+    {
+      "check_id": "WEEKLY_WATCHLIST_READER_SEMANTICS",
+      "status": "PASS",
+      "detail": "Next-watch subsection lists concrete open items (rollout spread, System Card, harness trials, GGUF coverage, ART function, grader validity, memory GA, harness-dependence, Pixel Canary identity, Codex scope, Cheepseek path) as observation points, not promises.",
+      "evidence_locations": [
+        "sections/80-week-in-review.tex"
+      ]
+    },
+    {
+      "check_id": "PUBLICATION_BOUNDARY",
+      "status": "PASS",
+      "detail": "Reader-surface gate PASSED 0/0 suppression-free; no HOLD/PARTIAL/VERIFIED/Screening vocabulary in reader prose; vendor claims qualified in natural Japanese; terminology seed respected without auto-rewrite.",
+      "evidence_locations": [
+        "reader-surface-gate-v2.json PASSED",
+        "sections/30-agent-operations.tex"
+      ]
+    },
+    {
+      "check_id": "ARCHITECTURE_CONTENT_FIDELITY",
+      "status": "PASS",
+      "detail": "7 packages appear in drafting order with approved titles, must-cover items and boundaries; editorial thesis preserved; identifier-preservation PASS 7/7; Architecture-to-Draft coverage exact.",
+      "evidence_locations": [
+        "identifier-preservation.json",
+        "sections/80-week-in-review.tex"
+      ]
+    },
+    {
+      "check_id": "FINAL_SYNTHESIS_QUALITY",
+      "status": "PASS",
+      "detail": "Week-in-review synthesis states center, constraint and next-watch with no new factual claims; cross-product incompatibility warning preserved.",
+      "evidence_locations": [
+        "sections/80-week-in-review.tex"
+      ]
+    },
+    {
+      "check_id": "WEEKLY_COMMUNITY_MOVEMENT",
+      "status": "PASS",
+      "detail": "Community movement shown only as context via 11 auditable public direct X status URLs plus the committed 26-row public ledger; ordinary versus late-breaking distinction explicit in every community note.",
+      "evidence_locations": [
+        "sections/10-cost-frontier.tex",
+        "sections/80-week-in-review.tex",
+        "community-observation-ledger.md"
+      ]
+    }
+  ],
+  "reviewed_by": "Worker/Agent (Muse Spark)",
+  "recorded_at": "2026-09-29T00:54:11Z",
+  "review_sha256": "e7c8426199b595b549f28a6a297a31d0a5a3c4da11fb7e8862d266c114cc636f"
+}

@@ -1,0 +1,130 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W39",
+  "evidence_task_id": "evidence:2026-W39:3c3fcbb764e0e356",
+  "basis": {
+    "task_sha256": "dae86b312ea1b8b8b5d73be660afef91c2939ea4cea13f8c7414f797874dee73",
+    "screening_acceptance_sha256": "aee84b5afdc469cbe86acb8bec70eb0967af67e19970667178631f8e3d1aac36",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "x-ledger-w39-r3",
+      "canonical_name": "W39 Grok/X r3 direct-X ledger",
+      "entity_type": "OTHER",
+      "organization": null,
+      "canonical_url": "grok-task:weekly-x-2026-W39"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "x-ledger-w39-r3",
+    "artifact_type": "OTHER",
+    "canonical_name": "W39 Grok/X r3 direct-X ledger",
+    "canonical_url": "grok-task:weekly-x-2026-W39"
+  },
+  "temporal": {
+    "observed_at": "2026-09-27T18:52:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-09-27T18:10:00Z",
+        "subject_id": "x-ledger-w39-r3",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "grok-task:weekly-x-2026-W39",
+      "source_class": "SOCIAL",
+      "title": "W39 Grok/X r3 ledger (26 URLs: 19 ordinary / 0 pre-window / 7 late-breaking)",
+      "published_at": "2026-09-27T18:10:00Z",
+      "accessed_at": "2026-09-27T18:52:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "The r3 ledger persists 26 exact direct X status URLs with Snowflake-derived canonical classes: 19 ORDINARY_WINDOW, 0 PRE_WINDOW_CARRY_IN, 7 LATE_BREAKING, 0 TIME_UNVERIFIED; 0 + 19 + 7 + 0 = 26; LEDGER_COUNT_CONSISTENCY PASS.",
+      "subject_id": "x-ledger-w39-r3",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Verifiable by recounting the 26-row Final direct-X ledger against UTC window [2026-09-18T22:00Z, 2026-09-25T22:00Z)."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Ordinary signal covers C1 GPT-6 family (5 URLs / 2 accounts), C2 Opus 5.5 (9 / 5), C3 HF GGUF walkthroughs (3 / 3), C10 W38 carry-in context (2 / 2); 12 ordinary unique accounts = 4 OFFICIAL + 6 INDEPENDENT + 2 COMMUNITY; late-only C5/C8/C9 and unverified C4/C6/C7 carry zero ordinary rows.",
+      "subject_id": "x-ledger-w39-r3",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "SOCIAL_OBSERVATION",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Sol recount of r3 candidate table and per-candidate ordinary OFF/IND/COM splits."
+    },
+    {
+      "statement_id": "claim-3",
+      "text": "No release identity, benchmark value, price, license, architecture, availability, or safety property is established by X alone; all technical facts await primary verification in the linked primary Discovery records.",
+      "subject_id": "x-ledger-w39-r3",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "SOCIAL_OBSERVATION",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary; X remains Raw Observation."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "X search is volume-limited and recency-biased; low-engagement long tail incomplete.",
+      "subject_id": "x-ledger-w39-r3",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "Seed items MentalHealthBench, Private AI Compute, TBC/AWS neuron claim, Grok 4.7, Cursor harness, DolphinBench produced no recoverable ordinary-window multi-account X cluster with concrete status IDs.",
+      "subject_id": "x-ledger-w39-r3",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "primary-verification-C1-C2-C3",
+        "status": "VERIFIED",
+        "finding": "Sol recomputed 26 = 0 + 19 + 7 + 0 with ordinary accounts 12 (4 OFFICIAL + 6 INDEPENDENT + 2 COMMUNITY); candidate bindings C1 5+1, C2 9+2, C3 3+0, C5 0+2, C8 0+1, C9 0+1, C10 2+0; both W38 carry-over rows present as ORDINARY_WINDOW bound only to C10.",
+        "subject_ids": [
+          "x-ledger-w39-r3"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

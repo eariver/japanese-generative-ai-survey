@@ -1,0 +1,143 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W39",
+  "evidence_task_id": "evidence:2026-W39:ca05a9c5bd51800a",
+  "basis": {
+    "task_sha256": "95505f3cf013274958647c301ad43bc40a122db0c07515dd4ce841630b8a42dd",
+    "screening_acceptance_sha256": "aee84b5afdc469cbe86acb8bec70eb0967af67e19970667178631f8e3d1aac36",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "private-ai-compute-server-memory",
+      "canonical_name": "Private AI Compute secure server-side memory",
+      "entity_type": "PRODUCT",
+      "organization": "Google",
+      "canonical_url": "https://deepmind.google/blog/advancing-private-ai-compute-with-secure-server-side-memory/"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "private-ai-compute-server-memory",
+    "artifact_type": "PRODUCT",
+    "canonical_name": "Private AI Compute secure server-side memory",
+    "canonical_url": "https://deepmind.google/blog/advancing-private-ai-compute-with-secure-server-side-memory/"
+  },
+  "temporal": {
+    "observed_at": "2026-09-27T18:52:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-09-23T12:00:00Z",
+        "subject_id": "private-ai-compute-server-memory",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "primary:deepmind.google/blog/advancing-private-ai-compute-with-secure-server-side-memory",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "Google: Private AI Compute server-side memory (Sep 23)",
+      "published_at": "2026-09-23T12:00:00Z",
+      "accessed_at": "2026-09-27T18:52:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Google disclosed a Private AI Compute architecture update enabling persistent cross-device server-side memory: device-held keys, secure enclaves, encrypted channels, per-user encrypted stores, tamper-proof public software record, independent audit cited.",
+      "subject_id": "private-ai-compute-server-memory",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "First-party architecture announcement 2026-09-23."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Announcement language is forward-looking (\"will enable\"); independent community note (post-cutoff) reads the feature as still planned, not generally available.",
+      "subject_id": "private-ai-compute-server-memory",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Status boundary from vendor wording plus post-cutoff community note."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Security/architecture properties are vendor-described; audit firm and results not independently verified here.",
+      "subject_id": "private-ai-compute-server-memory",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "Technical brief PDF referenced but not claim-level consumed.",
+      "subject_id": "private-ai-compute-server-memory",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-3",
+      "text": "No memory-capability or product-availability claim made.",
+      "subject_id": "private-ai-compute-server-memory",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "google-memory-brief",
+        "status": "VERIFIED",
+        "finding": "Architecture blog consumed; enclave/key design and forward-looking status verified as vendor-published.",
+        "subject_ids": [
+          "private-ai-compute-server-memory"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "audit-results",
+        "status": "UNRESOLVED",
+        "finding": "Independent audit firm and results not verified; technical brief PDF not claim-level consumed; GA must not be claimed.",
+        "subject_ids": [
+          "private-ai-compute-server-memory"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      "audit-results: Independent audit firm and results not verified; technical brief PDF not claim-level consumed; GA must not be claimed."
+    ],
+    "contradictions": []
+  }
+}

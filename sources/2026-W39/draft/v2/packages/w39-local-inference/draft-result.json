@@ -1,0 +1,273 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W39",
+  "research_profile": "WEEKLY",
+  "publication_profile": "WEEKLY_MAGAZINE",
+  "package_id": "w39-local-inference",
+  "draft_version": "r1",
+  "status": "ESTABLISHED",
+  "basis": {
+    "draft_package_sha256": "6b1e386d98859ab127a76c171b4a5a061f80935312d0cce1be1412dbb1e5f545",
+    "prompt_id": "article-drafting-v2",
+    "prompt_sha256": "b687313312a23025228c16c3f10cb68f669b910cd7215e41886d4dd91f44fe11"
+  },
+  "runner": {
+    "provider": "Muse Spark",
+    "model": "Muse Spark",
+    "invocation": "W39 Architecture r1 APPROVED; initial drafting synthesis for 7 approved packages",
+    "generated_at": "2026-09-28T09:31:53+09:00",
+    "run_reference": "W39 approved-through-preview 20260928"
+  },
+  "headline": "手元で動かす――GGUFをTransformersで",
+  "deck": "9月22日のGGUF対応を、速さの留保と動く範囲とともに示す。",
+  "deck_attribution_mode": "MIXED",
+  "deck_evidence_refs": [
+    {
+      "evidence_task_id": "evidence:2026-W39:77dd18ebf944d037",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1",
+      "subject_id": "transformers-gguf-execution",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:2026-W39:77dd18ebf944d037",
+      "kind": "CLAIM",
+      "evidence_id": "claim-2",
+      "subject_id": "transformers-gguf-execution",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:2026-W39:77dd18ebf944d037",
+      "kind": "CLAIM",
+      "evidence_id": "claim-3",
+      "subject_id": "transformers-gguf-execution",
+      "subject_role": "PRIMARY_SUBJECT"
+    }
+  ],
+  "blocks": [
+    {
+      "block_id": "p1-integration",
+      "block_type": "PARAGRAPH",
+      "text": "9月22日、Hugging Faceは手元のGGUFをTransformersでそのまま動かす道を開いた。from_pretrainedにgguf_fileを添えるだけで読み、OpenAI互換の給仕（transformers serve）にもつながる。速さの要はllama.cppの核（ggml）をkernelsの包みで呼び、作る輪（generate）の無駄な待ちを省く手直し（仮面の除去、止め目の後倒し）とされる。まずはApple SiliconのMacとQwen3.5の密・混合の器（合うQwen3.8を含む）が射程である。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W39:77dd18ebf944d037",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "transformers-gguf-execution",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W39:77dd18ebf944d037",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "transformers-gguf-execution",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W39:77dd18ebf944d037",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "transformers-gguf-execution",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W39:77dd18ebf944d037",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "transformers-gguf-execution",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W39:77dd18ebf944d037",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "transformers-gguf-execution",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p1-benchmarks",
+      "block_type": "PARAGRAPH",
+      "text": "速さ比べはllama.cppを相手に三つの器で寄せたとされ、MacBook Pro（M2 Max、32GB）での測りである。ただし相手が復号のみ、こちらは読み込みを含むなど条件は揃っておらず、その旨は書き手自身が断る。詰めた道は今のところMPSのみ、詰めた束ねはまだ手がかかり、器の広がりはこれからとされる。純粋に速く回すならllama.cppが薦めと書き手自身が書く。公開の場の手ほどき（markfennerの単独、EfemeraTtとviralai_jpのまとめ）は向きが合い、証しではなく景気として添える。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W39:77dd18ebf944d037",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "transformers-gguf-execution",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W39:77dd18ebf944d037",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "transformers-gguf-execution",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W39:77dd18ebf944d037",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "transformers-gguf-execution",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W39:77dd18ebf944d037",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "transformers-gguf-execution",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W39:77dd18ebf944d037",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "transformers-gguf-execution",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "w39-local-inference-boundaries",
+      "block_type": "CLAIM_BOUNDARY",
+      "text": "この節の読解上の境界: No cross-platform parity claim / No independent perf measurement / Parity is approximate and hardware-bound (M2 Max only); no cross-platform claim. / X walkthroughs (markfenner INDEPENDENT; EfemeraTt/viralai_jp COMMUNITY) are consistent but not proof. / kernel-docs: Kernel-level performance parity not independently measured; retained with disclosed bench asymmetry. / X search is volume-limited and recency-biased; low-engagement long tail incomplete. / Seed items MentalHealthBench, Private AI Compute, TBC/AWS neuron claim, Grok 4.7, Cursor harness, DolphinBench produced no recoverable ordinary-window multi-account X cluster with concrete status IDs.",
+      "attribution_mode": "INFERENCE",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W39:77dd18ebf944d037",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "transformers-gguf-execution",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W39:77dd18ebf944d037",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "transformers-gguf-execution",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W39:3c3fcbb764e0e356",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "x-ledger-w39-r3",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W39:3c3fcbb764e0e356",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "x-ledger-w39-r3",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    }
+  ],
+  "must_cover_coverage": [
+    {
+      "requirement": "GGUF loading + serve + kernels as stated (bounded)",
+      "block_ids": [
+        "p1-integration",
+        "p1-benchmarks",
+        "w39-local-inference-boundaries"
+      ]
+    },
+    {
+      "requirement": "Bench proximity with disclosed asymmetry (bounded)",
+      "block_ids": [
+        "p1-integration",
+        "p1-benchmarks",
+        "w39-local-inference-boundaries"
+      ]
+    },
+    {
+      "requirement": "MPS-only + arch limits as stated (bounded)",
+      "block_ids": [
+        "p1-integration",
+        "p1-benchmarks",
+        "w39-local-inference-boundaries"
+      ]
+    },
+    {
+      "requirement": "llama.cpp-still-recommended as stated (bounded)",
+      "block_ids": [
+        "p1-integration",
+        "p1-benchmarks",
+        "w39-local-inference-boundaries"
+      ]
+    },
+    {
+      "requirement": "X C3 walkthroughs as community signal only",
+      "block_ids": [
+        "p1-integration",
+        "p1-benchmarks",
+        "w39-local-inference-boundaries"
+      ]
+    }
+  ],
+  "boundary_dispositions": [
+    {
+      "boundary": "No cross-platform parity claim",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "w39-local-inference-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "No independent perf measurement",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "w39-local-inference-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Parity is approximate and hardware-bound (M2 Max only); no cross-platform claim.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "w39-local-inference-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "X walkthroughs (markfenner INDEPENDENT; EfemeraTt/viralai_jp COMMUNITY) are consistent but not proof.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "w39-local-inference-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "kernel-docs: Kernel-level performance parity not independently measured; retained with disclosed bench asymmetry.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "w39-local-inference-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "X search is volume-limited and recency-biased; low-engagement long tail incomplete.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "w39-local-inference-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Seed items MentalHealthBench, Private AI Compute, TBC/AWS neuron claim, Grok 4.7, Cursor harness, DolphinBench produced no recoverable ordinary-window multi-account X cluster with concrete status IDs.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "w39-local-inference-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    }
+  ],
+  "profile_extensions": {},
+  "publication_extensions": {}
+}

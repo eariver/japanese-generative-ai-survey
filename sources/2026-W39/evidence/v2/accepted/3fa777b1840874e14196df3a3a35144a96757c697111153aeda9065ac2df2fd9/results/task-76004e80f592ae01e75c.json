@@ -1,0 +1,132 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W39",
+  "evidence_task_id": "evidence:2026-W39:4caa01228aad0d3d",
+  "basis": {
+    "task_sha256": "a7f1c98bafaf1adb10dce459299520666bbf25b417e8195576627970b5ab4691",
+    "screening_acceptance_sha256": "aee84b5afdc469cbe86acb8bec70eb0967af67e19970667178631f8e3d1aac36",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "mentalhealthbench",
+      "canonical_name": "MentalHealthBench",
+      "entity_type": "BENCHMARK",
+      "organization": "OpenAI",
+      "canonical_url": "https://openai.com/index/introducing-mentalhealthbench"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "mentalhealthbench",
+    "artifact_type": "BENCHMARK",
+    "canonical_name": "MentalHealthBench",
+    "canonical_url": "https://openai.com/index/introducing-mentalhealthbench"
+  },
+  "temporal": {
+    "observed_at": "2026-09-27T18:52:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-09-23T12:00:00Z",
+        "subject_id": "mentalhealthbench",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "primary:openai.com/index/introducing-mentalhealthbench",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "OpenAI: MentalHealthBench open benchmark (Sep 23)",
+      "published_at": "2026-09-23T12:00:00Z",
+      "accessed_at": "2026-09-27T18:52:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "OpenAI released MentalHealthBench on Sep 23: open benchmark for AI responses in realistic mental-health conversations, co-created with 80+ licensed psychologists/psychiatrists across 22 countries, 19 languages, ~20 subspecialties.",
+      "subject_id": "mentalhealthbench",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "First-party publication announcement."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Design: 1,215 synthetic privacy-preserving conversations; acuity spectrum non-acute/high-acuity/emergencies; personas adults/teens/caregivers/clinicians, multilingual; rubric criteria weights -10..+10, each reviewed by >=3 experts, retained on >=2-expert agreement without third-expert contradiction.",
+      "subject_id": "mentalhealthbench",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Vendor-described design facts."
+    },
+    {
+      "statement_id": "claim-3",
+      "text": "Automated grader is GPT-5.6 Sol (OpenAI model grading OpenAI benchmark): methodology circularity risk explicitly flagged; side study of 44 adults (non-acute only) found users value tone/next-steps while experts emphasize context-seeking.",
+      "subject_id": "mentalhealthbench",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Grader identity vendor-disclosed; circularity is an analytical boundary, not a vendor admission."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Paper-level methodology (agreement stats, grader validation) not consumed: no deep methodological verdict.",
+      "subject_id": "mentalhealthbench",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "Comparative model readings are vendor-framed given grader overlap.",
+      "subject_id": "mentalhealthbench",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "mentalhealthbench-paper",
+        "status": "UNRESOLVED",
+        "finding": "Announcement-level design verified; paper-level methodology (agreement stats, grader validation) not consumed; grader circularity blocks score acceptance.",
+        "subject_ids": [
+          "mentalhealthbench"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      "mentalhealthbench-paper: Announcement-level design verified; paper-level methodology (agreement stats, grader validation) not consumed; grader circularity blocks score acceptance."
+    ],
+    "contradictions": []
+  }
+}

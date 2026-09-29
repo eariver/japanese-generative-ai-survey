@@ -1,0 +1,143 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W39",
+  "evidence_task_id": "evidence:2026-W39:77dd18ebf944d037",
+  "basis": {
+    "task_sha256": "f3027a015e550bbe17444b04a57d30cf77ea8a2c4aa28ef6604e3141c3ce4bed",
+    "screening_acceptance_sha256": "aee84b5afdc469cbe86acb8bec70eb0967af67e19970667178631f8e3d1aac36",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "transformers-gguf-execution",
+      "canonical_name": "Transformers GGUF execution support",
+      "entity_type": "PRODUCT",
+      "organization": "Hugging Face",
+      "canonical_url": "https://huggingface.co/blog/transformers-llama-cpp-quants"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "transformers-gguf-execution",
+    "artifact_type": "INTEGRATION",
+    "canonical_name": "Transformers GGUF execution support",
+    "canonical_url": "https://huggingface.co/blog/transformers-llama-cpp-quants"
+  },
+  "temporal": {
+    "observed_at": "2026-09-27T18:52:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-09-22T12:00:00Z",
+        "subject_id": "transformers-gguf-execution",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "primary:huggingface.co/blog/transformers-llama-cpp-quants",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "Hugging Face: Transformers runs llama.cpp quants (Sep 22)",
+      "published_at": "2026-09-22T12:00:00Z",
+      "accessed_at": "2026-09-27T18:52:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Hugging Face added efficient GGUF execution in Transformers via from_pretrained gguf_file loading, transformers serve OpenAI-compatible endpoint, ggml Metal kernels through the kernels library, and generate-loop optimizations (mask drop, deferred stopping).",
+      "subject_id": "transformers-gguf-execution",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "First-party technical article 2026-09-22."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Vendor benchmarks show Transformers close to llama.cpp across three checkpoints on MacBook Pro M2 Max; llama-bench decode-only vs generate-including-prefill asymmetry explicitly disclosed.",
+      "subject_id": "transformers-gguf-execution",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Vendor-run benchmarks with disclosed method asymmetry."
+    },
+    {
+      "statement_id": "claim-3",
+      "text": "Explicit limitations: packed inference path MPS-only; padded batches lower performance; arch coverage limited to Qwen3.5 dense/MoE plus compatible Qwen3.8; llama.cpp remains the recommended engine for pure efficient local inference.",
+      "subject_id": "transformers-gguf-execution",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Vendor-stated scope and caveats."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Parity is approximate and hardware-bound (M2 Max only); no cross-platform claim.",
+      "subject_id": "transformers-gguf-execution",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "X walkthroughs (markfenner INDEPENDENT; EfemeraTt/viralai_jp COMMUNITY) are consistent but not proof.",
+      "subject_id": "transformers-gguf-execution",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "hf-gguf-blog",
+        "status": "VERIFIED",
+        "finding": "Technical article consumed at claim level; API, kernels, MPS-only limits verified as vendor-published.",
+        "subject_ids": [
+          "transformers-gguf-execution"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "kernel-docs",
+        "status": "UNRESOLVED",
+        "finding": "Kernel-level performance parity not independently measured; retained with disclosed bench asymmetry.",
+        "subject_ids": [
+          "transformers-gguf-execution"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      "kernel-docs: Kernel-level performance parity not independently measured; retained with disclosed bench asymmetry."
+    ],
+    "contradictions": []
+  }
+}
