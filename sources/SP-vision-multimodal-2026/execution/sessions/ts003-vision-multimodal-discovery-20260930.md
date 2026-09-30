@@ -18,8 +18,20 @@ Started: `2026-09-30T00:31:34Z`
 
 ## Actions actually performed
 
-- Initialized the canonical edition-local execution record tree.
-- Replace/add concise stage-grouped bullets here as material production actions occur.
+- Verified exact start guards read-only: planning HEAD `7ca9e20e...` / tree `769f7008...` / parent `2d68e07c...` (Round E), reviewed main `d6381568...` / tree `83ce3a21...`, frozen Core `774dd39a...` / tree `cd46a6f7a...` — all matched; zero-write gate PASSED.
+- Created work branch `special/vision-multimodal-2026-work` from exact reviewed main `d6381568...` (NOT from planning).
+- Read execution contract + Round E scope closure + Round D follow-up/source-resolution + Round C + Round B reconnaissance/candidates + skeleton/scope-audit + main backlog + TS-001/TS-002 finals + TS-002 production precedent (structure only; no counts/content/obligations copied).
+- Synchronized `docs/thematic-special-backlog.md` (branch only): TS-002 `ACTIVE` -> `RELEASED`; TS-003 `SCOPED` -> `ACTIVE`.
+- Materialized canonical `research-scope-v2.json` (thematic-scope-spec-v2, schema-valid): Round E Core Question, 16 obligations VM-O01..VM-O16, D07A/D07B split, D04 4-node cap, D12-D14 endpoint caps, refusal list; planning authority = synced backlog (`TS-003` entry).
+- INITIALIZE_THEMATIC via local canonical bridge (request `init-thematic-20260930-01`, event `a6de2929...`) -> `ISSUE_INITIALIZED`, `as_of` from request `recorded_at` per contract.
+- X/Grok: `NOT_REQUIRED` for this first run (primary map first; Sol designs later reception pass). Manifest `external/x/x-source-intake-v2.json` COMPLETE with zero runs. No Grok task created.
+- Re-resolved every planning lead at intake: 95/95 arXiv IDs API title-matched (4 collisions corrected: DeViSE->context-only, RefCOCO->ACL D16-1212, Detic/V-JEPA/HallusionBench/MathVista/VSI-Bench IDs fixed); HTTP-200 checks on all 16 non-arXiv locators (proceedings, anthology, NIPS, author PDF, DOI, vendor pages/cards, HF dataset, 19 GH repos).
+- Ran primary-technical Discovery (collector run `vision-multimodal-discovery-r1`): 15 lane-grouped Raw observation files (`raw/discovery-observations-vm*.md`, VM-D001–VM-D111) + negative-space ledger (refusals, context-only nodes, 6 EVIDENCE_GAPs, zero LOW_YIELD).
+- Built `discovery/discovery-v2.jsonl` (111 BASE records, pass 0; 111 unique locators; 23 multi-obligation) and deterministic acceptance `discovery/discovery-accepted-v2.json` (graph validated).
+- Source-type discipline: all records use Evidence-map-admissible keys (`arxiv_primary`/`official_conference_paper`/`official_publisher_page`/`first_party_vendor_blog`/`first_party_release_or_docs`/`official_project_repo`) to avoid CV2-DM-016 recurrence; granularity lives in metadata.
+- Coverage accounting `execution/discovery-coverage-20260930.md` (obligation/historical-current/authority/X/overlap/role-map/eval-map/negative-space/gaps + anti-collapse checks, all PASS).
+- Advanced lifecycle ISSUE_INITIALIZED -> DISCOVERY_COLLECTED (bridge ADVANCE_STAGE, request `advance-discovery-20260930-01`, CORE_STAGE_CONTRACT PASS). STOP: no Screening/Evidence/Selection/Architecture work.
+- Independent receipts: `agent.validate_agent_state` no errors; `execution_record.validate` no errors; `validate_acceptance` 111 records rebuilt-match.
 
 ## External handoff
 
@@ -31,8 +43,9 @@ Started: `2026-09-30T00:31:34Z`
 
 ## End state
 
-- Lifecycle: `ISSUE_INITIALIZED`
+- Lifecycle: `DISCOVERY_COLLECTED`
 - Terminal reason: `none`
-- Next action: `stage:discovery`
-- Review target: none recorded yet
-- Session status: `IN_PROGRESS`
+- Next action: `stage:screening` (HELD — requires Sol completeness review first; not authorized this run)
+- Review target: none (no Human Gate requested)
+- Operational meaning: `AWAITING_SOL_DISCOVERY_COMPLETENESS_REVIEW`
+- Session status: `COMPLETE` (run objective met; no Sol/Human decision fabricated)
