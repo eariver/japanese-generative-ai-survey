@@ -1,0 +1,119 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-vision-multimodal-2026",
+  "evidence_task_id": "evidence:SP-vision-multimodal-2026:4f6ee34ec83ed509",
+  "basis": {
+    "task_sha256": "c014d5f3c4e8f217af610a7df924321cbe3f56d3d11a6475a81649c21463e80a",
+    "screening_acceptance_sha256": "2b50dd1c205efc957c16a848fe185f9de7fb5eca10a5729c1b58c5bb250e7aff",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "ev-vmd071",
+      "canonical_name": "Molmo 2 (Clark et al., 2026)",
+      "entity_type": "MODEL_FAMILY",
+      "organization": "Ai2",
+      "canonical_url": "https://arxiv.org/abs/2601.10611"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "ev-vmd071",
+    "artifact_type": "PAPER",
+    "canonical_name": "Molmo 2 (Clark et al., 2026)",
+    "canonical_url": "https://arxiv.org/abs/2601.10611"
+  },
+  "temporal": {
+    "observed_at": "2026-09-30T11:46:48Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-01",
+        "subject_id": "ev-vmd071",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2601.10611",
+      "source_class": "PRIMARY_PAPER",
+      "title": "Molmo2 (Clark et al.)",
+      "published_at": "2026-01",
+      "accessed_at": "2026-09-30T11:46:48Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Open weights+data (Apache 2.0), no closed-VLM synthetic data; 7 new video + 2 multi-image datasets (dense video captions, free-form video QA, complex-query tracking, video pointing); packing + message-tree recipe, bidirectional vision-token attention, token-weighting; 8B leads open class on short video/counting/captioning, competitive long-video; video-counting 35.5 vs Qwen3-VL 29.6, pointing F1 38.4 vs Gemini 3 Pro 20.0 (author-measured); fully-open Olmo variant.",
+      "subject_id": "ev-vmd071",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Full-paper abstract (160KB body, abstract+sections consumed); v4 Apr 2026."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Comparator role (not paradigm pole): 8B/4B reuse Qwen3 backbones — partial Qwen dependence disclosed; value is openness gradient + grounding-measured video evals.",
+      "subject_id": "ev-vmd071",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "R3 selection rationale."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Author-measured comparisons; Qwen-backbone dependence disclosed; long-video competitiveness is partial.",
+      "subject_id": "ev-vmd071",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Full abstract + repo README consumed: data openness, pointing/tracking evals, Olmo variant verified.",
+        "subject_ids": [
+          "ev-vmd071"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "vendor-claim quarantine",
+        "status": "VERIFIED",
+        "finding": "Vendor-measured claims isolated with explicit attribution and role caps; no independent-evaluation inference performed.",
+        "subject_ids": [
+          "ev-vmd071"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

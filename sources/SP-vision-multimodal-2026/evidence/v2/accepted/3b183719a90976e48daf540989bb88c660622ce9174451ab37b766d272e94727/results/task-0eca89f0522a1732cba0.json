@@ -1,0 +1,119 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-vision-multimodal-2026",
+  "evidence_task_id": "evidence:SP-vision-multimodal-2026:85bc25df6171e3dd",
+  "basis": {
+    "task_sha256": "acc99f361c1147df9e0807dcac2cbc15af45f4acc980a727910379e4b82aa68e",
+    "screening_acceptance_sha256": "2b50dd1c205efc957c16a848fe185f9de7fb5eca10a5729c1b58c5bb250e7aff",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "ev-vmd019",
+      "canonical_name": "MiDaS (Ranftl et al., 2019/2022)",
+      "entity_type": "MODEL",
+      "organization": "Intel Labs / ETH Zurich",
+      "canonical_url": "https://arxiv.org/abs/1907.01341"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "ev-vmd019",
+    "artifact_type": "PAPER",
+    "canonical_name": "MiDaS (Ranftl et al., 2019/2022)",
+    "canonical_url": "https://arxiv.org/abs/1907.01341"
+  },
+  "temporal": {
+    "observed_at": "2026-09-30T11:46:48Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2019-07",
+        "subject_id": "ev-vmd019",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/1907.01341",
+      "source_class": "PRIMARY_PAPER",
+      "title": "Towards Robust Monocular Depth Estimation / MiDaS (Ranftl et al.)",
+      "published_at": "2019-07",
+      "accessed_at": "2026-09-30T11:46:48Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Scale/shift-invariant robust objectives enable mixing incompatible depth datasets (stereo, laser, structured light, plus 3D-film data); Pareto-optimal multi-objective mixing beats naive mixing; encoder pre-training on auxiliary tasks matters; MiDaS models openly released.",
+      "subject_id": "ev-vmd019",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Full-paper abstract/conclusion/mixing experiments; X01 data-contract content."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Evaluation contract: zero-shot cross-dataset transfer (train on some datasets, test on unseen ones incl. DIW/ETH3D/Sintel/KITTI/NYU/TUM) as the 'in-the-wild' proxy — the robustness-measurement exhibit for D04.",
+      "subject_id": "ev-vmd019",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Experiments + closing discussion consumed."
+    },
+    {
+      "statement_id": "claim-3",
+      "text": "Paper's own boundary: existing depth datasets are likely the limiting factor; dataset insufficiency stated as the open problem.",
+      "subject_id": "ev-vmd019",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Conclusion consumed."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Relative-depth scope; metric-depth claims need other sources; 2019-vintage baselines.",
+      "subject_id": "ev-vmd019",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Full body consumed: invariant losses, mixing strategy, zero-shot protocol, and dataset-limitation statement verified.",
+        "subject_ids": [
+          "ev-vmd019"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

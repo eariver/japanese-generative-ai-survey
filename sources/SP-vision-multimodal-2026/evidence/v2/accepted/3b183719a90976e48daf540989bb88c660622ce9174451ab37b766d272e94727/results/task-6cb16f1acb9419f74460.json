@@ -1,0 +1,141 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-vision-multimodal-2026",
+  "evidence_task_id": "evidence:SP-vision-multimodal-2026:acb94f2fa047f59d",
+  "basis": {
+    "task_sha256": "45e14aaecc9cded6a7573b1765ee6dc7453bedb10007d49d793a4dd53f71aaba",
+    "screening_acceptance_sha256": "2b50dd1c205efc957c16a848fe185f9de7fb5eca10a5729c1b58c5bb250e7aff",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "ev-vmd106",
+      "canonical_name": "Genie 3 (Google DeepMind, 2025)",
+      "entity_type": "MODEL",
+      "organization": "Google DeepMind",
+      "canonical_url": "https://deepmind.google/blog/genie-3-a-new-frontier-for-world-models/"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "ev-vmd106",
+    "artifact_type": "MODEL",
+    "canonical_name": "Genie 3 (Google DeepMind, 2025)",
+    "canonical_url": "https://deepmind.google/blog/genie-3-a-new-frontier-for-world-models/"
+  },
+  "temporal": {
+    "observed_at": "2026-09-30T11:46:48Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2025-08",
+        "subject_id": "ev-vmd106",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://deepmind.google/blog/genie-3-a-new-frontier-for-world-models/",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "Genie 3 (DeepMind blog)",
+      "published_at": "2025-08",
+      "accessed_at": "2026-09-30T11:46:48Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Real-time 24fps/720p interactive worlds from text prompts with minutes-scale consistency and 1-min visual memory; promptable world events (weather/objects/characters); SIMA-agent training use with goal-agnostic simulation; Genie 1/2 lineage named; research-preview gating.",
+      "subject_id": "ev-vmd106",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Official blog consumed in full 2026-09-30 (Aug 5, 2025 post)."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Five vendor-stated limitations: limited agent action space; multi-agent interaction unsolved; no georeferenced real locales; conditional text rendering; minutes-scale duration. NeRF/3DGS contrast is vendor framing — attributed, not adopted.",
+      "subject_id": "ev-vmd106",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Blog Limitations section consumed verbatim-class."
+    },
+    {
+      "statement_id": "claim-3",
+      "text": "Role cap: CAPABILITY + DEPLOYMENT-pointer ONLY; no paper/weights means never ARCHITECTURE_CASE.",
+      "subject_id": "ev-vmd106",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Source-role discipline per Round E."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Architecture undisclosed; consistency/SIMA claims vendor-stated; no independent dynamics-use eval (G02).",
+      "subject_id": "ev-vmd106",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Full blog consumed: capabilities, SIMA use, limitations, gating verified as vendor statements.",
+        "subject_ids": [
+          "ev-vmd106"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "vendor-claim quarantine",
+        "status": "VERIFIED",
+        "finding": "Vendor-measured claims isolated with explicit attribution and role caps; no independent-evaluation inference performed.",
+        "subject_ids": [
+          "ev-vmd106"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "NeRF/3DGS framing attributed not adopted",
+        "status": "VERIFIED",
+        "finding": "Vendor 3D-method contrast recorded as attributed framing, not adopted analysis.",
+        "subject_ids": [
+          "ev-vmd106"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

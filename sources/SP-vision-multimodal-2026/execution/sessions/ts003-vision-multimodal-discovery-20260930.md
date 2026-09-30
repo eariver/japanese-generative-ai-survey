@@ -32,6 +32,9 @@ Started: `2026-09-30T00:31:34Z`
 - Coverage accounting `execution/discovery-coverage-20260930.md` (obligation/historical-current/authority/X/overlap/role-map/eval-map/negative-space/gaps + anti-collapse checks, all PASS).
 - Advanced lifecycle ISSUE_INITIALIZED -> DISCOVERY_COLLECTED (bridge ADVANCE_STAGE, request `advance-discovery-20260930-01`, CORE_STAGE_CONTRACT PASS). STOP: no Screening/Evidence/Selection/Architecture work.
 - Independent receipts: `agent.validate_agent_state` no errors; `execution_record.validate` no errors; `validate_acceptance` 111 records rebuilt-match.
+- Screening (Sol request Sections 1-10 authority): 111 explicit operator decisions via edition-local `make_screening_decisions.py` (KEEP 103 / MAYBE 3 / INSPECT 5 / DROP 0); canonical `run_screening_v2_interactive` accepted (run `71136cdd...`); lane integrity per Sections 3.1-3.3; gaps G01-G06 survive. Stage validation PASS -> checkpoint -> advanced DISCOVERY_COLLECTED -> CANDIDATES_NORMALIZED (edition-local `advance_screening.py`).
+- Evidence (main purpose of this run): canonical package prepared (111 tasks); full-text consumption of all 111 retained sources (95 arXiv HTML bodies + 6 proceedings/PDF bodies via pdftotext + 10 vendor/card/repo/HF pages re-verified live); 111 interactive records (`evidence-interactive-input.json`, VERIFIED 106 / PARTIAL 5 with explicit reasons); canonical builders/validators + append-only acceptors produced 111 Evidence Cards (`3b183719...`) + 111 Edition Views (`ed7ebf97...`).
+- Deliberately NOT performed (stop boundary): Materiality Ledger, Profile Completeness, Production State advance beyond CANDIDATES_NORMALIZED, Materiality/Completeness/Selection/Architecture stages, any Human Gate.
 
 ## External handoff
 
@@ -43,9 +46,11 @@ Started: `2026-09-30T00:31:34Z`
 
 ## End state
 
-- Lifecycle: `DISCOVERY_COLLECTED`
+- Lifecycle: `CANDIDATES_NORMALIZED`
 - Terminal reason: `none`
-- Next action: `stage:screening` (HELD — requires Sol completeness review first; not authorized this run)
+- Screening checkpoint: `passed`
+- Evidence checkpoint: built + validated, stage advance pending Sol semantic review
+- Next action: Sol Evidence Semantic Review (HELD — not authorized this run)
 - Review target: none (no Human Gate requested)
-- Operational meaning: `AWAITING_SOL_DISCOVERY_COMPLETENESS_REVIEW`
-- Session status: `COMPLETE` (run objective met; no Sol/Human decision fabricated)
+- Operational meaning: `AWAITING_SOL_EVIDENCE_SEMANTIC_REVIEW`
+- Session status: `COMPLETE` (run objective met; no Sol/Human decision fabricated; NO_MATERIALITY / NO_SELECTION / NO_ARCHITECTURE)

@@ -1,0 +1,119 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-vision-multimodal-2026",
+  "evidence_task_id": "evidence:SP-vision-multimodal-2026:a3d0f0452d7e3282",
+  "basis": {
+    "task_sha256": "ba2e0157f361f8ddc89dfb281942f6716311a5849058f0499bbaa156bec95296",
+    "screening_acceptance_sha256": "2b50dd1c205efc957c16a848fe185f9de7fb5eca10a5729c1b58c5bb250e7aff",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "ev-vmd029",
+      "canonical_name": "Qwen3-VL-Embedding / Reranker (Qwen Team, 2026)",
+      "entity_type": "MODEL",
+      "organization": "Alibaba Qwen",
+      "canonical_url": "https://arxiv.org/abs/2601.04720"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "ev-vmd029",
+    "artifact_type": "PAPER",
+    "canonical_name": "Qwen3-VL-Embedding / Reranker (Qwen Team, 2026)",
+    "canonical_url": "https://arxiv.org/abs/2601.04720"
+  },
+  "temporal": {
+    "observed_at": "2026-09-30T11:46:48Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-01",
+        "subject_id": "ev-vmd029",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2601.04720",
+      "source_class": "PRIMARY_PAPER",
+      "title": "Qwen3-VL-Embedding and Qwen3-VL-Reranker",
+      "published_at": "2026-01",
+      "accessed_at": "2026-09-30T11:46:48Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "VLM-backbone retrieval pipeline: embedding (multi-stage contrastive pre-training to reranker distillation; Matryoshka dimensions; 32K inputs; 2B/8B) + cross-encoder reranker; 8B scores 77.8 on MMEB-V2, ranked first as of 2026-01-08 (author-measured).",
+      "subject_id": "ev-vmd029",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Full-paper abstract/conclusion; leaderboard claim explicitly author-measured with date binding."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Role (VM-O05/VM-O10): retrieval sub-lane anchor (document-RAG interface) + encoder-reuse cross-reference; multilingual 30+ languages inherited from Qwen3-VL.",
+      "subject_id": "ev-vmd029",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Lineage position per Round E."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Author-measured leaderboard; preprint status confirmed at intake; independent reproduction pending (G05).",
+      "subject_id": "ev-vmd029",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Full body consumed: training paradigm, Matryoshka/quantization traits, MMEB-V2 claim with date verified.",
+        "subject_ids": [
+          "ev-vmd029"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "preprint version/status binding",
+        "status": "VERIFIED",
+        "finding": "Preprint status and version recorded; independent reproduction pending as G05.",
+        "subject_ids": [
+          "ev-vmd029"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}
