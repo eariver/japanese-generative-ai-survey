@@ -3,7 +3,7 @@
   "issue_id": "SP-vision-multimodal-2026",
   "research_profile": "THEMATIC",
   "publication_profile": "LONGFORM_SPECIAL",
-  "lifecycle_state": "EVIDENCE_REVIEWED",
+  "lifecycle_state": "ARCHITECTURE_ESTABLISHED",
   "profile": {
     "path": "sources/SP-vision-multimodal-2026/production-profile.json",
     "sha256": "e4d16027d66d379848378031e47198a09f0b27a961e27a0ab250923a07a57444"
@@ -31,8 +31,8 @@
     "publication_preview": null
   },
   "target_gate": "ARCHITECTURE_REVIEW",
-  "next_action": "stage:selection",
-  "terminal_reason": null,
+  "next_action": "ARCHITECTURE_REVIEW",
+  "terminal_reason": "HUMAN_GATE_REACHED",
   "exception_gate": {
     "status": "inactive",
     "reason": null
@@ -43,8 +43,8 @@
     "evidence": "passed",
     "materiality": "passed",
     "completeness": "passed",
-    "selection": "pending",
-    "architecture": "pending",
+    "selection": "passed",
+    "architecture": "passed",
     "draft": "pending",
     "validation": "pending",
     "publication_preview": "pending",
@@ -72,8 +72,14 @@
       "path": "sources/SP-vision-multimodal-2026/orchestration/v2/checkpoints/CANDIDATES_NORMALIZED.json",
       "sha256": "ef73f9b94e71269ad9469f2a3f67cd263b07b05b34fbeec846f1e3e2a7ae5468"
     },
-    "selection": null,
-    "architecture": null,
+    "selection": {
+      "path": "sources/SP-vision-multimodal-2026/orchestration/v2/checkpoints/EVIDENCE_REVIEWED.json",
+      "sha256": "5e199f43a445d69e9447e1e854172d60ccd0c8152df6fabab3b5f0f39339febc"
+    },
+    "architecture": {
+      "path": "sources/SP-vision-multimodal-2026/orchestration/v2/checkpoints/SELECTION_COMPLETE.json",
+      "sha256": "1c00a71a808e3fe167496c38b7be2c24c02ca9c2cfe5b158f3a7699b8aa1ec83"
+    },
     "draft": null,
     "validation": null,
     "publication_preview": null,
@@ -110,6 +116,18 @@
       "to": "EVIDENCE_REVIEWED",
       "recorded_at": "2026-09-30T17:09:52Z",
       "repository_commit_sha": "67e02538f120ce184814866d372daf9de9388c33"
+    },
+    {
+      "from": "EVIDENCE_REVIEWED",
+      "to": "SELECTION_COMPLETE",
+      "recorded_at": "2026-09-30T17:37:05Z",
+      "repository_commit_sha": "6e3d555e8895e53151e30a4c93ace6bc790ce2b7"
+    },
+    {
+      "from": "SELECTION_COMPLETE",
+      "to": "ARCHITECTURE_ESTABLISHED",
+      "recorded_at": "2026-09-30T17:37:51Z",
+      "repository_commit_sha": "6e3d555e8895e53151e30a4c93ace6bc790ce2b7"
     }
   ]
 }

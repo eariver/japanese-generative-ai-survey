@@ -1,0 +1,50 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-vision-multimodal-2026",
+  "from_state": "EVIDENCE_REVIEWED",
+  "to_state": "SELECTION_COMPLETE",
+  "checkpoints": [
+    "selection"
+  ],
+  "recorded_at": "2026-09-30T17:37:05Z",
+  "implementation": {
+    "repository_commit_sha": "6e3d555e8895e53151e30a4c93ace6bc790ce2b7",
+    "orchestrator_version": "survey-production-core-v2/0.15-postintegration-transport-thematic"
+  },
+  "contract": {
+    "pipeline_contract_version": "2.0-rc1",
+    "pipeline_contract_sha256": "ee89796245c22072cec98f34931180214a4928c24f399280793cd6420a4c8e71",
+    "quality_contract_version": "2.0-rc1",
+    "quality_contract_sha256": "b5b955d524fb438c0f1b2c9490bea1da2083e79028d67a55ca424bbfc20f2958",
+    "research_profile_version": "2.0-rc1",
+    "research_profile_sha256": "0f575e6d97caec72b2bf8b7f6b78a562d97ca67b2071193417b968ba3d73e6e8",
+    "publication_profile_version": "2.0-rc1",
+    "publication_profile_sha256": "a6859559dd1b9d42ab8fb4402b74b7bdd8611dbe65c8e02a7b022b545c20f4eb"
+  },
+  "artifacts": [
+    {
+      "name": "candidate-matrix",
+      "path": "sources/SP-vision-multimodal-2026/candidate-matrix-v2.json",
+      "sha256": "1cb6f3a8b86f7e21f510a144baf8c3897f1661dca19739e292ee5cfe91c3a35a"
+    },
+    {
+      "name": "candidate-selection",
+      "path": "sources/SP-vision-multimodal-2026/candidate-selection-v2.json",
+      "sha256": "378b818e73d328f0b0da3d5207f27098c546c39381ea8ec1035634322555e5ef"
+    }
+  ],
+  "reviews": [
+    {
+      "check_id": "CORE_STAGE_CONTRACT",
+      "kind": "DETERMINISTIC",
+      "status": "PASS",
+      "executor": "Muse Spark (Work execution role; deterministic tool result, not a Sol/Human decision)",
+      "evidence": "Deterministic selection stage-contract validation for TS-003: 111 candidates selected (72 PRIMARY / 39 SUPPORTING), all 16 arcs covered, derived from accepted Evidence r5 / Views / Materiality / Completeness (LIMITED) under Sol selection-through-architecture request 20261001.",
+      "result": {
+        "path": "sources/SP-vision-multimodal-2026/execution/selection-architecture-20261001/validation/selection-stage-validation.json",
+        "sha256": "a547784e36e41fc41862689ec1254f168d20a5af164b90c5f6352f42dfcf53e0"
+      }
+    }
+  ],
+  "summary": "TS-003 Selection complete: 111/111 SELECTED (72 PRIMARY, 39 SUPPORTING), 16 arcs preserved, D04 cap and D07A/D07B separation enforced, endpoint bounds held; derived from Evidence r5 + Materiality/Completeness (LIMITED) under Sol request 20261001."
+}

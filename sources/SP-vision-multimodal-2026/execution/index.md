@@ -14,9 +14,11 @@ This is the current human-readable navigation record for the edition. Machine li
 - Production Profile: `sources/SP-vision-multimodal-2026/production-profile.json`
 - Production State: `sources/SP-vision-multimodal-2026/production-state.json`
 - Current State SHA-256: `0f07c471ad65f800e508869f4e9a5d51fdb1e4d695fe9f26baca9246589973eb`
-- Current lifecycle: `ISSUE_INITIALIZED`
-- Current terminal reason: `none`
-- Current next action: `stage:discovery`
+- Current lifecycle: `ARCHITECTURE_ESTABLISHED`
+- Current terminal reason: `HUMAN_GATE_REACHED`
+- Current next action: `ARCHITECTURE_REVIEW`
+- Selection/Architecture run: `execution/selection-architecture-20261001/` (input, validation, dossier r1)
+- Human Architecture Review dossier r1: `execution/selection-architecture-20261001/architecture-review-dossier-r1.md`
 
 ## Human Gates
 
@@ -47,6 +49,7 @@ This is the current human-readable navigation record for the edition. Machine li
 ## Sessions
 
 - `sessions/ts003-vision-multimodal-discovery-20260930.md`
+- Selection→Architecture run 20261001: `selection-architecture-20261001/` + checkpoints `orchestration/v2/checkpoints/{EVIDENCE_REVIEWED,SELECTION_COMPLETE}.json`
 
 ## Final disposition
 
