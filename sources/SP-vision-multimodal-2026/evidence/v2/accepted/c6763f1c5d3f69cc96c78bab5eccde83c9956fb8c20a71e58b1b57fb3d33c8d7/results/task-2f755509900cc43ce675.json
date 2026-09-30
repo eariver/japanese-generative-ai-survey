@@ -1,0 +1,121 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-vision-multimodal-2026",
+  "evidence_task_id": "evidence:SP-vision-multimodal-2026:e543b8e20cd2e54c",
+  "basis": {
+    "task_sha256": "cf1d489d66c1b523d0f6c4a121a62449dccfc090318318c357ad911e6be63cb6",
+    "screening_acceptance_sha256": "2b50dd1c205efc957c16a848fe185f9de7fb5eca10a5729c1b58c5bb250e7aff",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "ev-vmd074",
+      "canonical_name": "Qwen3-VL repository (code + weights)",
+      "entity_type": "MODEL",
+      "organization": "Alibaba Qwen",
+      "canonical_url": "https://github.com/QwenLM/Qwen3-VL"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "ev-vmd074",
+    "artifact_type": "OPEN_WEIGHT",
+    "canonical_name": "Qwen3-VL repository (code + weights)",
+    "canonical_url": "https://github.com/QwenLM/Qwen3-VL"
+  },
+  "temporal": {
+    "observed_at": "2026-09-30T14:24:47Z",
+    "events": []
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://github.com/QwenLM/Qwen3-VL",
+      "source_class": "PRIMARY_REPOSITORY",
+      "title": "QwenLM/Qwen3-VL repository (code + weights)",
+      "published_at": null,
+      "accessed_at": "2026-09-30T14:24:47Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Deployment surface verified: Dense+MoE edge-to-cloud, FP8 variants, Transformers/vLLM support, Instruct + Thinking editions, Visual Agent GUI operation, 2D + 3D grounding, 256K native context expandable to 1M per repo.",
+      "subject_id": "ev-vmd074",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PROJECT_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Repo README introduction/key-enhancements consumed 2026-09-30."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Inspectability exhibit: three-module stack inspectable in code; weights do not self-establish eval claims.",
+      "subject_id": "ev-vmd074",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Edition-level analytical synthesis by the Work operator (lineage/selection/boundary/contract judgment, not a literal statement of the cited source); structural home for edition rationale."
+    },
+    {
+      "statement_id": "claim-3",
+      "text": "Code license: Apache 2.0 (repo-root LICENSE file of the bound repository, verified 2026-09-30). Model-weight license: unresolved in canonical Evidence (the Hugging Face release surface is not a bound source for this Card; the HF-derived tag observation is retained only in the audit note).",
+      "subject_id": "ev-vmd074",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PROJECT_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Repo-root LICENSE file consumed 2026-09-30 (exact path within the bound repository); commit-level pinning deferred to later stages."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Living surface: commit/version binding required at later stages; README marketing register quarantined from architecture.",
+      "subject_id": "ev-vmd074",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "README consumed: architecture editions, deployment targets, context claims verified as project statements.",
+        "subject_ids": [
+          "ev-vmd074"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "repo commit/version binding",
+        "status": "UNRESOLVED",
+        "finding": "Living-repo commit/version binding deferred to later stages; README-depth consumption recorded.",
+        "subject_ids": [
+          "ev-vmd074"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      "repo commit/version binding: Living-repo commit/version binding deferred to later stages; README-depth consumption recorded."
+    ],
+    "contradictions": []
+  }
+}
