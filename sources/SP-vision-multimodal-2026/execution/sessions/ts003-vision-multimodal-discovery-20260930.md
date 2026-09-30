@@ -36,6 +36,8 @@ Started: `2026-09-30T00:31:34Z`
 - Evidence (main purpose of this run): canonical package prepared (111 tasks); full-text consumption of all 111 retained sources (95 arXiv HTML bodies + 6 proceedings/PDF bodies via pdftotext + 10 vendor/card/repo/HF pages re-verified live); 111 interactive records (`evidence-interactive-input.json`, VERIFIED 106 / PARTIAL 5 with explicit reasons); canonical builders/validators + append-only acceptors produced 111 Evidence Cards (`3b183719...`) + 111 Edition Views (`ed7ebf97...`).
 - Deliberately NOT performed (stop boundary): Materiality Ledger, Profile Completeness, Production State advance beyond CANDIDATES_NORMALIZED, Materiality/Completeness/Selection/Architecture stages, any Human Gate.
 - Bounded Evidence semantic-fidelity repair r1->r2 (Sol r1 REQUEST_CHANGES, F1-F5): source-binding audit of 24 role-bearing cards; repo facts moved to repo-bound cards (Qwen3-VL/Omni currency+deployment, InternVL currency); Molmo license buckets separated with fresh bindings (repo LICENSE + HF tags; data-mix unresolved, PARTIAL kept); Qwen3-Omni weights corrected to license:other; 19 paper-card verification findings rewritten to name consumed body sections; 46 synthesis claims PRIMARY_FACT->INFERENCE (zero remain); D101 branch-separated lineage wording. New additive input + append-only r2 acceptance (111 Cards, `3f6be211...`) + r2 Views (`73c06689...`); r1 artifacts untouched; §11 checks 44/44 PASS; lifecycle stays CANDIDATES_NORMALIZED; G01-G06 preserved.
+- Minimal repair r2->r3 (Sol r2 R2-F1/F2), micro-repair r3->r4 (Sol r3 contract cleanliness), immutability repair r4->r5 (Sol r4 R4-F1): r5 built from r3 baseline with 107 Cards/Views byte-copied and 4 authorized repairs (D074/D075/D077/D111) + D101 byte-identical incl. timestamps. New append-only r5 acceptance (111 Cards, `4182d7d5...`) + r5 Views (`e3d0b3b3...`); r1-r4 untouched; G01-G06 preserved.
+- Evidence checkpoint + Materiality + Completeness (Sol r5 PASS, 2026-10-01 execution): exact r5 Evidence/Views re-validated as sole downstream authority (r1-r4 history only); canonical Materiality Ledger built via Core tooling (111 rows: 101 MATERIAL / 10 CONTEXT; D04 cap, D07A/D07B separation, endpoint bounds, source-role discipline enforced in audit `materiality-completeness-audit-20261001.md`); Profile Completeness built via canonical builder + validator (LIMITED: 13 SATISFIED / 3 LIMITATION for O06-G06/O14-G01/O15-G02, 0 NEEDS_RESEARCH; G01-G06 carried as residuals; X01-X04 read back); combined CORE_STAGE_CONTRACT validation PASS -> checkpoint `CANDIDATES_NORMALIZED.json` -> advanced CANDIDATES_NORMALIZED -> EVIDENCE_REVIEWED. Selection/Architecture not entered.
 
 ## External handoff
 
@@ -47,11 +49,15 @@ Started: `2026-09-30T00:31:34Z`
 
 ## End state
 
-- Lifecycle: `CANDIDATES_NORMALIZED`
+- Lifecycle: `EVIDENCE_REVIEWED`
 - Terminal reason: `none`
 - Screening checkpoint: `passed`
-- Evidence checkpoint: built + validated, stage advance pending Sol semantic review
-- Next action: Sol Evidence Semantic Review r5 (HELD — not authorized this run)
+- Evidence checkpoint: `passed`
+- Materiality checkpoint: `passed`
+- Completeness checkpoint: `passed`
+- Selection checkpoint: `pending`
+- Architecture checkpoint: `pending`
+- Next action: Sol Materiality/Completeness Review (HELD — not authorized this run)
 - Review target: none (no Human Gate requested)
-- Operational meaning: `AWAITING_SOL_EVIDENCE_SEMANTIC_REVIEW_R5`
-- Session status: `COMPLETE` (run objective met; no Sol/Human decision fabricated; NO_MATERIALITY / NO_SELECTION / NO_ARCHITECTURE)
+- Operational meaning: `AWAITING_SOL_MATERIALITY_COMPLETENESS_REVIEW`
+- Session status: `COMPLETE` (run objective met; no Sol/Human decision fabricated; NO_SELECTION / NO_ARCHITECTURE)
