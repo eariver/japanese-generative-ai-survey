@@ -1,0 +1,108 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-vision-multimodal-2026",
+  "evidence_task_id": "evidence:SP-vision-multimodal-2026:46a40e71f36174e1",
+  "basis": {
+    "task_sha256": "a22b5691817b1f64964dff384182721aeff5858f0def70172a665c902ac90d4a",
+    "screening_acceptance_sha256": "2b50dd1c205efc957c16a848fe185f9de7fb5eca10a5729c1b58c5bb250e7aff",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "ev-vmd041",
+      "canonical_name": "Flickr30k Entities (Plummer et al., 2015)",
+      "entity_type": "DATASET",
+      "organization": null,
+      "canonical_url": "https://openaccess.thecvf.com/content_iccv_2015/html/Plummer_Flickr30k_Entities_Collecting_ICCV_2015_paper.html"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "ev-vmd041",
+    "artifact_type": "PAPER",
+    "canonical_name": "Flickr30k Entities (Plummer et al., 2015)",
+    "canonical_url": "https://openaccess.thecvf.com/content_iccv_2015/html/Plummer_Flickr30k_Entities_Collecting_ICCV_2015_paper.html"
+  },
+  "temporal": {
+    "observed_at": "2026-09-30T14:42:15Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2015-12",
+        "subject_id": "ev-vmd041",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://openaccess.thecvf.com/content_iccv_2015/html/Plummer_Flickr30k_Entities_Collecting_ICCV_2015_paper.html",
+      "source_class": "PRIMARY_PAPER",
+      "title": "Flickr30k Entities (Plummer et al.)",
+      "published_at": "2015-12",
+      "accessed_at": "2026-09-30T14:42:15Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "158K captions augmented with 244K coreference chains + 276K boxes; first large-scale region-to-phrase correspondence dataset; phrase-localization task ('akin to detection but phrases unseen at train time'); CCA embedding baseline Recall@1 ~25% to ~50% with Fast R-CNN features.",
+      "subject_id": "ev-vmd041",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Full ICCV PDF consumed: annotation protocol, splits (29,783/1K/1K), baseline results."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Task-origin role: fixed-class detection -> open-phrase-set localization; supervised region-phrase training beats weakly-supervised (Rohrbach) — the supervision finding.",
+      "subject_id": "ev-vmd041",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Related-work adoption discussion consumed."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "People/animal-heavy domain bias; binary retrieval use needs global-matching extensions (SAE discussion).",
+      "subject_id": "ev-vmd041",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Full PDF consumed: correspondence schema, baseline numbers, and task definition verified.",
+        "subject_ids": [
+          "ev-vmd041"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

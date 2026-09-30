@@ -51,7 +51,7 @@ Started: `2026-09-30T00:31:34Z`
 - Terminal reason: `none`
 - Screening checkpoint: `passed`
 - Evidence checkpoint: built + validated, stage advance pending Sol semantic review
-- Next action: Sol Evidence Semantic Review r3 (HELD — not authorized this run)
+- Next action: Sol Evidence Semantic Review r4 (HELD — not authorized this run)
 - Review target: none (no Human Gate requested)
-- Operational meaning: `AWAITING_SOL_EVIDENCE_SEMANTIC_REVIEW_R3`
+- Operational meaning: `AWAITING_SOL_EVIDENCE_SEMANTIC_REVIEW_R4`
 - Session status: `COMPLETE` (run objective met; no Sol/Human decision fabricated; NO_MATERIALITY / NO_SELECTION / NO_ARCHITECTURE)

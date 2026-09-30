@@ -1,0 +1,119 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-vision-multimodal-2026",
+  "evidence_task_id": "evidence:SP-vision-multimodal-2026:c4ef50825f567b93",
+  "basis": {
+    "task_sha256": "a3c774ed7253963586868dadf6d16bd76425aa3c414a640b232c569a7e531f6d",
+    "screening_acceptance_sha256": "2b50dd1c205efc957c16a848fe185f9de7fb5eca10a5729c1b58c5bb250e7aff",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "ev-vmd100",
+      "canonical_name": "Gemini Robotics On-Device 2 (Google DeepMind, 2026)",
+      "entity_type": "MODEL",
+      "organization": "Google DeepMind",
+      "canonical_url": "https://deepmind.google/models/model-cards/gemini-robotics-on-device-2/"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "ev-vmd100",
+    "artifact_type": "MODEL",
+    "canonical_name": "Gemini Robotics On-Device 2 (Google DeepMind, 2026)",
+    "canonical_url": "https://deepmind.google/models/model-cards/gemini-robotics-on-device-2/"
+  },
+  "temporal": {
+    "observed_at": "2026-09-30T14:42:15Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-07",
+        "subject_id": "ev-vmd100",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://deepmind.google/models/model-cards/gemini-robotics-on-device-2/",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "Gemini Robotics On-Device 2 model card (DeepMind)",
+      "published_at": "2026-07",
+      "accessed_at": "2026-09-30T14:42:15Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "On-device Gemma + Robotics 1.5-tech VLA for general manipulation on local devices; text/image/proprioception-in, actions-out; trusted-testers-only; sim + on-robot eval of scene/instruction/action generalization; TPU/JAX/ML-Pathways training.",
+      "subject_id": "ev-vmd100",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Model card (July 2026) consumed in full 2026-09-30."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Stated limits (card-scoped): OOD generalization + high-DoF control limits; bi-arm-primary safety scope; layered-safety recommendation (ER models + low-level controllers + hardware safety).",
+      "subject_id": "ev-vmd100",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Card Limitations/Safety sections consumed verbatim-class."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Card-scoped eval only; OOD/whole-body outside stated scope; card may update (bind date).",
+      "subject_id": "ev-vmd100",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Full card consumed: I/O contract, training substrate, eval scope, limits, safety posture verified as vendor statements.",
+        "subject_ids": [
+          "ev-vmd100"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "card-scope limits preserved",
+        "status": "VERIFIED",
+        "finding": "Card-stated OOD/high-DoF limits and bi-arm-primary scope preserved verbatim-class.",
+        "subject_ids": [
+          "ev-vmd100"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

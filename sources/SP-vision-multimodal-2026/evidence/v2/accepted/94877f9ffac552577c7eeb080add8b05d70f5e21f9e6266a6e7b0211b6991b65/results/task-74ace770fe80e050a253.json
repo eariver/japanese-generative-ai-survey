@@ -1,0 +1,97 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-vision-multimodal-2026",
+  "evidence_task_id": "evidence:SP-vision-multimodal-2026:9ee5b39b27eced77",
+  "basis": {
+    "task_sha256": "006392febad066648dce3c1bafe025f33e5c828301bfd6f180d168dfbc527dba",
+    "screening_acceptance_sha256": "2b50dd1c205efc957c16a848fe185f9de7fb5eca10a5729c1b58c5bb250e7aff",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "ev-vmd069",
+      "canonical_name": "CLAP (Elizalde et al., 2023)",
+      "entity_type": "MODEL",
+      "organization": "Microsoft",
+      "canonical_url": "https://arxiv.org/abs/2206.04769"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "ev-vmd069",
+    "artifact_type": "PAPER",
+    "canonical_name": "CLAP (Elizalde et al., 2023)",
+    "canonical_url": "https://arxiv.org/abs/2206.04769"
+  },
+  "temporal": {
+    "observed_at": "2026-09-30T14:42:15Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2022-06",
+        "subject_id": "ev-vmd069",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2206.04769",
+      "source_class": "PRIMARY_PAPER",
+      "title": "CLAP: Learning Audio Concepts From Natural Language Supervision (Elizalde et al.)",
+      "published_at": "2022-06",
+      "accessed_at": "2026-09-30T14:42:15Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Dual-encoder contrastive language-audio pretraining on 128k pairs: zero-shot SOTA across 16 tasks/8 domains (sound events, music, speech) plus 5 supervised SOTAs — the explicit CLIP-parallel completing audio-side addressability; ICASSP 2023.",
+      "subject_id": "ev-vmd069",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Full-paper abstract/conclusion; numbers paper-reported."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "128k-pair scale vs CLIP-scale; later omni encoders qualify the comparison.",
+      "subject_id": "ev-vmd069",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Full body consumed: contrastive design, zero-shot scope, supervised results verified.",
+        "subject_ids": [
+          "ev-vmd069"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

@@ -1,0 +1,108 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-vision-multimodal-2026",
+  "evidence_task_id": "evidence:SP-vision-multimodal-2026:48f42e295f015ec1",
+  "basis": {
+    "task_sha256": "7548075b1c67d9560fa85f7b8464ef28b79e4ab1b7af7e67400219b95af7e77e",
+    "screening_acceptance_sha256": "2b50dd1c205efc957c16a848fe185f9de7fb5eca10a5729c1b58c5bb250e7aff",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "ev-vmd062",
+      "canonical_name": "LLaVA (Liu et al., 2023)",
+      "entity_type": "MODEL",
+      "organization": null,
+      "canonical_url": "https://arxiv.org/abs/2304.08485"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "ev-vmd062",
+    "artifact_type": "PAPER",
+    "canonical_name": "LLaVA (Liu et al., 2023)",
+    "canonical_url": "https://arxiv.org/abs/2304.08485"
+  },
+  "temporal": {
+    "observed_at": "2026-09-30T14:42:15Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2023-04",
+        "subject_id": "ev-vmd062",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2304.08485",
+      "source_class": "PRIMARY_PAPER",
+      "title": "Visual Instruction Tuning / LLaVA (Liu et al.)",
+      "published_at": "2023-04",
+      "accessed_at": "2026-09-30T14:42:15Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "First language-only-GPT-4-generated multimodal instruction data + end-to-end vision-encoder+LLM tuning: 85.1% relative GPT-4 score on synthetic instruction-following; 92.53% ScienceQA SOTA with GPT-4 synergy; data+model+code open; LLaVA-Bench reveals weaknesses by design (paper's own Limits with ramen-example failure cases).",
+      "subject_id": "ev-vmd062",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Full-paper abstract/limitations; numbers paper-reported."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "X01 exhibit: machine-generated instruction-following data as a supervision contract — the data-composition claim Evidence must carry.",
+      "subject_id": "ev-vmd062",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Edition-level analytical synthesis by the Work operator (lineage/selection/boundary/contract judgment, not a literal statement of the cited source); structural home for edition rationale."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Synthetic instruction-data dependence; failure cases paper-acknowledged via LLaVA-Bench.",
+      "subject_id": "ev-vmd062",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Complete LLaVA paper body consumed via arXiv HTML (78KB text): GPT-4 data generation, tuning design, benchmark results, LLaVA-Bench failure cases verified.",
+        "subject_ids": [
+          "ev-vmd062"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}
