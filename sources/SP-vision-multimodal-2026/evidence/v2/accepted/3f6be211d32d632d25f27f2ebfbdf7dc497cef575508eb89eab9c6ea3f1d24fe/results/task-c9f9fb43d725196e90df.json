@@ -1,0 +1,97 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-vision-multimodal-2026",
+  "evidence_task_id": "evidence:SP-vision-multimodal-2026:4e994d899261cc65",
+  "basis": {
+    "task_sha256": "4ecca593e219a211d3807e978cb584a13900d76b6b7889f94148df06180dc8ab",
+    "screening_acceptance_sha256": "2b50dd1c205efc957c16a848fe185f9de7fb5eca10a5729c1b58c5bb250e7aff",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "ev-vmd033",
+      "canonical_name": "Masked Autoencoders / MAE (He et al., 2022)",
+      "entity_type": "PAPER",
+      "organization": "Facebook AI Research",
+      "canonical_url": "https://arxiv.org/abs/2111.06377"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "ev-vmd033",
+    "artifact_type": "PAPER",
+    "canonical_name": "Masked Autoencoders / MAE (He et al., 2022)",
+    "canonical_url": "https://arxiv.org/abs/2111.06377"
+  },
+  "temporal": {
+    "observed_at": "2026-09-30T12:18:08Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2021-11",
+        "subject_id": "ev-vmd033",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2111.06377",
+      "source_class": "PRIMARY_PAPER",
+      "title": "Masked Autoencoders / MAE (He et al.)",
+      "published_at": "2021-11",
+      "accessed_at": "2026-09-30T12:18:08Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Asymmetric encoder-decoder (encoder on visible patches only, lightweight decoder) with 75% masking: 3x+ training acceleration with accuracy gains; scalable high-capacity generalizing models.",
+      "subject_id": "ev-vmd033",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Full-paper abstract; design + masking-ratio findings consumed."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Reconstruction-vs-representation reading; downstream transfer needs probe sources.",
+      "subject_id": "ev-vmd033",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Full body consumed at design depth: asymmetry, masking ratio, efficiency gains verified.",
+        "subject_ids": [
+          "ev-vmd033"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

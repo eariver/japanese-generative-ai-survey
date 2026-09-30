@@ -1,0 +1,97 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-vision-multimodal-2026",
+  "evidence_task_id": "evidence:SP-vision-multimodal-2026:c2d0b6fc3b59c6ad",
+  "basis": {
+    "task_sha256": "5e732becd84f0fd32eb3286cc57335b39dd8a8277a184b16c02e9f1eeadf799c",
+    "screening_acceptance_sha256": "2b50dd1c205efc957c16a848fe185f9de7fb5eca10a5729c1b58c5bb250e7aff",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "ev-vmd078",
+      "canonical_name": "MMMU",
+      "entity_type": "BENCHMARK",
+      "organization": null,
+      "canonical_url": "https://arxiv.org/abs/2311.16502"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "ev-vmd078",
+    "artifact_type": "BENCHMARK",
+    "canonical_name": "MMMU",
+    "canonical_url": "https://arxiv.org/abs/2311.16502"
+  },
+  "temporal": {
+    "observed_at": "2026-09-30T12:18:08Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2023-11",
+        "subject_id": "ev-vmd078",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2311.16502",
+      "source_class": "PRIMARY_PAPER",
+      "title": "MMMU (Yue et al.)",
+      "published_at": "2023-11",
+      "accessed_at": "2026-09-30T12:18:08Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "11.5K expert multimodal questions (college exams/quizzes/textbooks; 6 disciplines, 30 subjects, 183 subfields; 30 heterogeneous image types incl. charts/diagrams/maps/tables/music/chemical structures); GPT-4V 56% / Gemini Ultra 59% — substantial headroom.",
+      "subject_id": "ev-vmd078",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Full-paper abstract/conclusion; numbers paper-reported at report date."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Composite score must not stand as general intelligence; scaffold ablations and contamination opacity (closed models) required per use.",
+      "subject_id": "ev-vmd078",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "MMMU paper body consumed via arXiv HTML (100KB text) at abstract+design depth: expert-sourcing design and baseline headroom verified.",
+        "subject_ids": [
+          "ev-vmd078"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

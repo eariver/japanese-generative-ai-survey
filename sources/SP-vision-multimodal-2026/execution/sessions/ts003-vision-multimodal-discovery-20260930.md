@@ -35,6 +35,7 @@ Started: `2026-09-30T00:31:34Z`
 - Screening (Sol request Sections 1-10 authority): 111 explicit operator decisions via edition-local `make_screening_decisions.py` (KEEP 103 / MAYBE 3 / INSPECT 5 / DROP 0); canonical `run_screening_v2_interactive` accepted (run `71136cdd...`); lane integrity per Sections 3.1-3.3; gaps G01-G06 survive. Stage validation PASS -> checkpoint -> advanced DISCOVERY_COLLECTED -> CANDIDATES_NORMALIZED (edition-local `advance_screening.py`).
 - Evidence (main purpose of this run): canonical package prepared (111 tasks); full-text consumption of all 111 retained sources (95 arXiv HTML bodies + 6 proceedings/PDF bodies via pdftotext + 10 vendor/card/repo/HF pages re-verified live); 111 interactive records (`evidence-interactive-input.json`, VERIFIED 106 / PARTIAL 5 with explicit reasons); canonical builders/validators + append-only acceptors produced 111 Evidence Cards (`3b183719...`) + 111 Edition Views (`ed7ebf97...`).
 - Deliberately NOT performed (stop boundary): Materiality Ledger, Profile Completeness, Production State advance beyond CANDIDATES_NORMALIZED, Materiality/Completeness/Selection/Architecture stages, any Human Gate.
+- Bounded Evidence semantic-fidelity repair r1->r2 (Sol r1 REQUEST_CHANGES, F1-F5): source-binding audit of 24 role-bearing cards; repo facts moved to repo-bound cards (Qwen3-VL/Omni currency+deployment, InternVL currency); Molmo license buckets separated with fresh bindings (repo LICENSE + HF tags; data-mix unresolved, PARTIAL kept); Qwen3-Omni weights corrected to license:other; 19 paper-card verification findings rewritten to name consumed body sections; 46 synthesis claims PRIMARY_FACT->INFERENCE (zero remain); D101 branch-separated lineage wording. New additive input + append-only r2 acceptance (111 Cards, `3f6be211...`) + r2 Views (`73c06689...`); r1 artifacts untouched; §11 checks 44/44 PASS; lifecycle stays CANDIDATES_NORMALIZED; G01-G06 preserved.
 
 ## External handoff
 
@@ -50,7 +51,7 @@ Started: `2026-09-30T00:31:34Z`
 - Terminal reason: `none`
 - Screening checkpoint: `passed`
 - Evidence checkpoint: built + validated, stage advance pending Sol semantic review
-- Next action: Sol Evidence Semantic Review (HELD — not authorized this run)
+- Next action: Sol Evidence Semantic Review r2 (HELD — not authorized this run)
 - Review target: none (no Human Gate requested)
-- Operational meaning: `AWAITING_SOL_EVIDENCE_SEMANTIC_REVIEW`
+- Operational meaning: `AWAITING_SOL_EVIDENCE_SEMANTIC_REVIEW_R2`
 - Session status: `COMPLETE` (run objective met; no Sol/Human decision fabricated; NO_MATERIALITY / NO_SELECTION / NO_ARCHITECTURE)

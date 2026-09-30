@@ -1,0 +1,99 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-vision-multimodal-2026",
+  "evidence_task_id": "evidence:SP-vision-multimodal-2026:4b007409a575a02d",
+  "basis": {
+    "task_sha256": "939e66530cd4035a8a9a6ca65a9b54223621b8f16c154fa4043949854e30d732",
+    "screening_acceptance_sha256": "2b50dd1c205efc957c16a848fe185f9de7fb5eca10a5729c1b58c5bb250e7aff",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "ev-vmd075",
+      "canonical_name": "Qwen3-Omni repository (code + weights)",
+      "entity_type": "MODEL",
+      "organization": "Alibaba Qwen",
+      "canonical_url": "https://github.com/QwenLM/Qwen3-Omni"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "ev-vmd075",
+    "artifact_type": "OPEN_WEIGHT",
+    "canonical_name": "Qwen3-Omni repository (code + weights)",
+    "canonical_url": "https://github.com/QwenLM/Qwen3-Omni"
+  },
+  "temporal": {
+    "observed_at": "2026-09-30T12:18:08Z",
+    "events": []
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://github.com/QwenLM/Qwen3-Omni",
+      "source_class": "PRIMARY_REPOSITORY",
+      "title": "QwenLM/Qwen3-Omni repository (code + weights)",
+      "published_at": null,
+      "accessed_at": "2026-09-30T12:18:08Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Streaming omni deployment surface with cookbooks/demos; thinker-only (talker-disabled) mode documented; HF trending top-1 2025-09-26 (project-stated). Weights license is license:other per HF Qwen/Qwen3-Omni-30B-A3B-Instruct release tag (sha 26291f79, 2025-09-22) — NOT Apache 2.0; code license unbound.",
+      "subject_id": "ev-vmd075",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PROJECT_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Repo README + HF release API consumed 2026-09-30; license:other tag corrects the r1 Apache-2.0 implication."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Living surface; commit binding required; popularity signals are not technical authority.",
+      "subject_id": "ev-vmd075",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "README consumed: license, thinker-only mode, deployment surface verified as project statements.",
+        "subject_ids": [
+          "ev-vmd075"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "repo commit/version binding",
+        "status": "UNRESOLVED",
+        "finding": "Living-repo commit/version binding deferred to later stages; README-depth consumption recorded.",
+        "subject_ids": [
+          "ev-vmd075"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      "repo commit/version binding: Living-repo commit/version binding deferred to later stages; README-depth consumption recorded."
+    ],
+    "contradictions": []
+  }
+}
