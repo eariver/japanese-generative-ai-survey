@@ -1,0 +1,58 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-vision-multimodal-2026",
+  "research_profile": "THEMATIC",
+  "basis": {
+    "profile_path": "sources/SP-vision-multimodal-2026/production-profile.json",
+    "profile_sha256": "e4d16027d66d379848378031e47198a09f0b27a961e27a0ab250923a07a57444",
+    "state_path": "sources/SP-vision-multimodal-2026/production-state.json",
+    "state_sha256": "df833250a22809c88662a001b9e0568b37308cc6ded9beaad48c35229eeb855c",
+    "discovery_path": "sources/SP-vision-multimodal-2026/discovery/discovery-v2.jsonl",
+    "discovery_sha256": "e0e176247b6c6b2388cf504ab8f548dc3954769c1f760982c6ba33be57d9b266"
+  },
+  "prompt": {
+    "path": "config/prompts/source-screening-v2.md",
+    "sha256": "3e45900ead73688eab8734036e6e476c1ec4f1a7ce38da42d5ca52a68ef0a862"
+  },
+  "result_contract": {
+    "path": "schemas/screening-v2-batch-result.schema.json",
+    "sha256": "a05b65b41efbcaf654df5c3c5944254a76d93d8a28cab961f2c06f6d580da5a2"
+  },
+  "input": {
+    "record_count": 111,
+    "batch_policy": {
+      "max_records": 50,
+      "max_json_chars": 120000
+    },
+    "batches": [
+      {
+        "batch_id": "batch-001",
+        "path": "input/batches/batch-001.jsonl",
+        "record_count": 50,
+        "sha256": "f37992d4721589c6dfade39de9d69f119e28336b2874f14dac92a963dcb8f653"
+      },
+      {
+        "batch_id": "batch-002",
+        "path": "input/batches/batch-002.jsonl",
+        "record_count": 50,
+        "sha256": "5a0528795a4bd937a8c04d9f0d6352de9c2de270ea419ded4c94fb66c84fbc72"
+      },
+      {
+        "batch_id": "batch-003",
+        "path": "input/batches/batch-003.jsonl",
+        "record_count": 11,
+        "sha256": "7efb6ce458b83b6ede9d7c6112e0a6fa8ac28aa8febead5a892560b30866cc0a"
+      }
+    ]
+  },
+  "expected_outputs": {
+    "file_pattern": "results/batch-###.json",
+    "one_result_per_batch": true,
+    "schema_version": "2.0-rc1"
+  },
+  "rules": [
+    "Exactly one decision is required for every discovery record and no extra discovery_id is allowed.",
+    "Core Screening uses free-form scope_tags; Weekly why_now and fixed A-L topic lanes are not result fields.",
+    "Discovery provenance is not evidence of materiality; uncertain records remain INSPECT/MAYBE until verified."
+  ]
+}
