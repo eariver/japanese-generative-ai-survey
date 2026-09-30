@@ -80,7 +80,7 @@ Open Weightは末尾の補足論点ではなく、中国勢の成長と国際的
 
 ## TS-002 — Beyond Text: Generative Media
 
-**Status:** `ACTIVE`
+**Status:** `RELEASED`
 
 ### 仮題
 
@@ -144,7 +144,7 @@ LLMとは異なる系譜を持つ非テキスト生成AIは、どのように発
 
 ## TS-003 — Vision & Multimodal AI
 
-**Status:** `SCOPED`
+**Status:** `ACTIVE`
 
 ### 仮題
 
