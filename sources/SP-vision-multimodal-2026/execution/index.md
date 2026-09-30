@@ -19,6 +19,10 @@ This is the current human-readable navigation record for the edition. Machine li
 - Current next action: `ARCHITECTURE_REVIEW`
 - Selection/Architecture run: `execution/selection-architecture-20261001/` (input, validation, dossier r1)
 - Human Architecture Review dossier r1: `execution/selection-architecture-20261001/architecture-review-dossier-r1.md`
+- Human Architecture Review r1: `REQUEST_CHANGES` (`gates/reviews/architecture-r1.json`, boundary `SELECTION_COMPLETE`)
+- Architecture r2 run: `execution/architecture-r2-20261001/` (input, builder, validation, dossier r2)
+- Human Architecture Review dossier r2: `execution/architecture-r2-20261001/architecture-review-dossier-r2.md`
+- r1 immutable bytes: `execution/architecture-r1/` + commit `11616337817917df2da04daea2341202da376303`
 
 ## Human Gates
 
