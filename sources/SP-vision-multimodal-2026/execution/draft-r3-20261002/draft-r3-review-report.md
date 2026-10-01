@@ -35,6 +35,14 @@ draft checkpoint `passed`, validation/publication_preview/freeze/release `pendin
   Terminal state string unchanged.
 - Final blob SHA: recorded after push (see §13).
 
+## 13. Final commit / map blob
+
+- Commit `12f98c5945c1b2c049b52a1c7f64a78ccdd77512` / tree `43a01631869343221a18a5e0695fc972ab6cb613`
+  (pushed; remote HEAD matches).
+- Terminology map final blob SHA: `02ea1e57144385678777cc87959b7731dd04cd2e`
+  (status `DRAFT_R3_BINDING`, terminal `TS-003_TERMINOLOGY_MAP_CUMULATIVE_R3_BINDING` unchanged).
+- main `d6381568…` / Core `774dd39a…` unchanged.
+
 ## 4. Draft Package hashes
 
 All 16 byte-identical to r2 (verified by diff; only results/synthesis changed).
