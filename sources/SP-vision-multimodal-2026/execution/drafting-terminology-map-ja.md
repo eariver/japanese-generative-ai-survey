@@ -1,6 +1,6 @@
 # TS-003 Drafting Terminology Map — Japanese reader-facing prose
 
-Status: `EDITION_LOCAL / CUMULATIVE_TERMINOLOGY_AUTHORITY / DRAFT_R3_BINDING`
+Status: `EDITION_LOCAL / CUMULATIVE_TERMINOLOGY_AUTHORITY / DRAFT_R4_BINDING`
 
 Date: `2026-10-02 JST`
 
@@ -15,7 +15,7 @@ Review authorities incorporated:
 - `sources/SP-vision-multimodal-2026/execution/sol-draft-review-r1.md`
 - `sources/SP-vision-multimodal-2026/execution/sol-draft-review-r2.md`
 
-This revision supersedes the original `DRAFT_R1_BINDING` map for all Draft r3 and later TS-003 reader-surface work.
+This cumulative authority supersedes earlier map revisions for Draft r4 and later TS-003 reader-surface work.
 
 ## 0. Authority and maintenance rule
 
@@ -251,7 +251,40 @@ This registry records observed TS-003 failures. It is a regression list, not mer
 
 Ordinary non-encoder 目 (見る目、目の前、項目等), ordinary 管轄・管理, and 枠組み/枠数 senses remain allowed per the context rule (§0.2).
 
-### 3.4 Regression principle
+### 3.4 Sol r3 residual failures — discovered by independent post-r3 review
+
+These items were still present after the Worker r3 PASS_WITH_NOTES and are now part of the cumulative regression authority.
+
+| Observed form | Intended concept / function | Preferred repair | First formalized |
+|---|---|---|---|
+| technical segmentation rendered as 分割（例: 分割の枝、汎用分割、指示分割、パノプティック分割、固定ラベル分割器） | segmentation family | セグメンテーション / オープンボキャブラリーセグメンテーション / パノプティックセグメンテーション等 | Sol Draft Review r3 |
+| bare 測り used as a noun for metric/evaluation contract（例: 三つ目の測り、レアの測り、測りは契約ごと） | metric / evaluation protocol | 指標 / 評価指標 / 評価方法 / 評価条件 / 測定方法 | Sol Draft Review r3 |
+| 決めなし / 〜の決め（評価・抽出文脈） | evaluation/extraction rule or protocol | 評価条件 / 抽出規則 / 手順 / 定義 | Sol Draft Review r3 |
+| OVD評価の家 / 第二の家 / model-family senseの家系 | benchmark home / model family / lineage | 評価基準・評価対象を直接書く / モデル系列 / モデルファミリー / 系譜 | Sol Draft Review r3 |
+| data augmentation senseの水増し | data augmentation | データ拡張 | Sol Draft Review r3 |
+| scaffold senseの足場 | scaffold / auxiliary procedure | scaffold（補助的手順） / 補助的手順 | Sol Draft Review r3 |
+| foundation/base/backbone senseの土台（例: 拡散土台、識別土台、学習の土台の名） | foundation model / base model / backbone / base representation | 基盤モデル / 基盤 / バックボーン / 基盤表現を文脈に応じて明示 | Sol Draft Review r3 |
+| 載せ方 / 組み方 / 式と移し をtechnical axis名として使う | tokenization/formulation / architecture / objective / distillation or transfer | 実際の技術軸（トークン化、アーキテクチャ、目的関数、蒸留、転移等）を直接書く | Sol Draft Review r3 |
+| 呼びの到達 / 結びの仕組み | global alignment / grounding transition | アライメント / 接地 / 位置・領域への対応づけを直接書く | Sol Draft Review r3 |
+| 教師モデルの写しの産物 | teacher-model / pseudo-label dependence | 教師モデルの出力に依存 / 疑似ラベルに依存 / 教師モデル由来を具体化 | Sol Draft Review r3 |
+| streaming senseの流れの契約 / 流れのオムニ | streaming input/processing/deployment | ストリーミング入力 / ストリーミング処理 / ストリーミング対応 | Sol Draft Review r3 |
+| release/availability senseの配り方 / 配りの範囲 | availability / release / deployment scope | 提供形態 / 提供範囲 / 公開形態 / デプロイ形態 | Sol Draft Review r3 |
+| 軸の勘定 | separate evaluation axes / trade-off accounting | 別々の評価軸として扱う / 評価軸を分ける | Sol Draft Review r3 |
+| 一つの芸 | single-task specialization | 単一タスク / 特定能力 / 特定タスクへの特化 | Sol Draft Review r3 |
+| additional-sample senseの追加試料 | additional training/evaluation samples | 追加の学習データ / 追加サンプル | Sol Draft Review r3 |
+| few-shot senseのフューショット | few-shot | few-shot / 少数例学習（first useで説明可） | Sol Draft Review r3 |
+| neural-unit senseの素子 | neuron / unit | ニューロン / ユニット | Sol Draft Review r3 |
+| openness mixture senseのまだら | mixed openness / mixed dependency | 開放性が混在する / 依存関係が混在する | Sol Draft Review r3 |
+
+Context exceptions:
+
+- ordinary `分割` remains valid for dataset/train-test split, partitioning, or generic division;
+- ordinary verbs `測る` / natural `測り方` may remain when they literally describe measurement and do not replace a metric/protocol name;
+- ordinary `水増し` may remain only when it literally means numerical inflation, not data augmentation;
+- ordinary `土台になる` may remain as nontechnical prose only when it does not name a foundation/base/backbone concept;
+- literal family/house meanings are unaffected; model-family/benchmark-role contexts must use technical wording.
+
+### 3.5 Regression principle
 
 Do not “fix” one known form by inventing another metaphor.
 
@@ -368,9 +401,9 @@ Core validator PASSはlanguage PASSではない。
 
 Terminal map state:
 
-`TS-003_TERMINOLOGY_MAP_CUMULATIVE_R3_BINDING`
+`TS-003_TERMINOLOGY_MAP_CUMULATIVE_R4_BINDING`
 
-`KNOWN_FAILURES_THROUGH_SOL_DRAFT_REVIEW_R2_INCORPORATED`
+`KNOWN_FAILURES_THROUGH_SOL_DRAFT_REVIEW_R3_INCORPORATED`
 
 `SEMANTIC_QA_REQUIRED`
 
