@@ -1,0 +1,66 @@
+\section{Black Forest Labs、FLUX 3 Imageを公開}
+Black Forest Labsは画像生成・編集モデルFLUX 3 Imageを発表した。公式投稿では、他の画素を変えない精密なマルチターン編集、バウンディングボックスによるレイアウト指定、最大4K、最大10枚の参照画像を掲げる。企業向け商用ウェイトを先行し、オープンウェイト版は「今後数週間」としている。Grok収集では第三者ベンチマークは未確認である。
+\dailyxsource{Black Forest Labs (@bfl\_ai)}{https://x.com/bfl_ai/status/2105734605621825738}
+
+\section{Gemini 4 Argonの限定公開と評価論争}
+Gemini 4 ArgonのDeepMind公式X発表は観測窓開始の約2時間前だが、窓内でも限定公開、価格、ベンチマークと実利用の差が話題になった。MTSはGoogleのベンチマーク主張と、実コーディングでは弱いとの見方を対比している。Grok intakeでは、Fairwind Programへの限定提供や価格・DeepSWE成績は公式ブログ記載としている一方、Bloomberg報道やArena順位は一次画面未確認としている。
+\dailyxsource{MTS (@MTSlive)}{https://x.com/MTSlive/status/2105756853833724151}
+\dailyxnote{公式X発表は観測窓外。窓内の反応・議論を対象とした項目。}
+
+\section{Cloudflare、決定モデルClefを公開}
+CloudflareはClefとClef-flashをWorkers AIで提供し、Hugging FaceへApache-2.0で公開したと公式ブログで説明した。自由文を生成するのではなく、スキーマ付き質問に対して選択肢ごとの確率を返す決定モデルである。ブログはJev API互換や低レイテンシを掲げるが、ベースモデル名の一部はGrok収集では二次投稿由来で、公式表記との突合は未了としている。
+\dailyxsource{rita kozlov (@ritakozlov)}{https://x.com/ritakozlov/status/2105683951595725177}
+
+\section{Strands Decider 2Bをオープンソース公開}
+Strands Labsは20億パラメータのStrands Decider 2Bを公開した。公式ブログによれば、Qwen3.5-2BのLM headを外してpointer headへ置き換え、候補を直接スコアする。学習データとコードも公開したとされ、ローカルCPU/GPUでの利用を想定する。Grok収集ではClefとの同一条件での直接比較は未確認である。
+\dailyxsource{Marc Brooker (@MarcJBrooker)}{https://x.com/MarcJBrooker/status/2105722624827686969}
+
+\section{fal、Grok Imagine Video 1.5 Liteを提供}
+推論プラットフォームfalは、Grok Imagine動画ファミリーの軽量版1.5 Liteを自社で利用可能にしたと投稿した。説明ではテキストまたは画像からの動画生成、ネイティブ音声、1〜15秒、480p〜1080p、7種類のアスペクト比に対応する。xAI公式アカウントによる同内容の発表はGrok検索では確認されておらず、開発元の正式発表とは区別が必要である。
+\dailyxsource{fal (@fal)}{https://x.com/fal/status/2105759422223929375}
+
+\section{Claude Code 2.1.287とClaude Modsの報告}
+非公式changelogボットがClaude Code 2.1.287を報告し、106件のCLI変更、プラグインが挙動をより深く変更できる「Claude Mods」、危険な\texttt{rm}に関する確認処理の修正を挙げた。アカウント自身がunofficial botと明記しており、Anthropic公式リリースノートとの突合はGrok収集では未了である。
+\dailyxsource{Claude Code Changelog (@ClaudeCodeLog)}{https://x.com/ClaudeCodeLog/status/2105721911036481778}
+\dailyxnote{非公式changelogに基づく未確認情報。}
+
+\section{NVIDIAエージェントスキルカタログが拡散}
+NVIDIAがCUDA、Jetson、ロボティクス、LLM学習、RAGなどのエージェントスキルをカタログ化し、Claude CodeやCodexなどへ導入できるという紹介が拡散した。Grok収集ではNVIDIAドキュメントに\texttt{npx skills add nvidia/skills}やCodex向け指定があることを確認。一方、391 skills、星数、ライセンス、cuOptの改善率など投稿側の数値は未確認としている。
+\dailyxsource{Yarchi (@undefinedKi)}{https://x.com/undefinedKi/status/2105697800658821197}
+
+\section{Context Language Models論文が話題に}
+窓外に提出されたContext Language Models論文が窓内の紹介投稿で注目された。文脈をファイルとして扱い、モデル自身がBash経由で保持・書き換え・削除する構成で、実行中のライブ文脈を操作できる点を特徴とする。Grok intakeはarXivアブストラクトに複数の性能・計算量改善値があるとするが、論文提出自体は2026年9月29日で観測窓外である。
+\dailyxsource{elvis (@omarsar0)}{https://x.com/omarsar0/status/2105690460429996366}
+
+\section{Authority Bias研究の紹介}
+Lossfunkは、ユーザーからの異議では答えを変えにくいよう訓練されたモデルでも、同じ誤主張が「検証済みソース」と示されると回答を変え得るというAuthority Biasを報告した。投稿者はNeurIPS 2026採択を主張しているが、Grok収集では論文URL、OpenReview、対象モデルや実験条件を確認できていない。
+\dailyxsource{Lossfunk (@lossfunk)}{https://x.com/lossfunk/status/2105641625544425946}
+\dailyxnote{採択・実験設計ともGrok intakeでは未検証。}
+
+\section{PostTrainBench v1.2の更新報告}
+PostTrainBench関係者がv1.2を公開したと投稿し、Harbor対応、BFCL削除、スコアバグ修正、報酬ハック判定と最終評価の複数回実行を変更点に挙げた。別投稿ではFable 5.1が首位とする順位も共有されたが、Grok収集では公式リポジトリやリーダーボード、測定条件を確認できていない。
+\dailyxsource{Ben Rank (@full\_\_rank)}{https://x.com/full__rank/status/2105688453644156996}
+
+\section{MiMo-V2.6のAgent Arena結果}
+Arena.aiはMiMo-V2.6-Proについて、オープンソースモデル中Agent Arena 5位、V2.5-Proから10.4ポイント・9ランク上昇と投稿した。Flashについても低コストでパレート前線にあると説明する。モデル自体の発表は観測窓外であり、Grok収集ではリーダーボード画面や指標定義までは確認していない。
+\dailyxsource{Arena.ai (@arena)}{https://x.com/arena/status/2105733983250301224}
+
+\section{Anthropic、科学計算向けClaude利用を紹介}
+Anthropicは、ハーバードの物理学者Matthew SchwartzによるScience Blogのゲスト投稿を紹介した。LLMを人間の共同研究者と同じように扱うと強みを引き出しにくい「impedance mismatch」があるとし、厳密計算のツールキットとClaudeを組み合わせた分野横断的な利用を説明している。Grok収集ではブログ本文自体は未開封である。
+\dailyxsource{Anthropic (@AnthropicAI)}{https://x.com/AnthropicAI/status/2105733864152858919}
+
+\section{DeepMind、SynthID Bioと生物設計認証に言及}
+Google DeepMindは、人間・機械・自然の出自をどう検証するかを扱うポッドキャストを投稿し、SynthIDやSynthID Bioを取り上げた。別の公式投稿では、生物設計が組み込みセーフガード付きかを研究者が確認するためのツールを研究用途でオープン公開すると述べている。Grok収集では論文、配布先、ライセンスの詳細は未確認である。
+\dailyxsource{Google DeepMind (@GoogleDeepMind)}{https://x.com/GoogleDeepMind/status/2105707085287567709}
+
+\section{OWASP Agent Control Standardの紹介}
+セキュリティ関係者が、OWASPのAgent Control Standardを紹介した。エージェントがアクセス、実行、変更できる対象にランタイム制御を設ける考え方で、MCPやエージェントの脅威モデリングに関係すると説明している。Grok収集ではOWASP公式アカウントの投稿や文書本文を確認しておらず、版・日付・規範性も未確認である。
+\dailyxsource{Het Mehta (@hetmehtaa)}{https://x.com/hetmehtaa/status/2105769975826792930}
+
+\section{候補コマンドを強いモデルで審査する手法の紹介}
+二次紹介アカウントが、NVIDIA研究者によるものとして、小さなエージェントに各ステップで8候補を生成させ、強いフロンティアモデルに選択させる手法を紹介した。投稿では成功率が50\%から68\%へ上昇し、自己審査では利得が小さいとされる。論文タイトル、ベンチマーク、一次資料はGrok収集で未確認である。
+\dailyxsource{Rohan Paul (@rohanpaul\_ai)}{https://x.com/rohanpaul_ai/status/2105717151453814785}
+
+\section{Grok Build v1.0.47のchangelog投稿}
+X FreezeがGrok Build v1.0.47を報告し、モデル切替のUI反映、Goalパネル、狭い端末でのログインエラー修正、\texttt{.envrc}を持つリポジトリの起動高速化を挙げた。xAI公式投稿や正式リリースノートはGrok収集では確認されておらず、非公式のパッチノート形式投稿として扱う。
+\dailyxsource{X Freeze (@XFreeze)}{https://x.com/XFreeze/status/2105746947865039030}
