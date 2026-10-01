@@ -1,6 +1,6 @@
 # TS-003 Drafting Terminology Map — Japanese reader-facing prose
 
-Status: `EDITION_LOCAL / CUMULATIVE_TERMINOLOGY_AUTHORITY / DRAFT_R4_BINDING`
+Status: `EDITION_LOCAL / CUMULATIVE_TERMINOLOGY_AUTHORITY / DRAFT_R5_BINDING`
 
 Date: `2026-10-02 JST`
 
@@ -15,7 +15,7 @@ Review authorities incorporated:
 - `sources/SP-vision-multimodal-2026/execution/sol-draft-review-r1.md`
 - `sources/SP-vision-multimodal-2026/execution/sol-draft-review-r2.md`
 
-This cumulative authority supersedes earlier map revisions for Draft r4 and later TS-003 reader-surface work.
+This cumulative authority supersedes earlier map revisions for Draft r5 and later TS-003 reader-surface work.
 
 ## 0. Authority and maintenance rule
 
@@ -284,7 +284,34 @@ Context exceptions:
 - ordinary `土台になる` may remain as nontechnical prose only when it does not name a foundation/base/backbone concept;
 - literal family/house meanings are unaffected; model-family/benchmark-role contexts must use technical wording.
 
-### 3.5 Regression principle
+### 3.5 Sol r4 residual failures — discovered by independent post-r4 review
+
+These expressions survived r4 despite the cumulative map and therefore become explicit regression cases for r5.
+
+| Observed form | Intended concept / function | Preferred repair | First formalized |
+|---|---|---|---|
+| self-supervised senseの自己教師（例: headline「Transformerと自己教師の土台」） | self-supervised learning | 自己教師あり学習 / 自己教師あり | Sol Draft Review r4 |
+| technical foundation senseのheadline土台（例: 「Transformerと自己教師の土台」） | foundation / base representation | 基盤 / 基盤表現 / 基盤モデルを文脈に応じて明示 | Sol Draft Review r4 |
+| 言葉側だけを締める調整 | text-side-only tuning / adjustment | テキスト側のみを調整する / テキストエンコーダのみを調整する等、実際の対象を明示 | Sol Draft Review r4 |
+| 一対の判定に還す | pairwise independent sigmoid classification / objective | 各画像・テキスト対を独立に判定する等、目的関数の動作を直接説明 | Sol Draft Review r4 |
+| 引用の結び / 典拠の結び | citation/source linkage | 引用対応 / 一次資料との対応 / 典拠との対応 | Sol Draft Review r4 |
+| 手順の借り | reuse/adoption of training recipe | 学習手順を採用する / 学習レシピを利用する | Sol Draft Review r4 |
+| 仕組みの消費 | evidence consumption / supported mechanism coverage | 根拠が抄録レベルに限られる / 機構説明の根拠範囲を直接書く | Sol Draft Review r4 |
+| 文と絵の組を大量に当て / 4億ペアの当て | contrastive image-text training | 大量の画像・テキスト対で対照学習する / 画像・テキスト対による学習 | Sol Draft Review r4 |
+| 固定クラス分類を表す表引き | closed-set / fixed-class classification | 固定クラス分類 / 事前定義クラスによる分類 | Sol Draft Review r4 |
+| dataset collectionを表す30超の束 | 30+ datasets/tasks | 30以上のデータセット / 30以上の評価課題 | Sol Draft Review r4 |
+| ODinWを野外の補い | in-the-wild / diverse-domain supplementary evaluation | ODinWによる実世界・多様ドメイン評価を直接説明 | Sol Draft Review r4 |
+| sequence representationを表す列に変える契約 | token/sequence representation | トークン列へ変換する / 系列表現へ変換する | Sol Draft Review r4 |
+| evaluation separationを表す別の列に置く | separate evaluation axis/condition | 別の評価軸として扱う / 別条件として扱う | Sol Draft Review r4 |
+| technical transitionを表す「〜へ渡す役割」「次の節への渡し」 | transition / applicability / handoff | 適用範囲を広げる / 次節では〜を扱う等、技術的関係を直接書く | Sol Draft Review r4 |
+
+Context exceptions:
+
+- ordinary literal `締める`, `当てる`, `束`, `列`, `渡す` are not banned;
+- `引用を結ぶ` can be ordinary Japanese, but source-provenance discussion must name citation/source correspondence precisely;
+- ordinary `土台になる` may remain under §3.4 context exception when it is clearly nontechnical and does not name a foundation/base/backbone concept.
+
+### 3.6 Regression principle
 
 Do not “fix” one known form by inventing another metaphor.
 
@@ -401,9 +428,9 @@ Core validator PASSはlanguage PASSではない。
 
 Terminal map state:
 
-`TS-003_TERMINOLOGY_MAP_CUMULATIVE_R4_BINDING`
+`TS-003_TERMINOLOGY_MAP_CUMULATIVE_R5_BINDING`
 
-`KNOWN_FAILURES_THROUGH_SOL_DRAFT_REVIEW_R3_INCORPORATED`
+`KNOWN_FAILURES_THROUGH_SOL_DRAFT_REVIEW_R4_INCORPORATED`
 
 `SEMANTIC_QA_REQUIRED`
 
