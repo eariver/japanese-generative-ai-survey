@@ -14,12 +14,16 @@ This is the current human-readable navigation record for the edition. Machine li
 - Production Profile: `sources/SP-vision-multimodal-2026/production-profile.json`
 - Production State: `sources/SP-vision-multimodal-2026/production-state.json`
 - Current State SHA-256: `0f07c471ad65f800e508869f4e9a5d51fdb1e4d695fe9f26baca9246589973eb`
-- Current lifecycle: `ARCHITECTURE_ESTABLISHED`
-- Current terminal reason: `HUMAN_GATE_REACHED`
-- Current next action: `ARCHITECTURE_REVIEW`
+- Current lifecycle: `DRAFT_COMPLETE`
+- Current terminal reason: `none`
+- Current next action: `stage:reader-publication-validation`
 - Selection/Architecture run: `execution/selection-architecture-20261001/` (input, validation, dossier r1)
 - Human Architecture Review dossier r1: `execution/selection-architecture-20261001/architecture-review-dossier-r1.md`
 - Human Architecture Review r1: `REQUEST_CHANGES` (`gates/reviews/architecture-r1.json`, boundary `SELECTION_COMPLETE`)
+- Human Architecture Review r2: `APPROVED` (`gates/reviews/architecture-r2.json`)
+- Draft r1 run: `execution/draft-r1-20261001/` (specs, input, validation, language QA, review report)
+- Draft r1 review report: `execution/draft-r1-20261001/draft-r1-review-report.md`
+- Awaiting: fresh Sol Draft Review
 - Architecture r2 run: `execution/architecture-r2-20261001/` (input, builder, validation, dossier r2)
 - Human Architecture Review dossier r2: `execution/architecture-r2-20261001/architecture-review-dossier-r2.md`
 - r1 immutable bytes: `execution/architecture-r1/` + commit `11616337817917df2da04daea2341202da376303`
