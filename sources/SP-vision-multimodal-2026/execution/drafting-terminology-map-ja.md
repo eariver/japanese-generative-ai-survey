@@ -1,6 +1,6 @@
 # TS-003 Drafting Terminology Map — Japanese reader-facing prose
 
-Status: `EDITION_LOCAL / CUMULATIVE_TERMINOLOGY_AUTHORITY / DRAFT_R5_BINDING`
+Status: `EDITION_LOCAL / CUMULATIVE_TERMINOLOGY_AUTHORITY / DRAFT_R6_BINDING`
 
 Date: `2026-10-02 JST`
 
@@ -15,7 +15,7 @@ Review authorities incorporated:
 - `sources/SP-vision-multimodal-2026/execution/sol-draft-review-r1.md`
 - `sources/SP-vision-multimodal-2026/execution/sol-draft-review-r2.md`
 
-This cumulative authority supersedes earlier map revisions for Draft r5 and later TS-003 reader-surface work.
+This cumulative authority supersedes earlier map revisions for Draft r6 and later TS-003 reader-surface work.
 
 ## 0. Authority and maintenance rule
 
@@ -311,7 +311,25 @@ Context exceptions:
 - `引用を結ぶ` can be ordinary Japanese, but source-provenance discussion must name citation/source correspondence precisely;
 - ordinary `土台になる` may remain under §3.4 context exception when it is clearly nontechnical and does not name a foundation/base/backbone concept.
 
-### 3.6 Regression principle
+### 3.6 Sol r5 residual failures — direct map miss and P09 modality wording
+
+These residuals were discovered by independent Sol review after r5.
+
+| Observed form | Intended concept / function | Preferred repair | First formalized |
+|---|---|---|---|
+| self-supervised senseの自己教師（例: 「音全般の自己教師」「音の自己教師」） | self-supervised learning | 自己教師あり学習 / 自己教師あり | Sol Draft Review r5 |
+| model-family senseの家族（例: 「1Bから78Bの家族」） | model family / model series | モデル群 / モデルファミリー / モデル系列 | Sol Draft Review r5 |
+| modality/input-pipeline senseの入口（例: 「話し言葉の入口」「音全般の…入口」「音の入口を組み合わせる」） | speech/audio input path / modality encoder role | 音声入力 / 音声処理 / 音声エンコーダ / 音響表現学習など実際の役割を直接書く | Sol Draft Review r5 |
+| deployment senseの末端（例: 「末端からクラウドまで」） | edge-to-cloud deployment range | エッジデバイスからクラウドまで / エッジからクラウドまで | Sol Draft Review r5 |
+| architecture senseの部品（例: 「三つの部品の積み重ね」） | architecture components | 構成要素 / モジュール / アーキテクチャ構成 | Sol Draft Review r5 |
+
+Context exceptions:
+
+- literal family/household `家族` is unaffected;
+- ordinary physical `入口` and literal `部品` are unaffected;
+- `自己教師あり` is the approved established term; substring scans must not misclassify it as bare `自己教師`.
+
+### 3.7 Regression principle
 
 Do not “fix” one known form by inventing another metaphor.
 
@@ -428,9 +446,9 @@ Core validator PASSはlanguage PASSではない。
 
 Terminal map state:
 
-`TS-003_TERMINOLOGY_MAP_CUMULATIVE_R5_BINDING`
+`TS-003_TERMINOLOGY_MAP_CUMULATIVE_R6_BINDING`
 
-`KNOWN_FAILURES_THROUGH_SOL_DRAFT_REVIEW_R4_INCORPORATED`
+`KNOWN_FAILURES_THROUGH_SOL_DRAFT_REVIEW_R5_INCORPORATED`
 
 `SEMANTIC_QA_REQUIRED`
 
