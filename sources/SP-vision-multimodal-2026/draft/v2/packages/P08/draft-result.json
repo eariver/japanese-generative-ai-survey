@@ -4,8 +4,8 @@
   "research_profile": "THEMATIC",
   "publication_profile": "LONGFORM_SPECIAL",
   "package_id": "P08",
-  "draft_version": "r1",
-  "status": "ESTABLISHED",
+  "draft_version": "r2",
+  "status": "REVISED",
   "basis": {
     "draft_package_sha256": "ab3f57b600a1a22c116e94ffeb5f170e19f9a522efbac8fd53b9d6be316a4c69",
     "prompt_id": "article-drafting-v2",
@@ -14,12 +14,12 @@
   "runner": {
     "provider": "Muse",
     "model": "Muse Spark (Work execution role; not a Sol/Human decision)",
-    "invocation": "TS-003 Draft r1: 16-package Japanese long-form drafting from approved Architecture r2 (Human APPROVED r2); evidence-bounded prose under edition-local language policy drafting-language-policy-ja.md + terminology map; G01-G06 and 5 PARTIAL records preserved; vendor claims attributed; no cross-task ranking",
-    "generated_at": "2026-10-01T04:03:22Z",
-    "run_reference": "ts003-draft-r1-20261001"
+    "invocation": "TS-003 Draft r2 reader-surface repair from approved Architecture r2 (Human APPROVED r2, Sol Draft Review r1 REQUEST_CHANGES F1-F5): full-volume prose rewrite, zero duplicate sentences, metaphor-substitution eliminated, evaluator classes explicit, boundary reader surface repaired; G01-G06 and 5 PARTIAL preserved semantically; no cross-task ranking; no new research",
+    "generated_at": "2026-10-01T15:44:38Z",
+    "run_reference": "ts003-draft-r2-20261001"
   },
   "headline": "凍結した部品をつなぐ橋",
-  "deck": "別々に学んだ画像と言語を凍結したままつなぐ橋が、視覚言語モデル（VLM）の出発点を作った。Q-Formerや単層の写像、cross-attentionの世代を分け、視覚の指示チューニングが能力を受け継ぐ流れをたどり、開かれたデータへの結び目を示す。",
+  "deck": "別々に学んだ画像と言語を凍結したままつなぐ接続が、視覚言語モデル（VLM）の出発点を作った。接頭辞、密なcross-attention、Q-Former、単層写像、端から端までの調整という世代の違いをたどり、開かれたデータへの到達を示す。",
   "deck_attribution_mode": "MIXED",
   "deck_evidence_refs": [
     {
@@ -62,7 +62,7 @@
     {
       "block_id": "p08-b1",
       "block_type": "PARAGRAPH",
-      "text": "別々に事前学習した画像系と言語系は、そのままでは視覚言語モデル（VLM）として働かない。画像だけの学びと言語だけの学びをつなぐ橋が要る。最初の手がかりをFrozenが示した。画像エンコーダが連続した埋め込みの接頭辞を出し、凍結した自己回帰言語モデルがそのまま文を生成する。大規模な基盤を動かさず、橋の側だけを育てる考え方がここにある。著者らによれば、画像とテキストを交互に並べた例を与えるだけで、新しい物の名前を文の中で使う、質問に答える、画像に写らない知識を使う振る舞いが現れたと報告している。少数の例から使い回す契約の萌芽である。ただし論文自身が概念実証の範囲に留めると明記し、ここでは前駆の扱いに留まる。詳しい仕組みの掘り下げは行わず、一行の位置づけとする。Flamingoはこの橋を作り替えた。事前学習済みの画像のみのモデルと言語のみのモデルを、gated cross-attentionの密な層でつなぎ、画像とテキストが入り混じるウェブ由来のデータで学習する。層の間に差し込む密な層が、言語モデルの各段階で画像側の情報を読み取る。接頭辞で渡すだけの前駆とは異なり、各段階で密に読み合わせる点が世代の違いである。画像も短い動画も受け取り、一つのモデルが少数の例から自由回答や選択式の質問応答、説明文生成をこなす。著者らは、課題ごとに1000倍のデータでファインチューニングしたモデルを上回り、少数の例からの利用で最先端に届いたと報告している。一方で論文は、言語モデルの弱さを引き継ぐと明記する。言語側の先入観がハルシネーションを生むという指摘は、後の失敗分析に受け継がれる展示物である。学習データは非公開の体制であり、画像トークンを間引く前史の役割は後の節に譲る。閉じた体制の是非はここでは問わず、事実として記すに留める。言語側の先入観の指摘は、知覚と推論を分ける後の議論の起点となる。凍結した部品を使い回す考え方は、ここから後の世代に残る。費用を抑えて橋だけを育てる発想が、長く残る財産である。",
+      "text": "別々に事前学習した画像エンコーダと言語モデルは、そのままでは視覚言語モデル（VLM）として質問応答や説明文生成を行えない。Frozenはこの接続の前例を示した。画像エンコーダが連続埋め込みの接頭辞を出力し、凍結した自己回帰言語モデルがその接頭辞を条件に文を生成する。モデル論文の著者測定によれば、画像とテキストを交互に並べた例を与えるだけで、新しい物体の名称使用、質問応答、画像外知識の利用が現れたと報告している。この報告は概念実証の範囲に留まると論文自身が明記しており、本節では前例として位置づける。Flamingoは接続をgated cross-attentionの密な層に置き換えた。事前学習済みの画像専用モデルと言語専用モデルを各層で密に接続し、画像とテキストが混在するウェブ由来データで学習する。画像と短い動画を入力し、一つのモデルが少数の例から自由回答・選択式の質問応答と説明文生成を行う。モデル論文の著者測定によれば、課題ごとに1000倍のデータでファインチューニングしたモデルを上回り、少数例利用で最先端に届いたと報告している。一方で論文自身は言語モデルの弱さを引き継ぐと明記し、言語側の先入観がハルシネーションを生むと指摘する。この指摘は知覚と推論を分ける後の議論の起点となり、後の失敗分析が参照する。学習データは非公開であり、ここでは事実として記す。",
       "attribution_mode": "ATTRIBUTED",
       "evidence_refs": [
         {
@@ -91,7 +91,7 @@
     {
       "block_id": "p08-b2",
       "block_type": "PARAGRAPH",
-      "text": "Flamingo型の密なつなぎ方は力がある反面、学習させる部分が重く、データを閉じた体制に頼る。凍結した部品のまま費用を抑える道をBLIP-2が示した。行き詰まりは明確である。大きな基盤を丸ごと動かせば費用が膨らみ、閉じたデータから離れられない。境目の装置を替えることでこの行き詰まりを開く。境目の装置がQ-Formerであり、問い合わせベクトルが画像側から要る情報だけを絞り込む。密に読み合わせる層とは異なり、問いを立てて摘み出す受け口である。手順は二段階である。第一段階では画像エンコーダを凍結したまま、Q-Formerが表現を学ぶ。画像側の基盤は動かさず、橋の問いだけを鍛える。第二段階では言語モデルを凍結したまま、生成に向けた学習を重ねる。言語側の基盤も動かさず、橋から言語への渡し方を整える。どちらの段階でも大規模な基盤は動かさず、橋の部分だけを育てる。結果として学習させる変数は大幅に減る。費用の面での利点がここにある。著者らによれば、学習させる変数が54分の1の規模で、Flamingo80BをゼロショットのVQAv2で8.7ポイント上回り、視覚と言語にまたがる課題で最先端に届いたと報告している。変数の少なさと点の高さの対比が、凍結した構成の価値を示す。さらに指示に従って画像を言葉にする振る舞いが現れたという。頼まなくとも指示に沿う振る舞いの芽である。Q-Formerによる絞り込みは、Flamingoの密なcross-attentionとも、単層の写像とも違う世代である。密に読み取るのではなく、問いを立てて摘み出す点が要点である。ただし二段階の手間と複雑さは残る。段階を踏む分、手順の管理と調整が要る。著者らも認める通り、指示に沿わせる仕上げは後継の指示チューニングが担い、ここでは橋の費用を抑える設計に話が絞られる。受け継がれるのは凍結したまま育てる橋の考え方である。二段階の段取りは一段の手順と比べれば管理の手間が増す。表現を学ぶ段階と生成に渡す段階を別々に回し、それぞれの調整が要る。この重さが制約として残り、後の指示チューニングの世代が仕上げを担う。InstructBLIPやLLaVAが担う仕上げとの分業がここで成立する。変数を抑えて橋だけを育てる発想は、部品を凍結して使い回す考え方の見本である。著者らの報告する変数の少なさと点の高さの対比が、凍結した構成の価値を示す。報告の値として受け取り、独立した再現の有無はここでは問わない。密な読み合わせの層とも、単層の写像とも、端から端までの調整とも混ぜない。境目の装置が何であるかで世代を分けることが、橋の歴史の読み方である。費用の面での利点と手順の重さの両面を残す。",
+      "text": "Flamingo型の密な接続は表現力がある一方、学習対象が重く閉じたデータに依存する。BLIP-2は画像エンコーダと言語モデルの双方を凍結し、Q-Formerだけを学習する設計を示した。Q-Formerは学習可能な問い合わせベクトルで画像側から必要な情報だけを取り出す。手順は二つの学習段階からなる。第一段階では画像エンコーダを凍結したままQ-Formerが表現を学習し、第二段階では言語モデルを凍結したまま生成への接続を学習する。いずれの段階でも大規模な基盤は更新せず、接続部に限定して学習するため学習変数は大幅に減る。モデル論文の著者測定によれば、学習変数が54分の1の規模でFlamingo80BをゼロショットVQAv2で8.7ポイント上回り、視覚言語課題で最先端に届いたと報告している。指示に従う画像説明の振る舞いも現れたとモデル論文の著者測定は報告している。Q-Formerの問い合わせ選択は、密なcross-attentionとも単層写像とも異なる。制約として二段階の管理と調整の手間は残り、論文自身も指示への仕上げは後継の指示チューニングが担うと位置づける。この報告値はモデル論文の著者測定として受け取り、独立した第三者再現の有無はここでは判断しない。",
       "attribution_mode": "ATTRIBUTED",
       "evidence_refs": [
         {
@@ -106,7 +106,7 @@
     {
       "block_id": "p08-b3",
       "block_type": "PARAGRAPH",
-      "text": "橋ができても、指示に従う使い方は別の仕上げが要る。BLIP-2の橋は指示追従の芽を示したが、体系だった仕上げは次の世代に委ねられた。InstructBLIPはBLIP-2を土台に、視覚の指示チューニングを順序だてて進めた。土台の橋は動かせる形で残し、その上に指示の仕上げを重ねる。公開の26データセットを指示形式に直し、指示を意識するQ-Formerで学ぶ。問いを立てる受け口自体が指示を読む点が、前世代からの進みである。著者らによれば、触れていない13の課題群すべてでゼロショットの最先端に届き、BLIP-2や規模の大きいFlamingoを上回ったと報告している。含めた課題だけでなく、外した課題での振る舞いが問われる。画像つきのScienceQAでは仕上げの後に90.7%に達し、モデルはすべて公開されたという。仕上げの前後で測ることで、指示の仕上げの寄与が切り分けられる。ただし評価の約束は、含めた課題と外した課題を分ける手順の範囲に限られる。手順の外側への一般化は主張しない。指示データの配合そのものは後の節の主題であり、ここでは仕上げの手順と結果に絞る。同じ時期の短い橋としてMiniGPT-4を添える。凍結した画像エンコーダと凍結したVicunaを単層の写像でつなぐだけの構成であり、Q-Formerのような問い立ての受け口を持たない。詳しい描写や略図からのウェブページ作成、物語や詩、調理の手順書きといった組み合わせの振る舞いが現れたと報告している。短い説明文で整えてから詳しい描写で仕上げる二段階の選別が、繰り返しや断片化を抑えたという。粗い文から細かい文へという選別の順序が要点である。符号とモデルとデータは公開された。橋としての役割に絞った短い扱いとし、つなぎの脆さの議論は評価側の根拠に譲る。壊れやすさの実証はここでは行わない。短い橋と体系だった仕上げの対比が、世代の配置を示す。単層の写像は費用の面で軽い反面、指示を意識する受け口を持たない。Q-Formerの問い立てとの違いが、橋の世代の違いである。壊れやすさの実証はここでは行わない。",
+      "text": "InstructBLIPはBLIP-2を基盤に視覚の指示チューニングを体系化した。公開の26データセットを指示形式に直し、指示を入力するQ-Formerで学習する。問い合わせ部自体が指示を読む点が前世代からの変更である。モデル論文の著者測定によれば、学習に含めない13課題群すべてでゼロショット最先端に届き、BLIP-2や規模の大きいFlamingoを上回ったと報告している。画像付きScienceQAでは仕上げ後に90.7%に達し、モデルはすべて公開された。評価の主張は学習に含めた課題と含めない課題を分ける手順の範囲に限られ、その外側への一般化は主張しない。指示データの配合の詳細は後の節の範囲であり、ここでは手順と結果に絞る。同じ時期の短い接続としてMiniGPT-4を位置づける。凍結した画像エンコーダと凍結したVicunaを単層の写像で接続するだけで、Q-Formerのような問い合わせ選択は持たない。詳細な描写、略図からのウェブページ作成、物語や詩、調理手順の作成という組み合わせの振る舞いが現れたと、モデル論文の著者測定は報告している。短い説明文で整えてから詳細な描写で仕上げる二段階の選別が、繰り返しや断片化を抑えたとモデル論文の著者測定は報告している。符号とモデルとデータは公開された。接続の役割に絞った短い扱いとし、接続の脆さの実証は評価側の根拠に譲る。",
       "attribution_mode": "ATTRIBUTED",
       "evidence_refs": [
         {
@@ -128,7 +128,7 @@
     {
       "block_id": "p08-b4",
       "block_type": "PARAGRAPH",
-      "text": "指示に従う視覚言語モデルを一気に押し広げたのがLLaVAである。行き詰まりは指示データの作り方にあった。公開の課題を直すだけでは、従う振る舞いの幅が限られる。起点はデータの作り方にある。言語のみのGPT-4が作ったマルチモーダルの指示データを初めて用い、機械が書いた指示応答を教師信号に据える。人が集めた課題の直しとは異なり、機械が書いた従う例を束ねる。この教師信号の契約が後の節の展示物となる。画像エンコーダと言語モデルを端から端まで一緒に調整する点も世代の違いである。凍結したまま橋だけを育てる流儀とは異なり、両端を含めて仕上げる。著者らによれば、機械生成の指示追従ではGPT-4の評点に対する相対で85.1%に達したと報告している。機械が書いた例で学び、機械の評点で測るという閉じた輪の中で測った値である。さらにGPT-4との組み合わせでScienceQAでは92.53%の最先端に届いたという。組み合わせの相手がある場合の値として読む。データとモデルと符号は公開された。開かれた再現の道が残る。評価の物差しとしてLLaVA-Benchを添え、弱さも設計通りにあぶり出す。できることだけを示す物差しではなく、つまずきを見せる物差しである。論文自身が限界として記す通り、ラーメンの作例のような失敗は隠さない。合成した指示データへの依存は残り、作られた例の癖を引きずる。機械が書いた例の癖がモデルの癖となる。著者らが失敗例を開示する姿勢は、後のハルシネーション診断と地続きである。単層の写像で済ませるMiniGPT-4の橋と比べ、LLaVAは端から端までの調整で指示追従を仕上げる世代と位置づく。公開の26データセットを直すInstructBLIPの流儀とも、データの契約の点で一線を画す。人が集めた課題の直しと機械が書いた従う例の束ねは、教師信号の出所が異なる。機械が書いた例の癖がモデルの癖となる点が、合成データへの依存の内実である。失敗例の開示は、後の評価の節への橋渡しとなる。開かれた再現の道と失敗の開示の両面が、LLaVAの世代の特徴である。指示データの配合の詳しい議論は後の節に譲り、ここでは橋と仕上げの世代交代に話を絞る。機械が書いた指示応答を教師信号に据える契約は、データの配合の議論への展示物として残る。展示物の所在を示す。GPT-4との組み合わせの値は、相手がある場合の値として読む。単独の値に読み替えない。失敗の開示は、評価の節への橋渡しとなる。橋渡しの所在を示す。端から端までの調整と凍結したままの橋の対比が、世代の違いを示す。公開の26データセットを直すInstructBLIPの流儀とも、データの契約の点で一線を画す。",
+      "text": "LLaVAは指示データの作り方を変え、視覚言語モデルの指示追従を押し広げた。公開課題の書き換えだけでは追従の幅が限られるという制約が出発点である。言語専用のGPT-4が生成したマルチモーダル指示データを初めて用い、機械生成の指示応答を教師信号に据えた。画像エンコーダと言語モデルを端から端まで一緒に調整する点も世代の違いであり、凍結したまま接続部だけを学習する方式とは異なる。モデル論文の著者測定によれば、機械生成の指示追従ではGPT-4の評点に対する相対で85.1%に達したと報告している。これは機械生成例で学び機械評点で測る閉じた条件での値である。GPT-4との組み合わせではScienceQAで92.53%の最先端に届いたとモデル論文の著者測定は報告しており、組み合わせ相手がある条件の値として読む。データとモデルと符号は公開された。評価軸としてLLaVA-Benchを添え、論文自身が限界として記すラーメンの作例のような失敗を隠さない。合成した指示データへの依存は残り、機械生成例の癖がモデルの癖となる。論文自身の失敗開示は後のハルシネーション診断と連続する。単層写像のMiniGPT-4とは端から端までの調整の有無が異なり、公開26データセットを直すInstructBLIPの方式とは教師信号の出所が異なる。指示データの配合の詳細は後の節に譲り、ここでは接続と仕上げの世代交代に絞る。",
       "attribution_mode": "MIXED",
       "evidence_refs": [
         {
@@ -150,7 +150,7 @@
     {
       "block_id": "p08-b5",
       "block_type": "PARAGRAPH",
-      "text": "橋の世代を締めくくるのは、開かれたデータに立つMolmoの初代である。行き詰まりはデータの出所にあった。外部の視覚言語モデルに頼る限り、データの鎖は閉じたままである。PixMoと呼ぶ自前のデータに、密な説明文と自由な一問一答、2次元の指さし出力（pointing）、四種の合成データを含め、外部の視覚言語モデルには頼らない。自前で束ねた教師信号と調整した手順を合わせることで、72B級で最上位に届いたと報告している。著者らによれば、Claude 3.5 SonnetやGemini 1.5 ProとFlashを上回り、ベンチマークと人手の評価ではGPT-4oに次ぐ位置につけたという。機械の評価と人の評価の両輪で測った値である。MetaCLIPとOLMoによる完全に開かれた変種も用意し、重みとデータと符号を公開した。開かれた鎖の見本となる。エンコーダの選択も経験に支えられる。初期のCLIPエンコーダを既定とし、三つの代替を比べたアブレーションが、使い回す部品の選び方を示す。思いつきで選ぶのではなく、比べた上で定める。ただし初代の範囲は画像中心であり、動画の主張はMolmo 2の記録に譲る。動画の振る舞いはここでは語らない。ここまでの系譜は明確である。接頭辞で渡すFrozen、密に読み取るFlamingo、問いを立てて絞るBLIP-2のQ-Former、単層でつなぐMiniGPT-4、端から端まで調整するLLaVA、そして開かれたデータで束ねるMolmoである。各世代の境目の装置が何であるかを混ぜない。凍結した部品を使い回す考え方は後のQwen系にもつながり、部品を替えながら残す設計が定着した。費用を抑えて橋だけを育てる発想が、長く残る財産である。エンコーダを使い回す経験則は、後の解像度と融合の議論にも生きる。比べた上で定める姿勢が、部品選びの規範となる。開かれた鎖の見本としてのMolmoの位置づけは、後の開放の議論に受け継がれる。画像中心の範囲を超える主張は行わず、動画の振る舞いは後の記録に譲る。各世代の境目の装置を混ぜない読み方が、本節の要である。接頭辞の受け渡しと密な読み合わせと問い立ての絞り込みと単層の写像と端から端までの調整と開かれた束ねの六つを混ぜない。六つの言い分けが歴史の読み方である。三つの代替を比べる姿勢は、思いつきで選ばない規範を示す。規範の所在を示す。完全に開かれた変種の用意は、鎖の見本としての価値を示す。重みとデータと符号の三面の公開が要点である。部品を替えながら残す設計は、後の節にも生きる。",
+      "text": "接続の世代を締めくくるのは、開かれたデータに立つMolmoの初代である。外部の視覚言語モデルに依存する限りデータの出所は閉じたままという制約が出発点である。PixMoと呼ぶ自前のデータに密な説明文と自由な一問一答、2次元の指さし出力（pointing）、四種の合成データを収め、外部の視覚言語モデルには依存しない。自前の教師信号と調整した手順の組み合わせにより、72B級で最上位に届いたとモデル論文の著者測定は報告している。具体的にはClaude 3.5 SonnetやGemini 1.5 ProとFlashを上回り、ベンチマークと人手の評価ではGPT-4oに次ぐ位置につけたとモデル論文の著者測定は報告している。MetaCLIPとOLMoによる完全に開かれた変種も用意し、重みとデータと符号を公開した。エンコーダの選択も比較に支えられる。初期のCLIPエンコーダを既定とし、三つの代替を比べたアブレーションが部品の選び方を示す。初代の範囲は画像中心であり、動画の主張はMolmo 2の記録に譲る。系譜は、接頭辞で渡すFrozen、密に接続するFlamingo、問い合わせで選択するBLIP-2のQ-Former、単層で接続するMiniGPT-4、端から端まで調整するLLaVA、開かれたデータで組み立てるMolmoである。各世代の接続部の方式を混同しない。凍結した部品を使い回す考え方は後のQwen系にも連続する。",
       "attribution_mode": "MIXED",
       "evidence_refs": [
         {
@@ -193,7 +193,7 @@
     {
       "block_id": "P08-boundaries",
       "block_type": "CLAIM_BOUNDARY",
-      "text": "この節の読解上の境界: InstructBLIP/MiniGPT-4 gap filled; precursor stays one line / Closed training-data regime; resampling predecessor role noted for D09, not duplicated. / Two-stage cost/complexity; instruction-tuning successors (InstructBLIP/LLaVA) complete the picture. / Held-in/held-out protocol scope; instruction-data composition is the X01 exhibit. / Synthetic instruction-data dependence; failure cases paper-acknowledged via LLaVA-Bench. / Proof-of-concept scope per the paper's own discussion; precursor depth only. / Short treatment per bridge-function role; alignment-fragility notes need eval-side sources. / v1 image-centric scope; video claims belong to Molmo 2 record.",
+      "text": "この節の読解上の境界: Flamingoの学習データは非公開の体制であり、閉じた条件の記録として読む。Frozenの仕事は概念実証の範囲に留まり、前駆としての位置づけを超えない。",
       "attribution_mode": "INFERENCE",
       "evidence_refs": [
         {
@@ -275,11 +275,9 @@
   "boundary_dispositions": [
     {
       "boundary": "InstructBLIP/MiniGPT-4 gap filled; precursor stays one line",
-      "handling": "EXPLICITLY_STATED",
-      "block_ids": [
-        "P08-boundaries"
-      ],
-      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+      "handling": "RESPECTED_BY_OMISSION",
+      "block_ids": [],
+      "rationale": "Internal drafting guard; omission of the unsupported claim suffices."
     },
     {
       "boundary": "Closed training-data regime; resampling predecessor role noted for D09, not duplicated.",
@@ -287,31 +285,25 @@
       "block_ids": [
         "P08-boundaries"
       ],
-      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+      "rationale": "Reader-facing limitation; concise Japanese limitation text carries it."
     },
     {
       "boundary": "Two-stage cost/complexity; instruction-tuning successors (InstructBLIP/LLaVA) complete the picture.",
-      "handling": "EXPLICITLY_STATED",
-      "block_ids": [
-        "P08-boundaries"
-      ],
-      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+      "handling": "RESPECTED_BY_OMISSION",
+      "block_ids": [],
+      "rationale": "Internal drafting guard; omission of the unsupported claim suffices."
     },
     {
       "boundary": "Held-in/held-out protocol scope; instruction-data composition is the X01 exhibit.",
-      "handling": "EXPLICITLY_STATED",
-      "block_ids": [
-        "P08-boundaries"
-      ],
-      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+      "handling": "RESPECTED_BY_OMISSION",
+      "block_ids": [],
+      "rationale": "Internal drafting guard; omission of the unsupported claim suffices."
     },
     {
       "boundary": "Synthetic instruction-data dependence; failure cases paper-acknowledged via LLaVA-Bench.",
-      "handling": "EXPLICITLY_STATED",
-      "block_ids": [
-        "P08-boundaries"
-      ],
-      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+      "handling": "RESPECTED_BY_OMISSION",
+      "block_ids": [],
+      "rationale": "Internal drafting guard; omission of the unsupported claim suffices."
     },
     {
       "boundary": "Proof-of-concept scope per the paper's own discussion; precursor depth only.",
@@ -319,23 +311,19 @@
       "block_ids": [
         "P08-boundaries"
       ],
-      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+      "rationale": "Reader-facing limitation; concise Japanese limitation text carries it."
     },
     {
       "boundary": "Short treatment per bridge-function role; alignment-fragility notes need eval-side sources.",
-      "handling": "EXPLICITLY_STATED",
-      "block_ids": [
-        "P08-boundaries"
-      ],
-      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+      "handling": "RESPECTED_BY_OMISSION",
+      "block_ids": [],
+      "rationale": "Internal drafting guard; omission of the unsupported claim suffices."
     },
     {
       "boundary": "v1 image-centric scope; video claims belong to Molmo 2 record.",
-      "handling": "EXPLICITLY_STATED",
-      "block_ids": [
-        "P08-boundaries"
-      ],
-      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+      "handling": "RESPECTED_BY_OMISSION",
+      "block_ids": [],
+      "rationale": "Internal drafting guard; omission of the unsupported claim suffices."
     }
   ],
   "profile_extensions": {},
