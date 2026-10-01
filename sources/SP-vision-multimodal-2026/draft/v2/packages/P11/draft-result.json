@@ -4,7 +4,7 @@
   "research_profile": "THEMATIC",
   "publication_profile": "LONGFORM_SPECIAL",
   "package_id": "P11",
-  "draft_version": "r2",
+  "draft_version": "r3",
   "status": "REVISED",
   "basis": {
     "draft_package_sha256": "3b125561423475e7bfdc0091906184bee3b079e7dd5e67e3295b8f75e78a6953",
@@ -14,9 +14,9 @@
   "runner": {
     "provider": "Muse",
     "model": "Muse Spark (Work execution role; not a Sol/Human decision)",
-    "invocation": "TS-003 Draft r2 reader-surface repair from approved Architecture r2 (Human APPROVED r2, Sol Draft Review r1 REQUEST_CHANGES F1-F5): full-volume prose rewrite, zero duplicate sentences, metaphor-substitution eliminated, evaluator classes explicit, boundary reader surface repaired; G01-G06 and 5 PARTIAL preserved semantically; no cross-task ranking; no new research",
-    "generated_at": "2026-10-01T15:44:38Z",
-    "run_reference": "ts003-draft-r2-20261001"
+    "invocation": "TS-003 Draft r3 cumulative-terminology repair from approved Architecture r2 (Human APPROVED r2, Sol Draft Review r1 REQUEST_CHANGES F1-F5): full-volume prose rewrite, zero duplicate sentences, metaphor-substitution eliminated, evaluator classes explicit, boundary reader surface repaired; G01-G06 and 5 PARTIAL preserved semantically; no cross-task ranking; no new research",
+    "generated_at": "2026-10-01T16:44:49Z",
+    "run_reference": "ts003-draft-r3-20261002"
   },
   "headline": "長尺と実時間の契約を分ける",
   "deck": "録りためた動画の理解と、流れる映像への即応は別の契約で動く。順序と記憶と問い合わせの違いをたどり、枠数の効き方と未確定の部分を正直に残す。前例の資料から広さの評価、尋ね方の契約、実時間の仕組みへと進み、空間知能の未確定を添える。",
@@ -134,7 +134,7 @@
     {
       "block_id": "p11-b3",
       "block_type": "PARAGRAPH",
-      "text": "長い文脈の尋ね方には別の契約がある。広さを測る契約とは別に、尋ね方を測る契約がある。LongVideoBenchは3763本の動画と字幕に6678問の人手の選択式を添え、17の細かい区分で組む。referred-contextと呼ぶ推論では、指された長い文脈を取り出して筋道を立てる。ベンチマーク論文の著者による第三者測定の知見では、枠を増やして初めて点が伸び、枠数の効き方が明らかになったと報告している。将来の長いコンテキストのモデルに向けた指し示しとして読む。長さの広さで測る評価とは取り替えが利かず、指された文脈の取り出しと推論という独自の契約に立つ。対してStreamingBenchは流れる映像の評価の契約である。初めて流れる動画の多様式モデルを幅広く測り、900本の動画と4500問、18課題を三区分で扱う。即時の視覚、音声を含む源泉別、流れの中のやり取りと能動応答を含む文脈別の三区分である。流れの途中で時刻つきの問いを投げる。ベンチマーク論文の著者による第三者測定では、最良のGemini 1.5 Proが67.07%、人が91.66%と報告している。符号とデータは公開された。ただし多くのモデルはオフライン変換で測られ、真のオンラインの点は実時間の仕組み側の根拠が必要である。視聴覚の評価の役割も兼ねる。録りためた長さと流れる即応を同じ評価軸に載せない。",
+      "text": "長い文脈の尋ね方には別の契約がある。広さを測る契約とは別に、尋ね方を測る契約がある。LongVideoBenchは3763本の動画と字幕に6678問の人手の選択式を添え、17の細かい区分で組む。referred-contextと呼ぶ推論では、指された長い文脈を取り出して筋道を立てる。ベンチマーク論文の著者による第三者測定の知見では、枠を増やして初めて点が伸び、枠数の効き方が明らかになったと報告している。将来の長いコンテキストのモデルに向けた指し示しとして読む。長さの広さで測る評価とは取り替えが利かず、指された文脈の取り出しと推論という独自の契約に立つ。対してStreamingBenchは流れる映像の評価の契約である。初めて流れる動画のマルチモーダルモデルを幅広く測り、900本の動画と4500問、18課題を三区分で扱う。即時の視覚、音声を含む源泉別、流れの中のやり取りと能動応答を含む文脈別の三区分である。流れの途中で時刻つきの問いを投げる。ベンチマーク論文の著者による第三者測定では、最良のGemini 1.5 Proが67.07%、人が91.66%と報告している。コードとデータは公開された。ただし多くのモデルはオフライン変換で測られ、真のオンラインの点は実時間の仕組み側の根拠が必要である。視聴覚の評価の役割も兼ねる。録りためた長さと流れる即応を同じ評価軸に載せない。",
       "attribution_mode": "MIXED",
       "evidence_refs": [
         {
@@ -163,7 +163,7 @@
     {
       "block_id": "p11-b4",
       "block_type": "PARAGRAPH",
-      "text": "流れる映像に即応する仕組みの中心がFlash-VStreamである。録りためた長さを保つ仕組みとは別に、止めずに受け続ける仕組みが必要である。人の記憶の仕組みを手本に、極めて長い流れを実時間で受けながら、非同期の問いにも同時に答える。モデル論文の著者測定によれば、遅延とメモリ負荷を大きく抑えたと報告している。抑えた度合いの実数はモデル論文の著者測定として読む。VStream-QAを対の評価として添え、オンラインの流れの質問応答を測る。オフラインの評価での最先端の確認は汎用性の点検に留まる。符号とモデルと資料は利用できると記され、利用可能性の記述として読む。オンラインの入力と限りある記憶、保たれる時間的な状態、遅延とメモリ負荷のトレードオフを一つの仕組みで担う。VStream-QAは引用する前例として置き、SAM 2の記憶は仕組みへの指し示しに留める。遅延とメモリの数値はモデル論文の著者測定であり、それを超えるデプロイの数値は未確定として残す。時刻つきの途中の問い、非同期の問い応答、記憶の方針はオンラインの側に属し、オフライン変換の点と混同しない。枠数の効き方が鍵となる録りためた評価とは、保つものが異なる。",
+      "text": "流れる映像に即応する仕組みの中心がFlash-VStreamである。録りためた長さを保つ仕組みとは別に、止めずに受け続ける仕組みが必要である。人の記憶の仕組みを手本に、極めて長い流れを実時間で受けながら、非同期の問いにも同時に答える。モデル論文の著者測定によれば、遅延とメモリ負荷を大きく抑えたと報告している。抑えた度合いの実数はモデル論文の著者測定として読む。VStream-QAを対の評価として添え、オンラインの流れの質問応答を測る。オフラインの評価での最先端の確認は汎用性の点検に留まる。コードとモデルと資料は利用できると記され、利用可能性の記述として読む。オンラインの入力と限りある記憶、保たれる時間的な状態、遅延とメモリ負荷のトレードオフを一つの仕組みで担う。VStream-QAは引用する前例として置き、SAM 2の記憶は仕組みへの指し示しに留める。遅延とメモリの数値はモデル論文の著者測定であり、それを超えるデプロイの数値は未確定として残す。時刻つきの途中の問い、非同期の問い応答、記憶の方針はオンラインの側に属し、オフライン変換の点と混同しない。枠数の効き方が鍵となる録りためた評価とは、保つものが異なる。",
       "attribution_mode": "MIXED",
       "evidence_refs": [
         {
@@ -235,7 +235,7 @@
     {
       "block_id": "P11-boundaries",
       "block_type": "CLAIM_BOUNDARY",
-      "text": "この節の読解上の境界: 多くのモデルはオフライン変換で測られており、真のオンラインの点は実時間の仕組み側の記録が担う。遅延とメモリの数値は著者の報告に留まり、それを超える配備の数値は未確定として残す。空間知能の評価の読みは要旨の深さに留まり、偏りを除いた分析は後に譲る。",
+      "text": "この節の読解上の境界: 多くのモデルはオフライン変換で測られており、真のオンラインの点は実時間の仕組み側の記録が担う。遅延とメモリの数値は著者の報告に留まり、それを超えるデプロイの数値は未確定として残す。空間知能の評価の読みは要旨の深さに留まり、偏りを除いた分析は後に譲る。",
       "attribution_mode": "INFERENCE",
       "evidence_refs": [
         {

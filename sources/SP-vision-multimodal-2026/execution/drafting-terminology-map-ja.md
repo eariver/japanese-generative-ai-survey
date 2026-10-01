@@ -43,6 +43,9 @@ When Sol or Human review discovers a new terminology failure, add it to this fil
 
 The map therefore functions as a cumulative regression-prevention authority, not a one-time preflight list.
 
+r3 cumulative update log (2026-10-02, during r3 Pass C, before prose repair):
+`§3.3 added (encoder-目, pipeline-管, 多作物, 汎用手, fusion variants); §3.2 fusion rows refined; terminal state unchanged`.
+
 ### 0.2 Context rule — this is not a blind banned-word list
 
 An Avoid form is blocking only when it substitutes for the identified technical concept or creates the same reader-surface defect.
@@ -236,7 +239,19 @@ This registry records observed TS-003 failures. It is a regression list, not mer
 | 配りの極 | deployment/distribution endpoint | デプロイ形態 / 提供形態 / 端末実行の位置づけ | Sol Draft Review r2 |
 | 値打ち（editorial praise） | significance | 意義 / 位置づけ / 技術的効果を具体化 | r2 Sol inspection |
 
-### 3.3 Regression principle
+### 3.3 r3 failures — discovered during r3 Pass C full-text review
+
+| Observed form | Intended concept / function | Preferred repair | First formalized |
+|---|---|---|---|
+| エンコーダの意味での目（視覚言語モデルの目、SigLIP系の目、目を凍らせる、他の目を借りる） | vision encoder / backbone | 視覚エンコーダ / エンコーダを直接書く | r3 Pass C |
+| データ管 / 較正の配管 | data / calibration pipeline | データパイプライン / パイプライン | r3 Pass C |
+| 多作物 | multi-crop | マルチクロップ | r3 Pass C |
+| 汎用手 | general-purpose model | 汎用モデル | r3 Pass C |
+| 早い融合 / 遅い融合 / 固い融合（§3.2の遅い渡し・固い混ぜと同系） | early / late / tight fusion | 早期融合 / 後段融合 / 密な融合 | r3 Pass C (§3.2 refinement) |
+
+Ordinary non-encoder 目 (見る目、目の前、項目等), ordinary 管轄・管理, and 枠組み/枠数 senses remain allowed per the context rule (§0.2).
+
+### 3.4 Regression principle
 
 Do not “fix” one known form by inventing another metaphor.
 

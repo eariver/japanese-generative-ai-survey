@@ -4,7 +4,7 @@
   "research_profile": "THEMATIC",
   "publication_profile": "LONGFORM_SPECIAL",
   "package_id": "P01",
-  "draft_version": "r2",
+  "draft_version": "r3",
   "status": "REVISED",
   "basis": {
     "draft_package_sha256": "b32e4295e97079d4935f6004e4b813b13ae270ce9b854327f33e0221dc2e5791",
@@ -14,12 +14,12 @@
   "runner": {
     "provider": "Muse",
     "model": "Muse Spark (Work execution role; not a Sol/Human decision)",
-    "invocation": "TS-003 Draft r2 reader-surface repair from approved Architecture r2 (Human APPROVED r2, Sol Draft Review r1 REQUEST_CHANGES F1-F5): full-volume prose rewrite, zero duplicate sentences, metaphor-substitution eliminated, evaluator classes explicit, boundary reader surface repaired; G01-G06 and 5 PARTIAL preserved semantically; no cross-task ranking; no new research",
-    "generated_at": "2026-10-01T15:44:38Z",
-    "run_reference": "ts003-draft-r2-20261001"
+    "invocation": "TS-003 Draft r3 cumulative-terminology repair from approved Architecture r2 (Human APPROVED r2, Sol Draft Review r1 REQUEST_CHANGES F1-F5): full-volume prose rewrite, zero duplicate sentences, metaphor-substitution eliminated, evaluator classes explicit, boundary reader surface repaired; G01-G06 and 5 PARTIAL preserved semantically; no cross-task ranking; no new research",
+    "generated_at": "2026-10-01T16:44:49Z",
+    "run_reference": "ts003-draft-r3-20261002"
   },
   "headline": "学んだ表現が土台になるとき",
-  "deck": "手書きの特徴量からImageNet規模の学習への転換を追う。AlexNetの容量と実装の組み合わせとResNetの残差学習を読み、分類で鍛えた表現が検出と切り分けの出発点になる筋を確認する。単一データの射程と学習レシピの読みの両義性を保つ。",
+  "deck": "手書きの特徴量からImageNet規模の学習への転換を追う。AlexNetの容量と実装の組み合わせとResNetの残差学習を読み、分類で鍛えた表現が検出とセグメンテーションの出発点になる筋を確認する。単一データの射程と学習レシピの読みの両義性を保つ。",
   "deck_attribution_mode": "ATTRIBUTED",
   "deck_evidence_refs": [
     {
@@ -76,7 +76,7 @@
     {
       "block_id": "p01-b1",
       "block_type": "PARAGRAPH",
-      "text": "手書きの特徴量で濃淡の勾配や輪郭の断片を組み立てる段階では、設計の質が人の経験に依存した。Neocognitronは特徴抽出を担うS細胞相当の層と位置ずれを吸収するC細胞相当の層を重ね、最終層のC細胞が位置によらず刺激パターンに選択的に応答し、形状や大きさの小さな変化を許容すると述べた。畳み込みの階層の発想の出所として扱うのが本書の範囲であり、本文の入手に制限があるため仕組みの細部には立ち入らず、性能の主張はこの資料からは引き継がない。LeNetは畳み込みニューラルネットワークを勾配法で端から端まで学習させ、文書の文字認識に適用して、手書きの特徴量ではなく学習した階層で実務課題を解ける例を示した。画像を見る階層を学習で得る道がある点に、規模の転換の前史としての値打ちがある。こちらもLeNet論文の著者PDFの符号化の問題で本文の機械的な読み取りができないため、抄録水準に留めて文書画像の範囲の話として扱い、規模の主張はImageNet世代の資料に譲る。AlexNet論文の著者らは、障害として二点を挙げた。すなわち、ラベル付きデータが小規模な点と、高解像度画像を扱う大規模CNNの計算負荷である。これに対する組み合わせは、ImageNetのデータ規模、深さと幅を調整した容量と局所性・定常性を生かす畳み込みの前提、GPUで効率よく回る二次元畳み込みの実装、飽和しにくい素子、過学習を抑えるdropoutであった。規模は1.2M枚のImageNet画像に対し、60Mのパラメータと650Kの素子をもつ5層の畳み込みと3層の全結合、1000通りのsoftmaxからなる深いCNNであり、LSVRC-2010でtop-1誤り37.5%とtop-5誤り17.0%、ILSVRC-2012ではtop-5で15.3%を次点の26.2%に対して示し、3GBのGTX 580を2枚使って5〜6日かけたと、モデル論文の著者測定として報告している。同論文は高速なGPUと大規模データがあれば結果はさらに伸びると結んでおり、本書ではここに大規模な教師あり学習を再利用可能な例にするという読みの根拠を置く。ただしこの読みは編集上の合成であり、ImageNet単一の範囲を超える転移の主張は後継の記録に譲る。",
+      "text": "手書きの特徴量で濃淡の勾配や輪郭の断片を組み立てる段階では、設計の質が人の経験に依存した。Neocognitronは特徴抽出を担うS細胞相当の層と位置ずれを吸収するC細胞相当の層を重ね、最終層のC細胞が位置によらず刺激パターンに選択的に応答し、形状や大きさの小さな変化を許容すると述べた。畳み込みの階層の発想の出所として扱うのが本書の範囲であり、本文の入手に制限があるため仕組みの細部には立ち入らず、性能の主張はこの資料からは引き継がない。LeNetは畳み込みニューラルネットワークを勾配法で端から端まで学習させ、文書の文字認識に適用して、手書きの特徴量ではなく学習した階層で実務課題を解ける例を示した。画像を見る階層を学習で得る道がある点に、規模の転換の前史としての意義がある。こちらもLeNet論文の著者公開PDFの文字コードの問題で本文の機械的な読み取りができないため、抄録水準に留めて文書画像の範囲の話として扱い、規模の主張はImageNet世代の資料に譲る。AlexNet論文の著者らは、障害として二点を挙げた。すなわち、ラベル付きデータが小規模な点と、高解像度画像を扱う大規模CNNの計算負荷である。これに対する組み合わせは、ImageNetのデータ規模、深さと幅を調整した容量と局所性・定常性を生かす畳み込みの前提、GPUで効率よく回る二次元畳み込みの実装、飽和しにくい素子、過学習を抑えるdropoutであった。規模は1.2M枚のImageNet画像に対し、60Mのパラメータと650Kの素子をもつ5層の畳み込みと3層の全結合、1000通りのsoftmaxからなる深いCNNであり、LSVRC-2010でtop-1誤り37.5%とtop-5誤り17.0%、ILSVRC-2012ではtop-5で15.3%を次点の26.2%に対して示し、3GBのGTX 580を2枚使って5〜6日かけたと、モデル論文の著者測定として報告している。同論文は高速なGPUと大規模データがあれば結果はさらに伸びると結んでおり、本書ではここに大規模な教師あり学習を再利用可能な例にするという読みの根拠を置く。ただしこの読みは編集上の合成であり、ImageNet単一の範囲を超える転移の主張は後継の記録に譲る。",
       "attribution_mode": "MIXED",
       "evidence_refs": [
         {
