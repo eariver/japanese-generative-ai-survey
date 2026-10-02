@@ -4,7 +4,7 @@
   "research_profile": "THEMATIC",
   "publication_profile": "LONGFORM_SPECIAL",
   "package_id": "P05",
-  "draft_version": "r6",
+  "draft_version": "r7",
   "status": "REVISED",
   "basis": {
     "draft_package_sha256": "514884ea498f749e834e58006f0d9dfa4d16af5e87e96e929cee405e9a9e1019",
@@ -14,9 +14,9 @@
   "runner": {
     "provider": "Muse",
     "model": "Muse Spark (Work execution role; not a Sol/Human decision)",
-    "invocation": "TS-003 Draft r6 P09 terminology closure from approved Architecture r2 (Human APPROVED r2, Sol Draft Review r1 REQUEST_CHANGES F1-F5): full-volume prose rewrite, zero duplicate sentences, metaphor-substitution eliminated, evaluator classes explicit, boundary reader surface repaired; G01-G06 and 5 PARTIAL preserved semantically; no cross-task ranking; no new research",
-    "generated_at": "2026-10-02T00:06:39Z",
-    "run_reference": "ts003-draft-r6-20261002"
+    "invocation": "TS-003 Draft r7 preferred-terminology conformance from approved Architecture r2 (Human APPROVED r2, Sol Draft Review r1 REQUEST_CHANGES F1-F5): full-volume prose rewrite, zero duplicate sentences, metaphor-substitution eliminated, evaluator classes explicit, boundary reader surface repaired; G01-G06 and 5 PARTIAL preserved semantically; no cross-task ranking; no new research",
+    "generated_at": "2026-10-02T14:42:07Z",
+    "run_reference": "ts003-draft-r7-20261002"
   },
   "headline": "OCRから文書理解へ",
   "deck": "文字起こしから配置と構造の読みへ。LayoutLM系とOCRフリー系の系譜をたどり、画素だけを見る設計の制約と二つの特化型の失敗の姿を比べる。検索界面と二つの評価契約の許容を添え、順位付けは行わない。",
@@ -134,7 +134,7 @@
     {
       "block_id": "p05-b3",
       "block_type": "PARAGRAPH",
-      "text": "Pix2Structは画素だけを見る流れをスクリーンショットの構文理解へ広げた。Leeらによれば、マスクしたウェブのスクリーンショットから簡略HTMLを再構成する事前学習が、OCRと言語モデルとキャプションの信号を一つの課題に畳む。HTMLの再構成は、文字と配置と部品名を同時に当てる課題である。入力の解像度を可変に保ち、画像の上に描いた文字で指示を与える。縦長の頁も横広の画面も、そのまま受ける。絵の中の文字が、絵への指示になる。文書と図版とUIと自然画像にまたがる九つの課題のうち六つで、単一モデルとして初めて到達点に届いたと、モデル論文の著者測定として報告している。転換の要点は、読む対象を文書に限らず、モバイルアプリやボタンや書式を同じ純粋に視覚の理解の枠に入れた点にある。UIを文書の延長として扱う整理は画面操作の節へ渡すためのものであり、押す・遷移する議論は本節では行わない。高解像度化が系列長の制約になるという限界はDonut系と共通であり、論文自体の議論として残す。文書検索の界面として、Qwenチームの報告によれば、Qwen3-VL-Embeddingは視覚言語モデルを基盤にした検索パイプラインであり、埋め込みは多段階の対照事前学習からリランカ蒸留へ進み、Matryoshka次元と32K入力と2B・8B構成をもつ。32K入力で長い文書も切らずに受け、2Bと8Bの二構成で運用点を分ける。8BがMMEB-V2で77.8を得て2026年1月8日時点で1位に立ったとしているが、これはモデル論文の著者測定によるプレプリント時点の主張であり、独立した第三者再現はまだない。多言語30言語超の対応はQwen3-VLから引き継ぐ。本節では検索は文書を読む主体の議論に従属させ、細部には立ち入らない。",
+      "text": "Pix2Structは画素だけを見る流れをスクリーンショットの構文理解へ広げた。Leeらによれば、マスクしたウェブのスクリーンショットから簡略HTMLを再構成する事前学習が、OCRと言語モデルとキャプションの信号を一つの課題に畳む。HTMLの再構成は、文字と配置と要素名を同時に当てる課題である。入力の解像度を可変に保ち、画像の上に描いた文字で指示を与える。縦長の頁も横広の画面も、そのまま受ける。絵の中の文字が、絵への指示になる。文書と図版とUIと自然画像にまたがる九つの課題のうち六つで、単一モデルとして初めて到達点に届いたと、モデル論文の著者測定として報告している。転換の要点は、読む対象を文書に限らず、モバイルアプリやボタンや書式を同じ純粋に視覚の理解の枠に入れた点にある。UIを文書の延長として扱う整理は画面操作の節へ渡すためのものであり、押す・遷移する議論は本節では行わない。高解像度化が系列長の制約になるという限界はDonut系と共通であり、論文自体の議論として残す。文書検索の界面として、Qwenチームの報告によれば、Qwen3-VL-Embeddingは視覚言語モデルを基盤にした検索パイプラインであり、埋め込みは多段階の対照事前学習からリランカ蒸留へ進み、Matryoshka次元と32K入力と2B・8B構成をもつ。32K入力で長い文書も切らずに受け、2Bと8Bの二構成で運用点を分ける。8BがMMEB-V2で77.8を得て2026年1月8日時点で1位に立ったとしているが、これはモデル論文の著者測定によるプレプリント時点の主張であり、独立した第三者再現はまだない。多言語30言語超の対応はQwen3-VLから引き継ぐ。本節では検索は文書を読む主体の議論に従属させ、細部には立ち入らない。",
       "attribution_mode": "MIXED",
       "evidence_refs": [
         {

@@ -24,14 +24,14 @@
       "package_id": "P01",
       "drafting_order": 1,
       "draft_package_sha256": "b32e4295e97079d4935f6004e4b813b13ae270ce9b854327f33e0221dc2e5791",
-      "draft_result_sha256": "f10abe5ad7d2d5e1a43657cbdac54299f6e50a7ee2456be81e2561532342b326",
+      "draft_result_sha256": "2c521c8b83da48f2e1f322b9a59d6635122c9860f7e61566e4c85af8e938c5fa",
       "draft_result": {
         "schema_version": "2.0-rc1",
         "issue_id": "SP-vision-multimodal-2026",
         "research_profile": "THEMATIC",
         "publication_profile": "LONGFORM_SPECIAL",
         "package_id": "P01",
-        "draft_version": "r6",
+        "draft_version": "r7",
         "status": "REVISED",
         "basis": {
           "draft_package_sha256": "b32e4295e97079d4935f6004e4b813b13ae270ce9b854327f33e0221dc2e5791",
@@ -41,9 +41,9 @@
         "runner": {
           "provider": "Muse",
           "model": "Muse Spark (Work execution role; not a Sol/Human decision)",
-          "invocation": "TS-003 Draft r6 P09 terminology closure from approved Architecture r2 (Human APPROVED r2, Sol Draft Review r1 REQUEST_CHANGES F1-F5): full-volume prose rewrite, zero duplicate sentences, metaphor-substitution eliminated, evaluator classes explicit, boundary reader surface repaired; G01-G06 and 5 PARTIAL preserved semantically; no cross-task ranking; no new research",
-          "generated_at": "2026-10-02T00:06:39Z",
-          "run_reference": "ts003-draft-r6-20261002"
+          "invocation": "TS-003 Draft r7 preferred-terminology conformance from approved Architecture r2 (Human APPROVED r2, Sol Draft Review r1 REQUEST_CHANGES F1-F5): full-volume prose rewrite, zero duplicate sentences, metaphor-substitution eliminated, evaluator classes explicit, boundary reader surface repaired; G01-G06 and 5 PARTIAL preserved semantically; no cross-task ranking; no new research",
+          "generated_at": "2026-10-02T14:42:07Z",
+          "run_reference": "ts003-draft-r7-20261002"
         },
         "headline": "学んだ表現が土台になるとき",
         "deck": "手書きの特徴量からImageNet規模の学習への転換を追う。AlexNetの容量と実装の組み合わせとResNetの残差学習を読み、分類で鍛えた表現が検出とセグメンテーションの出発点になる筋を確認する。単一データの射程と学習レシピの読みの両義性を保つ。",
@@ -160,7 +160,7 @@
           {
             "block_id": "p01-b2",
             "block_type": "PARAGRAPH",
-            "text": "層を増やすと学習誤差そのものが上昇する劣化を、ResNet論文の著者らは診断の起点に据えた。勾配の爆発や消失は初期値と正規化でほぼ解消した後も、素朴に深くしたモデルでは学習誤差が増え、これは試験時の悪化ではなく学習の停滞、すなわち過学習ではなく最適化の問題だと述べた。深い側が浅い側と同じ写像をたどれるなら悪化するはずがない、という恒等写像の論拠が診断の中心にある。そこで学習対象をH(x)そのものから残差F(x)=H(x)-xへ置き換え、次元が一致する箇所の近道はパラメータなしの恒等写像とし、次元合わせが必要な箇所のみ式2の射影Wsを置く。通り抜けできる分だけ各層は積み上げる差分に専念でき、1x1-3x3-1x1のボトルネックで計算量を抑えて152層で11.3 GFLOPsとVGG-19より軽い。結果もモデル論文の著者測定に属し、152層単体で検証top-5誤り4.49%、集成でテストtop-5誤り3.57%を示してILSVRC 2015の1位、COCO検出で6.0ポイントの上積みを相対で28%の伸びとして学習表現のみに帰し、ImageNet検出・位置特定とCOCOセグメンテーションでも1位と報告している。検出の伸びは2015年当時のFaster R-CNN系列を基準にした評価条件での話であり、現在の評価軸での優劣は主張しない。",
+            "text": "層を増やすと学習誤差そのものが上昇する劣化を、ResNet論文の著者らは診断の起点に据えた。勾配の爆発や消失は初期値と正規化でほぼ解消した後も、素朴に深くしたモデルでは学習誤差が増え、これは試験時の悪化ではなく学習の停滞、すなわち過学習ではなく最適化の問題だと述べた。深い側が浅い側と同じ写像をたどれるなら悪化するはずがない、という恒等写像の論拠が診断の中心にある。そこで学習対象をH(x)そのものから残差F(x)=H(x)-xへ置き換え、次元が一致する箇所のショートカット接続はパラメータなしの恒等写像とし、次元合わせが必要な箇所のみ式2の射影Wsを置く。通り抜けできる分だけ各層は積み上げる差分に専念でき、1x1-3x3-1x1のボトルネックで計算量を抑えて152層で11.3 GFLOPsとVGG-19より軽い。結果もモデル論文の著者測定に属し、152層単体で検証top-5誤り4.49%、集成でテストtop-5誤り3.57%を示してILSVRC 2015の1位、COCO検出で6.0ポイントの上積みを相対で28%の伸びとして学習表現のみに帰し、ImageNet検出・位置特定とCOCOセグメンテーションでも1位と報告している。検出の伸びは2015年当時のFaster R-CNN系列を基準にした評価条件での話であり、現在の評価軸での優劣は主張しない。",
             "attribution_mode": "ATTRIBUTED",
             "evidence_refs": [
               {
@@ -454,14 +454,14 @@
       "package_id": "P02",
       "drafting_order": 2,
       "draft_package_sha256": "c91470a7ca56a0270309709ff787642d28ea20356a718bf0fe2b821a664591cc",
-      "draft_result_sha256": "c11f5910dfb3a7150059308335f041683c634a948240c561197a2573fdc77590",
+      "draft_result_sha256": "6d62991b937767cc4261b34547f6cd527121c4c0863def5f0a9ea6ad22bef330",
       "draft_result": {
         "schema_version": "2.0-rc1",
         "issue_id": "SP-vision-multimodal-2026",
         "research_profile": "THEMATIC",
         "publication_profile": "LONGFORM_SPECIAL",
         "package_id": "P02",
-        "draft_version": "r6",
+        "draft_version": "r7",
         "status": "REVISED",
         "basis": {
           "draft_package_sha256": "c91470a7ca56a0270309709ff787642d28ea20356a718bf0fe2b821a664591cc",
@@ -471,12 +471,12 @@
         "runner": {
           "provider": "Muse",
           "model": "Muse Spark (Work execution role; not a Sol/Human decision)",
-          "invocation": "TS-003 Draft r6 P09 terminology closure from approved Architecture r2 (Human APPROVED r2, Sol Draft Review r1 REQUEST_CHANGES F1-F5): full-volume prose rewrite, zero duplicate sentences, metaphor-substitution eliminated, evaluator classes explicit, boundary reader surface repaired; G01-G06 and 5 PARTIAL preserved semantically; no cross-task ranking; no new research",
-          "generated_at": "2026-10-02T00:06:39Z",
-          "run_reference": "ts003-draft-r6-20261002"
+          "invocation": "TS-003 Draft r7 preferred-terminology conformance from approved Architecture r2 (Human APPROVED r2, Sol Draft Review r1 REQUEST_CHANGES F1-F5): full-volume prose rewrite, zero duplicate sentences, metaphor-substitution eliminated, evaluator classes explicit, boundary reader surface repaired; G01-G06 and 5 PARTIAL preserved semantically; no cross-task ranking; no new research",
+          "generated_at": "2026-10-02T14:42:07Z",
+          "run_reference": "ts003-draft-r7-20261002"
         },
-        "headline": "箱から集合予測、開かれた語彙へ",
-        "deck": "箱の位置と物の名を対にする検出の系譜を追う。領域提案から一段と二段の動作点、集合予測を経て言葉で指せる開かれた語彙の手前までを見る。DINO検出器の呼び分けを保ち、版と評価条件を明記して数値は著者測定として読む。",
+        "headline": "ボックスから集合予測、オープンボキャブラリーへ",
+        "deck": "ボックスの位置と物の名を対にする検出の系譜を追う。領域提案からone-stageとtwo-stageの動作点、集合予測を経て言葉で指せるオープンボキャブラリーの手前までを見る。DINO検出器の呼び分けを保ち、版と評価条件を明記して数値は著者測定として読む。",
         "deck_attribution_mode": "MIXED",
         "deck_evidence_refs": [
           {
@@ -569,7 +569,7 @@
           {
             "block_id": "p02-b2",
             "block_type": "PARAGRAPH",
-            "text": "Faster R-CNNは二段の到達点であり、Region Proposal Networkが画像全体の畳み込み特徴量を検出器と共有して提案の計算をほぼ無料にしたと、モデル論文の著者らが述べている。別立ての提案装置ではなく検出器が見た特徴量地図の上で見るべき位置を同時に決め、VGG-16で毎秒5コマ、画像あたり300提案でVOC 2007と2012、COCOの当時最上位に並び、ILSVRCとCOCOの2015年1位の基盤になったと報告している。入出力の契約を明確にすると、完全畳み込みのRPNが各位置で物の輪郭と物らしさを予測し、どこを見るかという注意の役割をモデル自身が担う形である。ここで定まったアンカーとNMSの機械的な仕掛けが、後にDETRが外す前提であり、アンカーの代表値とNMSは人手で決めたまま残り、小さな物や縁の振る舞いは後継の資料に譲る。一段の系譜をYOLO一種に縮めないため、SSDの枝をここに置く。SSDはボックスの空間を既定の箱に離散化し、解像度の異なる特徴量地図に振り分けて粗い地図で大きな物を細かい地図で小さな物を受けもつ。モデル論文の著者測定ではSSD300がVOC 2007で74.3〜77.2%のmAPをTitan Xで毎秒59コマ、SSD512が76.9〜79.8%でFaster R-CNNを上回り3倍の速さと報告している。一段の速さと二段の精度の対立がここで崩れ始める一方、既定の箱の敷き詰めと受容野の対応は同論文自身が今後の課題として残し、本書では系譜の欠けを補う薄い扱いに留めて仕組みの裁定は下さない。",
+            "text": "Faster R-CNNはtwo-stageの到達点であり、Region Proposal Networkが画像全体の畳み込み特徴量を検出器と共有して提案の計算をほぼ無料にしたと、モデル論文の著者らが述べている。別立ての提案装置ではなく検出器が見た特徴マップの上で見るべき位置を同時に決め、VGG-16で毎秒5コマ、画像あたり300提案でVOC 2007と2012、COCOの当時最上位に並び、ILSVRCとCOCOの2015年1位の基盤になったと報告している。入出力の契約を明確にすると、完全畳み込みのRPNが各位置で物の輪郭と物らしさを予測し、どこを見るかというアテンションの役割をモデル自身が担う形である。ここで定まったアンカーとNMSの機械的な仕掛けが、後にDETRが外す前提であり、アンカーの代表値とNMSは人手で決めたまま残り、小さな物や縁の振る舞いは後継の資料に譲る。one-stageの系譜をYOLO一種に縮めないため、SSDの枝をここに置く。SSDはボックスの空間を既定のボックスに離散化し、解像度の異なる特徴マップに振り分けて粗い特徴マップで大きな物を細かい特徴マップで小さな物を受けもつ。モデル論文の著者測定ではSSD300がVOC 2007で74.3〜77.2%のmAPをTitan Xで毎秒59コマ、SSD512が76.9〜79.8%でFaster R-CNNを上回り3倍の速さと報告している。one-stageの速さとtwo-stageの精度の対立がここで崩れ始める一方、既定のボックスの敷き詰めと受容野の対応は同論文自身が今後の課題として残し、本書では系譜の欠けを補う薄い扱いに留めて仕組みの裁定は下さない。",
             "attribution_mode": "ATTRIBUTED",
             "evidence_refs": [
               {
@@ -598,7 +598,7 @@
           {
             "block_id": "p02-b3",
             "block_type": "PARAGRAPH",
-            "text": "YOLOは検出を、空間に区切った箱とクラス確率への回帰として一回の評価で解く動作点であり、提案と見分けを往復せず画像を一度見て箱と名を同時に出す。モデル論文の著者測定では基本モデルが毎秒45コマ、速い変種が毎秒155コマで他の実時間級の2倍のmAPを示し、R-CNN系より背景の誤検出が少なく位置の誤りが多いと報告している。速さと引き換えに位置が甘くなるのがこの動作点の特性であり、1セル2箱1クラスの格子制約が近接物の数に上限を付け、群れた小さな物や珍しい縦横比、粗い特徴量、小箱のIOUのぶれが苦手で誤りの主因は位置にあると述べている。自然画像から絵画への転移がDPMやR-CNNより良いという報告は、この動作点の汎用性の例である。精度は同世代の最上位には届かないと同論文自身が認め、後のYOLO各版は別製品として版に縛った主張に留める。一段の精度の遅れを損失側から診断したのがRetinaNetであり、RetinaNet論文の著者らによれば前景と背景の極端な不均衡こそ主因で、簡単な負例の寄与を(1-pt)^gammaで抑えるfocal lossにより、一段の速さを保ったまま二段の精度を超えたと報告している。損失の寄与に絞った成果であり、検出器側の形状の主張は検出器側の資料に譲り、本書では薄い扱いに留める。",
+            "text": "YOLOは検出を、空間に区切ったボックスとクラス確率への回帰として一回の評価で解く動作点であり、提案と見分けを往復せず画像を一度見てボックスと名を同時に出す。モデル論文の著者測定では基本モデルが毎秒45コマ、速いバリアントが毎秒155コマで他の実時間級の2倍のmAPを示し、R-CNN系より背景の誤検出が少なく位置の誤りが多いと報告している。速さと引き換えに位置が甘くなるのがこの動作点の特性であり、1セル2ボックス1クラスの格子制約が近接物の数に上限を付け、群れた小さな物や珍しい縦横比、粗い特徴量、小さなボックスのIOUのぶれが苦手で誤りの主因は位置にあると述べている。自然画像から絵画への転移がDPMやR-CNNより良いという報告は、この動作点の汎用性の例である。精度は同世代の最上位には届かないと同論文自身が認め、後のYOLO各版は別製品として版に縛った主張に留める。one-stageの精度の遅れを損失側から診断したのがRetinaNetであり、RetinaNet論文の著者らによれば前景と背景の極端な不均衡こそ主因で、簡単な負例の寄与を(1-pt)^gammaで抑えるfocal lossにより、one-stageの速さを保ったままtwo-stageの精度を超えたと報告している。損失の寄与に絞った成果であり、検出器側の形状の主張は検出器側の資料に譲り、本書では薄い扱いに留める。",
             "attribution_mode": "ATTRIBUTED",
             "evidence_refs": [
               {
@@ -634,7 +634,7 @@
           {
             "block_id": "p02-b4",
             "block_type": "PARAGRAPH",
-            "text": "DETRは検出を集合予測に書き換えてアンカーとNMSを外し、ハンガリアン法による二部マッチングの損失、すなわちクラスの負対数尤度とL1と尺度不変のGIoUによる箱の損失に、Transformerのエンコーダ・デコーダと学習した物体クエリと並列デコーディングを組み合わせたと、モデル論文の著者らが述べている。予測の集合と正解の集合を一対一に対応づけてから損失を数えるため、代表値の敷き詰めも重なりの後始末も要らず、専用の仕掛けも特殊なライブラリも使わない点が転換である。同じ程度のパラメータで念入りに調整されたFaster R-CNNとCOCO検証で互角、R50で42 AP、DC5-R101で44.9 AP、大きな物で+7.8 APL、小さな物で-5.5 APS、パノプティック拡張で46 PQと報告している。大きな物での伸びは全体を見るself-attentionに帰され、小さな物での落ちはその裏返しの特性である。代償として300〜500エポックのAdamW、16枚のV100で3日の日程、補助のデコーディング損失の必須、クエリ枠の分業、NMSが不要と言えるのは後のデコーダ層からという重なりの抑え込みが明記され、小さな物の弱さと学習の重さは同論文自身が開いた課題としてFPN流の後継に譲る。この系譜の到達点がDINO検出器であり、ノイズ除去のアンカーボックスの改良でR50・COCOで12エポック49.4 AP、24エポック51.3 AP、DN-DETRから+6.0と+2.7 AP、Objects365で事前学習したSwinLでは検証とテスト開発で63.2と63.3 APを並ぶ相手より小さなモデルとデータで出したと報告している。ここでのDINOは検出器であり自己教師ありのDINOとは別物として呼び分け、順位表の範囲の話として言葉との接地の振る舞いはGrounding DINO側の資料に譲る。",
+            "text": "DETRは検出を集合予測に書き換えてアンカーとNMSを外し、ハンガリアン法による二部マッチングの損失、すなわちクラスの負対数尤度とL1と尺度不変のGIoUによるボックスの損失に、Transformerのエンコーダ・デコーダと学習した物体クエリと並列デコーディングを組み合わせたと、モデル論文の著者らが述べている。予測の集合と正解の集合を一対一に対応づけてから損失を数えるため、代表値の敷き詰めも重なりの後始末も要らず、専用の仕掛けも特殊なライブラリも使わない点が転換である。同じ程度のパラメータで念入りに調整されたFaster R-CNNとCOCO検証で互角、R50で42 AP、DC5-R101で44.9 AP、大きな物で+7.8 APL、小さな物で-5.5 APS、パノプティック拡張で46 PQと報告している。大きな物での伸びは全体を見るself-attentionに帰され、小さな物での落ちはその裏返しの特性である。代償として300〜500エポックのAdamW、16枚のV100で3日の日程、補助のデコーディング損失の必須、クエリ枠の分業、NMSが不要と言えるのは後のデコーダ層からという重なりの抑え込みが明記され、小さな物の弱さと学習の重さは同論文自身が開いた課題としてFPN流の後継に譲る。この系譜の到達点がDINO検出器であり、ノイズ除去のアンカーボックスの改良でR50・COCOで12エポック49.4 AP、24エポック51.3 AP、DN-DETRから+6.0と+2.7 AP、Objects365で事前学習したSwinLでは検証とテスト開発で63.2と63.3 APを並ぶ相手より小さなモデルとデータで出したと報告している。ここでのDINOは検出器であり自己教師ありのDINOとは別物として呼び分け、順位表の範囲の話として言葉との接地の振る舞いはGrounding DINO側の資料に譲る。",
             "attribution_mode": "MIXED",
             "evidence_refs": [
               {
@@ -677,7 +677,7 @@
           {
             "block_id": "p02-b5",
             "block_type": "PARAGRAPH",
-            "text": "YOLO-Worldはオープンボキャブラリーの検出を実時間の動作点に載せた橋であり、付け替え可能な視覚言語の集約RepVL-PANと領域と文の対照学習による損失で、決まった語彙の外の言葉で指された物を箱で捉える。モデル論文の著者測定ではLVISで35.4 APをV100で毎秒52コマ、ゼロショットで出したと報告している。開かれた語彙と実時間の両立がここで形になり、ファインチューニングした変種は検出とオープンボキャブラリーのインスタンスセグメンテーションに広がると述べている。O365やLVIS流の閉じた語彙でファインチューニングするとゼロショットの汎用が落ち、CLIPの汎用が365区分の追加学習で削れるという関係が報告され、細かく注釈したデータと疑似注釈のデータの混合事前学習が良いという所見は、何で学ぶかが振る舞いを決めるデータの契約の話として読む。YOLOの製品系列の混同を避けて版に縛った主張に留め、端末に載せる負担は動機の記録として記すだけで確かめた成果とは言わない。提案から動作点へ、動作点から集合予測へ、集合予測から開かれた語彙へという順に本節の系譜を読み、箱を出す機械的な仕掛けの話が言葉で指せる物の話へ接続する手前までを射程とする。",
+            "text": "YOLO-Worldはオープンボキャブラリーの検出を実時間の動作点へ適用拡張したものであり、付け替え可能な視覚言語の集約RepVL-PANと領域と文の対照学習による損失で、決まった語彙の外の言葉で指された物をボックスで捉える。モデル論文の著者測定ではLVISで35.4 APをV100で毎秒52コマ、ゼロショットで出したと報告している。オープンボキャブラリーと実時間の両立がここで形になり、ファインチューニングしたバリアントは検出とオープンボキャブラリーのインスタンスセグメンテーションに広がると述べている。O365やLVIS流の閉じた語彙でファインチューニングするとゼロショットの汎用が落ち、CLIPの汎用が365区分の追加学習で削れるという関係が報告され、細かく注釈したデータと疑似注釈のデータの混合事前学習が良いという所見は、何で学ぶかが振る舞いを決めるデータの契約の話として読む。YOLOの製品系列の混同を避けて版に縛った主張に留め、端末に載せる負担は動機の記録として記すだけで確かめた成果とは言わない。提案から動作点へ、動作点から集合予測へ、集合予測からオープンボキャブラリーへという順に本節の系譜を読み、ボックスを出す機械的な仕掛けの話が言葉で指せる物の話へ接続する手前までを射程とする。",
             "attribution_mode": "ATTRIBUTED",
             "evidence_refs": [
               {
@@ -897,14 +897,14 @@
       "package_id": "P03",
       "drafting_order": 3,
       "draft_package_sha256": "350068d008c463cbb3cb7bfc402d74ce2b29ac02753f5e3693e553237c1b812b",
-      "draft_result_sha256": "76963115923999242b6e7aacbd0f9477f44adf62f82702d27ad6dd8bf0214f66",
+      "draft_result_sha256": "5f9708551234c36076d13fbb016f08570e624a07ed6c7dcac7b3f663ab64810b",
       "draft_result": {
         "schema_version": "2.0-rc1",
         "issue_id": "SP-vision-multimodal-2026",
         "research_profile": "THEMATIC",
         "publication_profile": "LONGFORM_SPECIAL",
         "package_id": "P03",
-        "draft_version": "r6",
+        "draft_version": "r7",
         "status": "REVISED",
         "basis": {
           "draft_package_sha256": "350068d008c463cbb3cb7bfc402d74ce2b29ac02753f5e3693e553237c1b812b",
@@ -914,12 +914,12 @@
         "runner": {
           "provider": "Muse",
           "model": "Muse Spark (Work execution role; not a Sol/Human decision)",
-          "invocation": "TS-003 Draft r6 P09 terminology closure from approved Architecture r2 (Human APPROVED r2, Sol Draft Review r1 REQUEST_CHANGES F1-F5): full-volume prose rewrite, zero duplicate sentences, metaphor-substitution eliminated, evaluator classes explicit, boundary reader surface repaired; G01-G06 and 5 PARTIAL preserved semantically; no cross-task ranking; no new research",
-          "generated_at": "2026-10-02T00:06:39Z",
-          "run_reference": "ts003-draft-r6-20261002"
+          "invocation": "TS-003 Draft r7 preferred-terminology conformance from approved Architecture r2 (Human APPROVED r2, Sol Draft Review r1 REQUEST_CHANGES F1-F5): full-volume prose rewrite, zero duplicate sentences, metaphor-substitution eliminated, evaluator classes explicit, boundary reader surface repaired; G01-G06 and 5 PARTIAL preserved semantically; no cross-task ranking; no new research",
+          "generated_at": "2026-10-02T14:42:07Z",
+          "run_reference": "ts003-draft-r7-20261002"
         },
         "headline": "指示に応える密な知覚",
-        "deck": "箱では足りない画素の構造をどう捉えるか。分類からの転移、箱と画素の橋、指示に応える基盤、動画への橋を契約の変化として読む。セマンティックセグメンテーションとインスタンスセグメンテーションの境を保ち、基盤の出来事と課題に縛られた装置の二重の読みを欠かさない。",
+        "deck": "ボックスでは足りない画素の構造をどう捉えるか。分類からの転移、ボックスと画素の接続、指示に応える基盤、動画への拡張を契約の変化として読む。セマンティックセグメンテーションとインスタンスセグメンテーションの境を保ち、基盤の出来事と課題に縛られた装置の二重の読みを欠かさない。",
         "deck_attribution_mode": "MIXED",
         "deck_evidence_refs": [
           {
@@ -1012,7 +1012,7 @@
           {
             "block_id": "p03-b2",
             "block_type": "PARAGRAPH",
-            "text": "Mask R-CNNは箱の系譜と密な系譜を結ぶ橋であり、Faster R-CNNにマスクの枝を並列に足してRoIAlign級の位置合わせで検出とインスタンスマスクを同時に解いた。箱を出す枝と形を塗る枝が並走し、量子化のずれを抑えた位置合わせで画素と対応づける。モデル論文の著者測定では毎秒5コマで小さな上乗せのまま、COCOの三部門、すなわちインスタンスとボックスと人物キーポイントのすべてで最上位に立ち、2016年の単体の応募を小細工なしで上回ったと報告している。同じ枠組みが姿勢推定にも伸びる点は枠組みの汎用の例として読む一方、箱に依存した作りであり箱なしの密な極はFCNやSAM側の資料に譲る。箱とは別に画素の契約そのものを言い直したのがパノプティックであり、セマンティックセグメンテーションとインスタンスセグメンテーションを一つの整合した出力にまとめ、すべてのクラスを覆うPanoptic Qualityという指標を添えた。モデル論文の著者らによれば三つのデータでの人と機械の比べ直しが情景の統合的な読み直しを呼び戻したと報告し、契約を言い換える深さに留めて隠れた部分の扱いは射程の外とし、アモーダルな拡張は同論文自身が今後の課題として残している。",
+            "text": "Mask R-CNNはボックスの系譜と密な系譜の統合であり、Faster R-CNNにマスクの枝を並列に足してRoIAlign級の位置合わせで検出とインスタンスマスクを同時に解いた。ボックスを出す枝と形を塗る枝が並走し、量子化のずれを抑えた位置合わせで画素と対応づける。モデル論文の著者測定では毎秒5コマで小さな上乗せのまま、COCOの三部門、すなわちインスタンスとボックスと人物キーポイントのすべてで最上位に立ち、2016年の単体の応募を小細工なしで上回ったと報告している。同じ枠組みが姿勢推定にも伸びる点は枠組みの汎用の例として読む一方、ボックスに依存した作りでありボックスなしの密な極はFCNやSAM側の資料に譲る。ボックスとは別に画素の契約そのものを言い直したのがパノプティックであり、セマンティックセグメンテーションとインスタンスセグメンテーションを一つの整合した出力にまとめ、すべてのクラスを覆うPanoptic Qualityという指標を添えた。モデル論文の著者らによれば三つのデータでの人と機械の比べ直しが情景の統合的な読み直しを呼び戻したと報告し、契約を言い換える深さに留めて隠れた部分の扱いは射程の外とし、アモーダルな拡張は同論文自身が今後の課題として残している。",
             "attribution_mode": "MIXED",
             "evidence_refs": [
               {
@@ -1041,7 +1041,7 @@
           {
             "block_id": "p03-b3",
             "block_type": "PARAGRAPH",
-            "text": "Segment Anythingは課題とモデルとデータを一まとめにした転換であり、プロンプトで指示できるセグメンテーションという課題、SAMというモデル、データエンジンで築いたSA-1B、すなわち1100万枚の許諾済み画像の上に10億超のマスクを載せたデータが一体で動く。点や箱や文で指された所を切り出すという契約がモデルとデータの両輪で支えられ、モデル論文の著者測定では新しい分布や課題へのゼロショットの転移が従来の教師ありの成果と競うか上回る場合が多いと報告している。ここで二重の読みを欠かさない。一つは視覚の基盤の出来事としての読み、もう一つは課題に縛られた装置としての読みである。同論文自身の議論が示す構成の考え、すなわちプロンプトと組み合わせで一つのモデルが設計時に知らなかった使い回しに応えるという見立ては、DALL-EにおけるCLIPの類推で語られ、決まった課題の対話型セグメンテーションとは大きな算法の部品になる点が違うと述べている。ゼロショットの汎用は課題の範囲の中の話であり、専門のモデルに譲る反例は評価側の資料が裁くため、本節では二重の読みを保って優劣の裁定は下さない。",
+            "text": "Segment Anythingは課題とモデルとデータを一まとめにした転換であり、プロンプトで指示できるセグメンテーションという課題、SAMというモデル、データエンジンで築いたSA-1B、すなわち1100万枚の許諾済み画像の上に10億超のマスクを載せたデータが一体で動く。点やボックスや文で指された所を切り出すという契約がモデルとデータの両輪で支えられ、モデル論文の著者測定では新しい分布や課題へのゼロショットの転移が従来の教師ありの成果と競うか上回る場合が多いと報告している。ここで二重の読みを欠かさない。一つは視覚の基盤の出来事としての読み、もう一つは課題に縛られた装置としての読みである。同論文自身の議論が示す構成の考え、すなわちプロンプトと組み合わせで一つのモデルが設計時に知らなかった使い回しに応えるという見立ては、DALL-EにおけるCLIPの類推で語られ、決まった課題の対話型セグメンテーションとは大きな算法の構成要素になる点が違うと述べている。ゼロショットの汎用は課題の範囲の中の話であり、専門のモデルに譲る反例は評価側の資料が裁くため、本節では二重の読みを保って優劣の裁定は下さない。",
             "attribution_mode": "MIXED",
             "evidence_refs": [
               {
@@ -1070,7 +1070,7 @@
           {
             "block_id": "p03-b4",
             "block_type": "PARAGRAPH",
-            "text": "SAM 2はプロンプトで指示できるセグメンテーションを動画に伸ばし、密な知覚から時間の状態への橋を架けるもので、プロンプトと予測をまたぐストリーミングのメモリとSA-Vというデータエンジン、すなわち最大規模の動画セグメンテーションデータが中心である。時刻が進んでも指示の対象を保ち続けるために過去の予測を覚えて次の切り出しに生かし、モデル論文の著者測定では動画では対話が3分の1に減り、画像ではSAMより6倍速く精度も高いと報告し、モデルとデータと学習のコードを公開したと述べている。この対比はSAMとの直接の比較条件での報告として読む。本書ではこの成果を時間の状態をどう持つかという設計の指し示しとして読み、その問いが後の節に効く点に位置づけの理由を置く。一方で配信の装置としての成否は別であり、オンラインの遅延や実地の速さの主張はFlash-VStream側の資料に譲り、メモリの設計の範囲の話として受け取って実地の速さの根拠とは言わない。密な構造を切り出す話が時刻に沿って保つ話へ接続する、その接続点だけを本節の出口に置く。",
+            "text": "SAM 2はプロンプトで指示できるセグメンテーションを動画に伸ばし、密な知覚から時間の状態への拡張であるもので、プロンプトと予測をまたぐストリーミングのメモリとSA-Vというデータエンジン、すなわち最大規模の動画セグメンテーションデータが中心である。時刻が進んでも指示の対象を保ち続けるために過去の予測を覚えて次の切り出しに生かし、モデル論文の著者測定では動画では対話が3分の1に減り、画像ではSAMより6倍速く精度も高いと報告し、モデルとデータと学習のコードを公開したと述べている。この対比はSAMとの直接の比較条件での報告として読む。本書ではこの成果を時間の状態をどう持つかという設計の指し示しとして読み、その問いが後の節に効く点に位置づけの理由を置く。一方で配信の装置としての成否は別であり、オンラインの遅延や実地の速さの主張はFlash-VStream側の資料に譲り、メモリの設計の範囲の話として受け取って実地の速さの根拠とは言わない。密な構造を切り出す話が時刻に沿って保つ話へ接続する、その接続点だけを本節の出口に置く。",
             "attribution_mode": "MIXED",
             "evidence_refs": [
               {
@@ -1113,7 +1113,7 @@
           {
             "block_id": "P03-boundaries",
             "block_type": "CLAIM_BOUNDARY",
-            "text": "この節の読解上の境界: 輪郭の粗さは後の基準での留保であり、磨き上げは後継に譲る。Mask R-CNNは箱を前提とする作りのため、箱なしの密な極は別の記録が担う。U-Netの話は医療画像の範囲に留まり、一般の情景への転移は語らない。",
+            "text": "この節の読解上の境界: 輪郭の粗さは後の基準での留保であり、磨き上げは後継に譲る。Mask R-CNNはボックスを前提とする作りのため、ボックスなしの密な極は別の記録が担う。U-Netの話は医療画像の範囲に留まり、一般の情景への転移は語らない。",
             "attribution_mode": "INFERENCE",
             "evidence_refs": [
               {
@@ -1257,14 +1257,14 @@
       "package_id": "P04",
       "drafting_order": 4,
       "draft_package_sha256": "43b6c3d12463efa01ac978b2582b923a20e9628288d9bf1d484c972032290c3f",
-      "draft_result_sha256": "7b4e5db85633762c1472b529299e68f125b761f41346c0ade2dd462785f34775",
+      "draft_result_sha256": "0f2dae5349534442707233d0213276bd2568a28a8069abce8b189495b3fdd410",
       "draft_result": {
         "schema_version": "2.0-rc1",
         "issue_id": "SP-vision-multimodal-2026",
         "research_profile": "THEMATIC",
         "publication_profile": "LONGFORM_SPECIAL",
         "package_id": "P04",
-        "draft_version": "r6",
+        "draft_version": "r7",
         "status": "REVISED",
         "basis": {
           "draft_package_sha256": "43b6c3d12463efa01ac978b2582b923a20e9628288d9bf1d484c972032290c3f",
@@ -1274,12 +1274,12 @@
         "runner": {
           "provider": "Muse",
           "model": "Muse Spark (Work execution role; not a Sol/Human decision)",
-          "invocation": "TS-003 Draft r6 P09 terminology closure from approved Architecture r2 (Human APPROVED r2, Sol Draft Review r1 REQUEST_CHANGES F1-F5): full-volume prose rewrite, zero duplicate sentences, metaphor-substitution eliminated, evaluator classes explicit, boundary reader surface repaired; G01-G06 and 5 PARTIAL preserved semantically; no cross-task ranking; no new research",
-          "generated_at": "2026-10-02T00:06:39Z",
-          "run_reference": "ts003-draft-r6-20261002"
+          "invocation": "TS-003 Draft r7 preferred-terminology conformance from approved Architecture r2 (Human APPROVED r2, Sol Draft Review r1 REQUEST_CHANGES F1-F5): full-volume prose rewrite, zero duplicate sentences, metaphor-substitution eliminated, evaluator classes explicit, boundary reader surface repaired; G01-G06 and 5 PARTIAL preserved semantically; no cross-task ranking; no new research",
+          "generated_at": "2026-10-02T14:42:07Z",
+          "run_reference": "ts003-draft-r7-20261002"
         },
         "headline": "推論を支える空間と幾何",
-        "deck": "名と箱にはない奥行きと姿勢と関係を後の推論の例として置く。相対の深さ、身体の配置、情景の関係、較正なしの幾何の四つの例を見る。尺度の不定と人手の揺れの限りも含めて射程を明記し、四つの例は単独の概説ではなく後の推論が仮定する状態の目録として読む。",
+        "deck": "名とボックスにはない奥行きと姿勢と関係を後の推論の例として置く。相対の深さ、身体の配置、情景の関係、キャリブレーション不要の幾何の四つの例を見る。尺度の不定と人手の揺れの限りも含めて射程を明記し、四つの例は単独の概説ではなく後の推論が仮定する状態の目録として読む。",
         "deck_attribution_mode": "MIXED",
         "deck_evidence_refs": [
           {
@@ -1357,7 +1357,7 @@
           {
             "block_id": "p04-b1",
             "block_type": "PARAGRAPH",
-            "text": "物の名と箱だけでは後の推論が要する奥行きと立体が足りず、MiDaSは相対的な深さを野外で通用させる例である。モデル論文の著者らによれば、尺度とずれに頑健な目的関数でステレオやレーザ、構造光、3D映画由来まで相容れない深さデータを混ぜ、素朴な混合をパレート最適な多目的の混合で上回り、補助課題で事前学習したエンコーダが効くと報告し、モデルを公開したと述べている。評価の契約が要点であり、一部のデータで学習してDIWやETH3D、Sintel、KITTI、NYU、TUMを含む未見のデータで測るゼロショットの転移を野外の頑健さの指標に据え、見たことのない場面で通用するかを中心に置く。既存の深さデータこそ限りだと同論文自身が残して開いた問いとしており、相対の深さの範囲の話として尺度つきの主張は他の資料に譲り、2019年当時の評価条件の話として読む。DUSt3Rは較正なしの幾何の状態をモデルの出力として出す例であり、内部の値も姿勢も与えない画像対から点群地図を回帰して単眼と両眼の再構成を一本にし、全体の位置合わせで共通の枠に載せる。較正の数値を入力に要求せず対応する立体を出力として得る逆転であり、下流でカメラや深さや対応が取り出せ、単眼と多視点の深さと相対姿勢で当時の最上位、定番のTransformerのエンコーダ・デコーダで事前学習の資産を使うと報告している。ただし点群地図は不定の尺度までであり、幾何の制約を設計で明示的に課さず、整合した学習データの事前分布に頼ると明記している。",
+            "text": "物の名とボックスだけでは後の推論が要する奥行きと立体が足りず、MiDaSは相対的な深さを野外で通用させる例である。モデル論文の著者らによれば、尺度とずれに頑健な目的関数でステレオやレーザ、構造光、3D映画由来まで相容れない深さデータを混ぜ、素朴な混合をパレート最適な多目的の混合で上回り、補助課題で事前学習したエンコーダが効くと報告し、モデルを公開したと述べている。評価の契約が要点であり、一部のデータで学習してDIWやETH3D、Sintel、KITTI、NYU、TUMを含む未見のデータで測るゼロショットの転移を野外の頑健さの指標に据え、見たことのない場面で通用するかを中心に置く。既存の深さデータこそ限りだと同論文自身が残して開いた問いとしており、相対の深さの範囲の話として尺度つきの主張は他の資料に譲り、2019年当時の評価条件の話として読む。DUSt3Rはキャリブレーション不要の幾何の状態をモデルの出力として出す例であり、内部の値も姿勢も与えない画像対から点群地図を回帰して単眼と両眼の再構成を一本にし、全体の位置合わせで共通の枠に載せる。較正の数値を入力に要求せず対応する立体を出力として得る逆転であり、下流でカメラや深さや対応が取り出せ、単眼と多視点の深さと相対姿勢で当時の最上位、定番のTransformerのエンコーダ・デコーダで事前学習の資産を使うと報告している。ただし点群地図は不定の尺度までであり、幾何の制約を設計で明示的に課さず、整合した学習データの事前分布に頼ると明記している。",
             "attribution_mode": "MIXED",
             "evidence_refs": [
               {
@@ -1407,7 +1407,7 @@
           {
             "block_id": "p04-b2",
             "block_type": "PARAGRAPH",
-            "text": "分類の特徴量だけでは身体は動かず、OpenPoseは多人数の2次元姿勢を下から積む例である。手足の位置と向きを入れた2次元ベクトル場、すなわちPart Affinity Fieldsで四肢を表して貪欲な二部マッチングで組み立て、部位の点を追うのではなく四肢の流れの場でつながりを表す点が設計の中心である。人数によらず実時間で動き、場だけの洗練が実行速度を倍にして精度を約7%上げ、身体と足を合わせた検出が速さと部品ごとの精度を保ち、135点のキーポイントの仕組みを公開したと、モデル論文の著者らが報告している。物中心の空間状態と対応づけ自体を表現にする実演が要点であり、何であるかではなくどう配置にあるかが要る課題の例として、分類の特徴量が行動を直接駆動できない理由を示す。2次元の姿勢の範囲であり3次元への持ち上げは扱わず、2019年当時の計算機の評価条件の話として読む。Visual Genomeは関係の構造を一級に据えた例であり、Visual Genome論文の著者らによれば10万超の画像に1枚あたり約21の物体、約18の属性、約18の関係、42超の領域記述、約17の問答を載せ、WordNetのsynsetに正準化し、情景グラフの定式が検索と文生成を押し上げたと報告している。物と性質と関係を同じ表に載せて領域ごとの言葉を添える分厚い注釈であり、関係と属性を主役に据えた点が情景の構造の読み、同時に領域記述が後の言葉との接地のデータの源流になる。混み入った人手の揺れと正準化の限りは明記し、GoldG流の来歴の主張はGLIP側の資料に譲る。",
+            "text": "分類の特徴量だけでは身体は動かず、OpenPoseは多人数の2次元姿勢を下から積む例である。手足の位置と向きを入れた2次元ベクトル場、すなわちPart Affinity Fieldsで四肢を表して貪欲な二部マッチングで組み立て、部位の点を追うのではなく四肢の流れの場でつながりを表す点が設計の中心である。人数によらず実時間で動き、場だけの洗練が実行速度を倍にして精度を約7%上げ、身体と足を合わせた検出が速さと部位ごとの精度を保ち、135点のキーポイントの仕組みを公開したと、モデル論文の著者らが報告している。物中心の空間状態と対応づけ自体を表現にする実演が要点であり、何であるかではなくどう配置にあるかが要る課題の例として、分類の特徴量が行動を直接駆動できない理由を示す。2次元の姿勢の範囲であり3次元への持ち上げは扱わず、2019年当時の計算機の評価条件の話として読む。Visual Genomeは関係の構造を一級に据えた例であり、Visual Genome論文の著者らによれば10万超の画像に1枚あたり約21の物体、約18の属性、約18の関係、42超の領域記述、約17の問答を載せ、WordNetのsynsetに正準化し、情景グラフの定式が検索と文生成を押し上げたと報告している。物と性質と関係を同じ表に載せて領域ごとの言葉を添える分厚い注釈であり、関係と属性を主役に据えた点が情景の構造の読み、同時に領域記述が後の言葉との接地のデータの源流になる。混み入った人手の揺れと正準化の限りは明記し、GoldG流の来歴の主張はGLIP側の資料に譲る。",
             "attribution_mode": "MIXED",
             "evidence_refs": [
               {
@@ -1443,7 +1443,7 @@
           {
             "block_id": "p04-b3",
             "block_type": "PARAGRAPH",
-            "text": "ラベルにはないものがここでの主題であり、物の名のラベルは奥行きを定めず箱のラベルは身体の向きを定めない。MiDaSの相対の深さとOpenPoseの2次元姿勢は、その欠けを埋める状態の例であり、深さの状態は遮蔽の前後や床の広がりを推論の下に敷き、姿勢の状態は手足の配置と人物の向きを行動の下に敷く。どちらが手前にあるかという順序が後の判断の前提になり、どう配置にあるかが後の動作の前提になり、後の検出や推論が当然のように仮定する空間がここで例として用意される。箱の入出力だけでは足りない分を状態の入出力が補う関係が空間の契約の内実であり、深さは相対のまま姿勢は2次元のままという射程の明記と対で読む。トークンに刻んでも残るものは何かという問いに対し、奥行きの順序と身体の配置が残るべき状態だという整理が本節前半のまとめである。",
+            "text": "ラベルにはないものがここでの主題であり、物の名のラベルは奥行きを定めずボックスのラベルは身体の向きを定めない。MiDaSの相対の深さとOpenPoseの2次元姿勢は、その欠けを埋める状態の例であり、深さの状態は遮蔽の前後や床の広がりを推論の下に敷き、姿勢の状態は手足の配置と人物の向きを行動の下に敷く。どちらが手前にあるかという順序が後の判断の前提になり、どう配置にあるかが後の動作の前提になり、後の検出や推論が当然のように仮定する空間がここで例として用意される。ボックスの入出力だけでは足りない分を状態の入出力が補う関係が空間の契約の内実であり、深さは相対のまま姿勢は2次元のままという射程の明記と対で読む。トークンに刻んでも残るものは何かという問いに対し、奥行きの順序と身体の配置が残るべき状態だという整理が本節前半のまとめである。",
             "attribution_mode": "MIXED",
             "evidence_refs": [
               {
@@ -1486,7 +1486,7 @@
           {
             "block_id": "p04-b4",
             "block_type": "PARAGRAPH",
-            "text": "関係と幾何がそろうと情景は物の列挙ではなくなり、Visual Genomeの関係と属性とDUSt3Rの較正なしの点群地図はその例である。誰が何を持ち何の上にあるかという関係の状態と、見る位置が変わっても保たれる幾何の状態が後の接地と推論の下に敷かれ、言葉が指す相手を決める課題にも見えの奥行きを読む課題にも同じ例が効く。較正のパイプラインを要求せずモデルの出力として幾何を得る設計は統合や行動の節への橋になり、数値を入れて解くのではなく学習したモデルが出す状態から始める逆転である。限りも明確にし、人手の揺れと正準化の難しさ、尺度の不定、学習済みの事前分布への依存は残り、NeRFや3DGS、SLAM、MVS、3次元検出への拡張はしない。後継は新しい契約を足さないため範囲から除く。四つの例は概説ではなく後の推論が仮定する状態の目録であり、密な知覚の節から言葉と推論の節へ渡る手前で空間と幾何の例を確認した。",
+            "text": "関係と幾何がそろうと情景は物の列挙ではなくなり、Visual Genomeの関係と属性とDUSt3Rのキャリブレーション不要の点群地図はその例である。誰が何を持ち何の上にあるかという関係の状態と、見る位置が変わっても保たれる幾何の状態が後の接地と推論の下に敷かれ、言葉が指す相手を決める課題にも見えの奥行きを読む課題にも同じ例が効く。較正のパイプラインを要求せずモデルの出力として幾何を得る設計は統合や行動の節への接続点になり、数値を入れて解くのではなく学習したモデルが出す状態から始める逆転である。限りも明確にし、人手の揺れと正準化の難しさ、尺度の不定、学習済みの事前分布への依存は残り、NeRFや3DGS、SLAM、MVS、3次元検出への拡張はしない。後継は新しい契約を足さないため範囲から除く。四つの例は概説ではなく後の推論が仮定する状態の目録であり、密な知覚の節から言葉と推論の節へ渡る手前で空間と幾何の例を確認した。",
             "attribution_mode": "MIXED",
             "evidence_refs": [
               {
@@ -1641,14 +1641,14 @@
       "package_id": "P05",
       "drafting_order": 5,
       "draft_package_sha256": "514884ea498f749e834e58006f0d9dfa4d16af5e87e96e929cee405e9a9e1019",
-      "draft_result_sha256": "ac09a208d86f13196c94b85f2405eb81d20be9d91493432606ce3cb8ef552a23",
+      "draft_result_sha256": "221bb3944d75b9cca495f58f2322b3d4c08afaf02cc53ae53de7e3d1ae1ca75e",
       "draft_result": {
         "schema_version": "2.0-rc1",
         "issue_id": "SP-vision-multimodal-2026",
         "research_profile": "THEMATIC",
         "publication_profile": "LONGFORM_SPECIAL",
         "package_id": "P05",
-        "draft_version": "r6",
+        "draft_version": "r7",
         "status": "REVISED",
         "basis": {
           "draft_package_sha256": "514884ea498f749e834e58006f0d9dfa4d16af5e87e96e929cee405e9a9e1019",
@@ -1658,9 +1658,9 @@
         "runner": {
           "provider": "Muse",
           "model": "Muse Spark (Work execution role; not a Sol/Human decision)",
-          "invocation": "TS-003 Draft r6 P09 terminology closure from approved Architecture r2 (Human APPROVED r2, Sol Draft Review r1 REQUEST_CHANGES F1-F5): full-volume prose rewrite, zero duplicate sentences, metaphor-substitution eliminated, evaluator classes explicit, boundary reader surface repaired; G01-G06 and 5 PARTIAL preserved semantically; no cross-task ranking; no new research",
-          "generated_at": "2026-10-02T00:06:39Z",
-          "run_reference": "ts003-draft-r6-20261002"
+          "invocation": "TS-003 Draft r7 preferred-terminology conformance from approved Architecture r2 (Human APPROVED r2, Sol Draft Review r1 REQUEST_CHANGES F1-F5): full-volume prose rewrite, zero duplicate sentences, metaphor-substitution eliminated, evaluator classes explicit, boundary reader surface repaired; G01-G06 and 5 PARTIAL preserved semantically; no cross-task ranking; no new research",
+          "generated_at": "2026-10-02T14:42:07Z",
+          "run_reference": "ts003-draft-r7-20261002"
         },
         "headline": "OCRから文書理解へ",
         "deck": "文字起こしから配置と構造の読みへ。LayoutLM系とOCRフリー系の系譜をたどり、画素だけを見る設計の制約と二つの特化型の失敗の姿を比べる。検索界面と二つの評価契約の許容を添え、順位付けは行わない。",
@@ -1778,7 +1778,7 @@
           {
             "block_id": "p05-b3",
             "block_type": "PARAGRAPH",
-            "text": "Pix2Structは画素だけを見る流れをスクリーンショットの構文理解へ広げた。Leeらによれば、マスクしたウェブのスクリーンショットから簡略HTMLを再構成する事前学習が、OCRと言語モデルとキャプションの信号を一つの課題に畳む。HTMLの再構成は、文字と配置と部品名を同時に当てる課題である。入力の解像度を可変に保ち、画像の上に描いた文字で指示を与える。縦長の頁も横広の画面も、そのまま受ける。絵の中の文字が、絵への指示になる。文書と図版とUIと自然画像にまたがる九つの課題のうち六つで、単一モデルとして初めて到達点に届いたと、モデル論文の著者測定として報告している。転換の要点は、読む対象を文書に限らず、モバイルアプリやボタンや書式を同じ純粋に視覚の理解の枠に入れた点にある。UIを文書の延長として扱う整理は画面操作の節へ渡すためのものであり、押す・遷移する議論は本節では行わない。高解像度化が系列長の制約になるという限界はDonut系と共通であり、論文自体の議論として残す。文書検索の界面として、Qwenチームの報告によれば、Qwen3-VL-Embeddingは視覚言語モデルを基盤にした検索パイプラインであり、埋め込みは多段階の対照事前学習からリランカ蒸留へ進み、Matryoshka次元と32K入力と2B・8B構成をもつ。32K入力で長い文書も切らずに受け、2Bと8Bの二構成で運用点を分ける。8BがMMEB-V2で77.8を得て2026年1月8日時点で1位に立ったとしているが、これはモデル論文の著者測定によるプレプリント時点の主張であり、独立した第三者再現はまだない。多言語30言語超の対応はQwen3-VLから引き継ぐ。本節では検索は文書を読む主体の議論に従属させ、細部には立ち入らない。",
+            "text": "Pix2Structは画素だけを見る流れをスクリーンショットの構文理解へ広げた。Leeらによれば、マスクしたウェブのスクリーンショットから簡略HTMLを再構成する事前学習が、OCRと言語モデルとキャプションの信号を一つの課題に畳む。HTMLの再構成は、文字と配置と要素名を同時に当てる課題である。入力の解像度を可変に保ち、画像の上に描いた文字で指示を与える。縦長の頁も横広の画面も、そのまま受ける。絵の中の文字が、絵への指示になる。文書と図版とUIと自然画像にまたがる九つの課題のうち六つで、単一モデルとして初めて到達点に届いたと、モデル論文の著者測定として報告している。転換の要点は、読む対象を文書に限らず、モバイルアプリやボタンや書式を同じ純粋に視覚の理解の枠に入れた点にある。UIを文書の延長として扱う整理は画面操作の節へ渡すためのものであり、押す・遷移する議論は本節では行わない。高解像度化が系列長の制約になるという限界はDonut系と共通であり、論文自体の議論として残す。文書検索の界面として、Qwenチームの報告によれば、Qwen3-VL-Embeddingは視覚言語モデルを基盤にした検索パイプラインであり、埋め込みは多段階の対照事前学習からリランカ蒸留へ進み、Matryoshka次元と32K入力と2B・8B構成をもつ。32K入力で長い文書も切らずに受け、2Bと8Bの二構成で運用点を分ける。8BがMMEB-V2で77.8を得て2026年1月8日時点で1位に立ったとしているが、これはモデル論文の著者測定によるプレプリント時点の主張であり、独立した第三者再現はまだない。多言語30言語超の対応はQwen3-VLから引き継ぐ。本節では検索は文書を読む主体の議論に従属させ、細部には立ち入らない。",
             "attribution_mode": "MIXED",
             "evidence_refs": [
               {
@@ -2121,14 +2121,14 @@
       "package_id": "P06",
       "drafting_order": 6,
       "draft_package_sha256": "ba899cffe1417b6ea63f110321fb06154db3153f7df42e02314ce15e92b824b8",
-      "draft_result_sha256": "c625270997f157abc84d2f7afe2bee6009107130c8cb046886bcf7517a0f4b01",
+      "draft_result_sha256": "dc85afd346e63500864efa2ba02f8be157f9f39599ab99eb8513b39b0282b850",
       "draft_result": {
         "schema_version": "2.0-rc1",
         "issue_id": "SP-vision-multimodal-2026",
         "research_profile": "THEMATIC",
         "publication_profile": "LONGFORM_SPECIAL",
         "package_id": "P06",
-        "draft_version": "r6",
+        "draft_version": "r7",
         "status": "REVISED",
         "basis": {
           "draft_package_sha256": "ba899cffe1417b6ea63f110321fb06154db3153f7df42e02314ce15e92b824b8",
@@ -2138,9 +2138,9 @@
         "runner": {
           "provider": "Muse",
           "model": "Muse Spark (Work execution role; not a Sol/Human decision)",
-          "invocation": "TS-003 Draft r6 P09 terminology closure from approved Architecture r2 (Human APPROVED r2, Sol Draft Review r1 REQUEST_CHANGES F1-F5): full-volume prose rewrite, zero duplicate sentences, metaphor-substitution eliminated, evaluator classes explicit, boundary reader surface repaired; G01-G06 and 5 PARTIAL preserved semantically; no cross-task ranking; no new research",
-          "generated_at": "2026-10-02T00:06:39Z",
-          "run_reference": "ts003-draft-r6-20261002"
+          "invocation": "TS-003 Draft r7 preferred-terminology conformance from approved Architecture r2 (Human APPROVED r2, Sol Draft Review r1 REQUEST_CHANGES F1-F5): full-volume prose rewrite, zero duplicate sentences, metaphor-substitution eliminated, evaluator classes explicit, boundary reader surface repaired; G01-G06 and 5 PARTIAL preserved semantically; no cross-task ranking; no new research",
+          "generated_at": "2026-10-02T14:42:07Z",
+          "run_reference": "ts003-draft-r7-20261002"
         },
         "headline": "Transformerと自己教師あり学習の基盤",
         "deck": "畳み込みからパッチ系列へ。トークンの定式と階層と目的関数と蒸留を分け、視覚の基盤が言語と結ばれる前の仕組みと残る問いを整える。規模かレシピかの論点を添え、トークン化とアーキテクチャと目的関数と蒸留を分けて読む。効率の一般論には踏み込まない。",
@@ -2193,7 +2193,7 @@
           {
             "block_id": "p06-b1",
             "block_type": "PARAGRAPH",
-            "text": "Vision Transformerは畳み込みから系列への組み替えである。Dosovitskiyらによれば、画像をパッチに切り、パッチ系列に素のTransformerを載せ、パッチ切り出しのほかは画像固有の帰納バイアスをほぼ排する。仮定を外した分、データと計算で補う。大規模な事前学習と転移でCNNの到達点に並び、超えると、モデル論文の著者測定として報告している。同じ到達度ではCNNより少ない計算で学べるとも述べる。本巻の読み筋は効率ではなく、トークンの定式にある。画像を系列として扱う約束が、後の視覚と言語のトークン融合の前提になる。100B級パラメータの時代を背景に置く。ただし大規模な事前学習への依存が残り、データが乏しい所では振るわない。DeiTはこの依存に対する学習レシピ側の答えである。Touvronらによれば、学習手順の改善とTransformer専用の蒸留トークンでデータ効率を上げ、蒸留トークン経由で畳み込み教師モデルの教師信号を借りる。外部データなし・86Mパラメータ・単一マシン3日弱でImageNet top-1の83.1%に達し、蒸留で85.2%まで伸び、転移も競ると、モデル論文の著者測定として報告している。畳み込みモデルが十年かけて積んだ構成と最適化の蓄積に対し、データ拡張と正則化の学習レシピを借りて目新しい仕掛けなしに並ぶ点が、規模かレシピかの論点になる。構成探索が過適合に陥りがちな例も引き、規模とレシピの論点を支える。ただし教師モデルへの依存が残り、橋渡しとして短く扱う。Swin Transformerは階層を保つ側の完全性を担う。Liuらによれば、局所ウィンドウとずらしによる窓間結合で注意を組み、画像寸法に線形の計算量で解く。ImageNet-1K top-1で87.3、COCO test-devでボックスAP 58.7・マスクAP 51.1と先行を2.7と2.6上回り、ADE20KでmIoU 53.5と3.2上回ったと、モデル論文の著者測定として報告し、コードとモデルを開く。階層を要する検出や密な予測へTransformerの適用範囲を広げる役割であり、本節では短く置く。",
+            "text": "Vision Transformerは畳み込みから系列への組み替えである。Dosovitskiyらによれば、画像をパッチに切り、パッチ系列に素のTransformerを載せ、パッチ切り出しのほかは画像固有の帰納バイアスをほぼ排する。仮定を外した分、データと計算で補う。大規模な事前学習と転移でCNNの到達点に並び、超えると、モデル論文の著者測定として報告している。同じ到達度ではCNNより少ない計算で学べるとも述べる。本巻の読み筋は効率ではなく、トークンの定式にある。画像を系列として扱う約束が、後の視覚と言語のトークン融合の前提になる。100B級パラメータの時代を背景に置く。ただし大規模な事前学習への依存が残り、データが乏しい所では振るわない。DeiTはこの依存に対する学習レシピ側の答えである。Touvronらによれば、学習手順の改善とTransformer専用の蒸留トークンでデータ効率を上げ、蒸留トークン経由で畳み込み教師モデルの教師信号を借りる。外部データなし・86Mパラメータ・単一マシン3日弱でImageNet top-1の83.1%に達し、蒸留で85.2%まで伸び、転移も競ると、モデル論文の著者測定として報告している。畳み込みモデルが十年かけて積んだ構成と最適化の蓄積に対し、データ拡張と正則化の学習レシピを借りて目新しい仕掛けなしに並ぶ点が、規模かレシピかの論点になる。構成探索が過適合に陥りがちな例も引き、規模とレシピの論点を支える。ただし教師モデルへの依存が残り、先行事例として短く扱う。Swin Transformerは階層を保つ側の完全性を担う。Liuらによれば、局所ウィンドウとずらしによる窓間結合でアテンションを組み、画像寸法に線形の計算量で解く。ImageNet-1K top-1で87.3、COCO test-devでボックスAP 58.7・マスクAP 51.1と先行を2.7と2.6上回り、ADE20KでmIoU 53.5と3.2上回ったと、モデル論文の著者測定として報告し、コードとモデルを開く。階層を要する検出や密な予測へTransformerの適用範囲を広げる役割であり、本節では短く置く。",
             "attribution_mode": "MIXED",
             "evidence_refs": [
               {
@@ -2251,7 +2251,7 @@
           {
             "block_id": "p06-b3",
             "block_type": "PARAGRAPH",
-            "text": "DINO自己教師ありは、ラベルなしの自己蒸留から立ち上がる。検出器のDINOとは同名別物であり、本節ではつねに自己教師ありと呼ぶ。Caronらによれば、ViTへのラベルなし自己蒸留が、教師ありViTや畳み込みモデルに見られない創発の性質を生む。CLS注意マップに意味的セグメンテーションの情報が現れ、小さなViTでImageNet kNN top-1の78.3%に達したと、モデル論文の著者測定として報告している。モメンタムエンコーダとマルチクロップと小さなパッチが効き、ViT-Baseでは線形評価top-1の80.1%に届く。仕組みの要点は、教師モデルなしに教師の役割を動かし続ける点にある。蒸留の群に属し、対照や再構成とは別の流れである。ただし創発の射程は区切る。注意に現れた片鱗が、そのまま検出のボックスになるとは限らない。DINOv2はこの流れを大規模化し、基盤の特徴に育てた。Oquabらによれば、自動で整えるデータパイプラインと拡張した学習で1B級ViTを学び、小さなモデルへ蒸留する。人手の微調整なしに汎用の特徴が弱教師ありの代替に迫り、画像と画素の多くのベンチマークでOpenCLIPを上回ったと、モデル論文の著者測定として報告している。汎用の特徴とプロンプトで指示できる界面は、基盤という同じ言葉で別物を指す。強い特徴と指示のインターフェースは別の契約である。ただし凍結評価の転移の範囲に留まり、凍結で測った強さが微調整先の強さを約束しない。",
+            "text": "DINO自己教師ありは、ラベルなしの自己蒸留から立ち上がる。検出器のDINOとは同名別物であり、本節ではつねに自己教師ありと呼ぶ。Caronらによれば、ViTへのラベルなし自己蒸留が、教師ありViTや畳み込みモデルに見られない創発の性質を生む。CLSアテンションマップに意味的セグメンテーションの情報が現れ、小さなViTでImageNet kNN top-1の78.3%に達したと、モデル論文の著者測定として報告している。モメンタムエンコーダとマルチクロップと小さなパッチが効き、ViT-Baseでは線形評価top-1の80.1%に届く。仕組みの要点は、教師モデルなしに教師の役割を動かし続ける点にある。蒸留の群に属し、対照や再構成とは別の流れである。ただし創発の射程は区切る。アテンションに現れた片鱗が、そのまま検出のボックスになるとは限らない。DINOv2はこの流れをスケーリングし、基盤の特徴に育てた。Oquabらによれば、自動で整えるデータパイプラインと拡張した学習で1B級ViTを学び、小さなモデルへ蒸留する。人手のファインチューニングなしに汎用の特徴が弱教師ありの代替に迫り、画像と画素の多くのベンチマークでOpenCLIPを上回ったと、モデル論文の著者測定として報告している。汎用の特徴とプロンプトで指示できる界面は、基盤という同じ言葉で別物を指す。強い特徴と指示のインターフェースは別の契約である。ただし凍結評価の転移の範囲に留まり、凍結で測った強さがファインチューニング先の強さを約束しない。",
             "attribution_mode": "MIXED",
             "evidence_refs": [
               {
@@ -2511,14 +2511,14 @@
       "package_id": "P07A",
       "drafting_order": 7,
       "draft_package_sha256": "0fd39d8f8871eb030d070b3480fdc06638a620e6132e2b55c1951a12f23e0675",
-      "draft_result_sha256": "c2314156f5e74c6b070247db2018a9dffc244c5b04888f4ff44743a1ddb9e348",
+      "draft_result_sha256": "05b4e0dfc8fbde0d36df00087c39c55dd009022cbd8ae0dfa635e9e0afde7681",
       "draft_result": {
         "schema_version": "2.0-rc1",
         "issue_id": "SP-vision-multimodal-2026",
         "research_profile": "THEMATIC",
         "publication_profile": "LONGFORM_SPECIAL",
         "package_id": "P07A",
-        "draft_version": "r6",
+        "draft_version": "r7",
         "status": "REVISED",
         "basis": {
           "draft_package_sha256": "0fd39d8f8871eb030d070b3480fdc06638a620e6132e2b55c1951a12f23e0675",
@@ -2528,9 +2528,9 @@
         "runner": {
           "provider": "Muse",
           "model": "Muse Spark (Work execution role; not a Sol/Human decision)",
-          "invocation": "TS-003 Draft r6 P09 terminology closure from approved Architecture r2 (Human APPROVED r2, Sol Draft Review r1 REQUEST_CHANGES F1-F5): full-volume prose rewrite, zero duplicate sentences, metaphor-substitution eliminated, evaluator classes explicit, boundary reader surface repaired; G01-G06 and 5 PARTIAL preserved semantically; no cross-task ranking; no new research",
-          "generated_at": "2026-10-02T00:06:39Z",
-          "run_reference": "ts003-draft-r6-20261002"
+          "invocation": "TS-003 Draft r7 preferred-terminology conformance from approved Architecture r2 (Human APPROVED r2, Sol Draft Review r1 REQUEST_CHANGES F1-F5): full-volume prose rewrite, zero duplicate sentences, metaphor-substitution eliminated, evaluator classes explicit, boundary reader surface repaired; G01-G06 and 5 PARTIAL preserved semantically; no cross-task ranking; no new research",
+          "generated_at": "2026-10-02T14:42:07Z",
+          "run_reference": "ts003-draft-r7-20261002"
         },
         "headline": "画像と言語をつなぐアライメント",
         "deck": "決まった分類名から言葉で指せる画像の意味へ。400Mペアの学習が開いたゼロショット転送と検索の契約を整え、語の並びや帰属の読みが落ちる画像全体のアライメントの限界を次の節で扱う。全体の照合と位置の特定を混ぜない。評価指標の切り分けを守る。",
@@ -2569,7 +2569,7 @@
           {
             "block_id": "p07a-b1",
             "block_type": "PARAGRAPH",
-            "text": "CLIPは決まった分類名の教師信号から、言葉で指せる画像の意味への転換である。Radfordらによれば、ウェブ由来の4億ペアでキャプション予測の事前学習を行い、自然言語で呼び出せる転移可能な表現を学ぶ。文と絵の大量の組を対照学習し、言葉を概念への言及の界面に育てる。ImageNetの128万枚のラベルを一つも使わず、教師ありResNet-50に並んだと、モデル論文の著者測定として報告している。OCRや動画の行動認識や位置推定や細粒度分類を含む30超のデータセットへゼロショット転送し、コードと重みを開く。転換の要点は、概念への言及の界面が言語になった点にある。あらかじめ定めた範疇の教師信号を、画像とテキストの教師信号に置き換えた。決まった範疇の固定クラス分類から、言葉の開いた呼び出しへの転換である。TS-003の読み筋はこの呼び出し可能性であり、条件づけの再利用は生成を扱う巻に譲る。この転換は無から生じたのではない。先行にShow and Tellがある。Vinyalsらによれば、CNNエンコーダからRNNデコーダへ尤度学習で文を起こすエンドツーエンドのキャプション生成が、PascalでBLEU-1の59（当時SOTA 25、人手約69）、Flickr30kで66、SBUで28、COCOでBLEU-4の27.7のSOTAに達したと、モデル論文の著者測定として報告している。絵を文にする道が先にあり、文で絵を呼ぶ道が後に続いた。小さな視覚表現から文を起こせることを示した先行であり、CLIPの唐突さを和らげる文脈である。ただし生成側の細部は生成を扱う巻がもち、本巻は先行の役割だけを記す。",
+            "text": "CLIPは決まった分類名の教師信号から、言葉で指せる画像の意味への転換である。Radfordらによれば、ウェブ由来の4億ペアでキャプション予測の事前学習を行い、自然言語で呼び出せる転移可能な表現を学ぶ。文と絵の大量の組を対照学習し、言葉を概念への言及の界面に育てる。ImageNetの128万枚のラベルを一つも使わず、教師ありResNet-50に並んだと、モデル論文の著者測定として報告している。OCRや動画の行動認識や位置推定や細粒度分類を含む30超のデータセットへゼロショット転送し、コードと重みを開く。転換の要点は、概念への言及の界面が言語になった点にある。あらかじめ定めたカテゴリの教師信号を、画像とテキストの教師信号に置き換えた。決まったカテゴリの固定クラス分類から、言葉の開いた呼び出しへの転換である。TS-003の読み筋はこの呼び出し可能性であり、条件づけの再利用は生成を扱う巻に譲る。この転換は無から生じたのではない。先行にShow and Tellがある。Vinyalsらによれば、CNNエンコーダからRNNデコーダへ尤度学習で文を起こすエンドツーエンドのキャプション生成が、PascalでBLEU-1の59（当時SOTA 25、人手約69）、Flickr30kで66、SBUで28、COCOでBLEU-4の27.7のSOTAに達したと、モデル論文の著者測定として報告している。絵を文にする道が先にあり、文で絵を呼ぶ道が後に続いた。小さな視覚表現から文を起こせることを示した先行であり、CLIPの唐突さを和らげる文脈である。ただし生成側の細部は生成を扱う巻がもち、本巻は先行の役割だけを記す。",
             "attribution_mode": "ATTRIBUTED",
             "evidence_refs": [
               {
@@ -2648,7 +2648,7 @@
           {
             "block_id": "p07a-b3",
             "block_type": "PARAGRAPH",
-            "text": "ALIGNは雑音の多いウェブ規模でCLIPの流れをなぞる変種である。Jiaらによれば、10億超の代替テキストペアに最小限の頻度洗浄だけを施し、規模で雑音を補う。丁寧な洗浄を排し、量で質の不足を埋める。二塔エンコーダの対照アライメントで、SOTAの表現とゼロショット分類、Flickr30KとMSCOCOの検索SOTAに届き、cross-attention型を上回ったと、モデル論文の著者測定として報告している。塔を分けて照合する素朴な構成が、規模の前では込み入った構成を上回る。規模が雑音を補うという読みは、対照の裾野の広さの記録である。最小限の洗浄で足りるという主張は、変種としての位置にとどめ短く扱う。変種としての記録に留め、洗浄の免罪にはしない。CLIPの側の限りは論文自体が記す。Limitationsの節があり、残る弱さを名指しする。画像全体とテキストの一括対応づけは、語の並びや帰属の読みを落とす。どの語がどの物に掛かるかの構造が、全体の照合では抜け落ちる。一括で照合する限り、掛かりは見えない。効率や規模への批判は後継の記録に譲り、SigLIPの目的関数の組み替えがその後継の対応であることは基盤の節に記した。4億ペアの対照学習が、30以上のデータセットへの転送を生んだ。ゼロショットと検索の数値は、位置特定の数値と並べて優劣を付けない。一括対応の限界が残るからこそ、任意の言葉を位置や領域へ結ぶ仕組みが要る。CLIPが開いた呼び出し可能性をどこに何があるかの特定へ延ばすことが、次の節の主題である。アライメントの到達を起点に接地の仕組みを扱うのが次の節である。",
+            "text": "ALIGNは雑音の多いウェブ規模でCLIPの流れをなぞるバリアントである。Jiaらによれば、10億超の代替テキストペアに最小限の頻度洗浄だけを施し、規模で雑音を補う。丁寧な洗浄を排し、量で質の不足を埋める。デュアルエンコーダの対照アライメントで、SOTAの表現とゼロショット分類、Flickr30KとMSCOCOの検索SOTAに届き、cross-attention型を上回ったと、モデル論文の著者測定として報告している。エンコーダを分けて照合する素朴な構成が、規模の前では込み入った構成を上回る。規模が雑音を補うという読みは、対照の裾野の広さの記録である。最小限の洗浄で足りるという主張は、バリアントとしての位置にとどめ短く扱う。バリアントとしての記録に留め、洗浄の免罪にはしない。CLIPの側の限りは論文自体が記す。Limitationsの節があり、残る弱さを名指しする。画像全体とテキストの一括対応づけは、語の並びや帰属の読みを落とす。どの語がどの物に掛かるかの構造が、全体の照合では抜け落ちる。一括で照合する限り、掛かりは見えない。効率や規模への批判は後継の記録に譲り、SigLIPの目的関数の組み替えがその後継の対応であることは基盤の節に記した。4億ペアの対照学習が、30以上のデータセットへの転送を生んだ。ゼロショットと検索の数値は、位置特定の数値と並べて優劣を付けない。一括対応の限界が残るからこそ、任意の言葉を位置や領域へ結ぶ仕組みが要る。CLIPが開いた呼び出し可能性をどこに何があるかの特定へ延ばすことが、次の節の主題である。アライメントの到達を起点に接地の仕組みを扱うのが次の節である。",
             "attribution_mode": "ATTRIBUTED",
             "evidence_refs": [
               {
@@ -2795,14 +2795,14 @@
       "package_id": "P07B",
       "drafting_order": 8,
       "draft_package_sha256": "316346ab0fbbf6f0854dd28ca3be743e846e0da68a07d59ab15664e9795cb3af",
-      "draft_result_sha256": "914f5b5b5a33b0437596e66d28741d32a37423f5e86db4cdfe39c93b3d5d10d4",
+      "draft_result_sha256": "82940f6d61a89dd960c2e2b6e54cd64cf0fb04857bb64177eb8d4da1b88a073a",
       "draft_result": {
         "schema_version": "2.0-rc1",
         "issue_id": "SP-vision-multimodal-2026",
         "research_profile": "THEMATIC",
         "publication_profile": "LONGFORM_SPECIAL",
         "package_id": "P07B",
-        "draft_version": "r6",
+        "draft_version": "r7",
         "status": "REVISED",
         "basis": {
           "draft_package_sha256": "316346ab0fbbf6f0854dd28ca3be743e846e0da68a07d59ab15664e9795cb3af",
@@ -2812,11 +2812,11 @@
         "runner": {
           "provider": "Muse",
           "model": "Muse Spark (Work execution role; not a Sol/Human decision)",
-          "invocation": "TS-003 Draft r6 P09 terminology closure from approved Architecture r2 (Human APPROVED r2, Sol Draft Review r1 REQUEST_CHANGES F1-F5): full-volume prose rewrite, zero duplicate sentences, metaphor-substitution eliminated, evaluator classes explicit, boundary reader surface repaired; G01-G06 and 5 PARTIAL preserved semantically; no cross-task ranking; no new research",
-          "generated_at": "2026-10-02T00:06:39Z",
-          "run_reference": "ts003-draft-r6-20261002"
+          "invocation": "TS-003 Draft r7 preferred-terminology conformance from approved Architecture r2 (Human APPROVED r2, Sol Draft Review r1 REQUEST_CHANGES F1-F5): full-volume prose rewrite, zero duplicate sentences, metaphor-substitution eliminated, evaluator classes explicit, boundary reader surface repaired; G01-G06 and 5 PARTIAL preserved semantically; no cross-task ranking; no new research",
+          "generated_at": "2026-10-02T14:42:07Z",
+          "run_reference": "ts003-draft-r7-20261002"
         },
-        "headline": "言葉を箱とマスクに結ぶ接地",
+        "headline": "言葉をボックスとマスクに結ぶ接地",
         "deck": "任意の言葉をボックスとマスクと座標に結ぶ展開を、定式と蒸留と語彙と融合と自己学習とセグメンテーションの機構群でたどる。評価指標は契約ごとに分け、未見の主張は語彙空間と学習分割の定義に縛る。定式からセグメンテーションまでの六群を残し、数値の優劣は付けない。",
         "deck_attribution_mode": "MIXED",
         "deck_evidence_refs": [
@@ -2874,7 +2874,7 @@
           {
             "block_id": "p07b-b1",
             "block_type": "PARAGRAPH",
-            "text": "開いた語彙への展開は、課題と測り方の取り決めから始まる。Plummerらによれば、Flickr30k Entitiesは158Kのキャプションに244Kの共参照鎖と276Kのボックスを添え、領域とフレーズの対応を大規模に集めた最初のデータセットであり、フレーズ局所化という課題を立てたと、ベンチマーク論文の著者による第三者測定として報告している。同じ物を指す言い回しの鎖と、その物の箱を一組にする。検出に似るが訓練時にフレーズは未見だという位置づけが、決まった範疇の検出から開いたフレーズ集合への局所化への進みを示す。CCA埋め込みのベースラインはRecall@1で約25%から、Fast R-CNN特徴で約50%に上がった。対応を人手で与えた学習が与えない学習を上回るという教師信号の知見も置く。ただし人と動物に偏る領域差が残り、二値検索の使いには大域照合の拡張が要ると議論自体が区切る。指示表現の評価条件を定めるのはRefCOCOである。Yuらによれば、関係を含む曖昧な記述の下で単一の指示対象を言い分ける契約をRefCOCO・+・gで定めると、ベンチマーク論文の著者による第三者測定として報告している。合成の文脈モデル化で組み立てる。微調整後のRECとゼロショットRECは手順の違いであって、新しい節ではなく、ゲーム収集の表記は収集の癖を残す。三つ目の評価指標がLVISである。Guptaらによれば、164K画像に1000超の基本水準範疇で約200万マスクを載せ、Zipfの裾野をもつと、ベンチマーク論文の著者による第三者測定として報告している。レア・コモン・フリークエントの分割がLVIS-rare APをOVD評価の基準にし、ODinWを実世界・多様ドメインの補完的評価として添える。三つの評価指標は混ぜない。フレーズのRecall@KとRefCOCOの接地精度とLVIS-rare APは別の契約である。レア分割の手順は使うたびに結び付け、ウェブ事前学習の隣接が未見の読みに響くと留保する。開世界検出の話題は脇に置く。",
+            "text": "オープンボキャブラリーへの展開は、課題と測り方の取り決めから始まる。Plummerらによれば、Flickr30k Entitiesは158Kのキャプションに244Kの共参照鎖と276Kのボックスを添え、領域とフレーズの対応を大規模に集めた最初のデータセットであり、フレーズ局所化という課題を立てたと、ベンチマーク論文の著者による第三者測定として報告している。同じ物を指す言い回しの鎖と、その物のボックスを一組にする。検出に似るが訓練時にフレーズは未見だという位置づけが、決まったカテゴリの検出から開いたフレーズ集合への局所化への進みを示す。CCA埋め込みのベースラインはRecall@1で約25%から、Fast R-CNN特徴で約50%に上がった。対応を人手で与えた学習が与えない学習を上回るという教師信号の知見も置く。ただし人と動物に偏る領域差が残り、二値検索の使いには大域照合の拡張が要ると議論自体が区切る。指示表現の評価条件を定めるのはRefCOCOである。Yuらによれば、関係を含む曖昧な記述の下で単一の指示対象を言い分ける契約をRefCOCO・+・gで定めると、ベンチマーク論文の著者による第三者測定として報告している。合成の文脈モデル化で組み立てる。ファインチューニング後のRECとゼロショットRECは手順の違いであって、新しい節ではなく、ゲーム収集の表記は収集の癖を残す。三つ目の評価指標がLVISである。Guptaらによれば、164K画像に1000超の基本水準カテゴリで約200万マスクを載せ、Zipfの裾野をもつと、ベンチマーク論文の著者による第三者測定として報告している。レア・コモン・フリークエントの分割がLVIS-rare APをOVD評価の基準にし、ODinWを実世界・多様ドメインの補完的評価として添える。三つの評価指標は混ぜない。フレーズのRecall@KとRefCOCOの接地精度とLVIS-rare APは別の契約である。レア分割の手順は使うたびに結び付け、ウェブ事前学習の隣接が未見の読みに響くと留保する。開世界検出の話題は脇に置く。",
             "attribution_mode": "ATTRIBUTED",
             "evidence_refs": [
               {
@@ -2910,7 +2910,7 @@
           {
             "block_id": "p07b-b2",
             "block_type": "PARAGRAPH",
-            "text": "OVR-CNNはオープンボキャブラリー検出を名指しした定式の起点である。Zareianらによれば、二段の枠組みで認識と位置特定を切り分ける。認識はキャプションから学び、V2L投影（視覚から言語への投影）と接地・MLM・ITM事前学習を開いた語彙VCの上で解く。位置特定はベース範疇のボックスから学ぶ。どこにあるかは決まった範疇で学び、何であるかは開いた語彙で学ぶ。27% mAPでゼロショット基線の10%を離し、ベース範疇の精度は教師ありに迫り、弱教師ありの26%を上回ったと、モデル論文の著者測定として報告している。定式の要点は、どこにあるかと何であるかの教師信号の出所を分けた点にある。出所の切り分けが、定式の名に値する。ただし開かれ方は埋め込みに縛られる。事前学習した単語埋め込みの範囲に限ると論文自体が断り、埋め込みの質の議論は蒸留の節に譲る。ViLDはこの定式の最初の蒸留の継承である。Guらによれば、CLIP・ALIGNの教師モデルを二段の生徒モデルに蒸留する。ViLD-textの領域テキスト蒸留とViLD-imageの領域画像蒸留の二本立てである。LVIS-rareでマスクAP 16.1（R50、教師あり対応を3.8上回る）、ALIGN教師モデルで26.3に達したと、モデル論文の著者測定として報告している。直接転移でVOC 72.2 AP50、COCO 36.6、Objects365 11.8を示し、COCOでOVR-CNNをノベル4.8・全体11.4上回ったとし、コードを開く。OVR-CNNが出所を分けたのに対し、ViLDは画像全体の教師モデルを領域の生徒モデルに移す。教師モデルの取り替えが、レアの評価値を押し上げる。ただし教師モデルに縛られる。教師モデルの質が生徒モデルの上限になり、LVIS-rareの評価値はレア分割の手順と一緒に記し、ウェブ由来の教師モデルが未見の読みに隣接するという留保を付ける。",
+            "text": "OVR-CNNはオープンボキャブラリー検出を名指しした定式の起点である。Zareianらによれば、two-stageの枠組みで認識と位置特定を切り分ける。認識はキャプションから学び、V2L投影（視覚から言語への投影）と接地・MLM・ITM事前学習をオープンボキャブラリーVCの上で解く。位置特定はベースカテゴリのボックスから学ぶ。どこにあるかは決まったカテゴリで学び、何であるかはオープンボキャブラリーで学ぶ。27% mAPでゼロショット基線の10%を離し、ベースカテゴリの精度は教師ありに迫り、弱教師ありの26%を上回ったと、モデル論文の著者測定として報告している。定式の要点は、どこにあるかと何であるかの教師信号の出所を分けた点にある。出所の切り分けが、定式の名に値する。ただし開かれ方は埋め込みに縛られる。事前学習した単語埋め込みの範囲に限ると論文自体が断り、埋め込みの質の議論は蒸留の節に譲る。ViLDはこの定式の最初の蒸留の継承である。Guらによれば、CLIP・ALIGNの教師モデルをtwo-stageの生徒モデルに蒸留する。ViLD-textの領域テキスト蒸留とViLD-imageの領域画像蒸留の二本立てである。LVIS-rareでマスクAP 16.1（R50、教師あり対応を3.8上回る）、ALIGN教師モデルで26.3に達したと、モデル論文の著者測定として報告している。直接転移でVOC 72.2 AP50、COCO 36.6、Objects365 11.8を示し、COCOでOVR-CNNをノベル4.8・全体11.4上回ったとし、コードを開く。OVR-CNNが出所を分けたのに対し、ViLDは画像全体の教師モデルを領域の生徒モデルに移す。教師モデルの取り替えが、レアの評価値を押し上げる。ただし教師モデルに縛られる。教師モデルの質が生徒モデルの上限になり、LVIS-rareの評価値はレア分割の手順と一緒に記し、ウェブ由来の教師モデルが未見の読みに隣接するという留保を付ける。",
             "attribution_mode": "ATTRIBUTED",
             "evidence_refs": [
               {
@@ -2968,7 +2968,7 @@
           {
             "block_id": "p07b-b4",
             "block_type": "PARAGRAPH",
-            "text": "Deticは語彙への教師信号を画像水準ラベルで賄う流れである。Zhouらによれば、ImageNet-21Kの画像水準教師信号で検出器の分類器を学ぶ。複雑な割り当てを排し、最大寸法の提案への割り当てで解く。開いた語彙のLVISで全体2.4・ノベル8.3の上積み、標準LVISで41.7 mAP（全体とレア）に届き、微調整なしに汎化する初の21K範疇検出器だと、モデル論文の著者測定として報告し、コードを開く。二万超の範疇を、学び直しなしに指せる。仕組みの要点は、箱なしラベルを最大の提案に預ける割り切りにあり、語彙の広さを箱の不足と引き替える。ただし割り当ての発見的選びに縛られる。画像の全ラベルを統計のモデルなしに同じ領域へ教師信号を与える点が、論文自体の限りである。大きい物に偏る割り当てが、小さい物の学びを痩せさせる。写る物の名も背景の名も、一つの箱に載る。認識の教師の出所を変える流れとして、定式と蒸留の群の隣に置く。LVIS-rareの数値はレア分割の手順と一緒に記す。ウェブ事前学習の隣接が未見の読みに響くという留保を付ける。",
+            "text": "Deticは語彙への教師信号を画像水準ラベルで賄う流れである。Zhouらによれば、ImageNet-21Kの画像水準教師信号で検出器の分類器を学ぶ。複雑な割り当てを排し、最大寸法の提案への割り当てで解く。オープンボキャブラリーのLVISで全体2.4・ノベル8.3の上積み、標準LVISで41.7 mAP（全体とレア）に届き、ファインチューニングなしに汎化する初の21Kカテゴリ検出器だと、モデル論文の著者測定として報告し、コードを開く。二万超のカテゴリを、学び直しなしに指せる。仕組みの要点は、ボックスなしラベルを最大の提案に預ける割り切りにあり、語彙の広さをボックスの不足と引き替える。ただし割り当ての発見的選びに縛られる。画像の全ラベルを統計のモデルなしに同じ領域へ教師信号を与える点が、論文自体の限りである。大きい物に偏る割り当てが、小さい物の学びを痩せさせる。写る物の名も背景の名も、一つのボックスに載る。認識の教師の出所を変える流れとして、定式と蒸留の群の隣に置く。LVIS-rareの数値はレア分割の手順と一緒に記す。ウェブ事前学習の隣接が未見の読みに響くという留保を付ける。",
             "attribution_mode": "ATTRIBUTED",
             "evidence_refs": [
               {
@@ -2990,7 +2990,7 @@
           {
             "block_id": "p07b-b5",
             "block_type": "PARAGRAPH",
-            "text": "GLIPは検出をフレーズの接地に言い換え、接地データの規模で支えた。Liらによれば、検出と接地の事前学習を一本にし、27Mの接地データ（人手3Mとウェブ24M、自己学習の接地ボックス）を用いる。COCO画像を見ずにゼロショットCOCO 49.8・LVIS 26.9 APで教師あり基線を上回り、微調整でCOCO val 60.8・test-dev 61.5、13転移課題の1ショットで完全教師ありDynamic Headに迫ったと、モデル論文の著者測定として報告し、コードを開く。言い換えの要点は、範疇の分類をフレーズとの対応に替えた点にある。ただし27Mという規模の主張は論文報告として記し、GoldGの内訳は根拠の深さの確認に譲る。MDETRは同じ接地の訴えを構成の側から担う早期融合の流れである。Kamathらによれば、生テキストクエリで条件づけたDETRを端から端まで解き、テキストと画像を早期に融合する。整合したフレーズ物体データ131万ペアで事前学習し、Flickr30kフレーズ接地とRefCOCO・+・gのRECとPhraseCutのRESでSOTA、GQAとCLEVRのVQAで競い、裾野のfew-shot検出を示すと、モデル論文の著者測定として報告し、コードとモデルを開く。一つの構成で四つの課題を賄う。GLIPとMDETRの分担はここにある。GLIPが言い換えをデータ規模で支えるのに対し、MDETRは変調多課題の構成で解く。ただし微調整後のRECとゼロショットRECは手順の違いであって、新しい節ではない。接地の評価はフレーズRecall@KとREC精度に分け、LVISのAPとは混ぜない。データの規模の流れから、構成の混ぜの流れへ進む。",
+            "text": "GLIPは検出をフレーズの接地に言い換え、接地データの規模で支えた。Liらによれば、検出と接地の事前学習を一本にし、27Mの接地データ（人手3Mとウェブ24M、自己学習の接地ボックス）を用いる。COCO画像を見ずにゼロショットCOCO 49.8・LVIS 26.9 APで教師あり基線を上回り、ファインチューニングでCOCO val 60.8・test-dev 61.5、13転移課題の1ショットで完全教師ありDynamic Headに迫ったと、モデル論文の著者測定として報告し、コードを開く。言い換えの要点は、カテゴリの分類をフレーズとの対応に替えた点にある。ただし27Mという規模の主張は論文報告として記し、GoldGの内訳は根拠の深さの確認に譲る。MDETRは同じ接地の訴えを構成の側から担う早期融合の流れである。Kamathらによれば、生テキストクエリで条件づけたDETRを端から端まで解き、テキストと画像を早期に融合する。整合したフレーズ物体データ131万ペアで事前学習し、Flickr30kフレーズ接地とRefCOCO・+・gのRECとPhraseCutのRESでSOTA、GQAとCLEVRのVQAで競い、裾野のfew-shot検出を示すと、モデル論文の著者測定として報告し、コードとモデルを開く。一つの構成で四つの課題を賄う。GLIPとMDETRの分担はここにある。GLIPが言い換えをデータ規模で支えるのに対し、MDETRは変調多課題の構成で解く。ただしファインチューニング後のRECとゼロショットRECは手順の違いであって、新しい節ではない。接地の評価はフレーズRecall@KとREC精度に分け、LVISのAPとは混ぜない。データの規模の流れから、構成の混ぜの流れへ進む。",
             "attribution_mode": "MIXED",
             "evidence_refs": [
               {
@@ -3019,7 +3019,7 @@
           {
             "block_id": "p07b-b6",
             "block_type": "PARAGRAPH",
-            "text": "融合の両極は、後段の最小構成と密な統一である。OWL-ViTは後段融合の最小主義の流れである。Mindererらによれば、標準ViTに対照の画像テキスト事前学習を施し、適応策と正則化を添えて端から端まで検出微調整する。構成を足さず、学習手順で検出に渡す。画像水準事前学習の規模とモデル寸法が検出を一貫して上げ、テキスト条件のゼロショット検出と画像条件の1ショット検出に強いと、モデル論文の著者測定として報告し、コードとモデルを開く。文で指す強さと、絵で示す強さの両立てである。ただし最小主義は到達の終わりではなく、規模の手順はOWL-ST側の根拠が要る。Grounding DINOは密な融合の統一である。Liuらによれば、DINOに接地事前学習（検出と接地とキャプションのデータ）を添え、特徴増強と言語誘導クエリ選択とcross-modalityデコーダの三段で固く混ぜる。COCOゼロショットAP 52.5（ゼロショットは学習に試験分割を使わないという論文定義）、ODinWゼロショット記録の平均26.1 APに達したと、モデル論文の著者測定として報告し、チェックポイントと推論コードを開く。RECも陽に評価し、将来のゼロショットRECに注意を促す。どの分割を見ないことにするかの定義が、ゼロショットの意味を決める。GLIPとGrounding DINOの分担はここにある。GLIPが言い換えの実務であるのに対し、こちらは融合設計の統一である。足さない渡しと三段の混ぜの対置である。ただしRECゼロショットは注意を要する残された課題だとする論文自体の呼びかけを記す。ODinWの平均とCOCOのゼロショットAPとREC精度は別の契約であり、未見の言い方は学習分割の定義に縛る。",
+            "text": "融合の両極は、後段の最小構成と密な統一である。OWL-ViTは後段融合の最小主義の流れである。Mindererらによれば、標準ViTに対照の画像テキスト事前学習を施し、適応策と正則化を添えて端から端まで検出ファインチューニングする。構成を足さず、学習手順で検出に渡す。画像水準事前学習の規模とモデル寸法が検出を一貫して上げ、テキスト条件のゼロショット検出と画像条件の1ショット検出に強いと、モデル論文の著者測定として報告し、コードとモデルを開く。文で指す強さと、絵で示す強さの両立てである。ただし最小主義は到達の終わりではなく、規模の手順はOWL-ST側の根拠が要る。Grounding DINOは密な融合の統一である。Liuらによれば、DINOに接地事前学習（検出と接地とキャプションのデータ）を添え、特徴増強と言語誘導クエリ選択とcross-modalityデコーダの三段で固く混ぜる。COCOゼロショットAP 52.5（ゼロショットは学習に試験分割を使わないという論文定義）、ODinWゼロショット記録の平均26.1 APに達したと、モデル論文の著者測定として報告し、チェックポイントと推論コードを開く。RECも陽に評価し、将来のゼロショットRECに注意を促す。どの分割を見ないことにするかの定義が、ゼロショットの意味を決める。GLIPとGrounding DINOの分担はここにある。GLIPが言い換えの実務であるのに対し、こちらは融合設計の統一である。足さない渡しと三段の混ぜの対置である。ただしRECゼロショットは注意を要する残された課題だとする論文自体の呼びかけを記す。ODinWの平均とCOCOのゼロショットAPとREC精度は別の契約であり、未見の言い方は学習分割の定義に縛る。",
             "attribution_mode": "MIXED",
             "evidence_refs": [
               {
@@ -3055,7 +3055,7 @@
           {
             "block_id": "p07b-b7",
             "block_type": "PARAGRAPH",
-            "text": "OWL-STとOWLv2は、ウェブ規模の自己学習でレアを押し上げた。Mindererらによれば、Nグラム機械ラベル空間と弱い選別に、学習効率の改善（OWLv2）を添えた手順である。人手の箱注釈なしにレア範疇でLVIS-rare 31.2%から44.6%へ上げ、相対43%の伸びだと、モデル論文の著者測定として報告している。仕組みの要点は、ラベル空間を機械に起こさせ、弱く選別して回す点にある。NeurIPS 2023の本論文PDFを機構の細部まで読んだ上で記す。ただしウェブ依存が残り、量の恵みと癖の混入は一組である。機械ラベル空間と人手ラベル空間の分析を論文自体が行い、未見の読みは空間の取り方で変わると断る。31.2%から44.6%への伸びは、機械ラベル空間の下での伸びである。LVIS-rareの数値はレア分割の手順に結び付け、ウェブ事前学習の隣接が未見の読みに響くと添える。",
+            "text": "OWL-STとOWLv2は、ウェブ規模の自己学習でレアを押し上げた。Mindererらによれば、Nグラム機械ラベル空間と弱い選別に、学習効率の改善（OWLv2）を添えた手順である。人手のボックス注釈なしにレアカテゴリでLVIS-rare 31.2%から44.6%へ上げ、相対43%の伸びだと、モデル論文の著者測定として報告している。仕組みの要点は、ラベル空間を機械に起こさせ、弱く選別して回す点にある。NeurIPS 2023の本論文PDFを機構の細部まで読んだ上で記す。ただしウェブ依存が残り、量の恵みと癖の混入は一組である。機械ラベル空間と人手ラベル空間の分析を論文自体が行い、未見の読みは空間の取り方で変わると断る。31.2%から44.6%への伸びは、機械ラベル空間の下での伸びである。LVIS-rareの数値はレア分割の手順に結び付け、ウェブ事前学習の隣接が未見の読みに響くと添える。",
             "attribution_mode": "ATTRIBUTED",
             "evidence_refs": [
               {
@@ -3077,7 +3077,7 @@
           {
             "block_id": "p07b-b8",
             "block_type": "PARAGRAPH",
-            "text": "オープンボキャブラリーセグメンテーションの枝は、画素と言葉の照合から始まる。LSegは画素テキスト照合の起点である。Liらによれば、テキストエンコーダのラベル埋め込みとTransformerの密な画素埋め込みを対照学習する。意味の近いラベルは埋め込みの領域を共有し、catとfurryが引き合う。再学習や追加の学習データなしに未見範疇へゼロショット汎化し、固定ラベルセグメンテーションモデルと競ると、モデル論文の著者測定として報告している。ただし起点の射程に留まり、指示セグメンテーションまでの統一にはX-Decoder側の根拠が要る。X-Decoderは汎用と指示の統一である。Zouらによれば、疑似ラベルなしに汎用セグメンテーションと指示セグメンテーションと言語視覚課題を汎用復号でまとめ、七つのデータ集合で開いた語彙のSOTAに届いた。CVPR本論文PDFを復号設計と課題被覆まで読んだ上で記す。ただし統一の射程は論文報告の範囲である。OpenSegは区切った変種として別に保つ。Ghiasiらによれば、語とマスクの照合の前にマスク提案を置く視覚グルーピング優先で、キャプション規模の教師信号を可能にし、PASCALでLSegをmIoU 19.9上回ったと、モデル論文の著者測定として報告している。変種の位置に留め、グルーピングの質への依存が残る。ODISEは拡散基盤の流れである。Xuらによれば、凍結したテキスト画像拡散とCLIP識別基盤で開いた語彙のパノプティックセグメンテーションを解き、COCO学習のみでADE20KのPQ 23.4・mIoU 30.0に届き、先行を8.3と7.9上回った。拡散内部表現がK-means探査で意味にまとまると示し、コードとモデルを開き、CVPR 2023ハイライトである。ただし拡散特徴への依存が残り、拡散基盤の細部には立ち入らない。起点と統一と変種と拡散の四つを、セグメンテーションの枝の一群にまとめる。",
+            "text": "オープンボキャブラリーセグメンテーションの枝は、画素と言葉の照合から始まる。LSegは画素テキスト照合の起点である。Liらによれば、テキストエンコーダのラベル埋め込みとTransformerの密な画素埋め込みを対照学習する。意味の近いラベルは埋め込みの領域を共有し、catとfurryが引き合う。再学習や追加の学習データなしに未見カテゴリへゼロショット汎化し、固定ラベルセグメンテーションモデルと競ると、モデル論文の著者測定として報告している。ただし起点の射程に留まり、指示セグメンテーションまでの統一にはX-Decoder側の根拠が要る。X-Decoderは汎用と指示の統一である。Zouらによれば、疑似ラベルなしに汎用セグメンテーションと指示セグメンテーションと言語視覚課題を汎用デコーダでまとめ、七つのデータ集合でオープンボキャブラリーのSOTAに届いた。CVPR本論文PDFをデコーダ設計と課題被覆まで読んだ上で記す。ただし統一の射程は論文報告の範囲である。OpenSegは区切ったバリアントとして別に保つ。Ghiasiらによれば、語とマスクの照合の前にマスク提案を置く視覚グルーピング優先で、キャプション規模の教師信号を可能にし、PASCALでLSegをmIoU 19.9上回ったと、モデル論文の著者測定として報告している。バリアントの位置に留め、グルーピングの質への依存が残る。ODISEは拡散基盤の流れである。Xuらによれば、凍結したテキスト画像拡散とCLIP識別基盤でオープンボキャブラリーのパノプティックセグメンテーションを解き、COCO学習のみでADE20KのPQ 23.4・mIoU 30.0に届き、先行を8.3と7.9上回った。拡散内部表現がK-means探査で意味にまとまると示し、コードとモデルを開き、CVPR 2023ハイライトである。ただし拡散特徴への依存が残り、拡散基盤の細部には立ち入らない。起点と統一とバリアントと拡散の四つを、セグメンテーションの枝の一群にまとめる。",
             "attribution_mode": "MIXED",
             "evidence_refs": [
               {
@@ -3120,7 +3120,7 @@
           {
             "block_id": "p07b-b9",
             "block_type": "PARAGRAPH",
-            "text": "全体を見渡す。GLIPの言い換えとGrounding DINOの融合とOWL-STの自己学習は、別の群の仕組みであり、一本の展開に連なる。言い換えが検出の出力を語の指示に開き、融合が言語と画像の対応を三段で強め、自己学習がウェブの量でレアカテゴリをカバーする。いずれの数値も論文報告の言い方の下で記し、未見の言い方は語彙空間と学習分割の定義に縛る。GLIPのゼロショットAPとGrounding DINOのODinW平均とOWL-STのLVIS-rareは別の契約であり、並べて優劣を付けない。定式の起点と蒸留による転移と語彙拡張と融合の二系統とスケーリングとセグメンテーションの枝の六群が、全体の整理である。起点が出所の切り分けを示し、転移が教師モデルの移し替えを示し、語彙拡張が箱なしでの適用範囲の拡大を示し、融合が後段融合と密な融合を示し、スケーリングが箱なしでのレアカテゴリのカバーを示し、セグメンテーションの枝が画素と言葉の照合のまとめを示す。数値は論文報告の言い方の下で記し、未見は語彙空間と分割の定義に縛り、評価指標は契約ごとに分ける。開くことと対応を強めることと適用範囲を広げることの三つが、全体の要点である。一つに畳まないことが、全体の保ち方である。報告の言い方と語彙空間の断りと契約ごとの評価指標を三つ組で残す。",
+            "text": "全体を見渡す。GLIPの言い換えとGrounding DINOの融合とOWL-STの自己学習は、別の群の仕組みであり、一本の展開に連なる。言い換えが検出の出力を語の指示に開き、融合が言語と画像の対応を三段で強め、自己学習がウェブの量でレアカテゴリをカバーする。いずれの数値も論文報告の言い方の下で記し、未見の言い方は語彙空間と学習分割の定義に縛る。GLIPのゼロショットAPとGrounding DINOのODinW平均とOWL-STのLVIS-rareは別の契約であり、並べて優劣を付けない。定式の起点と蒸留による転移と語彙拡張と融合の二系統とスケーリングとセグメンテーションの枝の六群が、全体の整理である。起点が出所の切り分けを示し、転移が教師モデルの移し替えを示し、語彙拡張がボックスなしでの適用範囲の拡大を示し、融合が後段融合と密な融合を示し、スケーリングがボックスなしでのレアカテゴリのカバーを示し、セグメンテーションの枝が画素と言葉の照合のまとめを示す。数値は論文報告の言い方の下で記し、未見は語彙空間と分割の定義に縛り、評価指標は契約ごとに分ける。開くことと対応を強めることと適用範囲を広げることの三つが、全体の要点である。一つに畳まないことが、全体の保ち方である。報告の言い方と語彙空間の断りと契約ごとの評価指標を三つ組で残す。",
             "attribution_mode": "MIXED",
             "evidence_refs": [
               {
@@ -3163,7 +3163,7 @@
           {
             "block_id": "P07B-boundaries",
             "block_type": "CLAIM_BOUNDARY",
-            "text": "この節の読解上の境界: ウェブ由来の教師モデルやデータを使う以上、未見の言い方はラベル空間と学習分割の定義に縛られる。機械の空間での未見と人手の空間での未見は別物であり、数値はその定義と組で読む。レア分割の数値も分割の取り方の下での記録である。微調整後の言い分けとゼロショットの言い分けは同じ契約の別の手順であり、新しい節ではない。",
+            "text": "この節の読解上の境界: ウェブ由来の教師モデルやデータを使う以上、未見の言い方はラベル空間と学習分割の定義に縛られる。機械の空間での未見と人手の空間での未見は別物であり、数値はその定義と組で読む。レア分割の数値も分割の取り方の下での記録である。ファインチューニング後の言い分けとゼロショットの言い分けは同じ契約の別の手順であり、新しい節ではない。",
             "attribution_mode": "INFERENCE",
             "evidence_refs": [
               {
@@ -3480,14 +3480,14 @@
       "package_id": "P08",
       "drafting_order": 9,
       "draft_package_sha256": "ab3f57b600a1a22c116e94ffeb5f170e19f9a522efbac8fd53b9d6be316a4c69",
-      "draft_result_sha256": "7a2a055609ca73fbcc7fe3a33ae66ad0498ef130c8d82d3d25003f16328789a9",
+      "draft_result_sha256": "ced145f357abf30045edfad1a2d1ccf73e4b38a93f24b285d1d800b3f9cab7d2",
       "draft_result": {
         "schema_version": "2.0-rc1",
         "issue_id": "SP-vision-multimodal-2026",
         "research_profile": "THEMATIC",
         "publication_profile": "LONGFORM_SPECIAL",
         "package_id": "P08",
-        "draft_version": "r6",
+        "draft_version": "r7",
         "status": "REVISED",
         "basis": {
           "draft_package_sha256": "ab3f57b600a1a22c116e94ffeb5f170e19f9a522efbac8fd53b9d6be316a4c69",
@@ -3497,11 +3497,11 @@
         "runner": {
           "provider": "Muse",
           "model": "Muse Spark (Work execution role; not a Sol/Human decision)",
-          "invocation": "TS-003 Draft r6 P09 terminology closure from approved Architecture r2 (Human APPROVED r2, Sol Draft Review r1 REQUEST_CHANGES F1-F5): full-volume prose rewrite, zero duplicate sentences, metaphor-substitution eliminated, evaluator classes explicit, boundary reader surface repaired; G01-G06 and 5 PARTIAL preserved semantically; no cross-task ranking; no new research",
-          "generated_at": "2026-10-02T00:06:39Z",
-          "run_reference": "ts003-draft-r6-20261002"
+          "invocation": "TS-003 Draft r7 preferred-terminology conformance from approved Architecture r2 (Human APPROVED r2, Sol Draft Review r1 REQUEST_CHANGES F1-F5): full-volume prose rewrite, zero duplicate sentences, metaphor-substitution eliminated, evaluator classes explicit, boundary reader surface repaired; G01-G06 and 5 PARTIAL preserved semantically; no cross-task ranking; no new research",
+          "generated_at": "2026-10-02T14:42:07Z",
+          "run_reference": "ts003-draft-r7-20261002"
         },
-        "headline": "凍結した部品をつなぐ橋",
+        "headline": "凍結した視覚・言語モデルを接続する",
         "deck": "別々に学んだ画像と言語を凍結したままつなぐ接続が、視覚言語モデル（VLM）の出発点を作った。接頭辞、密なcross-attention、Q-Former、単層写像、端から端までの調整という世代の違いをたどり、開かれたデータへの到達を示す。",
         "deck_attribution_mode": "MIXED",
         "deck_evidence_refs": [
@@ -3574,7 +3574,7 @@
           {
             "block_id": "p08-b2",
             "block_type": "PARAGRAPH",
-            "text": "Flamingo型の密な接続は表現力がある一方、学習対象が重く閉じたデータに依存する。BLIP-2は画像エンコーダと言語モデルの双方を凍結し、Q-Formerだけを学習する設計を示した。Q-Formerは学習可能な問い合わせベクトルで画像側から必要な情報だけを取り出す。手順は二つの学習段階からなる。第一段階では画像エンコーダを凍結したままQ-Formerが表現を学習し、第二段階では言語モデルを凍結したまま生成への接続を学習する。いずれの段階でも大規模な基盤は更新せず、接続部に限定して学習するため学習変数は大幅に減る。モデル論文の著者測定によれば、学習変数が54分の1の規模でFlamingo80BをゼロショットVQAv2で8.7ポイント上回り、視覚言語課題で最先端に届いたと報告している。指示に従う画像説明の振る舞いも現れたとモデル論文の著者測定は報告している。Q-Formerの問い合わせ選択は、密なcross-attentionとも単層写像とも異なる。制約として二段階の管理と調整の手間は残り、論文自身も指示への仕上げは後継の指示チューニングが担うと位置づける。この報告値はモデル論文の著者測定として受け取り、独立した第三者再現の有無はここでは判断しない。",
+            "text": "Flamingo型の密な接続は表現力がある一方、学習対象が重く閉じたデータに依存する。BLIP-2は画像エンコーダと言語モデルの双方を凍結し、Q-Formerだけを学習する設計を示した。Q-Formerは学習可能なクエリベクトルで画像側から必要な情報だけを取り出す。手順は二つの学習段階からなる。第一段階では画像エンコーダを凍結したままQ-Formerが表現を学習し、第二段階では言語モデルを凍結したまま生成への接続を学習する。いずれの段階でも大規模な基盤は更新せず、接続部に限定して学習するため学習可能パラメータは大幅に減る。モデル論文の著者測定によれば、学習可能パラメータが54分の1の規模でFlamingo80BをゼロショットVQAv2で8.7ポイント上回り、視覚言語課題で最先端に届いたと報告している。指示に従う画像説明の振る舞いも現れたとモデル論文の著者測定は報告している。Q-Formerのクエリ選択は、密なcross-attentionとも単層写像とも異なる。制約として二段階の管理と調整の手間は残り、論文自身も指示への仕上げは後継の指示チューニングが担うと位置づける。この報告値はモデル論文の著者測定として受け取り、独立した第三者再現の有無はここでは判断しない。",
             "attribution_mode": "ATTRIBUTED",
             "evidence_refs": [
               {
@@ -3589,7 +3589,7 @@
           {
             "block_id": "p08-b3",
             "block_type": "PARAGRAPH",
-            "text": "InstructBLIPはBLIP-2を基盤に視覚の指示チューニングを体系化した。公開の26データセットを指示形式に直し、指示を入力するQ-Formerで学習する。問い合わせ部自体が指示を読む点が前世代からの変更である。モデル論文の著者測定によれば、学習に含めない13課題群すべてでゼロショット最先端に届き、BLIP-2や規模の大きいFlamingoを上回ったと報告している。画像付きScienceQAでは仕上げ後に90.7%に達し、モデルはすべて公開された。評価の主張は学習に含めた課題と含めない課題を分ける手順の範囲に限られ、その外側への一般化は主張しない。指示データの配合の詳細は後の節の範囲であり、ここでは手順と結果に絞る。同じ時期の短い接続としてMiniGPT-4を位置づける。凍結した画像エンコーダと凍結したVicunaを単層の写像で接続するだけで、Q-Formerのような問い合わせ選択は持たない。詳細な描写、略図からのウェブページ作成、物語や詩、調理手順の作成という組み合わせの振る舞いが現れたと、モデル論文の著者測定は報告している。短い説明文で整えてから詳細な描写で仕上げる二段階の選別が、繰り返しや断片化を抑えたとモデル論文の著者測定は報告している。コードとモデルとデータは公開された。接続の役割に絞った短い扱いとし、接続の脆さの実証は評価側の根拠に譲る。",
+            "text": "InstructBLIPはBLIP-2を基盤に視覚の指示チューニングを体系化した。公開の26データセットを指示形式に直し、指示を入力するQ-Formerで学習する。クエリ自体が指示を読む点が前世代からの変更である。モデル論文の著者測定によれば、学習に含めない13課題群すべてでゼロショット最先端に届き、BLIP-2や規模の大きいFlamingoを上回ったと報告している。画像付きScienceQAでは仕上げ後に90.7%に達し、モデルはすべて公開された。評価の主張は学習に含めた課題と含めない課題を分ける手順の範囲に限られ、その外側への一般化は主張しない。指示データの配合の詳細は後の節の範囲であり、ここでは手順と結果に絞る。同じ時期の短い接続としてMiniGPT-4を位置づける。凍結した画像エンコーダと凍結したVicunaを単層の写像で接続するだけで、Q-Formerのようなクエリ選択は持たない。詳細な描写、略図からのウェブページ作成、物語や詩、調理手順の作成という組み合わせの振る舞いが現れたと、モデル論文の著者測定は報告している。短い説明文で整えてから詳細な描写で仕上げる二段階の選別が、繰り返しや断片化を抑えたとモデル論文の著者測定は報告している。コードとモデルとデータは公開された。接続の役割に絞った短い扱いとし、接続の脆さの実証は評価側の根拠に譲る。",
             "attribution_mode": "ATTRIBUTED",
             "evidence_refs": [
               {
@@ -3633,7 +3633,7 @@
           {
             "block_id": "p08-b5",
             "block_type": "PARAGRAPH",
-            "text": "接続の世代を締めくくるのは、開かれたデータに立つMolmoの初代である。外部の視覚言語モデルに依存する限りデータの出所は閉じたままという制約が出発点である。PixMoと呼ぶ自前のデータに密な説明文と自由な一問一答、2次元の指さし出力（pointing）、四種の合成データを収め、外部の視覚言語モデルには依存しない。自前の教師信号と調整した手順の組み合わせにより、72B級で最上位に届いたとモデル論文の著者測定は報告している。具体的にはClaude 3.5 SonnetやGemini 1.5 ProとFlashを上回り、ベンチマークと人手の評価ではGPT-4oに次ぐ位置につけたとモデル論文の著者測定は報告している。MetaCLIPとOLMoによる完全に開かれた変種も用意し、重みとデータとコードを公開した。エンコーダの選択も比較に支えられる。初期のCLIPエンコーダを既定とし、三つの代替を比べたアブレーションが部品の選び方を示す。初代の範囲は画像中心であり、動画の主張はMolmo 2の記録に譲る。系譜は、接頭辞で渡すFrozen、密に接続するFlamingo、問い合わせで選択するBLIP-2のQ-Former、単層で接続するMiniGPT-4、端から端まで調整するLLaVA、開かれたデータで組み立てるMolmoである。各世代の接続部の方式を混同しない。凍結した部品を使い回す考え方は後のQwen系にも連続する。",
+            "text": "接続の世代を締めくくるのは、開かれたデータに立つMolmoの初代である。外部の視覚言語モデルに依存する限りデータの出所は閉じたままという制約が出発点である。PixMoと呼ぶ自前のデータに密な説明文と自由な一問一答、2次元の指さし出力（pointing）、四種の合成データを収め、外部の視覚言語モデルには依存しない。自前の教師信号と調整した手順の組み合わせにより、72B級で最上位に届いたとモデル論文の著者測定は報告している。具体的にはClaude 3.5 SonnetやGemini 1.5 ProとFlashを上回り、ベンチマークと人手の評価ではGPT-4oに次ぐ位置につけたとモデル論文の著者測定は報告している。MetaCLIPとOLMoによる完全に開かれたバリアントも用意し、重みとデータとコードを公開した。エンコーダの選択も比較に支えられる。初期のCLIPエンコーダを既定とし、三つの代替を比べたアブレーションが構成要素の選び方を示す。初代の範囲は画像中心であり、動画の主張はMolmo 2の記録に譲る。系譜は、接頭辞で渡すFrozen、密に接続するFlamingo、クエリで選択するBLIP-2のQ-Former、単層で接続するMiniGPT-4、端から端まで調整するLLaVA、開かれたデータで組み立てるMolmoである。各世代の接続部の方式を混同しない。凍結した構成要素を使い回す考え方は後のQwen系にも連続する。",
             "attribution_mode": "MIXED",
             "evidence_refs": [
               {
@@ -3834,14 +3834,14 @@
       "package_id": "P09",
       "drafting_order": 10,
       "draft_package_sha256": "1b811443e72639b70461aa53096775a1a246e6cc964bc6e8b936acefc8ae2ccc",
-      "draft_result_sha256": "11bd8ddfd9bb749c1e65930fe2e338729c32e3266123df853e9782d9dd02bbbd",
+      "draft_result_sha256": "f050f1ce5e5e34b14d762d4fdb3f1e18d1ef40051a5c1cb31218f872bfa7a7d0",
       "draft_result": {
         "schema_version": "2.0-rc1",
         "issue_id": "SP-vision-multimodal-2026",
         "research_profile": "THEMATIC",
         "publication_profile": "LONGFORM_SPECIAL",
         "package_id": "P09",
-        "draft_version": "r6",
+        "draft_version": "r7",
         "status": "REVISED",
         "basis": {
           "draft_package_sha256": "1b811443e72639b70461aa53096775a1a246e6cc964bc6e8b936acefc8ae2ccc",
@@ -3851,9 +3851,9 @@
         "runner": {
           "provider": "Muse",
           "model": "Muse Spark (Work execution role; not a Sol/Human decision)",
-          "invocation": "TS-003 Draft r6 P09 terminology closure from approved Architecture r2 (Human APPROVED r2, Sol Draft Review r1 REQUEST_CHANGES F1-F5): full-volume prose rewrite, zero duplicate sentences, metaphor-substitution eliminated, evaluator classes explicit, boundary reader surface repaired; G01-G06 and 5 PARTIAL preserved semantically; no cross-task ranking; no new research",
-          "generated_at": "2026-10-02T00:06:39Z",
-          "run_reference": "ts003-draft-r6-20261002"
+          "invocation": "TS-003 Draft r7 preferred-terminology conformance from approved Architecture r2 (Human APPROVED r2, Sol Draft Review r1 REQUEST_CHANGES F1-F5): full-volume prose rewrite, zero duplicate sentences, metaphor-substitution eliminated, evaluator classes explicit, boundary reader surface repaired; G01-G06 and 5 PARTIAL preserved semantically; no cross-task ranking; no new research",
+          "generated_at": "2026-10-02T14:42:07Z",
+          "run_reference": "ts003-draft-r7-20261002"
         },
         "headline": "解像度と融合と時刻を問う",
         "deck": "画像・動画・音声をトークンや状態の列に変える手順を、解像度と融合の深さと時刻合わせの三つの問いで整理する。音声は入力側だけを扱い、開かれた系と閉じた系を分け、数値は出所と条件を添えて読む。三つの問いを混同しない。",
@@ -3906,7 +3906,7 @@
           {
             "block_id": "p09-b1",
             "block_type": "PARAGRAPH",
-            "text": "一つ目の問いは解像度である。縮小してから読む方式では細部が落ち、文書や図表の読み取りが損なわれる。先行するQwen2.5-VLは動的な解像度に対応するViTを最初から学習し、窓注意で計算を抑えた。本来の細かさのまま受け止める点と、窓に区切って計算を抑える点が作り直しの要点である。モデル論文の著者測定によれば、動的な解像度と絶対時刻の符号化により数時間の動画から秒単位で出来事を探し当てたと報告している。ボックスや点による接地、定型の抜き出し、課題別の調整なしでの計算機操作や携帯端末の操作も同じ基盤に載ると報告している。ただし主張は先行の範囲に留まり、置き換え後の判断はQwen3側の根拠に譲る。後継のQwen3-VLは三つの更新を組み合わせる。空間と時刻を合わせて扱うinterleaved-MRoPE、ViTの複数層の特徴を重ねて視覚と言語の対応を密にするDeepStack、T-RoPEを進めて時刻を文面のタイムスタンプで明示する時間合わせである。一層だけではなく複数層を重ねる点と、時刻を埋め込みに隠さず文面に書き出す点が変更である。モデル論文の著者測定によれば、256Kの長いコンテキストをそのまま受け、書籍や数時間の動画を保ち、秒単位の索引づけに応じると報告している。密な2Bから32B、混合専門家の30B-A3Bと235B-A22Bを用意し、指示版と思考版を分ける。純粋な文章理解の強さ、長いコンテキストの保持と想起と照合、MMMUや視覚数学の推論を三つの柱として位置づけ、平方根の重みづけ直しが文章側を守りながらマルチモーダル側を伸ばすと説明する。いずれもベンダー測定の主張であり、トークンや設定の数値は設定に結びつく読みに留め、独立した第三者再現は残された課題として残す。条件の異なる数値を並べて優劣をつけない。",
+            "text": "一つ目の問いは解像度である。縮小してから読む方式では細部が落ち、文書や図表の読み取りが損なわれる。先行するQwen2.5-VLは動的な解像度に対応するViTを最初から学習し、ウィンドウアテンションで計算を抑えた。本来の細かさのまま受け止める点と、窓に区切って計算を抑える点が作り直しの要点である。モデル論文の著者測定によれば、動的な解像度と絶対時刻の符号化により数時間の動画から秒単位で出来事を探し当てたと報告している。ボックスや点による接地、定型の抜き出し、課題別の調整なしでの計算機操作や携帯端末の操作も同じ基盤に載ると報告している。ただし主張は先行の範囲に留まり、置き換え後の判断はQwen3側の根拠に譲る。後継のQwen3-VLは三つの更新を組み合わせる。空間と時刻を合わせて扱うinterleaved-MRoPE、ViTの複数層の特徴を重ねて視覚と言語の対応を密にするDeepStack、T-RoPEを進めて時刻を文面のタイムスタンプで明示する時間合わせである。一層だけではなく複数層を重ねる点と、時刻を埋め込みに隠さず文面に書き出す点が変更である。モデル論文の著者測定によれば、256Kの長いコンテキストをそのまま受け、書籍や数時間の動画を保ち、秒単位の索引づけに応じると報告している。密な2Bから32B、Mixture-of-Experts（MoE）の30B-A3Bと235B-A22Bを用意し、指示版と思考版を分ける。純粋な文章理解の強さ、長いコンテキストの保持と想起と照合、MMMUや視覚数学の推論を三つの柱として位置づけ、平方根の重みづけ直しが文章側を守りながらマルチモーダル側を伸ばすと説明する。いずれもベンダー測定の主張であり、トークンや設定の数値は設定に結びつく読みに留め、独立した第三者再現は残された課題として残す。条件の異なる数値を並べて優劣をつけない。",
             "attribution_mode": "ATTRIBUTED",
             "evidence_refs": [
               {
@@ -3935,7 +3935,7 @@
           {
             "block_id": "p09-b2",
             "block_type": "PARAGRAPH",
-            "text": "二つ目の問いは融合の深さであり、一つのモデル系列だけを追わない。InternVL3は文章の言語モデルに後から視覚を継ぎ足すのではなく、マルチモーダルと文章を最初から一緒に事前学習する一段の手順を取る。後付けの継ぎ足しでは接続部の調整が重くなるという制約が出発点である。モデル論文の著者測定によれば、一段の学習により後付けの複雑さが解け、V2PEでマルチモーダルの長いコンテキストを伸ばし、SFTとMPOのポストトレーニングと実行時のスケーリングを重ねたと報告している。1Bから78Bのモデル群を用意し、78BではMMMUで72.2に達して公開の最先端に届き、4oや3.5-Sonnet、Gemini-2.5-Proと並び、純粋な言語側の保持も強いと報告している。この比較は報告時点の日付と結んだ読みに留め、モデル論文の著者測定として受け取る。重みと学習データは公開予定とされ、予定は予定として読む。Qwenの段階的な継ぎ足しとの対比、すなわち最初から一緒に学ぶか後から足すかという設計の違いが構造の要点である。検査のしやすさはQwen3-VLのリポジトリが担う。稠密と混合専門家でエッジデバイスからクラウドまで、FP8の変種、TransformersやvLLMへの対応、指示版と思考版、視覚エージェントによる画面操作、2次元と3次元の接地、256Kから1Mへの拡張が記される。三つの構成要素の積み重ねはコードの上で確かめられるが、重みだけでは評価の主張は立たない。コードはApache 2.0で公開が確認され、重みの許諾は未確定のまま残る。確認済みと未確定を分けて記す。版の結びつけは後の段階に譲り、説明文の宣伝的な表現は設計の根拠から切り分ける。",
+            "text": "二つ目の問いは融合の深さであり、一つのモデル系列だけを追わない。InternVL3は文章の言語モデルに後から視覚を継ぎ足すのではなく、マルチモーダルと文章を最初から一緒に事前学習する一段階の手順を取る。後付けの継ぎ足しでは接続部の調整が重くなるという制約が出発点である。モデル論文の著者測定によれば、一段階の学習により後付けの複雑さが解け、V2PEでマルチモーダルの長いコンテキストを伸ばし、SFTとMPOのポストトレーニングと実行時のスケーリングを重ねたと報告している。1Bから78Bのモデル群を用意し、78BではMMMUで72.2に達して公開の最先端に届き、4oや3.5-Sonnet、Gemini-2.5-Proと並び、純粋な言語側の保持も強いと報告している。この比較は報告時点の日付と結んだ読みに留め、モデル論文の著者測定として受け取る。重みと学習データは公開予定とされ、予定は予定として読む。Qwenの段階的な継ぎ足しとの対比、すなわち最初から一緒に学ぶか後から足すかという設計の違いが構造の要点である。検査のしやすさはQwen3-VLのリポジトリが担う。dense構成とMoEでエッジデバイスからクラウドまで、FP8のバリアント、TransformersやvLLMへの対応、指示版と思考版、視覚エージェントによる画面操作、2次元と3次元の接地、256Kから1Mへの拡張が記される。三つの構成要素の積み重ねはコードの上で確かめられるが、重みだけでは評価の主張は立たない。コードはApache 2.0で公開が確認され、重みの許諾は未確定のまま残る。確認済みと未確定を分けて記す。版の結びつけは後の段階に譲り、説明文の宣伝的な表現は設計の根拠から切り分ける。",
             "attribution_mode": "MIXED",
             "evidence_refs": [
               {
@@ -3978,7 +3978,7 @@
           {
             "block_id": "p09-b3",
             "block_type": "PARAGRAPH",
-            "text": "融合の問いには接地で測る比較軸も要る。対応の密さだけでは指し示す力は測れない。Molmo 2は設計の到達点ではなく比較の軸として置く。論文自身の三つ組の表示では、オープンウェイト、蒸留なしのオープンデータ、オープンコードを掲げる。Molmo 2論文の著者測定によれば、8Bが公開級の短い動画や数え上げ、説明文で先頭に立ち、長い動画でも競ると報告している。具体的には動画の数え上げで35.5に対してQwen3-VLが29.6、指さしのF1で38.4に対してGemini 3 Proが20.0、追跡のJ&Fで56.2に対して41.1という同一条件の直接比較であり、数え上げと指さしと追跡という接地寄りの評価軸で測った値である。9種の公開データには指さしと追跡の二種、説明文、質問応答が含まれ、完全に開かれたOlmo変種もあり、2026年4月のv4が記される。ただし8Bと4BはQwen3の基盤を使い回し、部分的な依存は開示される。価値は開放の度合いと接地で測る動画評価にあり、仕組みの新しさではない。論文自身が閉じた依存も明かす。Olmo変種でも画像エンコーダのSigLIP 2は閉じたデータに頼り、競える開かれたエンコーダがないことが共同体への呼びかけとして記される。データ生成の文章専用モデルも閉じており、MathVistaやMMMUの推論、10分を超える長い動画の学習データでは後れることが結果の議論に記される。閉じた系は能力の比較に留める。Gemini 3.1 Proは1Mのコンテキストで文章と画像と音声と動画を受け、MMMU-ProとVideo-MMMUの主張を手法の頁と2026年2月のモデルカードに記す。Gemini 3.6 Flashはトークンの効率寄りの位置づけで2026年7月のモデルカードに記される。いずれも能力と評価とデプロイの事実だけを借り、仕組みの根拠にはしない。数値はベンダー測定であり、日付と版の結びつけが必要である。",
+            "text": "融合の問いには接地で測る比較軸も要る。対応の密さだけでは指し示す力は測れない。Molmo 2は設計の到達点ではなく比較の軸として置く。論文自身の三つ組の表示では、オープンウェイト、蒸留なしのオープンデータ、オープンコードを掲げる。Molmo 2論文の著者測定によれば、8Bが公開級の短い動画や数え上げ、説明文で先頭に立ち、長い動画でも競ると報告している。具体的には動画の数え上げで35.5に対してQwen3-VLが29.6、指さしのF1で38.4に対してGemini 3 Proが20.0、追跡のJ&Fで56.2に対して41.1という同一条件の直接比較であり、数え上げと指さしと追跡という接地寄りの評価軸で測った値である。9種の公開データには指さしと追跡の二種、説明文、質問応答が含まれ、完全に開かれたOlmoバリアントもあり、2026年4月のv4が記される。ただし8Bと4BはQwen3の基盤を使い回し、部分的な依存は開示される。価値は開放の度合いと接地で測る動画評価にあり、仕組みの新しさではない。論文自身が閉じた依存も明かす。Olmoバリアントでも画像エンコーダのSigLIP 2は閉じたデータに頼り、競える開かれたエンコーダがないことが共同体への呼びかけとして記される。データ生成の文章専用モデルも閉じており、MathVistaやMMMUの推論、10分を超える長い動画の学習データでは後れることが結果の議論に記される。閉じた系は能力の比較に留める。Gemini 3.1 Proは1Mのコンテキストで文章と画像と音声と動画を受け、MMMU-ProとVideo-MMMUの主張を手法の頁と2026年2月のモデルカードに記す。Gemini 3.6 Flashはトークンの効率寄りの位置づけで2026年7月のモデルカードに記される。いずれも能力と評価とデプロイの事実だけを借り、仕組みの根拠にはしない。数値はベンダー測定であり、日付と版の結びつけが必要である。",
             "attribution_mode": "MIXED",
             "evidence_refs": [
               {
@@ -4028,7 +4028,7 @@
           {
             "block_id": "p09-b4",
             "block_type": "PARAGRAPH",
-            "text": "三つ目の問いは時刻と音声であり、音声は入力側だけを扱う。生成側の合成は別巻に譲り、ここでは受け止めてトークン列へ変換する契約だけを扱う。Whisperは話し言葉の音声入力処理の前例である。68万時間の多言語・多課題の弱い教師信号で学び、教師なしに近い転移で十分に教師ありの結果に迫り、人の正確さと頑健さに近づくとモデル論文の著者測定は報告している。モデルと推論コードが公開され、頑健な処理の基盤となる。役割は話し言葉をトークンに変える契約に絞り、話し言葉を超える主張は行わない。一般の音の主張にはBEATs側の根拠が必要である。BEATsは音全般の自己教師あり学習による音響表現学習を担う。音響トークナイザと音の自己教師あり学習を交互に鍛え、再構成ではなく覆った離散ラベルの予測で学ぶ。トークナイザは各周で教師の意味を受け継ぐ。モデル論文の著者測定では、AudioSet-2Mで50.6%のmAPを音のみで、ESC-50で98.1%に達し、データや変数の大きい先行を上回ったと報告している。分類の評価の範囲に留まり、融合の振る舞いにはオムニ側の根拠が必要である。CLAPは音側の呼び出し可能性を足す。言語と音声の二塔を対照学習で事前学習し、12.8万組で学ぶ。モデル論文の著者測定によれば、音の出来事や音楽や話し言葉の16課題・8領域でゼロショットの最先端に届き、教師ありの5課題でも最先端に達したと報告している。CLIPとの並びが明示され、画像側のCLIPに対する音側の答えとなる。ICASSP 2023で発表された論文である。ただし12.8万組はCLIP級の規模ではなく、後のオムニのエンコーダが比較を限定する。三者の契約は入力側に絞られ、後のオムニの組み合わせへの前例として読む。",
+            "text": "三つ目の問いは時刻と音声であり、音声は入力側だけを扱う。生成側の合成は別巻に譲り、ここでは受け止めてトークン列へ変換する契約だけを扱う。Whisperは音声入力処理の前例である。68万時間の多言語・多課題の弱い教師信号で学び、教師なしに近い転移で十分に教師ありの結果に迫り、人の正確さと頑健さに近づくとモデル論文の著者測定は報告している。モデルと推論コードが公開され、頑健な処理の基盤となる。役割は音声認識の対象をトークンに変える契約に絞り、音声認識の範囲を超える主張は行わない。一般の音の主張にはBEATs側の根拠が必要である。BEATsは音全般の自己教師あり学習による音響表現学習を担う。音響トークナイザと音の自己教師あり学習を交互に鍛え、再構成ではなくマスクされた離散ラベルの予測で学ぶ。トークナイザは各周で教師の意味を受け継ぐ。モデル論文の著者測定では、AudioSet-2Mで50.6%のmAPを音のみで、ESC-50で98.1%に達し、データや変数の大きい先行を上回ったと報告している。分類の評価の範囲に留まり、融合の振る舞いにはオムニ側の根拠が必要である。CLAPは音側の呼び出し可能性を足す。言語と音声のデュアルエンコーダを対照学習で事前学習し、12.8万組で学ぶ。モデル論文の著者測定によれば、音の出来事や音楽や音声認識の16課題・8領域でゼロショットの最先端に届き、教師ありの5課題でも最先端に達したと報告している。CLIPとの並びが明示され、画像側のCLIPに対する音側の答えとなる。ICASSP 2023で発表された論文である。ただし12.8万組はCLIP級の規模ではなく、後のオムニのエンコーダが比較を限定する。三者の契約は入力側に絞られ、後のオムニの組み合わせへの前例として読む。",
             "attribution_mode": "MIXED",
             "evidence_refs": [
               {
@@ -4064,7 +4064,7 @@
           {
             "block_id": "p09-b5",
             "block_type": "PARAGRAPH",
-            "text": "音声入力を組み合わせて時刻で合わせるのがQwen3-Omniである。Thinker-Talkerの混合専門家で文章と画像と音声と動画にまたがる知覚と生成を担い、音声エンコーダを最初から学習する。考える側と話す側を分け、音声の入力側は作り直す。M-RoPEの系譜はここにつながり、TM-RoPEで絶対時刻を合わせ、音声と映像のずれを80msに抑える。相対ではなく絶対で合わせる点が要点である。モデル論文の著者測定によれば、40分の音声認識と言語理解の例を受け、19言語の話し言葉の理解と10言語の生成に応じると報告している。理論上234msで最初の音を返す流れに乗ると報告され、この234msは理論上の冷間始動であり、実測のデプロイ値としては読まない。境界は明確である。TalkerやCode2Wavの合成の細部は別巻の範囲に置き、ここでは入力のエンコーダとTM-RoPEの同期、入力側のストリーミング処理の契約だけを担う。劣化なしの主張はベンダー測定として受け取る。Whisperの話し言葉からトークンへの契約、CLAPの音と言語の対応づけを前例とし、最初から学ぶ音声エンコーダと絶対時刻の同期が40分の事例と多言語の理解を支える。",
+            "text": "音声入力を組み合わせて時刻で合わせるのがQwen3-Omniである。Thinker-TalkerのMoEで文章と画像と音声と動画にまたがる知覚と生成を担い、音声エンコーダを最初から学習する。考える側と話す側を分け、音声の入力側は作り直す。M-RoPEの系譜はここにつながり、TM-RoPEで絶対時刻を合わせ、音声と映像のずれを80msに抑える。相対ではなく絶対で合わせる点が要点である。モデル論文の著者測定によれば、40分の音声認識と言語理解の例を受け、19言語の音声理解と10言語の生成に応じると報告している。理論上234msで最初の音を返す流れに乗ると報告され、この234msは理論上のコールドスタートであり、実測のデプロイ値としては読まない。境界は明確である。TalkerやCode2Wavの合成の細部は別巻の範囲に置き、ここでは入力のエンコーダとTM-RoPEの同期、入力側のストリーミング処理の契約だけを担う。劣化なしの主張はベンダー測定として受け取る。Whisperの音声からトークンへの契約、CLAPの音と言語の対応づけを前例とし、最初から学ぶ音声エンコーダと絶対時刻の同期が40分の事例と多言語の理解を支える。",
             "attribution_mode": "MIXED",
             "evidence_refs": [
               {
@@ -4136,7 +4136,7 @@
           {
             "block_id": "p09-b7",
             "block_type": "PARAGRAPH",
-            "text": "開放の度合いは二つのモデル系列で確かめる。InternVLのリポジトリは第二の系列の開放を示し、重みに加えてInternVL-Dataの学習データを出す。1.0から3.5までの系譜を論文の結び目でたどり、3.5-GPT-OSS系で学習コードを開く。読み物の見出しは3.5系を記し、報告2508.18265の241B-A28B級と2025年8月30日の学習コードの公開が添えられるが、発見の集成は変わらない。ただし資料公開の細部の範囲は未確認であり、見出しの深さに留まる。molmo2のリポジトリは全層の開放を見せる。データの用意、事前学習とSFTと長いコンテキストのSFT、評価の道具、vLLMによる推論、検査点の変換、MolmoPointの拡張、モデル群の結び目が見出しからたどれる。コードは2026年9月30日に確認されたリポジトリ直下のLICENSE文書によりApache 2.0で公開が確認され、重みの許諾や公開データの有無、資料ごとの許諾と利用条件は未確定のまま残る。学術や非商用の第三者データの混入条件の整理は先送りとする。Molmo 2の論文の三つ組と合わせると、開かれた重みとデータとコードの側と、SigLIP 2や文章専用モデルに頼る閉じた側との混在が残る。未確定は未確定と記すことが、開放の主張の正確さを保つ。",
+            "text": "開放の度合いは二つのモデル系列で確かめる。InternVLのリポジトリは第二の系列の開放を示し、重みに加えてInternVL-Dataの学習データを出す。1.0から3.5までの系譜を論文の結び目でたどり、3.5-GPT-OSS系で学習コードを開く。読み物の見出しは3.5系を記し、報告2508.18265の241B-A28B級と2025年8月30日の学習コードの公開が添えられるが、発見の集成は変わらない。ただし資料公開の細部の範囲は未確認であり、見出しの深さに留まる。molmo2のリポジトリは全層の開放を見せる。データの用意、事前学習とSFTと長いコンテキストのSFT、評価の道具、vLLMによる推論、チェックポイントの変換、MolmoPointの拡張、モデル群の結び目が見出しからたどれる。コードは2026年9月30日に確認されたリポジトリ直下のLICENSE文書によりApache 2.0で公開が確認され、重みの許諾や公開データの有無、資料ごとの許諾と利用条件は未確定のまま残る。学術や非商用の第三者データの混入条件の整理は先送りとする。Molmo 2の論文の三つ組と合わせると、オープンウェイトとデータとコードの側と、SigLIP 2や文章専用モデルに頼る閉じた側との混在が残る。未確定は未確定と記すことが、開放の主張の正確さを保つ。",
             "attribution_mode": "MIXED",
             "evidence_refs": [
               {
@@ -4193,7 +4193,7 @@
           {
             "block_id": "P09-boundaries",
             "block_type": "CLAIM_BOUNDARY",
-            "text": "この節の読解上の境界: ベンチマークの主張はベンダー測定であり、トークンや設定の数値は設定に結びつく読みに留め、独立した再現は今後の課題として残す。234msは理論上の冷間始動であり、実測のデプロイ値ではない。Whisperの話は話し言葉の範囲に留まり、音全般の主張はしない。BEATsの分類の強さは分類の範囲の記録であり、融合の振る舞いの根拠にはしない。",
+            "text": "この節の読解上の境界: ベンチマークの主張はベンダー測定であり、トークンや設定の数値は設定に結びつく読みに留め、独立した再現は今後の課題として残す。234msは理論上のコールドスタートであり、実測のデプロイ値ではない。Whisperの話は話し言葉の範囲に留まり、音全般の主張はしない。BEATsの分類の強さは分類の範囲の記録であり、融合の振る舞いの根拠にはしない。",
             "attribution_mode": "INFERENCE",
             "evidence_refs": [
               {
@@ -4501,14 +4501,14 @@
       "package_id": "P10",
       "drafting_order": 11,
       "draft_package_sha256": "25fed5b39d4aeb2c7ec791267ea56c3b304658f75bc20b22164f748e425ddb2e",
-      "draft_result_sha256": "670c03f0f7fb8edb19bc3c0c0426168defdbcdf75d54d38fc223700f1fc45580",
+      "draft_result_sha256": "555ebd8877abd0d30364de7eb5e36e05f587b698c6fea07b8f5dc725d0d2bfab",
       "draft_result": {
         "schema_version": "2.0-rc1",
         "issue_id": "SP-vision-multimodal-2026",
         "research_profile": "THEMATIC",
         "publication_profile": "LONGFORM_SPECIAL",
         "package_id": "P10",
-        "draft_version": "r6",
+        "draft_version": "r7",
         "status": "REVISED",
         "basis": {
           "draft_package_sha256": "25fed5b39d4aeb2c7ec791267ea56c3b304658f75bc20b22164f748e425ddb2e",
@@ -4518,9 +4518,9 @@
         "runner": {
           "provider": "Muse",
           "model": "Muse Spark (Work execution role; not a Sol/Human decision)",
-          "invocation": "TS-003 Draft r6 P09 terminology closure from approved Architecture r2 (Human APPROVED r2, Sol Draft Review r1 REQUEST_CHANGES F1-F5): full-volume prose rewrite, zero duplicate sentences, metaphor-substitution eliminated, evaluator classes explicit, boundary reader surface repaired; G01-G06 and 5 PARTIAL preserved semantically; no cross-task ranking; no new research",
-          "generated_at": "2026-10-02T00:06:39Z",
-          "run_reference": "ts003-draft-r6-20261002"
+          "invocation": "TS-003 Draft r7 preferred-terminology conformance from approved Architecture r2 (Human APPROVED r2, Sol Draft Review r1 REQUEST_CHANGES F1-F5): full-volume prose rewrite, zero duplicate sentences, metaphor-substitution eliminated, evaluator classes explicit, boundary reader surface repaired; G01-G06 and 5 PARTIAL preserved semantically; no cross-task ranking; no new research",
+          "generated_at": "2026-10-02T14:42:07Z",
+          "run_reference": "ts003-draft-r7-20261002"
         },
         "headline": "合成点を開き失敗を分ける",
         "deck": "一つの点数で賢さを語らず、知覚（perception）と推論の違い、言語の先入観と根拠の利用を分けて測る。制御ペアの診断を中心に、投票と回転と視覚数学の道具の違いを示す。判定と汚染の作法を同行させ、合成点の読み替えを避ける。",
@@ -4748,14 +4748,14 @@
       "package_id": "P11",
       "drafting_order": 12,
       "draft_package_sha256": "3b125561423475e7bfdc0091906184bee3b079e7dd5e67e3295b8f75e78a6953",
-      "draft_result_sha256": "3da44eda548fc9cb7cec3fb1c4fbf644a91a559ce6935e9f1d85191dc4ea713c",
+      "draft_result_sha256": "b8c082608840fb3bd24381beb9338f3ed870b1943392ea4dbf9ae67ef3c0288d",
       "draft_result": {
         "schema_version": "2.0-rc1",
         "issue_id": "SP-vision-multimodal-2026",
         "research_profile": "THEMATIC",
         "publication_profile": "LONGFORM_SPECIAL",
         "package_id": "P11",
-        "draft_version": "r6",
+        "draft_version": "r7",
         "status": "REVISED",
         "basis": {
           "draft_package_sha256": "3b125561423475e7bfdc0091906184bee3b079e7dd5e67e3295b8f75e78a6953",
@@ -4765,9 +4765,9 @@
         "runner": {
           "provider": "Muse",
           "model": "Muse Spark (Work execution role; not a Sol/Human decision)",
-          "invocation": "TS-003 Draft r6 P09 terminology closure from approved Architecture r2 (Human APPROVED r2, Sol Draft Review r1 REQUEST_CHANGES F1-F5): full-volume prose rewrite, zero duplicate sentences, metaphor-substitution eliminated, evaluator classes explicit, boundary reader surface repaired; G01-G06 and 5 PARTIAL preserved semantically; no cross-task ranking; no new research",
-          "generated_at": "2026-10-02T00:06:39Z",
-          "run_reference": "ts003-draft-r6-20261002"
+          "invocation": "TS-003 Draft r7 preferred-terminology conformance from approved Architecture r2 (Human APPROVED r2, Sol Draft Review r1 REQUEST_CHANGES F1-F5): full-volume prose rewrite, zero duplicate sentences, metaphor-substitution eliminated, evaluator classes explicit, boundary reader surface repaired; G01-G06 and 5 PARTIAL preserved semantically; no cross-task ranking; no new research",
+          "generated_at": "2026-10-02T14:42:07Z",
+          "run_reference": "ts003-draft-r7-20261002"
         },
         "headline": "長尺と実時間の契約を分ける",
         "deck": "録りためた動画の理解と、流れる映像への即応は別の契約で動く。順序と記憶と問い合わせの違いをたどり、枠数の効き方と未確定の部分を正直に残す。前例の資料から広さの評価、尋ね方の契約、実時間の仕組みへと進み、空間知能の未確定を添える。",
@@ -5190,14 +5190,14 @@
       "package_id": "P12",
       "drafting_order": 13,
       "draft_package_sha256": "44c406246b3ab64b2587e833605fef8b04f01c6ea1282ae97561cefec6caa9c3",
-      "draft_result_sha256": "d080e9e717fc654cbd452490fdebc8776f881f97049489bf6e38e31090f13628",
+      "draft_result_sha256": "48eb810303a94c5a4bace115af67b332fcd1daf113f43b0da213e6f0f3d7aaa3",
       "draft_result": {
         "schema_version": "2.0-rc1",
         "issue_id": "SP-vision-multimodal-2026",
         "research_profile": "THEMATIC",
         "publication_profile": "LONGFORM_SPECIAL",
         "package_id": "P12",
-        "draft_version": "r6",
+        "draft_version": "r7",
         "status": "REVISED",
         "basis": {
           "draft_package_sha256": "44c406246b3ab64b2587e833605fef8b04f01c6ea1282ae97561cefec6caa9c3",
@@ -5207,9 +5207,9 @@
         "runner": {
           "provider": "Muse",
           "model": "Muse Spark (Work execution role; not a Sol/Human decision)",
-          "invocation": "TS-003 Draft r6 P09 terminology closure from approved Architecture r2 (Human APPROVED r2, Sol Draft Review r1 REQUEST_CHANGES F1-F5): full-volume prose rewrite, zero duplicate sentences, metaphor-substitution eliminated, evaluator classes explicit, boundary reader surface repaired; G01-G06 and 5 PARTIAL preserved semantically; no cross-task ranking; no new research",
-          "generated_at": "2026-10-02T00:06:39Z",
-          "run_reference": "ts003-draft-r6-20261002"
+          "invocation": "TS-003 Draft r7 preferred-terminology conformance from approved Architecture r2 (Human APPROVED r2, Sol Draft Review r1 REQUEST_CHANGES F1-F5): full-volume prose rewrite, zero duplicate sentences, metaphor-substitution eliminated, evaluator classes explicit, boundary reader surface repaired; G01-G06 and 5 PARTIAL preserved semantically; no cross-task ranking; no new research",
+          "generated_at": "2026-10-02T14:42:07Z",
+          "run_reference": "ts003-draft-r7-20261002"
         },
         "headline": "画面操作は接地から状態管理へ",
         "deck": "実OS上で画面を操作するエージェントをどう評価するか。OSWorldの接地の制約とOSWorld 2.0の状態管理の制約を対比し、要素位置の正確さと課題成否を分離する契約を整理する。クリックの正確さから長い作業の保持へ移った変化を追う。",
@@ -5456,14 +5456,14 @@
       "package_id": "P13",
       "drafting_order": 14,
       "draft_package_sha256": "858e74e211092da01d24d6351b142c4570acaf7182ef2a7c1ec0d26f62cc558e",
-      "draft_result_sha256": "35263b046f810191b8447c261b7a256642fd6c3db96d688eb14aeaef2df6f660",
+      "draft_result_sha256": "e548bf73feb7072e53154c9f9103d8194b9a6b958980f2e73216820062ce23be",
       "draft_result": {
         "schema_version": "2.0-rc1",
         "issue_id": "SP-vision-multimodal-2026",
         "research_profile": "THEMATIC",
         "publication_profile": "LONGFORM_SPECIAL",
         "package_id": "P13",
-        "draft_version": "r6",
+        "draft_version": "r7",
         "status": "REVISED",
         "basis": {
           "draft_package_sha256": "858e74e211092da01d24d6351b142c4570acaf7182ef2a7c1ec0d26f62cc558e",
@@ -5473,12 +5473,12 @@
         "runner": {
           "provider": "Muse",
           "model": "Muse Spark (Work execution role; not a Sol/Human decision)",
-          "invocation": "TS-003 Draft r6 P09 terminology closure from approved Architecture r2 (Human APPROVED r2, Sol Draft Review r1 REQUEST_CHANGES F1-F5): full-volume prose rewrite, zero duplicate sentences, metaphor-substitution eliminated, evaluator classes explicit, boundary reader surface repaired; G01-G06 and 5 PARTIAL preserved semantically; no cross-task ranking; no new research",
-          "generated_at": "2026-10-02T00:06:39Z",
-          "run_reference": "ts003-draft-r6-20261002"
+          "invocation": "TS-003 Draft r7 preferred-terminology conformance from approved Architecture r2 (Human APPROVED r2, Sol Draft Review r1 REQUEST_CHANGES F1-F5): full-volume prose rewrite, zero duplicate sentences, metaphor-substitution eliminated, evaluator classes explicit, boundary reader surface repaired; G01-G06 and 5 PARTIAL preserved semantically; no cross-task ranking; no new research",
+          "generated_at": "2026-10-02T14:42:07Z",
+          "run_reference": "ts003-draft-r7-20261002"
         },
         "headline": "計画と言語と行動をつなぐ界面",
-        "deck": "言葉の知識を身体の動きへつなぐ道筋をたどる。SayCanの分業からPaLM-Eの一体の表現とRT-2の行動トークン化を経て、開かれた実装と製品の到達点まで界面の変化を整理する。七つの記録を一本の鎖として読む。",
+        "deck": "言葉の知識を身体の動きへつなぐ道筋をたどる。SayCanの分業からPaLM-Eの一体の表現とRT-2の行動トークン化を経て、開かれた実装と製品の到達点まで界面の変化を整理する。七つの記録を一つの系譜として読む。",
         "deck_attribution_mode": "MIXED",
         "deck_evidence_refs": [
           {
@@ -5528,7 +5528,7 @@
           {
             "block_id": "p13-b1",
             "block_type": "PARAGRAPH",
-            "text": "出発点は分業だった。言葉を考える部分と身体を動かす部分を分けて組み合わせる。SayCanは凍結した大規模言語モデルの意味知識を言う側（Say）に置き、学習済み技能の価値関数をできる側（Can）に置いたと報告されている。言語モデルが計画を立て、ロボットの技能が手足と目として働き、言葉の提案と技能の実行可能性を掛け合わせる。言葉だけでは身体が動かず、技能だけでは手順が立たないため、言葉が指示を出し技能が現時点で実行できるかを返す。実機の移動マニピュレータによる台所の課題101件で確かめ、接地を与えた計画は与えない場合のほぼ二倍に達したと報告されている。凍結した言語モデルを変えずに技能の側で現実を受け持つ点が特徴で、CoRL 2022で発表された。この記録は鎖のなかで計画側の先行事例という役割をもち、言語と知覚と行動を一つの表現にまとめていない。まとめる一手はPaLM-Eの側が担い、そこで初めて分業と一体の違いが見える。この記録だけでは一体の表現の破綻は語れず、結合の内容はPaLM-E側の記録が引き受ける。",
+            "text": "出発点は分業だった。言葉を考える部分と身体を動かす部分を分けて組み合わせる。SayCanは凍結した大規模言語モデルの意味知識を言う側（Say）に置き、学習済み技能の価値関数をできる側（Can）に置いたと報告されている。言語モデルが計画を立て、ロボットの技能が手足と目として働き、言葉の提案と技能の実行可能性を掛け合わせる。言葉だけでは身体が動かず、技能だけでは手順が立たないため、言葉が指示を出し技能が現時点で実行できるかを返す。実機の移動マニピュレータによる台所の課題101件で確かめ、接地を与えた計画は与えない場合のほぼ二倍に達したと報告されている。凍結した言語モデルを変えずに技能の側で現実を受け持つ点が特徴で、CoRL 2022で発表された。この記録は系譜のなかで計画側の先行事例という役割をもち、言語と知覚と行動を一つの表現にまとめていない。まとめる一手はPaLM-Eの側が担い、そこで初めて分業と一体の違いが見える。この記録だけでは一体の表現の破綻は語れず、結合の内容はPaLM-E側の記録が引き受ける。",
             "attribution_mode": "MIXED",
             "evidence_refs": [
               {
@@ -5550,7 +5550,7 @@
           {
             "block_id": "p13-b2",
             "block_type": "PARAGRAPH",
-            "text": "RT-1は実機の実演データを集めて吸収する側の先行事例だ。Robotics Transformerと名づけられたこの取り組みは、課題を限定しない開かれた学習と容量の大きなアーキテクチャを組み合わせ、多様な実ロボットのデータを吸い上げたと報告されている。単一タスクへの特化だけを進めるのではなく、多くの作業の実演を一つのモデルに集め、狭い課題の達人ではなく広い作業の働き手を目指す。汎化はデータとモデルの大きさと多様性の関数として、実際に動くロボットの実際の作業の上で調べられ、大きく多様なデータが初見の場面での振る舞いを支える。鎖のなかでこの記録は軌道を条件づけて学習できる基盤を敷いた。実演の軌道（trajectory）をトークンとして並べ、観測から行動への対応を学習できる形にした。以後は軌道と呼ぶ。行動の記録が言葉と同じ列に載ることで、次の定式化への道が開け、集めた列の質と量が後の結合の成否を縛る。この記録が語るのはデータの射程であり、方策の中身の組み立てはRT-2側の記録が引き受ける。",
+            "text": "RT-1は実機の実演データを集めて吸収する側の先行事例だ。Robotics Transformerと名づけられたこの取り組みは、課題を限定しない開かれた学習と容量の大きなアーキテクチャを組み合わせ、多様な実ロボットのデータを吸い上げたと報告されている。単一タスクへの特化だけを進めるのではなく、多くの作業の実演を一つのモデルに集め、狭い課題の達人ではなく広い作業の働き手を目指す。汎化はデータとモデルの大きさと多様性の関数として、実際に動くロボットの実際の作業の上で調べられ、大きく多様なデータが初見の場面での振る舞いを支える。系譜のなかでこの記録は軌道を条件づけて学習できる基盤を敷いた。実演の軌道（trajectory）をトークンとして並べ、観測から行動への対応を学習できる形にした。以後は軌道と呼ぶ。行動の記録が言葉と同じ列に載ることで、次の定式化への道が開け、集めた列の質と量が後の結合の成否を縛る。この記録が語るのはデータの射程であり、方策の中身の組み立てはRT-2側の記録が引き受ける。",
             "attribution_mode": "MIXED",
             "evidence_refs": [
               {
@@ -5572,7 +5572,7 @@
           {
             "block_id": "p13-b3",
             "block_type": "PARAGRAPH",
-            "text": "PaLM-Eは言葉と身体を分ける設計を破った。視覚や状態推定といった連続した感覚モダリティを、交互に織り交ぜたマルチモーダルな文として流し込み、凍結から結合へと進む言語モデルと端から端まで一緒に学習したと報告されている。見ることと考えることを別の箱に閉じ込めず、一つの文の続きとして扱い、画像が文節になり身体の状態が文節になり言葉と交互に並ぶ。扱う内容は操作の計画と視覚質問応答と画像説明にまたがり、一つのモデルが身体の内容と視覚言語の内容を同時に引き受ける。PaLM-E-562Bは視覚言語の汎用モデルとしても立ち、OK-VQAで最良の成績を収め、規模を大きくしても言語の力を保ったと報告されている。インターネットの視覚と言語とロボットの領域をまたぐ正の転移も報告され、Webで学んだ見方が身体の内容に効き、身体で学んだ手順が言葉の内容に効く。SayCanが計画側に言語を置いて技能と掛け合わせたのに対し、PaLM-Eは感覚と言語を一つの表現にまとめて一緒に学習した点が対比になる。ただし562B級の規模での結合学習は費用と複雑さの点で再現の裾野を狭め、誰もが同じものを作れるわけではない。大きな到達点であると同時に重い到達点であり、独立した手で確かめ直しにくい条件でもある。",
+            "text": "PaLM-Eは言葉と身体を分ける設計を破った。視覚や状態推定といった連続した感覚モダリティを、交互に織り交ぜたマルチモーダルな文として流し込み、凍結から結合へと進む言語モデルと端から端まで一緒に学習したと報告されている。見ることと考えることを別のボックスに閉じ込めず、一つの文の続きとして扱い、画像が文節になり身体の状態が文節になり言葉と交互に並ぶ。扱う内容は操作の計画と視覚質問応答と画像説明にまたがり、一つのモデルが身体の内容と視覚言語の内容を同時に引き受ける。PaLM-E-562Bは視覚言語の汎用モデルとしても立ち、OK-VQAで最良の成績を収め、規模を大きくしても言語の力を保ったと報告されている。インターネットの視覚と言語とロボットの領域をまたぐ正の転移も報告され、Webで学んだ見方が身体の内容に効き、身体で学んだ手順が言葉の内容に効く。SayCanが計画側に言語を置いて技能と掛け合わせたのに対し、PaLM-Eは感覚と言語を一つの表現にまとめて一緒に学習した点が対比になる。ただし562B級の規模での結合学習は費用と複雑さの点で再現の裾野を狭め、誰もが同じものを作れるわけではない。大きな到達点であると同時に重い到達点であり、独立した手で確かめ直しにくい条件でもある。",
             "attribution_mode": "ATTRIBUTED",
             "evidence_refs": [
               {
@@ -5602,7 +5602,7 @@
           {
             "block_id": "p13-b5",
             "block_type": "PARAGRAPH",
-            "text": "RT-2はVision-Language-Action（VLA）の定式化の起点だ。以後はVLAと呼ぶ。Web規模の視覚言語モデルをロボットの軌道とインターネットの視覚言語課題に一緒にファインチューニングし、行動を言葉と同じ書式のテキストトークンで表したと報告されている。行動トークンがこの記録の中心で、動かし方が言葉の列に載ることで観測から行動への写像を一つの端から端までのモデルに収めた。見ることと動かすことの間に別の箱を置かず、一つのモデルで受けて出す。Webで学んだ知識が身体の動きに流れ込み、Webで見た物体の知識が目の前の物体への対応に効き、Webで読んだ指示の知識が初見の命令への対応に効く。6000回の試行による評価では、新しい物体や数字や絵柄の配置といった初見の命令への創発的な汎化が見られたと報告され、教えた通りの繰り返しではなく初見の指示への対応が現れる。数字の札を並べよという初見の命令にも絵柄の位置を決める指示にも応じ、大まかな大きさの判断も見られたという。RT-1が敷いた実演の基盤の上にWebの知識を載せる一手が加わり、実演の列があってこそ言葉との結合が始まり、結合があってこそWebの知識が身体に届く。ただしこの記録が定めるのは定式化の役割であり、実運用に載せる内容や評価の射程は到達点側の記録が引き受ける。",
+            "text": "RT-2はVision-Language-Action（VLA）の定式化の起点だ。以後はVLAと呼ぶ。Web規模の視覚言語モデルをロボットの軌道とインターネットの視覚言語課題に一緒にファインチューニングし、行動を言葉と同じ書式のテキストトークンで表したと報告されている。行動トークンがこの記録の中心で、動かし方が言葉の列に載ることで観測から行動への写像を一つの端から端までのモデルに収めた。見ることと動かすことの間に別のボックスを置かず、一つのモデルで受けて出す。Webで学んだ知識が身体の動きに流れ込み、Webで見た物体の知識が目の前の物体への対応に効き、Webで読んだ指示の知識が初見の命令への対応に効く。6000回の試行による評価では、新しい物体や数字や絵柄の配置といった初見の命令への創発的な汎化が見られたと報告され、教えた通りの繰り返しではなく初見の指示への対応が現れる。数字の札を並べよという初見の命令にも絵柄の位置を決める指示にも応じ、大まかな大きさの判断も見られたという。RT-1が敷いた実演の基盤の上にWebの知識を載せる一手が加わり、実演の列があってこそ言葉との結合が始まり、結合があってこそWebの知識が身体に届く。ただしこの記録が定めるのは定式化の役割であり、実運用に載せる内容や評価の射程は到達点側の記録が引き受ける。",
             "attribution_mode": "ATTRIBUTED",
             "evidence_refs": [
               {
@@ -5617,7 +5617,7 @@
           {
             "block_id": "p13-b6",
             "block_type": "PARAGRAPH",
-            "text": "OpenVLAは開かれた重みで確かめられる極だ。Llama 2にDINOv2とSigLIPを合わせた視覚エンコーダを組み合わせた70億級のVLAで、97万件の実演で学び、非公開のRT-2-Xの550億級を29課題の埋め込み評価で16.5ポイント上回ったと報告されている。大きさは七分の一でありながら成否では上回り、重みの公開が確かめの裾野を広げ、効率の工夫が大きさの差を埋める。新しい課題への効率的なファインチューニングと複数課題にまたがる汎化も報告され、CoRL 2024で発表された。ただし独立した評価の指標が乏しいという隔たりは残り、重みが開かれているため皆が確かめられるが、この記録が結びつける独立したベンチマークはない。開かれていることと独立に測られていることは別の内容であり、効率の主張も論文の報告として読む。Gemini Robotics 2は両腕から全身の人型までの最も進んだVLAと、実世界を理解して多段に計画するER 2と、端末で動く効率的なVLAのOn-Device 2からなり、計画と方策の分担が製品の形で示されたと報告されている。提供形態は提携と早期利用の形をとる。仕組みの中身や遅延や価格やトークンの事実は公開されておらず、能力と運用の範囲だけを語り、仕組みの根拠にはしない。On-Device 2はGemmaにRobotics 1.5の技術を組み込んだVLAで、文と画像と固有感覚を入力し行動を出力し、信頼できる試用者に限って配られると報告されている。場面と指示と行動の汎化をシミュレーションと実機の両方で評価し、学習にはTPUとJAXとML-Pathwaysを使ったと報告されている。モデルカードが示す限りでは、初見の場面への汎化と自由度の高い制御に限りがあり、安全の射程は両腕を中心とし、層をなす安全の方法が勧められている。モデルカードは更新されうるため日付と切り離さずに読み、いつのモデルカードかを外して能力を語ることはできない。ベンダーの頁は到達点の結果であり、仕組みの結果ではない。",
+            "text": "OpenVLAはオープンウェイトで確かめられる極だ。Llama 2にDINOv2とSigLIPを合わせた視覚エンコーダを組み合わせた70億級のVLAで、97万件の実演で学び、非公開のRT-2-Xの550億級を29課題の埋め込み評価で16.5ポイント上回ったと報告されている。大きさは七分の一でありながら成否では上回り、重みの公開が確かめの裾野を広げ、効率の工夫が大きさの差を埋める。新しい課題への効率的なファインチューニングと複数課題にまたがる汎化も報告され、CoRL 2024で発表された。ただし独立した評価の指標が乏しいという隔たりは残り、重みが開かれているため皆が確かめられるが、この記録が結びつける独立したベンチマークはない。開かれていることと独立に測られていることは別の内容であり、効率の主張も論文の報告として読む。Gemini Robotics 2は両腕から全身の人型までの最も進んだVLAと、実世界を理解して多段に計画するER 2と、端末で動く効率的なVLAのOn-Device 2からなり、計画と方策の分担が製品の形で示されたと報告されている。提供形態は提携と早期利用の形をとる。仕組みの中身や遅延や価格やトークンの事実は公開されておらず、能力と運用の範囲だけを語り、仕組みの根拠にはしない。On-Device 2はGemmaにRobotics 1.5の技術を組み込んだVLAで、文と画像と固有感覚を入力し行動を出力し、信頼できる試用者に限って配られると報告されている。場面と指示と行動の汎化をシミュレーションと実機の両方で評価し、学習にはTPUとJAXとML-Pathwaysを使ったと報告されている。モデルカードが示す限りでは、初見の場面への汎化と自由度の高い制御に限りがあり、安全の射程は両腕を中心とし、層をなす安全の方法が勧められている。モデルカードは更新されうるため日付と切り離さずに読み、いつのモデルカードかを外して能力を語ることはできない。ベンダーの頁は到達点の結果であり、仕組みの結果ではない。",
             "attribution_mode": "MIXED",
             "evidence_refs": [
               {
@@ -5667,7 +5667,7 @@
           {
             "block_id": "p13-b7",
             "block_type": "PARAGRAPH",
-            "text": "鎖を通して見ると、表現と行動の界面が段階を追って変わった。SayCanは言語を計画側に置き身体の技能と掛け合わせ、言葉が手順を立て技能が実行可能性で裏打ちする。RT-1は実演の軌道を集めて条件づけを可能にし、Open X-Embodimentは機体をまたぐデータの条件を整えた。PaLM-Eは感覚と言語を一つの表現にまとめて一緒に学習した。RT-2は行動を言葉と同じ書式のトークンに載せ、観測から行動への写像を一つのモデルに収めた。OpenVLAはその定式を開かれた重みで確かめ直し、小さくても届くことを示した。分業から一体へ、一体から行動の言語化へ、閉じた大きさから開かれた確かめへと進んだ。製品の到達点では計画と方策の分担が能力の水準で示され、考える側と動かす側の分け方が製品の形で現れた。ただし機体の動きや制御則の中身には踏み込まず、扱うのは表現と行動の界面だけだ。独立した評価の指標の乏しさも残り、開かれた重みがあっても皆が共有する独立した測定はまだ結びついていない。言葉の知識が身体に届く筋道は見えたが、その確かめ方はまだ途上だ。",
+            "text": "鎖を通して見ると、表現と行動の界面が段階を追って変わった。SayCanは言語を計画側に置き身体の技能と掛け合わせ、言葉が手順を立て技能が実行可能性で裏打ちする。RT-1は実演の軌道を集めて条件づけを可能にし、Open X-Embodimentは機体をまたぐデータの条件を整えた。PaLM-Eは感覚と言語を一つの表現にまとめて一緒に学習した。RT-2は行動を言葉と同じ書式のトークンに載せ、観測から行動への写像を一つのモデルに収めた。OpenVLAはその定式をオープンウェイトで確かめ直し、小さくても届くことを示した。分業から一体へ、一体から行動の言語化へ、閉じた大きさから開かれた確かめへと進んだ。製品の到達点では計画と方策の分担が能力の水準で示され、考える側と動かす側の分け方が製品の形で現れた。ただし機体の動きや制御則の中身には踏み込まず、扱うのは表現と行動の界面だけだ。独立した評価の指標の乏しさも残り、オープンウェイトがあっても皆が共有する独立した測定はまだ結びついていない。言葉の知識が身体に届く筋道は見えたが、その確かめ方はまだ途上だ。",
             "attribution_mode": "MIXED",
             "evidence_refs": [
               {
@@ -5717,7 +5717,7 @@
           {
             "block_id": "P13-boundaries",
             "block_type": "CLAIM_BOUNDARY",
-            "text": "この節の読解上の境界: 独立した評価の指標の乏しさは残り、開かれた重みがあっても独立に測られたことにはならない。仕組みの中身や遅延や価格やトークンの事実は公開されておらず、書かれていないものは補わない。到達点の記録はモデルカードの範囲に留まり、日付と結びつけて読む。",
+            "text": "この節の読解上の境界: 独立した評価の指標の乏しさは残り、オープンウェイトがあっても独立に測られたことにはならない。仕組みの中身や遅延や価格やトークンの事実は公開されておらず、書かれていないものは補わない。到達点の記録はモデルカードの範囲に留まり、日付と結びつけて読む。",
             "attribution_mode": "INFERENCE",
             "evidence_refs": [
               {
@@ -5895,14 +5895,14 @@
       "package_id": "P14",
       "drafting_order": 15,
       "draft_package_sha256": "ad9e5eeddf959044eff08b5d45fba93d1390879cab23dc479d2879eefc4e6a20",
-      "draft_result_sha256": "ec712bd07005aad793fc62c451049d68438916adc3b56f3b1a1be24e55a9edc9",
+      "draft_result_sha256": "12e15ee403d3f22ed329342e77afeb5bfc8a891676f5980764f592169c4b2bb5",
       "draft_result": {
         "schema_version": "2.0-rc1",
         "issue_id": "SP-vision-multimodal-2026",
         "research_profile": "THEMATIC",
         "publication_profile": "LONGFORM_SPECIAL",
         "package_id": "P14",
-        "draft_version": "r6",
+        "draft_version": "r7",
         "status": "REVISED",
         "basis": {
           "draft_package_sha256": "ad9e5eeddf959044eff08b5d45fba93d1390879cab23dc479d2879eefc4e6a20",
@@ -5912,9 +5912,9 @@
         "runner": {
           "provider": "Muse",
           "model": "Muse Spark (Work execution role; not a Sol/Human decision)",
-          "invocation": "TS-003 Draft r6 P09 terminology closure from approved Architecture r2 (Human APPROVED r2, Sol Draft Review r1 REQUEST_CHANGES F1-F5): full-volume prose rewrite, zero duplicate sentences, metaphor-substitution eliminated, evaluator classes explicit, boundary reader surface repaired; G01-G06 and 5 PARTIAL preserved semantically; no cross-task ranking; no new research",
-          "generated_at": "2026-10-02T00:06:39Z",
-          "run_reference": "ts003-draft-r6-20261002"
+          "invocation": "TS-003 Draft r7 preferred-terminology conformance from approved Architecture r2 (Human APPROVED r2, Sol Draft Review r1 REQUEST_CHANGES F1-F5): full-volume prose rewrite, zero duplicate sentences, metaphor-substitution eliminated, evaluator classes explicit, boundary reader surface repaired; G01-G06 and 5 PARTIAL preserved semantically; no cross-task ranking; no new research",
+          "generated_at": "2026-10-02T14:42:07Z",
+          "run_reference": "ts003-draft-r7-20261002"
         },
         "headline": "予測する表現と生成する環境",
         "deck": "予測する表現と生成する世界をどう分けて読むか。歴史的定式、潜在ダイナミクス、予測表現、生成的環境の四つの極を立て、系譜の混線なく測り方ごとに整理する。各極の測り方と射程を対応表として一望し、用語の混線を避けて読む。",
@@ -6335,14 +6335,14 @@
       "package_id": "P15",
       "drafting_order": 16,
       "draft_package_sha256": "c8a198c22e92dbd9d56b84c5a668a287e9947a255a15a30235d32c10cc29f82f",
-      "draft_result_sha256": "6e317a5164d943080b598152a5c050fec5c60b60bdab708cc97094e168387a68",
+      "draft_result_sha256": "b231ed6e6f9b1081e349f228befb31d76dde65b9c3cf1a665e97081b79d5bb8a",
       "draft_result": {
         "schema_version": "2.0-rc1",
         "issue_id": "SP-vision-multimodal-2026",
         "research_profile": "THEMATIC",
         "publication_profile": "LONGFORM_SPECIAL",
         "package_id": "P15",
-        "draft_version": "r6",
+        "draft_version": "r7",
         "status": "REVISED",
         "basis": {
           "draft_package_sha256": "c8a198c22e92dbd9d56b84c5a668a287e9947a255a15a30235d32c10cc29f82f",
@@ -6352,9 +6352,9 @@
         "runner": {
           "provider": "Muse",
           "model": "Muse Spark (Work execution role; not a Sol/Human decision)",
-          "invocation": "TS-003 Draft r6 P09 terminology closure from approved Architecture r2 (Human APPROVED r2, Sol Draft Review r1 REQUEST_CHANGES F1-F5): full-volume prose rewrite, zero duplicate sentences, metaphor-substitution eliminated, evaluator classes explicit, boundary reader surface repaired; G01-G06 and 5 PARTIAL preserved semantically; no cross-task ranking; no new research",
-          "generated_at": "2026-10-02T00:06:39Z",
-          "run_reference": "ts003-draft-r6-20261002"
+          "invocation": "TS-003 Draft r7 preferred-terminology conformance from approved Architecture r2 (Human APPROVED r2, Sol Draft Review r1 REQUEST_CHANGES F1-F5): full-volume prose rewrite, zero duplicate sentences, metaphor-substitution eliminated, evaluator classes explicit, boundary reader surface repaired; G01-G06 and 5 PARTIAL preserved semantically; no cross-task ranking; no new research",
+          "generated_at": "2026-10-02T14:42:07Z",
+          "run_reference": "ts003-draft-r7-20261002"
         },
         "headline": "測る契約と残る限界と開かれた収束",
         "deck": "何を測り何を測っていないのか。全巻の評価の契約を測り方ごとに整理し、ベンダー測定と独立した測定を分け、一本化か分業かの収束を未決の問いとして残す。汚染への備えと主張の強さの見分けを示す方法の章として読む。",
@@ -6466,7 +6466,7 @@
           {
             "block_id": "p15-b4",
             "block_type": "PARAGRAPH",
-            "text": "動画の評価は長さの幅と指示文脈の想起で契約が分かれる。Video-MMEは900本254時間2700問の初の全域指標で、6領域30細分野と11秒から1時間の長さにまたがり、字幕と音声のモダリティを添え、専門家が注釈したと報告されている。短い切り抜きから一時間の番組まで幅で測り、字幕と音声の助けも使える条件で測る。Gemini 1.5 Proが商用モデルの最良で平均75%、GPT-4oの71.9%を上回ったというのは、ベンチマーク論文の著者による第三者測定だ。ベンダー測定ではなく、モデル論文の著者測定でもなく、独立した第三者再現でもないが、ベンダーの自己測定とは別の強さをもつ。画像と動画の視覚言語モデルの両方に掛かり、止まった絵のモデルも動く絵のモデルも同じ条件に載る。版はv3の記録で縛り、版を外して数値を扱ってはならない。LongVideoBenchは3763本の動画と字幕に6678件の人の多肢選択を載せ、17の細かい分類で、指示された長い文脈を取り出して考える参照推論の課題を置いたと報告されている。見つけてから考える二段の読みで、探すことと考えることを一つの課題に合わせる。知見はコマを増やして初めて伸びることで、枠数の感受性が将来の長い文脈のモデルへの位置づけになる。指示文脈の契約は長さの幅の契約と取り替えがきかず、長いものを広く測ることと指示されたものを取り出して考えることは別の内容だ。実時間の応答の契約はさらに別であり、溜めたものを考えることと流れるものに応じることは別の条件だ。幅で測る条件と想起で測る条件と実時間で測る条件は混ぜず、条件をまたいで結論を移してはならない。",
+            "text": "動画の評価は長さの幅と指示文脈の想起で契約が分かれる。Video-MMEは900本254時間2700問の初の全域指標で、6領域30細分野と11秒から1時間の長さにまたがり、字幕と音声のモダリティを添え、専門家が注釈したと報告されている。短い切り抜きから一時間の番組まで幅で測り、字幕と音声の助けも使える条件で測る。Gemini 1.5 Proが商用モデルの最良で平均75%、GPT-4oの71.9%を上回ったというのは、ベンチマーク論文の著者による第三者測定だ。ベンダー測定ではなく、モデル論文の著者測定でもなく、独立した第三者再現でもないが、ベンダーの自己測定とは別の強さをもつ。画像と動画の視覚言語モデルの両方に掛かり、止まった絵のモデルも動く絵のモデルも同じ条件に載る。版はv3の記録で縛り、版を外して数値を扱ってはならない。LongVideoBenchは3763本の動画と字幕に6678件の人の多肢選択を載せ、17の細かい分類で、指示された長い文脈を取り出して考える参照推論の課題を置いたと報告されている。見つけてから考える二段階の読みで、探すことと考えることを一つの課題に合わせる。知見はコマを増やして初めて伸びることで、枠数の感受性が将来の長い文脈のモデルへの位置づけになる。指示文脈の契約は長さの幅の契約と取り替えがきかず、長いものを広く測ることと指示されたものを取り出して考えることは別の内容だ。実時間の応答の契約はさらに別であり、溜めたものを考えることと流れるものに応じることは別の条件だ。幅で測る条件と想起で測る条件と実時間で測る条件は混ぜず、条件をまたいで結論を移してはならない。",
             "attribution_mode": "ATTRIBUTED",
             "evidence_refs": [
               {

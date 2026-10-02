@@ -4,7 +4,7 @@
   "research_profile": "THEMATIC",
   "publication_profile": "LONGFORM_SPECIAL",
   "package_id": "P01",
-  "draft_version": "r6",
+  "draft_version": "r7",
   "status": "REVISED",
   "basis": {
     "draft_package_sha256": "b32e4295e97079d4935f6004e4b813b13ae270ce9b854327f33e0221dc2e5791",
@@ -14,9 +14,9 @@
   "runner": {
     "provider": "Muse",
     "model": "Muse Spark (Work execution role; not a Sol/Human decision)",
-    "invocation": "TS-003 Draft r6 P09 terminology closure from approved Architecture r2 (Human APPROVED r2, Sol Draft Review r1 REQUEST_CHANGES F1-F5): full-volume prose rewrite, zero duplicate sentences, metaphor-substitution eliminated, evaluator classes explicit, boundary reader surface repaired; G01-G06 and 5 PARTIAL preserved semantically; no cross-task ranking; no new research",
-    "generated_at": "2026-10-02T00:06:39Z",
-    "run_reference": "ts003-draft-r6-20261002"
+    "invocation": "TS-003 Draft r7 preferred-terminology conformance from approved Architecture r2 (Human APPROVED r2, Sol Draft Review r1 REQUEST_CHANGES F1-F5): full-volume prose rewrite, zero duplicate sentences, metaphor-substitution eliminated, evaluator classes explicit, boundary reader surface repaired; G01-G06 and 5 PARTIAL preserved semantically; no cross-task ranking; no new research",
+    "generated_at": "2026-10-02T14:42:07Z",
+    "run_reference": "ts003-draft-r7-20261002"
   },
   "headline": "学んだ表現が土台になるとき",
   "deck": "手書きの特徴量からImageNet規模の学習への転換を追う。AlexNetの容量と実装の組み合わせとResNetの残差学習を読み、分類で鍛えた表現が検出とセグメンテーションの出発点になる筋を確認する。単一データの射程と学習レシピの読みの両義性を保つ。",
@@ -133,7 +133,7 @@
     {
       "block_id": "p01-b2",
       "block_type": "PARAGRAPH",
-      "text": "層を増やすと学習誤差そのものが上昇する劣化を、ResNet論文の著者らは診断の起点に据えた。勾配の爆発や消失は初期値と正規化でほぼ解消した後も、素朴に深くしたモデルでは学習誤差が増え、これは試験時の悪化ではなく学習の停滞、すなわち過学習ではなく最適化の問題だと述べた。深い側が浅い側と同じ写像をたどれるなら悪化するはずがない、という恒等写像の論拠が診断の中心にある。そこで学習対象をH(x)そのものから残差F(x)=H(x)-xへ置き換え、次元が一致する箇所の近道はパラメータなしの恒等写像とし、次元合わせが必要な箇所のみ式2の射影Wsを置く。通り抜けできる分だけ各層は積み上げる差分に専念でき、1x1-3x3-1x1のボトルネックで計算量を抑えて152層で11.3 GFLOPsとVGG-19より軽い。結果もモデル論文の著者測定に属し、152層単体で検証top-5誤り4.49%、集成でテストtop-5誤り3.57%を示してILSVRC 2015の1位、COCO検出で6.0ポイントの上積みを相対で28%の伸びとして学習表現のみに帰し、ImageNet検出・位置特定とCOCOセグメンテーションでも1位と報告している。検出の伸びは2015年当時のFaster R-CNN系列を基準にした評価条件での話であり、現在の評価軸での優劣は主張しない。",
+      "text": "層を増やすと学習誤差そのものが上昇する劣化を、ResNet論文の著者らは診断の起点に据えた。勾配の爆発や消失は初期値と正規化でほぼ解消した後も、素朴に深くしたモデルでは学習誤差が増え、これは試験時の悪化ではなく学習の停滞、すなわち過学習ではなく最適化の問題だと述べた。深い側が浅い側と同じ写像をたどれるなら悪化するはずがない、という恒等写像の論拠が診断の中心にある。そこで学習対象をH(x)そのものから残差F(x)=H(x)-xへ置き換え、次元が一致する箇所のショートカット接続はパラメータなしの恒等写像とし、次元合わせが必要な箇所のみ式2の射影Wsを置く。通り抜けできる分だけ各層は積み上げる差分に専念でき、1x1-3x3-1x1のボトルネックで計算量を抑えて152層で11.3 GFLOPsとVGG-19より軽い。結果もモデル論文の著者測定に属し、152層単体で検証top-5誤り4.49%、集成でテストtop-5誤り3.57%を示してILSVRC 2015の1位、COCO検出で6.0ポイントの上積みを相対で28%の伸びとして学習表現のみに帰し、ImageNet検出・位置特定とCOCOセグメンテーションでも1位と報告している。検出の伸びは2015年当時のFaster R-CNN系列を基準にした評価条件での話であり、現在の評価軸での優劣は主張しない。",
       "attribution_mode": "ATTRIBUTED",
       "evidence_refs": [
         {
