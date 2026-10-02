@@ -1,6 +1,6 @@
 # TS-003 Drafting Terminology Map — Japanese reader-facing prose
 
-Status: `EDITION_LOCAL / CUMULATIVE_TERMINOLOGY_AUTHORITY / DRAFT_R6_BINDING`
+Status: `EDITION_LOCAL / CUMULATIVE_TERMINOLOGY_AUTHORITY / DRAFT_R7_BINDING`
 
 Date: `2026-10-02 JST`
 
@@ -15,7 +15,7 @@ Review authorities incorporated:
 - `sources/SP-vision-multimodal-2026/execution/sol-draft-review-r1.md`
 - `sources/SP-vision-multimodal-2026/execution/sol-draft-review-r2.md`
 
-This cumulative authority supersedes earlier map revisions for Draft r6 and later TS-003 reader-surface work.
+This cumulative authority supersedes earlier map revisions for Draft r7 and later TS-003 reader-surface work.
 
 ## 0. Authority and maintenance rule
 
@@ -102,7 +102,7 @@ First-use pattern: natural Japanese + term once when useful (for example `接地
 | VLM | 視覚言語モデル（VLM）→ 以後はVLM | 視覚言語模型 |
 | Vision-Language-Action / VLA | Vision-Language-Action（VLA）→ 以後はVLA | 視覚言語行動模型 |
 | Computer Use | Computer Use（コンピュータ操作）→ 以後はComputer Use | 計算機利用、電脳使用 |
-| open-vocabulary | オープンボキャブラリー | 開放語彙、開語彙 |
+| open-vocabulary | オープンボキャブラリー | 開放語彙、開語彙、開かれた語彙、開いた語彙 |
 | referring expression | 指示表現 | 参照表現への機械的寄せ |
 | phrase grounding | フレーズの接地 | 句接地 |
 | REC / OVD / OVS | REC / OVD / OVS（初出のみ説明） | 漢語略称の新造 |
@@ -119,8 +119,24 @@ First-use pattern: natural Japanese + term once when useful (for example `接地
 | fine-tuning | ファインチューニング | 全巻での無秩序な微調整との揺れ |
 | pretraining | 事前学習 | — |
 | post-training | ポストトレーニング | 事後学習 |
-| encoder / decoder / backbone | エンコーダ / デコーダ / バックボーン | 符号器、復号器、基幹網 |
+| encoder / decoder / backbone | エンコーダ / デコーダ / バックボーン | 符号器、復号器、architecture/component senseのbare 復号、基幹網 |
 | resampler / Q-Former / cross-attention | リサンプラ / Q-Former / cross-attention | 交差注意への機械的漢語化 |
+| attention / window attention / attention map | アテンション / ウィンドウアテンション / アテンションマップ | mechanism名としての注意、窓注意 |
+| query / query vector | クエリ / クエリベクトル | Q-Former/Transformer文脈の問い合わせ、問い合わせベクトル |
+| shortcut / shortcut connection | ショートカット接続 | ResNet機構名としての近道 |
+| one-stage / two-stage detector | one-stage / two-stage（初出のみ「1段型/2段型」併記可） | detector architecture名としての一段・二段 |
+| feature map | 特徴マップ | feature mapを表す特徴量地図、特徴地図 |
+| dual encoder / two-tower | デュアルエンコーダ / two-tower（初出のみ説明） | 二塔、塔をarchitecture名として使うこと |
+| Mixture-of-Experts / MoE | Mixture-of-Experts（MoE）→ 以後はMoE | 混合専門家、専門家混合を固有architecture名の代用にすること |
+| dense model / dense architecture | denseモデル / dense構成（初出のみ説明） | model typeを表す稠密 |
+| model checkpoint | チェックポイント | モデル検査点、検査点 |
+| trainable parameters | 学習可能パラメータ / trainable parameters（初出のみ併記可） | 学習変数 |
+| model/configuration variant | バリアント / 派生モデル（文脈に応じる） | model/configuration senseの変種 |
+| category / base category / novel category | カテゴリ / ベースカテゴリ / novelカテゴリ（初出のみ説明可） | ML/CV taxonomyを表す範疇 |
+| cold start | コールドスタート | 冷間始動 |
+| masked label / masked token | マスクされたラベル / マスクされたトークン | mechanism説明としての覆ったラベル・覆ったトークン |
+| speech / ASR | 音声 / 音声認識（ASR） | speech modalityのprimary technical labelとしての話し言葉 |
+| architecture component / module | 構成要素 / モジュール / 具体的なcomponent名 | architecture senseの部品 |
 | frozen (encoder/model) | 凍結した〜 | 固定化の名詞連鎖 |
 | token / tokenizer | トークン / トークナイザ | 符号、字句化 |
 | source code / software code | コード / ソースコード / 推論コード / 学習コード（文脈に応じる） | 符号 |
@@ -129,13 +145,13 @@ First-use pattern: natural Japanese + term once when useful (for example `接地
 | context window / context length | コンテキスト / コンテキスト長 | 文脈長への機械的寄せ |
 | KV cache / memory pressure | KVキャッシュ / メモリ負荷 | 鍵値緩衝 |
 | resolution | 解像度 | 解像化 |
-| box / mask / coordinate | ボックス / マスク / 座標 | 枠、覆面をtechnical termの代用にすること |
+| box / mask / coordinate | ボックス / マスク / 座標 | technical boxとしての箱・枠、覆面をtechnical termの代用にすること |
 | anchor / NMS / region proposal | アンカー / NMS / 領域提案 | 非極大抑制の毎回展開 |
 | set prediction / dense prediction | 集合予測 / 密な予測 | 集合化 |
 | panoptic / instance / semantic | パノプティック / インスタンス / セマンティック | 汎分割 |
 | keypoint / pose | キーポイント / ポーズ / 姿勢推定（文脈に応じる） | — |
 | depth estimation | 深度推定 / 文中では「深さを推定」も可 | 深さ化 |
-| calibration-free | キャリブレーション不要の〜 | 無較正化 |
+| calibration-free | キャリブレーション不要の〜 | 較正なし、無較正化をtechnical labelとして使うこと |
 | hallucination | ハルシネーション | technical termとしての幻覚 |
 | CoT / scaffold / judge | CoT / scaffold（補助的手順） / 判定（judge） | 思考連鎖の機械的漢語化、審査員 |
 | contamination | 汚染 / データ汚染 | 混入化 |
@@ -154,7 +170,7 @@ First-use pattern: natural Japanese + term once when useful (for example `接地
 | latent dynamics | 潜在ダイナミクス | 潜在力学化 |
 | simulator | シミュレータ | 模擬器 |
 | action token | 行動トークン | 動作符号化 |
-| open weights | オープンウェイト | 公開重み化 |
+| open weights | オープンウェイト | 開かれた重み、公開重み化 |
 | vendor claim / independent result | ベンダー主張 / 独立した再現・評価 | 供給者説 |
 | model card | モデルカード | 模型証 |
 | OCR / layout / chart | OCR / レイアウト / 図表 | 光学文字認識の毎回展開 |
@@ -171,7 +187,7 @@ First-use pattern: natural Japanese + term once when useful (for example `接地
 | operating point | 動作点 | 稼働点化 |
 | trade-off | トレードオフ | 交換化 |
 | training recipe | 学習レシピ / レシピ | 処方、調製法化 |
-| scaling | スケーリング | 規模化 |
+| scaling | スケーリング | scaling概念を表す規模化・大規模化 |
 | methodological discipline / constraint | 方法上の規律 / 制約 / 前提（意味に応じる） | 躾 |
 | evidence/evaluation category | 根拠の区分 / 評価区分 / source role等を具体的に書く | 棚 |
 | criterion / metric / yardstick | 評価基準 / 指標 / 測定条件（意味に応じる） | technical termとしての物差し |
@@ -329,7 +345,55 @@ Context exceptions:
 - ordinary physical `入口` and literal `部品` are unaffected;
 - `自己教師あり` is the approved established term; substring scans must not misclassify it as bare `自己教師`.
 
-### 3.7 Regression principle
+### 3.7 Sol reader/publication candidate r1 residual failures — preferred-form conformance gap
+
+The first exact PDF materialization exposed a QA defect: prior rounds searched known bad strings aggressively but did not enforce the preferred-form side of Section 2 consistently across headlines, decks, body blocks and boundaries. These are therefore cumulative blocking regression cases for r7.
+
+| Observed form | Intended concept / function | Preferred repair | First formalized |
+|---|---|---|---|
+| technical bounding box senseの箱（P02/P03/P07B等、headline含む） | bounding box / box | ボックス / 初出で必要ならバウンディングボックス（ボックス） | Sol Reader/Publication Review r1 |
+| 開かれた語彙 / 開いた語彙 | open-vocabulary | オープンボキャブラリー | Sol Reader/Publication Review r1 |
+| decoder senseの汎用復号 / 復号設計 | decoder / decoder design | 汎用デコーダ / デコーダ設計 | Sol Reader/Publication Review r1 |
+| calibration-free senseの較正なし | calibration-free | キャリブレーション不要 | Sol Reader/Publication Review r1 |
+| scaling senseの大規模化 | scaling | スケーリング | Sol Reader/Publication Review r1 |
+| open-weights senseの開かれた重み | open weights | オープンウェイト | Sol Reader/Publication Review r1 |
+| architecture senseの部品（例: P08 headline「凍結した部品をつなぐ橋」、部品の選び方、凍結した部品） | component / module | 構成要素 / モジュール / 画像エンコーダ等の具体名 | Sol Reader/Publication Review r1 |
+| technical transition/interfaceのprimary labelとしての橋 / 橋渡し | connection / transition / interface role | 接続方式 / 統合 / 適用拡張など実際の技術的役割を直接書く | Sol Reader/Publication Review r1 |
+| model-lineageのprimary organizerとしての一本の鎖 / 鎖のなか | lineage / staged progression | 系譜 / 連続する変化 / 段階的な変化 | Sol Reader/Publication Review r1 |
+| Q-Former/Transformerの問い合わせ / 問い合わせベクトル | query / query vector | クエリ / クエリベクトル | Sol Reader/Publication Review r1 |
+| mechanism senseの窓注意 / 注意マップ | window attention / attention map | ウィンドウアテンション / アテンションマップ | Sol Reader/Publication Review r1 |
+| ResNet shortcut senseの近道 | shortcut connection | ショートカット接続 | Sol Reader/Publication Review r1 |
+| detector architecture senseの一段 / 二段 | one-stage / two-stage detector | one-stage / two-stage（初出のみ説明可） | Sol Reader/Publication Review r1 |
+| feature map senseの特徴量地図 | feature map | 特徴マップ | Sol Reader/Publication Review r1 |
+| dual-encoder senseの二塔 / 塔 | dual encoder / two-tower | デュアルエンコーダ / two-tower | Sol Reader/Publication Review r1 |
+| MoE senseの混合専門家 | Mixture-of-Experts / MoE | Mixture-of-Experts（MoE） / MoE | Sol Reader/Publication Review r1 |
+| dense-model senseの稠密 | dense model | denseモデル / dense構成 | Sol Reader/Publication Review r1 |
+| cold-start senseの冷間始動 | cold start | コールドスタート | Sol Reader/Publication Review r1 |
+| model-checkpoint senseの検査点 | model checkpoint | チェックポイント | Sol Reader/Publication Review r1 |
+| trainable-parameter senseの学習変数 | trainable parameters | 学習可能パラメータ | Sol Reader/Publication Review r1 |
+| model/configuration senseの変種 | model/configuration variant | バリアント / 派生モデル | Sol Reader/Publication Review r1 |
+| CV/ML category senseの範疇 | category | カテゴリ / ベースカテゴリ / novelカテゴリ等 | Sol Reader/Publication Review r1 |
+| masked-label senseの覆った離散ラベル | masked discrete labels | マスクされた離散ラベル | Sol Reader/Publication Review r1 |
+| speech/ASRのprimary labelとしての話し言葉 | speech / ASR | 音声 / 音声認識（ASR） | Sol Reader/Publication Review r1 |
+
+Context exceptions:
+
+- literal physical boxes, household/family objects, ordinary bridges and literal chains are unaffected;
+- ordinary Japanese `問い合わせ` for a user request remains valid; only model-query terminology is normalized;
+- ordinary `注意` meaning caution remains valid; only attention mechanisms/maps use アテンション;
+- ordinary `近道` meaning shortcut/heuristic remains valid; only ResNet-style shortcut connections are normalized;
+- learning phases described as first/second stage may use 第一段階/第二段階; detector architecture labels use one-stage/two-stage;
+- ordinary `変種` outside model/configuration terminology is unaffected;
+- ordinary spoken-language explanation may use descriptive Japanese, but when the concept is the speech modality/ASR task, use 音声/音声認識;
+- Architecture-defined P14 `四つの極` remains an explicit approved exception.
+
+QA consequence:
+
+**Preferred form is normative, not merely advisory.** Pass A must semantically classify every load-bearing concept in Section 2. A surface does not conform merely because the Avoid column has zero literal hits. A nonpreferred synonym, calque, domesticating paraphrase, or metaphor that replaces a preferred technical term is blocking unless the QA report records a specific context exception.
+
+Headlines and decks receive no relaxed terminology standard.
+
+### 3.8 Regression principle
 
 Do not “fix” one known form by inventing another metaphor.
 
@@ -393,13 +457,16 @@ Prefer direct statements:
 
 Draft r3以降のlanguage QAは、単純なregex countだけでPASSを出してはならない。
 
-### Pass A — preferred/avoid scan
+### Pass A — preferred-form semantic conformance + avoid scan
 
 For every row in Sections 1 and 2:
 
-- preferred formを確認;
-- Avoid / regression formを検索;
-- headline / deck / PARAGRAPH / BULLET / TABLE / CLAIM_BOUNDARY / synthesisを対象にする。
+- preferred formをconcept単位で確認する;
+- Avoid / regression formを検索する;
+- Avoid欄に文字列がなくても、preferred technical termを別の独自訳・意訳・比喩で置換していないか確認する;
+- headline / deck / PARAGRAPH / BULLET / TABLE / CLAIM_BOUNDARY / synthesisを対象にする;
+- headline/deckにも本文と同じterminology authorityを適用する;
+- preferred form以外を維持する場合は、QA reportにexact sentenceとcontext exceptionの根拠を記録する。
 
 ### Pass B — known-failure regression scan
 
@@ -446,9 +513,9 @@ Core validator PASSはlanguage PASSではない。
 
 Terminal map state:
 
-`TS-003_TERMINOLOGY_MAP_CUMULATIVE_R6_BINDING`
+`TS-003_TERMINOLOGY_MAP_CUMULATIVE_R7_BINDING`
 
-`KNOWN_FAILURES_THROUGH_SOL_DRAFT_REVIEW_R5_INCORPORATED`
+`KNOWN_FAILURES_THROUGH_SOL_READER_PUBLICATION_REVIEW_R1_INCORPORATED`
 
 `SEMANTIC_QA_REQUIRED`
 
