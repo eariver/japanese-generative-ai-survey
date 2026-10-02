@@ -4,8 +4,8 @@
   "research_profile": "THEMATIC",
   "publication_profile": "LONGFORM_SPECIAL",
   "package_id": "P05",
-  "draft_version": "r9",
-  "status": "REVISED",
+  "draft_version": "r1",
+  "status": "ESTABLISHED",
   "basis": {
     "draft_package_sha256": "514884ea498f749e834e58006f0d9dfa4d16af5e87e96e929cee405e9a9e1019",
     "prompt_id": "article-drafting-v2",
@@ -14,12 +14,12 @@
   "runner": {
     "provider": "Muse",
     "model": "Muse Spark (Work execution role; not a Sol/Human decision)",
-    "invocation": "TS-003 Draft r9 final micro-cleanup from approved Architecture r2 (Human APPROVED r2, Sol Draft Review r1 REQUEST_CHANGES F1-F5): full-volume prose rewrite, zero duplicate sentences, metaphor-substitution eliminated, evaluator classes explicit, boundary reader surface repaired; G01-G06 and 5 PARTIAL preserved semantically; no cross-task ranking; no new research",
-    "generated_at": "2026-10-02T15:52:54Z",
-    "run_reference": "ts003-draft-r9-20261002"
+    "invocation": "TS-003 Draft r1: 16-package Japanese long-form drafting from approved Architecture r2 (Human APPROVED r2); evidence-bounded prose under edition-local language policy drafting-language-policy-ja.md + terminology map; G01-G06 and 5 PARTIAL records preserved; vendor claims attributed; no cross-task ranking",
+    "generated_at": "2026-10-01T04:03:22Z",
+    "run_reference": "ts003-draft-r1-20261001"
   },
   "headline": "OCRから文書理解へ",
-  "deck": "文字起こしから配置と構造の読みへ。LayoutLM系とOCRフリー系の系譜をたどり、画素だけを見る設計の制約と二つの特化型の失敗の姿を比べる。検索界面と二つの評価契約の許容を添え、順位付けは行わない。",
+  "deck": "文字起こしから配置と構造の読みへ。LayoutLM系とOCRフリー系の系譜をたどり、二つの特化型を失敗の姿で比べる。文書検索と二つのベンチマークの契約を添え、数値の順位は付けない。解像度とトークン配分の隘路を通奏の問いとし、特化の見取り図を残す。",
   "deck_attribution_mode": "MIXED",
   "deck_evidence_refs": [
     {
@@ -76,7 +76,7 @@
     {
       "block_id": "p05-b1",
       "block_type": "PARAGRAPH",
-      "text": "LayoutLMは文書理解に事前学習を持ち込んだ起点である。Xuらによれば、トークン埋め込み・レイアウト埋め込み・画像埋め込みを一つのTransformerに入れ、大量のラベルなしスキャン文書で自己教師あり学習する。書式理解・領収書理解・スキャン文書分類で評価し、先行の事前学習モデルを大きく上回ったと、モデル論文の著者測定として報告している。転換の要点は、文字の並びだけでなく配置を教師信号に加えた点にある。欄と値の対応は語順だけでは決まらないため、配置込みの表現を先に学ぶ手順が対応づけを支える。ただし対象はベース版の範囲に限られ、画像側の扱いは浅い。論文は、より多くのデータと計算、画像埋め込みを含むLARGE構成、新しいアーキテクチャと自己教師あり目的関数を試す方向を明示している。文書AIをデータと計算の規模で読む見方はここに始まる。LayoutLMv3はこの系譜の後継である。Huangらによれば、事前学習済みCNNやFaster R-CNNの視覚バックボーンを使わず、領域アノテーションも要さない。視覚バックボーンを排した分、パラメータを節約する。テキストへのマスク言語モデル、画像へのマスク画像モデル、単語とパッチの対応づけを一組の目的関数として解くと、モデル論文の著者測定として報告している。文字中心と画像中心の双方の課題で汎用性と優位を示したとしている。画像モダリティの事前学習目的を外すと線形パッチ埋め込みは振るわず、色やトークンの再構成に変えると下流課題が落ちるというアブレーションが、目的関数の設計の効きを示す。より大きなデータと計算への拡張やfew-shotとゼロショットの能力は将来課題であり、確立した成果ではない。",
+      "text": "LayoutLMは、文書理解に事前学習を持ち込んだ起点である。Xuらによれば、トークン埋め込みとレイアウト埋め込みと画像埋め込みを一つのTransformerに載せ、大量のラベルなしスキャン文書で自己教師あり学習する。文字の符号と配置の符号と絵の符号を、一つの列に載せて学ぶ。書式理解と領収書理解とスキャン文書分類で評価し、先行の事前学習モデルを大きく上回ったと報告している。転換の要点は、文字の並びだけを見ず、どこに書かれたかという配置を教師信号に加えた点にある。書式や領収書では、語の並びだけでは欄と値の対応が取れない。欄の位置と値の位置の対応が、読みの要である。配置込みの表現を先に学ぶ段取りが、この対応を支える。ただし対象はベース版の範囲に限られる。統合した後継が必要だと論文自体が区切っている。絵の側の扱いは浅く、文字と配置が主である。論文は先の課題も明示する。より多くのデータと計算、画像埋め込みを含むLARGE構成、新しいアーキテクチャと自己教師あり目的関数を試すという方向である。文書AIをデータと計算の規模で読む見方はここに始まる。LayoutLMv3は、この系譜を一組のマスク学習に束ね直した後継である。Huangらによれば、事前学習したCNNやFaster R-CNNの視覚バックボーンを使わない。領域アノテーションも要さず、パラメータを節約する。テキストへのマスク言語モデル、画像へのマスク画像モデル、単語とパッチの対応づけを一組の目的関数として解くと報告している。隠して当てる課題を、文と絵と対応の三つで組にする。文字中心の課題と画像中心の課題の双方で汎用性と優位を示したとしている。設計を支えるアブレーションもある。画像モダリティの事前学習目的を外すと線形パッチ埋め込みは振るわず、色やトークンの再構成に変えると下流課題が落ちると報告している。目的関数の設計が効きを分けることを示す。絵の側の目的を抜くと、素朴な埋め込みでは立たない。残る限りも明示する。より大きなデータと計算への拡張や、フューショットとゼロショットの能力は将来課題であって、確立した成果ではない。文書をどう数式化するかの前史として、配置の事前学習と一組のマスク学習の二段を置く。",
       "attribution_mode": "ATTRIBUTED",
       "evidence_refs": [
         {
@@ -112,7 +112,7 @@
     {
       "block_id": "p05-b2",
       "block_type": "PARAGRAPH",
-      "text": "DonutはOCRを使う前提を外した分岐である。Kimらによれば、文書画像をエンドツーエンドのTransformerで直接、構造をもつ出力に写し、ページごとのOCRの計算コスト、文字列だけを返す硬さ、誤読が後段へ波及する連鎖の三つを取り除く。文書理解の課題で速度と精度の到達点に届いたと、モデル論文の著者測定として報告し、コードとモデルを公開している。言語や領域を切り替える工夫としてSynthDoGという合成データ生成器を添え、実文書の収集を待たずに言語と体裁の組み合わせを起こせる。集めにくい言語や体裁にも、合成で手を伸ばす。ただし合成学習への依存が残り、合成で見ない汚れや崩れには弱いという限界が、領域を移すときの転移を縛る。事前学習とファインチューニングの効きは入力解像度に強く左右されると論文自体が述べる。細かい文字を読むための高解像度化は、トークン増による学習と推論の負荷と天秤にかかる。画素だけを見る設計では、高解像度化が系列長の制約にぶつかる。どこに何トークンを割くかの配分が、文書を読む設計の要点になる。この制約は、科学論文特化の後継が引き継ぐ。汎用のOCR理論も別の見方で同じ制約に向き合う。",
+      "text": "Donutは、OCRを使う前提を外した分岐である。Kimらによれば、文書画像をエンドツーエンドのTransformerで直接、構造をもつ出力に写す。絵を入れて構造を出すまでを、一つの写像で通す。OCRの計算コストと硬さと誤りの連鎖を取り除く狙いである。ページごとにOCRを回すコスト、文字列だけを返す硬さ、誤読が後段へ波及する連鎖の三つを、単一の写像で断つ。OCR段の取り決めに縛られず、出力の構造へ直に向かう。文書理解の課題で速度と精度の到達点に届いたと報告し、コードとモデルを公開している。速さと出来の両にらみで到達に届いたという主張であり、再現の道も開く。言語や領域を切り替える工夫として、SynthDoGという合成データ生成器を添える。合成で学習ペアを作り分け、言語と領域の柔軟性を保つ設計である。実文書の収集を待たずに、言語と体裁の組み合わせを起こせる。集めにくい言語や体裁にも、合成で手を伸ばす。ただしこの選択は来歴を縛る。合成学習への依存が残り、領域を移すときの持ち運びに限りが生じる。合成の癖が実文書の癖とずれると、出来が落ちる。合成で見ない汚れや崩れには弱い。もう一つの縛りは解像度である。事前学習とファインチューニングの効きは入力解像度に強く左右されると論文自体が述べる。細かい文字を読むには解像度を上げたいが、上げるとトークンが増えて学習と推論が重くなる。読みの細かさと列の長さが天秤にかかる。画素だけを見るモデルでは、高解像度が系列長の壁にぶつかる。この壁は、文書を読むコスト配分を考える手がかりである。どこに何トークンを割くかの配分が、文書AIの勘所になる。解像度を上げるか、列を延ばすかの二律背反である。この壁は科学論文特化の後継が引き継ぐ。汎用OCR理論も別の処方で同じ壁に向き合う。壁の存在は共有し、処方は分かれる。",
       "attribution_mode": "ATTRIBUTED",
       "evidence_refs": [
         {
@@ -134,7 +134,7 @@
     {
       "block_id": "p05-b3",
       "block_type": "PARAGRAPH",
-      "text": "Pix2Structは画素だけを見る流れをスクリーンショットの構文理解へ広げた。Leeらによれば、マスクしたウェブのスクリーンショットから簡略HTMLを再構成する事前学習が、OCRと言語モデルとキャプションの信号を一つの課題に畳む。HTMLの再構成は、文字と配置と要素名を同時に当てる課題である。入力の解像度を可変に保ち、画像の上に描いた文字で指示を与える。縦長の頁も横広の画面も、そのまま受ける。絵の中の文字が、絵への指示になる。文書と図版とUIと自然画像にまたがる九つの課題のうち六つで、単一モデルとして初めて到達点に届いたと、モデル論文の著者測定として報告している。転換の要点は、読む対象を文書に限らず、モバイルアプリやボタンや書式を同じ純粋に視覚の理解の枠に入れた点にある。UIを文書の延長として扱う整理は画面操作の節へ渡すためのものであり、押す・遷移する議論は本節では行わない。高解像度化が系列長の制約になるという限界はDonut系と共通であり、論文自体の議論として残す。文書検索の界面として、Qwenチームの報告によれば、Qwen3-VL-Embeddingは視覚言語モデルを基盤にした検索パイプラインであり、埋め込みは多段階の対照事前学習からリランカ蒸留へ進み、Matryoshka次元と32K入力と2B・8B構成をもつ。32K入力で長い文書も切らずに受け、2Bと8Bの二構成で運用点を分ける。8BがMMEB-V2で77.8を得て2026年1月8日時点で1位に立ったとしているが、これはモデル論文の著者測定によるプレプリント時点の主張であり、独立した第三者再現はまだない。多言語30言語超の対応はQwen3-VLから引き継ぐ。本節では検索は文書を読む主体の議論に従属させ、細部には立ち入らない。",
+      "text": "Pix2Structは、画素だけを見る流れをスクリーンショットの構文理解へ広げた。Leeらによれば、マスクしたウェブのスクリーンショットから簡略HTMLを再構成する事前学習が、OCRと言語モデルとキャプションの信号を束ねる。画面を隠して骨組みを当てに戻す。HTMLの再構成は、文字と配置と部品名を同時に当てる課題であり、三つの信号を一つの課題に畳む。文字を読む力と文の力と絵の説明の力を、一つの当て戻しで練る。入力の解像度を可変に保ち、画像の上に描いた文字で指示を与える。解像度を固定で切り詰めず、画面の縦横に追従する。縦長の頁も横広の画面も、そのまま受ける。指示も外の文ではなく、画像に描いた文字で与える。絵の中の文字が、絵への指示になる。文書と図版とUIと自然画像にまたがる九つの課題のうち六つで、単一モデルとして初めて到達点に届いたと報告している。一つの目で九つの読みを賄い、六つで頂に立つ。転換の要点は、読む対象を文書に限らない点にある。モバイルアプリやボタンや書式を、同じ純粋に視覚の理解の枠に入れる。釦の文言も欄の罫も、文書の文字と同じ目で読む。UIを文書の延長として扱う見方は、画面操作を扱う節への受け渡しであって、本節で操作の中身を重ねて論じない。読む枠組みだけを置き、押す・遷移するの議論は譲る。押してどう変わるかは、操作の節の仕事である。限りもDonut系と共通である。高解像度が系列長の壁になるという解像度の隘路を、論文自体の議論として残す。画素だけを見る設計の代償であり、解像度を上げるほど系列が延びる。画面の密度が上がるほど、この代償が重くなる。密な画面ほど、列が延びて重くなる。この純粋に視覚の理解は、文書検索の界面につながる。Qwenチームによれば、Qwen3-VL-Embeddingは視覚言語モデルを土台にした検索パイプラインである。読む目を土台に、探す管を組む。埋め込みは多段階の対照事前学習からリランカ蒸留へ進み、Matryoshka次元と32K入力と2B・8B構成をもつ。対照で広く学び、リランカの蒸留で締める二段である。長い入力で文書の束を受け、大小二つの構成で運用点を分ける。長い文書も切らずに受ける。8BがMMEB-V2で77.8を得て2026年1月8日時点で1位に立ったと報告している。ただしこの順位は著者らが測ったもので、プレプリント時点の主張である。独立した再現はまだない。順位の言い方はこの留保と一緒に運ぶ。著者の計測と他者の再現は別の契約である。多言語30言語超の対応はQwen3-VLから引き継ぐ。役割は文書RAGの界面であり、エンコーダ再利用の参照点でもある。探す管の目安であり、目の使い回しの例でもある。本節では検索を従属の小路として扱い、文書を読む主体の議論に吸収しない。検索の細部に深入りせず、界面の契約だけを置く。探す話は読む話に従属する。",
       "attribution_mode": "MIXED",
       "evidence_refs": [
         {
@@ -170,7 +170,7 @@
     {
       "block_id": "p05-b4",
       "block_type": "PARAGRAPH",
-      "text": "Nougatは科学論文に絞った特化型の到達点である。Blecherらによれば、Donutの系譜を引くSwinエンコーダ・デコーダが科学論文のPDFをマークアップに変換し、本文とLaTeX数式と表を一つの出力に載せる。数式の添字や表の桁揃えを、文字起こしの延長で直列化する。arXivとPMCとIDLから作った学習ペアで学び、モデルとコードを公開している。機構の要点は、配置と数式と表構造を文字起こしの延長で直列化する点にある。汎用モデルが画面全体を読むのに対し、論文の体裁に強く寄せた入出力の契約をもつ。だからこそ失敗の姿がはっきり出る。同じ行や断片を繰り返し吐いて止まれなくなる繰り返しのモードがあり、研究論文の構造に偏るため他の文書では出来が落ちる。学習のほぼ全体が英語で、ラテン系言語の小さな試験しかないと論文自体が述べる。比較の規律も明示する。自前の試験でのマークアップ一致をGROBIDやpdfテキスト抽出と比べるだけで、他モデルとの数値優劣は付けない。評価の契約はDocVQAが定める。12K超の文書画像に50Kの問いを載せ、九種の推論型に分け、八対一対一で割ると、ベンチマーク論文の著者による第三者測定として報告している。指標はANLSに正確度を添える。ANLSは文字の小さなずれを許容する指標であり、一字のずれで零にしないという許容と組で読む。素の正確度だけを置かず必ずANLSで読むのは、OCR部分文字列の上限が膨らむからである。抜き出しで拾える問いは、読めたことにならない。人手の94.36%に対し、LoRRAやM4CやBERT-QAといったベースラインとの差は、表や欄の対応を要する構造を読む問いで開く。データセットとコードとリーダーボードを公開し、WACV 2021で発表した。汚染は中程度、言語先行の危うさは高いとされ、抜き出しの近道が残り、ウェブ文書の混入も避けがたい。",
+      "text": "Nougatは、科学論文に絞った特化型の到達点である。Blecherらによれば、Donutの系譜を引くSwinエンコーダ・デコーダが、科学論文のPDFをマークアップに変換する。OCRを外す分岐の直系であり、目は階層のSwinである。本文とLaTeX数式と表を一つの出力に載せる。数式の添字や表の桁揃えを、文字起こしの延長で直列化する。地の文と式と表を、一本の列に載せる。arXivとPMCとIDLから作った学習ペアで学び、モデルとコードを公開して科学文書の認識に渡す。学術の庫から対を作り、学術の読みに返す。学習ペアの出所は学術文書に偏り、この偏りが後の限りになる。機構の要点は、配置と数式と表構造を文字起こしの延長で直列化する点にある。汎用モデルが画面全体を読むのに対し、論文の体裁に強く寄せた入出力の契約をもつ。論文の頁を想定した読み書きの約束である。だからこそ失敗の姿がはっきり出る。繰り返しに陥るモードがある。同じ行や同じ断片を繰り返し吐き、止まれなくなる。止まるべき所で止まれない。研究論文の構造に偏り、他の文書は変換できるものの出来が落ちる。論文の体裁に寄せた分、請求書や書式の体裁には弱い。学術の外では足が鈍る。学習のほぼ全体が英語で、ラテン系言語の小さな試験しかないと論文自体が述べる。言語の裾野は狭く、英語の外は試しが足りない。英語の論文には強く、他言語には試しが薄い。比較の規律も明示する。自前の試験でのマークアップ一致をGROBIDやpdfテキスト抽出と比べるだけで、他モデルとの数値優劣は付けない。自前の物差しでの一致を見るだけで、他者との勝敗は付けない。本節も数値を並べない。特化の限界を失敗の姿で読む。どこで崩れるかが、特化の履歴書である。崩れ方が、特化の来歴を語る。評価の契約はDocVQAが定める。12K超の文書画像に50Kの問いを載せ、九種の推論型に分け、八対一対一で割ると報告している。学びと検証と試験の配分を定める。指標はANLSに正確度を添える。ANLSは文字の小さなずれを許容する指標であり、素の正確度と組で読む。一字のずれで零にしない物差しである。人手の94.36%に対し、LoRRAやM4CやBERT-QAといったベースラインとの差は、構造を読む問いで開く。表や欄の対応を要する問いで、機械は人を離される。抜き出しでは届かない問いが、差になる。データセットとコードとリーダーボードを公開し、WACV 2021で発表した。報告の規律は厳しい。素の正確度だけを置かず、必ずANLSで読む。OCR部分文字列の上限が膨らむからである。抜き出しで拾える問いは、読めたことにならない。拾える上限の高さが、正確度の見かけを上げる。汚染は中程度、言語先行の危うさは高いとされ、抜き出しの近道が残る。ウェブ文書の混入も避けがたい。言葉の癖で当たる問いが混じる。この契約に照らすと、自前評価だけでは測れないものが残る。繰り返しと言語と構造の偏りは、論文が自ら申告した限りである。申告された限りは、覆さずに運ぶ。ないものは足さず、ある限りを受け取る。",
       "attribution_mode": "MIXED",
       "evidence_refs": [
         {
@@ -213,7 +213,7 @@
     {
       "block_id": "p05-b5",
       "block_type": "PARAGRAPH",
-      "text": "GOTはOCR-2.0という理論を掲げる別系統の特化型モデルである。Weiらによれば、人工の光学的信号をすべて文字とみなし、580Mの単一エンドツーエンドモデルで解く。80Mの高圧縮エンコーダが1024画素を256トークンに畳み、長いコンテキストのデコーダが受ける。この圧縮により、長い文書を一つのモデルで受ける。素の出力と整形出力を切り替え、markdownやtikzやsmilesやkernを書き分ける。領域を指定して対話的に読むOCR、解像度を動かす読み、複数ページの読みを備えると、モデル論文の著者測定として報告している。OCR-1.0のパイプラインより構造が単純で、汎用視覚言語モデルよりOCRに絞る分、報告した性能が上回るという位置づけは、自前のOCR-2.0一式の中での主張として隔離する。同じ手順で測った汎用モデルとの直接対決は見つかっていない。図表を読む契約はChartQAが定める。9.6Kの人手設問と23.1Kの生成設問を、目で見る読みと論理の読みに分け、緩和正確度で測ると、ベンチマーク論文の著者による第三者測定として報告している。緩和正確度の許容の意味は数値と切り離さず、許容の幅と組で読む。実世界の図表を対象とし、FigureQAやDVQAやPlotQAの合成前史を文脈に置く。作られた図の文脈を背負い、生の図に進む。報告時点の到達点はVisionTaPasで、Findings ACL 2022で発表し、リポジトリを開く。",
+      "text": "GOTは、OCR-2.0という理論を掲げる特化型のもう一極である。Weiらによれば、人工の光学的信号をすべて文字とみなし、580Mの単一エンドツーエンドモデルで解く。文書の文字も図中の記号も楽譜の符も、同じ文字として扱う立場である。光で書かれた人工の信号は、みな文字だという立て方である。80Mの高圧縮エンコーダが1024画素を256トークンに畳み、長いコンテキストのデコーダが受ける。目の側を薄く長くし、受ける側を長く取る。四倍の画素を一トークンに畳む圧縮で、長い文書を呑む。素の出力と整形出力を切り替え、markdownやtikzやsmilesやkernを書き分ける。読むだけでなく、用途の書式で吐き出す。化学の線も譜の符も、書式に載せて返す。領域を指定して対話的に読むOCR、解像度を動かす読み、複数ページの読みを備えると報告している。指さした所だけを読む対話、画面の密度に応じる解像度、頁をまたぐ読みの三つを一つのモデルに載せる。読む所の指定と読みの細かさと読みの束を、一つの目で賄う。OCR-1.0のパイプラインより構造が単純で、汎用視覚言語モデルよりOCRに絞る分、報告した性能が上回ると位置づける。段を重ねた旧来より素朴で、広く読む汎用より狭く深いという立て方である。ただしこの優位の言い方は、自前のOCR-2.0一式の中での主張として隔離する。自前の物差しでの優位であり、他流との勝敗ではない。同じ手順で測った汎用モデルとの直接対決は見つかっていない。対決がない以上、優劣は決めない。同じ土俵の記録がない。本節は数値の順位を付けない。比べるのは失敗の姿と設計の選びである。Nougatが繰り返しと言語と構造の偏りを抱えるのに対し、GOTは圧縮と動的解像度と領域指定でトークン配分を締める。崩れ方と配分の締め方で比べ、勝ち負けでは比べない。同一条件の対決がないため、どちらが上かは決めない。特化の読み筋は、どこで崩れるかとどこにトークンを割くかで比べる。図表を読む契約はChartQAが定める。9.6Kの人手設問と23.1Kの生成設問を、目で見る読みと論理の読みに分け、緩和正確度で測ると報告している。値を読む問いと、差や傾向を考える問いを分ける。見る読みと考える読みの二段である。実世界の図表を対象とし、FigureQAやDVQAやPlotQAの合成前史を文脈に置く。合成の図でなく、世の図表に向き合う。作られた図の文脈を背負い、生の図に進む。報告時点の到達点はVisionTaPasで、Findings ACL 2022で発表し、リポジトリを開く。緩和正確度の許容の意味は、数値と一緒に運ぶ。数値の誤差の許容を外して数だけを比べない。許容の幅が、数値の意味を決める。合成の先行研究は文脈である。GOTの整形出力が図表を含むとき、この許容の契約が効く。図の読みの数値は、許容と組で読む。",
       "attribution_mode": "ATTRIBUTED",
       "evidence_refs": [
         {
@@ -242,7 +242,7 @@
     {
       "block_id": "p05-b6",
       "block_type": "PARAGRAPH",
-      "text": "二つの特化型の比べは、数値の順位ではなく設計の選びで行う。Nougatは論文の体裁に寄せ、GOTは文字の理論に寄せる。Nougatの崩れは繰り返しと言語と構造の三つに現れ、GOTの工夫は圧縮と動的解像度と領域指定の三つに現れる。どちらが上かを決める材料は同一条件の対決の記録しかなく、その記録は見つかっていないため、本節は数値の順位を付けない。解像度の制約は両者に共通する。NougatはDonutの系譜の制約を引き継ぎ、GOTは圧縮と動的読みで同じ制約に向き合う。制約の共有と向き合い方の分岐を、順位なしに残す。体裁への寄せと文字の理論の二流派が、同じ制約に別の見方で向き合ったことが、本節の記録である。どこで特化が崩れるかの記録が、汎用の節の設計に生きる。ANLSと緩和正確度の許容も数値と組で読み、許容を外した数比べはしない。",
+      "text": "二つの特化型の比べは、数値の順位ではなく設計の選びで行う。Nougatは論文の体裁に寄せ、GOTは文字の理論に寄せる。寄せ方が違う。Nougatの崩れは繰り返しと言語と構造の三つに現れる。止まれなくなる崩れ、英語の外で鈍る崩れ、論文以外の体裁で落ちる崩れである。GOTの締めは圧縮と動的解像度と領域指定の三つに現れる。画素を畳む締め、密度に応じる締め、指した所を読む締めである。崩れ方と締め方の対照が、特化の比較の軸である。どちらが上かを決める材料は、同一条件の対決の記録しかない。その記録は見つかっていない。同じ手順で測った汎用モデルとの直接対決がないという欠落は、そのまま残す。欠落を糊塗しない。分からないものは分からないと置く。共有する壁もある。解像度の隘路である。NougatはDonutの系譜の壁を引き継ぎ、GOTは別の処方で同じ壁に向き合う。画素だけを見る設計の代償は、特化の流派を超える。壁への向き合い方が、流派を分ける。一方は体裁への寄せで壁を迂回し、他方は圧縮と動的読みで壁を締める。迂回と締めの違いである。汎用モデルとの関係も、優劣ではなく契約で読む。GOTの優位の言い方は自前一式の中の主張であり、外への勝敗ではない。Nougatの比較も自前の一致に限る。自前の物差しを外に持ち出さない規律である。この規律が、特化の節の品位を保つ。失敗の姿の記録と処方の内訳の記録が、特化の節の収穫である。順位表ではなく、崩れ方と締め方の見取り図を残す。後の汎用の節がこの見取り図を使う。どこで特化が崩れるかを知ることが、汎用の設計の糧になる。体裁への寄せと文字の理論の二流派が、同じ壁に別の処方で向き合ったことが、本節の記録である。壁の共有と処方の分岐を、順位なしに残す。評価の契約であるANLSと緩和正確度の許容も、数値と組で運ぶ。許容を外した数比べをしない規律が、文書の節全体を貫く。特化の比較は、失敗と処方で締める。",
       "attribution_mode": "MIXED",
       "evidence_refs": [
         {
@@ -285,7 +285,7 @@
     {
       "block_id": "P05-boundaries",
       "block_type": "CLAIM_BOUNDARY",
-      "text": "この節の読解上の境界: NougatとGOTの評価は自前の試験の範囲に留まる。Nougatの繰り返し・言語・構造の偏りは論文自身の申告であり、GOTと汎用モデルの同一条件での直接対決は見つかっていないため優劣は決めない。検索モデルの順位は著者測定のプレプリント時点の主張であり、独立した再現はない。図表の数値は緩めた正確さの許容と組で読む。",
+      "text": "この節の読解上の境界: Specialist failure profiles (repetition/language/structure) over rankings; resolution/token policies bound / Base-version scope; unified successors (v3) needed for image-modality completeness. / Scaling to larger data/compute and few/zero-shot capability stated as future work, not established. / Synthetic-training dependence; resolution sensitivity bounds domain transfer. / Resolution bottleneck shared with Donut-class pixel-only models (paper's own discussion). / Own-suite evaluation only; repetition + language + structure biases paper-stated. / Own-suite evaluation; same-protocol generalist head-to-head not found (gap G03 preserved). / Author-measured leaderboard; preprint status confirmed at intake; independent reproduction pending (G05). / Extractive-shortcut vulnerability; web-document contamination. / Relaxed-accuracy tolerance semantics must travel with scores; synthetic predecessors are context.",
       "attribution_mode": "INFERENCE",
       "evidence_refs": [
         {
@@ -383,33 +383,43 @@
   "boundary_dispositions": [
     {
       "boundary": "Specialist failure profiles (repetition/language/structure) over rankings; resolution/token policies bound",
-      "handling": "RESPECTED_BY_OMISSION",
-      "block_ids": [],
-      "rationale": "Internal drafting guard; omission of the unsupported claim suffices."
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P05-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
     },
     {
       "boundary": "Base-version scope; unified successors (v3) needed for image-modality completeness.",
-      "handling": "RESPECTED_BY_OMISSION",
-      "block_ids": [],
-      "rationale": "Internal drafting guard; omission of the unsupported claim suffices."
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P05-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
     },
     {
       "boundary": "Scaling to larger data/compute and few/zero-shot capability stated as future work, not established.",
-      "handling": "RESPECTED_BY_OMISSION",
-      "block_ids": [],
-      "rationale": "Internal drafting guard; omission of the unsupported claim suffices."
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P05-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
     },
     {
       "boundary": "Synthetic-training dependence; resolution sensitivity bounds domain transfer.",
-      "handling": "RESPECTED_BY_OMISSION",
-      "block_ids": [],
-      "rationale": "Internal drafting guard; omission of the unsupported claim suffices."
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P05-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
     },
     {
       "boundary": "Resolution bottleneck shared with Donut-class pixel-only models (paper's own discussion).",
-      "handling": "RESPECTED_BY_OMISSION",
-      "block_ids": [],
-      "rationale": "Internal drafting guard; omission of the unsupported claim suffices."
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P05-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
     },
     {
       "boundary": "Own-suite evaluation only; repetition + language + structure biases paper-stated.",
@@ -417,7 +427,7 @@
       "block_ids": [
         "P05-boundaries"
       ],
-      "rationale": "Reader-facing limitation; concise Japanese limitation text carries it."
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
     },
     {
       "boundary": "Own-suite evaluation; same-protocol generalist head-to-head not found (gap G03 preserved).",
@@ -425,7 +435,7 @@
       "block_ids": [
         "P05-boundaries"
       ],
-      "rationale": "Reader-facing limitation; concise Japanese limitation text carries it."
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
     },
     {
       "boundary": "Author-measured leaderboard; preprint status confirmed at intake; independent reproduction pending (G05).",
@@ -433,13 +443,15 @@
       "block_ids": [
         "P05-boundaries"
       ],
-      "rationale": "Reader-facing limitation; concise Japanese limitation text carries it."
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
     },
     {
       "boundary": "Extractive-shortcut vulnerability; web-document contamination.",
-      "handling": "RESPECTED_BY_OMISSION",
-      "block_ids": [],
-      "rationale": "Internal drafting guard; omission of the unsupported claim suffices."
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P05-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
     },
     {
       "boundary": "Relaxed-accuracy tolerance semantics must travel with scores; synthetic predecessors are context.",
@@ -447,7 +459,7 @@
       "block_ids": [
         "P05-boundaries"
       ],
-      "rationale": "Reader-facing limitation; concise Japanese limitation text carries it."
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
     }
   ],
   "profile_extensions": {},
