@@ -1,6 +1,6 @@
 # TS-003 Drafting Terminology Map — Japanese reader-facing prose
 
-Status: `EDITION_LOCAL / CUMULATIVE_TERMINOLOGY_AUTHORITY / DRAFT_R7_BINDING`
+Status: `EDITION_LOCAL / CUMULATIVE_TERMINOLOGY_AUTHORITY / DRAFT_R8_BINDING`
 
 Date: `2026-10-02 JST`
 
@@ -15,7 +15,7 @@ Review authorities incorporated:
 - `sources/SP-vision-multimodal-2026/execution/sol-draft-review-r1.md`
 - `sources/SP-vision-multimodal-2026/execution/sol-draft-review-r2.md`
 
-This cumulative authority supersedes earlier map revisions for Draft r7 and later TS-003 reader-surface work.
+This cumulative authority supersedes earlier map revisions for Draft r8 and later TS-003 reader-surface work.
 
 ## 0. Authority and maintenance rule
 
@@ -393,7 +393,38 @@ QA consequence:
 
 Headlines and decks receive no relaxed terminology standard.
 
-### 3.8 Regression principle
+### 3.8 Sol Draft Review r7 residual failures — bidirectional semantic binding
+
+Draft r7 substantially improved terminology, but independent Sol review found a different class of failure: a preferred token can itself be wrong when it is applied to the wrong underlying concept, and a stale synthesis can escape a package-focused audit.
+
+| Observed form | Intended concept / function | Preferred repair | First formalized |
+|---|---|---|---|
+| P13の比喩的な container sense を blind repair した「別のボックスに閉じ込めず」「別のボックスを置かず」 | separation between subsystems / intermediate module boundary, not bounding box | 「別系統に分離せず」「視覚入力から行動出力までを一つのモデルで扱う」等、実際のarchitecture relationを直接書く | Sol Draft Review r7 |
+| lineage summary の「鎖を通して見ると」 | lineage / staged progression | 「この系譜を通して見ると」「段階的な変化を見ると」 | Sol Draft Review r7 |
+| P14以外のprimary technical organizerとしての「密な極」「もう一極」「融合の両極」「OpenVLA…極」「マルチモーダルの極」 | dense prediction family / alternate specialization / fusion strategies / open-weight example / native-multimodal example | 実際の技術分類・方式・到達点の事例を直接書く | Sol Draft Review r7 |
+| P09 boundaryでspeech/ASR scopeを表す「話し言葉の範囲」 | speech / ASR scope | 「音声認識の範囲」「音声入力の範囲」 | Sol Draft Review r7 |
+| synthesisの「個別学習済み部品の橋渡し」「個別部品の組み立て」 | connecting separately pretrained components / modular composition | 「個別に事前学習した構成要素の接続」「モジュール構成」等、component/connectionを直接書く | Sol Draft Review r7 |
+
+Context exceptions:
+
+- P14のArchitecture-defined「四つの極 / 四極」は引き続き明示的な例外;
+- 「極端」「極めて」など通常の副詞・形容表現は対象外;
+- bounding boxとしての「ボックス」は正しい。禁止するのは、非-box概念を「ボックス」で代用すること;
+- coreference chain等のtechnical termとして正当な「共参照鎖」は対象外;
+- ordinary spoken-language prose may use descriptive Japanese, but a scope boundary for Whisper/ASR should use 音声/音声認識.
+
+QA consequence:
+
+Preferred-form conformance is **bidirectional**.
+
+1. concept -> preferred form: a technical concept must use the preferred term;
+2. preferred form -> concept: a preferred token must not be inserted where the underlying concept is different.
+
+For example, every technical bounding box must be 「ボックス」, but not every metaphorical 「箱」 should become 「ボックス」.
+
+The same semantic pass must cover the **canonical profile synthesis result**, not only package prose. A synthesis that still contains stale component/bridge metaphors blocks PASS even if all 16 package Results pass.
+
+### 3.9 Regression principle
 
 Do not “fix” one known form by inventing another metaphor.
 
@@ -462,9 +493,10 @@ Draft r3以降のlanguage QAは、単純なregex countだけでPASSを出して�
 For every row in Sections 1 and 2:
 
 - preferred formをconcept単位で確認する;
+- preferred tokenの各出現が実際にそのconceptを指すか逆向きにも確認する（bidirectional binding）;
 - Avoid / regression formを検索する;
 - Avoid欄に文字列がなくても、preferred technical termを別の独自訳・意訳・比喩で置換していないか確認する;
-- headline / deck / PARAGRAPH / BULLET / TABLE / CLAIM_BOUNDARY / synthesisを対象にする;
+- headline / deck / PARAGRAPH / BULLET / TABLE / CLAIM_BOUNDARY / canonical profile synthesis resultを対象にする;
 - headline/deckにも本文と同じterminology authorityを適用する;
 - preferred form以外を維持する場合は、QA reportにexact sentenceとcontext exceptionの根拠を記録する。
 
@@ -513,9 +545,9 @@ Core validator PASSはlanguage PASSではない。
 
 Terminal map state:
 
-`TS-003_TERMINOLOGY_MAP_CUMULATIVE_R7_BINDING`
+`TS-003_TERMINOLOGY_MAP_CUMULATIVE_R8_BINDING`
 
-`KNOWN_FAILURES_THROUGH_SOL_READER_PUBLICATION_REVIEW_R1_INCORPORATED`
+`KNOWN_FAILURES_THROUGH_SOL_DRAFT_REVIEW_R7_INCORPORATED`
 
 `SEMANTIC_QA_REQUIRED`
 
