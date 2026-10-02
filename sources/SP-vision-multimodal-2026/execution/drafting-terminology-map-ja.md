@@ -1,6 +1,6 @@
 # TS-003 Drafting Terminology Map — Japanese reader-facing prose
 
-Status: `EDITION_LOCAL / CUMULATIVE_TERMINOLOGY_AUTHORITY / DRAFT_R8_BINDING`
+Status: `EDITION_LOCAL / CUMULATIVE_TERMINOLOGY_AUTHORITY / DRAFT_R9_BINDING`
 
 Date: `2026-10-02 JST`
 
@@ -15,7 +15,7 @@ Review authorities incorporated:
 - `sources/SP-vision-multimodal-2026/execution/sol-draft-review-r1.md`
 - `sources/SP-vision-multimodal-2026/execution/sol-draft-review-r2.md`
 
-This cumulative authority supersedes earlier map revisions for Draft r8 and later TS-003 reader-surface work.
+This cumulative authority supersedes earlier map revisions for Draft r9 and later TS-003 reader-surface work.
 
 ## 0. Authority and maintenance rule
 
@@ -119,7 +119,7 @@ First-use pattern: natural Japanese + term once when useful (for example `接地
 | fine-tuning | ファインチューニング | 全巻での無秩序な微調整との揺れ |
 | pretraining | 事前学習 | — |
 | post-training | ポストトレーニング | 事後学習 |
-| encoder / decoder / backbone | エンコーダ / デコーダ / バックボーン | 符号器、復号器、architecture/component senseのbare 復号、基幹網 |
+| encoder / decoder / backbone | エンコーダ / デコーダ / バックボーン | 符号器、復号器、architecture/component senseのbare 復号、基幹網、technical backbone senseの背骨 |
 | resampler / Q-Former / cross-attention | リサンプラ / Q-Former / cross-attention | 交差注意への機械的漢語化 |
 | attention / window attention / attention map | アテンション / ウィンドウアテンション / アテンションマップ | mechanism名としての注意、窓注意 |
 | query / query vector | クエリ / クエリベクトル | Q-Former/Transformer文脈の問い合わせ、問い合わせベクトル |
@@ -245,7 +245,7 @@ This registry records observed TS-003 failures. It is a regression list, not mer
 | 契約の家 | benchmark/task definition | 評価条件を定めるベンチマーク / データセットを直接明示 | Sol Draft Review r2 |
 | 語彙の足し | vocabulary expansion / supervision | 語彙拡張 / 教師信号の追加等を直接明示 | Sol Draft Review r2 |
 | 遅い渡し | late fusion / transfer | late fusion / 後段融合 / 文脈上正確なtechnical term | Sol Draft Review r2 |
-| 固い混ぜ | tight/deep fusion | deep fusion / 密な融合 / 文脈上正確なtechnical term | Sol Draft Review r2 |
+| 固い混ぜ / 固く混ぜる | tight/deep fusion | deep fusion / 密な融合 / 文脈上正確なtechnical term | Sol Draft Review r2; Sol Draft Review r8 refinement |
 | 規模の回し | scaling / large-scale training | スケーリング / 大規模学習 | Sol Draft Review r2 |
 | レア側の埋め | rare-category coverage/performance | レアカテゴリのカバレッジ / 性能等を直接説明 | Sol Draft Review r2 |
 | 幻のふるい | hallucination screening/diagnosis | ハルシネーション診断 / 投票型評価を直接説明 | Sol Draft Review r2 |
@@ -424,7 +424,25 @@ For example, every technical bounding box must be 「ボックス」, but not ev
 
 The same semantic pass must cover the **canonical profile synthesis result**, not only package prose. A synthesis that still contains stale component/bridge metaphors blocks PASS even if all 16 package Results pass.
 
-### 3.9 Regression principle
+### 3.9 Sol Draft Review r8 residual failures — final micro-cleanup
+
+Independent Sol review found four small residuals after the r8 bidirectional audit.
+
+| Observed form | Intended concept / function | Preferred repair | First formalized |
+|---|---|---|---|
+| 「拡散の背骨としての来歴」 | diffusion backbone | 「拡散モデルのバックボーンとしての来歴」等、backboneを標準用語で書く | Sol Draft Review r8 |
+| 「特徴増強と言語誘導クエリ選択とcross-modalityデコーダの三段で固く混ぜる」 | multi-stage tight/deep fusion | 三つの機構で密に融合する / 三段階の密な融合を直接説明 | Sol Draft Review r8 |
+| 「構成を足さず、学習手順で検出に渡す」 | adapting a pretrained vision-language model to detection without added modules | 追加モジュールなしで検出へファインチューニングする / 学習手順のみで検出へ適応する等、実際のtechnical relationを直接書く | Sol Draft Review r8 |
+| reader-facing punctuation defect「で、、文と画像…」 | punctuation / copy defect | 「で、文と画像…」 | Sol Draft Review r8 |
+
+Context exceptions:
+
+- anatomical/literal 「背骨」 is unaffected; only model/backbone terminology is normalized;
+- ordinary 「混ぜる」 is allowed when literally combining data/conditions, but fusion architecture/mechanism must use 融合;
+- ordinary 「渡す」 is allowed; technical adaptation/transition must name the actual adaptation, fine-tuning, or transfer;
+- punctuation defects are not terminology concepts, but are recorded here because they were introduced by a terminology-only repair and must be regression-checked before publication regeneration.
+
+### 3.10 Regression principle
 
 Do not “fix” one known form by inventing another metaphor.
 
@@ -545,9 +563,9 @@ Core validator PASSはlanguage PASSではない。
 
 Terminal map state:
 
-`TS-003_TERMINOLOGY_MAP_CUMULATIVE_R8_BINDING`
+`TS-003_TERMINOLOGY_MAP_CUMULATIVE_R9_BINDING`
 
-`KNOWN_FAILURES_THROUGH_SOL_DRAFT_REVIEW_R7_INCORPORATED`
+`KNOWN_FAILURES_THROUGH_SOL_DRAFT_REVIEW_R8_INCORPORATED`
 
 `SEMANTIC_QA_REQUIRED`
 
