@@ -899,6 +899,12 @@ def _revised_state(
         # deterministically. The historical record file itself is never touched
         # here; unreferenced it is inert historical evidence.
         updated["publication_revalidation_provenance"] = None
+    if "draft" not in keep:
+        # The active Draft revision basis is bound to the Draft checkpoint.
+        # Invalidating that checkpoint orphans the pointer, so revision clears it
+        # deterministically. The historical record file itself is never touched
+        # here; unreferenced it is inert historical evidence.
+        updated["draft_revision_provenance"] = None
     updated["lifecycle_state"] = regeneration_boundary
     updated["history"] = updated["history"][: target_index + 1]
 

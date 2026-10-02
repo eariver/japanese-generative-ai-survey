@@ -871,6 +871,7 @@ def initial_state(
         "exception_gate": {"status": "inactive", "reason": None},
         "machine_checkpoints": {name: "pending" for name in CHECKPOINTS},
         "checkpoint_provenance": {name: None for name in CHECKPOINTS},
+        "draft_revision_provenance": None,
         "legacy_compatibility": {
             "mode": cfg["state_authority"]["legacy_mode"],
             "legacy_state_path": str(legacy_path.relative_to(repo_root.resolve())),

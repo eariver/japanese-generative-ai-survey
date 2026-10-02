@@ -24,6 +24,7 @@ from scripts import survey_agent_tool_v2 as runtime_tool
 from scripts import survey_architecture_v2 as architecture
 from scripts import survey_completeness_v2 as completeness
 from scripts import survey_draft_profile_v2 as draft_profile
+from scripts import survey_draft_revision_v2 as draft_revision
 from scripts import survey_drafting_v2 as drafting
 from scripts import survey_evidence_v2 as evidence
 from scripts import survey_production_v2 as core
@@ -137,6 +138,16 @@ def _prior_artifacts(repo_root: Path, cfg: dict[str, Any], state: dict[str, Any]
             (row["name"], row["path"]): row["new_sha256"]
             for row in revalidation.get("superseded_artifacts", [])
         }
+    draft_record, draft_errors = draft_revision.resolve_active_draft_revision(repo_root, cfg, state)
+    if draft_errors:
+        raise StageValidationError("active Draft revision invalid: " + "; ".join(draft_errors))
+    draft_bound_prior: str | None = None
+    draft_revised: dict[tuple[str, str], str] = {}
+    if draft_record is not None:
+        draft_bound_prior = draft_record["prior_checkpoint"]["path"]
+        for row_name, row in draft_revision.record_revised_rows(draft_record).items():
+            if isinstance(row, dict) and row.get("path") and row.get("sha256"):
+                draft_revised[(row_name, row["path"])] = row["sha256"]
     for ref in state.get("checkpoint_provenance", {}).values():
         if ref is None:
             continue
@@ -153,6 +164,8 @@ def _prior_artifacts(repo_root: Path, cfg: dict[str, Any], state: dict[str, Any]
             expected = row["sha256"]
             if bound_prior is not None and rel == bound_prior:
                 expected = superseded.get((row["name"], row["path"]), expected)
+            if draft_bound_prior is not None and rel == draft_bound_prior:
+                expected = draft_revised.get((row["name"], row["path"]), expected)
             if artifact.is_symlink() or not artifact.is_file() or core.sha256_file(artifact) != expected:
                 raise StageValidationError(f"prior Stage Checkpoint artifact drift: {row['name']}")
             existing = result.get(row["name"])

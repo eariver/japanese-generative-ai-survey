@@ -27,6 +27,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
+from scripts import survey_draft_revision_v2 as draft_revision
 from scripts import survey_drafting_v2 as drafting
 from scripts import survey_production_v2 as core
 from scripts import survey_publication_v2 as publication
@@ -236,7 +237,7 @@ def _validate_release_reconciliation_review(
         raise AgentControlError("Release Record does not bind Stage Checkpoint merge-verification authority")
 
 
-def _validate_checkpoint_record(repo_root: Path, cfg: dict[str, Any], state: dict[str, Any], checkpoint: str, authority: dict[str, Any], revalidation: dict[str, Any] | None = None) -> list[str]:
+def _validate_checkpoint_record(repo_root: Path, cfg: dict[str, Any], state: dict[str, Any], checkpoint: str, authority: dict[str, Any], revalidation: dict[str, Any] | None = None, draft_record: dict[str, Any] | None = None) -> list[str]:
     errors: list[str] = []
     if not isinstance(authority, dict) or set(authority) != {"path", "sha256"}:
         return [f"checkpoint {checkpoint} provenance fields invalid"]
@@ -268,6 +269,13 @@ def _validate_checkpoint_record(repo_root: Path, cfg: dict[str, Any], state: dic
             (row.get("name"), row.get("path")): row.get("new_sha256")
             for row in revalidation.get("superseded_artifacts", [])
         }
+    if (
+        draft_record is not None
+        and authority.get("path") == draft_record.get("prior_checkpoint", {}).get("path")
+    ):
+        for name, row in draft_revision.record_revised_rows(draft_record).items():
+            if isinstance(row, dict) and row.get("path") and row.get("sha256"):
+                superseded[(name, row["path"])] = row["sha256"]
     for artifact in record.get("artifacts", []):
         try:
             resolved = core.repo_local_path(repo_root, artifact["path"], f"checkpoint artifact {artifact['name']}")
@@ -353,6 +361,8 @@ def validate_agent_state(repo_root: Path, cfg: dict[str, Any], state: dict[str, 
         expected.add("publication_preview")
     revalidation, revalidation_errors = resolve_active_publication_revalidation(repo_root, cfg, state)
     errors.extend(revalidation_errors)
+    draft_record, draft_errors = draft_revision.resolve_active_draft_revision(repo_root, cfg, state)
+    errors.extend(draft_errors)
     checkpoints = state.get("machine_checkpoints", {})
     provenance = state.get("checkpoint_provenance", {})
     for name in core.CHECKPOINTS:
@@ -378,7 +388,7 @@ def validate_agent_state(repo_root: Path, cfg: dict[str, Any], state: dict[str, 
             if authority is None:
                 errors.append(f"passed checkpoint lacks Stage Checkpoint provenance: {name}")
             else:
-                errors.extend(_validate_checkpoint_record(repo_root, cfg, state, name, authority, revalidation))
+                errors.extend(_validate_checkpoint_record(repo_root, cfg, state, name, authority, revalidation, draft_record))
         elif authority is not None:
             errors.append(f"pending checkpoint must not carry provenance: {name}")
 
@@ -1231,6 +1241,18 @@ def _verify_preserved_provenance(
     be smuggled into a publication revalidation. Raises AgentControlError.
     """
     sup = {(row["name"], row["path"]): row["new_sha256"] for row in superseded}
+    draft_record, draft_errors = draft_revision.resolve_active_draft_revision(
+        repo_root, cfg, state)
+    if draft_errors:
+        raise AgentControlError(
+            "active Draft revision invalid during revalidation: " + "; ".join(draft_errors))
+    draft_revised: dict[tuple[str, str], str] = {}
+    draft_bound_prior: str | None = None
+    if draft_record is not None:
+        draft_bound_prior = draft_record.get("prior_checkpoint", {}).get("path")
+        for row_name, row in draft_revision.record_revised_rows(draft_record).items():
+            if isinstance(row, dict) and row.get("path") and row.get("sha256"):
+                draft_revised[(row_name, row["path"])] = row["sha256"]
     seen: set[str] = set()
     for name, authority in state.get("checkpoint_provenance", {}).items():
         if authority is None:
@@ -1250,13 +1272,18 @@ def _verify_preserved_provenance(
         if record.get("issue_id") != state.get("issue_id"):
             raise AgentControlError(f"basis checkpoint issue identity mismatch: {name}")
         is_bound = authority.get("path") == validation_ref.get("path")
+        is_draft_bound = (
+            draft_bound_prior is not None and authority.get("path") == draft_bound_prior)
         for row in record.get("artifacts", []):
             key = (row.get("name"), row.get("path"))
             try:
                 resolved = core.repo_local_path(repo_root, row["path"], f"basis artifact {row.get('name')}")
             except (TypeError, ValueError) as exc:
                 raise AgentControlError(str(exc)) from exc
-            expected = sup.get(key, row.get("sha256")) if is_bound else row.get("sha256")
+            if is_draft_bound and key in draft_revised:
+                expected = draft_revised[key]
+            else:
+                expected = sup.get(key, row.get("sha256")) if is_bound else row.get("sha256")
             if not resolved.is_file() or core.sha256_file(resolved) != expected:
                 if is_bound and key in sup:
                     raise AgentControlError(f"revalidated publication artifact drift during revalidation: {key[0]}")
@@ -1537,6 +1564,14 @@ def main() -> int:
     revalidate.add_argument("--recorded-at")
     revalidate.add_argument("--implementation-sha")
 
+    establish = sub.add_parser("establish-draft-revision")
+    establish.add_argument("--state", required=True)
+    establish.add_argument("--reason", required=True)
+    establish.add_argument("--executor", required=True)
+    establish.add_argument("--review", required=True)
+    establish.add_argument("--recorded-at")
+    establish.add_argument("--implementation-sha")
+
     args = parser.parse_args()
     root = Path(args.repo_root).resolve()
     config_path = _path(root, args.config)
@@ -1600,6 +1635,26 @@ def main() -> int:
                 args.implementation_sha,
             )
             print(json.dumps({"state": str(state_path.relative_to(root)), "revalidation_record": str(record_path.relative_to(root))}, indent=2))
+            return 0
+        if args.command == "establish-draft-revision":
+            state_path = _path(root, args.state)
+            review_path = _path(root, args.review)
+            if review_path is not None and review_path.is_absolute():
+                try:
+                    review_path = review_path.relative_to(root)
+                except ValueError:
+                    pass
+            record_path = draft_revision.establish_draft_revision(
+                root,
+                cfg,
+                state_path,
+                args.reason,
+                args.executor,
+                review_path,
+                core.parse_instant(args.recorded_at) if args.recorded_at else _now(),
+                args.implementation_sha,
+            )
+            print(json.dumps({"state": str(state_path.relative_to(root)), "draft_revision_record": str(record_path.relative_to(root))}, indent=2))
             return 0
     except (OSError, ValueError, json.JSONDecodeError) as exc:
         print(str(exc), file=sys.stderr)
