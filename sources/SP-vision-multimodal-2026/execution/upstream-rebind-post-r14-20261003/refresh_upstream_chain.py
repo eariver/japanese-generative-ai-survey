@@ -44,9 +44,9 @@ DISC_REL = f"{SRC}/discovery/discovery-v2.jsonl"
 SCR_ACC = (f"{SRC}/screening/v2/accepted/"
            "71136cdd8c054b993f899fb394aee30f3cf8d23fbed61dd0a53cd29cd660de67/"
            "screening-accepted.json")
-EV6 = "d35fb09b64028f528e0d4e2ff711189f47332cb10e6b023e2e2261eeb8d7689c"
+EV6 = "d6338dc49d65d444efc379df0adb2e63722c7d8c90164c043b9aca4721bc7b57"
 EV_ACC = f"{SRC}/evidence/v2/accepted/{EV6}/evidence-accepted.json"
-VIEW6 = "d5d59e88aa22bfa110af67d315c790305860d61e5cf7fd1b68b7d3d39f7e1363"
+VIEW6 = "11fd09a02b410c52331a4333ae14200d9d55d608f1bde38a459b40bba9196cc3"
 VIEW_ACC = f"{SRC}/evidence/v2/views/accepted/{VIEW6}/edition-views-accepted.json"
 
 PREEXISTING_DRIFT = {
@@ -145,7 +145,7 @@ def main() -> int:
             ledger, root, profile_path, root / DISC_REL, root / SCR_ACC,
             root / EV_ACC, root / VIEW_ACC, impl)
     assert not errs, errs[:3]
-    ledger_path = root / f"{SRC}/materiality-ledger-v2-r7.json"
+    ledger_path = root / f"{SRC}/materiality-ledger-v2-r8.json"
     assert not ledger_path.exists(), "refusing to overwrite refresh output"
     core.write_json(ledger_path, ledger)
     evidence.validate_materiality_ledger(
@@ -170,7 +170,7 @@ def main() -> int:
                                        discovery_records, ledger_path, ledger, input_value)
     schema_gate.validate_instance(result, root / "schemas/profile-completeness-result.schema.json",
                                   label="Profile Completeness")
-    comp_path = root / f"{SRC}/profile-completeness-v2-r7.json"
+    comp_path = root / f"{SRC}/profile-completeness-v2-r8.json"
     assert not comp_path.exists(), "refusing to overwrite refresh output"
     core.write_json(comp_path, result)
     with agent_tool.current_stage_basis_override():
@@ -188,7 +188,7 @@ def main() -> int:
     assert archbase.validate_candidate_matrix(
         matrix, root, profile_path, root / DISC_REL, root / SCR_ACC,
         root / EV_ACC, root / VIEW_ACC, ledger_path, comp_path, impl) == []
-    matrix_path = root / f"{SRC}/candidate-matrix-v2-r7.json"
+    matrix_path = root / f"{SRC}/candidate-matrix-v2-r8.json"
     assert not matrix_path.exists(), "refusing to overwrite refresh output"
     core.write_json(matrix_path, matrix)
     print("matrix rows:", matrix["summary"]["candidate_count"])
@@ -204,7 +204,7 @@ def main() -> int:
         "profile_completeness_sha256": core.sha256_file(comp_path),
         "materiality_ledger_sha256": core.sha256_file(ledger_path),
     }
-    sel_path = root / f"{SRC}/candidate-selection-v2-r7.json"
+    sel_path = root / f"{SRC}/candidate-selection-v2-r8.json"
     assert not sel_path.exists(), "refusing to overwrite refresh output"
     core.write_json(sel_path, sel)
     errs = archbase.validate_selection(root, sel, profile_path, matrix_path, comp_path, ledger_path)
@@ -212,7 +212,7 @@ def main() -> int:
     print("selection assignments:", len(sel["assignments"]))
 
     # 5. Architecture v3 (NEW file; v2 preserved).
-    old_arch = core.load_json(root / f"{SRC}/architecture-v2.json")
+    old_arch = core.load_json(root / f"{SRC}/architecture-v3.json")
     arch = json.loads(json.dumps(old_arch))
     arch["basis"] = {
         "production_profile_sha256": core.sha256_file(profile_path),
@@ -223,18 +223,15 @@ def main() -> int:
     }
     arch["status"] = "PROPOSED"
     arch["human_review"] = {"reviewed_by": None, "reviewed_at": None, "review_reference": None}
-    # P09 license-boundary precision addition (Evidence boundary text itself is
-    # REQUIRED verbatim by validate_architecture; the precision sentence is added
-    # alongside, not substituted).
+    # P09 license-boundary precision (carried from v3 baseline; assert both present).
     hit = 0
     for p in arch["packages"]:
         if p["package_id"] == "P09":
             assert P09_LICENSE_OLD in p["boundaries"], "P09 license boundary missing"
-            p["boundaries"].insert(p["boundaries"].index(P09_LICENSE_OLD) + 1,
-                                   P09_LICENSE_ADD)
+            assert P09_LICENSE_ADD in p["boundaries"], "P09 license precision missing"
             hit += 1
     assert hit == 1, f"P09 license boundary hit x{hit}"
-    v3_path = root / f"{SRC}/architecture-v3.json"
+    v3_path = root / f"{SRC}/architecture-v4.json"
     assert not v3_path.exists(), "refusing to overwrite Architecture v3"
     core.write_json(v3_path, arch)
     errs = archbase.validate_architecture(
@@ -247,11 +244,11 @@ def main() -> int:
         root, profile_path, root / DISC_REL, root / SCR_ACC,
         root / EV_ACC, root / VIEW_ACC, ledger_path, comp_path,
         matrix_path, sel_path, v3_path, impl)
-    sum_path = root / f"{SRC}/architecture-review-summary-v3.json"
+    sum_path = root / f"{SRC}/architecture-review-summary-v4.json"
     assert not sum_path.exists()
     core.write_json(sum_path, summary)
     from scripts import survey_review_attention_v2 as review_attention
-    attn_path = root / f"{SRC}/architecture-review-attention-v3.json"
+    attn_path = root / f"{SRC}/architecture-review-attention-v4.json"
     assert not attn_path.exists()
     with agent_tool.current_stage_basis_override():
         review_attention.build_attention(
@@ -263,9 +260,9 @@ def main() -> int:
     old_lines = json.dumps(old_arch, ensure_ascii=False, indent=1).splitlines()
     new_lines = json.dumps(arch, ensure_ascii=False, indent=1).splitlines()
     diff = "\n".join(difflib.unified_diff(old_lines, new_lines,
-                                          fromfile="architecture-v2.json",
-                                          tofile="architecture-v3.json", n=2))
-    (root / EDIR / "architecture-v2-to-v3.diff").write_text(diff + "\n", encoding="utf-8")
+                                          fromfile="architecture-v3.json",
+                                          tofile="architecture-v4.json", n=2))
+    (root / EDIR / "architecture-v3-to-v4.diff").write_text(diff + "\n", encoding="utf-8")
     print("diff lines:", len(diff.splitlines()))
     _override_ctx.__exit__(None, None, None)
     return 0

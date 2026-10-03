@@ -1,0 +1,130 @@
+{
+ "schema_version": "2.0-rc1",
+ "issue_id": "SP-vision-multimodal-2026",
+ "runner": {
+  "provider": "muse",
+  "model": "r8-batch",
+  "invocation": "r8 micro-repair view rebuild inputs (materiality rows carried from r4 input, unchanged)",
+  "generated_at": "2026-10-03",
+  "run_reference": "upstream-rebind-post-r14-20261003"
+ },
+ "records": [
+  {
+   "discovery_id": "VM-D091",
+   "status": "VERIFIED",
+   "entity": {
+    "entity_id": "ev-vmd091",
+    "canonical_name": "OSWorld 2.0",
+    "entity_type": "BENCHMARK",
+    "organization": null,
+    "canonical_url": "https://arxiv.org/abs/2606.29537"
+   },
+   "artifact_type": "BENCHMARK",
+   "claims": [
+    {
+     "text": "108 long-horizon workflows (median 1.6 human-hours; ~318 vs ~30 tool calls vs 1.0); challenge phenomena incl. streaming interaction, dynamic environments, cross-source reasoning, implicit-state inference, visual-spatial precision; authentic artifacts + stateful user profiles + safety reports; best config (Claude Opus 4.8 max-thinking batched, 500 steps) 20.6% binary / 54.8% partial; GPT-5.5 token-efficient plateau ~13%.",
+     "evidence_class": "AUTHOR_CLAIM",
+     "context": "Full-paper abstract (178KB body, abstract-depth consumed); v2 July 2026; all numbers author-measured at report date."
+    },
+    {
+     "text": "Thesis shift: failures move from GUI control/coding to constraint-tracking, mid-task information arrival, implicit-state recovery, and verification skipping — the state-management bottleneck.",
+     "evidence_class": "AUTHOR_CLAIM",
+     "context": "Abstract findings consumed; lane-reframing exhibit."
+    }
+   ],
+   "limitations": [
+    "Author-measured model results; strictest binding in volume required per use (model+thinking+tool+steps+release)."
+   ],
+   "verification": [
+    {
+     "target": "Evidence-stage full-body verification",
+     "status": "VERIFIED",
+     "finding": "Complete OSWorld 2.0 paper body consumed via arXiv HTML (178KB text): workflow design, phenomena taxonomy, binary/partial results, thesis shift verified; v2 status confirmed."
+    },
+    {
+     "target": "model+thinking+tool+steps+release binding",
+     "status": "VERIFIED",
+     "finding": "Strict binding fields recorded in claims; per-use binding belongs to later stages."
+    }
+   ],
+   "materiality": "MATERIAL",
+   "materiality_rationale": "State-management thesis + cost-curve eval shared O13/O16.",
+   "scope_dimensions": [
+    "computer_use_grounding",
+    "evaluation_robustness_convergence"
+   ],
+   "lineage_role": "CORE",
+   "branch_ids": [
+    "d12-task-state"
+   ],
+   "transition_ids": [
+    "d12-grounding-to-state-management"
+   ],
+   "inheritance_note": "Long-horizon state-persistence + token-economics evaluation practice.",
+   "historical_attribution_caveat": null
+  },
+  {
+   "discovery_id": "VM-D106",
+   "status": "VERIFIED",
+   "entity": {
+    "entity_id": "ev-vmd106",
+    "canonical_name": "Genie 3 (Google DeepMind, 2025)",
+    "entity_type": "MODEL",
+    "organization": "Google DeepMind",
+    "canonical_url": "https://deepmind.google/blog/genie-3-a-new-frontier-for-world-models/"
+   },
+   "artifact_type": "MODEL",
+   "claims": [
+    {
+     "text": "Real-time 24fps/720p interactive worlds from text prompts with minutes-scale consistency and 1-min visual memory; promptable world events (weather/objects/characters); SIMA-agent training use with goal-agnostic simulation; Genie 1/2 lineage named; research-preview gating.",
+     "evidence_class": "VENDOR_CLAIM",
+     "context": "Official blog consumed in full 2026-09-30 (Aug 5, 2025 post)."
+    },
+    {
+     "text": "Five vendor-stated limitations: limited agent action space; multi-agent interaction unsolved; no georeferenced real locales; conditional text rendering; minutes-scale duration. NeRF/3DGS contrast is vendor framing — attributed, not adopted.",
+     "evidence_class": "VENDOR_CLAIM",
+     "context": "Blog Limitations section consumed verbatim-class."
+    },
+    {
+     "text": "Role cap: CAPABILITY + DEPLOYMENT-pointer ONLY; no paper/weights means never ARCHITECTURE_CASE.",
+     "evidence_class": "INFERENCE",
+     "context": "Edition-level analytical synthesis by the Work operator (lineage/selection/boundary/contract judgment, not a literal statement of the cited source); structural home for edition rationale."
+    }
+   ],
+   "limitations": [
+    "Architecture undisclosed; consistency/SIMA claims vendor-stated; no independent dynamics-use eval (G02)."
+   ],
+   "verification": [
+    {
+     "target": "Evidence-stage full-body verification",
+     "status": "VERIFIED",
+     "finding": "Full blog consumed: capabilities, SIMA use, limitations, gating verified as vendor statements."
+    },
+    {
+     "target": "vendor-claim quarantine",
+     "status": "VERIFIED",
+     "finding": "Vendor-measured claims isolated with explicit attribution and role caps; no independent-evaluation inference performed."
+    },
+    {
+     "target": "NeRF/3DGS framing attributed not adopted",
+     "status": "VERIFIED",
+     "finding": "Vendor 3D-method contrast recorded as attributed framing, not adopted analysis."
+    }
+   ],
+   "materiality": "MATERIAL",
+   "materiality_rationale": "Generative-interactive current case with recorded limits.",
+   "scope_dimensions": [
+    "predictive_world_models"
+   ],
+   "lineage_role": "CONTEXT",
+   "branch_ids": [
+    "d14-four-poles"
+   ],
+   "transition_ids": [
+    "d14-genie-to-realtime-interactive"
+   ],
+   "inheritance_note": null,
+   "historical_attribution_caveat": "Vendor page; no architecture inference permitted."
+  }
+ ]
+}
