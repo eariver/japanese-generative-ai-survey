@@ -1,0 +1,130 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-vision-multimodal-2026",
+  "evidence_task_id": "evidence:SP-vision-multimodal-2026:8d13b894941b9513",
+  "basis": {
+    "task_sha256": "30babd300f05fc8ca4c4f15b9a24320f30521f1f622f5b4592af2cc728314ed7",
+    "screening_acceptance_sha256": "2b50dd1c205efc957c16a848fe185f9de7fb5eca10a5729c1b58c5bb250e7aff",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "ev-vmd001",
+      "canonical_name": "Neocognitron (Fukushima, 1980)",
+      "entity_type": "PAPER",
+      "organization": null,
+      "canonical_url": "https://doi.org/10.1007/BF00344251"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "ev-vmd001",
+    "artifact_type": "PAPER",
+    "canonical_name": "Neocognitron (Fukushima, 1980)",
+    "canonical_url": "https://doi.org/10.1007/BF00344251"
+  },
+  "temporal": {
+    "observed_at": "2026-09-30T14:24:47Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "1980",
+        "subject_id": "ev-vmd001",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://doi.org/10.1007/BF00344251",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "Neocognitron (Fukushima)",
+      "published_at": "1980",
+      "accessed_at": "2026-09-30T14:24:47Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Neocognitron proposes a self-organized hierarchical network (S-cells with plastic afferent synapses for feature extraction, C-cells for position-tolerant pooling) whose final-layer C-cells respond selectively to a stimulus pattern regardless of position, with tolerance to small shape/size change.",
+      "subject_id": "ev-vmd001",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Springer abstract-page consumption (paywalled full text not accessed); claim scope is the published abstract's mechanism description."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Historical role (VM-O01): conceptual origin of convolutional feature hierarchies (S-/C-cell cascade ancestral to convolution/pooling structure); context-only predecessor, not a performance anchor.",
+      "subject_id": "ev-vmd001",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Edition-level analytical synthesis by the Work operator (lineage/selection/boundary/contract judgment, not a literal statement of the cited source); structural home for edition rationale."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Full-text body behind paywall; mechanism detail stays at abstract level by D01 cap design.",
+      "subject_id": "ev-vmd001",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "No performance/comparison claims carried from this source.",
+      "subject_id": "ev-vmd001",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Abstract confirms self-organized S-/C-cell hierarchy with position-invariant selective response; sufficient for context-only predecessor role.",
+        "subject_ids": [
+          "ev-vmd001"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "paywall content binding",
+        "status": "VERIFIED",
+        "finding": "Paywalled full text not accessed; abstract-level claim scope enforced by D01 cap; not bypassed via secondary sources.",
+        "subject_ids": [
+          "ev-vmd001"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}
