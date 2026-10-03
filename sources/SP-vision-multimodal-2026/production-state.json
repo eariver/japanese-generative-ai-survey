@@ -3,7 +3,7 @@
   "issue_id": "SP-vision-multimodal-2026",
   "research_profile": "THEMATIC",
   "publication_profile": "LONGFORM_SPECIAL",
-  "lifecycle_state": "ISSUE_INITIALIZED",
+  "lifecycle_state": "ARCHITECTURE_ESTABLISHED",
   "profile": {
     "path": "sources/SP-vision-multimodal-2026/production-profile.json",
     "sha256": "e4d16027d66d379848378031e47198a09f0b27a961e27a0ab250923a07a57444"
@@ -31,20 +31,20 @@
     "publication_preview": null
   },
   "target_gate": "ARCHITECTURE_REVIEW",
-  "next_action": "stage:discovery",
-  "terminal_reason": null,
+  "next_action": "ARCHITECTURE_REVIEW",
+  "terminal_reason": "HUMAN_GATE_REACHED",
   "exception_gate": {
     "status": "inactive",
     "reason": null
   },
   "machine_checkpoints": {
-    "discovery": "pending",
-    "screening": "pending",
-    "evidence": "pending",
-    "materiality": "pending",
-    "completeness": "pending",
-    "selection": "pending",
-    "architecture": "pending",
+    "discovery": "passed",
+    "screening": "passed",
+    "evidence": "passed",
+    "materiality": "passed",
+    "completeness": "passed",
+    "selection": "passed",
+    "architecture": "passed",
     "draft": "pending",
     "validation": "pending",
     "publication_preview": "pending",
@@ -52,13 +52,34 @@
     "release": "pending"
   },
   "checkpoint_provenance": {
-    "discovery": null,
-    "screening": null,
-    "evidence": null,
-    "materiality": null,
-    "completeness": null,
-    "selection": null,
-    "architecture": null,
+    "discovery": {
+      "path": "sources/SP-vision-multimodal-2026/orchestration/v2/checkpoints/ISSUE_INITIALIZED.json",
+      "sha256": "021c9129b9c44390c464136ee6b82e738372e83ea33b9a47c2fcb884952e7bc5"
+    },
+    "screening": {
+      "path": "sources/SP-vision-multimodal-2026/orchestration/v2/checkpoints/DISCOVERY_COLLECTED.json",
+      "sha256": "a1d016e9832280472edb1471908d77561d45e0b16bb34f233bef97ba71d2b0fe"
+    },
+    "evidence": {
+      "path": "sources/SP-vision-multimodal-2026/orchestration/v2/checkpoints/CANDIDATES_NORMALIZED.json",
+      "sha256": "5c056c4b3e7b9d6dda6a1efbf2d6780bb610f9116afb4681ed9d202c731703f4"
+    },
+    "materiality": {
+      "path": "sources/SP-vision-multimodal-2026/orchestration/v2/checkpoints/CANDIDATES_NORMALIZED.json",
+      "sha256": "5c056c4b3e7b9d6dda6a1efbf2d6780bb610f9116afb4681ed9d202c731703f4"
+    },
+    "completeness": {
+      "path": "sources/SP-vision-multimodal-2026/orchestration/v2/checkpoints/CANDIDATES_NORMALIZED.json",
+      "sha256": "5c056c4b3e7b9d6dda6a1efbf2d6780bb610f9116afb4681ed9d202c731703f4"
+    },
+    "selection": {
+      "path": "sources/SP-vision-multimodal-2026/orchestration/v2/checkpoints/EVIDENCE_REVIEWED.json",
+      "sha256": "0595f8cc1a7d7302877c18480de4e207b77e3f27588c53418c647f0874ff4612"
+    },
+    "architecture": {
+      "path": "sources/SP-vision-multimodal-2026/orchestration/v2/checkpoints/SELECTION_COMPLETE.json",
+      "sha256": "16e4f49d7d33a72ae28975529a159312cec2b8eda8420e4bdebdb481ac2dcfe5"
+    },
     "draft": null,
     "validation": null,
     "publication_preview": null,
@@ -77,6 +98,36 @@
       "to": "ISSUE_INITIALIZED",
       "recorded_at": "2026-09-30T00:31:34Z",
       "repository_commit_sha": "a6de2929e53b0bdb68e2d7f50ca9368e0ac1519c"
+    },
+    {
+      "from": "ISSUE_INITIALIZED",
+      "to": "DISCOVERY_COLLECTED",
+      "recorded_at": "2026-10-03T12:23:17Z",
+      "repository_commit_sha": "bc5d19922ace4a6e6ac319a0d6685be3eacc87b9"
+    },
+    {
+      "from": "DISCOVERY_COLLECTED",
+      "to": "CANDIDATES_NORMALIZED",
+      "recorded_at": "2026-10-03T12:24:15Z",
+      "repository_commit_sha": "bc5d19922ace4a6e6ac319a0d6685be3eacc87b9"
+    },
+    {
+      "from": "CANDIDATES_NORMALIZED",
+      "to": "EVIDENCE_REVIEWED",
+      "recorded_at": "2026-10-03T12:36:14Z",
+      "repository_commit_sha": "bc5d19922ace4a6e6ac319a0d6685be3eacc87b9"
+    },
+    {
+      "from": "EVIDENCE_REVIEWED",
+      "to": "SELECTION_COMPLETE",
+      "recorded_at": "2026-10-03T12:38:30Z",
+      "repository_commit_sha": "bc5d19922ace4a6e6ac319a0d6685be3eacc87b9"
+    },
+    {
+      "from": "SELECTION_COMPLETE",
+      "to": "ARCHITECTURE_ESTABLISHED",
+      "recorded_at": "2026-10-03T12:39:05Z",
+      "repository_commit_sha": "bc5d19922ace4a6e6ac319a0d6685be3eacc87b9"
     }
   ],
   "publication_revalidation_provenance": null

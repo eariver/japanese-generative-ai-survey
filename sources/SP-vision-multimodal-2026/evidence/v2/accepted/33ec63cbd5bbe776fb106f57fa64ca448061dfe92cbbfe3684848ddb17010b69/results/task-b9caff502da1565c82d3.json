@@ -1,0 +1,108 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-vision-multimodal-2026",
+  "evidence_task_id": "evidence:SP-vision-multimodal-2026:818fa016dee2b06e",
+  "basis": {
+    "task_sha256": "77d6451783cc76d476a0a2128a57983493225c1bbfa4f2a9bf59722d5743d653",
+    "screening_acceptance_sha256": "3f6be59d8dec325e5561ef118bf6025cd200f943d6ea161b4b7b40070d3af087",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "ev-vmd063",
+      "canonical_name": "Molmo / PixMo (Deitke et al., 2024)",
+      "entity_type": "MODEL_FAMILY",
+      "organization": "Ai2",
+      "canonical_url": "https://arxiv.org/abs/2409.17146"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "ev-vmd063",
+    "artifact_type": "PAPER",
+    "canonical_name": "Molmo / PixMo (Deitke et al., 2024)",
+    "canonical_url": "https://arxiv.org/abs/2409.17146"
+  },
+  "temporal": {
+    "observed_at": "2026-09-30T14:24:47Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2024-09",
+        "subject_id": "ev-vmd063",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2409.17146",
+      "source_class": "PRIMARY_PAPER",
+      "title": "Molmo and PixMo (Deitke et al.)",
+      "published_at": "2024-09",
+      "accessed_at": "2026-09-30T14:24:47Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Open-data thesis: PixMo (dense captions + free-form Q&A + 2D pointing + 4 synthetic sets, no external VLMs) + tuned pipeline yields best-in-class 72B (beats Claude 3.5 Sonnet, Gemini 1.5 Pro/Flash; second to GPT-4o on benchmarks + human eval); fully-open MetaCLIP+OLMo variant; weights+data+code open.",
+      "subject_id": "ev-vmd063",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Full-paper abstract/discussion-of-ablations; openness + pointing claims consumed."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Ablation finding: early CLIP encoder default, three alternatives evaluated — encoder-choice empiricism supporting the encoder-reuse discussion.",
+      "subject_id": "ev-vmd063",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Ablation discussion consumed."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "v1 image-centric scope; video claims belong to Molmo 2 record.",
+      "subject_id": "ev-vmd063",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Full body consumed: PixMo composition, no-closed-VLM-data claim, pointing datasets, eval results verified.",
+        "subject_ids": [
+          "ev-vmd063"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

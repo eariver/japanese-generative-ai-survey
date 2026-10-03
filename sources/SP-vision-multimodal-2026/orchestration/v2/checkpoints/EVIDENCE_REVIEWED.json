@@ -1,0 +1,50 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-vision-multimodal-2026",
+  "from_state": "EVIDENCE_REVIEWED",
+  "to_state": "SELECTION_COMPLETE",
+  "checkpoints": [
+    "selection"
+  ],
+  "recorded_at": "2026-10-03T12:38:30Z",
+  "implementation": {
+    "repository_commit_sha": "bc5d19922ace4a6e6ac319a0d6685be3eacc87b9",
+    "orchestrator_version": "survey-production-core-v2/0.15-postintegration-transport-thematic"
+  },
+  "contract": {
+    "pipeline_contract_version": "2.0-rc1",
+    "pipeline_contract_sha256": "ee89796245c22072cec98f34931180214a4928c24f399280793cd6420a4c8e71",
+    "quality_contract_version": "2.0-rc1",
+    "quality_contract_sha256": "b5b955d524fb438c0f1b2c9490bea1da2083e79028d67a55ca424bbfc20f2958",
+    "research_profile_version": "2.0-rc1",
+    "research_profile_sha256": "0f575e6d97caec72b2bf8b7f6b78a562d97ca67b2071193417b968ba3d73e6e8",
+    "publication_profile_version": "2.0-rc1",
+    "publication_profile_sha256": "a6859559dd1b9d42ab8fb4402b74b7bdd8611dbe65c8e02a7b022b545c20f4eb"
+  },
+  "artifacts": [
+    {
+      "name": "candidate-matrix",
+      "path": "sources/SP-vision-multimodal-2026/candidate-matrix-v2.json",
+      "sha256": "3482943f1aa00836e4d502f0f3de13964c62d10b6c0b18c1e2a45664ad2cc2fa"
+    },
+    {
+      "name": "candidate-selection",
+      "path": "sources/SP-vision-multimodal-2026/candidate-selection-v2.json",
+      "sha256": "c0ad644a54976421268edf2ce6e2cf4b14ab0d790e6f2fd179ebd2f7f1c9a6da"
+    }
+  ],
+  "reviews": [
+    {
+      "check_id": "CORE_STAGE_CONTRACT",
+      "kind": "DETERMINISTIC",
+      "status": "PASS",
+      "executor": "Survey Production Core v2 survey_stage_validation_v2.py",
+      "evidence": "Selection stage-contract validation passed over 112-record canonical authority (matrix 112 rows, 111 carried + VM-D112 SELECTED/SUPPORTING lineage-context assignments). Machine validation only; Sol Selection review owed.",
+      "result": {
+        "path": "sources/SP-vision-multimodal-2026/execution/architecture-r3-intake-20261003/validation/selection-stage-validation-112.json",
+        "sha256": "53e0820e79e6158f91b3c5c17ace2783e20222399fcbef08097e728ec9597084"
+      }
+    }
+  ],
+  "summary": "TS-003 Selection complete over 112-record canonical authority (matrix re-derived, 111 assignments carried + VM-D112 SELECTED/SUPPORTING, V1 identity held). Proceed to Architecture; Sol Selection review owed."
+}

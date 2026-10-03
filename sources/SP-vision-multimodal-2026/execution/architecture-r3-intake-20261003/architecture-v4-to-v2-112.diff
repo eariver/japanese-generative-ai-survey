@@ -1,0 +1,99 @@
+--- architecture-v4.json
+
++++ architecture-v2.json
+
+@@ -7,8 +7,8 @@
+
+   "basis": {
+     "production_profile_sha256": "e4d16027d66d379848378031e47198a09f0b27a961e27a0ab250923a07a57444",
+-    "profile_completeness_sha256": "4b098007ca2f1ebb95a48216b543a14e1ee80cce8e5087d79e4e80f3397ccb92",
+-    "materiality_ledger_sha256": "4d20abcdd39a3ab4bda1d0d0e88d633fa8ff985e571af3650b61515361341e83",
+-    "candidate_matrix_sha256": "0ef4974a1d83e07f2af339f2c83189cb45b4cc481c4e966f731c836faa4f6870",
+-    "candidate_selection_sha256": "f28fd27191c0ccb26248b9eea78d37b9a1770fa9bfef7ed56fef3d77996342e9"
++    "profile_completeness_sha256": "c4b3d833b5c195fd0590cfbc90d64c29ba878251686060af21e475e4a5dc384f",
++    "materiality_ledger_sha256": "32b51f0736f5c21fc017c4cdde8499940a9addb3efd552fe3be0940ec190082d",
++    "candidate_matrix_sha256": "3482943f1aa00836e4d502f0f3de13964c62d10b6c0b18c1e2a45664ad2cc2fa",
++    "candidate_selection_sha256": "c0ad644a54976421268edf2ce6e2cf4b14ab0d790e6f2fd179ebd2f7f1c9a6da"
+   },
+   "editorial_thesis": "TS-003 completes the three-volume arc — TS-001 computes intelligence, TS-002 generates the world, TS-003 perceives, grounds, reasons about, predicts and acts in it — by reconstructing partially independent technical lineages that converge late, organized as interacting problem layers (representation, recognition, localization/structure, language alignment, grounding, fusion, temporal/spatial state, reasoning, action/prediction) rather than a single model chronology. The cross-cutting test throughout is what representation of the world is sufficient for the next computation: what each stage preserves, discards, localizes, tokenizes, grounds, reasons over, predicts or acts upon.",
+@@ -106,5 +106,6 @@
+
+         "YOLO product-line confusion risk; version-bound claims only; edge-deployment burden noted as motivation, not established result.",
+         "Default-box tiling vs receptive-field alignment left as future work by the paper itself; thin treatment per lineage-completeness role.",
+-        "Loss-centric contribution; architecture claims require detector-side sources; thin treatment per role."
++        "Loss-centric contribution; architecture claims require detector-side sources; thin treatment per role.",
++        "Matching cost (assignment) vs matched-pair training loss kept distinct; auxiliary decoder losses are standard-recipe, never architecture-mandatory."
+       ],
+       "drafting_order": 2,
+@@ -511,10 +512,12 @@
+
+         "candidate:SP-vision-multimodal-2026:07a829a9dacd4350",
+         "candidate:SP-vision-multimodal-2026:b295578156b38584",
+-        "candidate:SP-vision-multimodal-2026:a8ccb33bb2e5cbfa"
++        "candidate:SP-vision-multimodal-2026:a8ccb33bb2e5cbfa",
++        "candidate:SP-vision-multimodal-2026:69b72bb7fcd308ec"
+       ],
+       "must_cover_requirements": [
+         "Two technically distinct open families (InternVL3 paradigm contrast, Molmo 2 grounding comparator); no Qwen-only narrative",
+         "Audio chain Whisper/BEATs/CLAP/omni-sync with synthesis excluded (TS-002)",
+-        "Vendor latency/token figures config-bound (CV2-DM-020); X03 fields multimodal-specific only"
++        "Vendor latency/token figures config-bound (CV2-DM-020); X03 fields multimodal-specific only",
++        "Query-driven selective acquisition economics axis via VM-D112 (vendor ceilings, version-bound; token scope only)"
+       ],
+       "boundaries": [
+@@ -538,5 +541,8 @@
+
+         "data-release scope verification: File-level data-release scope not verified; carried as INSPECT item for later stages.",
+         "PARTIAL: training-data license mix (academic/non-commercial third-party) unbound (INSPECT target).",
+-        "data license mix binding: Training-data license mix not bound; carried as INSPECT item for later stages."
++        "data license mix binding: Training-data license mix not bound; carried as INSPECT item for later stages.",
++        "All efficiency figures vendor-reported up-to ceilings; no independent reproduction; implementation, rates, pricing, and API surface may change after cutoff (bind version + date at use).",
++        "Benchmark-row binding (incl. LongVideoBench scope + 3.8 Flash row) deferred to downstream use; static-vs-agentic token-math worked example deferred.",
++        "Exact benchmark list/splits behind vendor efficiency ceilings (incl. LongVideoBench scope + 3.8 Flash row) remain binding work for downstream use."
+       ],
+       "drafting_order": 10,
+@@ -554,5 +560,6 @@
+
+             "VM-D067",
+             "VM-D068",
+-            "VM-D069"
++            "VM-D069",
++            "VM-D112"
+           ],
+           "BRIEF_CONTEXT_OR_AUTHORITY": [
+@@ -626,10 +633,12 @@
+
+         "candidate:SP-vision-multimodal-2026:7d3ae458d2c65b56",
+         "candidate:SP-vision-multimodal-2026:58672f226741bd8d",
+-        "candidate:SP-vision-multimodal-2026:632555d86cc7e1d9"
++        "candidate:SP-vision-multimodal-2026:632555d86cc7e1d9",
++        "candidate:SP-vision-multimodal-2026:69b72bb7fcd308ec"
+       ],
+       "must_cover_requirements": [
+         "Offline long-context vs online streaming contracts separated",
+         "Frame-count sensitivity and async-query/memory policies recorded",
+-        "VSI-Bench PARTIAL depth carried with debiased-subset deferral"
++        "VSI-Bench PARTIAL depth carried with debiased-subset deferral",
++        "Third video-processing contract (stored-timeline on-demand navigation) via VM-D112; offline breadth vs online state columns unchanged"
+       ],
+       "boundaries": [
+@@ -644,5 +653,8 @@
+
+         "PARTIAL: paper body at abstract depth (not full-paper read); debiased-subset analysis deferred.",
+         "Viewer-derived subset and row-count facts remain outside canonical scope for this Card; debiased-subset analysis deferred.",
+-        "dataset + debiased-subset binding: Debiased-subset analysis deferred; carried as INSPECT depth item."
++        "dataset + debiased-subset binding: Debiased-subset analysis deferred; carried as INSPECT depth item.",
++        "All efficiency figures vendor-reported up-to ceilings; no independent reproduction; implementation, rates, pricing, and API surface may change after cutoff (bind version + date at use).",
++        "Benchmark-row binding (incl. LongVideoBench scope + 3.8 Flash row) deferred to downstream use; static-vs-agentic token-math worked example deferred.",
++        "Exact benchmark list/splits behind vendor efficiency ceilings (incl. LongVideoBench scope + 3.8 Flash row) remain binding work for downstream use."
+       ],
+       "drafting_order": 12,
+@@ -656,5 +668,6 @@
+
+           "TRANSITION_NODE_TREATMENT": [
+             "VM-D085",
+-            "VM-D088"
++            "VM-D088",
++            "VM-D112"
+           ],
+           "BRIEF_CONTEXT_OR_AUTHORITY": [

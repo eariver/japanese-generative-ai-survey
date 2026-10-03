@@ -1,0 +1,62 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-vision-multimodal-2026",
+  "from_state": "CANDIDATES_NORMALIZED",
+  "to_state": "EVIDENCE_REVIEWED",
+  "checkpoints": [
+    "evidence",
+    "materiality",
+    "completeness"
+  ],
+  "recorded_at": "2026-10-03T12:36:14Z",
+  "implementation": {
+    "repository_commit_sha": "bc5d19922ace4a6e6ac319a0d6685be3eacc87b9",
+    "orchestrator_version": "survey-production-core-v2/0.15-postintegration-transport-thematic"
+  },
+  "contract": {
+    "pipeline_contract_version": "2.0-rc1",
+    "pipeline_contract_sha256": "ee89796245c22072cec98f34931180214a4928c24f399280793cd6420a4c8e71",
+    "quality_contract_version": "2.0-rc1",
+    "quality_contract_sha256": "b5b955d524fb438c0f1b2c9490bea1da2083e79028d67a55ca424bbfc20f2958",
+    "research_profile_version": "2.0-rc1",
+    "research_profile_sha256": "0f575e6d97caec72b2bf8b7f6b78a562d97ca67b2071193417b968ba3d73e6e8",
+    "publication_profile_version": "2.0-rc1",
+    "publication_profile_sha256": "a6859559dd1b9d42ab8fb4402b74b7bdd8611dbe65c8e02a7b022b545c20f4eb"
+  },
+  "artifacts": [
+    {
+      "name": "edition-views-acceptance",
+      "path": "sources/SP-vision-multimodal-2026/evidence/v2/views/accepted/be9b7a50b1214113c6dd0a87d7092a574d8498d1bf2bb9ce0798a1d20f1231b5/edition-views-accepted.json",
+      "sha256": "fc5362c8b9d888d3c5bcb53c8cdba8b834239e98dfe546ea5dbe86951a5cc46d"
+    },
+    {
+      "name": "evidence-acceptance",
+      "path": "sources/SP-vision-multimodal-2026/evidence/v2/accepted/33ec63cbd5bbe776fb106f57fa64ca448061dfe92cbbfe3684848ddb17010b69/evidence-accepted.json",
+      "sha256": "5e84717d23776cda74495e5a406f53a73b535fbac13db2ea23045624d4b2efd4"
+    },
+    {
+      "name": "materiality-ledger",
+      "path": "sources/SP-vision-multimodal-2026/materiality-ledger-v2.json",
+      "sha256": "32b51f0736f5c21fc017c4cdde8499940a9addb3efd552fe3be0940ec190082d"
+    },
+    {
+      "name": "profile-completeness",
+      "path": "sources/SP-vision-multimodal-2026/profile-completeness-v2.json",
+      "sha256": "c4b3d833b5c195fd0590cfbc90d64c29ba878251686060af21e475e4a5dc384f"
+    }
+  ],
+  "reviews": [
+    {
+      "check_id": "CORE_STAGE_CONTRACT",
+      "kind": "DETERMINISTIC",
+      "status": "PASS",
+      "executor": "Survey Production Core v2 survey_stage_validation_v2.py",
+      "evidence": "Combined Evidence/Materiality/Completeness stage-contract validation passed over canonical 112 authority (VM-D112 MATERIAL, V1 held). Machine validation only; Sol review owed.",
+      "result": {
+        "path": "sources/SP-vision-multimodal-2026/execution/architecture-r3-intake-20261003/validation/evidence-materiality-completeness-validation-112.json",
+        "sha256": "f0adab290e7d49b104aa44ef01c2508ec0b1a6ba9fa14c66730f27c3529a48fe"
+      }
+    }
+  ],
+  "summary": "TS-003 Evidence/Materiality/Completeness complete over 112-record canonical authority (VM-D112 admitted MATERIAL, V1 identity held, SSv2-free generated texts). Proceed to Selection; Sol review owed."
+}

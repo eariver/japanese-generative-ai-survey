@@ -1,0 +1,45 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-vision-multimodal-2026",
+  "from_state": "ISSUE_INITIALIZED",
+  "to_state": "DISCOVERY_COLLECTED",
+  "checkpoints": [
+    "discovery"
+  ],
+  "recorded_at": "2026-10-03T12:23:17Z",
+  "implementation": {
+    "repository_commit_sha": "bc5d19922ace4a6e6ac319a0d6685be3eacc87b9",
+    "orchestrator_version": "survey-production-core-v2/0.15-postintegration-transport-thematic"
+  },
+  "contract": {
+    "pipeline_contract_version": "2.0-rc1",
+    "pipeline_contract_sha256": "ee89796245c22072cec98f34931180214a4928c24f399280793cd6420a4c8e71",
+    "quality_contract_version": "2.0-rc1",
+    "quality_contract_sha256": "b5b955d524fb438c0f1b2c9490bea1da2083e79028d67a55ca424bbfc20f2958",
+    "research_profile_version": "2.0-rc1",
+    "research_profile_sha256": "0f575e6d97caec72b2bf8b7f6b78a562d97ca67b2071193417b968ba3d73e6e8",
+    "publication_profile_version": "2.0-rc1",
+    "publication_profile_sha256": "a6859559dd1b9d42ab8fb4402b74b7bdd8611dbe65c8e02a7b022b545c20f4eb"
+  },
+  "artifacts": [
+    {
+      "name": "discovery-acceptance",
+      "path": "sources/SP-vision-multimodal-2026/discovery/discovery-accepted-v2.json",
+      "sha256": "7072d557a50b4e8edf88c7afe141cf4aace8879477574c6e227f3b02d05b6a59"
+    }
+  ],
+  "reviews": [
+    {
+      "check_id": "CORE_STAGE_CONTRACT",
+      "kind": "DETERMINISTIC",
+      "status": "PASS",
+      "executor": "Survey Production Core v2 survey_stage_validation_v2.py",
+      "evidence": "Discovery stage-contract validation passed over canonical 112-record acceptance (111 carried BASE + VM-D112 BASE root collection). Machine validation only; Sol Discovery completeness review owed.",
+      "result": {
+        "path": "sources/SP-vision-multimodal-2026/execution/architecture-r3-intake-20261003/validation/discovery-stage-validation-112.json",
+        "sha256": "03f9d3256f7be27fb6f310462235090925791838c0be9e431c2dcc5cd93b7da8"
+      }
+    }
+  ],
+  "summary": "TS-003 Discovery (re-)collection complete: 112 BASE root records (VM-D001-VM-D111 carried + VM-D112 Agentic Video Understanding as normal root item). Proceed to Screening; Sol review owed."
+}

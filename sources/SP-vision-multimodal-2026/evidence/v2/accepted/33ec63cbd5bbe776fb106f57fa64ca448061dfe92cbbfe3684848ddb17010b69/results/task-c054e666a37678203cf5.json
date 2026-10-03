@@ -1,0 +1,97 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-vision-multimodal-2026",
+  "evidence_task_id": "evidence:SP-vision-multimodal-2026:ac075257c99d3b88",
+  "basis": {
+    "task_sha256": "15219f0c796d7c20b0345ab7dd45a1e11252f6912f3bcc233ff9559ba133e65d",
+    "screening_acceptance_sha256": "3f6be59d8dec325e5561ef118bf6025cd200f943d6ea161b4b7b40070d3af087",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "ev-vmd061",
+      "canonical_name": "MiniGPT-4 (Zhu et al., 2023)",
+      "entity_type": "MODEL",
+      "organization": null,
+      "canonical_url": "https://arxiv.org/abs/2304.10592"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "ev-vmd061",
+    "artifact_type": "PAPER",
+    "canonical_name": "MiniGPT-4 (Zhu et al., 2023)",
+    "canonical_url": "https://arxiv.org/abs/2304.10592"
+  },
+  "temporal": {
+    "observed_at": "2026-09-30T14:24:47Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2023-04",
+        "subject_id": "ev-vmd061",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2304.10592",
+      "source_class": "PRIMARY_PAPER",
+      "title": "MiniGPT-4 (Zhu et al.)",
+      "published_at": "2023-04",
+      "accessed_at": "2026-09-30T14:24:47Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Single projection layer aligning frozen visual encoder with frozen Vicuna unlocks GPT-4-like compositional abilities (detailed description, website-from-sketch, stories/poems, cooking instruction); two-stage curation (short captions then detailed-description finetuning) fixes repetition/fragmentation; code+models+data open.",
+      "subject_id": "ev-vmd061",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Full-paper abstract/discussion; compositional-skill thesis consumed."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Short treatment per bridge-function role; alignment-fragility notes need eval-side sources.",
+      "subject_id": "ev-vmd061",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Full body consumed: single-layer alignment, two-stage curation, compositional exhibits verified.",
+        "subject_ids": [
+          "ev-vmd061"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}
