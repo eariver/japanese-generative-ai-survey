@@ -1,0 +1,50 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-vision-multimodal-2026",
+  "from_state": "EVIDENCE_REVIEWED",
+  "to_state": "SELECTION_COMPLETE",
+  "checkpoints": [
+    "selection"
+  ],
+  "recorded_at": "2026-10-03T12:07:05Z",
+  "implementation": {
+    "repository_commit_sha": "8a62eb126848c50d261832e809a002234b404310",
+    "orchestrator_version": "survey-production-core-v2/0.15-postintegration-transport-thematic"
+  },
+  "contract": {
+    "pipeline_contract_version": "2.0-rc1",
+    "pipeline_contract_sha256": "ee89796245c22072cec98f34931180214a4928c24f399280793cd6420a4c8e71",
+    "quality_contract_version": "2.0-rc1",
+    "quality_contract_sha256": "b5b955d524fb438c0f1b2c9490bea1da2083e79028d67a55ca424bbfc20f2958",
+    "research_profile_version": "2.0-rc1",
+    "research_profile_sha256": "0f575e6d97caec72b2bf8b7f6b78a562d97ca67b2071193417b968ba3d73e6e8",
+    "publication_profile_version": "2.0-rc1",
+    "publication_profile_sha256": "a6859559dd1b9d42ab8fb4402b74b7bdd8611dbe65c8e02a7b022b545c20f4eb"
+  },
+  "artifacts": [
+    {
+      "name": "candidate-matrix",
+      "path": "sources/SP-vision-multimodal-2026/candidate-matrix-v2.json",
+      "sha256": "9945e43b5acb3906d4d63fb468ba013ecf5d74938029d45b0f9478dc850325ad"
+    },
+    {
+      "name": "candidate-selection",
+      "path": "sources/SP-vision-multimodal-2026/candidate-selection-v2.json",
+      "sha256": "3d0195adf27e8ea97a520c4e1cc380964132cdaab3e01a42329163412432cff0"
+    }
+  ],
+  "reviews": [
+    {
+      "check_id": "CORE_STAGE_CONTRACT",
+      "kind": "DETERMINISTIC",
+      "status": "PASS",
+      "executor": "Survey Production Core v2 survey_stage_validation_v2.py",
+      "evidence": "Selection stage-contract validation passed over replayed 111 authority (matrix 111 rows, 111 carried assignments, no Agentic candidate). Machine validation only; Sol Selection review owed.",
+      "result": {
+        "path": "sources/SP-vision-multimodal-2026/execution/replay-current-111-to-r3-20261003/validation/selection-stage-validation-111.json",
+        "sha256": "702e686621bbce3b757a372c985889c7e079319e20bfdd80e2b0988db827f7a9"
+      }
+    }
+  ],
+  "summary": "TS-003 Selection replay complete over 111-record canonical authority (matrix re-derived, 111 assignments carried, V1 identity held, no Agentic selection). Proceed to Architecture; Sol Selection review owed."
+}
