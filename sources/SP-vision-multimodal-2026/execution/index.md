@@ -14,9 +14,9 @@ This is the current human-readable navigation record for the edition. Machine li
 - Production Profile: `sources/SP-vision-multimodal-2026/production-profile.json`
 - Production State: `sources/SP-vision-multimodal-2026/production-state.json`
 - Current State SHA-256: `0f07c471ad65f800e508869f4e9a5d51fdb1e4d695fe9f26baca9246589973eb`
-- Current lifecycle: `DRAFT_COMPLETE`
-- Current terminal reason: `none`
-- Current next action: `stage:reader-publication-validation`
+- Current lifecycle: `RELEASE_CANDIDATE` (per `production-state.json`; this index does not assert lifecycle, only points at it)
+- Current terminal reason: `HUMAN_GATE_REACHED`
+- Current next action: `PUBLICATION_PREVIEW` (pending; blocked on fresh Human Architecture Review r3 after upstream rebind — see upstream-rebind entry below)
 - Selection/Architecture run: `execution/selection-architecture-20261001/` (input, validation, dossier r1)
 - Human Architecture Review dossier r1: `execution/selection-architecture-20261001/architecture-review-dossier-r1.md`
 - Human Architecture Review r1: `REQUEST_CHANGES` (`gates/reviews/architecture-r1.json`, boundary `SELECTION_COMPLETE`)
@@ -30,9 +30,9 @@ This is the current human-readable navigation record for the edition. Machine li
 
 ## Human Gates
 
-- Architecture Review: `pending`
+- Architecture Review: `approved` at r2 (`gates/reviews/architecture-r2.json` + `gates/reviews/approvals/architecture-r2.json`); fresh r3 review PENDING (candidate `architecture-v3.json`, review package in `execution/upstream-rebind-post-r14-20261003/`)
 - Publication Preview: `pending`
-- Detailed review records: none recorded yet
+- Detailed review records: `gates/reviews/review-index.json` (r1 REQUEST_CHANGES, r2 APPROVED; no r3 — Human decision not inferred)
 
 ## Publication Candidate
 
@@ -58,6 +58,7 @@ This is the current human-readable navigation record for the edition. Machine li
 
 - `sessions/ts003-vision-multimodal-discovery-20260930.md`
 - Selection→Architecture run 20261001: `selection-architecture-20261001/` + checkpoints `orchestration/v2/checkpoints/{EVIDENCE_REVIEWED,SELECTION_COMPLETE}.json`
+- Upstream rebind post-r14 (20261003): `execution/upstream-rebind-post-r14-20261003/` — Evidence r7 (VM-D084 V1 rename + DETR cost/loss precision), refreshed chain (`materiality-ledger-v2-r7.json`, `profile-completeness-v2-r7.json`, `candidate-matrix-v2-r7.json`, `candidate-selection-v2-r7.json`), `architecture-v3.json` (PROPOSED candidate) + `architecture-review-summary-v3.json` + `architecture-review-attention-v3.json` + `architecture-v2-to-v3.diff`. Agentic Video staged intake (Discovery supplement + screening/evidence drafts, NOT canonical). Awaiting Sol re-review + fresh Human Architecture Review; no gate transitioned by this pass.
 
 ## Final disposition
 
