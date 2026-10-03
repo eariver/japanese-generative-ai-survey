@@ -1,0 +1,119 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-vision-multimodal-2026",
+  "evidence_task_id": "evidence:SP-vision-multimodal-2026:a6b4065d7ddd17fd",
+  "basis": {
+    "task_sha256": "3e72f961e0b9b7fb3463c22334b546b9ad911a4751841febbe96344914384ed9",
+    "screening_acceptance_sha256": "2b50dd1c205efc957c16a848fe185f9de7fb5eca10a5729c1b58c5bb250e7aff",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "ev-vmd022",
+      "canonical_name": "DUSt3R (Wang et al., 2024)",
+      "entity_type": "MODEL",
+      "organization": "Naver Labs Europe",
+      "canonical_url": "https://arxiv.org/abs/2312.14132"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "ev-vmd022",
+    "artifact_type": "PAPER",
+    "canonical_name": "DUSt3R (Wang et al., 2024)",
+    "canonical_url": "https://arxiv.org/abs/2312.14132"
+  },
+  "temporal": {
+    "observed_at": "2026-09-30T14:24:47Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2023-12",
+        "subject_id": "ev-vmd022",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2312.14132",
+      "source_class": "PRIMARY_PAPER",
+      "title": "DUSt3R: Geometric 3D Vision Made Easy (Wang et al.)",
+      "published_at": "2023-12",
+      "accessed_at": "2026-09-30T14:24:47Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Pointmap regression from uncalibrated/unposed image pairs (no intrinsics, no poses) unifying monocular and binocular reconstruction; global alignment to a common frame for multi-view; cameras/depth/matches recoverable downstream; SoTA monocular/multi-view depth and relative pose; standard Transformer encoder-decoder leveraging pretrained models.",
+      "subject_id": "ev-vmd022",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Full-paper abstract/contributions/discussion; CVPR 2024. SoTA claims are paper-reported."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Paper's own boundary: pointmaps regressed up to unknown scale; generic architecture never explicitly enforces geometric constraints — priors come from geometrically consistent training pointmaps only.",
+      "subject_id": "ev-vmd022",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Discussion section consumed; recorded as the method's stated limit."
+    },
+    {
+      "statement_id": "claim-3",
+      "text": "Role (VM-O04): geometry-as-network-output-state (not calibrated-pipeline input) — the D04->D09/D13 bridge exhibit.",
+      "subject_id": "ev-vmd022",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Edition-level analytical synthesis by the Work operator (lineage/selection/boundary/contract judgment, not a literal statement of the cited source); structural home for edition rationale."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Scale ambiguity; learned-prior dependence; successors add no new contract (excluded).",
+      "subject_id": "ev-vmd022",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Full body consumed: pointmap formulation, alignment optimization, SoTA claims, and stated geometric-constraint limit verified.",
+        "subject_ids": [
+          "ev-vmd022"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}
