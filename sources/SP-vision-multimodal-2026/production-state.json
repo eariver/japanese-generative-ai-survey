@@ -3,7 +3,7 @@
   "issue_id": "SP-vision-multimodal-2026",
   "research_profile": "THEMATIC",
   "publication_profile": "LONGFORM_SPECIAL",
-  "lifecycle_state": "RELEASE_CANDIDATE",
+  "lifecycle_state": "DISCOVERY_COLLECTED",
   "profile": {
     "path": "sources/SP-vision-multimodal-2026/production-profile.json",
     "sha256": "e4d16027d66d379848378031e47198a09f0b27a961e27a0ab250923a07a57444"
@@ -23,33 +23,30 @@
     "orchestrator_version": "survey-production-core-v2/0.15-postintegration-transport-thematic"
   },
   "human_gates": {
-    "architecture_review": "approved",
+    "architecture_review": "pending",
     "publication_preview": "pending"
   },
   "human_gate_provenance": {
-    "architecture_review": {
-      "path": "sources/SP-vision-multimodal-2026/gates/architecture-approval.json",
-      "sha256": "9925b15ef2b61083920d8c04330ed14457db83c81cac0daf42275c08fb375715"
-    },
+    "architecture_review": null,
     "publication_preview": null
   },
   "target_gate": "ARCHITECTURE_REVIEW",
-  "next_action": "PUBLICATION_PREVIEW",
-  "terminal_reason": "HUMAN_GATE_REACHED",
+  "next_action": "stage:screening",
+  "terminal_reason": null,
   "exception_gate": {
     "status": "inactive",
     "reason": null
   },
   "machine_checkpoints": {
     "discovery": "passed",
-    "screening": "passed",
-    "evidence": "passed",
-    "materiality": "passed",
-    "completeness": "passed",
-    "selection": "passed",
-    "architecture": "passed",
-    "draft": "passed",
-    "validation": "passed",
+    "screening": "pending",
+    "evidence": "pending",
+    "materiality": "pending",
+    "completeness": "pending",
+    "selection": "pending",
+    "architecture": "pending",
+    "draft": "pending",
+    "validation": "pending",
     "publication_preview": "pending",
     "freeze": "pending",
     "release": "pending"
@@ -59,38 +56,14 @@
       "path": "sources/SP-vision-multimodal-2026/orchestration/v2/checkpoints/ISSUE_INITIALIZED.json",
       "sha256": "ec5bfed9abf925855ece1d41c289ada59fb5e6acb31526f659b9000678853609"
     },
-    "screening": {
-      "path": "sources/SP-vision-multimodal-2026/orchestration/v2/checkpoints/DISCOVERY_COLLECTED.json",
-      "sha256": "62a9b6d589df798a1356c88d0587354247be2d9ac9954176b39d6ce5001dda2a"
-    },
-    "evidence": {
-      "path": "sources/SP-vision-multimodal-2026/orchestration/v2/checkpoints/CANDIDATES_NORMALIZED.json",
-      "sha256": "ef73f9b94e71269ad9469f2a3f67cd263b07b05b34fbeec846f1e3e2a7ae5468"
-    },
-    "materiality": {
-      "path": "sources/SP-vision-multimodal-2026/orchestration/v2/checkpoints/CANDIDATES_NORMALIZED.json",
-      "sha256": "ef73f9b94e71269ad9469f2a3f67cd263b07b05b34fbeec846f1e3e2a7ae5468"
-    },
-    "completeness": {
-      "path": "sources/SP-vision-multimodal-2026/orchestration/v2/checkpoints/CANDIDATES_NORMALIZED.json",
-      "sha256": "ef73f9b94e71269ad9469f2a3f67cd263b07b05b34fbeec846f1e3e2a7ae5468"
-    },
-    "selection": {
-      "path": "sources/SP-vision-multimodal-2026/orchestration/v2/checkpoints/EVIDENCE_REVIEWED.json",
-      "sha256": "5e199f43a445d69e9447e1e854172d60ccd0c8152df6fabab3b5f0f39339febc"
-    },
-    "architecture": {
-      "path": "sources/SP-vision-multimodal-2026/orchestration/v2/checkpoints/SELECTION_COMPLETE.json",
-      "sha256": "dbc5952a7ebe506f15a8f56da0b3166ad72ff8a810625b144d19227039b5e2fb"
-    },
-    "draft": {
-      "path": "sources/SP-vision-multimodal-2026/orchestration/v2/checkpoints/ARCHITECTURE_ESTABLISHED.json",
-      "sha256": "21f79321a5426cfeec850140b081edf5959f6f1835baed5df15170bd71a9b798"
-    },
-    "validation": {
-      "path": "sources/SP-vision-multimodal-2026/orchestration/v2/checkpoints/DRAFT_COMPLETE.json",
-      "sha256": "f4a241df31d23619775986e56ce58e03c0d47cc735851d1ae4d9d1d98897ea10"
-    },
+    "screening": null,
+    "evidence": null,
+    "materiality": null,
+    "completeness": null,
+    "selection": null,
+    "architecture": null,
+    "draft": null,
+    "validation": null,
     "publication_preview": null,
     "freeze": null,
     "release": null
@@ -113,48 +86,6 @@
       "to": "DISCOVERY_COLLECTED",
       "recorded_at": "2026-09-30T00:40:39Z",
       "repository_commit_sha": "2f05c45a2a2bc4394ec0b325d60dbc4538f72c80"
-    },
-    {
-      "from": "DISCOVERY_COLLECTED",
-      "to": "CANDIDATES_NORMALIZED",
-      "recorded_at": "2026-09-30T11:29:54Z",
-      "repository_commit_sha": "f4122d844470cb91286625486d741998d5625715"
-    },
-    {
-      "from": "CANDIDATES_NORMALIZED",
-      "to": "EVIDENCE_REVIEWED",
-      "recorded_at": "2026-09-30T17:09:52Z",
-      "repository_commit_sha": "67e02538f120ce184814866d372daf9de9388c33"
-    },
-    {
-      "from": "EVIDENCE_REVIEWED",
-      "to": "SELECTION_COMPLETE",
-      "recorded_at": "2026-09-30T17:37:05Z",
-      "repository_commit_sha": "6e3d555e8895e53151e30a4c93ace6bc790ce2b7"
-    },
-    {
-      "from": "SELECTION_COMPLETE",
-      "to": "ARCHITECTURE_ESTABLISHED",
-      "recorded_at": "2026-09-30T18:15:25Z",
-      "repository_commit_sha": "2de6d0ce3c6fcb9d953de8fe1e80325298ea87d1"
-    },
-    {
-      "from": "ARCHITECTURE_ESTABLISHED",
-      "to": "DRAFT_COMPLETE",
-      "recorded_at": "2026-10-01T04:07:05Z",
-      "repository_commit_sha": "1a588ff12384b4d5236d7e3860ee1cec937c14df"
-    },
-    {
-      "from": "DRAFT_COMPLETE",
-      "to": "VALIDATED_DRAFT",
-      "recorded_at": "2026-10-03T03:53:17Z",
-      "repository_commit_sha": "59f89f89d9606ddb1328aeff07e4f63c0aae4ae7"
-    },
-    {
-      "from": "VALIDATED_DRAFT",
-      "to": "RELEASE_CANDIDATE",
-      "recorded_at": "2026-10-03T03:55:01Z",
-      "repository_commit_sha": "4f8b535c38f35879f7ea84b39a5c5f3c08eb966d"
     }
   ],
   "publication_revalidation_provenance": null
