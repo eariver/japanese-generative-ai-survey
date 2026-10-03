@@ -1,0 +1,119 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-vision-multimodal-2026",
+  "evidence_task_id": "evidence:SP-vision-multimodal-2026:b10c9e111b6ab1e8",
+  "basis": {
+    "task_sha256": "228f6b0875ba30a5fd280e6fc1345e88b8fb1e183f47175c031e2912864f05eb",
+    "screening_acceptance_sha256": "2b50dd1c205efc957c16a848fe185f9de7fb5eca10a5729c1b58c5bb250e7aff",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "ev-vmd011",
+      "canonical_name": "DINO detector (Zhang et al., 2022)",
+      "entity_type": "MODEL",
+      "organization": null,
+      "canonical_url": "https://arxiv.org/abs/2203.03605"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "ev-vmd011",
+    "artifact_type": "PAPER",
+    "canonical_name": "DINO detector (Zhang et al., 2022)",
+    "canonical_url": "https://arxiv.org/abs/2203.03605"
+  },
+  "temporal": {
+    "observed_at": "2026-09-30T14:24:47Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2022-03",
+        "subject_id": "ev-vmd011",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2203.03605",
+      "source_class": "PRIMARY_PAPER",
+      "title": "DINO: DETR with Improved DeNoising Anchor Boxes (Zhang et al.)",
+      "published_at": "2022-03",
+      "accessed_at": "2026-09-30T14:24:47Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "DETR-lineage capstone with improved denoising anchor boxes: 49.4 AP in 12 epochs / 51.3 in 24 epochs (R50, COCO), +6.0/+2.7 AP over DN-DETR; Objects365-pretrained SwinL reaches 63.2/63.3 AP val/test-dev with reduced model/data scale vs leaderboard peers.",
+      "subject_id": "ev-vmd011",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Full-paper abstract/results consumed; numbers paper-reported. Comparison numbers are paper-reported."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Role (VM-O02/VM-O08): technical base of Grounding DINO; must always be qualified as 'DINO detector' vs DINO self-supervised (CV2-DM-006 rule).",
+      "subject_id": "ev-vmd011",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Edition-level analytical synthesis by the Work operator (lineage/selection/boundary/contract judgment, not a literal statement of the cited source); structural home for edition rationale."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Leaderboard-comparison scope; grounding behavior requires Grounding-DINO-side sources.",
+      "subject_id": "ev-vmd011",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Full body consumed; DETR-successor numbers and Grounding-DINO-base role verified.",
+        "subject_ids": [
+          "ev-vmd011"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "DINO detector vs self-supervised disambiguation",
+        "status": "VERIFIED",
+        "finding": "Qualifier enforced in card and required in later prose (CV2-DM-006).",
+        "subject_ids": [
+          "ev-vmd011"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}
