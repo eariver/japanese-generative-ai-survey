@@ -1,0 +1,97 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-vision-multimodal-2026",
+  "evidence_task_id": "evidence:SP-vision-multimodal-2026:f85edfe8f978dc04",
+  "basis": {
+    "task_sha256": "dbb9e28c7da36cd23de71c7bb47bc2b33dcce1e62bc94002363a9ea99630c2d8",
+    "screening_acceptance_sha256": "7c76cdb6214e01ac88280ab7c85f0488951ddaf6b5bc9b0229b4d97acb795868",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "ev-vmd052",
+      "canonical_name": "LSeg (Li et al., 2022)",
+      "entity_type": "MODEL",
+      "organization": null,
+      "canonical_url": "https://arxiv.org/abs/2201.03546"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "ev-vmd052",
+    "artifact_type": "PAPER",
+    "canonical_name": "LSeg (Li et al., 2022)",
+    "canonical_url": "https://arxiv.org/abs/2201.03546"
+  },
+  "temporal": {
+    "observed_at": "2026-09-30T14:24:47Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2022-01",
+        "subject_id": "ev-vmd052",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2201.03546",
+      "source_class": "PRIMARY_PAPER",
+      "title": "Language-driven Semantic Segmentation / LSeg (Li et al.)",
+      "published_at": "2022-01",
+      "accessed_at": "2026-09-30T14:24:47Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Text-encoder label embeddings + Transformer dense per-pixel embeddings trained contrastively; semantically similar labels share embedding regions ('cat'/'furry'); zero-shot unseen-category generalization without retraining or extra samples; competitive with fixed-label segmenters.",
+      "subject_id": "ev-vmd052",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Full-paper abstract; ICLR 2022."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Origin scope; unification needs X-Decoder-side sources.",
+      "subject_id": "ev-vmd052",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Full body consumed: pixel-text alignment design and zero-shot claims verified.",
+        "subject_ids": [
+          "ev-vmd052"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

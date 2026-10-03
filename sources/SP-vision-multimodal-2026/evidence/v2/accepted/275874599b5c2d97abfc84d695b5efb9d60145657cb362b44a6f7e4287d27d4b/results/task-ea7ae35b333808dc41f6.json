@@ -1,0 +1,97 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-vision-multimodal-2026",
+  "evidence_task_id": "evidence:SP-vision-multimodal-2026:8b9c3bd9b50fd8e7",
+  "basis": {
+    "task_sha256": "d66032059d20f20ab345a2548c74c8b4a495b00763fac838052ae65abd9ceed6",
+    "screening_acceptance_sha256": "7c76cdb6214e01ac88280ab7c85f0488951ddaf6b5bc9b0229b4d97acb795868",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "ev-vmd095",
+      "canonical_name": "PaLM-E (Driess et al., 2023)",
+      "entity_type": "MODEL",
+      "organization": "Google",
+      "canonical_url": "https://arxiv.org/abs/2303.03378"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "ev-vmd095",
+    "artifact_type": "PAPER",
+    "canonical_name": "PaLM-E (Driess et al., 2023)",
+    "canonical_url": "https://arxiv.org/abs/2303.03378"
+  },
+  "temporal": {
+    "observed_at": "2026-09-30T14:24:47Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2023-03",
+        "subject_id": "ev-vmd095",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2303.03378",
+      "source_class": "PRIMARY_PAPER",
+      "title": "PaLM-E (Driess et al.)",
+      "published_at": "2023-03",
+      "accessed_at": "2026-09-30T14:24:47Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Embodied joint representation: continuous sensor modalities (vision, state estimation) injected as interleaved multimodal sentences trained end-to-end with a frozen-then-joint LLM across manipulation planning, VQA, captioning; PaLM-E-562B is also a VL generalist (OK-VQA SOTA) retaining language capability with scale; positive transfer across internet vision/language/robotics domains.",
+      "subject_id": "ev-vmd095",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Full-paper abstract; ICML 2023."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "562B-scale regime; joint-training cost/complexity bounds replicability.",
+      "subject_id": "ev-vmd095",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Full body consumed: multimodal-sentence design, joint training, transfer results verified.",
+        "subject_ids": [
+          "ev-vmd095"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

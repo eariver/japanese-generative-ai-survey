@@ -1,0 +1,119 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-vision-multimodal-2026",
+  "evidence_task_id": "evidence:SP-vision-multimodal-2026:07b5808887ca079e",
+  "basis": {
+    "task_sha256": "ed791b09e657c021a286319aa8522bf1461ec3c01438c7ed183008c17d4844aa",
+    "screening_acceptance_sha256": "7c76cdb6214e01ac88280ab7c85f0488951ddaf6b5bc9b0229b4d97acb795868",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "ev-vmd014",
+      "canonical_name": "U-Net (Ronneberger et al., 2015)",
+      "entity_type": "PAPER",
+      "organization": "University of Freiburg",
+      "canonical_url": "https://arxiv.org/abs/1505.04597"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "ev-vmd014",
+    "artifact_type": "PAPER",
+    "canonical_name": "U-Net (Ronneberger et al., 2015)",
+    "canonical_url": "https://arxiv.org/abs/1505.04597"
+  },
+  "temporal": {
+    "observed_at": "2026-09-30T14:24:47Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2015-05",
+        "subject_id": "ev-vmd014",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/1505.04597",
+      "source_class": "PRIMARY_PAPER",
+      "title": "U-Net (Ronneberger et al.)",
+      "published_at": "2015-05",
+      "accessed_at": "2026-09-30T14:24:47Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Contracting-plus-symmetric-expanding path with skip connections enables precise localization from very few annotated images via elastic-deformation augmentation: beats sliding-window CNN on ISBI neuronal stacks, wins ISBI 2015 cell-tracking categories by large margins, 512x512 segmentation under one second (10h Titan training).",
+      "subject_id": "ev-vmd014",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Full-paper abstract/conclusion; biomedical-domain scope preserved."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Boundary (VM-O03): segmentation-lineage role only; diffusion-backbone history is TS-002-owned and explicitly not carried by this card.",
+      "subject_id": "ev-vmd014",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Edition-level analytical synthesis by the Work operator (lineage/selection/boundary/contract judgment, not a literal statement of the cited source); structural home for edition rationale."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Biomedical-image domain; general-scene transfer requires other sources.",
+      "subject_id": "ev-vmd014",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Full body consumed; segmentation-role confinement verified.",
+        "subject_ids": [
+          "ev-vmd014"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "TS-002/TS-003 boundary: segmentation role only",
+        "status": "VERIFIED",
+        "finding": "Segmentation-role confinement enforced; diffusion-backbone history excluded.",
+        "subject_ids": [
+          "ev-vmd014"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

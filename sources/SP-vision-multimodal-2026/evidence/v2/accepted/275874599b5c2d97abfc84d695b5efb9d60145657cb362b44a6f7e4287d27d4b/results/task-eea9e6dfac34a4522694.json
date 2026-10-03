@@ -1,0 +1,97 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-vision-multimodal-2026",
+  "evidence_task_id": "evidence:SP-vision-multimodal-2026:f13e584f76331ad8",
+  "basis": {
+    "task_sha256": "29baaa1e94a687484c5b6595499df92a54528c05f584dfb19422b1964a5f9b24",
+    "screening_acceptance_sha256": "7c76cdb6214e01ac88280ab7c85f0488951ddaf6b5bc9b0229b4d97acb795868",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "ev-vmd079",
+      "canonical_name": "POPE",
+      "entity_type": "BENCHMARK",
+      "organization": null,
+      "canonical_url": "https://arxiv.org/abs/2305.10355"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "ev-vmd079",
+    "artifact_type": "BENCHMARK",
+    "canonical_name": "POPE",
+    "canonical_url": "https://arxiv.org/abs/2305.10355"
+  },
+  "temporal": {
+    "observed_at": "2026-09-30T14:24:47Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2023-05",
+        "subject_id": "ev-vmd079",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2305.10355",
+      "source_class": "PRIMARY_PAPER",
+      "title": "Evaluating Object Hallucination / POPE (Li et al.)",
+      "published_at": "2023-05",
+      "accessed_at": "2026-09-30T14:24:47Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "First systematic LVLM object-hallucination study: polling-based POPE evaluates hallucination stably/flexibly; finding that frequently-appearing/co-occurring instruction objects are hallucination-prone.",
+      "subject_id": "ev-vmd079",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Full-paper abstract; EMNLP 2023."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Polling scope only; open-ended faithfulness needs control-pair instruments (HallusionBench).",
+      "subject_id": "ev-vmd079",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Full body consumed: hallucination diagnosis and polling method verified.",
+        "subject_ids": [
+          "ev-vmd079"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

@@ -1,0 +1,108 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-vision-multimodal-2026",
+  "evidence_task_id": "evidence:SP-vision-multimodal-2026:c6d9aec0a063b225",
+  "basis": {
+    "task_sha256": "74e96578fe57443f4d99b60a921bf9375de4ba7b4d9eefbe4ea6ef1e16aafee1",
+    "screening_acceptance_sha256": "7c76cdb6214e01ac88280ab7c85f0488951ddaf6b5bc9b0229b4d97acb795868",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "ev-vmd067",
+      "canonical_name": "Whisper (Radford et al., 2023)",
+      "entity_type": "MODEL",
+      "organization": "OpenAI",
+      "canonical_url": "https://arxiv.org/abs/2212.04356"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "ev-vmd067",
+    "artifact_type": "PAPER",
+    "canonical_name": "Whisper (Radford et al., 2023)",
+    "canonical_url": "https://arxiv.org/abs/2212.04356"
+  },
+  "temporal": {
+    "observed_at": "2026-09-30T14:24:47Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2022-12",
+        "subject_id": "ev-vmd067",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2212.04356",
+      "source_class": "PRIMARY_PAPER",
+      "title": "Robust Speech Recognition via Large-Scale Weak Supervision / Whisper (Radford et al.)",
+      "published_at": "2022-12",
+      "accessed_at": "2026-09-30T14:24:47Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "680K-hour multilingual multitask weak supervision yields zero-shot-transfer speech models competitive with fully supervised results, approaching human accuracy/robustness; models + inference code released as a robust-processing foundation.",
+      "subject_id": "ev-vmd067",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Full-paper abstract/introduction; weak-supervision-at-scale thesis consumed."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Input-side role only: speech-to-token contract for the omni chain; synthesis history stays TS-002.",
+      "subject_id": "ev-vmd067",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Edition-level analytical synthesis by the Work operator (lineage/selection/boundary/contract judgment, not a literal statement of the cited source); structural home for edition rationale."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Speech-domain scope; general-audio needs BEATs-side sources.",
+      "subject_id": "ev-vmd067",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Full body consumed: weak-supervision scale, zero-shot transfer, release verified.",
+        "subject_ids": [
+          "ev-vmd067"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}
