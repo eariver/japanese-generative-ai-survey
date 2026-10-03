@@ -1,0 +1,350 @@
+{
+ "new_blocks": [
+  {
+   "after_block_id": "p09-b1",
+   "block_id": "p09-b9",
+   "block_type": "PARAGRAPH",
+   "evidence_refs": [
+    {
+     "evidence_id": "claim-1",
+     "evidence_task_id": "evidence:SP-vision-multimodal-2026:5261f13662aabd9b",
+     "kind": "CLAIM",
+     "subject_id": "ev-vmd065",
+     "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+     "evidence_id": "claim-2",
+     "evidence_task_id": "evidence:SP-vision-multimodal-2026:5261f13662aabd9b",
+     "kind": "CLAIM",
+     "subject_id": "ev-vmd065",
+     "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+     "evidence_id": "claim-1",
+     "evidence_task_id": "evidence:SP-vision-multimodal-2026:20afa93899477fd2",
+     "kind": "CLAIM",
+     "subject_id": "ev-vmd064",
+     "subject_role": "PRIMARY_SUBJECT"
+    }
+   ],
+   "package_id": "P09",
+   "reader_text": "課題は、解像度を保つだけでは視覚と言語の対応が密にならない点にある。一層の特徴だけでは、細部と全体の関係が落ちる。Qwen3-VLはViTの複数層の特徴を重ねるDeepStackにより、視覚と言語の対応を密にする。単層の読み替えではなく複数層の重ね合わせが機構である。空間と時刻の扱いはinterleaved-MRoPEが担い、T-RoPEを進めた文面のタイムスタンプによる時間合わせが時刻の明示を担う。埋め込みに時刻を隠さず、文面に書き出す点が変更である。denseモデルとMixture-of-Experts（MoE）の幅、指示版と思考版の分け方、平方根の重みづけ直しによる文章側の保持は、対応を密にする側の条件として添えられる。いずれもベンダー測定であり、設定に結びつく読みに留め、独立した第三者再現は残された課題とする。条件の異なる数値で優劣をつけない。解像度の保持から対応を密にすることと時刻の明示へ進む点が、後段の融合への接続である。なお視覚側のタイリングやパッチ処理の具体手順、リサンプラやプロジェクタによるトークン削減、KVキャッシュやメモリ負荷への帰結は、本稿の一次資料では確定しない。",
+   "serves_nodes": [
+    "VM-D065"
+   ]
+  },
+  {
+   "after_block_id": "p09-b2",
+   "block_id": "p09-b10",
+   "block_type": "PARAGRAPH",
+   "evidence_refs": [
+    {
+     "evidence_id": "claim-1",
+     "evidence_task_id": "evidence:SP-vision-multimodal-2026:4e6ee193ed14e437",
+     "kind": "CLAIM",
+     "subject_id": "ev-vmd070",
+     "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+     "evidence_id": "claim-2",
+     "evidence_task_id": "evidence:SP-vision-multimodal-2026:4e6ee193ed14e437",
+     "kind": "CLAIM",
+     "subject_id": "ev-vmd070",
+     "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+     "evidence_id": "claim-1",
+     "evidence_task_id": "evidence:SP-vision-multimodal-2026:5261f13662aabd9b",
+     "kind": "CLAIM",
+     "subject_id": "ev-vmd065",
+     "subject_role": "PRIMARY_SUBJECT"
+    }
+   ],
+   "package_id": "P09",
+   "reader_text": "課題は、文章の言語モデルに後から視覚を継ぎ足す手順では、接続部の調整が重くなる点にある。継ぎ足しの複雑さが残る。InternVL3はマルチモーダルと文章を最初から一緒に事前学習する一段階の手順を取る。後から足すのではなく最初から一緒に学ぶ点が機構である。V2PEでマルチモーダルの長いコンテキストを伸ばし、SFTとMPOのポストトレーニングと実行時のスケーリングを重ねる。学びの手順自体が一段階である。1Bから78Bのモデル群を用意し、純粋な言語側の保持も強いとモデル論文の著者測定は報告している。公開の最先端に届いたとの報告は、報告時点の日付と結んだ読みに留める。ベンダー測定の範囲に留め、第三者による再現は今後の課題として残す。3.5系との新旧の確認は後の段階に譲る。最初から一緒に学ぶか後から足すかという設計の違いが、Qwenの段階的な継ぎ足しとの対比の軸である。人気の比較ではなく手順の違いで読む。なお層単位の融合方式としてのcross-attentionか統一トークン列かの区別、トークン削減やKVキャッシュへの帰結は、本稿の一次資料では確定しない。",
+   "serves_nodes": [
+    "VM-D070",
+    "VM-D065"
+   ]
+  },
+  {
+   "after_block_id": "p09-b5",
+   "block_id": "p09-b11",
+   "block_type": "PARAGRAPH",
+   "evidence_refs": [
+    {
+     "evidence_id": "claim-1",
+     "evidence_task_id": "evidence:SP-vision-multimodal-2026:cec74d4ca95d2ecb",
+     "kind": "CLAIM",
+     "subject_id": "ev-vmd066",
+     "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+     "evidence_id": "claim-2",
+     "evidence_task_id": "evidence:SP-vision-multimodal-2026:cec74d4ca95d2ecb",
+     "kind": "CLAIM",
+     "subject_id": "ev-vmd066",
+     "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+     "evidence_id": "claim-1",
+     "evidence_task_id": "evidence:SP-vision-multimodal-2026:c6d9aec0a063b225",
+     "kind": "CLAIM",
+     "subject_id": "ev-vmd067",
+     "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+     "evidence_id": "claim-1",
+     "evidence_task_id": "evidence:SP-vision-multimodal-2026:9ee5b39b27eced77",
+     "kind": "CLAIM",
+     "subject_id": "ev-vmd069",
+     "subject_role": "PRIMARY_SUBJECT"
+    }
+   ],
+   "package_id": "P09",
+   "reader_text": "課題は、音声と映像を別々に受けると時刻の軸の対応が甘くなる点にある。相対的な対応づけでは、長い入力で時刻の特定が甘くなる。Qwen3-Omniは音声エンコーダを最初から学習し、TM-RoPEで絶対時刻に結びつけた時間IDにより、音声・映像表現を約80msの共通時間分解能で並べる。相対ではなく絶対で合わせる点が機構である。Thinker-TalkerのMixture-of-Experts（MoE）で知覚と生成にまたがる処理を担い、考える側と話す側を分ける。約80msの時間ID分解能での時刻合わせは、設定に結びつく読みに留め、独立した第三者再現を待つ。理論上234msで最初の音を返すとの報告は、理論上のコールドスタートであり、遅延の実測値としては読まない。TalkerやCode2Wavの合成の細部は別巻の範囲に置き、ここでは入力のエンコーダと同期と入力側のストリーミング処理の契約だけを担う。前例の音声からトークンへの契約と音と言語の対応づけを使い回さず作り直す点が、長い事例と多言語の理解への接続である。",
+   "serves_nodes": [
+    "VM-D066",
+    "VM-D067",
+    "VM-D069"
+   ]
+  },
+  {
+   "after_block_id": "p09-b3",
+   "block_id": "p09-b12",
+   "block_type": "PARAGRAPH",
+   "evidence_refs": [
+    {
+     "evidence_id": "claim-1",
+     "evidence_task_id": "evidence:SP-vision-multimodal-2026:4f6ee34ec83ed509",
+     "kind": "CLAIM",
+     "subject_id": "ev-vmd071",
+     "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+     "evidence_id": "claim-2",
+     "evidence_task_id": "evidence:SP-vision-multimodal-2026:4f6ee34ec83ed509",
+     "kind": "CLAIM",
+     "subject_id": "ev-vmd071",
+     "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+     "evidence_id": "claim-3",
+     "evidence_task_id": "evidence:SP-vision-multimodal-2026:4f6ee34ec83ed509",
+     "kind": "CLAIM",
+     "subject_id": "ev-vmd071",
+     "subject_role": "PRIMARY_SUBJECT"
+    }
+   ],
+   "package_id": "P09",
+   "reader_text": "課題は、視覚と言語の対応の密さだけでは、指し示す力が測れない点にある。密さの指標と接地の指標は別である。Molmo 2は到達点の主張ではなく比較軸として読む。数え上げと指さし出力（pointing）と追跡という接地寄りの評価軸で測った値が、比較の材料である。同一条件の直接比較である点だけを受け取り、条件の違う数値比べはしない。9種の公開データには指さしと追跡の二種、説明文、質問応答が含まれ、完全に開かれたOlmoバリアントもある。基盤の使い回しという依存の開示と組で読む。Olmoバリアントでも画像エンコーダのSigLIP 2は閉じたデータに頼り、データ生成の文章専用モデルも閉じていると論文自身が明かす。MathVistaやMMMUの推論、10分を超える長い動画の学習データでは後れるとの結果の議論は、論文自身の言葉として残す。著者測定の範囲に留め、独立した再現は今後の課題とする。開放の度合いと接地で測る評価に価値があり、仕組みの新しさの根拠にはしない。閉じた系は能力の比較に留める。",
+   "serves_nodes": [
+    "VM-D071"
+   ]
+  },
+  {
+   "after_block_id": "p07b-b2",
+   "block_id": "p07b-b11",
+   "block_type": "PARAGRAPH",
+   "evidence_refs": [
+    {
+     "evidence_id": "claim-1",
+     "evidence_task_id": "evidence:SP-vision-multimodal-2026:121e1a6de76dea8d",
+     "kind": "CLAIM",
+     "subject_id": "ev-vmd043",
+     "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+     "evidence_id": "claim-2",
+     "evidence_task_id": "evidence:SP-vision-multimodal-2026:121e1a6de76dea8d",
+     "kind": "CLAIM",
+     "subject_id": "ev-vmd043",
+     "subject_role": "PRIMARY_SUBJECT"
+    }
+   ],
+   "package_id": "P07B",
+   "reader_text": "固定カテゴリの検出器は、認識と位置特定を同じ閉じたラベル集合で学ぶため、学習時に見ない概念を指せない。OVR-CNNはtwo-stageの枠組みで両者の教師信号の出所を分離した。位置特定はベースカテゴリのボックスから学び、認識はキャプションから学ぶ。視覚特徴を言語空間へ写すV2L投影を置き、オープンボキャブラリーVCの上で三つの事前学習を解く。マスク言語モデリングは文脈から隠した語を当て、画像テキスト照合は対の正誤を判定し、接地は領域と語の対応を学ぶ。三課題の分担が認識の転移を支える。モデル論文の著者測定として27% mAPでゼロショットベースラインの10%を離し、ベースカテゴリの精度は教師ありに迫り、弱教師ありの26%を上回ったと報告している。ただし開かれ方は事前学習した単語埋め込みの範囲に限ると論文自体が断る。埋め込みの外の概念には届かず、埋め込みの質の議論は蒸留の展開に譲る。出所の分離が定式の起点となることを確認して、蒸留の展開へ進む。",
+   "serves_nodes": [
+    "VM-D043"
+   ]
+  },
+  {
+   "after_block_id": "p07b-b3",
+   "block_id": "p07b-b12",
+   "block_type": "PARAGRAPH",
+   "evidence_refs": [
+    {
+     "evidence_id": "claim-1",
+     "evidence_task_id": "evidence:SP-vision-multimodal-2026:2cf1e589a946b028",
+     "kind": "CLAIM",
+     "subject_id": "ev-vmd044",
+     "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+     "evidence_id": "claim-1",
+     "evidence_task_id": "evidence:SP-vision-multimodal-2026:48beece23bd3412f",
+     "kind": "CLAIM",
+     "subject_id": "ev-vmd045",
+     "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+     "evidence_id": "claim-2",
+     "evidence_task_id": "evidence:SP-vision-multimodal-2026:48beece23bd3412f",
+     "kind": "CLAIM",
+     "subject_id": "ev-vmd045",
+     "subject_role": "PRIMARY_SUBJECT"
+    }
+   ],
+   "package_id": "P07B",
+   "reader_text": "画像全体で学んだアライメントは、切り取った領域にはそのまま落ちない。領域ずれの診断が二つの別機構を生んだ。ViLDはCLIP・ALIGNの教師モデルをtwo-stageの生徒モデルへ蒸留する。ViLD-textは領域特徴とテキスト埋め込みの対応を移し、ViLD-imageは領域特徴と画像埋め込みの対応を移す二経路である。RegionCLIPは対照的に領域表現自体を組み替える。CLIP教師モデルで提案領域に仮のラベルを付け、雛形キャプションで疑似の領域テキストペアを起こして対照事前学習する。モデル論文の著者測定として、ViLDはLVIS-rareでマスクAP 16.1に届いたと報告している。RegionCLIPは疑似ペアによる対照事前学習でゼロショット推論を支えると報告し、コードを開く。ただし両者とも教師モデルの出力への依存に縛られる。仮の文の誤りと雛形への依存が残り、評価値はLVIS-rareとCOCOノベルの契約に結び付けて読む。検出器への蒸留と領域表現の事前学習は別機構として残り、語彙拡張の展開へ接続する。",
+   "serves_nodes": [
+    "VM-D044",
+    "VM-D045"
+   ]
+  },
+  {
+   "after_block_id": "p07b-b5",
+   "block_id": "p07b-b13",
+   "block_type": "PARAGRAPH",
+   "evidence_refs": [
+    {
+     "evidence_id": "claim-1",
+     "evidence_task_id": "evidence:SP-vision-multimodal-2026:48b74d1180cca336",
+     "kind": "CLAIM",
+     "subject_id": "ev-vmd047",
+     "subject_role": "PRIMARY_SUBJECT"
+    }
+   ],
+   "package_id": "P07B",
+   "reader_text": "固定カテゴリへの分類は、検出の出力を決まった選択肢に閉じる。GLIPは検出をフレーズの接地に言い換え、検出と接地の事前学習を一本化した。固定の分類器の重みで選ぶ代わりに、語句の埋め込みとの対応スコアで選ぶ。出力の選択肢が語句の側に移り、カテゴリ分類をフレーズとの対応計算に替える。27Mの接地データで支える。人手3Mとウェブ24Mに自己学習の接地ボックスを足した規模である。見ない条件と見せる条件と転移の条件の三つを分けて読む。1-shot転移の主張は一例だけ見せての転移の範囲に留め、コードを開く。1-shotは一例だけ見せての転移であり、見ない強さと見せる強さと転移の強さを分けて読む。言い換えとデータ実務の分担が明確になった。次は融合の深さの比較である。",
+   "serves_nodes": [
+    "VM-D047"
+   ]
+  },
+  {
+   "after_block_id": "p07b-b6",
+   "block_id": "p07b-b14",
+   "block_type": "PARAGRAPH",
+   "evidence_refs": [
+    {
+     "evidence_id": "claim-1",
+     "evidence_task_id": "evidence:SP-vision-multimodal-2026:f8fcad66ad997c8c",
+     "kind": "CLAIM",
+     "subject_id": "ev-vmd048",
+     "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+     "evidence_id": "claim-2",
+     "evidence_task_id": "evidence:SP-vision-multimodal-2026:f8fcad66ad997c8c",
+     "kind": "CLAIM",
+     "subject_id": "ev-vmd048",
+     "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+     "evidence_id": "claim-1",
+     "evidence_task_id": "evidence:SP-vision-multimodal-2026:d6cf167fd67e3840",
+     "kind": "CLAIM",
+     "subject_id": "ev-vmd049",
+     "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+     "evidence_id": "claim-2",
+     "evidence_task_id": "evidence:SP-vision-multimodal-2026:d6cf167fd67e3840",
+     "kind": "CLAIM",
+     "subject_id": "ev-vmd049",
+     "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+     "evidence_id": "claim-1",
+     "evidence_task_id": "evidence:SP-vision-multimodal-2026:139481c043a93d8c",
+     "kind": "CLAIM",
+     "subject_id": "ev-vmd050",
+     "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+     "evidence_id": "claim-2",
+     "evidence_task_id": "evidence:SP-vision-multimodal-2026:139481c043a93d8c",
+     "kind": "CLAIM",
+     "subject_id": "ev-vmd050",
+     "subject_role": "PRIMARY_SUBJECT"
+    }
+   ],
+   "package_id": "P07B",
+   "reader_text": "言語と画像をどの深さで合わせるかは、言い換えだけでは決まらない。MDETRは生テキストクエリで条件づけたDETRを端から端まで解き、テキストと画像を早期に融合する。一つの構成で接地と指示表現理解とセグメンテーションと問い応答を賄う。OWL-ViTは対照的に追加モジュールなしで学習手順のみを調整して検出へ適応させ、照合を後段に置く最小構成である。文で指すゼロショット検出と画像例で示す1-shot検出を両立てする。Grounding DINOはDINOに接地事前学習を添え、特徴増強と言語誘導クエリ選択とcross-modalityデコーダの三段階で密に融合する。モデル論文の著者測定として、MDETRは131万ペアの事前学習でFlickr30kのフレーズ接地とRefCOCOのRECとPhraseCutのRESでSOTAに届いたと報告する。OWL-ViTは画像水準事前学習の規模とモデル寸法が検出を一貫して上げると報告する。Grounding DINOはCOCOゼロショットAP 52.5とODinW平均26.1 APに達したと報告する。ただしゼロショットの定義は論文ごとに縛り、RECゼロショットは注意を要する課題として残る。三つの融合の選択肢が整理された。残るはウェブ規模の自己学習の手順である。",
+   "serves_nodes": [
+    "VM-D048",
+    "VM-D049",
+    "VM-D050"
+   ]
+  },
+  {
+   "after_block_id": "p07b-b7",
+   "block_id": "p07b-b15",
+   "block_type": "PARAGRAPH",
+   "evidence_refs": [
+    {
+     "evidence_id": "claim-1",
+     "evidence_task_id": "evidence:SP-vision-multimodal-2026:81a7c66884ebcdef",
+     "kind": "CLAIM",
+     "subject_id": "ev-vmd051",
+     "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+     "evidence_id": "claim-2",
+     "evidence_task_id": "evidence:SP-vision-multimodal-2026:81a7c66884ebcdef",
+     "kind": "CLAIM",
+     "subject_id": "ev-vmd051",
+     "subject_role": "PRIMARY_SUBJECT"
+    }
+   ],
+   "package_id": "P07B",
+   "reader_text": "人手のボックス注釈なしにレアカテゴリを拾う手順が残る。OWL-STとOWLv2はNグラムで機械ラベル空間を起こし、弱い選別で使えるものを残して自己学習を回す。人手のボックスを足さず、ウェブの量でレアカテゴリのカバーを広げる。OWLv2の学習効率の改善で回す量を増やす。起こして選別して回す三段階である。モデル論文の著者測定として、人手のボックス注釈なしにレアカテゴリでLVIS-rare 31.2%から44.6%へ上げたと報告している。NeurIPS 2023の本論文PDFを機構の細部まで読んだ記録として記す。効率改善の内訳はOWLv2側の記録に属し、ここでは手順の要点と断りを記す。伸びは機械ラベル空間の下での記録であり、レア分割の手順と組で読む。最小構成の展示をスケーリングの手順で伸ばす筋が明確になった。画素と言葉の照合の枝は別に扱う。",
+   "serves_nodes": [
+    "VM-D051"
+   ]
+  },
+  {
+   "after_block_id": "p07b-b8",
+   "block_id": "p07b-b16",
+   "block_type": "PARAGRAPH",
+   "evidence_refs": [
+    {
+     "evidence_id": "claim-1",
+     "evidence_task_id": "evidence:SP-vision-multimodal-2026:f85edfe8f978dc04",
+     "kind": "CLAIM",
+     "subject_id": "ev-vmd052",
+     "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+     "evidence_id": "claim-1",
+     "evidence_task_id": "evidence:SP-vision-multimodal-2026:e89653a73e85df3a",
+     "kind": "CLAIM",
+     "subject_id": "ev-vmd053",
+     "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+     "evidence_id": "claim-1",
+     "evidence_task_id": "evidence:SP-vision-multimodal-2026:9bd1ddfaf58e3004",
+     "kind": "CLAIM",
+     "subject_id": "ev-vmd054",
+     "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+     "evidence_id": "claim-1",
+     "evidence_task_id": "evidence:SP-vision-multimodal-2026:e4620df23bff5b48",
+     "kind": "CLAIM",
+     "subject_id": "ev-vmd055",
+     "subject_role": "PRIMARY_SUBJECT"
+    }
+   ],
+   "package_id": "P07B",
+   "reader_text": "ボックスの接地を画素の対応へ広げる枝が残る。LSegはテキストエンコーダのラベル埋め込みとTransformerの密な画素埋め込みを対照学習する。意味の近いラベルは埋め込みの領域を共有する。X-Decoderは疑似ラベルなしに汎用デコーダで汎用セグメンテーションと指示セグメンテーションと言語視覚課題をまとめる。OpenSegは語とマスクの照合の前にマスク提案を置く視覚グルーピング優先のバリアントである。ODISEは凍結したテキスト画像拡散とCLIP識別基盤を組にしてオープンボキャブラリーのパノプティックセグメンテーションを解く。モデル論文の著者測定として、LSegは再学習や追加の学習データなしに未見カテゴリへゼロショット汎化し固定ラベルモデルと競ると報告する。X-Decoderは七つのデータ集合でオープンボキャブラリーのSOTAに届いたと報告する。OpenSegは視覚グルーピング優先の位置で先行を上回ったと報告する。ODISEはCOCO学習のみでADE20Kの先行を上回ったと報告する。ただし起点と統一とバリアントと拡散依存は別射程であり、拡散基盤の細部には立ち入らない。画素と言葉の照合の枝がまとまった。以上で接地の展開の整理を閉じる。",
+   "serves_nodes": [
+    "VM-D052",
+    "VM-D053",
+    "VM-D054",
+    "VM-D055"
+   ]
+  }
+ ]
+}
