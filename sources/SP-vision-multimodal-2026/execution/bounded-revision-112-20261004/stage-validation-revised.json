@@ -1,16 +1,19 @@
 {
   "schema_version": "2.0-rc1",
+  "check_id": "CORE_STAGE_CONTRACT",
+  "status": "PASS",
   "issue_id": "SP-vision-multimodal-2026",
   "from_state": "ARCHITECTURE_ESTABLISHED",
   "to_state": "DRAFT_COMPLETE",
-  "checkpoints": [
-    "draft"
-  ],
-  "recorded_at": "2026-10-04T08:39:17Z",
-  "implementation": {
-    "repository_commit_sha": "46e3bcd15f81a97753f55fd01a87ba705aa01519",
-    "orchestrator_version": "survey-production-core-v2/0.15-postintegration-transport-thematic"
+  "production_state": {
+    "path": "sources/SP-vision-multimodal-2026/production-state.json",
+    "sha256": "f73c50b928d90d0afc7e9c944818c50746a6a7201f7267d0f4ec60be6ea8ec16"
   },
+  "production_profile": {
+    "path": "sources/SP-vision-multimodal-2026/production-profile.json",
+    "sha256": "e4d16027d66d379848378031e47198a09f0b27a961e27a0ab250923a07a57444"
+  },
+  "implementation_commit_sha": "46e3bcd15f81a97753f55fd01a87ba705aa01519",
   "contract": {
     "pipeline_contract_version": "2.0-rc1",
     "pipeline_contract_sha256": "ee89796245c22072cec98f34931180214a4928c24f399280793cd6420a4c8e71",
@@ -193,18 +196,5 @@
       "sha256": "c32d7eff16c2a1184b35dff1c1dbb544f3113f477523b97a5aa1136172d16bcc"
     }
   ],
-  "reviews": [
-    {
-      "check_id": "CORE_STAGE_CONTRACT",
-      "kind": "DETERMINISTIC",
-      "status": "PASS",
-      "executor": "Muse Spark (Work execution role; deterministic tool result, not a Sol/Human decision)",
-      "evidence": "Deterministic drafting-synthesis stage-contract validation for TS-003 bounded 112-record Draft revision (supplied independent Sol review materialized; Architecture r4 APPROVED preserved, lifecycle stays DRAFT_COMPLETE): 16 draft-package/result pairs revalidated against current 112 authority (packages byte-identical, results revised) + VM-D112 P09/P11 binding + V1 VM-D084 held + synthesis input derivation match + regenerated synthesis valid. Machine validation only; fresh independent Sol JSON content review owed.",
-      "result": {
-        "path": "sources/SP-vision-multimodal-2026/execution/bounded-revision-112-20261004/stage-validation-revised.json",
-        "sha256": "47115fbeca630e7fe933c02eb32fad00a56362173f90ab6b9e3a3a0acab528d0"
-      }
-    }
-  ],
-  "summary": "TS-003 fresh 112-record Draft complete from Architecture r4 APPROVED (Human Owner r4 on 3c9ad812e93b75f730615a8f114e1379657c676f); 16 packages expanded to ~197k reader chars, VM-D112 bound P09/P11 selective-acquisition contract, V1 VM-D084 held, vendor ceilings version/date/config bound; STOP for independent Sol JSON content review; no TeX/PDF."
+  "recorded_at": "2026-10-04T08:39:17Z"
 }
