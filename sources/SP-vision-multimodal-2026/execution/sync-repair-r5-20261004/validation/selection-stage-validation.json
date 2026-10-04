@@ -1,16 +1,19 @@
 {
   "schema_version": "2.0-rc1",
+  "check_id": "CORE_STAGE_CONTRACT",
+  "status": "PASS",
   "issue_id": "SP-vision-multimodal-2026",
   "from_state": "EVIDENCE_REVIEWED",
   "to_state": "SELECTION_COMPLETE",
-  "checkpoints": [
-    "selection"
-  ],
-  "recorded_at": "2026-10-04T17:02:14Z",
-  "implementation": {
-    "repository_commit_sha": "ef34953703d6505117fe0f2ab3f1ae216f72bd15",
-    "orchestrator_version": "survey-production-core-v2/0.15-postintegration-transport-thematic"
+  "production_state": {
+    "path": "sources/SP-vision-multimodal-2026/production-state.json",
+    "sha256": "b2e91ead469e2c2fb647c2285c579f60ae08ff692547e46844cb6cae80ae3657"
   },
+  "production_profile": {
+    "path": "sources/SP-vision-multimodal-2026/production-profile.json",
+    "sha256": "e4d16027d66d379848378031e47198a09f0b27a961e27a0ab250923a07a57444"
+  },
+  "implementation_commit_sha": "ef34953703d6505117fe0f2ab3f1ae216f72bd15",
   "contract": {
     "pipeline_contract_version": "2.0-rc1",
     "pipeline_contract_sha256": "ee89796245c22072cec98f34931180214a4928c24f399280793cd6420a4c8e71",
@@ -33,18 +36,5 @@
       "sha256": "601e022b49dee4d46bec2a03fa47bdb05913e15fcd3b480eaa016933b5c4aae4"
     }
   ],
-  "reviews": [
-    {
-      "check_id": "CORE_STAGE_CONTRACT",
-      "kind": "DETERMINISTIC",
-      "status": "PASS",
-      "executor": "Muse Spark (Work execution role; deterministic tool result, not a Human/Sol decision)",
-      "evidence": "Selection stage-contract validation passed (matrix byte-identical, 112 assignments carried + 1 rationale sync). Machine validation only.",
-      "result": {
-        "path": "sources/SP-vision-multimodal-2026/execution/sync-repair-r5-20261004/validation/selection-stage-validation.json",
-        "sha256": "b5a1065806ab637538e07c61f376c179c2292d636b92ff2b4ac590387bd1260f"
-      }
-    }
-  ],
-  "summary": "TS-003 Selection synced (rationale-only). Proceed to Architecture."
+  "recorded_at": "2026-10-04T17:02:14Z"
 }
