@@ -4,7 +4,7 @@
 
 - Starting HEAD / Tree: `ef34953703d6505117fe0f2ab3f1ae216f72bd15` /
   `993f24e8c8b2f1b20fb1ead1fc78f7f3da87f1e9`（remote一致をread-only確認）
-- Final HEAD / Tree: （push後に確定・記録）
+- Final HEAD / Tree: `cf022080810a33eecc378fa3f32c1bde45670fb4` / `78e55cf099956f51d933230917adee656c42c2ca`（remote一致確認済み、working tree clean）
 
 ## §6 correction note（overclaimの明示）
 
