@@ -1,0 +1,130 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-vision-multimodal-2026",
+  "evidence_task_id": "evidence:SP-vision-multimodal-2026:25ffb37e8ae8213c",
+  "basis": {
+    "task_sha256": "93d3669250a3d13e99c2fa6aebc2833604b1009b0fa852a9c35fb20fbded7afe",
+    "screening_acceptance_sha256": "3f6be59d8dec325e5561ef118bf6025cd200f943d6ea161b4b7b40070d3af087",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "ev-vmd002",
+      "canonical_name": "Gradient-Based Learning Applied to Document Recognition / LeNet (LeCun et al., 1998)",
+      "entity_type": "PAPER",
+      "organization": null,
+      "canonical_url": "http://yann.lecun.com/exdb/publis/pdf/lecun-98.pdf"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "ev-vmd002",
+    "artifact_type": "PAPER",
+    "canonical_name": "Gradient-Based Learning Applied to Document Recognition / LeNet (LeCun et al., 1998)",
+    "canonical_url": "http://yann.lecun.com/exdb/publis/pdf/lecun-98.pdf"
+  },
+  "temporal": {
+    "observed_at": "2026-09-30T14:24:47Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "1998-11",
+        "subject_id": "ev-vmd002",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "http://yann.lecun.com/exdb/publis/pdf/lecun-98.pdf",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "Gradient-Based Learning Applied to Document Recognition (LeCun et al.)",
+      "published_at": "1998-11",
+      "accessed_at": "2026-09-30T14:24:47Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "LeNet demonstrates gradient-trained convolutional networks applied end-to-end to document character recognition, establishing learned feature hierarchies over handcrafted features for a deployed task.",
+      "subject_id": "ev-vmd002",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Author-hosted PDF verified reachable (HTTP 200) but custom-font-encoded (text extraction yields glyph noise); claim rests on verified identity + established paper content at predecessor-context depth."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Historical role (VM-O01): pre-AlexNet CNN existence proof that makes the ImageNet scaling break legible as scaling, not invention.",
+      "subject_id": "ev-vmd002",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Edition-level analytical synthesis by the Work operator (lineage/selection/boundary/contract judgment, not a literal statement of the cited source); structural home for edition rationale."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Author PDF uses custom font encoding; full-body machine reading blocked — PARTIAL recorded honestly; no detail beyond predecessor-context scope is claimed.",
+      "subject_id": "ev-vmd002",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "Document-domain scope; scaling claims require ImageNet-era sources.",
+      "subject_id": "ev-vmd002",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Locator resolves to the canonical LeCun et al. Proc. IEEE 1998 paper; predecessor role confirmed. Full-body extraction barrier recorded, not bypassed via secondary sources.",
+        "subject_ids": [
+          "ev-vmd002"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "author-PDF content binding",
+        "status": "VERIFIED",
+        "finding": "Author PDF reachable but custom-font-encoded; predecessor-context scope enforced; extraction barrier recorded honestly.",
+        "subject_ids": [
+          "ev-vmd002"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}
