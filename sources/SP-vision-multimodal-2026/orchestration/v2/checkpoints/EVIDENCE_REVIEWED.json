@@ -6,9 +6,9 @@
   "checkpoints": [
     "selection"
   ],
-  "recorded_at": "2026-10-04T17:02:14Z",
+  "recorded_at": "2026-10-04T17:28:20Z",
   "implementation": {
-    "repository_commit_sha": "ef34953703d6505117fe0f2ab3f1ae216f72bd15",
+    "repository_commit_sha": "408b9a6749fcdee7c8b998392c68853ff0365c05",
     "orchestrator_version": "survey-production-core-v2/0.15-postintegration-transport-thematic"
   },
   "contract": {
@@ -25,12 +25,12 @@
     {
       "name": "candidate-matrix",
       "path": "sources/SP-vision-multimodal-2026/candidate-matrix-v2.json",
-      "sha256": "4288fa3784379d9a0abe9641bfb7b2f847c0118d7f97c508171e9e59a70c0f07"
+      "sha256": "b24f66e8ab3999bc8318c05c9ad90f096c217317a6778f097496c5b620904f25"
     },
     {
       "name": "candidate-selection",
       "path": "sources/SP-vision-multimodal-2026/candidate-selection-v2.json",
-      "sha256": "601e022b49dee4d46bec2a03fa47bdb05913e15fcd3b480eaa016933b5c4aae4"
+      "sha256": "55e9c65671b2828ab9ebe9afb20c46047050ff7a48b3c0918cacf9bd1cd28717"
     }
   ],
   "reviews": [
@@ -38,13 +38,13 @@
       "check_id": "CORE_STAGE_CONTRACT",
       "kind": "DETERMINISTIC",
       "status": "PASS",
-      "executor": "Muse Spark (Work execution role; deterministic tool result, not a Human/Sol decision)",
-      "evidence": "Selection stage-contract validation passed (matrix byte-identical, 112 assignments carried + 1 rationale sync). Machine validation only.",
+      "executor": "Muse Spark (Work execution role; deterministic tool result, not a Sol/Human decision)",
+      "evidence": "Selection stage-contract validation passed over replayed 112-record canonical authority (matrix re-derived, 112 assignments carried byte-identical, V1 held). Machine validation only; Sol Selection review + Human decision owed.",
       "result": {
-        "path": "sources/SP-vision-multimodal-2026/execution/sync-repair-r5-20261004/validation/selection-stage-validation.json",
-        "sha256": "b5a1065806ab637538e07c61f376c179c2292d636b92ff2b4ac590387bd1260f"
+        "path": "sources/SP-vision-multimodal-2026/execution/blocker-repair-r5-20261004/validation/selection-stage-validation-112.json",
+        "sha256": "08be28ddbf20881791af74b8915424be58fe48e1be75e729a7b7a11ec2465e3e"
       }
     }
   ],
-  "summary": "TS-003 Selection synced (rationale-only). Proceed to Architecture."
+  "summary": "TS-003 Selection replayed over 112-record canonical authority (matrix re-derived with 8 corrected evidence SHAs, 112 assignments carried, V1 identity held). Proceed to Architecture; Sol Selection review owed."
 }

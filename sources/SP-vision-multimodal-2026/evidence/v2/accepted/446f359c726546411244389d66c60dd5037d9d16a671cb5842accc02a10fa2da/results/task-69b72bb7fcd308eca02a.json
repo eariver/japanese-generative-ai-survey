@@ -1,0 +1,310 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-vision-multimodal-2026",
+  "evidence_task_id": "evidence:SP-vision-multimodal-2026:c4177b264109ceec",
+  "basis": {
+    "task_sha256": "dfe1bb3575d959f6c47629b5b5e8dbe6b6f34102ea951fdd50f168a11d050ece",
+    "screening_acceptance_sha256": "3f6be59d8dec325e5561ef118bf6025cd200f943d6ea161b4b7b40070d3af087",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "ev-vmd112",
+      "canonical_name": "Agentic Video Understanding (Google, 2026)",
+      "entity_type": "MODEL",
+      "organization": "Google",
+      "canonical_url": "https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-agentic-video-in-gemini/"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "ev-vmd112",
+    "artifact_type": "MODEL",
+    "canonical_name": "Agentic Video Understanding (Google, 2026)",
+    "canonical_url": "https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-agentic-video-in-gemini/"
+  },
+  "temporal": {
+    "observed_at": "2026-10-03T12:35:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-09",
+        "subject_id": "ev-vmd112",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-agentic-video-in-gemini/",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "Introducing agentic video understanding with Gemini (Google, 2026-09-01)",
+      "published_at": "2026-09",
+      "accessed_at": "2026-10-03T12:35:00Z",
+      "role": "Release announcement with mechanism description and vendor efficiency figures"
+    },
+    {
+      "source_id": "supplement-src-f0fd31616290e794",
+      "url": "https://ai.google.dev/gemini-api/docs/video-understanding",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "Gemini API video understanding docs (Google, verified 2026-10-03)",
+      "published_at": null,
+      "accessed_at": "2026-10-03T12:35:00Z",
+      "role": "Technical details: processing modes, token math, caveats, accounting"
+    },
+    {
+      "source_id": "supplement-src-7892eab93a30cdae",
+      "url": "https://ai.google.dev/gemini-api/docs/changelog",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "Gemini API changelog 2026-09-01 entry (Google)",
+      "published_at": "2026-09-01T00:00:00Z",
+      "accessed_at": "2026-10-03T12:35:00Z",
+      "role": "Release scope and model/version dating"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Static processing extracts video frames at a fixed rate (default 1 FPS, adjustable via API) and places them into context in a single pass; audio at 1Kbps single channel with timestamps added every second; fast action sequences may lose detail at 1 FPS.",
+      "subject_id": "ev-vmd112",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1",
+        "supplement-src-f0fd31616290e794"
+      ],
+      "context": "Docs processing-modes section + release post static baseline; static baseline for the agentic contrast."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Agentic understanding replaces upfront full-timeline ingest with a reasoning-plus-tools loop that dynamically searches, scans, and inspects target video segments across visual frames, audio, and transcripts, fetching only the moments and signals needed per query.",
+      "subject_id": "ev-vmd112",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Release post How-it-works mechanism (fetched 2026-10-03)."
+    },
+    {
+      "statement_id": "claim-3",
+      "text": "The model takes a goal-directed role deciding what to watch, at what speed, and through which modality (frames, audio, transcript), invoking an internal tool to load the relevant part of the video file per query.",
+      "subject_id": "ev-vmd112",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Release post body verbatim mechanism (fetched 2026-10-03)."
+    },
+    {
+      "statement_id": "claim-4",
+      "text": "Agentic processing adaptively adjusts frame rates and resolution on the fly based on the prompt, and resamples interesting time windows at higher FPS to inspect rapid motion and subtle visual artifacts.",
+      "subject_id": "ev-vmd112",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1",
+        "supplement-src-f0fd31616290e794"
+      ],
+      "context": "Docs agentic-mode description + release post applications (adaptive specifics stay qualitative; no numeric FPS schedule claimed)."
+    },
+    {
+      "statement_id": "claim-5",
+      "text": "Available for video uploads and YouTube videos via the Gemini API in AI Studio and Enterprise Agent Platform; enabled by setting processing to agentic; different processing modes may be set per video in the same request.",
+      "subject_id": "ev-vmd112",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1",
+        "supplement-src-f0fd31616290e794",
+        "supplement-src-7892eab93a30cdae"
+      ],
+      "context": "Release post availability + docs per-video mode mixing + changelog API scope."
+    },
+    {
+      "statement_id": "claim-6",
+      "text": "The model dynamically navigates the timeline, requesting transcripts, frames, or audio tracks on demand to answer the prompt.",
+      "subject_id": "ev-vmd112",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1",
+        "supplement-src-7892eab93a30cdae"
+      ],
+      "context": "Changelog entry verbatim + release post modality selection."
+    },
+    {
+      "statement_id": "claim-7",
+      "text": "Video context is preserved across turns: stateful mode via previous_interaction_id needs no additional handling; stateless mode must carry all returned steps including processing_call and processing_result in the next step_list, else video context is lost and follow-up quality degrades.",
+      "subject_id": "ev-vmd112",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "supplement-src-f0fd31616290e794"
+      ],
+      "context": "Docs multi-turn section handling notes."
+    },
+    {
+      "statement_id": "claim-8",
+      "text": "Up to 88% fewer tokens than static processing for long-form content, because the model loads only needed transcript/frames/audio. Token scope only; not a memory, KV-cache, or latency claim.",
+      "subject_id": "ev-vmd112",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "supplement-src-f0fd31616290e794",
+        "supplement-src-7892eab93a30cdae"
+      ],
+      "context": "Changelog + docs token calculation; long-form condition explicit; fetched bodies confirm ceilings."
+    },
+    {
+      "statement_id": "claim-9",
+      "text": "Up to 66% lower analysis cost across standard video analysis benchmarks, at standard API token pricing with no additional feature fee. Cost scope only, separate from token scope.",
+      "subject_id": "ev-vmd112",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Release post Benchmarks; benchmark scope distinct from long-form token scope."
+    },
+    {
+      "statement_id": "claim-10",
+      "text": "Up to ~7% higher accuracy with agentic 3.7 Flash; agentic 3.7 Flash placed at the accuracy-to-cost pareto frontier among tested models for video understanding. Quality scope only, vendor-reported.",
+      "subject_id": "ev-vmd112",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Release post Benchmarks + frontier captions; tested-model scope."
+    },
+    {
+      "statement_id": "claim-11",
+      "text": "Navigation may slightly increase time to first token on short clips (under 5 minutes) due to internal reasoning and tool round-trips; static suits latency-sensitive short-clip or full-clip frame-precision queries.",
+      "subject_id": "ev-vmd112",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "supplement-src-f0fd31616290e794"
+      ],
+      "context": "Docs Technical details + choose-mode guidance; <5 min condition."
+    },
+    {
+      "statement_id": "claim-12",
+      "text": "Navigation reasoning tokens count as thought tokens (total_thought_tokens); frames, audio, and transcript loaded on demand count as tool use tokens (total_tool_use_tokens); totals vary with content complexity and navigation strategy.",
+      "subject_id": "ev-vmd112",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "supplement-src-f0fd31616290e794"
+      ],
+      "context": "Docs token-calculation section verbatim."
+    },
+    {
+      "statement_id": "claim-13",
+      "text": "Token/cost/quality figures are Google vendor-reported up-to ceilings with differing scopes (long-form vs benchmarks); no independent reproduction; exact benchmark list/splits await downstream binding.",
+      "subject_id": "ev-vmd112",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1",
+        "supplement-src-f0fd31616290e794",
+        "supplement-src-7892eab93a30cdae"
+      ],
+      "context": "Edition synthesis for downstream editorial use (G05-style boundary)."
+    },
+    {
+      "statement_id": "claim-14",
+      "text": "Model/version scope: launch 3.7 Flash, 3.6 Flash, 3.5 Flash-Lite (2026-09-01); developer docs list 3.8 Flash support; static remains the default for all models.",
+      "subject_id": "ev-vmd112",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1",
+        "supplement-src-f0fd31616290e794",
+        "supplement-src-7892eab93a30cdae"
+      ],
+      "context": "Release vs docs dating; version binding required at use."
+    },
+    {
+      "statement_id": "claim-15",
+      "text": "Agentic processing applies to stored/uploaded and YouTube on-demand timelines; it is not online streaming state (no continuous ingestion, bounded streaming memory, or async mid-stream queries) and is not streaming-system evidence.",
+      "subject_id": "ev-vmd112",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1",
+        "supplement-src-f0fd31616290e794"
+      ],
+      "context": "Edition-level contract judgment; P11 column-separation enforcement."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "All efficiency figures vendor-reported up-to ceilings; no independent reproduction; implementation, rates, pricing, and API surface may change after cutoff (bind version + date at use).",
+      "subject_id": "ev-vmd112",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1",
+        "supplement-src-f0fd31616290e794"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "Benchmark-row binding (incl. LongVideoBench scope + 3.8 Flash row) deferred to downstream use; static-vs-agentic token-math worked example deferred.",
+      "subject_id": "ev-vmd112",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1",
+        "supplement-src-f0fd31616290e794"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Official release post + API docs + changelog consumed 2026-10-03: static-vs-agentic mechanism, token/cost/quality ceilings with scopes, caveats, and accounting verified as vendor statements.",
+        "subject_ids": [
+          "ev-vmd112"
+        ],
+        "source_ids": [
+          "src-1",
+          "supplement-src-f0fd31616290e794",
+          "supplement-src-7892eab93a30cdae"
+        ]
+      },
+      {
+        "target": "vendor-claim quarantine",
+        "status": "VERIFIED",
+        "finding": "Vendor-measured ceilings isolated with explicit attribution, separate scopes, and role caps; no independent-evaluation inference performed.",
+        "subject_ids": [
+          "ev-vmd112"
+        ],
+        "source_ids": [
+          "src-1",
+          "supplement-src-f0fd31616290e794",
+          "supplement-src-7892eab93a30cdae"
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      "Exact benchmark list/splits behind vendor efficiency ceilings (incl. LongVideoBench scope + 3.8 Flash row) remain binding work for downstream use."
+    ],
+    "contradictions": []
+  }
+}
