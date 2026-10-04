@@ -1,0 +1,49 @@
+\section{Aleph Alpha、オープンウェイトMoE「Kolibri」を公開}
+Aleph Alphaが英語・ドイツ語向けMoEモデルKolibriを公開した。Grokが確認した公式ブログでは総78.1B、active 3.46B、最長学習長256k、対応コンテキスト最大1M tokens、Apache 2.0を掲げ、Hugging Faceで全重みを配布するとしている。ベンチマーク値は同社測定で、独立再現は未確認。窓内の同社公式X投稿は確認できていない。
+\dailyxsource{Context Window (@ContextWindow)}{https://x.com/ContextWindow/status/2106504543198753224}
+
+\section{AntigravityでClaude Opus 5.5 / Sonnet 5.5利用との報告}
+非公式更新アカウントが、Google Antigravityの有料ユーザー向けにClaude Opus 5.5とSonnet 5.5が利用可能になったと投稿し、利用者報告も続いた。Ultra/Proの条件や思考強度、旧モデル削除日など詳細な整理も共有されたが、GoogleまたはAnthropicの公式投稿・ドキュメントはGrok収集では未確認である。
+\dailyxsource{Claude updates (@Claudeupdates11)}{https://x.com/Claudeupdates11/status/2106304522880455029}
+\dailyxnote{非公式アカウントおよび利用者報告に基づく項目。}
+
+\section{Cline、Ling 3.1 Flashを期間限定で無料提供}
+Cline公式アカウントはLing 3.1 FlashをClineへ追加し、10月13日まで無料提供すると投稿した。投稿では560B total / 25B activeのMoEとし、Kimi K3やDeepSeek V4 Proとの同等性にも言及する。ただしモデル規模や比較評価は投稿者主張で、開発元のモデルカードや料金条件はGrok収集では未確認である。
+\dailyxsource{Cline (@cline)}{https://x.com/cline/status/2106470199415456151}
+
+\section{GLM 5.3を3台のDGX Sparkでローカル実行}
+MiaはフルサイズのGLM 5.3を3台のDGX SparkとTensorFoldで動かし、散文生成で24--28 tok/sとする動画を公開した。関連投稿では最大コンテキスト制約への言及もあるが、同一設定かは不明。量子化方式、チェックポイント、バッチや出力長など速度測定条件は確認されておらず、コミュニティ実演として扱う。
+\dailyxsource{Mia (@MiaAI\_lab)}{https://x.com/MiaAI_lab/status/2106296458052088143}
+
+\section{MiniMax H3のローカル動画生成デモ}
+Glenn WilliamsはMiniMax H3をComfyUIでローカル生成し、Topazで4K化した15秒の動画を投稿した。投稿ではopen weights、カメラ固定、ローカル生成と説明するが、モデルカードURLはなく、公開日やライセンス、ローカル実行要件も未確認である。新規リリースの告知ではなく、利用例として記録する。
+\dailyxsource{Glenn Williams (@GlennHasABeard)}{https://x.com/GlennHasABeard/status/2106462029779288376}
+
+\section{Magnitude、ローカル推論エンジンOSS化との告知}
+Magnitudeがエージェント向けローカル推論エンジンをオープンソース化し、ハードウェア向けカーネル調整によりllama.cpp比でdecode最大2倍とする投稿があった。投稿本文にはGitHubリポジトリが示されているが、Grok収集ではリポジトリ内容、ライセンス、ベンチマーク条件、開発元本人による正式発表は未確認である。
+\dailyxsource{Robert Corbin (@Shadowfetch)}{https://x.com/Shadowfetch/status/2106312008434135485}
+
+\section{LiteLLM、判定モデルLaya / Nimbleをサポート}
+LiteLLM関係者のKrrishは、オープンウェイトのdecision modelであるLayaとNimbleがLiteLLMで利用可能になったと投稿した。ドキュメントURLも示されているが、Grok収集ではページ本文やモデルカード、開発元、分類タスクの定義と評価までは取得していない。製品更新として記録する。
+\dailyxsource{Krrish (@krrish\_dh)}{https://x.com/krrish_dh/status/2106460421947564292}
+
+\section{Allen AI「olmo-core 3」への言及}
+個人アカウントがAllen AIのolmo-core 3について、オープンなMoE学習を兆パラメータ級へ拡張し、旧FSDP経路比2.7倍のスループット、expert数8から128、active約3.2Bと紹介した。窓内のAllen AI公式投稿やリポジトリはGrok収集では確認されておらず、数値も投稿者主張の段階である。
+\dailyxsource{Karthik Varma (@Karthikvarmamkv)}{https://x.com/Karthikvarmamkv/status/2106437361403847080}
+
+\section{エージェントハーネスを7部品に分解する論文紹介}
+Wavestone AI LabがClaude Code、Codexなど11のエージェントを分析し、ハーネスをLoop、LLM layer、Tools、Memory、Safety、Orchestration、Extensionsの7部品へ分解したという紹介が共有された。SKILL.mdやMCPの採用数、90行のハーネス例にも言及するが、論文タイトル、書誌情報、一次URLはGrok収集では未確認である。
+\dailyxsource{Yarchi (@undefinedKi)}{https://x.com/undefinedKi/status/2106479644354474463}
+
+\section{Claude Opus 5.5によるコード生成3Dワールドのデモ}
+Leon LinはClaude Opus 5.5が外部アセットを使わずコードのみで3Dワールドを生成し、5種類の描画スタイルを切り替えるデモを投稿した。別投稿でもコード生成による映像表現が共有されている。人手修正の有無などは未検証で、モデル能力の独立評価ではなくコミュニティ実演として扱う。
+\dailyxsource{Leon Lin (@LexnLin)}{https://x.com/LexnLin/status/2106493673425047896}
+
+\section{OpenAI Dotsの製品体験批判と未確認の安全性主張}
+Dotsについて新規発表ではなく、作業過程や結果が見えにくいとする個人の製品体験批判が投稿された。同時間帯にはGPT-6.1 Astraの公開中止や「エージェントが100以上の組織を攻撃した」とする外部記事引用もあったが、Grok収集では引用元本文や一次資料を確認できていない。これらは確認済み事実として扱わない。
+\dailyxsource{Debbie O'Brien (@debs\_obrien)}{https://x.com/debs_obrien/status/2106488444310671637}
+
+\section{政策・資金・企業研修をまとめた二次ダイジェスト}
+個人ニュースダイジェストがAnthropicのFrontier Academy、カリフォルニア司法長官によるOpenAIへの召喚状、韓国のAI立法枠組み、FieldAIの資金調達報道を列挙した。いずれも短縮URL先や一次資料はGrok収集では未確認である。FieldAIについても「報道されたタームシート」であり、資金調達完了とは扱わない。
+\dailyxsource{Mike T. (@daogangtang)}{https://x.com/daogangtang/status/2106408318386548992}
+\dailyxnote{各項目は二次ダイジェスト由来で、一次資料未確認。}
