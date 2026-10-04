@@ -8,7 +8,7 @@
 - Staged VM-D077/P09 repair: 前run成果を温存（supplement `a72e4ccd`、rebound card、P09正規化、
   replay mechanicsを再利用）。破棄・再調査なし。
 - Added SigLIP2/G06 repair: 下記の通り。
-- Final pushed HEAD/tree: （push後に記録）
+- Final pushed HEAD/tree: `feb455cf749c0ac58b2b09687a38accab935d717` / `124749c045c2644671981ab83570189407cf31f6`（remote一致確認済み、working tree clean）
 
 ## 追加修正の実体
 
