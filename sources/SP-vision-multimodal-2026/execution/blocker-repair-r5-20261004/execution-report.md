@@ -4,7 +4,7 @@
 
 - Starting HEAD / Tree: `408b9a6749fcdee7c8b998392c68853ff0365c05` /
   `b8cc2576b833362131ac510230a4592b188e8750`（remote一致をread-only確認）
-- Final HEAD / Tree: （push後に確定・記録）
+- Final HEAD / Tree: `efc318d5f2aab9eb5dc29af3e635f3716d57e3bd` / `037d75acb9a9ed0ba0f29898c5a359de5ac15226`（remote一致確認済み、working tree clean）
 
 ## §9 prior-workaround correction（明示）
 
