@@ -1,0 +1,163 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-vision-multimodal-2026",
+  "evidence_task_id": "evidence:SP-vision-multimodal-2026:48f42e295f015ec1",
+  "basis": {
+    "task_sha256": "7d8c056e9549bcb8991e973ac9fffdb0f6c510474b8615373e5f2035dc67515e",
+    "screening_acceptance_sha256": "3f6be59d8dec325e5561ef118bf6025cd200f943d6ea161b4b7b40070d3af087",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "ev-vmd062",
+      "canonical_name": "LLaVA (Liu et al., 2023)",
+      "entity_type": "MODEL",
+      "organization": null,
+      "canonical_url": "https://arxiv.org/abs/2304.08485"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "ev-vmd062",
+    "artifact_type": "PAPER",
+    "canonical_name": "LLaVA (Liu et al., 2023)",
+    "canonical_url": "https://arxiv.org/abs/2304.08485"
+  },
+  "temporal": {
+    "observed_at": "2026-09-30T14:24:47Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2023-04",
+        "subject_id": "ev-vmd062",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2304.08485",
+      "source_class": "PRIMARY_PAPER",
+      "title": "Visual Instruction Tuning / LLaVA (Liu et al.)",
+      "published_at": "2023-04",
+      "accessed_at": "2026-09-30T14:24:47Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Language-only GPT-4 instruction-data generation: image unseen by teacher; image encoded as symbolic sequences of multi-perspective captions plus bounding boxes [x1,y1,x2,y2]; COCO-sourced; 158K unique samples (58K conversation + 23K detailed description + 77K complex reasoning); seed examples are the only human annotations.",
+      "subject_id": "ev-vmd062",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Paper §3 + Tables 1/14 + App.F Tables 13/15/16."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Architecture/interface: CLIP ViT-L/14 visual encoder connected to Vicuna LLM through a single trainable projection matrix W (system described as end-to-end trained large multimodal model at the whole-system level).",
+      "subject_id": "ev-vmd062",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Paper §4.1 + Abstract/contributions."
+    },
+    {
+      "statement_id": "claim-3",
+      "text": "Stage 1 feature-alignment pre-training: visual encoder FROZEN and LLM FROZEN; ONLY the projection matrix W trainable (theta=W); 595K CC3M-derived pairs; single-turn naive-expansion format.",
+      "subject_id": "ev-vmd062",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Paper §4.2 Stage 1 + Eq.(3) + App.E (CC3M/Fig.7/Table 11)."
+    },
+    {
+      "statement_id": "claim-4",
+      "text": "Stage 2 instruction tuning: visual encoder REMAINS FROZEN (always); projection layer AND LLM updated (theta={W,phi}); 158K instruction-following (multi-turn conversation + detailed + complex, uniformly sampled) or ScienceQA single-turn variant. The vision encoder is nowhere updated end-to-end; end-to-end phrasing is system-level (vs coordination systems), not component-level.",
+      "subject_id": "ev-vmd062",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Paper §4.2 Stage 2 + Eq.(3) + §5/App.C hyperparams; system-vs-component distinction per §1/§2/§4.1/App.B Fig.6."
+    },
+    {
+      "statement_id": "claim-5",
+      "text": "Evaluation conditions: LLaVA-Bench (COCO) 85.1% All relative to text-only GPT-4 reference under the triplet/judge protocol (30 images x 3 types); In-the-Wild 67.3 vs BLIP-2 38.1; ScienceQA 90.92% alone and 92.53% ensemble with GPT-4-as-judge (reasoning-first, visual features before last layer, 12 epochs); LLaVA-Bench limits paper-acknowledged (knowledge/multilingual/retrieval/high-resolution/bag-of-patches failures incl. yogurt case).",
+      "subject_id": "ev-vmd062",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Paper §5.1 Tables 4/5/6 + §5.2 Tables 7/8 + Limitations + App.A/B."
+    },
+    {
+      "statement_id": "claim-6",
+      "text": "X01 exhibit: machine-generated instruction-following data as a supervision contract — the data-composition claim Evidence must carry (caption+box proxy symbols; 158K composition; 595K alignment subset).",
+      "subject_id": "ev-vmd062",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Edition synthesis over claims 1/3/4; X01 supervision-timeline role."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Synthetic instruction-data dependence; failure cases paper-acknowledged via LLaVA-Bench; knowledge/multilingual/internet-retrieval/high-resolution perception bounds per paper Limitations.",
+      "subject_id": "ev-vmd062",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Paper §5.1 Limitations + App.A/B."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Complete LLaVA paper body consumed via arXiv HTML (78KB text): GPT-4 data generation, tuning design, benchmark results, LLaVA-Bench failure cases verified.",
+        "subject_ids": [
+          "ev-vmd062"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "Targeted Evidence correction re-verification (LLaVA topology)",
+        "status": "VERIFIED",
+        "finding": "Primary full-body re-verified 2026-10-04 against bound locator (read-only web fetch of arXiv HTML); pinpoints recorded per claim context. Old end-to-end vision-encoder+LLM tuning claim removed as factually wrong.",
+        "subject_ids": [
+          "ev-vmd062"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

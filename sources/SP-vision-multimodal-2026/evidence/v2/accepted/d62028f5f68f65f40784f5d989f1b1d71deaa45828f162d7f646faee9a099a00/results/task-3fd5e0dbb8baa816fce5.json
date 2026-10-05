@@ -1,0 +1,163 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-vision-multimodal-2026",
+  "evidence_task_id": "evidence:SP-vision-multimodal-2026:cec74d4ca95d2ecb",
+  "basis": {
+    "task_sha256": "f31a0bbf72dd95e16ec0c8cd4b1224b50f0416d57b5c2f96dedb4198aeb83d41",
+    "screening_acceptance_sha256": "3f6be59d8dec325e5561ef118bf6025cd200f943d6ea161b4b7b40070d3af087",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "ev-vmd066",
+      "canonical_name": "Qwen3-Omni (Qwen Team, 2025)",
+      "entity_type": "MODEL_FAMILY",
+      "organization": "Alibaba Qwen",
+      "canonical_url": "https://arxiv.org/abs/2509.17765"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "ev-vmd066",
+    "artifact_type": "PAPER",
+    "canonical_name": "Qwen3-Omni (Qwen Team, 2025)",
+    "canonical_url": "https://arxiv.org/abs/2509.17765"
+  },
+  "temporal": {
+    "observed_at": "2026-09-30T14:24:47Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2025-09",
+        "subject_id": "ev-vmd066",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2509.17765",
+      "source_class": "PRIMARY_PAPER",
+      "title": "Qwen3-Omni Technical Report (Xu et al.)",
+      "published_at": "2025-09",
+      "accessed_at": "2026-09-30T14:24:47Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Thinker-Talker MoE unifying perception+generation across text/image/audio/video; from-scratch audio encoder; TM-RoPE absolute-time 80ms audio-video alignment; 40-min ASR/SLU instances; 19-language speech understanding / 10-language generation; 234ms theoretical first-packet streaming; 36 audio/AV benches with open-SOTA 32 and overall 22 (author-measured, report-stated comparators).",
+      "subject_id": "ev-vmd066",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Qwen3-Omni technical report body consumed from complete arXiv HTML; input/fusion claims are report-stated; weights-license term removed (unbound by the report; see repo-bound VM-D075)."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Boundary enforced: Talker/Code2Wav synthesis detail is TS-002-side; TS-003 carries input encoder + TM-RoPE sync + streaming-input contract only.",
+      "subject_id": "ev-vmd066",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Edition-level analytical synthesis by the Work operator (lineage/selection/boundary/contract judgment, not a literal statement of the cited source); structural home for edition rationale."
+    },
+    {
+      "statement_id": "claim-3",
+      "text": "Audio input is resampled to 16 kHz into 128-channel mel-spectrograms (25 ms window, 10 ms hop) feeding the from-scratch AuT attention encoder-decoder (~0.6B params) trained on 20M hours of supervised audio (80% Chinese/English pseudo-labeled ASR, 10% other-language ASR, 10% audio understanding); Conv2D blocks downsample 8x to a 12.5 Hz token rate (~80 ms per frame), with flash attention over 1-8 s dynamic windows. Pretraining stage S1 trains the audio/vision adapters first on a fixed LLM, then the encoders.",
+      "subject_id": "ev-vmd066",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "arXiv:2509.17765v1 §2.2 Audio Transformer (AuT) + Fig.3 + §2.3 input paragraph + §3-S1 Encoder Alignment."
+    },
+    {
+      "statement_id": "claim-4",
+      "text": "TM-RoPE factorizes rotary embeddings into temporal/height/width with 24/20/20 interleaved angles (vs M-RoPE first-16 temporal angles): one temporal ID per 80 ms of audio, video frames stamped by actual timestamps at the same 80 ms granularity, and contiguous numbering across modalities (each modality starts at prior max + 1). Text uses identical triple IDs (=1D RoPE); images hold temporal ID constant. Unlike Qwen2.5-Omni fixed 2-second chunking, alignment is direct absolute-time ID matching, supporting arbitrary-duration streaming input with dynamic video frame rate.",
+      "subject_id": "ev-vmd066",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "arXiv:2509.17765v1 §2.3 Video and Multimodal Position Embedding (TM-RoPE)."
+    },
+    {
+      "statement_id": "claim-5",
+      "text": "Streaming stack: chunked prefill with async Thinker-to-Talker handoff; MoE Thinker (30B-A3B) and Talker (3B-A0.3B) with MTP (80M) residual codebooks and causal-ConvNet Code2Wav (200M) synthesizing from the first 12.5 Hz codec frame (80 ms audio/token). Theoretical cold-start end-to-end first-packet latency at concurrency 1 is 234 ms audio / 547 ms video (tail 72/160 + Thinker TTFT 88/160 + Talker 57/210 + MTP 14 + decoder 3 ms); streaming RTF stays below 1 across concurrency 1/4/6. Author-calculated theory on vLLM with torch.compile/CUDA-Graph acceleration, not a measured deployment value; MoE KV-cache saving is qualitative only.",
+      "subject_id": "ev-vmd066",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "arXiv:2509.17765v1 §2.5 Designs for Streaming and Concurrency + Table 1 (module/params/streaming) + Table 2 (theoretical first-packet latency per concurrency)."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "No-degradation and leaderboard claims vendor-measured (G05); 234ms is theoretical cold-start; generation-side excluded by boundary.",
+      "subject_id": "ev-vmd066",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Complete report body consumed via arXiv HTML (90KB text): Thinker-Talker architecture, TM-RoPE sync, audio-encoder, latency, language and benchmark-scope sections verified as first-party report statements with role caps; no repository-surface facts retained in this paper-bound card.",
+        "subject_ids": [
+          "ev-vmd066"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "vendor-claim quarantine",
+        "status": "VERIFIED",
+        "finding": "Vendor-measured claims isolated with explicit attribution and role caps; no independent-evaluation inference performed.",
+        "subject_ids": [
+          "ev-vmd066"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "generation-side exclusion",
+        "status": "VERIFIED",
+        "finding": "Synthesis-side detail excluded by TS-002 boundary; card carries input/fusion claims only.",
+        "subject_ids": [
+          "ev-vmd066"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}
