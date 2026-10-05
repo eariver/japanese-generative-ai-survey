@@ -4,7 +4,7 @@
 
 - Starting HEAD / Tree: `a4e8e02bd411313fc5c4e64a33f8b380e5841148` /
   `86754ebfa48716e089e0aa20e5838b447b114991`（remote一致をread-only確認）
-- Final HEAD / Tree: （push後に確定・記録）
+- Final HEAD / Tree: `374b070a8ab6791ee1701c36ff3105576fba189f` / `830fc13ba300a06fef8735bd954194113b773554`（remote一致確認済み、working tree clean）
 
 ## Discovery / Intake
 
