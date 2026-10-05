@@ -4,7 +4,7 @@
 
 - Starting HEAD / Tree: `2a76ec127257e9af01b785b3c82ef5ee967b06f9` /
   `f7f3ade5800bc1a759e7345769c3b69df95d6c88`（remote一致をread-only確認）
-- Final HEAD / Tree: （push後に確定・記録）
+- Final HEAD / Tree: `42d4da2fe2f9c78d933dc8809125ac0c19e9c3e8` / `9d8475a30db412e2d781298047c989d1296326ed`（remote一致確認済み、working tree clean）
 
 ## Scope遵守
 
