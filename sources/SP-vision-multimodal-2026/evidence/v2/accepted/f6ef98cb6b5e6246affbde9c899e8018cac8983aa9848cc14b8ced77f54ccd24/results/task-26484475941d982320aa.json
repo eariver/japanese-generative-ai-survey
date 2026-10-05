@@ -1,0 +1,130 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-vision-multimodal-2026",
+  "evidence_task_id": "evidence:SP-vision-multimodal-2026:392343dab0a3215c",
+  "basis": {
+    "task_sha256": "1b4d1533d934f2792f84047ec6590fd32555461b147e5cf452779492b5c215b2",
+    "screening_acceptance_sha256": "2fd98e8602ca6cc3f530ecd33965fef0dec7b41604604085ca0bd5b38972499c",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "ev-vmd005",
+      "canonical_name": "R-CNN (Girshick et al., 2014)",
+      "entity_type": "PAPER",
+      "organization": "UC Berkeley",
+      "canonical_url": "https://arxiv.org/abs/1311.2524"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "ev-vmd005",
+    "artifact_type": "PAPER",
+    "canonical_name": "R-CNN (Girshick et al., 2014)",
+    "canonical_url": "https://arxiv.org/abs/1311.2524"
+  },
+  "temporal": {
+    "observed_at": "2026-09-30T14:24:47Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2013-11",
+        "subject_id": "ev-vmd005",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/1311.2524",
+      "source_class": "PRIMARY_PAPER",
+      "title": "Rich feature hierarchies (R-CNN) (Girshick et al.)",
+      "published_at": "2013-11",
+      "accessed_at": "2026-09-30T14:24:47Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "R-CNN applies high-capacity CNNs to bottom-up region proposals and improves VOC 2012 mAP by >30% relative (53.3%) via two insights: CNN-on-proposals for localization, and supervised pre-training (classification) followed by domain-specific fine-tuning when detection labels are scarce.",
+      "subject_id": "ev-vmd005",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Full-paper abstract/introduction/conclusion; VOC 2012 numbers paper-reported."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Bottleneck addressed: VOC detection plateau under complex ensembles of handcrafted features; mechanism fuses classical CV (region proposals) with deep learning rather than opposing them.",
+      "subject_id": "ev-vmd005",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Introduction + closing synthesis paragraph."
+    },
+    {
+      "statement_id": "claim-3",
+      "text": "Historical role (VM-O02): region-proposal detection origin; pre-training/fine-tuning paradigm later inherited across vision.",
+      "subject_id": "ev-vmd005",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Edition-level analytical synthesis by the Work operator (lineage/selection/boundary/contract judgment, not a literal statement of the cited source); structural home for edition rationale."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Multi-stage pipeline speed addressed only as future work; R-CNN itself is slow by later standards.",
+      "subject_id": "ev-vmd005",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "Failure-mode analysis uses Hoiem et al. tooling of its era.",
+      "subject_id": "ev-vmd005",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Full body consumed: insights, VOC numbers, pre-training paradigm, and classical+deep synthesis verified.",
+        "subject_ids": [
+          "ev-vmd005"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

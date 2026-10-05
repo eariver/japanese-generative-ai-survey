@@ -1,0 +1,108 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-vision-multimodal-2026",
+  "evidence_task_id": "evidence:SP-vision-multimodal-2026:940c80609fd5a8ec",
+  "basis": {
+    "task_sha256": "c28c4dec016abcb439880a0d3f7cae8ca37bc3e87685e834c6163684d7a08d48",
+    "screening_acceptance_sha256": "2fd98e8602ca6cc3f530ecd33965fef0dec7b41604604085ca0bd5b38972499c",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "ev-vmd058",
+      "canonical_name": "Flamingo (Alayrac et al., 2022)",
+      "entity_type": "MODEL",
+      "organization": "DeepMind",
+      "canonical_url": "https://arxiv.org/abs/2204.14198"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "ev-vmd058",
+    "artifact_type": "PAPER",
+    "canonical_name": "Flamingo (Alayrac et al., 2022)",
+    "canonical_url": "https://arxiv.org/abs/2204.14198"
+  },
+  "temporal": {
+    "observed_at": "2026-09-30T14:24:47Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2022-04",
+        "subject_id": "ev-vmd058",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2204.14198",
+      "source_class": "PRIMARY_PAPER",
+      "title": "Flamingo (Alayrac et al.)",
+      "published_at": "2022-04",
+      "accessed_at": "2026-09-30T14:24:47Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Bridge pretrained vision-only + language-only models with gated cross-attention dense layers; train on interleaved web corpora; ingest images/video; single model reaches few-shot SOTA across open/close-ended VQA/captioning, beating models fine-tuned on 1000x more task data.",
+      "subject_id": "ev-vmd058",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Full-paper abstract; architecture + data + eval design consumed."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Paper's own limitation: inherits pretrained-LM weaknesses including LM-prior-driven hallucinations — the language-prior exhibit for D10.",
+      "subject_id": "ev-vmd058",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Discussion/Limitations consumed."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Closed training-data regime; resampling predecessor role noted for D09, not duplicated.",
+      "subject_id": "ev-vmd058",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Complete Flamingo paper body consumed via arXiv HTML (177KB text): bridging design, interleaved training, few-shot results, inherited-weakness limits verified.",
+        "subject_ids": [
+          "ev-vmd058"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

@@ -6,10 +6,10 @@
   "status": "PROPOSED",
   "basis": {
     "production_profile_sha256": "e4d16027d66d379848378031e47198a09f0b27a961e27a0ab250923a07a57444",
-    "profile_completeness_sha256": "6e3664e4bf7d3f438138b4354797919babfcde46852548cbb5bd59fba441f30f",
-    "materiality_ledger_sha256": "1b5830f7e96f6c4205079bbc6dd62bb7996e35c12885ea1c6aecdb2827d24a41",
-    "candidate_matrix_sha256": "f6745eb981bd7a8d702084b49c0a610282b11c0d570575d01f9a4da535691de1",
-    "candidate_selection_sha256": "60d0d12d08cea75a0402d50760eeb4cc0e1002d9466c11cc00c7239dc9975df4"
+    "profile_completeness_sha256": "d2afa4096e1481d386aec685ffd20ed537c184184e6b5e75333d4e0d0b991c71",
+    "materiality_ledger_sha256": "7377418819eee19fd281417e371bcc78010c7b3f059e56340ab7df39e1a4d010",
+    "candidate_matrix_sha256": "648c152c815c25e30657ab8354ee829beb161d8d952a8d76d8e4994fd6d12888",
+    "candidate_selection_sha256": "83e7a1a4af6012918ae2cf5843ae808579074535097d3379b9f5f18b9501cbe1"
   },
   "editorial_thesis": "TS-003 completes the three-volume arc — TS-001 computes intelligence, TS-002 generates the world, TS-003 perceives, grounds, reasons about, predicts and acts in it — by reconstructing partially independent technical lineages that converge late, organized as interacting problem layers (representation, recognition, localization/structure, language alignment, grounding, fusion, temporal/spatial state, reasoning, action/prediction) rather than a single model chronology. The cross-cutting test throughout is what representation of the world is sufficient for the next computation: what each stage preserves, discards, localizes, tokenizes, grounds, reasons over, predicts or acts upon.",
   "architecture_goals": [
@@ -560,8 +560,7 @@
         "individual third-party dataset license texts and Source Attribution contents unbound; carried as INSPECT item for later stages.",
         "Code licenses canonical: Qwen3-VL, Qwen3-Omni and Molmo 2 code Apache 2.0 confirmed in canonical Evidence (repo-root LICENSE, repo-bound).",
         "Model-weight licenses canonical split: Qwen3-VL weights Apache 2.0 within bound model-card scope (8B-Instruct); Qwen3-Omni weights Apache 2.0 within bound model-card scope (30B-A3B-Instruct); Molmo 2 weights Apache 2.0 within the VM-D077 supplement scope; weight license and mixture terms are separate buckets.",
-        "Released-data scope canonical: Molmo 2 dataset family availability within the VM-D077 supplement scope (collection + checked per-dataset terms); individual third-party license texts and attribution contents PARTIAL/INSPECT.",
-        "Qwen3-Omni repository (VM-D075): weight/code license status remains unresolved in canonical Evidence."
+        "Released-data scope canonical: Molmo 2 dataset family availability within the VM-D077 supplement scope (collection + checked per-dataset terms); individual third-party license texts and attribution contents PARTIAL/INSPECT."
       ],
       "drafting_order": 10,
       "profile_extensions": {},
@@ -595,7 +594,7 @@
     {
       "package_id": "P10",
       "title": "Multimodal reasoning and failure decomposition",
-      "purpose": "Decomposing composite scores into perception, OCR, grounding, language-prior, reasoning, hallucination and scaffold effects; control-pair diagnosis as the signature instrument.",
+      "purpose": "Decomposing composite scores into perception, OCR, grounding, language-prior, reasoning, hallucination and scaffold effects; control-pair diagnosis as the signature instrument. Realized as base perception → reasoning/scaffold intervention → tool-assisted perception → failure attribution (diagnostic roles, scaffold effect with PARTIAL depth, reasoning-plus-tools loop).",
       "primary_candidate_ids": [
         "candidate:SP-vision-multimodal-2026:e3ed005b735b36af"
       ],
@@ -607,7 +606,8 @@
       ],
       "must_cover_requirements": [
         "No benchmark as general intelligence; language-prior vs evidence-use separation per score",
-        "Polling vs control-pair vs CircularEval vs visual-math kept distinct; judge/contamination disciplines travel"
+        "Polling vs control-pair vs CircularEval vs visual-math kept distinct; judge/contamination disciplines travel",
+        "Three-role chain: diagnostic/failure attribution (MMMU/POPE/HallusionBench/MMBench/MathVista), scaffold effect (VSI-Bench, PARTIAL depth), tool-assisted perception (Agentic Video Understanding); no comprehensive reasoning-model post-training history claimed"
       ],
       "boundaries": [
         "Thinking-variant ablations required for attribution; tool-assisted perception where material",
@@ -702,7 +702,7 @@
     {
       "package_id": "P12",
       "title": "Computer Use as actionable digital grounding",
-      "purpose": "From screenshots to element grounding to coordinate/tool action to persistent task state; interface contracts compared; long-horizon state over click accuracy.",
+      "purpose": "From screenshots to element grounding to coordinate/tool action to persistent task state; interface contracts compared; long-horizon state over click accuracy. Realized as observation/action interface comparison: complete screenshot, accessibility-tree and terminal-output observations with pyautogui code actions and the COMPUTER_13 structured action space, synthesized with vision-only grounding, pure localization, state management and professional grounding evaluation.",
       "primary_candidate_ids": [
         "candidate:SP-vision-multimodal-2026:119af0334915af1e",
         "candidate:SP-vision-multimodal-2026:048657a8506e4170",
@@ -715,15 +715,16 @@
       "must_cover_requirements": [
         "Bounded endpoint; OSWorld 1.0 vs 2.0 distinct contracts (grounding vs state-management thesis)",
         "Screenshot-loop token costs via TS-001 vocabulary; safety audits as eval metadata only",
-        "UGround vision-only grounding interface and ScreenSpot-Pro professional evaluation as supporting endpoint evidence"
+        "UGround vision-only grounding interface and ScreenSpot-Pro professional evaluation as supporting endpoint evidence",
+        "Compare observation/action interfaces (screenshot/a11y-tree/terminal observations; pyautogui/COMPUTER_13 action spaces) across OSWorld, UGround, SeeClick/ScreenSpot, OSWorld 2.0 and ScreenSpot-Pro; no DOM/API detail beyond sourced structured interfaces"
       ],
       "boundaries": [
         "No general agent-architecture survey; web-phase predecessors stay context",
         "Short-horizon scope; long-horizon thesis needs 2.0-side sources.",
         "Author-measured model results; strictest binding in volume required per use (model+thinking+tool+steps+release).",
-        "Successor currency check at later stages (v2/Pro-class named as check, not entries).",
         "Evaluation-only scope; agent policy claims need OSWorld-side sources.",
-        "Web-synthetic domain limits; live-OS long-horizon state needs OSWorld-side sources."
+        "Web-synthetic domain limits; live-OS long-horizon state needs OSWorld-side sources.",
+        "ScreenSpot-Pro is separately admitted as canonical VM-D120; any still-unreviewed successor remains correctly deferred (check, not entry)."
       ],
       "drafting_order": 13,
       "profile_extensions": {},
