@@ -1,0 +1,119 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-vision-multimodal-2026",
+  "evidence_task_id": "evidence:SP-vision-multimodal-2026:81a7c66884ebcdef",
+  "basis": {
+    "task_sha256": "4e282fdc8e34b87bfb532767c8bf0673f64e3065a6ef5fc46067e6d2f1a23eba",
+    "screening_acceptance_sha256": "c851605b219be55c746671e950a808b0f6821a514600b0e0d7fd582e9298b603",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "ev-vmd051",
+      "canonical_name": "OWL-ST / OWLv2 (Minderer et al., 2023)",
+      "entity_type": "MODEL",
+      "organization": "Google DeepMind",
+      "canonical_url": "https://arxiv.org/abs/2306.09683"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "ev-vmd051",
+    "artifact_type": "PAPER",
+    "canonical_name": "OWL-ST / OWLv2 (Minderer et al., 2023)",
+    "canonical_url": "https://arxiv.org/abs/2306.09683"
+  },
+  "temporal": {
+    "observed_at": "2026-09-30T14:24:47Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2023-06",
+        "subject_id": "ev-vmd051",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2306.09683",
+      "source_class": "PRIMARY_PAPER",
+      "title": "Scaling Open-Vocabulary Object Detection / OWL-ST/OWLv2 (Minderer et al.)",
+      "published_at": "2023-06",
+      "accessed_at": "2026-09-30T14:24:47Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Web-scale self-training recipe (N-gram machine label space + weak filtering; training-efficiency improvements in OWLv2): LVIS-rare 31.2 to 44.6% with no human box annotations on rare classes (43% relative); full NeurIPS 2023 paper PDF consumed for mechanism detail.",
+      "subject_id": "ev-vmd051",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "NeurIPS PDF + abstract; numbers paper-reported."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "'Unseen' claim is label-space-sensitive (paper's own machine-vs-human label-space analysis) — bind exactly per CV2-DM-020.",
+      "subject_id": "ev-vmd051",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Label-space section consumed; qualification recorded."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Web-data dependence; label-space qualification travels with every number.",
+      "subject_id": "ev-vmd051",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Full PDF consumed: self-training recipe, label-space analysis, LVIS-rare gains verified.",
+        "subject_ids": [
+          "ev-vmd051"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "unseen-claim label-space binding",
+        "status": "VERIFIED",
+        "finding": "'Unseen' claims recorded as label-space-sensitive with exact binding requirement.",
+        "subject_ids": [
+          "ev-vmd051"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

@@ -6,10 +6,10 @@
   "status": "PROPOSED",
   "basis": {
     "production_profile_sha256": "e4d16027d66d379848378031e47198a09f0b27a961e27a0ab250923a07a57444",
-    "profile_completeness_sha256": "27593d40e8e7d155af98633e6521b5c8ac6f114fda442b1a2829566587d081c7",
-    "materiality_ledger_sha256": "3263f93af058622293a995c6610160173d5f9fc31b8e0ac6f8cf32e07796f0c2",
-    "candidate_matrix_sha256": "3182a328da6d95e367d349cdddc6943e961756813a4f35186e3e3a2f94778c82",
-    "candidate_selection_sha256": "9aa70afdc53f82faa93007520b209c0484dce7697f9cb9e543a302187b88d340"
+    "profile_completeness_sha256": "b941b6d5abfbc05f8f7d9c39f5bc3512f9d9d358acce0e9a3718b32e029728eb",
+    "materiality_ledger_sha256": "160509108e208c0684d9a30d617ab8df372bd518bbde756a2b3e9f13a463097c",
+    "candidate_matrix_sha256": "c1ea591db9742800db7883882a6d89860ab74a456ba02d3e7305dda568834da7",
+    "candidate_selection_sha256": "758056adf35de3c9344f6d0cedc7d5f8e135aa0de0b816396e49229d414783ab"
   },
   "editorial_thesis": "TS-003 completes the three-volume arc — TS-001 computes intelligence, TS-002 generates the world, TS-003 perceives, grounds, reasons about, predicts and acts in it — by reconstructing partially independent technical lineages that converge late, organized as interacting problem layers (representation, recognition, localization/structure, language alignment, grounding, fusion, temporal/spatial state, reasoning, action/prediction) rather than a single model chronology. The cross-cutting test throughout is what representation of the world is sufficient for the next computation: what each stage preserves, discards, localizes, tokenizes, grounds, reasons over, predicts or acts upon.",
   "architecture_goals": [
@@ -138,7 +138,8 @@
         "candidate:SP-vision-multimodal-2026:9b2c7357b784e193",
         "candidate:SP-vision-multimodal-2026:57573d846b0142b9",
         "candidate:SP-vision-multimodal-2026:f52d1729f630ecc4",
-        "candidate:SP-vision-multimodal-2026:ff155becaad734b4"
+        "candidate:SP-vision-multimodal-2026:ff155becaad734b4",
+        "candidate:SP-vision-multimodal-2026:bcd865fd3ef9f02b"
       ],
       "supporting_candidate_ids": [
         "candidate:SP-vision-multimodal-2026:3788211927ae5b5c",
@@ -146,7 +147,8 @@
       ],
       "must_cover_requirements": [
         "VM-O03 distinctions preserved; U-Net segmentation-role only",
-        "SAM dual reading carried; SAM 2 as architecture pointer not system case"
+        "SAM dual reading carried; SAM 2 as architecture pointer not system case",
+        "SAM 3 promptable concept segmentation as the late convergence transition"
       ],
       "boundaries": [
         "No TS-002 diffusion-backbone retelling; panoptic at contract depth",
@@ -155,7 +157,8 @@
         "Zero-shot generality is task-bounded; specialist counter-cases belong to eval-side sources.",
         "Memory-architecture scope; online-deployment latency claims need system-side sources.",
         "Biomedical-image domain; general-scene transfer requires other sources.",
-        "Contract-clarity depth only per role; amodal extension noted as future work by the paper; mechanism depth lives in method records."
+        "Contract-clarity depth only per role; amodal extension noted as future work by the paper; mechanism depth lives in method records.",
+        "Fine-grained out-of-domain zero-shot weak; simple noun phrases only (no long referring queries); video cost linear in object count."
       ],
       "drafting_order": 3,
       "profile_extensions": {},
@@ -168,7 +171,8 @@
           ],
           "TRANSITION_NODE_TREATMENT": [
             "VM-D015",
-            "VM-D018"
+            "VM-D018",
+            "VM-D115"
           ],
           "BRIEF_CONTEXT_OR_AUTHORITY": [
             "VM-D014",
@@ -280,15 +284,19 @@
         "candidate:SP-vision-multimodal-2026:c9f9fb43d725196e",
         "candidate:SP-vision-multimodal-2026:ac41dfc9f3562e21",
         "candidate:SP-vision-multimodal-2026:5fd983cfcd6299b4",
-        "candidate:SP-vision-multimodal-2026:94d6c9e9f8f71019"
+        "candidate:SP-vision-multimodal-2026:94d6c9e9f8f71019",
+        "candidate:SP-vision-multimodal-2026:a6b488c3023091d3",
+        "candidate:SP-vision-multimodal-2026:1a72aa57c29bc267"
       ],
       "supporting_candidate_ids": [
         "candidate:SP-vision-multimodal-2026:21f7d7488b7487af",
-        "candidate:SP-vision-multimodal-2026:d102e0cbe5cbd64e"
+        "candidate:SP-vision-multimodal-2026:d102e0cbe5cbd64e",
+        "candidate:SP-vision-multimodal-2026:1679e8fef59b1658"
       ],
       "must_cover_requirements": [
         "VM-O06 lineage complete; SigLIP2 encoder reuse bound via VM-D065 claim-3",
-        "TS-001 owns generic attention efficiency; TS-003 owns representation contract"
+        "TS-001 owns generic attention efficiency; TS-003 owns representation contract",
+        "DINOv3 Gram-anchored dense refinement as the self-distillation transition; SigLIP 2 staged alignment recipe as the alignment transition; AIMv2 autoregressive objective as supporting variant"
       ],
       "boundaries": [
         "No generic Transformer-efficiency retelling; recipe reading preserved",
@@ -298,7 +306,10 @@
         "Frozen-eval transfer scope; task-specific limits need eval-side sources.",
         "Distillation-teacher dependence; short treatment per bridge role.",
         "Hierarchy-completeness role; short treatment.",
-        "Abs-page-level consumption for the loss mechanism (HTML extraction thin); SigLIP2 citation bound via VM-D065 claim-3 (G06 resolved)."
+        "Abs-page-level consumption for the loss mechanism (HTML extraction thin); SigLIP2 citation bound via VM-D065 claim-3 (G06 resolved).",
+        "NaFlex omits self-distillation/masked losses and extrapolates poorly; RefCOCO still below English-only LocCa (multilingual tradeoff); small-model gains depend on distillation stage.",
+        "Single-paper scope; scaling/robustness beyond reported conditions unbound.",
+        "Training compute/carbon cost; fairness gaps vs DINOv2 narrowed but present; OCR-heavy content hard for SSL; intermediate-layer use ill-conditioned without normalization."
       ],
       "drafting_order": 6,
       "profile_extensions": {},
@@ -312,7 +323,10 @@
           "TRANSITION_NODE_TREATMENT": [
             "VM-D033",
             "VM-D034",
-            "VM-D035"
+            "VM-D035",
+            "VM-D113",
+            "VM-D114",
+            "VM-D118"
           ],
           "BRIEF_CONTEXT_OR_AUTHORITY": [
             "VM-D031",
@@ -335,7 +349,8 @@
       ],
       "must_cover_requirements": [
         "D07A metric identity (zero-shot/retrieval) never merged with D07B localization metrics",
-        "X01 image-text pair contracts visible; bag-of-words limit recorded as D07B motivator"
+        "X01 image-text pair contracts visible; bag-of-words limit recorded as D07B motivator",
+        "SigLIP 2 staged recipe extends the image-level alignment lineage (supporting)"
       ],
       "boundaries": [
         "Captioning/VQA predecessors prevent CLIP ex-nihilo; generation detail stays TS-002",
@@ -388,7 +403,8 @@
       "must_cover_requirements": [
         "D07B full chain preserved (never CLIP + Grounding DINO only); D07A/D07B metric split enforced",
         "LVIS-rare/ODinW/RefCOCO/phrase-Recall@K identities kept distinct",
-        "GLIP/OWL-ViT/Grounding-DINO IDs rebound at intake; unseen claims label-space-bound"
+        "GLIP/OWL-ViT/Grounding-DINO IDs rebound at intake; unseen claims label-space-bound",
+        "SigLIP 2 localization transfer and SAM 3 concept grounding extend open-vocabulary perception (supporting)"
       ],
       "boundaries": [
         "Redundancy calls stand (distillation vs pretraining vs vocabulary vs reformulation vs fusion vs scaling); OWOD stays footnote",
@@ -517,7 +533,8 @@
         "Two technically distinct open families (InternVL3 paradigm contrast, Molmo 2 grounding comparator); no Qwen-only narrative",
         "Audio chain Whisper/BEATs/CLAP/omni-sync with synthesis excluded (TS-002)",
         "Vendor latency/token figures config-bound (CV2-DM-020); X03 fields multimodal-specific only",
-        "Query-driven selective acquisition economics axis via VM-D112 (vendor ceilings, version-bound; token scope only)"
+        "Query-driven selective acquisition economics axis via VM-D112 (vendor ceilings, version-bound; token scope only)",
+        "SigLIP 2 encoder-reuse note extends the fusion encoder lineage (supporting)"
       ],
       "boundaries": [
         "M-RoPE lineage thread; Thinker-Talker streaming subordinated to input/fusion side",
@@ -541,9 +558,10 @@
         "Exact benchmark list/splits behind vendor efficiency ceilings (incl. LongVideoBench scope + 3.8 Flash row) remain binding work for downstream use.",
         "PARTIAL: training-data license mix bound at bucket level (academic/non-commercial third-party; manual-license items DocQA/InfoQA/SceneText, LVBench, MLVU/LongVideoBench agreements, manual-download tracking sets) — individual third-party license texts and Source Attribution contents remain unbound (INSPECT target).",
         "individual third-party dataset license texts and Source Attribution contents unbound; carried as INSPECT item for later stages.",
-        "Code licenses canonical: Qwen3-VL and Molmo 2 code Apache 2.0 confirmed in canonical Evidence (repo-root LICENSE, repo-bound).",
+        "Code licenses canonical: Qwen3-VL, Qwen3-Omni and Molmo 2 code Apache 2.0 confirmed in canonical Evidence (repo-root LICENSE, repo-bound).",
         "Model-weight licenses canonical split: Qwen3-VL weights Apache 2.0 within bound model-card scope (8B-Instruct); Qwen3-Omni weights Apache 2.0 within bound model-card scope (30B-A3B-Instruct); Molmo 2 weights Apache 2.0 within the VM-D077 supplement scope; weight license and mixture terms are separate buckets.",
-        "Released-data scope canonical: Molmo 2 dataset family availability within the VM-D077 supplement scope (collection + checked per-dataset terms); individual third-party license texts and attribution contents PARTIAL/INSPECT."
+        "Released-data scope canonical: Molmo 2 dataset family availability within the VM-D077 supplement scope (collection + checked per-dataset terms); individual third-party license texts and attribution contents PARTIAL/INSPECT.",
+        "Qwen3-Omni repository (VM-D075): weight/code license status remains unresolved in canonical Evidence."
       ],
       "drafting_order": 10,
       "profile_extensions": {},
@@ -639,7 +657,8 @@
         "Offline long-context vs online streaming contracts separated",
         "Frame-count sensitivity and async-query/memory policies recorded",
         "VSI-Bench PARTIAL depth carried with debiased-subset deferral",
-        "Third video-processing contract (stored-timeline on-demand navigation) via VM-D112; offline breadth vs online state columns unchanged"
+        "Third video-processing contract (stored-timeline on-demand navigation) via VM-D112; offline breadth vs online state columns unchanged",
+        "SAM 3 memory video tracking as supporting stored-timeline evidence"
       ],
       "boundaries": [
         "VStream-QA as cited predecessor; SAM 2 memory as architecture pointer",
@@ -689,16 +708,22 @@
         "candidate:SP-vision-multimodal-2026:048657a8506e4170",
         "candidate:SP-vision-multimodal-2026:52ea0a56f7d6f8c4"
       ],
-      "supporting_candidate_ids": [],
+      "supporting_candidate_ids": [
+        "candidate:SP-vision-multimodal-2026:8a740dd7b6642284",
+        "candidate:SP-vision-multimodal-2026:3cea06c11283ca9e"
+      ],
       "must_cover_requirements": [
         "Bounded endpoint; OSWorld 1.0 vs 2.0 distinct contracts (grounding vs state-management thesis)",
-        "Screenshot-loop token costs via TS-001 vocabulary; safety audits as eval metadata only"
+        "Screenshot-loop token costs via TS-001 vocabulary; safety audits as eval metadata only",
+        "UGround vision-only grounding interface and ScreenSpot-Pro professional evaluation as supporting endpoint evidence"
       ],
       "boundaries": [
         "No general agent-architecture survey; web-phase predecessors stay context",
         "Short-horizon scope; long-horizon thesis needs 2.0-side sources.",
         "Author-measured model results; strictest binding in volume required per use (model+thinking+tool+steps+release).",
-        "Successor currency check at later stages (v2/Pro-class named as check, not entries)."
+        "Successor currency check at later stages (v2/Pro-class named as check, not entries).",
+        "Evaluation-only scope; agent policy claims need OSWorld-side sources.",
+        "Web-synthetic domain limits; live-OS long-horizon state needs OSWorld-side sources."
       ],
       "drafting_order": 13,
       "profile_extensions": {},
@@ -710,7 +735,9 @@
             "VM-D091"
           ],
           "TRANSITION_NODE_TREATMENT": [
-            "VM-D092"
+            "VM-D092",
+            "VM-D119",
+            "VM-D120"
           ],
           "BRIEF_CONTEXT_OR_AUTHORITY": []
         }
@@ -719,22 +746,25 @@
     {
       "package_id": "P13",
       "title": "Vision-Language-Action and embodied interfaces",
-      "purpose": "Seven-node minimum chain from planner-side grounding through action tokenization to open implementation and card-scoped deployment; representation/action interface only.",
+      "purpose": "Seven-node minimum chain from planner-side grounding through action tokenization to open implementation and card-scoped deployment; representation/action interface only. Discrete language-like action tokens and continuous flow-matching generation form a separate action-interface branch within the same representation/interface contract.",
       "primary_candidate_ids": [
         "candidate:SP-vision-multimodal-2026:acc1476a7210d9ff",
         "candidate:SP-vision-multimodal-2026:362a3d892f28cee6",
         "candidate:SP-vision-multimodal-2026:ea7ae35b333808dc",
         "candidate:SP-vision-multimodal-2026:582a2fe27ffde0e7",
         "candidate:SP-vision-multimodal-2026:c48e13f6d1a3c5a3",
-        "candidate:SP-vision-multimodal-2026:285960b48aeb0909"
+        "candidate:SP-vision-multimodal-2026:285960b48aeb0909",
+        "candidate:SP-vision-multimodal-2026:a8ddfe446424a5d4"
       ],
       "supporting_candidate_ids": [
         "candidate:SP-vision-multimodal-2026:eb9d3e8819d0d563",
-        "candidate:SP-vision-multimodal-2026:03bffb104e90229f"
+        "candidate:SP-vision-multimodal-2026:03bffb104e90229f",
+        "candidate:SP-vision-multimodal-2026:14b04c375155f8ba"
       ],
       "must_cover_requirements": [
         "Hard cap holds: no kinematics/dynamics/gait/hardware/locomotion/safety-policy content",
-        "G01 independent-eval scarcity preserved as limitation; vendor pages never architecture"
+        "G01 independent-eval scarcity preserved as limitation; vendor pages never architecture",
+        "pi-zero flow-matching interface as the action-interface transition; FAST tokenization as the supporting representation transition"
       ],
       "boundaries": [
         "SayCan planner-side role sharpens (not duplicates) PaLM-E joint break",
@@ -745,7 +775,9 @@
         "Formulation role fixed by Round C; deployment/eval scope needs endpoint-side sources.",
         "G01 gap preserved; fine-tuning-efficiency claims are paper-reported.",
         "No mechanism disclosure; no latency/price/token facts published.",
-        "Card-scoped eval only; OOD/whole-body outside stated scope; card may update (bind date)."
+        "Card-scoped eval only; OOD/whole-body outside stated scope; card may update (bind date).",
+        "Policy evaluation on static manipulators only; alternative compressions and FAST+diffusion untested; inference-speed gap unresolved.",
+        "Prototype scope; hardest/longest tasks need fine-tuning plus a high-level language planner; scale/hardware sensitivity and inference cost retained."
       ],
       "drafting_order": 14,
       "profile_extensions": {},
@@ -760,7 +792,9 @@
             "VM-D093",
             "VM-D094",
             "VM-D096",
-            "VM-D098"
+            "VM-D098",
+            "VM-D116",
+            "VM-D117"
           ],
           "BRIEF_CONTEXT_OR_AUTHORITY": [
             "VM-D099",
@@ -937,7 +971,8 @@
       "p12_gui_computer_use": [
         "VM-D090",
         "VM-D091",
-        "VM-D092"
+        "VM-D092",
+        "VM-D120"
       ],
       "p13_vla_limitation": [
         "VM-D098",

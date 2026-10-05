@@ -1,0 +1,119 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-vision-multimodal-2026",
+  "evidence_task_id": "evidence:SP-vision-multimodal-2026:e4d1370818155fa8",
+  "basis": {
+    "task_sha256": "fa959c9d8dde3ffb9d609eeb4e874508b54d77d2faabcb81e97dc85d6adcb5dd",
+    "screening_acceptance_sha256": "c851605b219be55c746671e950a808b0f6821a514600b0e0d7fd582e9298b603",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "ev-vmd098",
+      "canonical_name": "OpenVLA (Kim et al., 2024)",
+      "entity_type": "MODEL",
+      "organization": "Stanford / Berkeley / TRI",
+      "canonical_url": "https://arxiv.org/abs/2406.09246"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "ev-vmd098",
+    "artifact_type": "PAPER",
+    "canonical_name": "OpenVLA (Kim et al., 2024)",
+    "canonical_url": "https://arxiv.org/abs/2406.09246"
+  },
+  "temporal": {
+    "observed_at": "2026-09-30T14:24:47Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2024-06",
+        "subject_id": "ev-vmd098",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2406.09246",
+      "source_class": "PRIMARY_PAPER",
+      "title": "OpenVLA (Kim et al.)",
+      "published_at": "2024-06",
+      "accessed_at": "2026-09-30T14:24:47Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "7B open-source VLA (Llama 2 + DINOv2/SigLIP fused visual encoder) on 970K real demonstrations: beats closed RT-2-X (55B) by 16.5% absolute success across 29 tasks spanning multiple robot embodiments at 7x fewer params; efficient fine-tuning for new tasks with multi-task generalization; CoRL 2024.",
+      "subject_id": "ev-vmd098",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Full-paper abstract; numbers paper-reported."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Independent-eval scarcity carried as G01: open weights enable community eval, but no independent benchmark is bound by this card.",
+      "subject_id": "ev-vmd098",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Edition-level analytical synthesis by the Work operator (lineage/selection/boundary/contract judgment, not a literal statement of the cited source); structural home for edition rationale."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "G01 gap preserved; fine-tuning-efficiency claims are paper-reported.",
+      "subject_id": "ev-vmd098",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Complete OpenVLA paper body consumed via arXiv HTML (130KB text): architecture, 970K-demonstration scale, comparison results, fine-tuning exhibits verified; G01 preserved.",
+        "subject_ids": [
+          "ev-vmd098"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "G01 independent VLA eval scarcity",
+        "status": "VERIFIED",
+        "finding": "No independent eval bound by this card; G01 gap preserved, not repaired by vendor material.",
+        "subject_ids": [
+          "ev-vmd098"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

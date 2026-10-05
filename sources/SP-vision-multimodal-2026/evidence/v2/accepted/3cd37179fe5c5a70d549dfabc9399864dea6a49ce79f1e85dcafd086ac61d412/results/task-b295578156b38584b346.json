@@ -1,0 +1,110 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-vision-multimodal-2026",
+  "evidence_task_id": "evidence:SP-vision-multimodal-2026:914cf36ce25f198b",
+  "basis": {
+    "task_sha256": "1168a67d2155c7670dc61ba2a16e55f604bf8ab12ab0bb573f455c54325a725b",
+    "screening_acceptance_sha256": "c851605b219be55c746671e950a808b0f6821a514600b0e0d7fd582e9298b603",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "ev-vmd076",
+      "canonical_name": "InternVL repository (code + weights + data)",
+      "entity_type": "MODEL",
+      "organization": "Shanghai AI Lab",
+      "canonical_url": "https://github.com/OpenGVLab/InternVL"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "ev-vmd076",
+    "artifact_type": "OPEN_WEIGHT",
+    "canonical_name": "InternVL repository (code + weights + data)",
+    "canonical_url": "https://github.com/OpenGVLab/InternVL"
+  },
+  "temporal": {
+    "observed_at": "2026-09-30T14:24:47Z",
+    "events": []
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://github.com/OpenGVLab/InternVL",
+      "source_class": "PRIMARY_REPOSITORY",
+      "title": "OpenGVLab/InternVL repository (code + weights + data)",
+      "published_at": null,
+      "accessed_at": "2026-09-30T14:24:47Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Second-family openness exhibit: weights plus training-data release (InternVL-Data); report lineage 1.0 through 3.5 documented with paper links; training code open-sourced (3.5-GPT-OSS line).",
+      "subject_id": "ev-vmd076",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PROJECT_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Repo README header/news consumed 2026-09-30."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Currency note (provenance, not substitution): repo README documents the InternVL3.5 line (report 2508.18265, 241B-A28B-class, training code open-sourced 2025-08-30); Discovery corpus unchanged.",
+      "subject_id": "ev-vmd076",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PROJECT_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Repo README news section consumed 2026-09-30; Sol r1 currency-check obligation discharged as provenance note."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "PARTIAL: data-release file-level scope unverified (INSPECT target); README header depth only.",
+      "subject_id": "ev-vmd076",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Release structure verified at README depth.",
+        "subject_ids": [
+          "ev-vmd076"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "data-release scope verification",
+        "status": "UNRESOLVED",
+        "finding": "File-level data-release scope not verified; carried as INSPECT item for later stages.",
+        "subject_ids": [
+          "ev-vmd076"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      "data-release scope verification: File-level data-release scope not verified; carried as INSPECT item for later stages."
+    ],
+    "contradictions": []
+  }
+}

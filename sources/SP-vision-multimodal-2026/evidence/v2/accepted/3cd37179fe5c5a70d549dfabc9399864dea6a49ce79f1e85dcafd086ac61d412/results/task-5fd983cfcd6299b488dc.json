@@ -1,0 +1,108 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-vision-multimodal-2026",
+  "evidence_task_id": "evidence:SP-vision-multimodal-2026:3c9024041edb1a4a",
+  "basis": {
+    "task_sha256": "27223351f3a8785c6e0426a2224ffbc0828979eac7430b37d85c9fad67ebb80e",
+    "screening_acceptance_sha256": "c851605b219be55c746671e950a808b0f6821a514600b0e0d7fd582e9298b603",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "ev-vmd035",
+      "canonical_name": "DINOv2 (Oquab et al., 2024)",
+      "entity_type": "MODEL",
+      "organization": "Meta",
+      "canonical_url": "https://arxiv.org/abs/2304.07193"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "ev-vmd035",
+    "artifact_type": "PAPER",
+    "canonical_name": "DINOv2 (Oquab et al., 2024)",
+    "canonical_url": "https://arxiv.org/abs/2304.07193"
+  },
+  "temporal": {
+    "observed_at": "2026-09-30T14:24:47Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2023-04",
+        "subject_id": "ev-vmd035",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2304.07193",
+      "source_class": "PRIMARY_PAPER",
+      "title": "DINOv2 (Oquab et al.)",
+      "published_at": "2023-04",
+      "accessed_at": "2026-09-30T14:24:47Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Automatic curated-data pipeline + scaled training (1B-param ViT distilled to smaller models) yields all-purpose features closing the gap to weakly-supervised alternatives without finetuning, surpassing OpenCLIP on most image/pixel benchmarks.",
+      "subject_id": "ev-vmd035",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Full-paper abstract/discussion; curation+scale program consumed."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "SAM-contrast pole: all-purpose features vs promptable interface — the two pre-VLM 'foundation' meanings distinguished.",
+      "subject_id": "ev-vmd035",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Edition-level analytical synthesis by the Work operator (lineage/selection/boundary/contract judgment, not a literal statement of the cited source); structural home for edition rationale."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Frozen-eval transfer scope; task-specific limits need eval-side sources.",
+      "subject_id": "ev-vmd035",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Complete DINOv2 paper body consumed via arXiv HTML (102KB text): curation pipeline, scaling, OpenCLIP comparison verified.",
+        "subject_ids": [
+          "ev-vmd035"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

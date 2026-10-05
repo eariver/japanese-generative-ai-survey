@@ -1,0 +1,119 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-vision-multimodal-2026",
+  "evidence_task_id": "evidence:SP-vision-multimodal-2026:430f58620318dee9",
+  "basis": {
+    "task_sha256": "10d34dc8276935d2f51d20a6d53a9125c39630c01701d33de5e5d66120dd4d29",
+    "screening_acceptance_sha256": "c851605b219be55c746671e950a808b0f6821a514600b0e0d7fd582e9298b603",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "ev-vmd017",
+      "canonical_name": "Segment Anything / SAM (Kirillov et al., 2023)",
+      "entity_type": "MODEL",
+      "organization": "Meta AI",
+      "canonical_url": "https://arxiv.org/abs/2304.02643"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "ev-vmd017",
+    "artifact_type": "PAPER",
+    "canonical_name": "Segment Anything / SAM (Kirillov et al., 2023)",
+    "canonical_url": "https://arxiv.org/abs/2304.02643"
+  },
+  "temporal": {
+    "observed_at": "2026-09-30T14:24:47Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2023-04",
+        "subject_id": "ev-vmd017",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2304.02643",
+      "source_class": "PRIMARY_PAPER",
+      "title": "Segment Anything (Kirillov et al.)",
+      "published_at": "2023-04",
+      "accessed_at": "2026-09-30T14:24:47Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Task/model/data system: promptable segmentation task + SAM + data-engine-built SA-1B (1B+ masks on 11M licensed images); zero-shot transfer to new distributions/tasks often competitive with or superior to prior fully-supervised results.",
+      "subject_id": "ev-vmd017",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Full-paper abstract/introduction/discussion; scale and transfer claims paper-reported."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Composition thesis (paper's own discussion): prompting + composition let one model serve extensible uses including tasks unknown at design time (CLIP-in-DALL-E analogy); promptable models compose into larger algorithmic systems unlike fixed-task interactive segmenters.",
+      "subject_id": "ev-vmd017",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Discussion section consumed; supports the foundation-vs-tool dual reading."
+    },
+    {
+      "statement_id": "claim-3",
+      "text": "Dual reading carried: foundation-model event AND task-bounded system; downstream per-task evals adjudicate (D15), not this card.",
+      "subject_id": "ev-vmd017",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Edition-level analytical synthesis by the Work operator (lineage/selection/boundary/contract judgment, not a literal statement of the cited source); structural home for edition rationale."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Zero-shot generality is task-bounded; specialist counter-cases belong to eval-side sources.",
+      "subject_id": "ev-vmd017",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Full body consumed: SA-1B construction, promptable design, transfer results, composition discussion verified.",
+        "subject_ids": [
+          "ev-vmd017"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}
