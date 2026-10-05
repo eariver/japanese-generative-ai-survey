@@ -4,7 +4,7 @@
 
 - Starting HEAD / Tree: `f703ceb70087335547904d33fe79973d59010407` /
   `505edd86a1054ab703b5f7e12c3fc2b6cbcf5ba1`（remote一致をread-only確認）
-- Final HEAD / Tree: （push後に確定・記録）
+- Final HEAD / Tree: `0cdc8ff850ffae7182cdfaaa07f990f1fb695ee2` / `097d726ac44864367a816ae2667210e93bab0c6c`（remote一致確認済み、working tree clean）
 
 ## Intake
 
