@@ -4,7 +4,7 @@
 
 - Starting HEAD / Tree: `6ac7c399e5dafa1da0460f239bdc965fe52969a7` /
   （remote一致をread-only確認。Expected Tree指定なしのため実測記録）
-- Final HEAD / Tree: （push後に確定・記録）
+- Final HEAD / Tree: `ae41b8d30e46aa358d1b39a6122424d140cbfc9d` / `a03b979ae70168aa6085ae4042784ccac77b8f79`（remote一致確認済み、working tree clean）
 
 ## Temporal authority（readback）
 
