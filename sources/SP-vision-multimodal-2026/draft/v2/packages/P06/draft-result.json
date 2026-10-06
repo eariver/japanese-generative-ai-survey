@@ -4,22 +4,22 @@
   "research_profile": "THEMATIC",
   "publication_profile": "LONGFORM_SPECIAL",
   "package_id": "P06",
-  "draft_version": "content-revision-r4-20261004",
+  "draft_version": "fresh-121-r5",
   "status": "ESTABLISHED",
   "basis": {
-    "draft_package_sha256": "06f824d2727528c35e1e694d0702c2c901dee135a85da87ca0937f3eede36279",
+    "draft_package_sha256": "c1d21db26709c0ab3d18f3f74b429a0bf7c5c35fb3011e9ba6e892a778129bc2",
     "prompt_id": "article-drafting-v2",
     "prompt_sha256": "b687313312a23025228c16c3f10cb68f669b910cd7215e41886d4dd91f44fe11"
   },
   "runner": {
     "provider": "Muse",
     "model": "Muse Spark (Work execution role; not a Sol/Human decision)",
-    "invocation": "TS-003 bounded Draft content revision from supplied independent Sol review (materialized from supplied review; worker does not claim Sol review): repetition/filler removal, P15 methodology-first rebuild, evidence-binding repair, publication-boundary repair, terminology normalization, targeted technical corrections; Architecture r4 APPROVED preserved, no upstream rerun, no TeX/PDF",
-    "generated_at": "2026-10-04T09:48:37.957633+00:00",
-    "run_reference": "ts003-bounded-revision-112-20261004"
+    "invocation": "TS-003 fresh 121-record Draft from Architecture r5 APPROVED (Human Owner r5 on c4444c725988f6d4e524f79a4388a203829e2729); 16-package fresh Japanese long-form drafting from current 121 authority, VM-D122 excluded, deferred families excluded, no TeX/PDF",
+    "generated_at": "2026-10-06T00:30:00Z",
+    "run_reference": "ts003-fresh-draft-121-r5-20261006"
   },
-  "headline": "系列化と自己教師あり学習の視覚基盤",
-  "deck": "畳み込みからpatch系列へ。tokenの定式と階層と再構成と蒸留と対照の目的関数を分け、再利用可能な表現が言語と結ばれる前の仕組みと残る問いを整える。効率の一般論には踏み込まない。",
+  "headline": "自己教師あり学習と基盤表現",
+  "deck": "画像を系列として扱う定式化から、再構成と対照と蒸留の目的関数を分離する。レシピとスケーリングの関係を整理し、自己蒸留と段階的アライメント、自己回帰の変種を経て、視覚言語モデルに再利用される基盤表現の条件を問う。",
   "deck_attribution_mode": "MIXED",
   "deck_evidence_refs": [
     {
@@ -34,6 +34,34 @@
       "kind": "CLAIM",
       "evidence_id": "claim-2",
       "subject_id": "ev-vmd030",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-vision-multimodal-2026:9dce7c29b30f2b61",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1",
+      "subject_id": "ev-vmd034",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-vision-multimodal-2026:9dce7c29b30f2b61",
+      "kind": "CLAIM",
+      "evidence_id": "claim-2",
+      "subject_id": "ev-vmd034",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-vision-multimodal-2026:9dce7c29b30f2b61",
+      "kind": "CLAIM",
+      "evidence_id": "claim-3",
+      "subject_id": "ev-vmd034",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-vision-multimodal-2026:9dce7c29b30f2b61",
+      "kind": "CLAIM",
+      "evidence_id": "claim-4",
+      "subject_id": "ev-vmd034",
       "subject_role": "PRIMARY_SUBJECT"
     },
     {
@@ -53,9 +81,9 @@
   ],
   "blocks": [
     {
-      "block_id": "p06-b1",
+      "block_id": "P06-B01",
       "block_type": "PARAGRAPH",
-      "text": "Vision Transformerは畳み込みから系列への組み替えである。前の制約は局所性と平行移動不変性を構造に織り込む点にあり、新しい定式は画像をpatchに切り、patch系列に素のTransformerを載せ、patch切り出しのほかは画像固有の帰納バイアスをほぼ排する点にある。仮定を外した分、データと計算で補う。機構は位置埋め込みを付したpatch トークン列をself-attentionで処理し、分類トークンから判定する。結果として大規模な事前学習と転移でCNNの到達点に並び、超えると、モデル論文の著者測定として報告している。同じ到達度ではCNNより少ない計算で学べるとも述べる。本書の読み筋は効率ではなくトークンの定式にあり、画像を系列として扱う約束が後の視覚と言語のトークン融合の前提になる。限界は大規模な事前学習への依存であり、データが乏しい所では振るわない。100B級パラメータの時代を背景に置く。継承は検出や密な予測へのTransformer適用と視覚言語モデルのエンコーダ再利用に及び、系列化が表現の契約を変えた。定式の具体は、224級の画像を16級のpatchに切り、196級の系列に平坦化して線形写像する点にある。分類用の学習可能トークンを先頭に置き、一次元位置埋め込みを足して素のTransformerに入れる。学習はJFT級の大規模私的資料とImageNet-21K級の公開資料の二段で測られ、規模を上げるほど転移が伸びる。BASE級とLARGE級とHUGE級の三段が規模軸をなし、大きいモデルほど資料の量を要する。微調整は高解像度への移行を含み、位置埋め込みの補間で形状の違いを吸収する。hybrid の変種として畳み込み特徴を系列化する道も残すが、本流は素のpatch系列である。解像度を上げるほど系列が長くなり、細部の読みは伸びる一方、計算の負担が増す。分類トークンの読み出しは系列全体の集約であり、平均poolingとの比較では学習可能な集約が選ばれる。集約の選びが転移の質に響く。帰納バイアスを構造に戻すか資料で補うかの選択が、後の効率の議論とは別に設計の分岐として残る。本書は効率の一般論に踏み込まず、トークンの定式の確立として読む。基盤モデルの数値は論文の報告条件での著者測定であり、独立した第三者再現は確認されていない。他モデルとの数値の順位付けには用いない。",
+      "text": "畳み込みを前提とする段階では、画像を言語モデルと共通の系列として扱う定式化が欠けていた。Vision Transformerは画像パッチの系列に純粋なTransformerを適用し、パッチ切り出しを除けば画像固有の帰納バイアスを最小化した。不足していたのは畳み込みに頼らない系列化の見通しであり、大規模な事前学習と転移によりCNNの最先端と同等以上になることが示され、同等精度で学習計算が少ない点も報告された。新たに可能になったのは画像をトークン列へ変換して扱うことであり、後の視覚と言語のトークン融合の前提となった。ただし大規模な事前学習への依存が条件であり、次の計算に足る表現としての系列化が本節の問いである。",
       "attribution_mode": "MIXED",
       "evidence_refs": [
         {
@@ -75,9 +103,9 @@
       ]
     },
     {
-      "block_id": "p06-b2",
+      "block_id": "P06-B02",
       "block_type": "PARAGRAPH",
-      "text": "大規模依存に対する学習手順側の答えがDeiTである。構成を変えずに学習手順の改善とTransformer専用の蒸留トークンでデータ効率を上げる。蒸留トークンは分類トークンと並ぶ学習可能な系列要素であり、畳み込み教師モデルの教師信号をこのトークン経由で借りる。教師にはRegNet系の畳み込みモデルを用い、硬い蒸留と柔らかい蒸留の二様を比べる。硬い蒸留は教師の判定を正解とみなす強い借用であり、柔らかい蒸留は教師の分布を写す弱い借用である。強い借用の方が伸びることが報告の要点である。拡張の束はRandAugmentとMixupとCutMixと確率的深さを組み合わせ、AdamWで300 epoch級の長期学習を回す。外部データなしで86M級がImageNet top-1の83.1%級に達し、蒸留で85.2%級まで伸び、転移も競ると、モデル論文の著者測定として報告している。前任との差は構成の新規性ではなく学習手順の借用にあり、規模か手順かの論点を示す。教師モデルへの依存が残るため本書では橋渡しとして位置づける。転移先は花や車や航空機の細粒度を含む多様な課題であり、手順の借用が系列モデルの実務に残る。階層の議論は別ブロックに譲り、本ブロックは蒸留手順に閉じる。転移の顔ぶれは細粒度の花や車や航空機や犬種を含み、手順の借用が系列モデルの実務に広がることを示す。転移先の資料は小規模であり、大規模事前学習なしに立つ点が手順の価値になる。学習の経済は外部資料を要さず、ImageNet-1K級の公開資料だけで完結する点にある。収集の手間を手順の工夫で代替したことが、実務への影響の核心である。蒸留トークンの注意の向きは、分類トークンが正解の分布に寄り、蒸留トークンが教師の分布に寄る分離を示す。二つのトークンの相補が推論の質を支える。硬い蒸留と柔らかい蒸留の比較は、強い借用が弱い借用を上回ることを示し、借用の強さの設計指針になる。拡張の束の各要素は、RandAugmentの多様化、MixupとCutMixの混合、確率的深さの正則化に分かれ、各々の寄与が除去試験で確かめられる。最適化はAdamWに weight decay を組み合わせ、長期の学習を安定させる。残る限りは教師への依存であり、教師の質が上限を決める。規模か手順かの論点の記録が継承の要点である。小規模モデルの段取りも同一の手順で賄い、tiny級とsmall級が資料効率の裾野を広げる。小さいモデルほど蒸留の恩恵が大きく、手順の借用が軽量実務に直結する。学習の再現性は公開された手順とコードに支えられ、手順の借用という知見が系列モデルの標準実務に残る。構成の新規性を競わず学習の作法を磨く姿勢が、後の自己教師あり学習の手順の議論に接続する。規模か手順かの論点の記録が本ブロックの継承である。",
+      "text": "ViTが大規模データを求める段階では、学習手順と階層構成の不足が残った。DeiTは改良された学習手順とTransformer専用の蒸留トークンにより、外部データなしで86Mパラメータ、単一計算機3日以内にImageNetで83.1パーセント、蒸留で85.2パーセントまで到達し、転移も競争力を持つことが示された。畳み込みモデルの調整や正則化を再利用した点が学習レシピの読みを支える。一方Swin Transformerはシフト付きウィンドウアテンションにより局所ウィンドウと窓間接続を両立し、画像規模に対する線形計算量で階層性を取り戻した。ImageNetで87.3パーセント、COCOでボックスAP58.7とマスクAP51.1、ADE20Kで53.5mIoUと報告され、コードとモデルが公開された。両者はTransformer化の橋渡しであり、詳細は簡潔に扱う。",
       "attribution_mode": "ATTRIBUTED",
       "evidence_refs": [
         {
@@ -93,13 +121,20 @@
           "evidence_id": "claim-2",
           "subject_id": "ev-vmd031",
           "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:654257bfd25b2055",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd032",
+          "subject_role": "PRIMARY_SUBJECT"
         }
       ]
     },
     {
-      "block_id": "p06-b3",
+      "block_id": "P06-B03",
       "block_type": "PARAGRAPH",
-      "text": "MAEはラベルなしで学ぶマスク再構成の柱である。前の対照や蒸留が対や教師を要するのに対し、新しい手順は非対称のエンコーダとデコーダを置き、エンコーダは見えるpatchだけを受け、軽いデコーダが欠けた所を戻す点にある。75%を隠す高いマスク率で学習を3倍超速めながら精度も上げたと、モデル論文の著者測定として報告している。符号化の量を絞る分、学習が速い。大きな容量のモデルほど伸びる。機構の要点は見える所だけを符号化する点にあり、隠す割合を上げると課題が難しくなり、表層の写しではなく使える表現が残る。結果の射程は再構成の側にあり、対照や蒸留とは別の流れである。限界として再構成と表現の読み分けが要る。画素を戻せることがそのまま下流課題の強さを意味せず、転移の主張には課題側の指標による根拠が要る。本節では仕組みの範囲に留める。継承はラベルなし表現学習の実例として残り、後継の識別的自己教師あり学習との対比点になる。手順の具体は、画像の75%級を隠し、見える25%級だけをエンコーダに入れる点にある。隠す割合の高さが課題を難しくし、表層の写しではなく使える表現を残す。エンコーダはViT系の大容量を置き、デコーダは幅の狭い浅い系列を置く。非対称の分だけ符号化の量が絞られ、学習が速い。復元対象は正規化した画素値であり、語彙化した記号ではなく生の見た目を戻す。隠し方の比較では、無作為の斑点状が帯状や格子状を上回り、隠し率の比較では中間の高さが最良になる。低すぎると課題が易しく表層の写しに留まり、高すぎると手がかりが尽きて学習が崩れる。デコーダの深さの比較では、浅すぎると表現が符号化側に残らず、深すぎると復号側に移る。ほどよい浅さが転移の質を決める。微調整と線形読み出しは別の指標であり、前者は全体の作り直し、後者は凍結特徴の質を測る。エンコーダの規模軸はBASE級とLARGE級とHUGE級に分かれ、大きいモデルほど隠し率の高さの恩恵を受ける。小さいモデルは隠し率を下げた方が伸び、規模と課題の難しさの組み合わせが設計になる。デコーダの設計は幅512級で8層級の軽量に置き、符号化側の大容量との非対称を保つ。復号の対象を正規化画素に置く点は、語彙化の手間を排し、生の見た目への復元に集中する選択である。隠し率の走査は40%級から80%級に及び、中間の75%級が最良になる。隠し方の走査は無作為の斑点状と帯状と格子状を比べ、斑点状が最良になる。全体を見渡す手がかりの残り方が質を決める。微調整の構えは全体の作り直しであり、線形読み出しの構えは凍結特徴の質の測定である。二つの指標を混ぜず、主張ごとに使い分ける。長時間学習の構えは1600 epoch級に及び、長い学習ほど転移が伸びる。学習の長さと隠し率の組み合わせが設計の要点であり、長い学習と高い隠し率の組が使える表現を残す。学習の経済と表現の質の交換が本手順の実務である。",
+      "text": "ラベルなしで視覚表現を得る段階では、再構成と表現の関係を分ける設計が欠けていた。MAEは可視パッチのみを処理する非対称なエンコーダと軽量デコーダにより、75パーセントのマスクで3倍以上の学習高速化と精度向上を両立させた。再構成対象はマスク部のパッチ画素に対する平均二乗誤差であり、既定のアブレーションでは非正規化画素を用い、最終レシピではパッチ単位で正規化した画素を用いる。デコーダ深度を1から8にすると線形プローブは65.5から73.5に上がる一方でファインチューニングは84.9前後で平坦であり、マスク率の最適は75パーセント前後である。既定レシピは8層512次元デコーダ、非正規化画素、800エポック、最終レシピは正規化画素、1600エポックであり、両者を混同しない。",
       "attribution_mode": "ATTRIBUTED",
       "evidence_refs": [
         {
@@ -108,13 +143,34 @@
           "evidence_id": "claim-1",
           "subject_id": "ev-vmd033",
           "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:4e994d899261cc65",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ev-vmd033",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:4e994d899261cc65",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "ev-vmd033",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:4e994d899261cc65",
+          "kind": "CLAIM",
+          "evidence_id": "claim-4",
+          "subject_id": "ev-vmd033",
+          "subject_role": "PRIMARY_SUBJECT"
         }
       ]
     },
     {
-      "block_id": "p06-b4",
+      "block_id": "P06-B04",
       "block_type": "PARAGRAPH",
-      "text": "DINO自己教師ありはラベルなしの自己蒸留から立ち上がる。検出器のDINOとは同名別物であり、本書ではつねに自己教師ありと呼ぶ。前のマスク再構成が欠けの復元で学ぶのに対し、新しい手順は教師モデルなしに教師の役割を動かし続ける点にある。ViTへのラベルなし自己蒸留が教師ありViTや畳み込みモデルに見られない創発の性質を生み、CLS attention mapに意味的segmentationの情報が現れ、小さなViTでImageNet kNN top-1の78.3%に達したと、モデル論文の著者測定として報告している。momentum エンコーダとmulti-cropと小さなpatchが効き、ViT-Baseでは線形評価top-1の80.1%に届く。蒸留の群に属し、対照や再構成とは別の流れである。限界として創発の射程は区切る。attentionに現れた片鱗がそのまま検出のboxになるとは限らず、OVDの疑似label利用には下流側の根拠が要る。継承は規模化された後継へ向かい、蒸留による創発が基盤特徴の議論に接続する。人手の教師を要さず、教師の役割が学習の進行とともに育つ。学習の安定には教師側を生徒の指数移動平均で緩やかに更新する仕組みが用いられる。切り取りの設計は大域二枚と局所八枚級の多重切り取りであり、全体と部分の対応を量で賄う。小さなpatchが創発を強め、運動量エンコーダと組で効く。射影 head は三層級の多層知覚であり、原型との照合で分布を定める。規模軸は小さなViTからBase級に及び、patchの細かさと多重切り取りの組み合わせが創発の強さを決める。小さなpatchほど注意地図の意味的まとまりが増し、局所八枚級の切り取りが全体と部分の対応を支える。原型数の設計は出力の語彙の広さに相当し、多すぎても少なすぎても質が落ちる。kNN評価と線形評価は別の指標であり、前者は近傍の質、後者は線形分離の質を測る。二つの値を混ぜず、主張ごとに使い分ける。注意地図の可視化は意味的まとまりの証拠であり、検出のboxの証拠ではない。OVDへの接続は疑似labelの利用という下流側の設計に属し、本手順の射程の外にある。",
+      "text": "ラベルなしの蒸留が表現を生む段階では、教師と生徒の関係を崩壊なく保つ仕組みが欠けていた。DINOによる自己蒸留はラベルなしでViTを学び、教師ありViTや畳み込みモデルに見られない創発的性質を示した。CLSアテンションが意味的セグメンテーションの情報を含み、小規模ViTでkNNによりImageNet78.3パーセント、ViT-Baseで線形評価80.1パーセントと報告された。教師はモーメンタムエンコーダで勾配を止め、生徒のみ確率的勾配で更新し、マルチクロップと小パッチが重要である。崩壊回避には教師出力へのセンタリングと低い教師温度による先鋭化の両方が必要であり、いずれかを欠くと崩壊する。教師温度は0.04から0.07への線形warming、生徒温度0.1固定、モーメンタム係数0.996から1への余弦変化であり、向きを逆にしない。本節では検出器のDINOと常に区別する。",
       "attribution_mode": "MIXED",
       "evidence_refs": [
         {
@@ -130,13 +186,27 @@
           "evidence_id": "claim-2",
           "subject_id": "ev-vmd034",
           "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:9dce7c29b30f2b61",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "ev-vmd034",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:9dce7c29b30f2b61",
+          "kind": "CLAIM",
+          "evidence_id": "claim-4",
+          "subject_id": "ev-vmd034",
+          "subject_role": "PRIMARY_SUBJECT"
         }
       ]
     },
     {
-      "block_id": "p06-b5",
+      "block_id": "P06-B05",
       "block_type": "PARAGRAPH",
-      "text": "DINOv2は自己蒸留の流れを規模化し、基盤の特徴に育てた。前の小規模な創発が片鱗に留まるのに対し、新しい手順は自動で整えるデータ処理と拡張した学習で1B級ViTを学び、小さなモデルへ蒸留する点にある。人手の調整なしに汎用の特徴が弱教師ありの代替に迫り、画像と画素の多くのベンチマークでOpenCLIPを上回ったと、モデル論文の著者測定として報告している。前任との差はデータ処理の自動化と規模の拡大にあり、後継の対照系との差は教師なしに汎用特徴を鍛える点にある。汎用の特徴とpromptで指示できるインターフェースは同じ基盤という言葉で別物を指す。強い特徴と指示のインターフェースは別の契約であり、本書では区別を保つ。限界として凍結評価の転移の範囲に留まり、凍結で測った強さが調整先の強さを約束しない。凍結で測った強さが調整先の強さを約束せず、課題固有の限りは評価側の資料に譲る。継承は視覚言語モデルのエンコーダ再利用の候補として残り、識別と生成の双方の基盤に接続する。規模化の具体は、人手の調整なしに資料を整える自動処理と、拡張した学習手順の二点にある。精選した1億4千万級の画像資料を起こし、識別的自己教師あり学習で1B級ViTを学び、小さなモデルへ蒸留する。目的関数は画像水準の識別とpatch水準の再構成を組み合わせ、大域の意味と局所の対応を同時に育てる。評価の構えは凍結特徴の転移にあり、線形読み出しや簡素なデコーダで画像分類や画素予測を測る。蒸留された小さなモデル群が実務の再利用に回り、識別と生成の双方の基盤に接続する。規模化の実例として残る。資料の起こし方は、精選と重複除去と自動選別の三段であり、人手の注釈を介さずに量と質を両立させる。精選は意味の近さを基準に集め、重複除去は写しの混入を防ぎ、選別は質の低い画像を落とす。自動処理の設計が規模化の本体である。目的関数の二本は、画像水準の識別的蒸留とpatch水準のマスク再構成に分かれ、前者が大域の意味、後者が局所の対応を担う。二本の組み合わせが汎用特徴の質を決める。蒸留の段取りは大きいモデルから小さなモデルへの移し替えであり、実務の再利用に回る小さなモデル群を起こす。凍結評価の顔ぶれは、画像分類の線形読み出し、画素予測の簡素な復号、深さ推定や対応づけの課題に及び、特徴の汎用さを多面で測る。課題固有の調整先の強さを約束せず、凍結の強さと調整の強さの区別を保つ。指示のインターフェースとの区別も保ち、強い特徴と呼び出し可能性を混ぜない。",
+      "text": "自己教師あり特徴を実用にする段階では、精選データと規模拡大の手順が欠けていた。DINOv2は自動化された精選データパイプラインと拡張学習により、1BパラメータのViTを小規模モデルへ蒸留し、ファインチューニングなしで弱教師ありの代替に迫る汎用特徴を得た。画像や画素の評価でOpenCLIPを上回ると報告される範囲が示された。新たに可能になったのは凍結したまま転移する汎用特徴の利用である。一方でSAMとの対比が重要であり、汎用特徴と指示可能な界面は基盤という語の別義である。評価は凍結転移の範囲であり、課題固有の限界は評価側の資料に委ねられる。DINOv2やiBOTのマスク予測は画素再構成ではなく、MAE型の画素再構成と同一視しない。",
       "attribution_mode": "MIXED",
       "evidence_refs": [
         {
@@ -156,9 +226,9 @@
       ]
     },
     {
-      "block_id": "p06-b6",
+      "block_id": "P06-B06",
       "block_type": "PARAGRAPH",
-      "text": "SigLIPは整列の目的関数を組み替えた。前の対照学習が大域softmax正規化でbatch規模に縛られるのに対し、新しい定式はペアごとのsigmoid損失で学び、大域正規化を排する点にある。batch規模と損失の結びを解き、1M級batchまで拡張できるが伸びは鈍り、32Kで足り、小さなbatchでもよく働くと、モデル論文の著者測定として報告している。画像側を凍結した調整の変種としてSigLiTがあり、4枚級の加速器で2日級かけImageNet zero-shot 84.5%級に達した。視覚エンコーダを凍結し、テキスト側のみを調整するものである。ICCV 2023 oralで発表し、モデルを開く。結果の射程は目的関数の群にあり、定式や階層や蒸留とは別の流れである。継承としてQwen側の報告によれば、SigLIP系がQwen3-VLとOmniのエンコーダの中に続く。再利用の事実は2026年時点の報告として受け止め、正確な引用対応は未確定のまま残す。ただし正確な引用対応は未確定のまま残る。損失の仕組みの記述は抄録頁の水準に留まる部分があり、正確な典拠が結ばれていない箇所は結ばれていないと書く。定式の具体は、正負のペア全体のsoftmax正規化を排し、各画像テキストペアの一致不一致を独立の二値判定として解く点にある。正例を引き寄せ負例を押しやる対照の眼目は保ちつつ、batch規模と損失の結びを解く。温度と初期バイアスの設計が学習の安定を支え、小さなbatchでもよく働く。目的関数の組み替えの実例として残る。batch規模の走査は小規模から100万級に及び、伸びは32K級で頭打ちになる。小さなbatchでもよく働く点が実務上の眼目であり、加速器の制約を超えた利用を可能にする。温度と初期バイアスの設計は学習の初期の安定を支え、負例の海の中での正例の発見を助ける。置き換えの前後で転移の質が保たれることが、組み替えの正当化になる。SigLiTの構えは視覚を凍結し言語だけを動かす点にあり、学習の経済を別方向に進める。凍結の対象を変えることで、再利用の実務が広がる。Qwen系への継承は報告の水準に留め、正確な引用対応が結ばれていない箇所は結ばれていないと書く。多言語への拡張は対照の裾野の広さの記録に属し、規模と洗浄の振れの議論に接続する。",
+      "text": "画像とテキストの対応づけを拡張する段階では、全体正規化がバッチ規模と損失を結びつける点が制約だった。SigLIPは対ごとのシグモイド損失により全体正規化を除き、バッチ規模と損失を切り離した。1Mバッチまで拡張しても収穫は逓減し、32Kで十分なことが示され、小バッチでも有効である。凍結画像の調整であるSigLiTは4基のTPUv4で2日、ImageNetゼロショット84.5パーセントと報告された。新たに可能になったのは小規模計算での対照学習の拡張である。SigLIP2-So400mがQwen3-VLやOmni系のエンコーダに継続利用された事実は2026年報告に基づく。損失機構の根拠は抄録水準に限られる点は明示する。",
       "attribution_mode": "ATTRIBUTED",
       "evidence_refs": [
         {
@@ -178,16 +248,88 @@
       ]
     },
     {
-      "block_id": "p06-b7",
+      "block_id": "P06-B07",
       "block_type": "PARAGRAPH",
-      "text": "階層を保つ側の完全性がSwin Transformerである。ViTが単一解像度の大域attentionに置くのに対し、新しい構成は局所window内のattentionとずらしによる窓間結合を組み、patch統合で解像度を段階的に落とす点にある。窓内の計算に閉じるため、画像寸法に対する計算量の伸びは線形に収まる。窓をずらすことで窓をまたぐ結合が生まれ、層を重ねるごとに受容野が広がる。相対位置バイアスが窓内の幾何を支え、絶対座標への依存を弱める。段の構成は四段階であり、各段で解像度を半分にし、次元を倍にする。畳み込みの階層の流儀を系列処理に移した形である。ImageNet-1K top-1で87.3級、COCO test-devでbox AP 58.7級とマスク AP 51.1級、ADE20KでmIoU 53.5級と先行を上回ったと、モデル論文の著者測定として報告し、コードとモデルを開く。前任との差は大域attentionを窓に区切りつつ階層を保ち、検出や密な予測へ適用範囲を広げた点にある。密な予測への適合は、段ごとの特徴を取り出して検出器や分割器に渡せることに由来する。階層完全性の役割として位置づけ、系列化の節の柱の一つに残す。窓設計の二本は、固定窓の局所attentionとずらし窓の結合に分かれ、前者が計算の線形化、後者が受容野の拡大を担う。二層一組で一つの段階をなし、組を重ねるごとに窓をまたぐ結合が広がる。patch統合は隣接の特徴を束ねて解像度を半分にし、次元を倍にする。束ねと畳み込みのdownsampleの対応が、階層の流儀の引き継ぎを示す。相対位置バイアスは窓内の幾何を表で支え、窓の形状に依存しない転移を可能にする。絶対座標の表への依存を排した点が、形状の多様さへの応じ方になる。規模軸は tiny 級から large 級に及び、同一構成で規模の効果を読める。検出器への接続は、段ごとの特徴地図をFPN様の首に渡す点にあり、単一解像度の系列との違いがここに現れる。分割器への接続も同様であり、密な予測の実務に直結する。ずれ幅の設計は半窓級に置き、窓を半分ずらすことで窓をまたぐ結合を規則的に起こす。ずらしに伴う窓数の増加はマスク付きattentionで吸収し、計算の線形性を保つ。効率化の手つきが構成の実用性を支える。後継のSwinV2への受け渡しは、残差後の正規化とコサインattentionと対数間隔の連続位置バイアスにあり、大規模化と高解像度転移の安定を担う。受け渡しの記録は継承の開示であり、確立した成果と後継の展開を混ぜない。窓と階層の設計思想が検出や密な予測の実務に残り、系列化の節の柱として保たれる。",
+      "text": "自己蒸留を長期学習に耐える密な表現へ進める段階では、特徴マップの劣化が残った。DINOv3は7Bの自己教師あり視覚モデルであり、LVD-1689Mの1689M階層サンプリングで学習される。目的関数はL_DINOとL_iBOTに0.1倍のL_DKoleoを加えた構成であり、センタリングに代えてSinkhorn-Knoppを用い、axial RoPEと1M反復の一定スケジュールを採る。ここでiBOTはマスクされたパッチトークンの予測であり、MAEの画素再構成とは別の目的である。長期学習でのmIoU低下に対し、早期のGram教師に対するGramアンカリングでパッチ一貫性を保ち、特徴固定にはしない。事後適応として解像度拡張、多生徒蒸留、凍結視覚に対するdino.txtのテキスト対応が再学習なしに可能である。計算や炭素コスト、公平性差、OCR含有の難しさ、中間層利用の条件が限界である。",
       "attribution_mode": "ATTRIBUTED",
       "evidence_refs": [
         {
-          "evidence_task_id": "evidence:SP-vision-multimodal-2026:654257bfd25b2055",
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:e80cab6730b37dae",
           "kind": "CLAIM",
           "evidence_id": "claim-1",
-          "subject_id": "ev-vmd032",
+          "subject_id": "ev-vmd113",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:e80cab6730b37dae",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ev-vmd113",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:e80cab6730b37dae",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "ev-vmd113",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:e80cab6730b37dae",
+          "kind": "CLAIM",
+          "evidence_id": "claim-4",
+          "subject_id": "ev-vmd113",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "P06-B08",
+      "block_type": "PARAGRAPH",
+      "text": "対照学習を改良する段階では、単一損失の改良だけでは位置や密な転移が十分ではなかった。SigLIP2はSigLIPの対ごとシグモイド損失を保ちつつ、段階的レシピとして説明デコーダLocCaによるキャプション学習、SILCによる局所全体間の自己蒸留、TIPSやDINO系統のマスク予測、オンラインデータ精選を組み合わせた。WebLIの109言語多言語混合と偏り除去フィルタ、元解像度を保つNaFlexによる縦横比保持と多解像度学習が用いられ、改善は新損失ではなく組合せに帰される。RefCOCOの接地、OWL-ViTによるオープンボキャブラリー検出、密なプローブでSigLIPを上回り、PaliGemma型の凍結エンコーダ転移でも改善が報告された。一方NaFlexは自己蒸留やマスク損失を含まず外挿が弱いこと、RefCOCOが英語専用LocCaに届かない多言語の代償、小規模モデルの改善が蒸留段階に依存することが限界である。",
+      "attribution_mode": "ATTRIBUTED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:0f5a5b1f4eb4032e",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd114",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:0f5a5b1f4eb4032e",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ev-vmd114",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:0f5a5b1f4eb4032e",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "ev-vmd114",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "P06-B09",
+      "block_type": "PARAGRAPH",
+      "text": "マスクや対照や蒸留とは別の目的関数が必要な段階で、自己回帰による視覚学習が提示された。AIMv2は接頭辞付きViTと因果的マルチモーダルデコーダにより、生パッチ列の後にテキストトークンを生成し、大バッチ対照を必要としない密なトークン単位の信号を得る。凍結した基盤の転移でマスク系や対照系や蒸留系と競争力を持つことが示された。新たに可能になったのは生成順序による密な学習信号の利用である。ただし単一論文の範囲であり、報告条件を越えるスケーリングや頑健性は未確定である。全体を通して独立に進んだトークン化と目的関数の系譜は後段の視覚言語モデルに再利用されるが、一本化の勝利ではなく次の計算に足る基盤表現の条件が残る。",
+      "attribution_mode": "ATTRIBUTED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:0a211dbf194ef13a",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd118",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:0a211dbf194ef13a",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ev-vmd118",
           "subject_role": "PRIMARY_SUBJECT"
         }
       ]
@@ -195,8 +337,8 @@
     {
       "block_id": "P06-boundaries",
       "block_type": "CLAIM_BOUNDARY",
-      "text": "この節の読解上の境界: No generic Transformer-efficiency retelling; recipe reading preserved / Large-scale pre-training dependence (DeiT qualifies); 100B-parameter era context noted in intro. / Reconstruction-vs-representation reading; downstream transfer needs probe sources. / Emergent-property scope; OVD pseudo-label use needs downstream sources. / Frozen-eval transfer scope; task-specific limits need eval-side sources. / Abs-page-level consumption for the loss mechanism (HTML extraction thin); SigLIP2 citation unbound (G06). / G06 SigLIP2 citation binding: SigLIP2 exact citation unbound; G06 gap preserved. / Distillation-teacher dependence; short treatment per bridge role. / Hierarchy-completeness role; short treatment.",
-      "attribution_mode": "INFERENCE",
+      "text": "この節の読解上の境界: No generic Transformer-efficiency retelling; recipe reading preserved / Large-scale pre-training dependence (DeiT qualifies); 100B-parameter era context noted in intro. / Reconstruction-vs-representation reading; downstream transfer needs probe sources. / Emergent-property scope; OVD pseudo-label use needs downstream sources. / Frozen-eval transfer scope; task-specific limits need eval-side sources. / Distillation-teacher dependence; short treatment per bridge role. / Hierarchy-completeness role; short treatment. / Abs-page-level consumption for the loss mechanism (HTML extraction thin); SigLIP2 citation bound via VM-D065 claim-3 (G06 resolved). / NaFlex omits self-distillation/masked losses and extrapolates poorly; RefCOCO still below English-only LocCa (multilingual tradeoff); small-model gains depend on distillation stage. / Single-paper scope; scaling/robustness beyond reported conditions unbound. / Training compute/carbon cost; fairness gaps vs DINOv2 narrowed but present; OCR-heavy content hard for SSL; intermediate-layer use ill-conditioned without normalization.",
+      "attribution_mode": "MIXED",
       "evidence_refs": [
         {
           "evidence_task_id": "evidence:SP-vision-multimodal-2026:fea277ab42f86a90",
@@ -234,6 +376,20 @@
           "subject_role": "PRIMARY_SUBJECT"
         },
         {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:e80cab6730b37dae",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd113",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:0f5a5b1f4eb4032e",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd114",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
           "evidence_task_id": "evidence:SP-vision-multimodal-2026:35ac530167b1aead",
           "kind": "LIMITATION",
           "evidence_id": "limitation-1",
@@ -246,34 +402,60 @@
           "evidence_id": "limitation-1",
           "subject_id": "ev-vmd032",
           "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:0a211dbf194ef13a",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd118",
+          "subject_role": "PRIMARY_SUBJECT"
         }
       ]
     }
   ],
   "must_cover_coverage": [
     {
-      "requirement": "VM-O06 lineage complete; G06 SigLIP2 citation residual bounded",
+      "requirement": "VM-O06 lineage complete; SigLIP2 encoder reuse bound via VM-D065 claim-3",
       "block_ids": [
-        "p06-b1",
-        "p06-b2",
-        "p06-b3",
-        "p06-b4",
-        "p06-b5",
-        "p06-b6",
-        "p06-b7",
+        "P06-B01",
+        "P06-B02",
+        "P06-B03",
+        "P06-B04",
+        "P06-B05",
+        "P06-B06",
+        "P06-B07",
+        "P06-B08",
+        "P06-B09",
         "P06-boundaries"
       ]
     },
     {
       "requirement": "TS-001 owns generic attention efficiency; TS-003 owns representation contract",
       "block_ids": [
-        "p06-b1",
-        "p06-b2",
-        "p06-b3",
-        "p06-b4",
-        "p06-b5",
-        "p06-b6",
-        "p06-b7",
+        "P06-B01",
+        "P06-B02",
+        "P06-B03",
+        "P06-B04",
+        "P06-B05",
+        "P06-B06",
+        "P06-B07",
+        "P06-B08",
+        "P06-B09",
+        "P06-boundaries"
+      ]
+    },
+    {
+      "requirement": "DINOv3 Gram-anchored dense refinement as the self-distillation transition; SigLIP 2 staged alignment recipe as the alignment transition; AIMv2 autoregressive objective as supporting variant",
+      "block_ids": [
+        "P06-B01",
+        "P06-B02",
+        "P06-B03",
+        "P06-B04",
+        "P06-B05",
+        "P06-B06",
+        "P06-B07",
+        "P06-B08",
+        "P06-B09",
         "P06-boundaries"
       ]
     }
@@ -320,22 +502,6 @@
       "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
     },
     {
-      "boundary": "Abs-page-level consumption for the loss mechanism (HTML extraction thin); SigLIP2 citation unbound (G06).",
-      "handling": "EXPLICITLY_STATED",
-      "block_ids": [
-        "P06-boundaries"
-      ],
-      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
-    },
-    {
-      "boundary": "G06 SigLIP2 citation binding: SigLIP2 exact citation unbound; G06 gap preserved.",
-      "handling": "EXPLICITLY_STATED",
-      "block_ids": [
-        "P06-boundaries"
-      ],
-      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
-    },
-    {
       "boundary": "Distillation-teacher dependence; short treatment per bridge role.",
       "handling": "EXPLICITLY_STATED",
       "block_ids": [
@@ -345,6 +511,38 @@
     },
     {
       "boundary": "Hierarchy-completeness role; short treatment.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P06-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Abs-page-level consumption for the loss mechanism (HTML extraction thin); SigLIP2 citation bound via VM-D065 claim-3 (G06 resolved).",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P06-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "NaFlex omits self-distillation/masked losses and extrapolates poorly; RefCOCO still below English-only LocCa (multilingual tradeoff); small-model gains depend on distillation stage.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P06-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Single-paper scope; scaling/robustness beyond reported conditions unbound.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P06-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Training compute/carbon cost; fairness gaps vs DINOv2 narrowed but present; OCR-heavy content hard for SSL; intermediate-layer use ill-conditioned without normalization.",
       "handling": "EXPLICITLY_STATED",
       "block_ids": [
         "P06-boundaries"
@@ -363,7 +561,10 @@
       "TRANSITION_NODE_TREATMENT": [
         "VM-D033",
         "VM-D034",
-        "VM-D035"
+        "VM-D035",
+        "VM-D113",
+        "VM-D114",
+        "VM-D118"
       ],
       "BRIEF_CONTEXT_OR_AUTHORITY": [
         "VM-D031",

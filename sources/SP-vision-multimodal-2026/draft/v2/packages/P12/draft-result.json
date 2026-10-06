@@ -4,28 +4,42 @@
   "research_profile": "THEMATIC",
   "publication_profile": "LONGFORM_SPECIAL",
   "package_id": "P12",
-  "draft_version": "content-revision-r4-20261004",
+  "draft_version": "fresh-121-r5",
   "status": "ESTABLISHED",
   "basis": {
-    "draft_package_sha256": "d677f0cf7a510bdbb2edeabf7a5e4ab0c2f412ec5e678fb0a94b9e5a0992c2c7",
+    "draft_package_sha256": "ea90f3f87456efe1f701b0bd844bef7fb8e8735fb1f9516084fcda529dd508ad",
     "prompt_id": "article-drafting-v2",
     "prompt_sha256": "b687313312a23025228c16c3f10cb68f669b910cd7215e41886d4dd91f44fe11"
   },
   "runner": {
     "provider": "Muse",
     "model": "Muse Spark (Work execution role; not a Sol/Human decision)",
-    "invocation": "TS-003 bounded Draft content revision from supplied independent Sol review (materialized from supplied review; worker does not claim Sol review): repetition/filler removal, P15 methodology-first rebuild, evidence-binding repair, publication-boundary repair, terminology normalization, targeted technical corrections; Architecture r4 APPROVED preserved, no upstream rerun, no TeX/PDF",
-    "generated_at": "2026-10-04T09:48:37.957633+00:00",
-    "run_reference": "ts003-bounded-revision-112-20261004"
+    "invocation": "TS-003 fresh 121-record Draft from Architecture r5 APPROVED (Human Owner r5 on c4444c725988f6d4e524f79a4388a203829e2729); 16-package fresh Japanese long-form drafting from current 121 authority, VM-D122 excluded, deferred families excluded, no TeX/PDF",
+    "generated_at": "2026-10-06T00:30:00Z",
+    "run_reference": "ts003-fresh-draft-121-r5-20261006"
   },
-  "headline": "画面の要素特定と課題遂行と状態維持を分けて測る",
-  "deck": "実OS上で画面を操作するエージェントをどう評価するか。OSWorldのグラウンディングの制約とOSWorld 2.0の状態管理の制約を対比し、要素位置の正確さと課題成否を分離する契約を整理する。短い手順の成否と長い作業の維持は別の測定である。",
-  "deck_attribution_mode": "MIXED",
+  "headline": "画面操作へ至る接地の系譜",
+  "deck": "Computer Use（コンピュータ操作）では画面の接地が起点だが、タスク成功と純粋な位置特定は別契約である。UGroundのvision-onlyな接地とScreenSpot-Proの高解像度評価を経て、OSWorld 2.0は長時間の状態管理へ論点を移す。",
+  "deck_attribution_mode": "ATTRIBUTED",
   "deck_evidence_refs": [
     {
       "evidence_task_id": "evidence:SP-vision-multimodal-2026:85268ad1dbd5f285",
       "kind": "CLAIM",
       "evidence_id": "claim-1",
+      "subject_id": "ev-vmd090",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-vision-multimodal-2026:85268ad1dbd5f285",
+      "kind": "CLAIM",
+      "evidence_id": "claim-2",
+      "subject_id": "ev-vmd090",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-vision-multimodal-2026:85268ad1dbd5f285",
+      "kind": "CLAIM",
+      "evidence_id": "claim-3",
       "subject_id": "ev-vmd090",
       "subject_role": "PRIMARY_SUBJECT"
     },
@@ -42,194 +56,13 @@
       "evidence_id": "claim-2",
       "subject_id": "ev-vmd091",
       "subject_role": "PRIMARY_SUBJECT"
-    },
-    {
-      "evidence_task_id": "evidence:SP-vision-multimodal-2026:3d4f179a082773fd",
-      "kind": "CLAIM",
-      "evidence_id": "claim-1",
-      "subject_id": "ev-vmd092",
-      "subject_role": "PRIMARY_SUBJECT"
-    },
-    {
-      "evidence_task_id": "evidence:SP-vision-multimodal-2026:3d4f179a082773fd",
-      "kind": "CLAIM",
-      "evidence_id": "claim-2",
-      "subject_id": "ev-vmd092",
-      "subject_role": "PRIMARY_SUBJECT"
     }
   ],
   "blocks": [
     {
-      "block_id": "p12-b1",
+      "block_id": "P12-B1",
       "block_type": "PARAGRAPH",
-      "text": "実OS上で動作するエージェントを測る評価は、模擬の画面ではなく実際に動作するオペレーティングシステムの上に課題を置くことから始まる。本節の数値はベンチマーク論文の著者による測定であり、モデルと設定と道具と手順数と版に結びつけて読む。条件を外した数値比べは行わず、独立した第三者再現を待つ立場で読む。OSWorldはUbuntuとWindowsとmacOSの実OSを対象にした初めての規模をもつマルチモーダルエージェント評価環境として報告されている。課題数は369件であり、実在のウェブアプリケーションとデスクトップアプリケーション、ファイルの読み書き、複数のアプリケーションにまたがる作業手順を含む。表計算の編集や文書の整形やメールの送受信やファイルシステムの整理など、日常の計算機作業を実OSの上で再現する。課題ごとに初期設定と専用の評価スクリプトが用意され、合否の判定は画面の見た目の一致ではなく実行後のファイルやアプリケーションの状態が求める通りになったかで決まる。途中の操作手順が想定通りでなくても求める状態に届けば成功とみなす。経路の正解を一通りに固定せず、到達状態の一致だけを数える。到達の有無だけを数え、経路の美しさや手順の短さはこの契約では問わない。初期設定は仮想計算機のスナップショットや自動化された設定手順で再現され、評価スクリプトは生成された文書や表の欄の値、設定画面の到達値、送信済みや受信済みの記録、ファイルシステムの有無と内容の一致などを直接確かめる。画面の画素の一致や操作履歴の一致では合否を決めない。異なる経路で同じ状態に届いた場合も成功として扱う。コードと環境は公開され、NeurIPS 2024で発表された。公開された符号と環境は第三者が同じ初期状態から同じ評価手順を回せることを支え、測定の再現の土台になる。人は72.36%を達成したのに対し、最良のモデルは12.24%にとどまったと報告している。失敗の中心は二つある。一つは画面要素を座標に対応づけるグラウンディング（位置の対応づけ）の弱さであり、画面の意味は捉えられても押すべき位置の指定がずれる場合がある。もう一つはアプリケーションを使いこなす操作知識の不足であり、どのメニューを開きどの順序で操作するかが身についていない。単発の押し間違いではなく手順の順序や確認の省略を含む。この記録の射程は短い手順に限られ、長い手順の途中で状態を見失う現象は扱えない。位置の正確さと課題全体の成否を一つの数値に混ぜるとどこを直すべきかが見えなくなるため、別の評価条件で測り分ける。層を分けて読むことが、直すべき箇所を見失わないための規律である。",
-      "attribution_mode": "ATTRIBUTED",
-      "evidence_refs": [
-        {
-          "evidence_task_id": "evidence:SP-vision-multimodal-2026:85268ad1dbd5f285",
-          "kind": "CLAIM",
-          "evidence_id": "claim-1",
-          "subject_id": "ev-vmd090",
-          "subject_role": "PRIMARY_SUBJECT"
-        }
-      ]
-    },
-    {
-      "block_id": "p12-b2",
-      "block_type": "PARAGRAPH",
-      "text": "OSWorld 2.0は測定対象を押す位置の正確さから長い作業の維持へ移した。課題数は108件の長い手順であり、人が要する時間の中央値は1.6時間に達すると報告されている。短い課題の延長ではなく、初めから長い作業として設計され、途中で方針を変えなければ終わらない構成になっている。道具の呼び出し回数は、OSWorld 1.0の約30回に対して約318回にのぼり、数百の操作を積み重ねて初めて完了する水準の違いが層の違いを示す。課題には長い作業に特有のつまずきが織り込まれている。作業の途中で新しい情報が届き最初の手順を変更しなければならない場合、環境が動的に変わる場合、複数の出所を見比べて考えなければ答えが出ない場合、画面に書かれていない暗黙の状態を推測しなければならない場合、視覚的な位置を精密に合わせなければならない場合がある。最初の見立て通りに進めば解ける課題ではなく、途中の変化への応答が合否を分ける。制約の追加や前提の覆りが途中で起こり、計画の立て直しと状態の回復が求められる。実物に近い成果物と状態をもつ利用者像が用意され、安全性の報告も添えられるが、評価に付随する材料として読み、運用の可否を決める方針には格上げしない。最良だった構成は、Claude Opus 4.8を最大の思考設定でバッチ化し500手順まで許したものであり、二値の成否が20.6%、部分点が54.8%だったと報告されている。最後までやり切る割合は二割にとどまる一方、途中まで進める割合は半ばを超え、二値と部分点の開き自体が長い作業の現在の姿である。部分点は途中までの到達を拾い、二値は完遂だけを数えるため、両者を組で読むことが長い作業の読み方になる。GPT-5.5は消費を抑えた動作点で約13%の横ばいを示したと報告され、費用を抑えた設定では伸びが頭打ちになる。費用を抑えた動作点と上限を延ばした動作点は別の欄に置く。失敗の中心は画面操作の誤りやコードの書き損じから、制約を最後まで追い続けること、作業途中に届く情報への対応、暗黙の状態の回復、確認手順の省略防止へ移った。指示を出して押すことよりも、長い作業の状態を保ち続けることが制約になったことが、この記録の主張である。状態の保持は記憶と照合と復旧の往復であり、一度の正しい操作では置き換えられない。上限を500に置くことは測定の約束であり、無制限の試行を許したことにはならない。上限と費用と完遂の三者の関係を外さずに読むことが、長い層の規律である。",
-      "attribution_mode": "ATTRIBUTED",
-      "evidence_refs": [
-        {
-          "evidence_task_id": "evidence:SP-vision-multimodal-2026:6852a5755398b866",
-          "kind": "CLAIM",
-          "evidence_id": "claim-1",
-          "subject_id": "ev-vmd091",
-          "subject_role": "PRIMARY_SUBJECT"
-        },
-        {
-          "evidence_task_id": "evidence:SP-vision-multimodal-2026:6852a5755398b866",
-          "kind": "CLAIM",
-          "evidence_id": "claim-2",
-          "subject_id": "ev-vmd091",
-          "subject_role": "PRIMARY_SUBJECT"
-        }
-      ]
-    },
-    {
-      "block_id": "p12-b3",
-      "block_type": "PARAGRAPH",
-      "text": "SeeClickとScreenSpotは要素の位置を定める力を課題全体の成否から切り分けて測るための記録である。出発点にあるのは、スクリーンショットだけを見るエージェントは要素の位置特定でつまずくという診断であり、画面は見えていても押すべき場所を指せない場合がある。画面の意味は捉えられても座標の指定がずれる層があり、意味理解の伸びをそのまま操作の伸びに読み替えることはできない。見えることと指せることの開きが、ここでの問いである。対応としてグラウンディングの事前学習と学習データの自動収集を組み合わせ、位置を指す力を直接鍛えて表示要素と指示文の組を機械的に集めて量を確保する。人の手による注釈だけに頼らず量を確保し、位置を指す学習の土台を広げる。ScreenSpotは純粋な位置特定の条件として作られ、600件を超えるスクリーンショットと1200件を超える指示からなり、モバイルとデスクトップとウェブにまたがって文字とアイコン・ウィジェットを対象にする。文字だけの条件と図像を含む条件を分け、機種をまたいだ広さで測る。測るのは課題の成否ではなく、指示された要素の位置を言い当てられるかだけであり、グラウンディングの弱さがどれほど縮んだかを切り分けて読める。指示文の指す対象が画面のどこにあるかを当てさせ、操作の前段だけを取り出す。ここで上がった位置特定の力は、MiniWobやAITWやMind2Webといったエージェント課題の遂行にも波及したと報告されるが、位置の条件での伸びをそのまま課題成否の伸びとして語ることはできない。欄をまたいだ読み替えはしない。モデルとデータとコードは公開され、ACL 2024で発表された。要素の位置を言い当てる正確さと課題を最後までやり遂げる成否は別の欄の数値であり、座標の一致で測る値と状態の達成で測る値を一つの表に混ぜない。後継と呼ばれる版が出ればその時点で確かめ直す必要があり、版の特定なしに正確さを語らない。グラウンディングの層を独立に測ることが、積み上げのどこが効いたかを見えるようにする。",
-      "attribution_mode": "MIXED",
-      "evidence_refs": [
-        {
-          "evidence_task_id": "evidence:SP-vision-multimodal-2026:3d4f179a082773fd",
-          "kind": "CLAIM",
-          "evidence_id": "claim-1",
-          "subject_id": "ev-vmd092",
-          "subject_role": "PRIMARY_SUBJECT"
-        },
-        {
-          "evidence_task_id": "evidence:SP-vision-multimodal-2026:3d4f179a082773fd",
-          "kind": "CLAIM",
-          "evidence_id": "claim-2",
-          "subject_id": "ev-vmd092",
-          "subject_role": "PRIMARY_SUBJECT"
-        }
-      ]
-    },
-    {
-      "block_id": "p12-b4",
-      "block_type": "PARAGRAPH",
-      "text": "三つの記録を並べると、計算機操作の評価は層をなすことが分かる。最初にスクリーンショットが入力になり、次に画面の中の要素へグラウンディングして押す場所を定め、定めた座標や道具で実際に操作し、最後に長い手順の状態を保ち続ける。見ることと指すこととやり遂げることと保ち続けることは別の仕事であり、一つの数値では測れない。各仕事の境目に別の評価が置かれる。ScreenSpotが要素の位置を言い当てる条件を担い、OSWorldが実OS上の短い課題の成否を担い、OSWorld 2.0が長い手順の状態管理を担う。下の層が上がっても上の層が自動で解けるわけではない。位置が定まっても手順を見失えば課題は失敗し、手順を覚えても位置がずれれば操作は空振りし、状態を保てても確認を省けば取り返しのつかない誤りに進む。下の失敗は座標のずれとして現れ、真ん中の失敗は手順の誤りとして現れ、上の失敗は状態の喪失として現れる。OSWorld 1.0とOSWorld 2.0は別の条件であり、369件の短い課題と108件の長い手順は母集団も手順の長さもつまずきの種類も異なるため、数値を並べて優劣を語ることはできない。座標の一致は指す力の評価軸であり、状態の達成はやり遂げる力の評価軸であり、完遂と部分点は保ち続ける力の評価軸である。各層の数値は測った条件と組で読む。どれだけ進めたかの部分点とやり切ったかの二値を組で読むのは長い層だけの約束であり、短い層や位置の層に持ち込まない。どの層の伸びが全体の伸びに効いたかを語るには、層ごとの測定を揃えて読むしかない。数値を見たらまずどの層の数値かを確かめることが、読みの出発点になる。下の層の伸びを上の層の伸びに読み替えない。検証の契約も層ごとに違い、位置の層は座標の一致で数え、短い層は到達状態の一致で数え、長い層は完遂と部分点の組で数える。入力の方式の違いも層の読みに絡み、支援情報の有無を外した比較はしない。費用の欄も層ごとに違い、長い層ほどトークン予算の経済が動作点を縛る。後継版が出れば旧版の範囲での到達として残し、新版の予測には使わない。",
-      "attribution_mode": "MIXED",
-      "evidence_refs": [
-        {
-          "evidence_task_id": "evidence:SP-vision-multimodal-2026:85268ad1dbd5f285",
-          "kind": "CLAIM",
-          "evidence_id": "claim-1",
-          "subject_id": "ev-vmd090",
-          "subject_role": "PRIMARY_SUBJECT"
-        },
-        {
-          "evidence_task_id": "evidence:SP-vision-multimodal-2026:6852a5755398b866",
-          "kind": "CLAIM",
-          "evidence_id": "claim-1",
-          "subject_id": "ev-vmd091",
-          "subject_role": "PRIMARY_SUBJECT"
-        },
-        {
-          "evidence_task_id": "evidence:SP-vision-multimodal-2026:6852a5755398b866",
-          "kind": "CLAIM",
-          "evidence_id": "claim-2",
-          "subject_id": "ev-vmd091",
-          "subject_role": "PRIMARY_SUBJECT"
-        },
-        {
-          "evidence_task_id": "evidence:SP-vision-multimodal-2026:3d4f179a082773fd",
-          "kind": "CLAIM",
-          "evidence_id": "claim-1",
-          "subject_id": "ev-vmd092",
-          "subject_role": "PRIMARY_SUBJECT"
-        },
-        {
-          "evidence_task_id": "evidence:SP-vision-multimodal-2026:3d4f179a082773fd",
-          "kind": "CLAIM",
-          "evidence_id": "claim-2",
-          "subject_id": "ev-vmd092",
-          "subject_role": "PRIMARY_SUBJECT"
-        }
-      ]
-    },
-    {
-      "block_id": "p12-b5",
-      "block_type": "PARAGRAPH",
-      "text": "入力の方式の違いは測っている内容を変えるため、条件として切り分けて読む。スクリーンショットだけを入力にする条件は、人が画面を見て操作する姿に最も近く、画素からの読み取りとグラウンディングと操作を一貫して試す。余分な手がかりを与えず、見たものだけを頼りに押す場所を決めさせる。画素だけが頼りの条件では、要素の列挙も役割の推測も座標の決定もすべて視覚から行わなければならない。対してアクセシビリティツリー（accessibility tree、画面要素の名前・役割・階層を表す構造情報）やDOM（Document Object Model）などのインターフェース要素情報を併用する条件は、画面の構造の手がかりを別経路で与えて位置の特定や要素の列挙の負担を軽くする。要素の名前や役割や階層が別経路で分かれば、画素からの推測の難しさは下がる。構造の手がかりは実運用の到達を押し上げるが、純粋な視覚の読み取りの評価ではなくなる。アプリケーションの呼び出しインターフェースを直接叩く条件は画面操作を迂回し、見て押す課題とは別の自動化を測る。画面を見ずに裏口から状態を変える力は、操作の自動化としては有効だが、視覚グラウンディング点の評価ではなくなる。混ぜた条件は実運用の到達を押し上げるが、混ぜた分の表示なしに数値は読めない。どの入力で測ったかを外した数比べはしない。OSWorld系列の読みではスクリーンショットを基本とし、支援情報を併用した場合と併用しない場合を別の欄に置く。出力の側も座標の指定と道具呼び出しとキーや指示の発行が混ざるため、何を出力させ何で合否を決めたかを言い添える。座標だけを出させる条件と道具の呼び出しまで許す条件では、測っている操作の幅が違う。スクリーンショットだけの条件での到達と支援つきの条件での到達を同じ伸びとして語らず、迂回の有無を隠した比較は採らない。支援つきの到達を純粋な視覚の到達に読み替えない。版が進み入力の既定が変われば、その時点で結びつけ直す。入力の約束の変化は能力の変化と同じ重さをもち、約束を外した比較は行わない。",
-      "attribution_mode": "MIXED",
-      "evidence_refs": [
-        {
-          "evidence_task_id": "evidence:SP-vision-multimodal-2026:85268ad1dbd5f285",
-          "kind": "CLAIM",
-          "evidence_id": "claim-1",
-          "subject_id": "ev-vmd090",
-          "subject_role": "PRIMARY_SUBJECT"
-        },
-        {
-          "evidence_task_id": "evidence:SP-vision-multimodal-2026:3d4f179a082773fd",
-          "kind": "CLAIM",
-          "evidence_id": "claim-1",
-          "subject_id": "ev-vmd092",
-          "subject_role": "PRIMARY_SUBJECT"
-        },
-        {
-          "evidence_task_id": "evidence:SP-vision-multimodal-2026:3d4f179a082773fd",
-          "kind": "CLAIM",
-          "evidence_id": "claim-2",
-          "subject_id": "ev-vmd092",
-          "subject_role": "PRIMARY_SUBJECT"
-        }
-      ]
-    },
-    {
-      "block_id": "p12-b6",
-      "block_type": "PARAGRAPH",
-      "text": "長い作業では操作の正確さと別に費用の制約が動作点を縛る。スクリーンショットを繰り返し入力する方式は入力の量を多く消費し、手順数とともに消費が積み上がる。高解像の画面を毎手順送り続ければトークン数と費用と待ち時間が増え、手順の上限をどこに置くかが成否と費用の両方を動かす。ステップ数が増えるにつれて観測入力と状態保持の累積コストも増えるため、上限を延ばせば進める幅は広がるが消費も積み上がり、正確さと費用の両睨みになる。正確さと費用の交換が、この層の現実である。OSWorld 2.0の最良構成は500手順までを許す設定であり、上限の置き方が完遂と部分点の両方に効く。500という上限は測定条件の一部であり、上限の内側での到達として読んで上限なしの能力に読み替えない。GPT-5.5が消費を抑えた動作点で約13%の横ばいを示したことは、費用を抑えた設定では伸びが頭打ちになる例である。消費を抑えた動作点と上限を延ばした動作点は別の欄に置き、直接比べない。正確さだけを上げても費用の条件で使えなければ実運用には届かず、費用だけを下げても正確さが足りなければ作業は終わらない。検証の面では課題ごとの状態スクリプトが合否を決め、画素の一致ではなく到達状態の一致で数える。状態スクリプトの維持と更新は測定の信頼の条件であり、アプリケーションの版上がりや挙動変化があれば確かめ直す。版上がりで画面の配置や裏側の挙動が変われば、検証の合否も変わりうる。ScreenSpotの位置特定の正確さは座標の一致で測り、OSWorldの成否は状態の達成で測り、OSWorld 2.0の維持は長い手順の完遂と部分点で測る。画面の解像度を下げれば一手順のトークン数は減るが、グラウンディングの正確さが損なわれれば完遂は下がる。解像度と正確さと費用の三者の交換が、動作点の選択になる。どの解像度で測ったかも数値と組で読む。トークン数の経済を抜きにした到達の議論は、この層では採らない。費用の欄を欠いた能力の比較は行わない。",
-      "attribution_mode": "MIXED",
-      "evidence_refs": [
-        {
-          "evidence_task_id": "evidence:SP-vision-multimodal-2026:6852a5755398b866",
-          "kind": "CLAIM",
-          "evidence_id": "claim-1",
-          "subject_id": "ev-vmd091",
-          "subject_role": "PRIMARY_SUBJECT"
-        },
-        {
-          "evidence_task_id": "evidence:SP-vision-multimodal-2026:6852a5755398b866",
-          "kind": "CLAIM",
-          "evidence_id": "claim-2",
-          "subject_id": "ev-vmd091",
-          "subject_role": "PRIMARY_SUBJECT"
-        },
-        {
-          "evidence_task_id": "evidence:SP-vision-multimodal-2026:3d4f179a082773fd",
-          "kind": "CLAIM",
-          "evidence_id": "claim-1",
-          "subject_id": "ev-vmd092",
-          "subject_role": "PRIMARY_SUBJECT"
-        },
-        {
-          "evidence_task_id": "evidence:SP-vision-multimodal-2026:3d4f179a082773fd",
-          "kind": "CLAIM",
-          "evidence_id": "claim-2",
-          "subject_id": "ev-vmd092",
-          "subject_role": "PRIMARY_SUBJECT"
-        }
-      ]
-    },
-    {
-      "block_id": "p12-b7",
-      "block_type": "PARAGRAPH",
-      "text": "本節は計算機操作の評価の到達点として境界を明確に保つ。扱うのは画面を見て要素にグラウンディングし座標や道具で操作し長い作業の状態を保つという一連の流れだけであり、エージェントの構成一般は論じない。計画の立て方や学習の仕組みの一般論には踏み込まず、測った条件の範囲で語る。測ったことだけを語り、測っていないことは語らない。ウェブ時代の先行事例は背景にとどめ、MiniWobなどの先行は層の理解の助けとして触れるに留める。スクリーンショットだけを入力にする条件と支援情報を併用する条件では測っている内容が変わるため、条件の表示なしに数値は読めない。安全性の報告は評価に添えられた材料として読み、運用の可否を決める根拠ではなく測ったときの付帯情報として扱う。利用者像や成果物の実物らしさは測定の文脈を整えるが、運用の安全の保証にはならない。OSWorld 1.0の短い射程とOSWorld 2.0の長い射程は別の評価であり、短い層の到達を長い層の予測には使わない。後継の版が出た場合は鮮度の確認が必要であり、版の特定なしに到達点を語らない。OSWorldはNeurIPS 2024、SeeClickとScreenSpotはACL 2024の版で縛り、版を外して最良を語らない。後継版の報告が出れば、その時点で結びつけ直す。旧版の到達を新版の予測には使わない。閉じたモデルの数値は能力と運用の範囲に留め、内部構成や学習の詳細の推測には使わない。層を分けて測り層を混ぜて語らないこと、条件を外して数値を比べないこと、付帯情報を根拠に格上げしないことが、本節の境界のまとめである。層の対応表と入力条件と費用の欄を三点で確かめることが、読みの出発点になる。",
+      "text": "OSWorldは実OS上で動作するマルチモーダルなComputer Useの評価環境であり、接地から行動へ至る起点となる。UbuntuとWindowsとmacOSを対象に、実際のウェブやデスクトップのアプリケーション、ファイル入出力、複数アプリケーションにまたがる作業を含む369タスクを備える。各タスクは設定用構成と実行結果で判定する評価スクリプトを持ち、対話的な学習を支える。観察と行動の界面はcomplete screenshotとaccessibility-tree observationとterminal-output observation、pyautoguiによるコード行動とCOMPUTER_13の構造化された行動空間で比較され、根拠を超える細部は発明しない。コードと環境は公開され、NeurIPS 2024で発表された論文著者測定の到達点である。",
       "attribution_mode": "ATTRIBUTED",
       "evidence_refs": [
         {
@@ -240,6 +73,137 @@
           "subject_role": "PRIMARY_SUBJECT"
         },
         {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:85268ad1dbd5f285",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ev-vmd090",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:85268ad1dbd5f285",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "ev-vmd090",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "P12-B2",
+      "block_type": "PARAGRAPH",
+      "text": "OSWorldの論文著者測定では人間が72.36%に対し最良モデルが12.24%であり、失敗はGUI要素の接地と操作知識の不足に帰せられる。スクリーンショットのみを入力するエージェントは要素の位置特定で詰まるため、タスク成功を測るOSWorldの評価と位置特定の正確さだけを測るScreenSpotの評価は別の評価軸として扱い、条件の異なる数値を並べて優劣をつけない。界面の比較ではcomplete screenshotとaccessibility-tree observationとterminal-output observationの観察条件、pyautoguiによるコード行動とCOMPUTER_13の構造化された行動空間を区別する。OSWorldは短い手順の範囲を扱い、長い手順の論点はOSWorld 2.0側の根拠を要する。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:85268ad1dbd5f285",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd090",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:85268ad1dbd5f285",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ev-vmd090",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:85268ad1dbd5f285",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "ev-vmd090",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:3d4f179a082773fd",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd092",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:3d4f179a082773fd",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ev-vmd092",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "P12-B3",
+      "block_type": "PARAGRAPH",
+      "text": "SeeClickとScreenSpotはスクリーンショットのみのエージェントが要素の位置特定で詰まるという診断から出発し、接地の事前学習と自動収集で位置特定を直接鍛える転換点である。ScreenSpotは600以上のスクリーンショットと1200以上の指示から成り、モバイルとデスクトップとウェブにまたがり、テキストとアイコンやウィジェットを対象とする純粋な位置特定の契約を示す。位置特定の改善はMiniWobとAITWとMind2Webのエージェント課題へ転移することが論文著者により報告される。モデルとデータとコードは公開され、ACL 2024で発表された。タスク成功とは別の評価軸として純粋な位置特定を測る点が重要であり、後継の扱いはScreenSpot-Proを正準とし、未査読の後継は導入しない。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:3d4f179a082773fd",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd092",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:3d4f179a082773fd",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ev-vmd092",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "P12-B4",
+      "block_type": "PARAGRAPH",
+      "text": "UGroundはスクリーンショットだけを見るvision-onlyな接地の方向を示す汎用の接地モデルであり、accessibility-tree observationに頼らず画面画素から座標へ対応づける。130万スクリーンショットから得た1000万要素のウェブ合成による接地レシピで学習し、構造記述を使う方式と対置される。SeeAct-Vは独立した節として立てず界面文脈として畳み込む。この対置により、補助的な構造記述の有無ではなく画面から直接座標を求める能力が問われる。ウェブ合成の領域という限界があるため、実OS上の長時間状態についてはOSWorld側の根拠を要する。接地の正確さとタスク成功は別の評価軸として保ち、接地改善がそのまま長時間成功を意味しないと読む。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:a09c80fa9231ebf2",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd119",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:a09c80fa9231ebf2",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ev-vmd119",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "P12-B5",
+      "block_type": "PARAGRAPH",
+      "text": "ScreenSpot-Proは専門家向けの高解像度な接地評価であり、元解像度のまま扱う全画面課題で面積比0.07%規模の微小対象を扱う。専門的な作業画面を対象とするため、切り抜き中心の容易な接地評価とは測る対象が異なり、条件の異なる数値を並べて優劣をつけない。全画面では探索範囲が広がり微小対象の見落としが増え、座標のわずかなずれが失敗に直結するため接地の厳密さが問われる。プランナに導かれるカスケード型の推論時探索という契約を持ち、段階的に候補を絞る。評価専用の範囲であり、エージェント方策の主張にはOSWorld側の根拠を要する。純粋な位置特定の到達点として保ち、未査読の後継は導入しない。いずれも論文著者測定の範囲として読み、独立した再現とは区別する。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:1517a20a6a8b9f0d",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd120",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:1517a20a6a8b9f0d",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ev-vmd120",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "P12-B6",
+      "block_type": "PARAGRAPH",
+      "text": "OSWorld 2.0は108件の長時間ワークフローから成り、中央値で1.6人間時間の作業を扱う到達点の事例である。ストリーミング対話、動的環境、複数情報源にまたがる推論、暗黙状態の推定、視覚と空間の精密さを課題現象とし、真正な成果物と状態を持つ利用者像と安全性報告を備える。論文著者測定ではClaude Opus 4.7が最大思考の単一行動設定で平均318.4回のツール呼び出しとなり、OSWorld 1.0の約30回と桁が異なる。条件結合の厳密さが本巻で最も強い分野であり、名称と設定と手順を明示して読む。安全性報告は評価の付随情報として扱う。",
+      "attribution_mode": "ATTRIBUTED",
+      "evidence_refs": [
+        {
           "evidence_task_id": "evidence:SP-vision-multimodal-2026:6852a5755398b866",
           "kind": "CLAIM",
           "evidence_id": "claim-1",
@@ -251,6 +215,63 @@
           "kind": "CLAIM",
           "evidence_id": "claim-2",
           "subject_id": "ev-vmd091",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "P12-B7",
+      "block_type": "PARAGRAPH",
+      "text": "OSWorld 2.0の知見は失敗の重心がGUI操作やコード記述から、制約の追跡、作業中の情報到着、暗黙状態からの回復、検証の省略へ移ることを示し、長時間の状態管理の隘路が主題となる。クリック精度ではなく状態管理が到達点であり、すべての数値はモデルと思考と道具と手順と公開版を結び付けて読む論文著者測定である。接地の系譜と状態管理の系譜は遅れて交わるだけで、一本化を急がず、異なる契約の数値を並べて順位づけしない。本節は画像全体の意味対応と領域への接地を区別し、評価条件ごとに測る対象を変えない方法上の規律を保つ。ScreenSpot-Proを正準の後継評価として保ち、未査読の後継を持ち込まない。独立した第三者再現を要する点は残る。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:6852a5755398b866",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd091",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:6852a5755398b866",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ev-vmd091",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:85268ad1dbd5f285",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd090",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:85268ad1dbd5f285",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ev-vmd090",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:85268ad1dbd5f285",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "ev-vmd090",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:1517a20a6a8b9f0d",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd120",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:1517a20a6a8b9f0d",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ev-vmd120",
           "subject_role": "PRIMARY_SUBJECT"
         }
       ]
@@ -258,8 +279,8 @@
     {
       "block_id": "P12-boundaries",
       "block_type": "CLAIM_BOUNDARY",
-      "text": "この節の読解上の境界: No general agent-architecture survey; web-phase predecessors stay context / Short-horizon scope; long-horizon thesis needs 2.0-side sources. / Author-measured model results; strictest binding in volume required per use (model+thinking+tool+steps+release). / Successor currency check at later stages (v2/Pro-class named as check, not entries).",
-      "attribution_mode": "INFERENCE",
+      "text": "この節の読解上の境界: No general agent-architecture survey; web-phase predecessors stay context / Short-horizon scope; long-horizon thesis needs 2.0-side sources. / Author-measured model results; strictest binding in volume required per use (model+thinking+tool+steps+release). / Evaluation-only scope; agent policy claims need OSWorld-side sources. / Web-synthetic domain limits; live-OS long-horizon state needs OSWorld-side sources. / ScreenSpot-Pro is separately admitted as canonical VM-D120; any still-unreviewed successor remains correctly deferred (check, not entry).",
+      "attribution_mode": "MIXED",
       "evidence_refs": [
         {
           "evidence_task_id": "evidence:SP-vision-multimodal-2026:85268ad1dbd5f285",
@@ -280,6 +301,20 @@
           "kind": "LIMITATION",
           "evidence_id": "limitation-1",
           "subject_id": "ev-vmd092",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:a09c80fa9231ebf2",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd119",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:1517a20a6a8b9f0d",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd120",
           "subject_role": "PRIMARY_SUBJECT"
         }
       ]
@@ -289,26 +324,52 @@
     {
       "requirement": "Bounded endpoint; OSWorld 1.0 vs 2.0 distinct contracts (grounding vs state-management thesis)",
       "block_ids": [
-        "p12-b1",
-        "p12-b2",
-        "p12-b3",
-        "p12-b4",
-        "p12-b5",
-        "p12-b6",
-        "p12-b7",
+        "P12-B1",
+        "P12-B2",
+        "P12-B3",
+        "P12-B4",
+        "P12-B5",
+        "P12-B6",
+        "P12-B7",
         "P12-boundaries"
       ]
     },
     {
       "requirement": "Screenshot-loop token costs via TS-001 vocabulary; safety audits as eval metadata only",
       "block_ids": [
-        "p12-b1",
-        "p12-b2",
-        "p12-b3",
-        "p12-b4",
-        "p12-b5",
-        "p12-b6",
-        "p12-b7",
+        "P12-B1",
+        "P12-B2",
+        "P12-B3",
+        "P12-B4",
+        "P12-B5",
+        "P12-B6",
+        "P12-B7",
+        "P12-boundaries"
+      ]
+    },
+    {
+      "requirement": "UGround vision-only grounding interface and ScreenSpot-Pro professional evaluation as supporting endpoint evidence",
+      "block_ids": [
+        "P12-B1",
+        "P12-B2",
+        "P12-B3",
+        "P12-B4",
+        "P12-B5",
+        "P12-B6",
+        "P12-B7",
+        "P12-boundaries"
+      ]
+    },
+    {
+      "requirement": "Compare observation/action interfaces (screenshot/a11y-tree/terminal observations; pyautogui/COMPUTER_13 action spaces) across OSWorld, UGround, SeeClick/ScreenSpot, OSWorld 2.0 and ScreenSpot-Pro; no DOM/API detail beyond sourced structured interfaces",
+      "block_ids": [
+        "P12-B1",
+        "P12-B2",
+        "P12-B3",
+        "P12-B4",
+        "P12-B5",
+        "P12-B6",
+        "P12-B7",
         "P12-boundaries"
       ]
     }
@@ -339,7 +400,23 @@
       "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
     },
     {
-      "boundary": "Successor currency check at later stages (v2/Pro-class named as check, not entries).",
+      "boundary": "Evaluation-only scope; agent policy claims need OSWorld-side sources.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P12-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Web-synthetic domain limits; live-OS long-horizon state needs OSWorld-side sources.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P12-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "ScreenSpot-Pro is separately admitted as canonical VM-D120; any still-unreviewed successor remains correctly deferred (check, not entry).",
       "handling": "EXPLICITLY_STATED",
       "block_ids": [
         "P12-boundaries"
@@ -356,7 +433,9 @@
         "VM-D091"
       ],
       "TRANSITION_NODE_TREATMENT": [
-        "VM-D092"
+        "VM-D092",
+        "VM-D119",
+        "VM-D120"
       ],
       "BRIEF_CONTEXT_OR_AUTHORITY": []
     }

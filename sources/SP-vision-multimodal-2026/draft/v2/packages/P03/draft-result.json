@@ -4,22 +4,22 @@
   "research_profile": "THEMATIC",
   "publication_profile": "LONGFORM_SPECIAL",
   "package_id": "P03",
-  "draft_version": "content-revision-r4-20261004",
+  "draft_version": "fresh-121-r5",
   "status": "ESTABLISHED",
   "basis": {
-    "draft_package_sha256": "6e35323db2904ada24017c93011f0103773fb1d72690b44a42a6e366402fd19f",
+    "draft_package_sha256": "bac92b079a8f04335130967f1b9788b6554f541e69b85c219e3ba9519ca56b5c",
     "prompt_id": "article-drafting-v2",
     "prompt_sha256": "b687313312a23025228c16c3f10cb68f669b910cd7215e41886d4dd91f44fe11"
   },
   "runner": {
     "provider": "Muse",
     "model": "Muse Spark (Work execution role; not a Sol/Human decision)",
-    "invocation": "TS-003 bounded Draft content revision from supplied independent Sol review (materialized from supplied review; worker does not claim Sol review): repetition/filler removal, P15 methodology-first rebuild, evidence-binding repair, publication-boundary repair, terminology normalization, targeted technical corrections; Architecture r4 APPROVED preserved, no upstream rerun, no TeX/PDF",
-    "generated_at": "2026-10-04T09:48:37.957633+00:00",
-    "run_reference": "ts003-bounded-revision-112-20261004"
+    "invocation": "TS-003 fresh 121-record Draft from Architecture r5 APPROVED (Human Owner r5 on c4444c725988f6d4e524f79a4388a203829e2729); 16-package fresh Japanese long-form drafting from current 121 authority, VM-D122 excluded, deferred families excluded, no TeX/PDF",
+    "generated_at": "2026-10-06T00:30:00Z",
+    "run_reference": "ts003-fresh-draft-121-r5-20261006"
   },
-  "headline": "画素の切り分けが指示に応えるとき",
-  "deck": "バウンディングボックスでは足りない画素の構造をどう捉えるかをたどる。分類からの転移、バウンディングボックスと画素の接続、指示に応える基盤、動画への拡張を契約の変化として読む。意味と個体の境を区別し、基盤の出来事と課題に縛られた装置の二重の読みで整理する。",
+  "headline": "密な知覚と指示の拡張",
+  "deck": "ボックスでは足りない画素と領域の構造へ。分類の転用からインスタンスと全体像の統一、プロンプトで指示できるセグメンテーションと概念への拡張まで、密な表現が何を可能にしたかを整理する。",
   "deck_attribution_mode": "MIXED",
   "deck_evidence_refs": [
     {
@@ -62,7 +62,7 @@
     {
       "block_id": "p03-b1",
       "block_type": "PARAGRAPH",
-      "text": "バウンディングボックスは物の居場所を示すが領域の形までは定めず、画素ごとの構造が要る所で密な予測の系譜が始まる。Fully Convolutional Networksは分類モデルを画素から画素へのモデルに書き換えて端から端まで学習させ、全結合層を畳み込みに置き換えて大きさの異なる入力から大きさに見合う地図を出す設計である。前任の分類モデルとの技術的な差は、固定長のラベル出力から可変の大きさの画素地図への出力の変え方にあり、入力の大きさに依存しない読みが可能になった。分類モデルはFCNの特別な場合と読み替えられ、分類からセグメンテーションへのファインチューニングという転移の契約がここで定まり、前節の分類から検出への転移と並ぶもう一つの継承である。転移の契約の内実は、分類で鍛えた畳み込みの重みを密な予測の符号化の側に引き継ぎ、復元の側を課題のデータで学び直す手順であり、分類のインターフェースのまま密な課題が解けるという意味ではない。粗い深層の意味の地図と細かい浅層の位置の地図をスキップで足し合わせて、意味の粗さと位置の細かさを両立させる融合が設計の要点である。モデル論文の著者測定ではAlexNetやVGG、GoogLeNet級の分類器をFCNに仕立てて学習表現を引き継ぎ、VOC 2012で平均IU 62.2%、相対で2割の伸びを5分の1秒を切る推論で出したと報告している。評価の契約はVOC 2012の条件での話であり、他の情景への優劣は主張しない。輪郭は後の評価軸では粗く、磨き上げは後継の資料に譲る。大きさを保ったまま密な地図を出す設計が、後の符号化と復元の往復の前提になった。独立した再現は確認されておらず、数値は著者測定として扱う。",
+      "text": "画像全体の分類だけでは画素ごとの構造が残らない。FCNはこの欠落に対し、同時代の分類器を全畳み込み化し、分類で得た表現を転用して画素から画素へ端から端まで学習する形に変えた。深い粗い層と浅い細かい層のスキップ融合により、VOC 2012で平均IU 62.2%、相対20%の改善を1/5秒未満の推論で示したことが論文著者により報告されている。本節の数値は論文著者の測定に属し、条件の異なる評価を横並びで順位づけしない。分類網をFCNの特殊例として読み替えた点が歴史的意義であり、分類からセグメンテーションへのファインチューニングという転用の契約を残した。新たに計算可能になったのは密な予測である。境界の粗さは後年の基準では残り、精緻化は後継資料に委ねられる。",
       "attribution_mode": "MIXED",
       "evidence_refs": [
         {
@@ -84,7 +84,7 @@
     {
       "block_id": "p03-b2",
       "block_type": "PARAGRAPH",
-      "text": "U-Netは本書ではセグメンテーションの役割だけを担う位置づけであり、縮む経路と対称に広がる経路をスキップで結んで弾性変形のデータ拡張でごく少数の注釈から精密な位置決めを学習させ、縮めて文脈をつかみ広げて位置を戻す往復である。前任のFCNとの技術的な差は、少数の注釈で密な位置決めを成立させるために、文脈の圧縮と位置の復元を対称に置き、対応する解像度同士を短絡で結んだ点にある。縮む側で受容野を広げて文脈を集め、広がる側で解像度を戻して位置を復元し、同じ解像度の層同士を連結して失われた細部を補う往復が、対称の経路の内実である。重なり合うタイルで大きな画像を継ぎ目なく処理する手順と、変形で注釈の不足を補う拡張が、少数の注釈という条件を成立させた。モデル論文の著者測定ではISBIの神経細胞スタックで滑走窓の畳み込みモデルを上回り、2015年の細胞追跡の部門で大差の1位、512角のセグメンテーションを1秒未満、Titanで10時間の学習と報告している。医療画像の範囲の話であり一般の情景への転移は他の資料に譲り、拡散モデルの背骨としての来歴は別巻の範囲として本書では扱わない。少ない注釈から密な地図を得る設計例として扱い、一般情景の根拠には使わない。データセットの来歴もISBIの条件に縛られ、他の分割や課題への一般化はしない。密な予測の多様な形状のうち、対称の往復という一つの到達点として位置づける。文脈の集約と位置の復元の往復という考えが、後の密な予測の設計に受け継がれた点を確認する。",
+      "text": "画素単位の位置特定を少量注釈でどう行うかが残る段階で、U-Netは縮小経路と対称な拡大経路をスキップ接続で結び、弾性変形によるデータ拡張と組み合わせて精密な位置特定を可能にした。スライディングウィンドウ型CNNをISBIの神経組織スタックで上回り、ISBI 2015の細胞追跡部門で大きな差で首位となり、512x512のセグメンテーションを1秒未満で示したことが論文著者により報告されている。対象範囲は生体医用画像に保たれ、一般場面への転移は他資料に委ねられる。本節ではセグメンテーションの系譜としての役割に限定し、拡散モデルのバックボーンとしての来歴はTS-002の所管として扱わない。少量注釈での精密な対応づけを示した点が配置の理由である。",
       "attribution_mode": "MIXED",
       "evidence_refs": [
         {
@@ -106,7 +106,7 @@
     {
       "block_id": "p03-b3",
       "block_type": "PARAGRAPH",
-      "text": "Mask R-CNNはバウンディングボックスの系譜と密な系譜の統合であり、Faster R-CNNにマスクの枝を並列に足して位置合わせで検出とインスタンスマスクを同時に解いた。バウンディングボックスを出す枝と形を塗る枝が並走し、量子化のずれを抑えた位置合わせで画素と対応づける。前任のFaster R-CNNとの技術的な差は、バウンディングボックスの予測に画素の枝を並列に加え、切り出し時のずれを抑えた点にあり、バウンディングボックスの契約のまま画素の出力を得る。バウンディングボックスの分類とバウンディングボックスの補正に加えて、各関心領域の画素ごとに物の有無を塗る二値のマスクを並列に予測する三つの出力が一体で学ばれる。RoIPoolの量子化の丸めが画素の対応をずらす問題を、RoIAlignが双線形の補間で特徴量を標本化し直して解き、画素単位のずれを抑えた点が位置合わせの内実である。マスクの損失を種類ごとの競合から切り離して当該の種類の二値の塗りとして数える分離が、分類の誤りと塗りの誤りの干渉を抑えた。モデル論文の著者測定では毎秒5コマで小さな上乗せのまま、COCOの三部門、すなわちインスタンスとバウンディングボックスと人物キーポイントのすべてで最上位に立ち、2016年の単体の応募を小細工なしで上回ったと報告している。同じ枠組みが姿勢推定にも伸びる点は枠組みの汎用の例として読む一方、バウンディングボックスに依存した作りでありバウンディングボックスに依存しない密な予測はFCNやSAM側の資料に譲る。バウンディングボックスを経由して画素に至る経路の到達点として位置づける。",
+      "text": "検出と密な予測が分かれた段階では、ボックスとマスクを一貫して求めることができない。Mask R-CNNはFaster R-CNNに並列なマスク分岐を加え、RoIAlign型の位置合わせとともに検出とインスタンスマスクを同時に小さな追加負担で求める形に変えた。COCOの3部門であるインスタンスとボックスと人物キーポイントのすべてで首位となったことが論文著者により報告されている。ボックス系と密な知覚系を接続する位置づけにあり、姿勢推定への拡張も同一枠組みの汎用性として記されている。新たに計算可能になったのは、検出の枠組みのまま個体ごとのマスクを得ることである。ボックス依存は構造上の制約であり、ボックスなしの密な方向はFCNやSAM側資料に委ねられる。",
       "attribution_mode": "MIXED",
       "evidence_refs": [
         {
@@ -128,7 +128,7 @@
     {
       "block_id": "p03-b4",
       "block_type": "PARAGRAPH",
-      "text": "バウンディングボックスとは別に画素の契約そのものを言い直したのがパノプティックであり、セマンティックセグメンテーションとインスタンスセグメンテーションを一つの整合した出力にまとめ、すべてのクラスを覆うPanoptic Qualityという指標を添えた。前者は物の種類ごとの画素の覆い、すなわち数えられない背景や面の種類の地図であり、後者は個体ごとの切り分け、すなわち数えられる物の個体の地図であり、統合後は背景も個体も一つの地図に載せて重なりも欠けも許さないという違いである。数えられる物と数えられない面の区別を保ちながら、一枚の整合した地図に統合する点が契約の言い換えの内実である。指標は認識の正しさと切り分けの質を一つの値にまとめ、個体の対応づけの後に領域の重なりで質を数える二段の構成であり、従来の種類ごとの平均IUや個体ごとの平均APとは別の契約の評価である。モデル論文の著者らによれば三つのデータでの人と機械の比べ直しが情景の統合的な読み直しを呼び戻したと報告し、人手の注釈の一貫性と機械の出力の整合性を同じ地図の上で比べ直した点が来歴の条件である。契約を言い換える深さに留めて隠れた部分の扱いは範囲の外とし、アモーダルな拡張は同論文自身が今後の課題として残している。すなわち、見えている部分の地図の統合が範囲であり、遮蔽の裏側の形状の推定は含まないという境である。契約の明確化の例として扱い、手法の細部は別資料に譲る。画素の出力の契約を一枚にまとめた点が、指示応答への接続の前提になる。",
+      "text": "セマンティックとインスタンスが別課題のままでは場面全体の整合が取れない。パノプティックセグメンテーションはstuffとしてのセマンティックとthingsとしてのインスタンスを一貫したパノプティックセグメンテーションに統一し、全部のカテゴリを覆う解釈可能なPQという指標とともに提案された。3データセットでの人と機械の比較研究を伴い、統一的な場面解析を蘇らせたことが論文著者により報告されている。本パッケージでは契約明確化の深さで扱い、アモーダルへの拡張は論文自身が今後の課題として残す。機構の深さは手法側記録に委ねられる。配置の理由は、検出と認識とセグメンテーションの区分を保ったまま全体像を測る契約を与えた点にある。",
       "attribution_mode": "ATTRIBUTED",
       "evidence_refs": [
         {
@@ -143,7 +143,7 @@
     {
       "block_id": "p03-b5",
       "block_type": "PARAGRAPH",
-      "text": "Segment Anythingは課題とモデルとデータを一まとめにした転換であり、プロンプトで指示できるセグメンテーションという課題、SAMというモデル、データエンジンで築いたSA-1B、すなわち1100万枚の許諾済み画像の上に10億超のマスクを載せたデータが一体で動く。点やバウンディングボックスや文で指された所を切り出すという契約がモデルとデータの両輪で支えられ、前任の固定課題の密な予測との技術的な差は、出力を決まった種類に縛らず指示で切り出す対象を変える点にある。入力は画像とプロンプト、表現は指示と対応づいたマスク、目的は指示された領域の切り出し、インターフェースは点やバウンディングボックスや文を受けてマスクを返す指示応答であり、種類固定のインターフェースとは異なる。画像のエンコーダとプロンプトのエンコーダと軽いマスクのデコーダの三つの部品が、指示と画像の対応づけを担う構成であり、重い画像の符号化を一度だけ行い軽い指示の復号を繰り返す分担が対話の効率を支えた。データエンジンはモデルが提案したマスクを注釈者が直し、直した注釈でモデルを鍛え直す反復であり、指示応答の精度を注釈の規模とともに引き上げたと著者らが報告している。モデル論文の著者測定では新しい分布や課題へのゼロショットの転移が従来の教師ありの成果と競うか上回る場合が多いと報告している。指示で切り出すという契約の成立が、密な知覚を基盤の側へ押し出した。",
+      "text": "固定課題の対話型分割だけでは設計時に想定しない用途へ広がらない。SAMはこの欠落に対し、プロンプトで指示できるセグメンテーションという課題とモデルとデータエンジンで構築したSA-1B、すなわち1100万枚の許諾画像上の10億超マスクを組み合わせた体系へ変えた。新たな分布や課題へのゼロショット転移が従来の完全教師あり結果と競合し、しばしば上回ることが論文著者により報告されている。論文自身の議論では、指示と組み合わせにより一つのモデルが設計時未知の用途に使え、固定課題の対話型分割器と異なり大きな算法体系に組み込めるとされ、CLIPとDALL-Eの関係になぞらえられている。ここで新たに計算可能になったのは、指示を介した拡張可能な利用である。",
       "attribution_mode": "MIXED",
       "evidence_refs": [
         {
@@ -172,7 +172,7 @@
     {
       "block_id": "p03-b6",
       "block_type": "PARAGRAPH",
-      "text": "一つは視覚の基盤の出来事としての読み、もう一つは課題に縛られた装置としての読みである。同論文自身の議論が示す構成の考え、すなわちプロンプトと組み合わせで一つのモデルが設計時に知らなかった使い回しに応えるという見立ては、DALL-EにおけるCLIPの類推で語られ、決まった課題の対話型セグメンテーションとは大きな処理に組み込める部品になる点が違うと述べている。単体の切り出しの巧拙ではなく、大きな処理に組み込める部品になるかどうかが基盤の側の問いであり、決まった種類での勝ち負けが装置の側の問いである。基盤の側では、指示で切り出す部品が検出や追跡や生成や編集の処理に組み込まれて使い回されるかどうかが問われ、装置の側では、決まった種類の切り分けの評価軸で専門のモデルに勝つかどうかが問われる。ゼロショットの汎用は課題の範囲の中の話であり、専門のモデルに譲る反例は評価側の資料が裁くため、本節では二重の読みを保って優劣の裁定は下さない。データエンジンの反復で注釈を増やす手順が、指示応答の精度を支えた点も著者らが報告している。プロンプトという言葉は指示の入力を指し、文脈の長さの議論とは切り分ける。埋め込みやエンコーダやデコーダの用語は本書の表記で統一し、置き換えは行わない。基盤と装置のどちらか一方に寄せないことが、この記録の扱いの要点である。",
+      "text": "SAMの読みは二重であり、基盤モデルの出来事としての側面と課題限定の体系としての側面をともに保つ。下流の課題ごとの評価が判定するのではなく、下流の評価側資料が判定し、本カードでは判定しない。ゼロショットの汎化は課題に区切られた範囲に属し、専門特化との対比は評価側資料に委ねられる。検出とセグメンテーションの区別を保つことが契約であり、ボックスを求める操作と画素や領域を求める操作を混ぜない。プロンプトで指示できる点が継承点となり、SAM 2や概念への拡張の前提になる。未解決は専門領域での反例の扱いであり、総合的な優劣ではなく条件付きの転移として読む。",
       "attribution_mode": "MIXED",
       "evidence_refs": [
         {
@@ -201,7 +201,7 @@
     {
       "block_id": "p03-b7",
       "block_type": "PARAGRAPH",
-      "text": "SAM 2はプロンプトで指示できるセグメンテーションを動画に伸ばし、密な知覚から時間の状態への拡張であるもので、プロンプトと予測をまたぐストリーミングのメモリとSA-Vというデータエンジン、すなわち最大規模の動画セグメンテーションデータが中心である。前任のSAMとの技術的な差は、単一画像の切り出しから時刻に沿って対象を保つ保持へ契約を変え、過去の予測を覚えて次の切り出しに生かすメモリを加えた点にある。時刻が進んでも指示の対象を保ち続けるために過去の予測を覚えて次の切り出しに生かし、フレームごとの符号化とメモリの注意機構で対象の特徴を保持して再利用する設計が、時間の状態の内実である。指示が追加されるたびにメモリの内容が更新され、対象の見えの変化や遮蔽や再出現に応答する点が、単一画像の指示応答との違いである。モデル論文の著者測定では動画では対話が3分の1に減り、画像ではSAMより6倍速く精度も高いと報告し、モデルとデータと学習のコードを公開したと述べている。この対比はSAMとの直接の比較条件での報告として読む。本書ではこの成果を時間の状態をどう持つかという設計の指し示しとして読み、その問いが後の節に効く点に位置づけの理由を置く。一方で配信の装置としての成否は別であり、オンラインの遅延や実地の速さの主張は別資料に譲り、メモリの設計の範囲の話として受け取って実地の速さの根拠とは言わない。メモリの保持が長い動画で破綻する条件や、指示の対象が変わる条件は開かれた問いとして残る。密な構造の切り出しが時刻に沿った保持へ接続する。",
+      "text": "画像のみの指示では時間方向の状態が残らない。SAM 2はプロンプトや予測に対するストリーミングメモリとSA-Vデータエンジンにより、指示できるセグメンテーションを映像へ広げた。映像で3分の1の対話回数、画像でSAMより6倍高速かつ高精度であることが論文著者により報告され、モデルとデータと学習コードが公開された。密な知覚から時間的状態への適用拡張としての構成要素の位置づけにあり、実運用のストリーミング体系そのものではない。メモリ構成の範囲に属し、実展開の遅延の主張は体系側資料に委ねられる。新たに計算可能になったのは、指示を保ったままの映像内の追跡的な対応づけである。",
       "attribution_mode": "MIXED",
       "evidence_refs": [
         {
@@ -221,10 +221,39 @@
       ]
     },
     {
+      "block_id": "p03-b8",
+      "block_type": "PARAGRAPH",
+      "text": "指示が画素や既知対象に限られる段階では、概念を画像と短い映像にわたり追うことができない。SAM 3はPromptable Concept Segmentationという契約、すなわち視覚概念の全事例を検出してセグメンテーションし追跡し、マスクと固有IDを返す形へ変えた。指示は単純なテキスト名詞句と画像例の正負ボックス、SAM 2型の視覚クリックであり、DETR型の画像検出器とメモリ型の映像追跡器が一つの知覚エンコーダを共有し、存在トークンの分離が認識と位置特定を分ける。SAMとSAM 2の点指示とメモリ機構を引き継ぎ、新規性は画像と映像の規模の上に載る言語接地の概念インターフェースにある。細粒度の領域外ゼロショットは弱く、長い指示表現は扱わず、映像負担は対象数に線形という限定が述べられている。",
+      "attribution_mode": "ATTRIBUTED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:fb77b0019ffe81dc",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd115",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:fb77b0019ffe81dc",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ev-vmd115",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:fb77b0019ffe81dc",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "ev-vmd115",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
       "block_id": "P03-boundaries",
       "block_type": "CLAIM_BOUNDARY",
-      "text": "この節の読解上の境界: No TS-002 diffusion-backbone retelling; panoptic at contract depth / Coarse boundaries by later standards; refinement needs successor sources. / Box-dependent by construction; box-free dense pole needs FCN/SAM-side sources. / Zero-shot generality is task-bounded; specialist counter-cases belong to eval-side sources. / Memory-architecture scope; online-deployment latency claims need system-side sources. / Biomedical-image domain; general-scene transfer requires other sources. / Contract-clarity depth only per role; amodal extension noted as future work by the paper; mechanism depth lives in method records.",
-      "attribution_mode": "INFERENCE",
+      "text": "この節の読解上の境界: No TS-002 diffusion-backbone retelling; panoptic at contract depth / Coarse boundaries by later standards; refinement needs successor sources. / Box-dependent by construction; box-free dense pole needs FCN/SAM-side sources. / Zero-shot generality is task-bounded; specialist counter-cases belong to eval-side sources. / Memory-architecture scope; online-deployment latency claims need system-side sources. / Biomedical-image domain; general-scene transfer requires other sources. / Contract-clarity depth only per role; amodal extension noted as future work by the paper; mechanism depth lives in method records. / Fine-grained out-of-domain zero-shot weak; simple noun phrases only (no long referring queries); video cost linear in object count.",
+      "attribution_mode": "MIXED",
       "evidence_refs": [
         {
           "evidence_task_id": "evidence:SP-vision-multimodal-2026:e64042250de2535e",
@@ -252,6 +281,13 @@
           "kind": "LIMITATION",
           "evidence_id": "limitation-1",
           "subject_id": "ev-vmd018",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:fb77b0019ffe81dc",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd115",
           "subject_role": "PRIMARY_SUBJECT"
         },
         {
@@ -282,6 +318,7 @@
         "p03-b5",
         "p03-b6",
         "p03-b7",
+        "p03-b8",
         "P03-boundaries"
       ]
     },
@@ -295,6 +332,21 @@
         "p03-b5",
         "p03-b6",
         "p03-b7",
+        "p03-b8",
+        "P03-boundaries"
+      ]
+    },
+    {
+      "requirement": "SAM 3 promptable concept segmentation as the late convergence transition",
+      "block_ids": [
+        "p03-b1",
+        "p03-b2",
+        "p03-b3",
+        "p03-b4",
+        "p03-b5",
+        "p03-b6",
+        "p03-b7",
+        "p03-b8",
         "P03-boundaries"
       ]
     }
@@ -355,6 +407,14 @@
         "P03-boundaries"
       ],
       "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Fine-grained out-of-domain zero-shot weak; simple noun phrases only (no long referring queries); video cost linear in object count.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P03-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
     }
   ],
   "profile_extensions": {},
@@ -367,7 +427,8 @@
       ],
       "TRANSITION_NODE_TREATMENT": [
         "VM-D015",
-        "VM-D018"
+        "VM-D018",
+        "VM-D115"
       ],
       "BRIEF_CONTEXT_OR_AUTHORITY": [
         "VM-D014",

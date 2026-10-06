@@ -4,22 +4,22 @@
   "research_profile": "THEMATIC",
   "publication_profile": "LONGFORM_SPECIAL",
   "package_id": "P04",
-  "draft_version": "content-revision-r4-20261004",
+  "draft_version": "fresh-121-r5",
   "status": "ESTABLISHED",
   "basis": {
-    "draft_package_sha256": "e581db68f1d858f78dde705ffb4792d8ef55d50d1b6f0e8cffd6dea407e0a2bc",
+    "draft_package_sha256": "9ca61f4c7797a6b7ca36df0aad17d01efd84a633dd9c99c8654371aac92d9dce",
     "prompt_id": "article-drafting-v2",
     "prompt_sha256": "b687313312a23025228c16c3f10cb68f669b910cd7215e41886d4dd91f44fe11"
   },
   "runner": {
     "provider": "Muse",
     "model": "Muse Spark (Work execution role; not a Sol/Human decision)",
-    "invocation": "TS-003 bounded Draft content revision from supplied independent Sol review (materialized from supplied review; worker does not claim Sol review): repetition/filler removal, P15 methodology-first rebuild, evidence-binding repair, publication-boundary repair, terminology normalization, targeted technical corrections; Architecture r4 APPROVED preserved, no upstream rerun, no TeX/PDF",
-    "generated_at": "2026-10-04T09:48:37.957633+00:00",
-    "run_reference": "ts003-bounded-revision-112-20261004"
+    "invocation": "TS-003 fresh 121-record Draft from Architecture r5 APPROVED (Human Owner r5 on c4444c725988f6d4e524f79a4388a203829e2729); 16-package fresh Japanese long-form drafting from current 121 authority, VM-D122 excluded, deferred families excluded, no TeX/PDF",
+    "generated_at": "2026-10-06T00:30:00Z",
+    "run_reference": "ts003-fresh-draft-121-r5-20261006"
   },
-  "headline": "奥行きと配置が推論を支えるとき",
-  "deck": "名とバウンディングボックスにはない奥行きと姿勢と関係を後の推論の例として置く。相対の深さ、身体の配置、情景の関係、較正なしの幾何の四件を見る。尺度の不定と人手の揺れの限りも含めて範囲を明記し、四件は後の推論が仮定する状態の目録として読む。",
+  "headline": "幾何の状態を持つ表現",
+  "deck": "ラベルだけでは足りない奥行きと姿勢と関係と立体へ。四つの限定事例で、後の推論が前提にする空間状態が何であり、実環境での汎化をどう測るかを整理する。",
   "deck_attribution_mode": "MIXED",
   "deck_evidence_refs": [
     {
@@ -69,7 +69,7 @@
     {
       "block_id": "p04-b1",
       "block_type": "PARAGRAPH",
-      "text": "物の名とバウンディングボックスだけでは後の推論が要する奥行きと立体が足りず、MiDaSは相対的な深さを野外で通用させる例である。モデル論文の著者らによれば、尺度とずれに頑健な目的関数でステレオやレーザ、構造光、3D映画由来まで相容れない深さデータを混ぜ、素朴な混合をパレート最適な多目的の混合で上回り、補助課題で事前学習したエンコーダが効くと報告し、モデルを公開したと述べている。前任の単一データセットの深さ推定との技術的な差は、尺度の異なるデータを頑健な目的関数で混ぜて学ぶ点にあり、単一の取り方に縛られない。各データの尺度とずれをデータごとに吸収する正規化で、絶対の尺度の違いを無効化して順序の正しさを学ぶ点が、頑健な混合の内実である。素朴に混ぜると特定のデータの尺度に引きずられる問題を、データごとの最適の重みをパレートの意味で求める多目的の定式で解いた点が、手順の側の要点である。評価の契約が要点であり、一部のデータで学習してDIWやETH3D、Sintel、KITTI、NYU、TUMを含む未見のデータで測るゼロショットの転移を野外の頑健さの指標に据え、見たことのない場面で通用するかを中心に置く。学習に使った分布の外での測定を指標に据えた点が、単一データセットの分割内の測定との違いである。既存の深さデータこそ限りだと同論文自身が残して開いた問いとしており、相対の深さの範囲の話として尺度つきの主張は他の資料に譲り、2019年当時の評価条件の話として読む。相対の順序の正しさが範囲であり、絶対の距離の正確さは含まないという境である。",
+      "text": "カテゴリラベルだけでは奥行きの状態が残らない。MiDaSはこの欠落に対し、ステレオやレーザー、構造化光、さらに3D映画由来まで含む互換性のない深度データ群を、スケールとシフトに不変な頑健目的で混ぜて学ぶ形に変えた。単純混合よりパレート最適な多目的混合が優れ、補助課題でのエンコーダ事前学習が効き、モデルが公開されたことが論文著者により報告されている。ここで表現は、単一収集条件の深度ではなく条件をまたいで使える相対深度へ変わった。新たに計算可能になったのは、収集方式の違いを吸収した学習である。既存深度データが制約であるという所見自体が論文の結論に含まれる。",
       "attribution_mode": "ATTRIBUTED",
       "evidence_refs": [
         {
@@ -98,21 +98,28 @@
     {
       "block_id": "p04-b2",
       "block_type": "PARAGRAPH",
-      "text": "分類の特徴量だけでは身体は動かず、OpenPoseは多人数の2次元姿勢を下から積む例である。手足の位置と向きを入れた2次元ベクトル場、すなわちPart Affinity Fieldsで四肢を表して貪欲な二部マッチングで組み立て、部位の点を追うのではなく四肢の流れの場でつながりを表す点が設計の中心である。前任の人物のバウンディングボックス検出との技術的な差は、バウンディングボックスで人を囲ってから部位を見るのではなく、部位の場から組み立てる点にあり、人数によらない処理が可能になった。検出の信頼度地図で関節の候補を求め、親和性の場で四肢のつながりの確からしさを数え、二部マッチングで人物ごとの骨格に組み立てる三段の手順が、下から積む内実である。人数が増えても処理の骨格が変わらず、組み立ての費用だけが増える点が、上から囲む方式との違いである。人数によらず実時間で動き、場だけの洗練が実行速度を倍にして精度を約7%上げ、身体と足を合わせた検出が速さと部位ごとの精度を保ち、135点のキーポイントの仕組みを公開したと、モデル論文の著者らが報告している。物中心の空間状態と対応づけ自体を表現にする実演が要点であり、何であるかではなくどう配置にあるかが要る課題の例として、分類の特徴量が行動を直接駆動できない理由を示す。分類特徴と姿勢表現の対照例として位置づける。2次元の姿勢の範囲であり3次元への持ち上げは扱わず、2019年当時の計算機の評価条件の話として読む。実行速度の数値は当時の計算機での著者測定であり、現在の遅延の基準での優劣は主張しない。",
-      "attribution_mode": "MIXED",
+      "text": "評価の契約は、一部データで学び見たことのない他データで試すゼロショット横断、すなわちDIWやETH3D、Sintel、KITTI、NYU、TUMを含む未見データでの転移を実環境での汎化の代理として測る点にある。本節の数値は論文著者の測定に属し、条件の異なる評価を横並びで順位づけしない。主張は版に紐づく。論文自身の境界として、既存深度データが不足であることが未解決に残る。相対深度の範囲に属し、メートル尺度の深度の主張は他資料に委ねられ、基準は2019年当時のものである。四つの限定事例のみで3D視覚の網羅には広げないことが本パッケージの契約である。",
+      "attribution_mode": "ATTRIBUTED",
       "evidence_refs": [
         {
-          "evidence_task_id": "evidence:SP-vision-multimodal-2026:ad9033f18ee4f668",
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:85bc25df6171e3dd",
           "kind": "CLAIM",
           "evidence_id": "claim-1",
-          "subject_id": "ev-vmd020",
+          "subject_id": "ev-vmd019",
           "subject_role": "PRIMARY_SUBJECT"
         },
         {
-          "evidence_task_id": "evidence:SP-vision-multimodal-2026:ad9033f18ee4f668",
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:85bc25df6171e3dd",
           "kind": "CLAIM",
           "evidence_id": "claim-2",
-          "subject_id": "ev-vmd020",
+          "subject_id": "ev-vmd019",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:85bc25df6171e3dd",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "ev-vmd019",
           "subject_role": "PRIMARY_SUBJECT"
         }
       ]
@@ -120,21 +127,21 @@
     {
       "block_id": "p04-b3",
       "block_type": "PARAGRAPH",
-      "text": "Visual Genomeは関係の構造を一級に据えた例であり、著者らによれば10万超の画像に1枚あたり約21の物体、約18の属性、約18の関係、42超の領域記述、約17の問答を載せ、WordNetのsynsetに正準化し、情景グラフの定式が検索と文生成を押し上げたと報告している。前任の物体名の列挙との技術的な差は、物と性質と関係を同じ表に載せて領域ごとの言葉を添える点にあり、誰が何を持ち何の上にあるかという関係の状態が明示された。物と性質と関係を同じ表に載せて領域ごとの言葉を添える分厚い注釈であり、関係と属性を主役に据えた点が情景の構造の読み、同時に領域記述が後の言葉とのグラウンディングのデータの源流になる。情景グラフとは、物を頂点、関係を辺、属性を頂点の注釈として一枚の構造にまとめた表であり、物の列挙ではなく物の結び付きを一級の対象にした点が定式の要点である。検索の問いに対して関係の構造で絞り込み、文生成の素材として物と関係の組を与える二つの使い道が、報告条件での評価の対象である。混み入った人手の揺れと正準化の限りは明記し、GoldG流の来歴の主張は別資料に譲る。関係状態の例とグラウンディングデータの源流を兼ねる例として扱う。クラウドソーシングの揺れが残るため、正準化の完全さは主張しない。関係の明示が検索と生成を押し上げたという所見は、報告された評価条件での話として読む。",
+      "text": "分類特徴だけでは身体の関節配置と人物間の対応づけが残らない。OpenPoseは四肢の位置と向きを符号化する二次元ベクトル場であるPart Affinity Fieldsと貪欲な二部マッチングにより、多人数の二次元ポーズを人数によらず実時間でボトムアップに組み立てる形へ変えた。部位とPAFの同時精緻化ではなくPAFのみの精緻化が実行速度を2倍にし精度を約7%上げ、身体と足部の統合検出が速度と要素ごとの精度を保ち、135キーポイントのオープンソース体系になったことが論文著者により報告されている。対象中心の空間状態と対応づけ自体を表現にする所見が役割であり、分類特徴では行動へ進めない理由を示す。二次元ポーズの範囲に属し、三次元liftingは上限により除外し、実行速度の基準は2019年当時の計算機による。",
       "attribution_mode": "MIXED",
       "evidence_refs": [
         {
-          "evidence_task_id": "evidence:SP-vision-multimodal-2026:ab41a7643858ee00",
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:ad9033f18ee4f668",
           "kind": "CLAIM",
           "evidence_id": "claim-1",
-          "subject_id": "ev-vmd021",
+          "subject_id": "ev-vmd020",
           "subject_role": "PRIMARY_SUBJECT"
         },
         {
-          "evidence_task_id": "evidence:SP-vision-multimodal-2026:ab41a7643858ee00",
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:ad9033f18ee4f668",
           "kind": "CLAIM",
           "evidence_id": "claim-2",
-          "subject_id": "ev-vmd021",
+          "subject_id": "ev-vmd020",
           "subject_role": "PRIMARY_SUBJECT"
         }
       ]
@@ -142,28 +149,21 @@
     {
       "block_id": "p04-b4",
       "block_type": "PARAGRAPH",
-      "text": "DUSt3Rは較正なしの幾何の状態をモデルの出力として出す例であり、内部の値も姿勢も与えない画像対から点群地図を回帰して単眼と両眼の再構成を一本にし、全体の位置合わせで共通の枠に載せる。カメラ内部パラメータや既知姿勢を入力条件として要求せず、画像対からpointmapを推定し、そこからカメラ・深度・対応関係などをdownstreamで回収できる点が転換である。下流でカメラや深さや対応が取り出せ、単眼と多視点の深さと相対姿勢で当時の最上位と報告している点は、幾何の各課題の個別の解法ではなく一つの出力からの読み替えで各課題に応えるという統合の例である。二枚の画像を共通の枠の点群地図に回帰し、複数の対の地図を全体の位置合わせで一つの立体に統合する二段の手順が、較正なしの再構成の内実である。前任の較正を前提にする再構成との技術的な差は、幾何の制約を設計で明示的に課さず、対応する立体の回帰として学ぶ点にある。ただし点群地図は不定の尺度までであり、幾何の制約を設計で明示的に課さず、整合した学習データの事前分布に頼ると明記している。絶対の尺度の不定と、学習データの分布への依存という二つの限りが、較正なしの代償として残る。統合や行動の節への接続点として、数値を入れて解くのではなく学習したモデルが出す状態から始める逆転の例に位置づける。",
+      "text": "対象名だけでは関係と属性の構造が残らない。Visual Genomeは10万枚超の画像に1画像あたり約21対象と約18属性と約18関係、42超の領域記述と約17のQA対を収め、WordNet synsetへ正準化し、関係と属性を一級の対象としてシーングラフに定式化した。検索性能やキャプションの改善に資することが論文著者により報告されている。ここで表現は、単体の認識から関係を含む場面構造へ変わった。新たに計算可能になったのは、領域記述を伴う関係の学習と評価である。密度の数値は論文著者の測定に属する。",
       "attribution_mode": "MIXED",
       "evidence_refs": [
         {
-          "evidence_task_id": "evidence:SP-vision-multimodal-2026:a6b4065d7ddd17fd",
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:ab41a7643858ee00",
           "kind": "CLAIM",
           "evidence_id": "claim-1",
-          "subject_id": "ev-vmd022",
+          "subject_id": "ev-vmd021",
           "subject_role": "PRIMARY_SUBJECT"
         },
         {
-          "evidence_task_id": "evidence:SP-vision-multimodal-2026:a6b4065d7ddd17fd",
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:ab41a7643858ee00",
           "kind": "CLAIM",
           "evidence_id": "claim-2",
-          "subject_id": "ev-vmd022",
-          "subject_role": "PRIMARY_SUBJECT"
-        },
-        {
-          "evidence_task_id": "evidence:SP-vision-multimodal-2026:a6b4065d7ddd17fd",
-          "kind": "CLAIM",
-          "evidence_id": "claim-3",
-          "subject_id": "ev-vmd022",
+          "subject_id": "ev-vmd021",
           "subject_role": "PRIMARY_SUBJECT"
         }
       ]
@@ -171,42 +171,21 @@
     {
       "block_id": "p04-b5",
       "block_type": "PARAGRAPH",
-      "text": "ラベルにはないものがここでの主題であり、物の名のラベルは奥行きを定めずバウンディングボックスのラベルは身体の向きを定めない。MiDaSの相対の深さとOpenPoseの2次元姿勢は、その欠けを埋める状態の例であり、深さの状態は遮蔽の前後や床の広がりを推論の下に敷き、姿勢の状態は手足の配置と人物の向きを行動の下に敷く。前任の名とバウンディングボックスの出力との技術的な差は、分類と検出の出力にない順序と配置を状態として出す点にある。どちらが手前にあるかという順序が後の判断の前提になり、どう配置にあるかが後の動作の前提になり、後の検出や推論が当然のように仮定する空間がここで例として用意される。ここで系列に載せる際の得失を編集上の整理としてまとめる。画像を系列に変換する際に奥行きの順序や配置の細部がどこまで保てるかは設計に依存し、本節の四件はその定量を扱わない。解像度と系列長や計算の負担の交換は本節の記録からは断定せず、一般的な得失の見方は編集上の推論として弱めて読む。得る側の見方は、順序と配置の状態を系列に載せて後の推論の素材にできる点であり、失う側の見方は細部の切り捨てと系列増大の負荷の交換であるが、いずれも本節の記録を超える断定ではなく編集上の推論として読む。系列化の契約の詳細はP06の系列化とP09の解像度・融合の記録を参照する。残すべきは順序と配置という状態であるという整理が本節前半のまとめであり、画素の扱いの断定には別の記録が要る。深さは相対のまま姿勢は2次元のままという範囲の明記と対で読む。",
+      "text": "関係構造の来歴として、Visual Genomeは領域記述の接地データの先行形態にも位置づけられ、GLIP期のGoldG的実践のデータ体制へ連なるものとして整理される。ただしクラウドソーシングの雑音と正準化の限界が残り、GoldGへの下降の主張はGLIP側資料に委ねられる。本パッケージでは関係構造の限定事例として扱い、語彙拡張の系統史には広げない。配置の理由は、後の言語接地が前提にする領域と言語の対応づけの原型を示す点にある。未解決は雑音と正準化の扱いであり、独立した第三者再現ではなく論文著者の測定として読む。",
       "attribution_mode": "MIXED",
       "evidence_refs": [
         {
-          "evidence_task_id": "evidence:SP-vision-multimodal-2026:85bc25df6171e3dd",
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:ab41a7643858ee00",
           "kind": "CLAIM",
           "evidence_id": "claim-1",
-          "subject_id": "ev-vmd019",
+          "subject_id": "ev-vmd021",
           "subject_role": "PRIMARY_SUBJECT"
         },
         {
-          "evidence_task_id": "evidence:SP-vision-multimodal-2026:85bc25df6171e3dd",
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:ab41a7643858ee00",
           "kind": "CLAIM",
           "evidence_id": "claim-2",
-          "subject_id": "ev-vmd019",
-          "subject_role": "PRIMARY_SUBJECT"
-        },
-        {
-          "evidence_task_id": "evidence:SP-vision-multimodal-2026:85bc25df6171e3dd",
-          "kind": "CLAIM",
-          "evidence_id": "claim-3",
-          "subject_id": "ev-vmd019",
-          "subject_role": "PRIMARY_SUBJECT"
-        },
-        {
-          "evidence_task_id": "evidence:SP-vision-multimodal-2026:ad9033f18ee4f668",
-          "kind": "CLAIM",
-          "evidence_id": "claim-1",
-          "subject_id": "ev-vmd020",
-          "subject_role": "PRIMARY_SUBJECT"
-        },
-        {
-          "evidence_task_id": "evidence:SP-vision-multimodal-2026:ad9033f18ee4f668",
-          "kind": "CLAIM",
-          "evidence_id": "claim-2",
-          "subject_id": "ev-vmd020",
+          "subject_id": "ev-vmd021",
           "subject_role": "PRIMARY_SUBJECT"
         }
       ]
@@ -214,23 +193,38 @@
     {
       "block_id": "p04-b6",
       "block_type": "PARAGRAPH",
-      "text": "関係と幾何がそろうと情景は物の列挙ではなくなり、Visual Genomeの関係と属性とDUSt3Rの較正なしの点群地図はその例である。前任の単一画像の名当てとの技術的な差は、見る位置が変わっても保たれる幾何と、言葉で指せる関係を状態として持つ点にある。誰が何を持ち何の上にあるかという関係の状態と、見る位置が変わっても保たれる幾何の状態が後のグラウンディングと推論の下に敷かれ、言葉が指す相手を決める課題にも見えの奥行きを読む課題にも同じ例が効く。較正のパイプラインを要求せずモデルの出力として幾何を得る設計は統合や行動の節への接続点になり、数値を入れて解くのではなく学習したモデルが出す状態から始める逆転である。系列化の得失の整理として、関係の記述が記号に切り分けやすい面的な見方は編集上の推論であり、尺度の不定は記号化で解消せず人手の揺れも残るため、正確さの根拠には独立した確かめが要る。載せやすい面の見方は編集上の推論に留め、尺度の不定と人手の揺れが残る点は記録の限りとして読む。限りも明確にし、人手の揺れと正準化の難しさ、尺度の不定、学習済みの事前分布への依存は残り、NeRFや3DGS、SLAM、MVS、3次元検出への拡張はしない。後継は新しい契約を足さないため範囲から除く。四件は概説ではなく後の推論が仮定する状態の目録であり、2.5次元の順序と配置と関係と較正なしの幾何の四つの状態が、密な知覚の節から言葉と推論の節へ渡る手前の在庫である。",
+      "text": "カメラキャリブレーション済みの管路だけでは、姿勢もカメラ内部パラメータも未知の画像対から立体を起こすことができない。DUSt3Rはこの欠落に対し、カメラ内部パラメータも姿勢も与えないキャリブレーションなし・姿勢なしの画像対からポイントマップ回帰で単眼と両眼の再構成を統一する形に変えた。共通座標系への大域整合で多視点を束ね、カメラと深度と対応を下流で回収でき、単眼と多視点の深度と相対姿勢で最先端相当であることが論文著者により報告されている。標準的なTransformerのエンコーダとデコーダで事前学習モデルを活用する。ここで幾何は管路への入力ではなくネットワーク出力の状態に変わり、後の言語モデル的融合や行動が前提にできる形になった。",
       "attribution_mode": "MIXED",
       "evidence_refs": [
         {
-          "evidence_task_id": "evidence:SP-vision-multimodal-2026:ab41a7643858ee00",
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:a6b4065d7ddd17fd",
           "kind": "CLAIM",
           "evidence_id": "claim-1",
-          "subject_id": "ev-vmd021",
+          "subject_id": "ev-vmd022",
           "subject_role": "PRIMARY_SUBJECT"
         },
         {
-          "evidence_task_id": "evidence:SP-vision-multimodal-2026:ab41a7643858ee00",
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:a6b4065d7ddd17fd",
           "kind": "CLAIM",
           "evidence_id": "claim-2",
-          "subject_id": "ev-vmd021",
+          "subject_id": "ev-vmd022",
           "subject_role": "PRIMARY_SUBJECT"
         },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:a6b4065d7ddd17fd",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "ev-vmd022",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p04-b7",
+      "block_type": "PARAGRAPH",
+      "text": "論文自身の境界として、ポイントマップは不定スケールまでの回帰であり、汎用構成が幾何制約を明示的に強制することはなく、事前知識は幾何整合な学習ポイントマップからのみ来る。スケールの曖昧さと学習済み事前知識への依存が残り、後継は新たな契約を加えないものとして除外する。幾何を出力状態として持つ所見が本パッケージから後の推論や行動への適用拡張の根拠になる。四つの限定事例に上限を保ち、NeRFやSLAM、MVS、3D検出、人体復元、指標の網羅には広げない。次の計算に十分な表現は何かという問いから見れば、ラベルにない奥行きと姿勢と関係と立体のうち、後の計算が要する最小の空間状態がここで示された。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
         {
           "evidence_task_id": "evidence:SP-vision-multimodal-2026:a6b4065d7ddd17fd",
           "kind": "CLAIM",
@@ -301,6 +295,7 @@
         "p04-b4",
         "p04-b5",
         "p04-b6",
+        "p04-b7",
         "P04-boundaries"
       ]
     },
@@ -313,6 +308,7 @@
         "p04-b4",
         "p04-b5",
         "p04-b6",
+        "p04-b7",
         "P04-boundaries"
       ]
     }
