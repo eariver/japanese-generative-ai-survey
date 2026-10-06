@@ -4,7 +4,7 @@
   "research_profile": "THEMATIC",
   "publication_profile": "LONGFORM_SPECIAL",
   "package_id": "P06",
-  "draft_version": "fresh-121-r5",
+  "draft_version": "fresh-121-r5-rev1",
   "status": "ESTABLISHED",
   "basis": {
     "draft_package_sha256": "c1d21db26709c0ab3d18f3f74b429a0bf7c5c35fb3011e9ba6e892a778129bc2",
@@ -14,9 +14,9 @@
   "runner": {
     "provider": "Muse",
     "model": "Muse Spark (Work execution role; not a Sol/Human decision)",
-    "invocation": "TS-003 fresh 121-record Draft from Architecture r5 APPROVED (Human Owner r5 on c4444c725988f6d4e524f79a4388a203829e2729); 16-package fresh Japanese long-form drafting from current 121 authority, VM-D122 excluded, deferred families excluded, no TeX/PDF",
-    "generated_at": "2026-10-06T00:30:00Z",
-    "run_reference": "ts003-fresh-draft-121-r5-20261006"
+    "invocation": "TS-003 Draft content revision r5-rev1 from Architecture r5 APPROVED (starting HEAD eafb68eaf6a009be33c003877d2dbc9360f0129b): bounded Draft CONTENT revision, no Discovery reopen; P15 rebuilt as cross-package synthesis over 40 mapped authorities (edition-local overlay); P10 D111/D112 three-role chain; P12 token/context economics; P11 SAM3/D115 supporting role; P06 SigLIP2-Qwen binding via D065 claim-3; P09 Molmo2 license/data-term separation; LongVideoBench 6678 fix; reader-facing Japanese cleanup; no TeX/PDF; DRAFT_COMPLETE held",
+    "generated_at": "2026-10-06T06:00:00Z",
+    "run_reference": null
   },
   "headline": "自己教師あり学習と基盤表現",
   "deck": "画像を系列として扱う定式化から、再構成と対照と蒸留の目的関数を分離する。レシピとスケーリングの関係を整理し、自己蒸留と段階的アライメント、自己回帰の変種を経て、視覚言語モデルに再利用される基盤表現の条件を問う。",
@@ -228,7 +228,7 @@
     {
       "block_id": "P06-B06",
       "block_type": "PARAGRAPH",
-      "text": "画像とテキストの対応づけを拡張する段階では、全体正規化がバッチ規模と損失を結びつける点が制約だった。SigLIPは対ごとのシグモイド損失により全体正規化を除き、バッチ規模と損失を切り離した。1Mバッチまで拡張しても収穫は逓減し、32Kで十分なことが示され、小バッチでも有効である。凍結画像の調整であるSigLiTは4基のTPUv4で2日、ImageNetゼロショット84.5パーセントと報告された。新たに可能になったのは小規模計算での対照学習の拡張である。SigLIP2-So400mがQwen3-VLやOmni系のエンコーダに継続利用された事実は2026年報告に基づく。損失機構の根拠は抄録水準に限られる点は明示する。",
+      "text": "画像とテキストの対応づけを拡張する段階では、全体正規化がバッチ規模と損失を結びつける点が制約だった。SigLIPは対ごとのシグモイド損失により全体正規化を除き、バッチ規模と損失を切り離した。1Mバッチまで拡張しても収穫は逓減し、32Kで十分なことが示され、小バッチでも有効である。凍結画像の調整であるSigLiTは4基のTPUv4で2日、ImageNetゼロショット84.5パーセントと報告された。新たに可能になったのは小規模計算での対照学習の拡張である。SigLIP2-So400mがQwen3-VLの視覚エンコーダに継続利用されたこと（既定SO-400M）は、Qwen側の報告に基づく事実として記録され、損失機構の根拠は抄録水準に限られる点は明示する。",
       "attribution_mode": "ATTRIBUTED",
       "evidence_refs": [
         {
@@ -243,6 +243,13 @@
           "kind": "CLAIM",
           "evidence_id": "claim-2",
           "subject_id": "ev-vmd036",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:5261f13662aabd9b",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "ev-vmd065",
           "subject_role": "PRIMARY_SUBJECT"
         }
       ]
@@ -337,7 +344,7 @@
     {
       "block_id": "P06-boundaries",
       "block_type": "CLAIM_BOUNDARY",
-      "text": "この節の読解上の境界: No generic Transformer-efficiency retelling; recipe reading preserved / Large-scale pre-training dependence (DeiT qualifies); 100B-parameter era context noted in intro. / Reconstruction-vs-representation reading; downstream transfer needs probe sources. / Emergent-property scope; OVD pseudo-label use needs downstream sources. / Frozen-eval transfer scope; task-specific limits need eval-side sources. / Distillation-teacher dependence; short treatment per bridge role. / Hierarchy-completeness role; short treatment. / Abs-page-level consumption for the loss mechanism (HTML extraction thin); SigLIP2 citation bound via VM-D065 claim-3 (G06 resolved). / NaFlex omits self-distillation/masked losses and extrapolates poorly; RefCOCO still below English-only LocCa (multilingual tradeoff); small-model gains depend on distillation stage. / Single-paper scope; scaling/robustness beyond reported conditions unbound. / Training compute/carbon cost; fairness gaps vs DINOv2 narrowed but present; OCR-heavy content hard for SSL; intermediate-layer use ill-conditioned without normalization.",
+      "text": "この節の読解上の境界：大規模事前学習への依存は残り、効率の一般論は扱わない。損失機構の記述は抄録水準の範囲に留まる。SigLIP2のQwen3-VLへの継続利用はQwen側の報告に基づく。",
       "attribution_mode": "MIXED",
       "evidence_refs": [
         {

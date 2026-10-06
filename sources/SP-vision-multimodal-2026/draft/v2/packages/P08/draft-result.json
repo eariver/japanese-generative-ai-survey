@@ -4,7 +4,7 @@
   "research_profile": "THEMATIC",
   "publication_profile": "LONGFORM_SPECIAL",
   "package_id": "P08",
-  "draft_version": "fresh-121-r5",
+  "draft_version": "fresh-121-r5-rev1",
   "status": "ESTABLISHED",
   "basis": {
     "draft_package_sha256": "622b3d03b8a17225f510bc87a112d82abb7aac29e38a5c4667e6e2342386567d",
@@ -14,9 +14,9 @@
   "runner": {
     "provider": "Muse",
     "model": "Muse Spark (Work execution role; not a Sol/Human decision)",
-    "invocation": "TS-003 fresh 121-record Draft from Architecture r5 APPROVED (Human Owner r5 on c4444c725988f6d4e524f79a4388a203829e2729); 16-package fresh Japanese long-form drafting from current 121 authority, VM-D122 excluded, deferred families excluded, no TeX/PDF",
-    "generated_at": "2026-10-06T00:30:00Z",
-    "run_reference": "ts003-fresh-draft-121-r5-20261006"
+    "invocation": "TS-003 Draft content revision r5-rev1 from Architecture r5 APPROVED (starting HEAD eafb68eaf6a009be33c003877d2dbc9360f0129b): bounded Draft CONTENT revision, no Discovery reopen; P15 rebuilt as cross-package synthesis over 40 mapped authorities (edition-local overlay); P10 D111/D112 three-role chain; P12 token/context economics; P11 SAM3/D115 supporting role; P06 SigLIP2-Qwen binding via D065 claim-3; P09 Molmo2 license/data-term separation; LongVideoBench 6678 fix; reader-facing Japanese cleanup; no TeX/PDF; DRAFT_COMPLETE held",
+    "generated_at": "2026-10-06T06:00:00Z",
+    "run_reference": null
   },
   "headline": "凍結を活かす接続方式の系譜",
   "deck": "別々に事前学習した視覚エンコーダと言語モデルをどう接続するかが問われた。凍結の維持と最小の学習から始まり、指示チューニングとオープンデータへの収束を接続方式の世代交代として整理する。画像全体のアライメントと位置への接地は区別し、何を学習し何を凍結したかを明示する。",
@@ -90,7 +90,7 @@
     {
       "block_id": "p08-b1",
       "block_type": "PARAGRAPH",
-      "text": "出発点は凍結した言語モデルに視覚情報を接頭辞として入力する試みだった。Frozenでは視覚エンコーダが連続値の埋め込み接頭辞を出力し、凍結した自己回帰型言語モデルが画像説明や少数例からの学習を行う。新しい物体名の獲得やVQA、外部知識を要する問いが少数例の画像・テキスト交互例から扱えることが示されたが、論文自身の位置づけは概念実証にとどまる。ここで欠けていたのは、凍結を保ったまま多様な課題へ汎化する接続方式と学習コーパスの設計だった。Flamingoは事前学習済みの視覚と言語の構成要素をgated cross-attentionの密な層で接続し、交互に配置したウェブコーパスで学習した。画像と動画を取り込み、単一モデルでオープンエンドとクローズドエンドのVQAや画像説明の少数例評価で先行結果を更新し、課題別に1000倍のデータでファインチューニングしたモデルを上回ったとモデル論文著者測定で報告する。一方で事前学習済み言語モデル由来の弱さを引き継ぎ、言語事前分布に引っ張られたハルシネーションが残る。学習データは非公開であり、再標本化の先行役割はP09側に譲る。",
+      "text": "出発点は凍結した言語モデルに視覚情報を接頭辞として入力する試みだった。Frozenでは視覚エンコーダが連続値の埋め込み接頭辞を出力し、凍結した自己回帰型言語モデルが画像説明や少数例からの学習を行う。新しい物体名の獲得やVQA、外部知識を要する問いが少数例の画像・テキスト交互例から扱えることが示されたが、論文自身の位置づけは概念実証にとどまる。ここで欠けていたのは、凍結を保ったまま多様な課題へ汎化する接続方式と学習コーパスの設計だった。Flamingoは事前学習済みの視覚と言語の構成要素をgated cross-attentionの密な層で接続し、交互に配置したウェブコーパスで学習した。画像と動画を取り込み、単一モデルでオープンエンドとクローズドエンドのVQAや画像説明の少数例評価で先行結果を更新し、課題別に1000倍のデータでファインチューニングしたモデルを上回ったとモデル論文著者測定で報告する。一方で事前学習済み言語モデル由来の弱さを引き継ぎ、言語事前分布に引っ張られたハルシネーションが残る。学習データは非公開であり、再標本化の扱いは解像度と融合の節に委ねる。",
       "attribution_mode": "ATTRIBUTED",
       "evidence_refs": [
         {
@@ -119,7 +119,7 @@
     {
       "block_id": "p08-b2",
       "block_type": "PARAGRAPH",
-      "text": "BLIP-2は凍結の経済性を二段階の起動手順へ具体化した。第一段階では凍結した画像エンコーダのもとでQ-Formerによる表現学習を行い、第二段階では凍結した大規模言語モデルに向けて生成学習を行う。学習可能パラメータを大幅に抑えながら視覚と言語の課題で先行結果を更新し、ゼロショットVQAv2でFlamingo80Bを8.7ポイント上回りつつ学習可能パラメータは54分の1だったとモデル論文著者測定で報告する。画像からテキストへの指示追従的な生成が創発した点も含め、欠けていた効率的な接続が新たに計算可能になった。一方で二段階構成ゆえの計算コストと複雑さが残り、指示チューニングによる完成は後継の役割となる。Q-Formerはクエリを用いて視覚特徴を言語モデルが扱える形に集約するリサンプラである。",
+      "text": "BLIP-2は凍結の経済性を二段階の学習手順へ具体化した。第一段階では凍結した画像エンコーダのもとでQ-Formerによる表現学習を行い、第二段階では凍結した大規模言語モデルに向けて生成学習を行う。学習可能パラメータを大幅に抑えながら視覚と言語の課題で先行結果を更新し、ゼロショットVQAv2でFlamingo80Bを8.7ポイント上回りつつ学習可能パラメータは54分の1だったとモデル論文著者測定で報告する。画像からテキストへの指示追従的な生成が創発した点も含め、欠けていた効率的な接続が新たに計算可能になった。一方で二段階構成ゆえの計算コストと複雑さが残り、指示チューニングによる完成は後継の役割となる。Q-Formerは学習可能なクエリが凍結画像特徴に問い合わせて言語モデルが扱える形へ集約する機構であり、単純な圧縮器ではない。",
       "attribution_mode": "ATTRIBUTED",
       "evidence_refs": [
         {
@@ -285,7 +285,7 @@
     {
       "block_id": "p08-b7",
       "block_type": "PARAGRAPH",
-      "text": "MolmoとPixMoはデータの開放性を接続方式の条件へ繰り上げた。PixMoは密な画像説明と自由形式Q&A、指さし出力、4種の合成集合からなり、外部の視覚言語モデルを用いずに構築された。調整した学習手順と組み合わせることで72Bのモデル群が同規模帯で最高水準となり、Claude 3.5 SonnetやGemini 1.5 ProやFlashを上回りGPT-4oに次いだとモデル論文著者測定で報告する。MetaCLIPとOLMoによる完全オープンな変形も用意され、重みとデータとコードが公開された。指さし出力は位置への接地を直接の出力形式としており、画像全体のアライメントとは別の契約である。対象は画像中心のv1範囲であり、動画の主張はMolmo2側の根拠に譲る。ここで新たに計算可能になったのは蒸留に頼らない開放データからの強い視覚言語モデルである。",
+      "text": "MolmoとPixMoはデータの開放性を接続方式の条件へ繰り上げた。PixMoは密な画像説明と自由形式Q&A、指さし出力、4種の合成集合からなり、外部の視覚言語モデルを用いずに構築された。調整した学習手順と組み合わせることで72Bのモデル群が同規模帯で最高水準となり、Claude 3.5 SonnetやGemini 1.5 ProやFlashを上回りGPT-4oに次いだとモデル論文著者測定で報告する。MetaCLIPとOLMoによる完全オープンな変形も用意され、重みとデータとコードが公開された。指さし出力は位置への接地を直接の出力形式としており、画像全体のアライメントとは別の契約である。対象は画像中心のv1範囲であり、動画の主張はMolmo2側の記録に委ねる。ここで新たに計算可能になったのは蒸留に頼らない開放データからの強い視覚言語モデルである。",
       "attribution_mode": "ATTRIBUTED",
       "evidence_refs": [
         {
@@ -307,7 +307,7 @@
     {
       "block_id": "p08-b8",
       "block_type": "PARAGRAPH",
-      "text": "この系譜を通して見ると、別々に事前学習した構成要素の接続は遅れて収束する。Frozenの接頭辞入力を起点に、Flamingoのgated cross-attentionと交互コーパスが少数例汎化を開き、BLIP-2の二段階起動が凍結の経済性を定式化した。InstructBLIPとLLaVAは指示データの機械生成と段階的な凍結管理へ問題を移し、学習する範囲と凍結する範囲の契約を明確にした。MolmoとPixMoは外部モデル蒸留に頼らない開放データで同列の到達を示し、実環境での汎化を測る条件を広げた。欠けていた少数例対応や指示追従は順に計算可能になったが、言語事前分布由来のハルシネーションや合成データ依存、高解像度知覚の限界は未解決として残る。接続方式の選択は効率と再利用性の判断であり、単一の最良形への一本化ではない。",
+      "text": "この系譜を通して見ると、別々に事前学習した構成要素の接続は遅れて収束する。Frozenの接頭辞入力を起点に、Flamingoのgated cross-attentionと交互コーパスが少数例汎化を開き、BLIP-2の二段階学習が凍結の経済性を定式化した。InstructBLIPとLLaVAは指示データの機械生成と段階的な凍結管理へ問題を移し、学習する範囲と凍結する範囲の契約を明確にした。MolmoとPixMoは外部モデル蒸留に頼らない開放データで同列の到達を示し、実環境での汎化を測る条件を広げた。欠けていた少数例対応や指示追従は順に計算可能になったが、言語事前分布由来のハルシネーションや合成データ依存、高解像度知覚の限界は未解決として残る。接続方式の選択は効率と再利用性の判断であり、単一の最良形への一本化ではない。",
       "attribution_mode": "MIXED",
       "evidence_refs": [
         {
@@ -385,7 +385,7 @@
     {
       "block_id": "P08-boundaries",
       "block_type": "CLAIM_BOUNDARY",
-      "text": "この節の読解上の境界: InstructBLIP/MiniGPT-4 gap filled; precursor stays one line / Closed training-data regime; resampling predecessor role noted for D09, not duplicated. / Two-stage cost/complexity; instruction-tuning successors (InstructBLIP/LLaVA) complete the picture. / Held-in/held-out protocol scope; instruction-data composition is the X01 exhibit. / Proof-of-concept scope per the paper's own discussion; precursor depth only. / Short treatment per bridge-function role; alignment-fragility notes need eval-side sources. / v1 image-centric scope; video claims belong to Molmo 2 record. / Synthetic instruction-data dependence; failure cases paper-acknowledged via LLaVA-Bench; knowledge/multilingual/internet-retrieval/high-resolution perception bounds per paper Limitations.",
+      "text": "この節の読解上の境界：end-to-endの呼称は系レベルのものであり、構成要素の同時更新を意味しない。数値はモデル論文著者の測定であり、実環境での汎化は別の証拠に委ねる。再標本化の扱いは解像度と融合の節に委ねる。",
       "attribution_mode": "MIXED",
       "evidence_refs": [
         {

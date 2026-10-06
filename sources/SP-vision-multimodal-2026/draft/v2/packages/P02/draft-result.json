@@ -4,7 +4,7 @@
   "research_profile": "THEMATIC",
   "publication_profile": "LONGFORM_SPECIAL",
   "package_id": "P02",
-  "draft_version": "fresh-121-r5",
+  "draft_version": "fresh-121-r5-rev1",
   "status": "ESTABLISHED",
   "basis": {
     "draft_package_sha256": "f52f75c69a263c20bc7a4d8e73b86c0d6960ff547666df4847a297d7c8400287",
@@ -14,12 +14,12 @@
   "runner": {
     "provider": "Muse",
     "model": "Muse Spark (Work execution role; not a Sol/Human decision)",
-    "invocation": "TS-003 fresh 121-record Draft from Architecture r5 APPROVED (Human Owner r5 on c4444c725988f6d4e524f79a4388a203829e2729); 16-package fresh Japanese long-form drafting from current 121 authority, VM-D122 excluded, deferred families excluded, no TeX/PDF",
-    "generated_at": "2026-10-06T00:30:00Z",
-    "run_reference": "ts003-fresh-draft-121-r5-20261006"
+    "invocation": "TS-003 Draft content revision r5-rev1 from Architecture r5 APPROVED (starting HEAD eafb68eaf6a009be33c003877d2dbc9360f0129b): bounded Draft CONTENT revision, no Discovery reopen; P15 rebuilt as cross-package synthesis over 40 mapped authorities (edition-local overlay); P10 D111/D112 three-role chain; P12 token/context economics; P11 SAM3/D115 supporting role; P06 SigLIP2-Qwen binding via D065 claim-3; P09 Molmo2 license/data-term separation; LongVideoBench 6678 fix; reader-facing Japanese cleanup; no TeX/PDF; DRAFT_COMPLETE held",
+    "generated_at": "2026-10-06T06:00:00Z",
+    "run_reference": null
   },
-  "headline": "検出の動作点と集合予測",
-  "deck": "領域提案から高速なone-stage、損失の修正、集合予測へ。手設計のアンカーとNMSを外し、開かれた語彙での検出へ適用を広げる過程で、位置と個体の対応づけがどう変わったかを整理する。",
+  "headline": "検出方式と集合予測",
+  "deck": "領域提案から高速なone-stage、損失の修正、集合予測へ。手設計のアンカーとNMSを外し、オープンボキャブラリー検出へ適用を広げる過程で、位置と個体の対応づけがどう変わったかを整理する。",
   "deck_attribution_mode": "ATTRIBUTED",
   "deck_evidence_refs": [
     {
@@ -91,7 +91,7 @@
     {
       "block_id": "p02-b2",
       "block_type": "PARAGRAPH",
-      "text": "領域提案の計算負担が残る段階では、どこを見るべきかという仮説生成自体が重かった。Faster R-CNNは画像全体の畳み込み特徴を検出器と共有するRegion Proposal Networkを導入し、提案をほぼ負担なく生成する構成へ変えた。RPNは全畳み込みの形で各位置から対象のboundsと対象らしさを予測し、どこを見るかという注意の役割を学習で担う。1画像あたり300の提案で、VGG-16を用いた統合系が毎秒5フレームで動作することが論文著者により報告されている。ここで表現は、画像全体の特徴マップから位置仮説を直接引き出す形に変わった。新たに計算可能になったのは、提案と検出を同一特徴で動かす統合的な検出である。",
+      "text": "領域提案の計算負担が残る段階では、どこを見るべきかという仮説生成自体が重かった。Faster R-CNNは画像全体の畳み込み特徴を検出器と共有するRegion Proposal Networkを導入し、提案をほぼ負担なく生成する構成へ変えた。RPNは全畳み込みの形で各位置から対象らしい領域の境界ボックスと存在らしさを予測し、どこを見るかという注目領域の仮説生成を学習で担う。1画像あたり300の提案で、VGG-16を用いた統合系が毎秒5フレームで動作することが論文著者により報告されている。ここで表現は、画像全体の特徴マップから位置仮説を直接引き出す形に変わった。新たに計算可能になったのは、提案と検出を同一特徴で動かす統合的な検出である。",
       "attribution_mode": "ATTRIBUTED",
       "evidence_refs": [
         {
@@ -113,7 +113,7 @@
     {
       "block_id": "p02-b3",
       "block_type": "PARAGRAPH",
-      "text": "帰結としてVOC 2007と2012、COCOで当時の最先端精度が報告され、ILSVRCとCOCOの2015年の第1位の基盤になった。転換の意義は精度の数値だけでなく、アンカーの設計とNMSが手設計として残るという制約を明確にした点にある。小さな対象や縁の振る舞いは後継資料に委ねられる。本パッケージではこの手設計の仮定が後に集合予測で外される対象として位置づけられ、除去すべき前提が何かが見えるようになった。共有特徴から仮説を得る実践はMask R-CNNなど後続の処理に引き継がれる。未解決は動作点の固定であり、速度と精度の両立や小さな対象への対応は後のone-stageや集合予測の検討に残された。",
+      "text": "帰結としてVOC 2007と2012、COCOで当時の最先端精度が報告され、ILSVRCとCOCOの2015年の第1位の基盤になった。転換の意義は精度の数値だけでなく、アンカーの設計とNMSが手設計として残るという制約を明確にした点にある。小さな対象や縁の振る舞いは後継資料に委ねられる。本節ではこの手設計の仮定が後に集合予測で外される対象として位置づけられ、除去すべき前提が何かが見えるようになった。共有特徴から仮説を得る実践はMask R-CNNなど後続の処理に引き継がれる。未解決は速度と精度の両立の難しさと小さな対象への対応であり、後のone-stageや集合予測の検討に残された。",
       "attribution_mode": "ATTRIBUTED",
       "evidence_refs": [
         {
@@ -164,7 +164,7 @@
     {
       "block_id": "p02-b5",
       "block_type": "PARAGRAPH",
-      "text": "一段化の系譜を補うものとして、SSDはボックス空間をスケールと縦横比の異なる既定ボックスに離散化し、解像度の異なる特徴マップ上に配置して一段で検出する構成を採った。SSD300でVOC 2007の精度74.3から77.2%、Titan Xで毎秒59フレーム、SSD512で76.9から79.8%に達し、Faster R-CNNを上回りつつ3倍の速度であることが論文著者により報告されている。ここでの表現は、多解像度の特徴マップが異なる大きさの対象を分担する形である。既定ボックスの敷き詰めと受容野の対応づけは論文自身が今後の課題として残し、本パッケージでは系譜の完全性のための限定された位置づけで扱う。動作点を高速側へ移す選択肢が増えたことが意義であり、構造の詳細は検出器側資料に委ねられる。",
+      "text": "一段化の系譜を補うものとして、SSDはボックス空間をスケールと縦横比の異なる既定ボックスに離散化し、解像度の異なる特徴マップ上に配置して一段で検出する構成を採った。SSD300でVOC 2007の精度74.3から77.2%、Titan Xで毎秒59フレーム、SSD512で76.9から79.8%に達し、Faster R-CNNを上回りつつ3倍の速度であることが論文著者により報告されている。ここでの表現は、多解像度の特徴マップが異なる大きさの対象を分担する形である。既定ボックスの敷き詰めと受容野の対応づけは論文自身が今後の課題として残し、本節では系譜の完全性のための限定された位置づけで扱う。速度を優先する側へ設計の重心を移す選択肢が増えたことが意義であり、構造の詳細は検出器側資料に委ねられる。",
       "attribution_mode": "ATTRIBUTED",
       "evidence_refs": [
         {
@@ -179,7 +179,7 @@
     {
       "block_id": "p02-b6",
       "block_type": "PARAGRAPH",
-      "text": "一段の精度不足が残る段階で、RetinaNetは極端な前景と背景の不均衡を中心原因として診断した。容易な負例の寄与を抑えるfocal lossにより、一段の速度を保ちながら二段の精度を超えることが論文著者により報告されている。ここでの転換は構造ではなく損失の側にあり、表現の取り出し方ではなく学習の重みづけを変えることで動作点が動いた。新たに計算可能になったのは、速度を犠牲にせず不均衡の影響を抑えた学習である。本パッケージでは損失中心の寄与として薄く扱い、構造の主張は検出器側資料に委ねる。なぜ一段が遅れていたかという診断が残る点に意義がある。",
+      "text": "一段の精度不足が残る段階で、RetinaNetは極端な前景と背景の不均衡を中心原因として診断した。容易な負例の寄与を抑えるfocal lossにより、一段の速度を保ちながら二段の精度を超えることが論文著者により報告されている。ここでの転換は構造ではなく損失の側にあり、表現の取り出し方ではなく学習の重みづけを変えることで一段の速度のまま二段の精度を超える設計が可能になった。本節では損失中心の寄与として薄く扱い、構造の主張は検出器側資料に委ねる。なぜ一段が遅れていたかという診断が残る点に意義がある。",
       "attribution_mode": "ATTRIBUTED",
       "evidence_refs": [
         {
@@ -223,7 +223,7 @@
     {
       "block_id": "p02-b8",
       "block_type": "PARAGRAPH",
-      "text": "帰結として、同等パラメータで入念に調整されたFaster R-CNNとCOCO検証で同等、R50で42 AP、DC5-R101で44.9 APであることが論文著者により報告されている。大面積対象で優れる点は広域の自己アテンションに帰され、小面積対象で劣る点とともに述べられている。パノプティックへの拡張はテストで46 PQに達し、特にstuff側で競合する。学習にはAdamWで300から500エポックを要し、オブジェクトクエリの枠の専業化や、後段デコーダ層以降でのみNMSが原理的に不要になるという自己アテンションによる重複抑制の所見が含まれる。未解決は小さな対象の不足と学習負担であり、FPN系の後継に委ねられる。",
+      "text": "帰結として、同等パラメータで入念に調整されたFaster R-CNNとCOCO検証で同等、R50で42 AP、DC5-R101で44.9 APであることが論文著者により報告されている。大面積対象で優れる点は広域の自己アテンションに帰され、小面積対象で劣る点とともに述べられている。パノプティックへの拡張はテストで46 PQに達し、特にstuff側で競合する。学習にはAdamWで300から500エポックを要し、オブジェクトクエリの枠の専業化や、後段デコーダ層以降でのみNMSが原理的に不要になるという自己アテンションによる重複抑制の所見が含まれる。未解決は小さな対象の不足と学習負担であり、後の多解像度化の検討に委ねられる。",
       "attribution_mode": "ATTRIBUTED",
       "evidence_refs": [
         {
@@ -252,7 +252,7 @@
     {
       "block_id": "p02-b9",
       "block_type": "PARAGRAPH",
-      "text": "集合予測の収束点として、DINO検出器はノイズ除去アンカーボックスの改良により、R50とCOCOで12エポック49.4 AP、24エポック51.3 APを示したことが論文著者により報告されている。Objects365で事前学習したSwinLでは検証とtest-devで63.2と63.3 APに達し、順位表の同等品より小さなモデルとデータ規模での到達が述べられている。本パッケージではGrounding DINOの技術的基盤として位置づけられる。名称の混同を避けるため、本節のDINOは検出器を指し、P06の自己教師あり学習のDINOとは別物として常に区別する。順位表比較の範囲に属し、接地の振る舞いはGrounding DINO側資料に委ねられる。",
+      "text": "集合予測の収束点として、DINO検出器はノイズ除去アンカーボックスの改良により、R50とCOCOで12エポック49.4 AP、24エポック51.3 APを示したことが論文著者により報告されている。Objects365で事前学習したSwinLでは検証とtest-devで63.2と63.3 APに達し、順位表の同等品より小さなモデルとデータ規模での到達が述べられている。本節ではGrounding DINOの技術的基盤として位置づけられる。名称の混同を避けるため、本節のDINOは検出器を指し、P06の自己教師あり学習のDINOとは別物として常に区別する。順位表比較の範囲に属し、接地の振る舞いはGrounding DINO側資料に委ねられる。",
       "attribution_mode": "MIXED",
       "evidence_refs": [
         {
@@ -274,7 +274,7 @@
     {
       "block_id": "p02-b10",
       "block_type": "PARAGRAPH",
-      "text": "閉じた語彙の動作点が残る段階では、実時間性を保ったまま未知の語彙へ対応づけることができない。YOLO-Worldは再パラメータ化できる視覚言語集約と領域テキスト対照損失により、オープンボキャブラリー検出をYOLOの動作点に持ち込んだ。LVISで35.4 APをV100で毎秒52フレームのゼロショットで示し、ファインチューニング版は検出とオープンボキャブラリーのインスタンスセグメンテーションへ広がることが論文著者により報告されている。O365やLVIS型の閉じた語彙へのファインチューニングはゼロショット汎化を損ない、365カテゴリでの調整がCLIP由来の汎化を削るという相反が述べられている。精密注釈と疑似注釈の組み合わせでの事前学習が良いという所見は教師信号の契約に関わる。YOLO製品群との混同を避け版に紐づけて扱い、端末展開の負担は動機であって確立した結果としない。",
+      "text": "閉じた語彙の検出方式が残る段階では、実時間性を保ったまま未知の語彙へ対応づけることができない。YOLO-Worldは再パラメータ化できる視覚言語集約と領域テキスト対照損失により、オープンボキャブラリー検出をYOLOの速度域の設計に持ち込んだ。LVISで35.4 APをV100で毎秒52フレームのゼロショットで示し、ファインチューニング版は検出とオープンボキャブラリーのインスタンスセグメンテーションへ広がることが論文著者により報告されている。O365やLVIS型の閉じた語彙へのファインチューニングはゼロショット汎化を損ない、365カテゴリでの調整がCLIP由来の汎化を削るという相反が述べられている。精密注釈と疑似注釈の組み合わせでの事前学習が良いという所見は教師信号の契約に関わる。YOLO製品群との混同を避け版に紐づけて扱い、端末展開の負担は動機であって確立した結果としない。",
       "attribution_mode": "ATTRIBUTED",
       "evidence_refs": [
         {
@@ -296,7 +296,7 @@
     {
       "block_id": "P02-boundaries",
       "block_type": "CLAIM_BOUNDARY",
-      "text": "この節の読解上の境界: One-stage history not reduced to one product family; version-bound YOLO claims only / Multi-stage pipeline speed addressed only as future work; R-CNN itself is slow by later standards. / Failure-mode analysis uses Hoiem et al. tooling of its era. / Anchor design and NMS remain hand-designed; small-object/edge behaviors need successor sources. / Accuracy lags state-of-the-art systems of its generation by the paper's own account; later YOLO versions are distinct products. / Small-object deficit and training cost are paper-stated open challenges; FPN-style successors address them outside this source. / Leaderboard-comparison scope; grounding behavior requires Grounding-DINO-side sources. / YOLO product-line confusion risk; version-bound claims only; edge-deployment burden noted as motivation, not established result. / Default-box tiling vs receptive-field alignment left as future work by the paper itself; thin treatment per lineage-completeness role. / Loss-centric contribution; architecture claims require detector-side sources; thin treatment per role. / Matching cost (assignment) vs matched-pair training loss kept distinct; auxiliary decoder losses are standard-recipe, never architecture-mandatory.",
+      "text": "この節の読解上の境界：数値はすべて論文著者の測定であり、条件の異なる評価を横並びで順位づけしない。小さな対象の不足と学習負担は未解決として残り、後の多解像度化の検討に委ねる。検出器のDINOと自己教師あり学習のDINOは別物として区別する。YOLO製品群は版を区切って扱う。",
       "attribution_mode": "INFERENCE",
       "evidence_refs": [
         {

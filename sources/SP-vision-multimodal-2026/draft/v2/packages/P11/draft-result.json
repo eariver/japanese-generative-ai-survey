@@ -4,7 +4,7 @@
   "research_profile": "THEMATIC",
   "publication_profile": "LONGFORM_SPECIAL",
   "package_id": "P11",
-  "draft_version": "fresh-121-r5",
+  "draft_version": "fresh-121-r5-rev1",
   "status": "ESTABLISHED",
   "basis": {
     "draft_package_sha256": "773812f2f180b60ee089ab7ec3d9e02ccfe9311f858e142ae37e4cfef94e918f",
@@ -14,9 +14,9 @@
   "runner": {
     "provider": "Muse",
     "model": "Muse Spark (Work execution role; not a Sol/Human decision)",
-    "invocation": "TS-003 fresh 121-record Draft from Architecture r5 APPROVED (Human Owner r5 on c4444c725988f6d4e524f79a4388a203829e2729); 16-package fresh Japanese long-form drafting from current 121 authority, VM-D122 excluded, deferred families excluded, no TeX/PDF",
-    "generated_at": "2026-10-06T00:30:00Z",
-    "run_reference": "ts003-fresh-draft-121-r5-20261006"
+    "invocation": "TS-003 Draft content revision r5-rev1 from Architecture r5 APPROVED (starting HEAD eafb68eaf6a009be33c003877d2dbc9360f0129b): bounded Draft CONTENT revision, no Discovery reopen; P15 rebuilt as cross-package synthesis over 40 mapped authorities (edition-local overlay); P10 D111/D112 three-role chain; P12 token/context economics; P11 SAM3/D115 supporting role; P06 SigLIP2-Qwen binding via D065 claim-3; P09 Molmo2 license/data-term separation; LongVideoBench 6678 fix; reader-facing Japanese cleanup; no TeX/PDF; DRAFT_COMPLETE held",
+    "generated_at": "2026-10-06T06:00:00Z",
+    "run_reference": null
   },
   "headline": "動画の時間的状態を三つに分ける",
   "deck": "短い分類から順序と一人称と長尺へ進み、オフラインの広さとオンラインの状態と保存された時間軸の選択的取得を分けて読む。実時間の問いと記憶の仕組みを切り分け、数値は契約ごとに読む。",
@@ -157,7 +157,7 @@
     {
       "block_id": "p11-b5",
       "block_type": "PARAGRAPH",
-      "text": "LongVideoBenchは3763本の動画と字幕に6678問の人手の選択式の問いを、17の細かなカテゴリで載せた長尺の評価である。長い文脈のうち指示された部分を取り出して筋道を立てるreferring reasoningが要点であり、取り出す働きと考える働きとを分けて測る。人手で作られた問いが、指示された文脈の取り出しの質を支える。報告の知見は、フレームを増やして初めて検索性能と推論が伸びるというフレーム数への敏感さであり、将来の長文脈のモデルへの位置づけを示す。契約は指示された文脈の取り出しであり、長さの広さだけを測る評価とは取り替えない。",
+      "text": "LongVideoBenchは3763本の動画と字幕に6678問の人手の選択式の問いを、17の細かなカテゴリで載せた長尺の評価である。長い文脈のうち指示された部分を取り出して推論するreferring reasoningが要点であり、取り出しと推論を分けて測る。人手で作られた問いが、指示された文脈の取り出しの質を支える。報告の知見は、フレームを増やして初めて検索性能と推論が伸びるというフレーム数への敏感さであり、将来の長文脈のモデルへの位置づけを示す。契約は指示された文脈の取り出しであり、長さの広さだけを測る評価とは取り替えない。",
       "attribution_mode": "MIXED",
       "evidence_refs": [
         {
@@ -237,7 +237,7 @@
     {
       "block_id": "p11-b8",
       "block_type": "PARAGRAPH",
-      "text": "VSI-Benchは288本の一人称の動画に5131問を載せ、配置と計測と時空間の三つの型に8課題を置いた空間の評価である。MCAとMRAの指標と何も見ない条件との比較を備え、CoTで下がり認知地図で上がるという補助的手順の知見が報告される。読みはPARTIALであり、要旨の深さに留まり、偏りを除いた部分集合の分析には踏み込まない。空間の理解を助ける手順の効果を示す範囲での言及に留め、一般の推論の到達とは呼ばない。scaffoldの効果は範囲を限って読み、要旨の水準を超えた断定はしない。",
+      "text": "VSI-Benchは288本の一人称の動画に5131問を載せ、配置と計測と時空間の三つの型に8課題を置いた空間の評価である。MCAとMRAの指標と何も見ない条件との比較を備え、CoTで下がり認知地図で上がるという補助的手順の知見が報告される。記述は論文要旨の水準に留まり、偏りを除いた部分集合の分析には踏み込まない。空間の理解を助ける手順の効果を示す範囲での言及に留め、一般の推論の到達とは呼ばない。scaffoldの効果は範囲を限って読み、要旨の水準を超えた断定はしない。",
       "attribution_mode": "MIXED",
       "evidence_refs": [
         {
@@ -273,7 +273,7 @@
     {
       "block_id": "p11-b9",
       "block_type": "PARAGRAPH",
-      "text": "Agentic Video Understandingは保存された動画とYouTubeの時間軸を問いに応じてたどる第三の契約であり、オンラインの流れを受け続ける状態とは別の列に置く。静止の処理は既定で毎秒1フレームの固定の速さで取り込み、音声は単一伝送路の毎秒1キロビットで毎秒の時刻を添えるが、速い動きは毎秒1フレームでは細部を落とすことがある。道具を使う処理は問いごとに要る場面と言語と音の信号だけを取り出し、何を見るかどの速さでどのモダリティで見るかをモデルが定め、関心のある時間窓を高いフレーム数で取り直し、元解像度とフレーム数の配分を問いに応じて変える。アップロードされた動画とYouTubeが対象で、問いごとに方式を変えられる。長い形式では最大88%少ないトークン、標準の評価では最大66%低い解析費用、3.7 Flashで最大7%高い正確さとされるが、いずれもベンダー測定の上限であり、独立した再現はない。概念の実例を示すSAM 3については、ここでは名のみに留める。",
+      "text": "Agentic Video Understandingは保存された動画とYouTubeの時間軸を問いに応じてたどる第三の契約であり、オンラインの流れを受け続ける状態とは別の列に置く。静止の処理は既定で毎秒1フレームの固定の速さで取り込み、音声は単一音声チャネル（モノラル）の毎秒1キロビットで毎秒の時刻を添えるが、速い動きは毎秒1フレームでは細部を落とすことがある。道具を使う処理は問いごとに要る場面と言語と音の信号だけを取り出し、何を見るかどの速さでどのモダリティで見るかをモデルが定め、関心のある時間窓を高いフレーム数で取り直し、元解像度とフレーム数の配分を問いに応じて変える。アップロードされた動画とYouTubeが対象で、問いごとに方式を変えられる。長い形式では最大88%少ないトークン、標準の評価では最大66%低い解析費用、3.7 Flashで最大7%高い正確さとされるが、いずれもベンダー測定の上限であり、独立した再現はない。概念を画像と短い映像にわたり追う指示の方式は、次項のSAM 3の範囲であり、保存済み時間軸の契約として位置づけられる。",
       "attribution_mode": "MIXED",
       "evidence_refs": [
         {
@@ -398,9 +398,38 @@
       ]
     },
     {
+      "block_id": "p11-b10",
+      "block_type": "PARAGRAPH",
+      "text": "保存済みの時間軸に概念で指示を与える方式として、SAM 3はPromptable Concept Segmentationを担う。単純なテキスト名詞句と画像例の正負ボックス、SAM 2型の視覚クリックで指示し、DETR型の画像検出器とメモリ型の映像追跡器が一つの知覚エンコーダを共有し、存在トークンの分離が認識と位置特定を分ける。SAMとSAM 2の点指示とメモリ機構を引き継ぎ、新規性は言語接地の概念インターフェースにある。細粒度の領域外ゼロショットは弱く、長い指示表現は扱わず、映像の負担は対象数に線形という限定が述べられている。連続取り込みのオンライン状態とは別の契約であり、本節の第二の主系譜ではなく保存済み時間軸の補助的証拠として扱う。",
+      "attribution_mode": "ATTRIBUTED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:fb77b0019ffe81dc",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd115",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:fb77b0019ffe81dc",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ev-vmd115",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:fb77b0019ffe81dc",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "ev-vmd115",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
       "block_id": "P11-boundaries",
       "block_type": "CLAIM_BOUNDARY",
-      "text": "この節の読解上の境界: VStream-QA as cited predecessor; SAM 2 memory as architecture pointer / Data-scope claims; modeling claims need system sources. / Most models evaluated via offline conversion; true online-system scores need Flash-VStream-side sources. / Author-reported latency/VRAM; deployment figures beyond that are G04 gap. / Short-clip classification scope only; temporal reasoning needs successors. / Short treatment; template-class scope. / Version-bind at Evidence (v3); commercial-model numbers author-measured. / Distinct referred-context contract; not interchangeable with duration-breadth benches. / PARTIAL: paper body at abstract depth (not full-paper read); debiased-subset analysis deferred. / Viewer-derived subset and row-count facts remain outside canonical scope for this Card; debiased-subset analysis deferred. / dataset + debiased-subset binding: Debiased-subset analysis deferred; carried as INSPECT depth item. / All efficiency figures vendor-reported up-to ceilings; no independent reproduction; implementation, rates, pricing, and API surface may change after cutoff (bind version + date at use). / Benchmark-row binding (incl. LongVideoBench scope + 3.8 Flash row) deferred to downstream use; static-vs-agentic token-math worked example deferred. / Exact benchmark list/splits behind vendor efficiency ceilings (incl. LongVideoBench scope + 3.8 Flash row) remain binding work for downstream use.",
+      "text": "この節の読解上の境界：短い断片の分類と資料の範囲を超える主張はしない。商用の数値は論文著者の測定であり、版と日付に結びつける。真のオンライン体系の評価は別系統の資料に委ねる。空間評価の記述は論文要旨の水準に留まる。効率値はベンダー測定の上限である。",
       "attribution_mode": "INFERENCE",
       "evidence_refs": [
         {
@@ -487,76 +516,37 @@
     {
       "requirement": "Offline long-context vs online streaming contracts separated",
       "block_ids": [
-        "p11-b1",
-        "p11-b2",
-        "p11-b3",
         "p11-b4",
         "p11-b5",
         "p11-b6",
         "p11-b7",
-        "p11-b8",
-        "p11-b9",
-        "P11-boundaries"
+        "p11-b9"
       ]
     },
     {
       "requirement": "Frame-count sensitivity and async-query/memory policies recorded",
       "block_ids": [
-        "p11-b1",
-        "p11-b2",
-        "p11-b3",
-        "p11-b4",
         "p11-b5",
         "p11-b6",
-        "p11-b7",
-        "p11-b8",
-        "p11-b9",
-        "P11-boundaries"
+        "p11-b7"
       ]
     },
     {
       "requirement": "VSI-Bench PARTIAL depth carried with debiased-subset deferral",
       "block_ids": [
-        "p11-b1",
-        "p11-b2",
-        "p11-b3",
-        "p11-b4",
-        "p11-b5",
-        "p11-b6",
-        "p11-b7",
-        "p11-b8",
-        "p11-b9",
-        "P11-boundaries"
+        "p11-b8"
       ]
     },
     {
       "requirement": "Third video-processing contract (stored-timeline on-demand navigation) via VM-D112; offline breadth vs online state columns unchanged",
       "block_ids": [
-        "p11-b1",
-        "p11-b2",
-        "p11-b3",
-        "p11-b4",
-        "p11-b5",
-        "p11-b6",
-        "p11-b7",
-        "p11-b8",
-        "p11-b9",
-        "P11-boundaries"
+        "p11-b9"
       ]
     },
     {
       "requirement": "SAM 3 memory video tracking as supporting stored-timeline evidence",
       "block_ids": [
-        "p11-b1",
-        "p11-b2",
-        "p11-b3",
-        "p11-b4",
-        "p11-b5",
-        "p11-b6",
-        "p11-b7",
-        "p11-b8",
-        "p11-b9",
-        "P11-boundaries"
+        "p11-b10"
       ]
     }
   ],

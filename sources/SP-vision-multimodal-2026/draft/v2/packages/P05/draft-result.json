@@ -4,7 +4,7 @@
   "research_profile": "THEMATIC",
   "publication_profile": "LONGFORM_SPECIAL",
   "package_id": "P05",
-  "draft_version": "fresh-121-r5",
+  "draft_version": "fresh-121-r5-rev1",
   "status": "ESTABLISHED",
   "basis": {
     "draft_package_sha256": "2be803340b76c7aa9a0dd59cd14ae34820a521ac2f454883ff1c52b95538ccd3",
@@ -14,9 +14,9 @@
   "runner": {
     "provider": "Muse",
     "model": "Muse Spark (Work execution role; not a Sol/Human decision)",
-    "invocation": "TS-003 fresh 121-record Draft from Architecture r5 APPROVED (Human Owner r5 on c4444c725988f6d4e524f79a4388a203829e2729); 16-package fresh Japanese long-form drafting from current 121 authority, VM-D122 excluded, deferred families excluded, no TeX/PDF",
-    "generated_at": "2026-10-06T00:30:00Z",
-    "run_reference": "ts003-fresh-draft-121-r5-20261006"
+    "invocation": "TS-003 Draft content revision r5-rev1 from Architecture r5 APPROVED (starting HEAD eafb68eaf6a009be33c003877d2dbc9360f0129b): bounded Draft CONTENT revision, no Discovery reopen; P15 rebuilt as cross-package synthesis over 40 mapped authorities (edition-local overlay); P10 D111/D112 three-role chain; P12 token/context economics; P11 SAM3/D115 supporting role; P06 SigLIP2-Qwen binding via D065 claim-3; P09 Molmo2 license/data-term separation; LongVideoBench 6678 fix; reader-facing Japanese cleanup; no TeX/PDF; DRAFT_COMPLETE held",
+    "generated_at": "2026-10-06T06:00:00Z",
+    "run_reference": null
   },
   "headline": "文書の読みから構造理解へ",
   "deck": "文字認識の後、レイアウトと構造の理解が問われた。OCR依存とOCRフリー、専門家モデルと汎用モデルの系譜を数値順位ではなく表現とインターフェースの変化でたどり、検索接続を限定的な副経路として次の計算に足る文書表現を問う。",
@@ -200,7 +200,7 @@
     {
       "block_id": "P05-B06",
       "block_type": "PARAGRAPH",
-      "text": "OCRを文字読みに限る段階では、数式や表、楽譜、図形、図表を同じ対象として扱う枠組みがなかった。GOTは人工的な光学信号をすべて文字とみなすOCR-2.0の考えと580Mの統一エンドツーエンドモデルを提示した。80Mの高圧縮エンコーダが1024画素を256トークンに変換し、長いコンテキストのデコーダがプレーン出力と整形出力に対応し、markdownやtikz、smiles、kernを生成できる。領域指定による対話的OCRや動的解像度、複数ページ処理も同じ枠組みに含まれる。学習は疑似正解や数式・表・音楽・図形・図表の描画手段、合成中心のデータエンジンとCommon-CrawlのPDF抽出に支えられる。評価は独自系列に限られ、汎用モデルとの同一条件比較は確認されていない。",
+      "text": "OCRを文字読みに限る段階では、数式や表、楽譜、図形、図表を同じ対象として扱う枠組みがなかった。GOTは人工的な光学信号をすべて文字とみなすOCR-2.0の考えと580Mの統一エンドツーエンドモデルを提示した。80Mの高圧縮エンコーダが1024×1024画像を256 visual tokensへ変換し、長いコンテキストのデコーダがプレーン出力と整形出力に対応し、markdownやtikz、smiles、kernを生成できる。領域指定による対話的OCRや動的解像度、複数ページ処理も同じ枠組みに含まれる。学習は疑似正解や数式・表・音楽・図形・図表の描画手段、合成中心のデータエンジンとCommon-CrawlのPDF抽出に支えられる。評価は独自系列に限られ、汎用モデルとの同一条件比較は確認されていない。",
       "attribution_mode": "ATTRIBUTED",
       "evidence_refs": [
         {
@@ -251,7 +251,7 @@
     {
       "block_id": "P05-B08",
       "block_type": "PARAGRAPH",
-      "text": "文書質問応答を測る段階では、構造に敏感な問いを系統的に評価する基盤が欠けていた。DocVQAは12K以上の文書画像に50Kの質問を付与し、9種の推論類型と80対10対10の区分で構成され、ANLSを主要指標とし正確度を併用する。ベースラインとしてLoRRAやM4C、BERT-QAが置かれ、人間の94.36パーセントが参照点として示される。ANLSはST-VQA由来の平均正規化レーベンシュタイン類似度であり、軽微なOCR誤差を過度に罰しない設計である。新たに可能になったのは構造依存の問いの難しさの特定である。一方で抜き出し型の近道やウェブ文書の汚染が指摘され、言語先行の利用と汚染の可能性を切り分けない総合スコアの読みは適切ではない。",
+      "text": "文書質問応答を測る段階では、構造に敏感な問いを系統的に評価する基盤が欠けていた。DocVQAは12K以上の文書画像に50Kの質問を付与し、9種の推論類型と80対10対10の区分で構成され、ANLSを主要指標とし正確度を併用する。ベースラインとしてLoRRAやM4C、BERT-QAが置かれ、人間の94.36パーセントが参照点として示される。ANLSはST-VQA由来の平均正規化レーベンシュタイン類似度であり、軽微なOCR誤差を過度に罰しない設計である。新たに可能になったのは構造依存の問いの難しさの特定である。一方で抜き出し型の近道やウェブ文書の汚染が指摘され、言語バイアスの利用と汚染の可能性を切り分けない総合スコアの読みは適切ではない。",
       "attribution_mode": "MIXED",
       "evidence_refs": [
         {
@@ -352,7 +352,7 @@
     {
       "block_id": "P05-boundaries",
       "block_type": "CLAIM_BOUNDARY",
-      "text": "この節の読解上の境界: Specialist failure profiles (repetition/language/structure) over rankings; resolution/token policies bound / Base-version scope; unified successors (v3) needed for image-modality completeness. / Scaling to larger data/compute and few/zero-shot capability stated as future work, not established. / Synthetic-training dependence; resolution sensitivity bounds domain transfer. / Resolution bottleneck shared with Donut-class pixel-only models (paper's own discussion). / Own-suite evaluation only; repetition + language + structure biases paper-stated. / Own-suite evaluation; same-protocol generalist head-to-head not found (gap G03 preserved). / Author-measured leaderboard; preprint status confirmed at intake; independent reproduction pending (G05). / Extractive-shortcut vulnerability; web-document contamination. / Relaxed-accuracy tolerance semantics must travel with scores; synthetic predecessors are context.",
+      "text": "この節の読解上の境界：専門家モデルと汎用モデルの数値比較は同一条件の根拠がある場合に限る。検索接続は文書検索の副経路に限定する。UIの画面操作はComputer Useの節の課題であり、ここでは完結させない。",
       "attribution_mode": "INFERENCE",
       "evidence_refs": [
         {

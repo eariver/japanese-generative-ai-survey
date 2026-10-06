@@ -4,7 +4,7 @@
   "research_profile": "THEMATIC",
   "publication_profile": "LONGFORM_SPECIAL",
   "package_id": "P09",
-  "draft_version": "fresh-121-r5",
+  "draft_version": "fresh-121-r5-rev1",
   "status": "ESTABLISHED",
   "basis": {
     "draft_package_sha256": "15a8c70532770a6ab8f70c5f9c97d17986f7ae8bc6fe12498939533a803124d2",
@@ -14,9 +14,9 @@
   "runner": {
     "provider": "Muse",
     "model": "Muse Spark (Work execution role; not a Sol/Human decision)",
-    "invocation": "TS-003 fresh 121-record Draft from Architecture r5 APPROVED (Human Owner r5 on c4444c725988f6d4e524f79a4388a203829e2729); 16-package fresh Japanese long-form drafting from current 121 authority, VM-D122 excluded, deferred families excluded, no TeX/PDF",
-    "generated_at": "2026-10-06T00:30:00Z",
-    "run_reference": "ts003-fresh-draft-121-r5-20261006"
+    "invocation": "TS-003 Draft content revision r5-rev1 from Architecture r5 APPROVED (starting HEAD eafb68eaf6a009be33c003877d2dbc9360f0129b): bounded Draft CONTENT revision, no Discovery reopen; P15 rebuilt as cross-package synthesis over 40 mapped authorities (edition-local overlay); P10 D111/D112 three-role chain; P12 token/context economics; P11 SAM3/D115 supporting role; P06 SigLIP2-Qwen binding via D065 claim-3; P09 Molmo2 license/data-term separation; LongVideoBench 6678 fix; reader-facing Japanese cleanup; no TeX/PDF; DRAFT_COMPLETE held",
+    "generated_at": "2026-10-06T06:00:00Z",
+    "run_reference": null
   },
   "headline": "解像度と時刻と入力の経済学",
   "deck": "画像と動画と音声をモデルが扱える列へ変える過程を整理する。元解像度の保持と分割、融合の深さ、時刻合わせ、問いに応じた選択的取得がトークンとコンテキストの費用を決める。統合の意味は共通トークナイザではなく学習と統合の契約で定義し、数値はベンダー測定として扱う。",
@@ -338,7 +338,7 @@
     {
       "block_id": "p09-b4",
       "block_type": "PARAGRAPH",
-      "text": "Qwen3-Omniは視覚テキストから音声を含む入力側への拡張を担う。Thinker-TalkerのMoEで知覚を統一し、音声エンコーダはスクラッチからのAuTである。16kHzへ再標本化した128次元メルスペクトログラムを約0.6Bのアテンションエンコーダ・デコーダへ入れ、2000万時間の教師あり音声で学習する。Conv2Dで8分の1に間引き12.5Hz相当のトークン列とし、1秒から8秒の動的ウィンドウでflash attentionを用いる。事前学習S1では固定した大規模言語モデルのもとで音声と視覚のアダプタを先に学ぶ。時刻合わせはTM-RoPEで回転埋め込みを時間と高さと幅へ分け、音声80ミリ秒ごとに一つの時間IDを与え、映像枠も実時刻で同粒度に刻み、モダリティ間で連番とする。Qwen2.5-Omniの2秒固定区切りと異なり、直接の絶対時刻ID照合で任意長ストリーミング入力と可変枠率を支える。40分間の音声認識や理解、19言語の音声理解が入力側の契約として報告される。理論上のコールドスタート初パケット遅延234ミリ秒やストリーミング係数1未満はベンダー算出の理論値であり、実運用測定ではない。生成側の合成詳細は本巻の対象外とし、入力エンコーダと同期と入力契約のみを扱う。",
+      "text": "Qwen3-Omniは視覚テキストから音声を含む入力側への拡張を担う。Thinker-TalkerのMoEで知覚を統一し、音声エンコーダはスクラッチからのAuTである。16kHzへ再標本化した128次元メルスペクトログラムを約0.6Bのアテンションエンコーダ・デコーダへ入れ、2000万時間の教師あり音声で学習する。Conv2Dで8分の1に間引き12.5Hz相当のトークン列とし、1秒から8秒の動的ウィンドウでflash attentionを用いる。事前学習S1では固定した大規模言語モデルのもとで音声と視覚のアダプタを先に学ぶ。時刻合わせはTM-RoPEで回転埋め込みを時間と高さと幅へ分け、音声80ミリ秒ごとに一つの時間IDを与え、映像フレームも実時刻で同粒度に刻み、モダリティ間で連番とする。Qwen2.5-Omniの2秒固定区切りと異なり、直接の絶対時刻ID照合で任意長ストリーミング入力と可変フレームレートを支える。40分間の音声認識や理解、19言語の音声理解が入力側の契約として報告される。理論上のコールドスタート初パケット遅延234ミリ秒やストリーミング係数1未満はベンダー算出の理論値であり、実運用測定ではない。生成側の合成詳細は本巻の対象外とし、入力エンコーダと同期と入力契約のみを扱う。",
       "attribution_mode": "MIXED",
       "evidence_refs": [
         {
@@ -381,7 +381,7 @@
     {
       "block_id": "p09-b5",
       "block_type": "PARAGRAPH",
-      "text": "音声入力の三つの来歴がオムニ統合の下地となる。Whisperは68万時間の多言語多課題の弱教師あり学習でゼロショット転移を示し、完全教師ありに匹敵して人間に近い頑健さに迫ったとモデル論文著者測定で報告する。役割は音声からトークンへの入力側契約に限られ、音声ドメインの範囲である。BEATsは音響トークナイザと音声自己教師あり学習の反復同時最適化であり、再構成ではなくマスクされた離散ラベル予測で学ぶ。トークナイザは各周回で教師モデルの意味を蒸留し、AudioSet-2Mで50.6% mAP、ESC-50で98.1%とモデル論文著者測定で報告する。分類ベンチマークの範囲であり、融合の振る舞いはオムニ側の根拠に譲る。CLAPは言語音声のデュアルエンコーダ対照学習を12万8000対で行い、16課題8領域のゼロショットと5課題の教師ありで最高性能を示し、音声側の言語で指定可能な対応を完成させた。規模はCLIPの規模ではなく、後のオムニエンコーダが限定づける。欠けていた一般音声と言語対応が計算可能になり、未解決としては融合時の時刻同期が残り、後のTM-RoPEへ引き継がれる。",
+      "text": "音声入力の三つの来歴がオムニ統合の下地となる。Whisperは68万時間の多言語多課題の弱教師あり学習でゼロショット転移を示し、完全教師ありに匹敵して人間に近い頑健さに迫ったとモデル論文著者測定で報告する。役割は音声からトークンへの入力側契約に限られ、音声ドメインの範囲である。BEATsは音響トークナイザと音声自己教師あり学習の反復同時最適化であり、再構成ではなくマスクされた離散ラベル予測で学ぶ。トークナイザは各周回で教師モデルの意味を蒸留し、AudioSet-2Mで50.6% mAP、ESC-50で98.1%とモデル論文著者測定で報告する。分類ベンチマークの範囲であり、融合の振る舞いはオムニ側の記録に委ねる。CLAPは言語音声のデュアルエンコーダ対照学習を12万8000対で行い、16課題8領域のゼロショットと5課題の教師ありで最高性能を示し、音声側の言語で指定可能な対応を完成させた。規模はCLIPの規模ではなく、後のオムニエンコーダが限定づける。欠けていた一般音声と言語対応が計算可能になり、未解決としては融合時の時刻同期が残り、後のTM-RoPEへ引き継がれる。",
       "attribution_mode": "MIXED",
       "evidence_refs": [
         {
@@ -460,7 +460,7 @@
     {
       "block_id": "p09-b7",
       "block_type": "PARAGRAPH",
-      "text": "Molmo2は接地で測る動画評価を持ち込む対照軸である。論文自身の三区分でオープンウェイトと蒸留なしオープンデータとオープンコードを掲げ、8Bのモデル群は短尺動画や計数や字幕付けのオープン帯で先頭に立ち、長尺では競合するとモデル論文著者測定で報告する。動画計数35.5対Qwen3-VL29.6、指さし出力F1で38.4対Gemini 3 Pro20.0、追跡J&F56.2対41.1はいずれも同一手順内の著者測定である。9種の公開データ群と完全オープンのOlmo変形を備える。一方で画像エンコーダにはSigLIP 2の非公開データを用い、データ生成にも非公開テキストモデルを用いたと論文自身が開示し、MathVistaやMMMUの推論や10分超の長尺は遅れると認める。解像度処理は縮小全体像に重なり付きタイリングを足し、学習時最大8枚、推論時最大24枚とし、動画は毎秒2枠・最大128枠で、長文脈学習では384枠まで延ばす。結合部は後ろから3層目と9層目のViT特徴を2x2ウィンドウで束ね、映像枠は3x3ウィンドウでトークンを削り、ウィンドウ平均をクエリとするmulti-head attentionと共有MLPで写す。三段階学習とViTと言語列の共同パッキングで長文脈化する。",
+      "text": "Molmo2は接地で測る動画評価を持ち込む対照軸である。論文自身の三区分でオープンウェイトと蒸留なしオープンデータとオープンコードを掲げ、8Bのモデル群は短尺動画や計数や字幕付けのオープン帯で先頭に立ち、長尺では競合するとモデル論文著者測定で報告する。動画計数35.5対Qwen3-VL29.6、指さし出力F1で38.4対Gemini 3 Pro20.0、追跡J&F56.2対41.1はいずれも同一手順内の著者測定である。9種の公開データ群と完全オープンのOlmo変形を備える。一方で画像エンコーダにはSigLIP 2の非公開データを用い、データ生成にも非公開テキストモデルを用いたと論文自身が開示し、MathVistaやMMMUの推論や10分超の長尺は遅れると認める。解像度処理は縮小全体像に重なり付きタイリングを足し、学習時最大8枚、推論時最大24枚とし、動画は毎秒2フレーム・最大128フレームで、長文脈学習では384フレームまで延ばす。結合部は後ろから3層目と9層目のViT特徴を2x2ウィンドウで束ね、映像フレームは3x3ウィンドウでトークンを削り、ウィンドウ平均をクエリとするmulti-head attentionと共有MLPで写す。三段階学習とViTと言語列の共同パッキングで長文脈化する。",
       "attribution_mode": "MIXED",
       "evidence_refs": [
         {
@@ -539,7 +539,7 @@
     {
       "block_id": "p09-b9",
       "block_type": "PARAGRAPH",
-      "text": "検査可能性はリポジトリ側の根拠で支える。Qwen3-VLリポジトリはdenseとMoEのエッジデバイスからクラウドまでの提供面を示し、FP8変形やTransformersとvLLM対応、Instruct版とThinking版、視覚エージェント操作、2次元と3次元接地、25万6000のネイティブコンテキストから100万への拡張をプロジェクト主張として記す。三つの構成要素の積み重ねはコードで検査できるが、重み自体が評価主張を自立させない。コードはApache 2.0であり、8B-Instructの重みもApache 2.0の適用範囲としてモデルカード側で束縛される。Qwen3-Omniリポジトリはストリーミング対応の提供面と事例集を示し、Thinkerのみ動作が文書化される。コードはApache 2.0、30B-A3B-Instructの重みはApache 2.0であり、READMEの人気指標は技術的根拠にしない。いずれも更新が続く表面であり、コミット束縛は後の段階に譲る。",
+      "text": "検査可能性はリポジトリ側の根拠で支える。Qwen3-VLリポジトリはdenseとMoEのエッジデバイスからクラウドまでの提供面を示し、FP8変形やTransformersとvLLM対応、Instruct版とThinking版、視覚エージェント操作、2次元と3次元接地、25万6000のネイティブコンテキストから100万への拡張をプロジェクト主張として記す。三つの構成要素の積み重ねはコードで検査できるが、重み自体が評価主張を自立させない。コードはApache 2.0であり、8B-Instructの重みもApache 2.0の適用範囲としてモデルカード側で束縛される。Qwen3-Omniリポジトリはストリーミング対応の提供面と事例集を示し、Thinkerのみ動作が文書化される。コードはApache 2.0、30B-A3B-Instructの重みはApache 2.0であり、READMEの人気指標は技術的根拠にしない。いずれも更新が続く資料であり、版と日付の結びつけを維持する。",
       "attribution_mode": "MIXED",
       "evidence_refs": [
         {
@@ -589,7 +589,7 @@
     {
       "block_id": "p09-b10",
       "block_type": "PARAGRAPH",
-      "text": "第二の系譜のオープン性は重みとデータの提供で示される。InternVLリポジトリは重みとInternVL-Dataの公開、1.0から3.5までの報告系譜と論文対応、3.5-GPT-OSS系の学習コード公開をREADME表層で示す。3.5系の存在は来歴注記であり、既存の収集範囲の置換ではない。ファイル水準の提供範囲は未確認であり、後の確認に譲る。molmo2リポジトリはデータ準備と事前学習やSFTや長文脈SFT、評価道具、vLLM推論、チェックポイント変換、MolmoPoint拡張をコード水準で検証する。コードはApache 2.0、Molmo2-8BやO-7Bの重みはApache 2.0で研究教育利用の条件と第三者の学術非商用条件が付く。重み許諾と混合データ許諾は別の区分である。9種のデータ群と評価分割は閲覧器付きで利用可能であり、ODC-BY系とモデル出力規約やCC BY-4.0映像部分の条件が確認範囲で束縛される。個別第三者文書や帰属記載の全文は未束縛であり、実環境での汎化を論じる際の限定として残る。",
+      "text": "第二の系譜のオープン性は重みとデータの提供で示される。InternVLリポジトリは重みとInternVL-Dataの公開、1.0から3.5までの報告系譜と論文対応、3.5-GPT-OSS系の学習コード公開をREADME表層で示す。3.5系の存在は来歴注記であり、既存の収集範囲の置換ではない。ファイル水準の提供範囲は未確認であり、版確定時の結びつけに委ねる。molmo2リポジトリはデータ準備と事前学習やSFTや長文脈SFT、評価道具、vLLM推論、チェックポイント変換、MolmoPoint拡張をコード水準で検証する。コードはApache 2.0である。模型の重みの許諾は別の区分である。Molmo2-8BやO-7Bの重みはApache 2.0であり、研究教育利用の条件とAi2の責任ある利用の枠組みに属する。Ai2が公開した9種のデータ群と評価分割は閲覧器付きで利用可能であり、確認済み範囲のODC-BY系条件やモデル出力規約、CC BY-4.0映像部分の条件が束縛される。学習混合物に含まれる第三者のデータ条件（学術・非商用の区分、手続きが必要な文書群や合意取得の映像集合、手動取得の追跡集合）はさらに別の区分であり、個別の第三者文書の許諾文や帰属記載の全文は未確認である。第三者データの条件が重みのApache 2.0を書き換えることはなく、三つの区分（コード、重み、公開データ群）と混合物の第三者条件を混ぜない。実環境での汎化を論じる際の限定として残る。",
       "attribution_mode": "ATTRIBUTED",
       "evidence_refs": [
         {
@@ -639,7 +639,7 @@
     {
       "block_id": "p09-b11",
       "block_type": "PARAGRAPH",
-      "text": "選択的取得がトークンとコンテキストの経済を変える。静止的処理は既定毎秒1枠でコンテキストへ一括投入し、音声は単一チャンネル毎秒1キロビットで秒ごとに時刻を付すため、速い動作の細部が落ちる場合がある。エージェンティック理解は事前の全時間取り込みをやめ、推論と道具の循環で映像枠と音声と書き起こしを問いごとに必要な区間のみ取り寄せ、必要な区間の検索性能が費用を決める。モデルは目的に沿って何をどの速度でどのモダリティで見るかを決め、内部道具で該当部分を読み込む。関心区間は枠率と解像度を上げて再標本化する。長尺条件で最大88%少ないトークン、標準動画分析ベンチマークで最大66%低い分析費用、3.7 Flashで最大約7%高い正確さはいずれもベンダー測定の上限であり、トークンと費用と品質の範囲は別である。探索推論トークンは思考トークン、取り寄せた枠や音声や書き起こしは道具利用トークンとして数え、内容と進め方で変動する。5分未満の短尺では初トークン時刻が延びる場合があり、遅延重視や全面精度重視は静止処理が向く。対象は保存済み投稿とYouTubeの随時時間軸であり、連続取り込みのオンライン状態ではない。",
+      "text": "選択的取得がトークンとコンテキストの経済を変える。静止的処理は既定毎秒1フレームでコンテキストへ一括投入し、音声は単一チャンネル毎秒1キロビットで秒ごとに時刻を付すため、速い動作の細部が落ちる場合がある。エージェンティック理解は事前の全時間取り込みをやめ、推論と道具の循環で映像フレームと音声と書き起こしを問いごとに必要な区間のみ取り寄せ、必要な区間の検索性能が費用を決める。モデルは目的に沿って何をどの速度でどのモダリティで見るかを決め、内部道具で該当部分を読み込む。関心区間はフレームレートと解像度を上げて再標本化する。長尺条件で最大88%少ないトークン、標準動画分析ベンチマークで最大66%低い分析費用、3.7 Flashで最大約7%高い正確さはいずれもベンダー測定の上限であり、トークンと費用と品質の範囲は別である。探索推論トークンは思考トークン、取り寄せた枠や音声や書き起こしは道具利用トークンとして数え、内容と進め方で変動する。5分未満の短尺では初トークン時刻が延びる場合があり、遅延重視や全面精度重視は静止処理が向く。対象は保存済み投稿とYouTubeの随時時間軸であり、連続取り込みのオンライン状態ではない。",
       "attribution_mode": "MIXED",
       "evidence_refs": [
         {
@@ -752,7 +752,7 @@
     {
       "block_id": "P09-boundaries",
       "block_type": "CLAIM_BOUNDARY",
-      "text": "この節の読解上の境界: M-RoPE lineage thread; Thinker-Talker streaming subordinated to input/fusion side / All benchmark claims vendor-measured (G05); token/config figures config-bound (CV2-DM-020); independent reproduction pending; repo commit binding at later stages. / No-degradation and leaderboard claims vendor-measured (G05); 234ms is theoretical cold-start; generation-side excluded by boundary. / Speech-domain scope; general-audio needs BEATs-side sources. / Classification-benchmark scope; fusion behavior needs omni-side sources. / 128k-pair scale vs CLIP-scale; later omni encoders qualify the comparison. / Vendor-measured evals at this read level (G05); 3.5-series supersession checks belong to later stages. / Author-measured comparisons; Qwen-backbone dependence disclosed; long-video competitiveness is partial. / Superseded claims need Qwen3-side sources; predecessor depth only. / No mechanism disclosure; scores vendor-measured; card content may drift (bind date). / No mechanism; vendor-measured framing. / Living surface: commit/version binding required at later stages; README marketing register quarantined from architecture. / repo commit/version binding: Living-repo commit/version binding deferred to later stages; README-depth consumption recorded. / Living surface; commit binding required; popularity signals are not technical authority. / PARTIAL: data-release file-level scope unverified (INSPECT target); README header depth only. / data-release scope verification: File-level data-release scope not verified; carried as INSPECT item for later stages. / All efficiency figures vendor-reported up-to ceilings; no independent reproduction; implementation, rates, pricing, and API surface may change after cutoff (bind version + date at use). / Benchmark-row binding (incl. LongVideoBench scope + 3.8 Flash row) deferred to downstream use; static-vs-agentic token-math worked example deferred. / Exact benchmark list/splits behind vendor efficiency ceilings (incl. LongVideoBench scope + 3.8 Flash row) remain binding work for downstream use. / PARTIAL: training-data license mix bound at bucket level (academic/non-commercial third-party; manual-license items DocQA/InfoQA/SceneText, LVBench, MLVU/LongVideoBench agreements, manual-download tracking sets) — individual third-party license texts and Source Attribution contents remain unbound (INSPECT target). / individual third-party dataset license texts and Source Attribution contents unbound; carried as INSPECT item for later stages. / Code licenses canonical: Qwen3-VL, Qwen3-Omni and Molmo 2 code Apache 2.0 confirmed in canonical Evidence (repo-root LICENSE, repo-bound). / Model-weight licenses canonical split: Qwen3-VL weights Apache 2.0 within bound model-card scope (8B-Instruct); Qwen3-Omni weights Apache 2.0 within bound model-card scope (30B-A3B-Instruct); Molmo 2 weights Apache 2.0 within the VM-D077 supplement scope; weight license and mixture terms are separate buckets. / Released-data scope canonical: Molmo 2 dataset family availability within the VM-D077 supplement scope (collection + checked per-dataset terms); individual third-party license texts and attribution contents PARTIAL/INSPECT.",
+      "text": "この節の読解上の境界：すべてのベンチマーク主張はベンダー測定であり、独立再現を待つ。トークンと構成の数値は設定に依存する。重みの許諾と混合データの条件は別の区分であり、個別の第三者文書の全文は未確認である。生成側の合成詳細は扱わない。更新が続く資料であり、版と日付の結びつけを維持する。",
       "attribution_mode": "INFERENCE",
       "evidence_refs": [
         {

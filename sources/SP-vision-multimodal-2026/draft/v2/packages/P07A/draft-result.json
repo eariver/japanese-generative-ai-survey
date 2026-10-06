@@ -4,7 +4,7 @@
   "research_profile": "THEMATIC",
   "publication_profile": "LONGFORM_SPECIAL",
   "package_id": "P07A",
-  "draft_version": "fresh-121-r5",
+  "draft_version": "fresh-121-r5-rev1",
   "status": "ESTABLISHED",
   "basis": {
     "draft_package_sha256": "7bdda2c143cfdd7ce4752184d9b85c5c970e0ccc50905a3494456762d82ba4d9",
@@ -14,9 +14,9 @@
   "runner": {
     "provider": "Muse",
     "model": "Muse Spark (Work execution role; not a Sol/Human decision)",
-    "invocation": "TS-003 fresh 121-record Draft from Architecture r5 APPROVED (Human Owner r5 on c4444c725988f6d4e524f79a4388a203829e2729); 16-package fresh Japanese long-form drafting from current 121 authority, VM-D122 excluded, deferred families excluded, no TeX/PDF",
-    "generated_at": "2026-10-06T00:30:00Z",
-    "run_reference": "ts003-fresh-draft-121-r5-20261006"
+    "invocation": "TS-003 Draft content revision r5-rev1 from Architecture r5 APPROVED (starting HEAD eafb68eaf6a009be33c003877d2dbc9360f0129b): bounded Draft CONTENT revision, no Discovery reopen; P15 rebuilt as cross-package synthesis over 40 mapped authorities (edition-local overlay); P10 D111/D112 three-role chain; P12 token/context economics; P11 SAM3/D115 supporting role; P06 SigLIP2-Qwen binding via D065 claim-3; P09 Molmo2 license/data-term separation; LongVideoBench 6678 fix; reader-facing Japanese cleanup; no TeX/PDF; DRAFT_COMPLETE held",
+    "generated_at": "2026-10-06T06:00:00Z",
+    "run_reference": null
   },
   "headline": "画像全体と言語の対応づけ",
   "deck": "固定分類から自然言語で画像を指す方式への転換を扱う。ゼロショット転移と画像テキスト検索のRecall@Kを契約とし、位置への接地とは指標も機構も分離して、画像全体の意味対応に足る表現を問う。",
@@ -77,7 +77,7 @@
     {
       "block_id": "P07A-B02",
       "block_type": "PARAGRAPH",
-      "text": "説明文生成の次に欠けたのは、画像理解と推論を切り分けて測る問いである。VQAは約25万画像、約76万質問、約1000万回答からなる自由形式の質問応答であり、短答や選択式による自動評価で汎用的な説明より細かい画像理解と複雑な推論を求めた。新たに可能になったのは言語先行の近道を露出させる評価族の起点である。後のVQA-v2では類似画像対に同じ質問を付与し答えが異なる補完的構成により、言語の事前分布だけでは解けない条件が整えられた。学習汚染と事前分布の利用可能性が単純な正確度の読みを限定し、区分と抽出規則を明示して数値を扱う必要がある。",
+      "text": "説明文生成の次に欠けたのは、画像理解と推論を切り分けて測る問いである。VQAは約25万画像、約76万質問、約1000万回答からなる自由形式の質問応答であり、短答や選択式による自動評価で汎用的な説明より細かい画像理解と複雑な推論を求めた。新たに可能になったのは言語バイアスの近道を露出させる評価族の起点である。後のVQA-v2では類似画像対に同じ質問を付与し答えが異なる補完的構成により、言語の事前分布だけでは解けない条件が整えられた。学習汚染と事前分布の利用可能性が単純な正確度の読みを限定し、区分と抽出規則を明示して数値を扱う必要がある。",
       "attribution_mode": "MIXED",
       "evidence_refs": [
         {
@@ -172,7 +172,7 @@
     {
       "block_id": "P07A-B06",
       "block_type": "PARAGRAPH",
-      "text": "画像水準の系譜は、説明生成から質問応答の評価を経て、固定分類から言語指定可能なアライメントへ進み、雑音規模の実践で補強された。共通の問いは次の計算に足る画像全体の表現は何かであり、文生成か、問い応答か、対照表現かは別の計算に対応する。本節の契約はゼロショット分類と画像テキスト検索のRecall@Kであり、フレーズの接地や検出のAPとは別の指標で測る。画像テキスト対の大規模契約はX01の資料として可視化される。単一構成の勝利を結論とせず、残る構成理解の不足を接地側へ受け渡す。",
+      "text": "画像水準の系譜は、説明生成から質問応答の評価を経て、固定分類から言語指定可能なアライメントへ進み、雑音規模の実践で補強された。共通の問いは次の計算に足る画像全体の表現は何かであり、文生成か、問い応答か、対照表現かは別の計算に対応する。本節の契約はゼロショット分類と画像テキスト検索のRecall@Kであり、フレーズの接地や検出のAPとは別の指標で測る。画像テキスト対の大規模契約はX01の教師信号の系譜に位置づけられる。単一構成の勝利を結論とせず、残る構成理解の不足を接地側へ受け渡す。",
       "attribution_mode": "MIXED",
       "evidence_refs": [
         {
@@ -229,7 +229,7 @@
     {
       "block_id": "P07A-boundaries",
       "block_type": "CLAIM_BOUNDARY",
-      "text": "この節の読解上の境界: Captioning/VQA predecessors prevent CLIP ex-nihilo; generation detail stays TS-002 / Bag-of-words alignment limits; efficiency/scale critiques need successor sources (SigLIP record). / Generation-side detail is TS-002-owned; TS-003 carries the predecessor role only. / VQA-v2 training contamination and prior-exploitability qualify naive accuracy readings; bind split + extraction rule. / Variant role; short treatment.",
+      "text": "この節の読解上の境界：生成側の詳細は扱わず、画像と言語の対応の起点に限定する。数値は論文著者の測定であり、位置への接地とは別の評価で測る。",
       "attribution_mode": "INFERENCE",
       "evidence_refs": [
         {

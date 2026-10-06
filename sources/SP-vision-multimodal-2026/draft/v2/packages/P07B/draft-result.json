@@ -4,7 +4,7 @@
   "research_profile": "THEMATIC",
   "publication_profile": "LONGFORM_SPECIAL",
   "package_id": "P07B",
-  "draft_version": "fresh-121-r5",
+  "draft_version": "fresh-121-r5-rev1",
   "status": "ESTABLISHED",
   "basis": {
     "draft_package_sha256": "e752554048b008488b25fa0f73f679396c9b4fcb638134b83819b208a0e9ffdb",
@@ -14,9 +14,9 @@
   "runner": {
     "provider": "Muse",
     "model": "Muse Spark (Work execution role; not a Sol/Human decision)",
-    "invocation": "TS-003 fresh 121-record Draft from Architecture r5 APPROVED (Human Owner r5 on c4444c725988f6d4e524f79a4388a203829e2729); 16-package fresh Japanese long-form drafting from current 121 authority, VM-D122 excluded, deferred families excluded, no TeX/PDF",
-    "generated_at": "2026-10-06T00:30:00Z",
-    "run_reference": "ts003-fresh-draft-121-r5-20261006"
+    "invocation": "TS-003 Draft content revision r5-rev1 from Architecture r5 APPROVED (starting HEAD eafb68eaf6a009be33c003877d2dbc9360f0129b): bounded Draft CONTENT revision, no Discovery reopen; P15 rebuilt as cross-package synthesis over 40 mapped authorities (edition-local overlay); P10 D111/D112 three-role chain; P12 token/context economics; P11 SAM3/D115 supporting role; P06 SigLIP2-Qwen binding via D065 claim-3; P09 Molmo2 license/data-term separation; LongVideoBench 6678 fix; reader-facing Japanese cleanup; no TeX/PDF; DRAFT_COMPLETE held",
+    "generated_at": "2026-10-06T06:00:00Z",
+    "run_reference": null
   },
   "headline": "言葉を位置と領域に接地する",
   "deck": "任意の言語概念をボックスやマスク、座標、根拠に対応づける連鎖を扱う。フレーズ接地と指示参照、オープンボキャブラリー検出と接地検出、セグメンテーション分岐を、指標ごとに分離して次の計算に足る接地表現を問う。",
@@ -106,7 +106,7 @@
     {
       "block_id": "P07B-B03",
       "block_type": "PARAGRAPH",
-      "text": "接地から検出への定式化が欠けていた段階で、オープンボキャブラリー検出が命名された。OVR-CNNは認識をキャプションから学び、位置特定を基本分類ボックスから学ぶ二段構成により両者を分離した。V2L投影と接地やマスク言語モデル、画像テキスト照合の事前学習を開放語彙VC上で行い、27パーセントmAPと10パーセントのゼロショット基準の差、基本分類精度が監視ありに近いことが示された。新たに可能になったのは語彙を埋め込みに開いた検出の定式化である。一方で開放性は実用上は事前学習済み単語埋め込みにboundedし、埋め込み品質の差はViLD側の資料に委ねられるという限定が論文自身により付される。",
+      "text": "接地から検出への定式化が欠けていた段階で、オープンボキャブラリー検出が命名された。OVR-CNNは認識をキャプションから学び、位置特定を基本分類ボックスから学ぶ二段構成により両者を分離した。V2L投影と接地やマスク言語モデル、画像テキスト照合の事前学習をオープンボキャブラリーの語彙条件で行い、27パーセントmAPと10パーセントのゼロショット基準の差、基本分類精度が監視ありに近いことが示された。新たに可能になったのは語彙を埋め込みに開いた検出の定式化である。一方で開放性は実用上は事前学習済み単語埋め込みに制約され、埋め込み品質の差はViLD側の資料に委ねられるという限定が論文自身により付される。",
       "attribution_mode": "ATTRIBUTED",
       "evidence_refs": [
         {
@@ -128,7 +128,7 @@
     {
       "block_id": "P07B-B04",
       "block_type": "PARAGRAPH",
-      "text": "画像水準の教師を検出器に移す手段が欠けていた段階で、蒸留によるOVDが示された。ViLDはCLIPやALIGNの教師を二段の生徒に蒸留し、領域テキスト蒸留と領域画像蒸留を組み合わせた。LVIS-rareでマスクAP16.1、監視あり対応比で3.8上回り、ALIGN教師で26.3、VOC直接転移72.2AP50、COCO36.6、Objects365で11.8と報告され、COCOでOVR-CNNを新規4.8、全体11.4上回るとされる。コードが公開された。新たに可能になったのは教師にboundedした検出器の開放語彙化であり、LVIS-rare手順の入口として後の評価に引き継がれる。限界は教師にboundedすることであり、領域事前学習のRegionCLIPとは機構が異なる別系統として保つ。",
+      "text": "画像水準の教師を検出器に移す手段が欠けていた段階で、蒸留によるOVDが示された。ViLDはCLIPやALIGNの教師を二段の生徒に蒸留し、領域テキスト蒸留と領域画像蒸留を組み合わせた。LVIS-rareでマスクAP16.1、監視あり対応比で3.8上回り、ALIGN教師で26.3、VOC直接転移72.2AP50、COCO36.6、Objects365で11.8と報告され、COCOでOVR-CNNを新規4.8、全体11.4上回るとされる。コードが公開された。新たに可能になったのは教師に制約された検出器のオープンボキャブラリー化であり、LVIS-rare手順の入口として後の評価に引き継がれる。限界は教師にboundedすることであり、領域事前学習のRegionCLIPとは機構が異なる別系統として保つ。",
       "attribution_mode": "ATTRIBUTED",
       "evidence_refs": [
         {
@@ -165,7 +165,7 @@
     {
       "block_id": "P07B-B06",
       "block_type": "PARAGRAPH",
-      "text": "ボックス注釈なしに検出器を開放語彙化する段階では、画像水準教師の割当てが欠けていた。DeticはImageNet-21Kの画像水準教師により、最大規模提案への割当てという単純な方式で検出器分類器を学習した。開放語彙LVISで全体2.4mAP、新規8.3mAPの改善、標準LVISで41.7mAPと報告され、ファインチューニングなしに21K分類の検出器として汎化する最初の事例とされる。コードが公開された。新たに可能になったのは複雑な割当てを要しない語彙拡張である。限界は全画像ラベルを同じ領域に教師づける点であり、データ統計のモデル化を含まない割当て発見的手法の範囲として記録する。",
+      "text": "ボックス注釈なしに検出器をオープンボキャブラリー化する段階では、画像水準教師の割当てが欠けていた。DeticはImageNet-21Kの画像水準教師により、最大規模提案への割当てという単純な方式で検出器分類器を学習した。オープンボキャブラリーのLVISで全体2.4mAP、新規8.3mAPの改善、標準LVISで41.7mAPと報告され、ファインチューニングなしに21K分類の検出器として汎化する最初の事例とされる。コードが公開された。新たに可能になったのは複雑な割当てを要しない語彙拡張である。限界は全画像ラベルを同じ領域に教師づける点であり、データ統計のモデル化を含まない割当て発見的手法の範囲として記録する。",
       "attribution_mode": "ATTRIBUTED",
       "evidence_refs": [
         {
@@ -246,7 +246,7 @@
     {
       "block_id": "P07B-B10",
       "block_type": "PARAGRAPH",
-      "text": "接地事前学習と検出器の密な結合が欠けていた段階で、3段階の密な融合が示された。Grounding DINOは特徴増強と言語誘導クエリ選択とcross-modalityデコーダの3段階でDINOと接地学習を結合し、検出と接地とキャプションのデータで事前学習する。COCOゼロショット52.5APと報告され、ここでのゼロショットは学習に検証区分を使わない論文定義である。ODinWゼロショット平均26.1APが記録され、チェックポイントと推論コードが公開された。新たに可能になったのは密な融合による開放集合検出である。GLIPの再定式化とは契約が異なり、融合設計としての位置が保たれる。RECのゼロショット性能は今後の注目を要すると論文自身が述べており、言い切らない。",
+      "text": "接地事前学習と検出器の密な結合が欠けていた段階で、3段階の密な融合が示された。Grounding DINOは特徴増強と言語誘導クエリ選択とcross-modalityデコーダの3段階でDINOと接地学習を結合し、検出と接地とキャプションのデータで事前学習する。COCOゼロショット52.5APと報告され、ここでのゼロショットは学習に検証区分を使わない論文定義である。ODinWゼロショット平均26.1APが記録され、チェックポイントと推論コードが公開された。新たに可能になったのは密な融合によるオープンボキャブラリー検出である。GLIPの再定式化とは契約が異なり、融合設計としての位置が保たれる。RECのゼロショット性能は今後の注目を要すると論文自身が述べており、言い切らない。",
       "attribution_mode": "MIXED",
       "evidence_refs": [
         {
@@ -341,7 +341,7 @@
     {
       "block_id": "P07B-B14",
       "block_type": "PARAGRAPH",
-      "text": "開放語彙の系譜は、語句接地から指示参照とOVD定式化へ進み、蒸留と領域事前学習と割当て手順を経て、接地再定式化と調整検出と最小転移と密な融合と自己学習へ分岐し、セグメンテーション分岐を伴って遅れて収束する。共通の問いは次の計算に足る接地表現は何かであり、語句か、ボックスか、マスクか、座標付き根拠かは課題ごとに異なる。本節の契約はLVIS-rareや開放語彙AP、ODinW、RefCOCO正確度、フレーズRecall@Kを混ぜず、画像水準のゼロショットや検索Recall@Kとは別の指標で測る。SigLIP 2の位置転移やSAM 3の概念接地は範囲背景として名指すに留める。単一構成の勝利を結論とせず、未解決の粒度と代償を残す。",
+      "text": "オープンボキャブラリーの系譜は、語句接地から指示参照とOVD定式化へ進み、蒸留と領域事前学習と割当て手順を経て、接地再定式化と調整検出と最小転移と密な融合と自己学習へ分岐し、セグメンテーション分岐を伴って遅れて収束する。共通の問いは次の計算に足る接地表現は何かであり、語句か、ボックスか、マスクか、座標付き根拠かは課題ごとに異なる。本節の契約はLVIS-rareやオープンボキャブラリーAP、ODinW、RefCOCO正確度、フレーズRecall@Kを混ぜず、画像水準のゼロショットや検索Recall@Kとは別の指標で測る。SigLIP 2の位置転移やSAM 3の概念接地は範囲背景として名指すに留める。単一構成の勝利を結論とせず、未解決の粒度と代償を残す。",
       "attribution_mode": "MIXED",
       "evidence_refs": [
         {
@@ -391,7 +391,7 @@
     {
       "block_id": "P07B-boundaries",
       "block_type": "CLAIM_BOUNDARY",
-      "text": "この節の読解上の境界: Redundancy calls stand (distillation vs pretraining vs vocabulary vs reformulation vs fusion vs scaling); OWOD stays footnote / People/animal-heavy domain bias; binary retrieval use needs global-matching extensions (SAE discussion). / Fine-tuned vs zero-shot REC is a protocol difference, not a new node; game-collected expressions carry collection bias. / Vocabulary bounded by embeddings; GloVe-vs-CLIP embedding quality needs ViLD-side sources. / Teacher-bounded; region-pretraining pole (RegionCLIP) is a different mechanism, kept separately. / Pseudo-label noise bounds; template-caption dependence. / Max-proposal assignment heuristic; ID corrected at intake (Round B guess wrong). / GoldG composition details deferred to Evidence-depth check; grounding-data scale claims are paper-reported. / GoldG composition at Evidence: GoldG composition details deferred; noted as Evidence-depth check. / Fine-tuned REC vs zero-shot REC is a protocol difference, not a new node. / Minimalism is the exhibit, not the endpoint; scaling recipe needs OWL-ST-side sources. / REC zero-shot performance noted as needing community attention (paper's own call). / Web-data dependence; label-space qualification travels with every number. / Origin scope; unification needs X-Decoder-side sources. / OpenSeg kept as separate bounded variant; unification scope is paper-reported. / Rare-split protocol must be bound per use; web-pretraining adjacency affects 'unseen' readings. / Variant status; grouping-quality dependence. / Diffusion-feature dependence; crossover boundary must be policed.",
+      "text": "この節の読解上の境界：未知の主張はラベル空間と手順に依存し、条件結合を明示して用いる。ウェブデータ依存が限界であり、画像水準の指標とは混ぜない。",
       "attribution_mode": "INFERENCE",
       "evidence_refs": [
         {
