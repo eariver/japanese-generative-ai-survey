@@ -261,7 +261,11 @@ def main() -> int:
     state_path = SRC / "production-state.json"
     up = _upstream(root, state_path)
     state = up["state"]
-    spec = json.loads((EXECDIR / "compact-input-rev1.json").read_text(encoding="utf-8"))
+    for cand in ("compact-input-rev2.json", "compact-input-rev1.json"):
+        spec_file = EXECDIR / cand
+        if spec_file.exists():
+            break
+    spec = json.loads(spec_file.read_text(encoding="utf-8"))
     if spec.get("schema_version") != "2.0-rc1" or spec.get("issue_id") != state["issue_id"]:
         raise SystemExit("spec identity mismatch")
     plan = _load(up["architecture"])

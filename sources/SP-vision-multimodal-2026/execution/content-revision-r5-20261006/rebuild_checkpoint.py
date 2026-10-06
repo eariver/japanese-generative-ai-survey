@@ -2,7 +2,7 @@
 """Rebuild draft checkpoint + state provenance after content-revision r5-rev1 regen.
 
 Same precedent as content-revision-r4 (rebuild_checkpoint.py):
- 1. write stage-validation-r5-rev1.json (binds current state bytes);
+ 1. write stage-validation-r5-rev2.json (binds current state bytes);
  2. rebuild ARCHITECTURE_ESTABLISHED.json (artifact SHAs + reviews.result.sha);
  3. update production-state.json checkpoint_provenance.draft.sha256;
  4. run canonical validate_agent_state (must be clean).
@@ -18,7 +18,7 @@ from pathlib import Path
 ROOT = Path("/home/eariver/git/japanese-generative-ai-survey")
 SRC = ROOT / "sources/SP-vision-multimodal-2026"
 EXECDIR = SRC / "execution/content-revision-r5-20261006"
-START_SHA = "eafb68eaf6a009be33c003877d2dbc9360f0129b"
+START_SHA = "18be8aff5c0d61916d50be3ada165e12bb93a02a"
 
 
 def sha256_file(p: Path) -> str:
@@ -76,7 +76,7 @@ def main() -> int:
         "implementation_commit_sha": START_SHA,
         "contract": contract, "artifacts": arts, "recorded_at": now,
     }
-    vpath = EXECDIR / "stage-validation-r5-rev1.json"
+    vpath = EXECDIR / "stage-validation-r5-rev2.json"
     vpath.write_text(json.dumps(validation, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     vsha = sha256_file(vpath)
     cp_path = SRC / "orchestration/v2/checkpoints/ARCHITECTURE_ESTABLISHED.json"
@@ -92,7 +92,7 @@ def main() -> int:
         "evidence": ("Deterministic drafting-synthesis stage-contract validation for TS-003 Draft content "
                      "revision r5-rev1 (bounded Draft CONTENT revision from Architecture r5 APPROVED; lifecycle stays "
                      "DRAFT_COMPLETE): 16 draft-package/result pairs revalidated against current 121 authority "
-                     "(packages byte-identical, results revised to draft_version fresh-121-r5-rev1) + 12/16 canonical "
+                     "(packages byte-identical, results revised to draft_version fresh-121-r5-rev2) + 12/16 canonical "
                      "Draft validation PASS + 4/16 edition-local overlay PASS (P06 D065 claim-3; P10 D111/D112 "
                      "three-role chain; P11 D115 supporting role; P15 40/40 Architecture-map Discovery IDs bound "
                      "via multi-consumer cross-package synthesis authority; frozen generic cross-ref rejection "
@@ -101,10 +101,10 @@ def main() -> int:
                      "edition-local semantic audits PASS (P15 per-thread 4/4,4/4,4/4,4/4,3/3,5/5,5/5,5/5,5/5,5/5,6/6; "
                      "LongVideoBench 6678; reader-Japanese purge; regression guards). "
                      "Machine validation only; Human/Sol Draft content review owed."),
-        "result": {"path": "sources/SP-vision-multimodal-2026/execution/content-revision-r5-20261006/stage-validation-r5-rev1.json",
+        "result": {"path": "sources/SP-vision-multimodal-2026/execution/content-revision-r5-20261006/stage-validation-r5-rev2.json",
                    "sha256": vsha}}]
-    cp["summary"] = ("TS-003 Draft content revision r5-rev1 from Architecture r5 APPROVED (Human Owner 2026-10-06): "
-                     "P15 rebuilt as cross-package synthesis (40/40) + P10/P11/P12/P06/P09 bounded repairs + "
+    cp["summary"] = ("TS-003 final Draft content polish r5-rev2 from Architecture r5 APPROVED: "
+                     "P15-B02 branching regimes + P09 license separation + P07A/B + P02 costs + language/rhythm polish (40/40 preserved) + "
                      "reader-facing Japanese cleanup across 16 packages; VM-D122 excluded; no TeX/PDF; "
                      "STOP for Human/Sol Draft content review")
     cp_path.write_text(json.dumps(cp, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")

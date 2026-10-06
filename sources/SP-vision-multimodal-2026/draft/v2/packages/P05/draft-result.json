@@ -4,7 +4,7 @@
   "research_profile": "THEMATIC",
   "publication_profile": "LONGFORM_SPECIAL",
   "package_id": "P05",
-  "draft_version": "fresh-121-r5-rev1",
+  "draft_version": "fresh-121-r5-rev2",
   "status": "ESTABLISHED",
   "basis": {
     "draft_package_sha256": "2be803340b76c7aa9a0dd59cd14ae34820a521ac2f454883ff1c52b95538ccd3",
@@ -14,8 +14,8 @@
   "runner": {
     "provider": "Muse",
     "model": "Muse Spark (Work execution role; not a Sol/Human decision)",
-    "invocation": "TS-003 Draft content revision r5-rev1 from Architecture r5 APPROVED (starting HEAD eafb68eaf6a009be33c003877d2dbc9360f0129b): bounded Draft CONTENT revision, no Discovery reopen; P15 rebuilt as cross-package synthesis over 40 mapped authorities (edition-local overlay); P10 D111/D112 three-role chain; P12 token/context economics; P11 SAM3/D115 supporting role; P06 SigLIP2-Qwen binding via D065 claim-3; P09 Molmo2 license/data-term separation; LongVideoBench 6678 fix; reader-facing Japanese cleanup; no TeX/PDF; DRAFT_COMPLETE held",
-    "generated_at": "2026-10-06T06:00:00Z",
+    "invocation": "TS-003 final Draft content polish r5-rev2 from Architecture r5 APPROVED (starting HEAD 18be8aff5c0d61916d50be3ada165e12bb93a02a): bounded reader-facing repair; P15-B02 branching supervision regimes; P09 Molmo2 license/intended-use/data-term separation; P07A geo-localization; P07B Flickr unseen-phrase accuracy; P02 DETR matching-cost terms; reader language pass (リアルタイム etc.); prose-rhythm variation; P11 chapter-focus note; V-JEPA Policy content-based deferral recorded; no upstream reopen; no TeX/PDF; DRAFT_COMPLETE held",
+    "generated_at": "2026-10-06T08:00:00Z",
     "run_reference": null
   },
   "headline": "文書の読みから構造理解へ",
@@ -76,7 +76,7 @@
     {
       "block_id": "P05-B01",
       "block_type": "PARAGRAPH",
-      "text": "OCRが文字列だけを返す段階では、文字が紙面のどこにあり、どの欄に対応するかが残らなかった。LayoutLMはテキスト埋め込みにレイアウト埋め込みと画像埋め込みを加え、一つのTransformerで事前学習する表現に変えた。大量のラベルなしスキャン文書で自己教師あり学習を行い、様式理解や領収書理解、スキャン文書分類を同じ枠組みで扱えるようにした点が転換である。以前はOCR文字列だけを言語モデルに渡す構成では欄と値の対応づけが外部処理に残ったが、位置を埋め込みとして保つことで欄構造の計算が可能になった。新たに計算可能になったのはフォームや領収書の項目対応である。ただし本記録は基本版の範囲であり、画像モダリティの統合は後継の課題として残る。",
+      "text": "OCRが文字列だけを返す段階では、文字が紙面のどこにあり、どの欄に対応するかが残らなかった。LayoutLMはテキスト埋め込みにレイアウト埋め込みと画像埋め込みを加え、一つのTransformerで事前学習する表現に変えた。大量のラベルなしスキャン文書で自己教師あり学習を行い、様式理解や領収書理解、スキャン文書分類を同じ枠組みで扱えるようにした点が転換である。以前はOCR文字列だけを言語モデルに渡す構成では欄と値の対応づけが外部処理に残ったが、位置を埋め込みとして保つことで欄構造の計算が可能になった。フォームや領収書の項目対応が可能になった。ただし本記録は基本版の範囲であり、画像モダリティの統合は後継の課題として残る。",
       "attribution_mode": "ATTRIBUTED",
       "evidence_refs": [
         {
@@ -127,7 +127,7 @@
     {
       "block_id": "P05-B03",
       "block_type": "PARAGRAPH",
-      "text": "従来の文書理解ではOCRが前提であり、そのコストや硬直性、誤りの連鎖が残った。Donutは文書画像から構造化出力へ直接変換するOCRフリーのTransformerであり、エンコーダとデコーダで画素から文字列や構造を生成する。新たに計算可能になったのはOCRを経由しない文書理解であり、合成データ生成器SynthDoGにより言語や領域の柔軟性を確保し、コードとモデルが公開された点も重要である。事前学習とファインチューニングの性能は入力解像度に強く依存し、高い解像度では系列長が増大するため画素のみのモデルに共通する制約が現れる。この解像度とトークン量の関係は文書系の入力経済性を考える材料である。合成学習への依存と解像度依存性が領域転移の限界であり、実環境での汎化は別途検証が必要である。",
+      "text": "従来の文書理解ではOCRが前提であり、そのコストや硬直性、誤りの連鎖が残った。Donutは文書画像から構造化出力へ直接変換するOCRフリーのTransformerであり、エンコーダとデコーダで画素から文字列や構造を生成する。OCRを経由しない文書理解が可能になり、合成データ生成器SynthDoGにより言語や領域の柔軟性を確保し、コードとモデルが公開された点も重要である。事前学習とファインチューニングの性能は入力解像度に強く依存し、高い解像度では系列長が増大するため画素のみのモデルに共通する制約が現れる。この解像度とトークン量の関係は文書系の入力経済性を考える材料である。合成学習への依存と解像度依存性が領域転移の限界であり、実環境での汎化は別途検証が必要である。",
       "attribution_mode": "ATTRIBUTED",
       "evidence_refs": [
         {
@@ -171,7 +171,7 @@
     {
       "block_id": "P05-B05",
       "block_type": "PARAGRAPH",
-      "text": "科学論文のPDFを扱う段階では、数式や表をテキストとして正しく取り出す表現が欠けていた。NougatはDonut系統のSwinエンコーダとデコーダにより、科学系PDFから本文と数式のLaTeXや表を含むマークアップを生成する。arXivやPMC、IDL由来の学習対を用い、モデルとコードが公開されて科学テキスト認識の専門家モデルとしての位置が定まった。新たに計算可能になったのはページ画像から構造付きマークアップへの直接変換である。一方で繰り返し生成の失敗様式、研究論文構造への偏り、ほぼ英語中心の学習でラテン系言語の確認が小規模に限られる点が論文自身により述べられている。評価は独自のマークアップ一致とGROBIDやPDFテキスト抽出との比較に限られ、条件の異なるモデル間の数値優劣には踏み込まない。",
+      "text": "科学論文のPDFを扱う段階では、数式や表をテキストとして正しく取り出す表現が欠けていた。NougatはDonut系統のSwinエンコーダとデコーダにより、科学系PDFから本文と数式のLaTeXや表を含むマークアップを生成する。arXivやPMC、IDL由来の学習対を用い、モデルとコードが公開されて科学テキスト認識の専門家モデルとしての位置が定まった。ページ画像から構造付きマークアップへの直接変換が開かれた。一方で繰り返し生成の失敗様式、研究論文構造への偏り、ほぼ英語中心の学習でラテン系言語の確認が小規模に限られる点が論文自身により述べられている。評価は独自のマークアップ一致とGROBIDやPDFテキスト抽出との比較に限られ、条件の異なるモデル間の数値優劣には踏み込まない。",
       "attribution_mode": "MIXED",
       "evidence_refs": [
         {

@@ -269,7 +269,8 @@ def main() -> int:
     reg["hallusionbench_restraint"] = has("厳しい") and has("診断")
     reg["genie3_no_arch"] = has("アーキテクチャの断定は行わない")
     reg["qwen_apache"] = has("8B-Instructの重みもApache 2.0")
-    reg["molmo_apache"] = has("Molmo2-8BやO-7Bの重みはApache 2.0")
+    reg["molmo_apache"] = (has("Molmo2-8BやO-7Bの重みはApache 2.0")
+                             or has("モデル重みのライセンスはApache 2.0"))
     reg["no_vmd122"] = "VM-D122" not in all_text and "ev-vmd122" not in json.dumps(
         {pid: load(pid) for pid in PIDS}, ensure_ascii=False)
     for k, v in reg.items():

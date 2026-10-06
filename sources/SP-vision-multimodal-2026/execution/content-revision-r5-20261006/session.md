@@ -95,3 +95,34 @@ SigLIP-side authority; P09 Molmo 2 weight/data terms misleading; LongVideoBench
 - Architecture r5: APPROVED / unchanged. Discovery/Screening/Evidence (121)/
   Selection (121)/approval: unchanged. Shared Core: unchanged. TeX/PDF: none.
 - STOP for Human/Sol Draft content review.
+
+## Addendum — final polish r5-rev2 (same run family, starting HEAD 18be8aff5)
+
+Bounded reader-facing repair, no upstream reopen:
+
+- P15-B02 rewritten as branching supervision regimes (same 5 X01 authorities;
+  DINOv2 kept as a label-free branch; late-convergence thesis preserved).
+- P09-B10 Molmo 2 final separation: code Apache 2.0 / model-weight license
+  Apache 2.0 / intended-use + responsible-use guidance (not a license modifier) /
+  third-party mixture terms (bucket-level, individual texts unconfirmed).
+  `模型の重みの許諾` eliminated.
+- P07A-B03: geo-localization rendered as 地理的位置推定（geo-localization）.
+- P07B-B01: unseen overstatement replaced with open-ended phrase-space semantics.
+- P02-B07: DETR burden terms replaced with matching-cost vocabulary; matching
+  cost vs matched-pair training loss distinction retained.
+- Language pass: 実時間→リアルタイム (14), 後継の証し→後続研究の根拠,
+  rhythm variation across 62 exact-once edits (論文著者 53→36 with varied
+  attribution forms; 委ねられる 18→11; 新たに計算可能になった 15→0 with
+  meaning-preserving reformulations; no attribution/limitation removed).
+- P11 deck extended with the chapter-focus note (three contracts primary;
+  causal/physical/audiovisual within selected evidence, no separate surveys).
+- V-JEPA Policy: content-based Owner scope rationale recorded in
+  `deferred-v-jepa-policy-scope-note.md` (representational sufficiency via
+  V-JEPA→2→2-AC, π₀, FAST; V-JEPA 2.1 intra-pole deferral). No intake, no
+  materiality screening, counts unchanged.
+- Regen (`compact-input-rev2.json`, `draft_version fresh-121-r5-rev2`):
+  16 packages byte-identical; 12 canonical + 4 overlay PASS; both audit suites
+  PASS (P15 40/40 preserved; 般化/管路/枠率/単一伝送路/実時間 all zero).
+- Checkpoint rebuilt (`stage-validation-r5-rev2.json`); state provenance
+  refreshed (draft SHA only); `validate_agent_state` CLEAN.
+- DRAFT_COMPLETE held; reader-publication-validation NOT started.
