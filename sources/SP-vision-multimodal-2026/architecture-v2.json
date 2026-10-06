@@ -6,10 +6,10 @@
   "status": "PROPOSED",
   "basis": {
     "production_profile_sha256": "e4d16027d66d379848378031e47198a09f0b27a961e27a0ab250923a07a57444",
-    "profile_completeness_sha256": "d2afa4096e1481d386aec685ffd20ed537c184184e6b5e75333d4e0d0b991c71",
-    "materiality_ledger_sha256": "7377418819eee19fd281417e371bcc78010c7b3f059e56340ab7df39e1a4d010",
-    "candidate_matrix_sha256": "648c152c815c25e30657ab8354ee829beb161d8d952a8d76d8e4994fd6d12888",
-    "candidate_selection_sha256": "83e7a1a4af6012918ae2cf5843ae808579074535097d3379b9f5f18b9501cbe1"
+    "profile_completeness_sha256": "87082395238edece9258328f75a1e1940a65ec67507fd1bd8c876db6235b7218",
+    "materiality_ledger_sha256": "cbc1d55da7369d40ab31e12aedcec5b51b4e19f36f131c8ed83e38639e301afc",
+    "candidate_matrix_sha256": "74b55b0afcd4724dd599f54ac5283d0cb2a1855ac24e499fa3c58b438586df8c",
+    "candidate_selection_sha256": "c4c1456356c45e800ea97fd5e021aa0cac3741838ea412f62f6aca01879db94f"
   },
   "editorial_thesis": "TS-003 completes the three-volume arc — TS-001 computes intelligence, TS-002 generates the world, TS-003 perceives, grounds, reasons about, predicts and acts in it — by reconstructing partially independent technical lineages that converge late, organized as interacting problem layers (representation, recognition, localization/structure, language alignment, grounding, fusion, temporal/spatial state, reasoning, action/prediction) rather than a single model chronology. The cross-cutting test throughout is what representation of the world is sufficient for the next computation: what each stage preserves, discards, localizes, tokenizes, grounds, reasons over, predicts or acts upon.",
   "architecture_goals": [
@@ -250,7 +250,8 @@
         "Own-suite evaluation; same-protocol generalist head-to-head not found (gap G03 preserved).",
         "Author-measured leaderboard; preprint status confirmed at intake; independent reproduction pending (G05).",
         "Extractive-shortcut vulnerability; web-document contamination.",
-        "Relaxed-accuracy tolerance semantics must travel with scores; synthetic predecessors are context."
+        "Relaxed-accuracy tolerance semantics must travel with scores; synthetic predecessors are context.",
+        "LayoutLM v1 pre-trains text + 2D layout (MVLM, optional MDC); Faster R-CNN image features integrate at downstream fine-tuning; image-embedding pre-training is stated future work belonging to successors."
       ],
       "drafting_order": 5,
       "profile_extensions": {},
@@ -349,12 +350,12 @@
       ],
       "must_cover_requirements": [
         "D07A metric identity (zero-shot/retrieval) never merged with D07B localization metrics",
-        "X01 image-text pair contracts visible; bag-of-words limit recorded as D07B motivator",
+        "X01 image-text pair contracts visible; original-paper zero-shot limitations bounded to reported tasks (no compositionality claim); D07A/D07B separation kept on distinct evaluation contracts",
         "SigLIP 2 staged recipe extends the image-level alignment lineage (supporting)"
       ],
       "boundaries": [
         "Captioning/VQA predecessors prevent CLIP ex-nihilo; generation detail stays TS-002",
-        "Bag-of-words alignment limits; efficiency/scale critiques need successor sources (SigLIP record).",
+        "Original-paper zero-shot limits: weak fine-grained classification (car models, flower species, aircraft variants), counting (CLEVRCounts), near-random novel systematic tasks (KITTI distance); out-of-distribution brittleness (MNIST 88%, below a pixel baseline); ~1000x compute estimated to reach overall SOTA (infeasible on current hardware).",
         "Generation-side detail is TS-002-owned; TS-003 carries the predecessor role only.",
         "VQA-v2 training contamination and prior-exploitability qualify naive accuracy readings; bind split + extraction rule.",
         "Variant role; short treatment."
@@ -778,7 +779,8 @@
         "No mechanism disclosure; no latency/price/token facts published.",
         "Card-scoped eval only; OOD/whole-body outside stated scope; card may update (bind date).",
         "Policy evaluation on static manipulators only; alternative compressions and FAST+diffusion untested; inference-speed gap unresolved.",
-        "Prototype scope; hardest/longest tasks need fine-tuning plus a high-level language planner; scale/hardware sensitivity and inference cost retained."
+        "Prototype scope; hardest/longest tasks need fine-tuning plus a high-level language planner; scale/hardware sensitivity and inference cost retained.",
+        "π₀ output contract is an H=50 continuous-action chunk (flow matching); control rates are platform-dependent (UR5e/Franka 20 Hz, others 50 Hz) with re-inference after 16/25 actions (≈0.8/0.5 s); horizon, rate, and replan cadence are distinct quantities."
       ],
       "drafting_order": 14,
       "profile_extensions": {},
