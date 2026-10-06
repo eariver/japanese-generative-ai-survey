@@ -6,10 +6,10 @@
   "status": "PROPOSED",
   "basis": {
     "production_profile_sha256": "e4d16027d66d379848378031e47198a09f0b27a961e27a0ab250923a07a57444",
-    "profile_completeness_sha256": "87082395238edece9258328f75a1e1940a65ec67507fd1bd8c876db6235b7218",
-    "materiality_ledger_sha256": "cbc1d55da7369d40ab31e12aedcec5b51b4e19f36f131c8ed83e38639e301afc",
-    "candidate_matrix_sha256": "74b55b0afcd4724dd599f54ac5283d0cb2a1855ac24e499fa3c58b438586df8c",
-    "candidate_selection_sha256": "c4c1456356c45e800ea97fd5e021aa0cac3741838ea412f62f6aca01879db94f"
+    "profile_completeness_sha256": "f1898ed63b2eca6e9fb2c4c2a7c85e9ba0326f21b0ab3cc068dbf0660917610f",
+    "materiality_ledger_sha256": "e5546e25a2be65fad53609fb59eeca3cb34d310ce95e9b9b1ba00e84da97171f",
+    "candidate_matrix_sha256": "a289c11de171076bb769024ebdff8f518646a079e558f786234dd012f698f01b",
+    "candidate_selection_sha256": "20142cf9002e9992c883ae884edf40a363f7b863c58ee537ad7c1a715d758858"
   },
   "editorial_thesis": "TS-003 completes the three-volume arc — TS-001 computes intelligence, TS-002 generates the world, TS-003 perceives, grounds, reasons about, predicts and acts in it — by reconstructing partially independent technical lineages that converge late, organized as interacting problem layers (representation, recognition, localization/structure, language alignment, grounding, fusion, temporal/spatial state, reasoning, action/prediction) rather than a single model chronology. The cross-cutting test throughout is what representation of the world is sufficient for the next computation: what each stage preserves, discards, localizes, tokenizes, grounds, reasons over, predicts or acts upon.",
   "architecture_goals": [
@@ -357,7 +357,7 @@
         "Captioning/VQA predecessors prevent CLIP ex-nihilo; generation detail stays TS-002",
         "Original-paper zero-shot limits: weak fine-grained classification (car models, flower species, aircraft variants), counting (CLEVRCounts), near-random novel systematic tasks (KITTI distance); out-of-distribution brittleness (MNIST 88%, below a pixel baseline); ~1000x compute estimated to reach overall SOTA (infeasible on current hardware).",
         "Generation-side detail is TS-002-owned; TS-003 carries the predecessor role only.",
-        "VQA-v2 training contamination and prior-exploitability qualify naive accuracy readings; bind split + extraction rule.",
+        "VQA-family accuracy can exploit question/answer priors; VQA v2 reduces this bias using complementary image pairs, so dataset version/split and answer extraction must remain bound to evaluation claims.",
         "Variant role; short treatment."
       ],
       "drafting_order": 7,
@@ -533,18 +533,18 @@
       "must_cover_requirements": [
         "Two technically distinct open families (InternVL3 paradigm contrast, Molmo 2 grounding comparator); no Qwen-only narrative",
         "Audio chain Whisper/BEATs/CLAP/omni-sync with synthesis excluded (TS-002)",
-        "Vendor latency/token figures config-bound (CV2-DM-020); X03 fields multimodal-specific only",
-        "Query-driven selective acquisition economics axis via VM-D112 (vendor ceilings, version-bound; token scope only)",
+        "First-party latency/token figures config-bound (CV2-DM-020); X03 fields multimodal-specific only",
+        "Query-driven selective acquisition economics axis via VM-D112 (provider/vendor ceilings, version-bound; token scope only)",
         "SigLIP 2 encoder-reuse note extends the fusion encoder lineage (supporting)"
       ],
       "boundaries": [
         "M-RoPE lineage thread; Thinker-Talker streaming subordinated to input/fusion side",
-        "All benchmark claims vendor-measured (G05); token/config figures config-bound (CV2-DM-020); independent reproduction pending; repo commit binding at later stages.",
-        "No-degradation and leaderboard claims vendor-measured (G05); 234ms is theoretical cold-start; generation-side excluded by boundary.",
+        "All benchmark claims are author/developer self-reported measurements (G05); token/config figures config-bound (CV2-DM-020); independent reproduction pending; repo commit binding at later stages.",
+        "No-degradation and leaderboard claims are author/developer self-reported (G05); 234ms is theoretical cold-start; generation-side excluded by boundary.",
         "Speech-domain scope; general-audio needs BEATs-side sources.",
         "Classification-benchmark scope; fusion behavior needs omni-side sources.",
         "128k-pair scale vs CLIP-scale; later omni encoders qualify the comparison.",
-        "Vendor-measured evals at this read level (G05); 3.5-series supersession checks belong to later stages.",
+        "Author/developer self-reported evaluation at this read level (G05); 3.5-series supersession checks belong to later stages.",
         "Author-measured comparisons; Qwen-backbone dependence disclosed; long-video competitiveness is partial.",
         "Superseded claims need Qwen3-side sources; predecessor depth only.",
         "No mechanism disclosure; scores vendor-measured; card content may drift (bind date).",
@@ -865,7 +865,7 @@
     {
       "package_id": "P15",
       "title": "Measurement, limits and convergence",
-      "purpose": "Task-identity-preserving evaluation synthesis: what each contract measures and misses, condition binding, vendor-vs-independent separation, and the unified-vs-modular convergence verdict with supervision-timeline synthesis.",
+      "purpose": "Task-identity-preserving evaluation synthesis: what each contract measures and misses, condition binding, author/developer self-reported vs provider/vendor-reported vs independent-third-party separation, and the unified-vs-modular convergence verdict with supervision-timeline synthesis.",
       "primary_candidate_ids": [
         "candidate:SP-vision-multimodal-2026:0202917391a980c0"
       ],
@@ -888,7 +888,7 @@
         "Methodology-first: distinct contracts only, no catalogue, no cross-family ranking",
         "OCRBench v2 private-set discipline + recognition-vs-spotting gap as signature exhibits",
         "X01 timeline synthesis and convergence verdict live here, not as predetermined unity",
-        "P15 binds cross-package synthesis authority: P05 DocVQA/ChartQA, P10 MMMU/POPE/MMBench, P11 Video-MME/LongVideoBench, P09 Gemini-3.x vendor-vs-independent poles, P13 Gemini-Robotics-2/On-Device-2 limitation evidence, P14 Genie-3 limitation evidence (all reused SUPPORTING, no new candidates)",
+        "P15 binds cross-package synthesis authority: P05 DocVQA/ChartQA, P10 MMMU/POPE/MMBench, P11 Video-MME/LongVideoBench, P09 author/developer self-reported vs provider/vendor-reported vs independent-third-party poles, P13 Gemini-Robotics-2/On-Device-2 limitation evidence, P14 Genie-3 limitation evidence (all reused SUPPORTING, no new candidates)",
         "P15 consumes P12 GUI/Computer-Use evaluation (OSWorld/OSWorld-2.0/SeeClick-ScreenSpot) via the extension cross-synthesis map; PRIMARY single-destination rule keeps their package home in P12",
         "X01-X04 synthesis threads bound via the extension cross-synthesis map to named already-selected evidence",
         "Methodology-first organizing principle holds: distinct evaluation contracts, no benchmark catalogue, no score ranking"
@@ -994,13 +994,6 @@
         "VM-D106",
         "VM-D107"
       ],
-      "p09_vendor_vs_independent": [
-        "VM-D065",
-        "VM-D070",
-        "VM-D071",
-        "VM-D072",
-        "VM-D073"
-      ],
       "x01_data_supervision_post_training": [
         "VM-D003",
         "VM-D035",
@@ -1029,6 +1022,13 @@
         "VM-D099",
         "VM-D100",
         "VM-D110"
+      ],
+      "p09_measurement_provenance": [
+        "VM-D065",
+        "VM-D070",
+        "VM-D071",
+        "VM-D072",
+        "VM-D073"
       ]
     },
     "regeneration": "r2 from SELECTION_COMPLETE after Human Architecture Review r1 REQUEST_CHANGES; Selection byte-identical"
