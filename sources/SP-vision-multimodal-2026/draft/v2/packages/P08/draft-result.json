@@ -4,7 +4,7 @@
   "research_profile": "THEMATIC",
   "publication_profile": "LONGFORM_SPECIAL",
   "package_id": "P08",
-  "draft_version": "fresh-121-r7",
+  "draft_version": "fresh-121-r7-rev1",
   "status": "ESTABLISHED",
   "basis": {
     "draft_package_sha256": "33cd3b54865c0baa50249f21e58438e85b2960843098073624252bcccaab973a",
@@ -14,8 +14,8 @@
   "runner": {
     "provider": "Muse",
     "model": "Muse Spark (Work execution role; not a Sol/Human decision)",
-    "invocation": "TS-003 fresh 121-authority Draft from Architecture r7 APPROVED (corrected DocVQA/DETR authority + P07A VM-D114 binding + post-r6 correction guards): 16 packages newly authored from the corrected chain; fresh-121-r6 as negative regression only; no TeX/PDF; DRAFT_COMPLETE then STOP for independent AI review",
-    "generated_at": "2026-10-07T03:00:00Z",
+    "invocation": "TS-003 Draft closure revision r7-rev1 from Architecture r7 APPROVED (same authority; targeted semantic/editorial repair: SSv1 task identity, InstructBLIP/LLaVA contracts, P07B synthesis granularity + rhythm, technical Japanese, workflow-vocabulary purge, SigLIP2/P07A role split, cross-package dedup, reader-scope cleanup; r7 authority unchanged; no TeX/PDF; DRAFT_COMPLETE held for final AI closure review)",
+    "generated_at": "2026-10-07T05:00:00Z",
     "run_reference": null
   },
   "headline": "固定を活かして視覚と言語を接合した世代交代",
@@ -307,7 +307,7 @@
     {
       "block_id": "p08-b8",
       "block_type": "PARAGRAPH",
-      "text": "系譜を通覧すると、別々に事前学習されたコンポーネントの結合は段階を追って収束する。Frozenの前置きを起点にFlamingoのgated cross-attentionと交互配置集合が少数例での汎化を切り開き、BLIP-2の二段階が凍結の節約を定式化した。InstructBLIPとLLaVAは指示集合の機械生成と段階ごとの凍結管理へ論点を移し、学習範囲と固定範囲の契約を明確にした。MolmoとPixMoは外部蒸留なしの開かれた集合で同列の到達を示し、pointingを含む評価の幅と開放データおよびコードによる確認可能性を押し広げた。少数例対応や指示追従の欠落は順に計算可能となったが、言語事前分布に由来する幻覚や合成依存、高解像度知覚の限界は残存する。結合の選択は効率と再利用の判断であり、単一形式への集約ではない。",
+      "text": "系譜を通覧すると、別々に事前学習されたコンポーネントの結合は段階を追って収束する。Frozenの前置きを起点にFlamingoのgated cross-attentionと交互配置集合が少数例での汎化を切り開き、BLIP-2の二段階が凍結の節約を定式化した。InstructBLIPは既存の公開視覚言語データセット26件を指示形式へ変換し、指示を読み取るQ-Formerで調整する。26件の指示化と13のheld-out集合でのゼロショット首位、画像付きScienceQA 90.7%が著者測定として示される。核はBLIP-2土台の指示形式変換であり、GPT-4による合成指示生成ではない。LLaVAは対照的に、画像を見ない言語専用GPT-4が記号化した説明とボックスから15万8000件の合成指示集合を生成し、第一段で視覚と言語モデルを凍結してprojectionのみ、第二段で視覚を凍結したままprojectionと大規模言語モデルを学ぶ。両者は指示追従へ向かうが、データ生成（既存公開集合の指示化かGPT-4合成か）と学習対象（指示読み取りQ-Formerか段階的projection/LLMか）の契約が異なる。MolmoとPixMoは外部蒸留なしの開かれた集合で同列の到達を示し、pointingを含む評価の幅と開放データおよびコードによる確認可能性を押し広げた。少数例対応や指示追従の欠落は順に計算可能となったが、言語事前分布に由来する幻覚や合成依存、高解像度知覚の限界は残存する。",
       "attribution_mode": "MIXED",
       "evidence_refs": [
         {
@@ -322,6 +322,13 @@
           "kind": "CLAIM",
           "evidence_id": "claim-2",
           "subject_id": "ev-vmd058",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:b049264287440eba",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd060",
           "subject_role": "PRIMARY_SUBJECT"
         },
         {

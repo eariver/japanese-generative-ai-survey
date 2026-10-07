@@ -4,7 +4,7 @@
   "research_profile": "THEMATIC",
   "publication_profile": "LONGFORM_SPECIAL",
   "package_id": "P13",
-  "draft_version": "fresh-121-r7",
+  "draft_version": "fresh-121-r7-rev1",
   "status": "ESTABLISHED",
   "basis": {
     "draft_package_sha256": "7371322d7f4f6182206609e3e69853e344e8549c8c39ee37b71c655082a944e9",
@@ -14,12 +14,12 @@
   "runner": {
     "provider": "Muse",
     "model": "Muse Spark (Work execution role; not a Sol/Human decision)",
-    "invocation": "TS-003 fresh 121-authority Draft from Architecture r7 APPROVED (corrected DocVQA/DETR authority + P07A VM-D114 binding + post-r6 correction guards): 16 packages newly authored from the corrected chain; fresh-121-r6 as negative regression only; no TeX/PDF; DRAFT_COMPLETE then STOP for independent AI review",
-    "generated_at": "2026-10-07T03:00:00Z",
+    "invocation": "TS-003 Draft closure revision r7-rev1 from Architecture r7 APPROVED (same authority; targeted semantic/editorial repair: SSv1 task identity, InstructBLIP/LLaVA contracts, P07B synthesis granularity + rhythm, technical Japanese, workflow-vocabulary purge, SigLIP2/P07A role split, cross-package dedup, reader-scope cleanup; r7 authority unchanged; no TeX/PDF; DRAFT_COMPLETE held for final AI closure review)",
+    "generated_at": "2026-10-07T05:00:00Z",
     "run_reference": null
   },
-  "headline": "企画分離から離散と連続の行動インターフェースへ",
-  "deck": "企画側の接地からjointな表象と離散的行動トークン化へ進み、開放実装と連続生成や周波数空間トークン化が分岐する。実環境での汎化を軸にVLA系譜は遅れて交わり、一本化を急がない。",
+  "headline": "プランニング分離から離散と連続の行動インターフェースへ",
+  "deck": "プランニング側の接地からjointな表象と離散的行動トークン化へ進み、開放実装と連続生成や周波数空間トークン化が分岐する。実環境での汎化を軸にVLA系譜は遅れて交わり、一本化を急がない。",
   "deck_attribution_mode": "ATTRIBUTED",
   "deck_evidence_refs": [
     {
@@ -41,7 +41,7 @@
     {
       "block_id": "P13-B1",
       "block_type": "PARAGRAPH",
-      "text": "SayCanはVLA以前の企画側接地を示す分岐点である。固定大規模言語モデルの意味知識をSayとし、学習済み技能の実行可能性を示す価値関数をCanとして積で行動を選ぶ。言語モデルが企画を担い、技能群が手足と目として働く。移動マニピュレータの実キッチン101課題では接地ありが接地なし基準のほぼ2倍に達したと論文著者らは報告する。Canは累積報酬ではなく技能の実現可能性を表す関数であり、結合表現を持たない点が肝要である。企画側に留まり知覚と言語を束ねない点が後のjoint化との対照を鮮明にする。",
+      "text": "SayCanはVLA以前のプランニング側の接地を示す分岐点である。固定大規模言語モデルの意味知識をSayとし、学習済み技能の実行可能性を示す価値関数をCanとして積で行動を選ぶ。言語モデルがプランニングを担い、技能群が手足と目として働く。移動マニピュレータの実キッチン101課題では接地ありが接地なし基準のほぼ2倍に達したと論文著者らは報告する。Canは累積報酬ではなく技能の実現可能性を表す関数であり、結合表現を持たない点が肝要である。プランニング側に留まり知覚と言語を束ねない点が後のjoint化との対照を鮮明にする。",
       "attribution_mode": "MIXED",
       "evidence_refs": [
         {
@@ -92,7 +92,7 @@
     {
       "block_id": "P13-B3",
       "block_type": "PARAGRAPH",
-      "text": "PaLM-Eは視覚と言語と行動を一表現に束ねた結合の転換であり、この節で機構を深く扱う対象である。視覚や状態推定など連続感覚を織り交ぜた多様式文として入れ、固定から結合へ進む大規模言語モデルとend-to-endで学ぶ。操作企画と視覚質問応答と説明生成にまたがり、562B規模では視覚言語の汎用力を保ちOK-VQAで報告時最良を示したと原論文は述べる。ネット上の視覚言語とロボット域の間で正の転移を示す。言語力を保ったまま操作へ伸ばす点が重要であり、562B共同学習は計算と複雑さの面で再現性を縛る。企画分離と統合を混ぜず、規模と維持の両立として読む。",
+      "text": "PaLM-Eは視覚と言語と行動を一表現に束ねた結合の転換であり、この節で機構を深く扱う対象である。視覚や状態推定など連続感覚を織り交ぜた多様式文として入れ、固定から結合へ進む大規模言語モデルとend-to-endで学ぶ。操作のプランニングと視覚質問応答と説明生成にまたがり、562B規模では視覚言語の汎用力を保ちOK-VQAで報告時最良を示したと原論文は述べる。ネット上の視覚言語とロボット域の間で正の転移を示す。言語力を保ったまま操作へ伸ばす点が重要であり、562B共同学習は計算と複雑さの面で再現性を縛る。プランニングの分離と統合を混ぜず、規模と維持の両立として読む。",
       "attribution_mode": "ATTRIBUTED",
       "evidence_refs": [
         {
@@ -144,7 +144,7 @@
     {
       "block_id": "P13-B6",
       "block_type": "PARAGRAPH",
-      "text": "π₀は学習済みPaliGemma視覚言語基盤3Bに300Mのflow-matching行動エキスパートを添える構成であり、合計3.3Bとなる。出力契約は連続行動の塊であり、地平H=50の系列をフロー照合の場を10段Eulerで解いて生成し、時間的アンサンブルは用いず開ループで塊を実行する。ここで三量を切り分ける。第一に塊長H=50は出力の長さである。第二に制御率は機体依存であり、UR5eとFrankaは20Hz、その他評価機は50Hzであって、一律ではなく最大50Hz級の能力として報告される。第三に再推論周期は別量であり、20Hz機では16行動後およそ0.8秒、50Hz機では25行動後およそ0.5秒で推し直し、H=50全実行を待たない。データ体制は1万時間超と9億300万段階、7構成68課題、OXEとBridgeとDROID混合で学び、数時間から100時間超の調整で適応する。離散的言語風トークンは単純課題では足りるが精密高頻度の器用さでは崩れると報告する。連続生成の分岐を定める転換であり、離散分岐との対照軸となる。難関長期課題は調整と上位言語企画を要し、規模と機材鋭敏さと推論負担が残る。",
+      "text": "π₀は学習済みPaliGemma視覚言語基盤3Bに300Mのflow-matching行動エキスパートを添える構成であり、合計3.3Bとなる。出力契約は連続行動の塊であり、ホライズンH=50の系列をflow matching（フローマッチング）のベクトル場を10段Eulerで解いて生成し、時間的アンサンブルは用いず開ループで塊を実行する。ここで三量を切り分ける。第一に塊長H=50は出力の長さである。第二に制御率は機体依存であり、UR5eとFrankaは20Hz、その他評価機は50Hzであって、一律ではなく最大50Hz級の能力として報告される。第三に再推論周期は別量であり、20Hz機では16行動後およそ0.8秒、50Hz機では25行動後およそ0.5秒で推し直し、H=50全実行を待たない。データ体制は1万時間超と9億300万段階、7構成68課題、OXEとBridgeとDROID混合で学び、数時間から100時間超の調整で適応する。離散的言語風トークンは単純課題では足りるが精密高頻度の器用さでは崩れると報告する。連続生成の分岐を定める転換であり、離散分岐との対照軸となる。難関長期課題は調整と上位の言語プランニングを要し、規模とハードウェア構成への感度と推論負担が残る。",
       "attribution_mode": "ATTRIBUTED",
       "evidence_refs": [
         {
@@ -216,7 +216,7 @@
     {
       "block_id": "P13-B8",
       "block_type": "PARAGRAPH",
-      "text": "Gemini Robotics 2は両腕から全身人型まで扱う最先端VLAと、実世界理解と多段企画を担うER 2、効率型VLAのOn-Device 2から成る提供形態であり、企画と方策の分業を能力段階で示す。提携と早期利用向け提供であり、提供側測定の能力提供域を扱い、機構や遅延や価格やトークンの事実は公表されない。On-Device 2はGemmaとRobotics 1.5系VLAを端末で動かし、文と画像とプロプリオセプションを入れ行動を出す。信頼できる検証者に限り、模擬と実機で場面指示行動の汎化を測り、TPUとJAXとML-Pathwaysで学ぶ。分布外汎化と高自由度制御の限界、両腕中心の安全域、階層的安全推奨が記される。系譜は遅れて交わる。",
+      "text": "Gemini Robotics 2は両腕から全身人型まで扱う最先端VLAと、実世界理解と多段プランニングを担うER 2、効率型VLAのOn-Device 2から成る提供形態であり、プランニングと方策の分業を能力段階で示す。提携と早期利用向け提供であり、提供側測定の能力提供域を扱い、機構や遅延や価格やトークンの事実は公表されない。On-Device 2はGemmaとRobotics 1.5系VLAを端末で動かし、文と画像とプロプリオセプションを入れ行動を出す。信頼できる検証者に限り、模擬と実機で場面指示行動の汎化を測り、TPUとJAXとML-Pathwaysで学ぶ。分布外汎化と高自由度制御の限界、両腕中心の安全域、階層的安全推奨が記される。系譜は遅れて交わる。",
       "attribution_mode": "MIXED",
       "evidence_refs": [
         {

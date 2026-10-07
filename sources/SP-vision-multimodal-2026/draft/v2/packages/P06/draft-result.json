@@ -4,7 +4,7 @@
   "research_profile": "THEMATIC",
   "publication_profile": "LONGFORM_SPECIAL",
   "package_id": "P06",
-  "draft_version": "fresh-121-r7",
+  "draft_version": "fresh-121-r7-rev1",
   "status": "ESTABLISHED",
   "basis": {
     "draft_package_sha256": "498a082bed342981af7742b404c05e2dbaf75319ac0794ffd2979dc2afbc2fb8",
@@ -14,8 +14,8 @@
   "runner": {
     "provider": "Muse",
     "model": "Muse Spark (Work execution role; not a Sol/Human decision)",
-    "invocation": "TS-003 fresh 121-authority Draft from Architecture r7 APPROVED (corrected DocVQA/DETR authority + P07A VM-D114 binding + post-r6 correction guards): 16 packages newly authored from the corrected chain; fresh-121-r6 as negative regression only; no TeX/PDF; DRAFT_COMPLETE then STOP for independent AI review",
-    "generated_at": "2026-10-07T03:00:00Z",
+    "invocation": "TS-003 Draft closure revision r7-rev1 from Architecture r7 APPROVED (same authority; targeted semantic/editorial repair: SSv1 task identity, InstructBLIP/LLaVA contracts, P07B synthesis granularity + rhythm, technical Japanese, workflow-vocabulary purge, SigLIP2/P07A role split, cross-package dedup, reader-scope cleanup; r7 authority unchanged; no TeX/PDF; DRAFT_COMPLETE held for final AI closure review)",
+    "generated_at": "2026-10-07T05:00:00Z",
     "run_reference": null
   },
   "headline": "系列化した画像と目的別の学習が開く再利用の土台",
@@ -170,7 +170,7 @@
     {
       "block_id": "P06-B04",
       "block_type": "PARAGRAPH",
-      "text": "注釈なし蒸留から表現を引き出すには、教師と生徒の関係を崩壊なく保つ仕掛けが要った。自己教師ありDINOは注釈なしにViTを学び、教師ありViTや畳み込みには見られない創発的性質を示した。CLS注意が意味的分割の情報を含み、小規模ViTでkNNによりImageNetで78.3%、ViT-Baseで線形評価80.1%とされる。教師は勾配を止めたモーメンタム符号化器で生徒のみ確率的勾配で動かし、多作物と小パッチが効く。崩壊回避には教師出力へのセンタリングと低い教師温度による先鋭化の両方が要り、片方を欠くと崩壊する。教師温度は0.04から0.07への線形ウォームアップ、生徒温度0.1固定、運動量係数0.996から1への余弦変化であり、向きを逆にしない。本節のDINOは検出器のDINOとは別物であり、自己教師ありDINOとして呼ぶ。",
+      "text": "注釈なし蒸留から表現を引き出すには、教師と生徒の関係を崩壊なく保つ仕掛けが要った。自己教師ありDINOは注釈なしにViTを学び、教師ありViTや畳み込みには見られない創発的性質を示した。CLS注意が意味的分割の情報を含み、小規模ViTでkNNによりImageNetで78.3%、ViT-Baseで線形評価80.1%とされる。教師は勾配を止めたモーメンタム符号化器で生徒のみ確率的勾配で動かし、マルチクロップと小パッチが効く。崩壊回避には教師出力へのセンタリングと低い教師温度による先鋭化の両方が要り、片方を欠くと崩壊する。教師温度は0.04から0.07への線形ウォームアップ、生徒温度0.1固定、運動量係数0.996から1への余弦変化であり、向きを逆にしない。本節のDINOは検出器のDINOとは別物であり、自己教師ありDINOとして呼ぶ。",
       "attribution_mode": "MIXED",
       "evidence_refs": [
         {
@@ -293,7 +293,7 @@
     {
       "block_id": "P06-B08",
       "block_type": "PARAGRAPH",
-      "text": "対照学習の改良だけでは、位置や密な転移が十分にならなかった。SigLIP 2は対ごとシグモイド損失を保ちつつ、段階的手順として説明復号器LocCaによる見出し学習、SILCによる局所全体間の自己蒸留、TIPSやDINO系統のマスク予測、オンライン精選を組み合わせた。WebLIの109言語多言語混合と偏り除去選別、元解像度を保つNaFlexによる縦横比保持と多解像度学習が用いられ、改善は新損失ではなく組合せに帰される。RefCOCOの接地、OWL-ViTによるオープンボキャブラリー検出、密な探索でSigLIPを上回り、PaliGemma型の凍結符号化器転移でも改善が示された。一方NaFlexは自己蒸留やマスク損失を含まず外挿が弱いこと、RefCOCOが英語専用LocCaに届かない多言語の代償、小規模モデルの改善が蒸留段階に依存することが限界である。",
+      "text": "対照学習の改良だけでは、位置や密な転移が十分にならなかった。SigLIP 2は対ごとシグモイド損失を保ちつつ、段階的手順として説明デコーダLocCaによるキャプション生成学習、SILCによる局所全体間の自己蒸留、TIPSやDINO系統のマスク予測、オンライン精選を組み合わせた。WebLIの109言語多言語混合と偏り除去選別、元解像度を保つNaFlexによる縦横比保持と多解像度学習が用いられ、改善は新損失ではなく組合せに帰される。RefCOCOの接地、OWL-ViTによるオープンボキャブラリー検出、密な探索でSigLIPを上回り、PaliGemma型の凍結符号化器転移でも改善が示された。一方NaFlexは自己蒸留やマスク損失を含まず外挿が弱いこと、RefCOCOが英語専用LocCaに届かない多言語の代償、小規模モデルの改善が蒸留段階に依存することが限界である。",
       "attribution_mode": "ATTRIBUTED",
       "evidence_refs": [
         {
