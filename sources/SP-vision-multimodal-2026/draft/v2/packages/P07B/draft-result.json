@@ -4,7 +4,7 @@
   "research_profile": "THEMATIC",
   "publication_profile": "LONGFORM_SPECIAL",
   "package_id": "P07B",
-  "draft_version": "fresh-121-r8",
+  "draft_version": "fresh-121-r8-rev1",
   "status": "ESTABLISHED",
   "basis": {
     "draft_package_sha256": "222df9fe45e517e57e5af3ff032d7fc082442057f6b5aec98fab785e0546f014",
@@ -14,8 +14,8 @@
   "runner": {
     "provider": "Muse",
     "model": "Muse Spark (Work execution role; not a Sol/Human decision)",
-    "invocation": "TS-003 fresh 121-authority Draft from Architecture r8 APPROVED (corrected D039 authority + P11 SAM3 wording + effective cross-package map incl. D110->P05): 16 packages newly authored from the corrected chain; fresh-121-r7-rev1 as regression reference only; no TeX/PDF; DRAFT_COMPLETE then STOP for independent AI review",
-    "generated_at": "2026-10-07T07:00:00Z",
+    "invocation": "TS-003 Draft closure revision r8-rev1 from Architecture r8 APPROVED (same authority; targeted reader-facing + binding repair: P04 GoldG/D047, Flamingo scale, OSWorld conditions, P09 TODO removal, Grounding DINO terms, Japanese/workflow cleanup; r8 authority unchanged; no TeX/PDF; DRAFT_COMPLETE held for independent content review)",
+    "generated_at": "2026-10-07T08:00:00Z",
     "run_reference": null
   },
   "headline": "言葉の指示を箱・マスク・座標へ落とす連鎖",
@@ -202,7 +202,7 @@
     {
       "block_id": "P07B-B08",
       "block_type": "PARAGRAPH",
-      "text": "文と画像を早期に融合させる言語条件づけの方式として、MDETRは自然文の質問でDETRを条件づけ、文画像の早期融合により端到端の条件付き検出器を構成した。語句と対象の対応データ130万対の事前学習により、Flickr30kの語句接地やRefCOCO系列のREC、PhraseCutの参照分割で最先端とされ、GQAやCLEVRのVQAでも競争力を持ち、少数例の長尾検出が可能とされる。コードとモデルが公開された。多課題を一つの調整構成で扱えるようになった。GLIPの資料実践再定式とは契約が異なり、両者は重複ではなく別系統として保つ。",
+      "text": "文と画像を早期に融合させる言語条件づけの方式として、MDETRは自然言語クエリでDETRを条件づけ、文画像の早期融合により端到端の条件付き検出器を構成した。語句と対象の対応データ130万対の事前学習により、Flickr30kの語句接地やRefCOCO系列のREC、PhraseCutの参照分割で最先端とされ、GQAやCLEVRのVQAでも競争力を持ち、少数例の長尾検出が可能とされる。コードとモデルが公開された。多課題を一つの調整構成で扱えるようになった。GLIPのデータ実践による再定式とは契約が異なり、両者は重複ではなく別系統として保つ。",
       "attribution_mode": "MIXED",
       "evidence_refs": [
         {
@@ -246,7 +246,7 @@
     {
       "block_id": "P07B-B10",
       "block_type": "PARAGRAPH",
-      "text": "接地学習と検出器を三段階で密に結ぶ融合設計として、Grounding DINOが示された。Grounding DINOは特徴増強と言語誘導質問選択と相互様式復号器の3段階でDINO検出器と接地学習を結合し、検出と接地と説明文のデータで事前学習する。検出器DINOは技術的土台として区別され、集合予測系の系譜に属する。COCOゼロショット52.5APとされ、ここでのゼロショットは学習に検証区分を使わない論文定義である。ODinWゼロショット平均26.1APが記録され、検査点と推論コードが公開された。密な融合によるオープンボキャブラリー検出が実現された。GLIPの再定式とは契約が異なり、融合設計としての位置が保たれる。RECのゼロショット性能は今後の注目を要すると論文自身が述べており、言い切らない。",
+      "text": "接地学習と検出器を三段階で密に結ぶ融合設計として、Grounding DINOが示された。Grounding DINOはfeature enhancer（特徴強化器）とlanguage-guided query selection（言語誘導型クエリ選択）とcross-modality decoder（クロスモダリティ・デコーダ）の3段階でDINO検出器と接地学習を結合し、検出と接地と説明文のデータで事前学習する。検出器DINOは技術的土台として区別され、集合予測系の系譜に属する。COCOゼロショット52.5APとされ、ここでのゼロショットは学習に検証区分を使わない論文定義である。ODinWゼロショット平均26.1APが記録され、チェックポイントと推論コードが公開された。密な融合によるオープンボキャブラリー検出が実現された。GLIPの再定式とは契約が異なり、融合設計としての位置が保たれる。RECのゼロショット性能は今後の注目を要すると論文自身が述べており、言い切らない。",
       "attribution_mode": "MIXED",
       "evidence_refs": [
         {
@@ -341,7 +341,7 @@
     {
       "block_id": "P07B-B14",
       "block_type": "PARAGRAPH",
-      "text": "本節の系譜は、語句と領域の対応づけを担う資料（Flickr30k Entitiesの24.4万共参照鎖・27.6万箱）から、検出を語句の接地へ書き直す資料実践（GLIPの27M接地集合：人手3Mとウェブ由来24M）、検出器と接地学習を三段階で結ぶ密な融合（Grounding DINO）へ進んだ。教師の置き方（ViLDの蒸留かGLIPの資料実践か）と融合の位置（MDETRの早期融合か後段での融合）と出力（箱か語句接地か）で系統が分かれる。LVIS-rareのAPと語句接地のRecallを別指標で測り、画像水準のゼロショットや検索Recall@Kとも混ぜない点が共通の約束である。希少区分の手順は利用ごとに明示し、ウェブ資料依存の限界を条件づける。単一構成の勝利ではなく、粒度と代償の未解決を残す。",
+      "text": "本節の系譜は、語句と領域の対応づけを担う資料（Flickr30k Entitiesの24.4万共参照鎖・27.6万箱）から、検出を語句の接地へ書き直す資料実践（GLIPの27M接地集合：人手3Mとウェブ由来24M）、検出器と接地学習を三段階で結ぶ密な融合（Grounding DINO）へ進んだ。教師の置き方（ViLDの蒸留かGLIPのデータ実践か）と融合の位置（MDETRの早期融合か後段での融合）と出力（箱か語句接地か）で系統が分かれる。LVIS-rareのAPと語句接地のRecallを別指標で測り、画像水準のゼロショットや検索Recall@Kとも混ぜない点が共通の約束である。希少区分の手順は利用ごとに明示し、ウェブデータ依存の限界を条件づける。単一構成の勝利ではなく、粒度と代償の未解決を残す。",
       "attribution_mode": "MIXED",
       "evidence_refs": [
         {

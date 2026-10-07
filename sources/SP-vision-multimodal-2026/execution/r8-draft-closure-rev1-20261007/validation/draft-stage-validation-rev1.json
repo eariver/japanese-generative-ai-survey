@@ -1,16 +1,19 @@
 {
   "schema_version": "2.0-rc1",
+  "check_id": "CORE_STAGE_CONTRACT",
+  "status": "PASS",
   "issue_id": "SP-vision-multimodal-2026",
   "from_state": "ARCHITECTURE_ESTABLISHED",
   "to_state": "DRAFT_COMPLETE",
-  "checkpoints": [
-    "draft"
-  ],
-  "recorded_at": "2026-10-07T15:04:12Z",
-  "implementation": {
-    "repository_commit_sha": "1bbb86d7ad32508023970dae05f81bc920f207ab",
-    "orchestrator_version": "survey-production-core-v2/0.15-postintegration-transport-thematic"
+  "production_state": {
+    "path": "sources/SP-vision-multimodal-2026/production-state.json",
+    "sha256": "0c888948ba65b456a973682f7fe4cf130c60700b563c8d66b513d897aa314b89"
   },
+  "production_profile": {
+    "path": "sources/SP-vision-multimodal-2026/production-profile.json",
+    "sha256": "e4d16027d66d379848378031e47198a09f0b27a961e27a0ab250923a07a57444"
+  },
+  "implementation_commit_sha": "1bbb86d7ad32508023970dae05f81bc920f207ab",
   "contract": {
     "pipeline_contract_version": "2.0-rc1",
     "pipeline_contract_sha256": "ee89796245c22072cec98f34931180214a4928c24f399280793cd6420a4c8e71",
@@ -193,18 +196,5 @@
       "sha256": "58945ad5b3a80ae9e3778f629cf7b7b7a791673862a03914cb7cdacbc8d3c9b0"
     }
   ],
-  "reviews": [
-    {
-      "check_id": "CORE_STAGE_CONTRACT",
-      "kind": "DETERMINISTIC",
-      "status": "PASS",
-      "executor": "Muse Spark (Work execution role; deterministic tool result, not a Sol/Human decision)",
-      "evidence": "Deterministic drafting-synthesis validation for TS-003 Draft closure revision r8-rev1 (Draft-only targeted repair from Architecture r8 APPROVED; lifecycle stays DRAFT_COMPLETE): 16 draft-package/result pairs revalidated against unchanged r8 authority (packages re-derived identical, results revised to draft_version fresh-121-r8-rev1) + 8/16 canonical Draft validation PASS + 8/16 edition-local overlay PASS (P04/P05/P06/P07A/P07B/P10/P11/P15 over 35-entry r8-rev1 effective map incl. D047->P04) + synthesis input derivation match (overlay-aware) + regenerated synthesis valid (payloads refreshed) + edition-local closure audits PASS (P04 GoldG/D047, Flamingo scale, OSWorld conditions, P09 TODO removal, GroundingDINO terms, reader X01, P01 epistemics, Japanese/workflow purge, FINAL effective consumption, F1-F6 + G1-G7 negative fixtures). Machine validation only; fresh independent content review owed.",
-      "result": {
-        "path": "sources/SP-vision-multimodal-2026/execution/r8-draft-closure-rev1-20261007/validation/draft-stage-validation-rev1.json",
-        "sha256": "98f5aca086d9e3f6e47469dde31cd0d119133b622ca12f59435aa8b7bfd3442d"
-      }
-    }
-  ],
-  "summary": "TS-003 Draft closure revision r8-rev1 from Architecture r8 APPROVED (unchanged): P04 GoldG/D047 binding + Flamingo data-volume correction + OSWorld condition binding + P09 TODO removal + GroundingDINO terminology + reader X01 removal + P01 epistemic scope + Japanese/workflow cleanup; VM-D122 excluded; no TeX/PDF; STOP for fresh independent content review"
+  "recorded_at": "2026-10-07T15:04:12Z"
 }
