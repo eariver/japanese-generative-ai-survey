@@ -4,22 +4,22 @@
   "research_profile": "THEMATIC",
   "publication_profile": "LONGFORM_SPECIAL",
   "package_id": "P07A",
-  "draft_version": "fresh-121-r6",
+  "draft_version": "fresh-121-r7",
   "status": "ESTABLISHED",
   "basis": {
-    "draft_package_sha256": "98768fa5eced1e61b49d8adc673cca9afc2bf03fdce69aa1426e7922e8b62183",
+    "draft_package_sha256": "36ecd6646105f8e2dfd93fbf06e142e360122a7617d3418bb6b4b07fb14cf00f",
     "prompt_id": "article-drafting-v2",
     "prompt_sha256": "b687313312a23025228c16c3f10cb68f669b910cd7215e41886d4dd91f44fe11"
   },
   "runner": {
     "provider": "Muse",
     "model": "Muse Spark (Work execution role; not a Sol/Human decision)",
-    "invocation": "TS-003 fresh 121-authority Draft from Architecture r6 APPROVED (corrected VQA-v2 + three-way provenance authority): 16 packages newly authored from the corrected chain; r5-rev2 as negative regression only; no TeX/PDF; DRAFT_COMPLETE then STOP for independent AI review",
-    "generated_at": "2026-10-07T02:00:00Z",
+    "invocation": "TS-003 fresh 121-authority Draft from Architecture r7 APPROVED (corrected DocVQA/DETR authority + P07A VM-D114 binding + post-r6 correction guards): 16 packages newly authored from the corrected chain; fresh-121-r6 as negative regression only; no TeX/PDF; DRAFT_COMPLETE then STOP for independent AI review",
+    "generated_at": "2026-10-07T03:00:00Z",
     "run_reference": null
   },
-  "headline": "一枚の画像を言葉で指し示す対応関係",
-  "deck": "決まった分類名から自然文で画像を指す方式への転換を扱う。ゼロショット転移と画像文検索のRecall@Kを契約とし、位置への接地とは指標も機構も切り離して、画像全体の意味対応に見合う表現を問う。",
+  "headline": "分類名の固定から言葉で示す画像理解へ",
+  "deck": "定められた分類名から自然文で画像を指す方式への転換を扱う。ゼロショット転移と画像文検索のRecall@Kを契約とし、位置への接地とは指標も機構も切り離して、画像全体の意味対応に見合う表現を問う。",
   "deck_attribution_mode": "MIXED",
   "deck_evidence_refs": [
     {
@@ -62,7 +62,7 @@
     {
       "block_id": "P07A-B01",
       "block_type": "PARAGRAPH",
-      "text": "画像と言語を結ぶ初期には、画像全体から文を起こす手段自体がなかった。Show and TellすなわちNICはCNN符号化器からRNN復号器へ尤度学習で説明文を生成する端到端の構成であり、PascalでBLEU-1が59、従来25、人間約69、Flickr30kで66、SBUで28、COCOでBLEU-4が27.7とされる。コンパクトな視覚表現から生成が成り立つことを示した点が先行事例としての意義である。画像内容の言語化が新たに開かれた。生成側の作り込みは別巻の領域であり、本節では画像と言語の対応の起点としてのみ扱う。",
+      "text": "画像と言語を結ぶ初期には、画像全体から文を起こす手段自体が欠けていた。Show and TellすなわちNICはCNN符号化器からRNN復号器へ尤度学習で説明文を起こす端到端の構成であり、PascalでBLEU-1が59、従来25、人間約69、Flickr30kで66、SBUで28、COCOでBLEU-4が27.7と伝えられる。コンパクトな視覚表現から生成が成り立つことを示した点が先行事例としての意義である。画像内容の言語化が新たに開かれた。生成側の作り込みは別巻の領域であり、本節では画像と言語の対応の起点としてのみ扱う。",
       "attribution_mode": "ATTRIBUTED",
       "evidence_refs": [
         {
@@ -77,7 +77,7 @@
     {
       "block_id": "P07A-B02",
       "block_type": "PARAGRAPH",
-      "text": "説明文生成の次に足りなかったのは、画像理解と推論を切り分けて測る問いである。VQAは約25万画像、約76万質問、約1000万回答からなるopen-endedの質問応答であり、短答や選択式による自動評価で汎用的な説明より細かな画像理解と込み入った推論を求めた。言語の事前分布だけに頼る近道をあぶり出す評価族の起点になったことが位置づけである。後のVQA v2では同じ質問に似た画像対を添え、正解が異なる補完的構成により、質問や答えの偏りだけでは解けない条件を整えた。すなわち同一の質問と見た目の近い相補的画像と異なる正答の組が偏りを抑え、画像根拠の利用を強く求めるが、言語の事前分布を消し去るものではない。版や区分と答え抽出規則を明示して数値を扱う必要がある。",
+      "text": "説明文の生成だけでは、画像理解と推論を分けて測る物差しが足りなかった。VQAは約25万画像、約76万質問、約1000万回答からなるopen-endedの質問応答であり、短答や選択式による自動評価で汎用的な説明より細かな画像理解と込み入った推論を求めた。質問や答えの事前分布だけに頼る近道をあぶり出す評価族の起点になったことが位置づけである。後のVQA v2では同一の質問に外見の近い画像対を添え、正解が異なる相補的な組により、質問や答えの偏りだけでは解けない条件を整えた。すなわち同じ質問と見た目の近い相補的画像と異なる正答の組が偏りを抑え、画像根拠の利用を強く求めるが、言語の事前分布を消し去るものではない。版や区分と答え抽出規則を明示して数値を扱う必要がある。",
       "attribution_mode": "MIXED",
       "evidence_refs": [
         {
@@ -106,7 +106,7 @@
     {
       "block_id": "P07A-B03",
       "block_type": "PARAGRAPH",
-      "text": "固定分類が概念を規定する枠組みでは、自然文で概念を指す使い方がなかった。CLIPは4億のウェブ画像文対から説明予測の事前学習を行い、自然文で指定可能な転移可能表現を学んだ。ImageNetの128万ラベルを使わず教師ありResNet-50に匹敵し、光学文字認識や動画行動認識、地理的位置推定（geo-localization）、細粒度分類を含む30超の資料群へゼロショット転移することが示され、コードとモデル重みが公開された。所定分類による教師から画像文教師へ変わり、言語が概念参照のインターフェースになった点が転換である。画像全体の意味を言語で指定する利用が開かれた。原論文が記す弱さは、車種や花種、航空機変種の細粒度分類の弱さ、CLEVRCountsの数え上げの弱さ、KITTI距離の新規系統課題でほぼ偶然水準に留まる点、分布外の脆さとしてMNIST 88%で画素基準を下回る点、全体首位へは約1000倍の計算が要ると見積もられ現行機では非現実的な点に限って扱い、これ以外の作り話を足さない。接地のAPとは別の契約で測る。",
+      "text": "固定分類が概念を定める枠組みでは、自然文で概念を示す使い方がなかった。CLIPは4億のウェブ画像文対から説明予測の事前学習を行い、自然文で指定できる転移可能な表現を学んだ。ImageNetの128万ラベルを使わず教師ありResNet-50に匹敵し、光学文字認識や動画行動認識、地理的位置推定、細粒度分類を含む30超の資料群へゼロショット転移することが示され、コードとモデルの重みが公開された。所定分類による教師から画像文教師へ変わり、言語が概念参照のインターフェースになった点が転換である。画像全体の意味を言語で指定する利用が開かれた。原論文が記す弱さは、車種や花種、航空機変種の細粒度分類の弱さ、CLEVRCountsの数え上げの弱さ、KITTI距離の新規系統課題でほぼ偶然水準に留まる点、分布外の脆さとしてMNIST 88%で画素基準を下回る点、全体首位へは約1000倍の計算が要ると見積もられ現行機では非現実的な点に限って扱い、これ以外の作り話を足さない。接地のAPとは別の契約で測る。",
       "attribution_mode": "ATTRIBUTED",
       "evidence_refs": [
         {
@@ -128,7 +128,7 @@
     {
       "block_id": "P07A-B04",
       "block_type": "PARAGRAPH",
-      "text": "整備済み資料が前提のままでは、雑音の多い大規模代替文で足りるかが確かめられなかった。ALIGNは10億超の代替文対に最小限の頻度洗浄だけを行い、規模が雑音を補うことを示した。二重符号化器による対照対応づけで表現学習とゼロショット分類、Flickr30KやMSCOCOの検索で交差注意型を上回るとされる。精選を前提としない規模拡大の実践が開かれた。本記録は変種としての位置であり、記述は簡潔に留める。画像全体と文の意味対応という契約はCLIPと共通し、位置や領域への接地とは別の評価で測られる。",
+      "text": "整えた資料が前提のままでは、雑音の多い大規模代替文で足りるかが確かめられなかった。ALIGNは10億超の代替文対に最小限の頻度洗浄だけを行い、規模が雑音を補うことを示した。二重符号化器による対照対応づけで表現学習とゼロショット分類、Flickr30KやMSCOCOの検索で交差注意型を上回るとされる。精選を前提としない規模拡大の実践が開かれた。本記録は変種としての位置であり、記述は簡潔に留める。画像全体と文の意味対応という契約はCLIPと共通し、位置や領域への接地とは別の評価で測られる。",
       "attribution_mode": "ATTRIBUTED",
       "evidence_refs": [
         {
@@ -143,7 +143,7 @@
     {
       "block_id": "P07A-B05",
       "block_type": "PARAGRAPH",
-      "text": "画像水準の対応が成立した後も、原論文が明示した弱さは残った。車種や花種、航空機変種の細かな分類、CLEVRCountsの数え上げ、KITTI距離のような新規系統課題での偶然水準、MNIST 88%という分布外の脆さ、全体首位に約1000倍の計算が要るという見積りがそれである。ここでSigLIP 2の段階的手順は画像水準対応の系譜の延長として位置づけられる。すなわち対ごと損失を保ちつつ説明学習や自己蒸留やマスク予測を組み合わせる手順であり、本節の契約を変えるものではなく補強する立場である。新たに問われるのは画像全体の対応に見合う学習手順の条件であり、位置への接地は次節の契約である。両者を同一指標で比べない。",
+      "text": "対照学習の損失を変えるだけでは、位置や密な転移の不足が残った。SigLIP 2は対ごとのシグモイド損失を保ったまま、段階的な手順として説明デコーダLocCaによる見出し学習、SILCによる局所全体間の自己蒸留、TIPSやDINO系統のマスク予測、オンライン精選を組み合わせた。WebLIの109言語多言語混合と偏り除去選別、元解像度を保つNaFlexによる縦横比保持と多解像度学習が用いられ、伸びは新損失ではなく組合せに帰される。RefCOCOの接地、OWL-ViTによるオープンボキャブラリー検出、密な探索でSigLIPを上回り、PaliGemma型の凍結符号化器転移でも改善が示された。一方NaFlexは自己蒸留やマスク損失を含まず外挿が弱いこと、RefCOCOが英語専用LocCaに届かない多言語の代償、小規模モデルの改善が蒸留段階に依存することが限界である。画像水準対応の系譜を補強する立場であり、位置への接地は次節の契約として指標を混ぜない。",
       "attribution_mode": "ATTRIBUTED",
       "evidence_refs": [
         {
@@ -159,13 +159,34 @@
           "evidence_id": "claim-2",
           "subject_id": "ev-vmd039",
           "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:0f5a5b1f4eb4032e",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd114",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:0f5a5b1f4eb4032e",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ev-vmd114",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:0f5a5b1f4eb4032e",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "ev-vmd114",
+          "subject_role": "PRIMARY_SUBJECT"
         }
       ]
     },
     {
       "block_id": "P07A-B06",
       "block_type": "PARAGRAPH",
-      "text": "画像水準の流れは、説明生成から質問応答の評価を経て、固定分類から言語指定可能な対応づけへ進み、雑音規模の実践で補強された。共通の論点は次の演算に見合う画像全体の表現は何かであり、文生成か、問い答えか、対照表現かは別の演算に対応する。本節の契約はゼロショット分類と画像文検索のRecall@Kであり、語句の接地や検出のAPとは別の指標で測る。画像文対の大規模契約はX01の教師信号の系譜に位置づけられる。単一構成の勝利を結論とせず、細粒度や数え上げや新規系統課題の弱さを残したまま接地側へ受け渡す。",
+      "text": "画像水準の流れは、説明生成から質問応答の評価を経て、固定分類から言語指定できる対応づけへ進み、雑音規模の実践で補強された。共通の論点は次の演算に見合う画像全体の表現は何かであり、文生成か、問い答えか、対照表現かは別の演算に対応する。本節の契約はゼロショット分類と画像文検索のRecall@Kであり、語句の接地や検出のAPとは別の指標で測る。画像文対の大規模契約はX01の教師信号の系譜に位置づけられる。単一構成の勝利を結論とせず、細粒度や数え上げや新規系統課題の弱さを残したまま接地側へ受け渡す。",
       "attribution_mode": "MIXED",
       "evidence_refs": [
         {
@@ -222,7 +243,7 @@
     {
       "block_id": "P07A-boundaries",
       "block_type": "CLAIM_BOUNDARY",
-      "text": "読み方の区切り：生成側の作り込みは扱わず、画像と言語の対応の起点に限定する。数値は論文著者の自己報告であり、位置への接地とは別の評価で測る。版や区分と答え抽出規則を切り離さない。",
+      "text": "読み方の区切りは次の通りである。生成側の作り込みは扱わず、画像と言語の対応の起点に限定する。数値は論文著者の自己報告であり、位置への接地とは別の評価で測る。CLIPの弱さは原論文の限定報告に属し、BoWの議論は本節のCLIP主張としない。版や区分と答え抽出規則を切り離さない。",
       "attribution_mode": "MIXED",
       "evidence_refs": [
         {
