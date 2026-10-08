@@ -1,0 +1,130 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-vision-multimodal-2026",
+  "evidence_task_id": "evidence:SP-vision-multimodal-2026:721cee26da56d9ed",
+  "basis": {
+    "task_sha256": "edd9dcc25fb409362a521dfb615eaee758a555686a0fe2ede76b40902d892163",
+    "screening_acceptance_sha256": "e471c40158c226d150bf18bf68a5da46a8ad8710d5df3d063eab23f32f5863d9",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "ev-vmd072",
+      "canonical_name": "Gemini 3.1 Pro (Google, 2026)",
+      "entity_type": "MODEL",
+      "organization": "Google DeepMind",
+      "canonical_url": "https://deepmind.google/models/model-cards/gemini-3-1-pro/"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "ev-vmd072",
+    "artifact_type": "MODEL",
+    "canonical_name": "Gemini 3.1 Pro (Google, 2026)",
+    "canonical_url": "https://deepmind.google/models/model-cards/gemini-3-1-pro/"
+  },
+  "temporal": {
+    "observed_at": "2026-09-30T14:24:47Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-02",
+        "subject_id": "ev-vmd072",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://deepmind.google/models/model-cards/gemini-3-1-pro/",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "Gemini 3.1 Pro model card (DeepMind)",
+      "published_at": "2026-02",
+      "accessed_at": "2026-09-30T14:24:47Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Closed native-multimodal pole: 1M context; text/image/audio/video-in; MMMU-Pro and Video-MMMU vendor claims documented with methodology pages (model card, Feb 2026).",
+      "subject_id": "ev-vmd072",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Model card consumed 2026-09-30; capability + eval facts with vendor attribution."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Role cap: CAPABILITY + EVALUATION (vendor) + DEPLOYMENT only; NEVER architecture authority; version+date binding required per CV2-DM-013.",
+      "subject_id": "ev-vmd072",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Edition-level analytical synthesis by the Work operator (lineage/selection/boundary/contract judgment, not a literal statement of the cited source); structural home for edition rationale."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "No mechanism disclosure; scores vendor-measured; card content may drift (bind date).",
+      "subject_id": "ev-vmd072",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Model card page consumed: modality scope, context window, eval claims with methodology links verified as vendor statements.",
+        "subject_ids": [
+          "ev-vmd072"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "vendor-claim quarantine",
+        "status": "VERIFIED",
+        "finding": "Vendor-measured claims isolated with explicit attribution and role caps; no independent-evaluation inference performed.",
+        "subject_ids": [
+          "ev-vmd072"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "version+date binding",
+        "status": "VERIFIED",
+        "finding": "Card/model version and page date bound in claims; drift noted as later-stage binding item.",
+        "subject_ids": [
+          "ev-vmd072"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

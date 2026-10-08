@@ -1,0 +1,141 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-vision-multimodal-2026",
+  "evidence_task_id": "evidence:SP-vision-multimodal-2026:649b3797fd83a762",
+  "basis": {
+    "task_sha256": "d09be68f4b9f3bfddfa5186fffcf5cc89380c920253cf5025772736ac9c89ff0",
+    "screening_acceptance_sha256": "e471c40158c226d150bf18bf68a5da46a8ad8710d5df3d063eab23f32f5863d9",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "ev-vmd003",
+      "canonical_name": "ImageNet Classification with Deep CNNs / AlexNet (Krizhevsky, Sutskever, Hinton, 2012)",
+      "entity_type": "PAPER",
+      "organization": "University of Toronto",
+      "canonical_url": "https://papers.nips.cc/paper/4824-imagenet-classification-with-deep-convolutional-neural-networks"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "ev-vmd003",
+    "artifact_type": "PAPER",
+    "canonical_name": "ImageNet Classification with Deep CNNs / AlexNet (Krizhevsky, Sutskever, Hinton, 2012)",
+    "canonical_url": "https://papers.nips.cc/paper/4824-imagenet-classification-with-deep-convolutional-neural-networks"
+  },
+  "temporal": {
+    "observed_at": "2026-09-30T14:24:47Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2012-09",
+        "subject_id": "ev-vmd003",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://papers.nips.cc/paper/4824-imagenet-classification-with-deep-convolutional-neural-networks",
+      "source_class": "PRIMARY_PAPER",
+      "title": "ImageNet Classification with Deep CNNs (Krizhevsky, Sutskever, Hinton)",
+      "published_at": "2012-09",
+      "accessed_at": "2026-09-30T14:24:47Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "A large deep CNN (60M parameters, 650K neurons; 5 convolutional + 3 fully-connected layers with 1000-way softmax) trained on 1.2M ImageNet images achieves top-1/top-5 errors of 37.5%/17.0% (LSVRC-2010) and a winning 15.3% top-5 (ILSVRC-2012) vs 26.2% for the runner-up.",
+      "subject_id": "ev-vmd003",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "NIPS 2012 full paper, sections Abstract/1/4.1; numbers are paper-reported test results."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Bottleneck addressed: small labeled datasets and prohibitive cost of large high-resolution CNNs; mechanism stack is data scale (ImageNet) + model capacity (depth/breadth-controlled CNN with locality/stationarity priors) + efficient GPU 2D-convolution implementation + non-saturating neurons + dropout against overfitting (5-6 days on two GTX 580 3GB GPUs).",
+      "subject_id": "ev-vmd003",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Full-paper sections 1/3/4; the paper's own contributions list."
+    },
+    {
+      "statement_id": "claim-3",
+      "text": "What became possible: large-scale supervised visual representation learning as a reusable substrate; the paper closes by stating results should improve with faster GPUs and bigger datasets — the scaling-recipe reading.",
+      "subject_id": "ev-vmd003",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Section 1 closing + Section 5-equivalent discussion; supports the TS-003 recipe interpretation over novelty interpretation."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Single-dataset (ImageNet) scope; transfer claims require successor sources (ResNet record).",
+      "subject_id": "ev-vmd003",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "Recipe reading vs architectural-novelty reading must both be carried; the paper's own framing supports the recipe side.",
+      "subject_id": "ev-vmd003",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Full NIPS paper body consumed: architecture, training stack, error rates, and scaling discussion verified against the source.",
+        "subject_ids": [
+          "ev-vmd003"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "proceedings-page content binding",
+        "status": "VERIFIED",
+        "finding": "Proceedings page identity verified; full-paper mechanism claims carried at predecessor-context depth per role.",
+        "subject_ids": [
+          "ev-vmd003"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

@@ -1,0 +1,108 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-vision-multimodal-2026",
+  "evidence_task_id": "evidence:SP-vision-multimodal-2026:1517a20a6a8b9f0d",
+  "basis": {
+    "task_sha256": "2ce983d4df553079d0534a6d6399514396a60a8a36b4c12c893c0df944db0790",
+    "screening_acceptance_sha256": "e471c40158c226d150bf18bf68a5da46a8ad8710d5df3d063eab23f32f5863d9",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "ev-vmd120",
+      "canonical_name": "ScreenSpot-Pro (2025)",
+      "entity_type": "MODEL",
+      "organization": null,
+      "canonical_url": "https://arxiv.org/abs/2504.07981"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "ev-vmd120",
+    "artifact_type": "PAPER",
+    "canonical_name": "ScreenSpot-Pro (2025)",
+    "canonical_url": "https://arxiv.org/abs/2504.07981"
+  },
+  "temporal": {
+    "observed_at": "2026-10-05T00:00:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2025-04",
+        "subject_id": "ev-vmd120",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2504.07981",
+      "source_class": "PRIMARY_PAPER",
+      "title": "ScreenSpot-Pro (2025)",
+      "published_at": "2025-04",
+      "accessed_at": "2026-10-05T00:00:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Professional high-resolution grounding evaluation: full-screen tasks with tiny targets (0.07% area regime), distinct from cropped easy grounding.",
+      "subject_id": "ev-vmd120",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Paper evaluation regime (residual-sweep admission)."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Planner-guided cascaded inference-time search contract (ScreenSeekeR folded here as method context, not a separate node).",
+      "subject_id": "ev-vmd120",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Edition method-contract reading over the paper."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Evaluation-only scope; agent policy claims need OSWorld-side sources.",
+      "subject_id": "ev-vmd120",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage verification",
+        "status": "VERIFIED",
+        "finding": "ScreenSpot-Pro regime and search-contract claims verified against the bound paper locator.",
+        "subject_ids": [
+          "ev-vmd120"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

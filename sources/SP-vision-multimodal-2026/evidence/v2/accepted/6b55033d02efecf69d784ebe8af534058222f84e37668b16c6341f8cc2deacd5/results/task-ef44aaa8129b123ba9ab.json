@@ -1,0 +1,151 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-vision-multimodal-2026",
+  "evidence_task_id": "evidence:SP-vision-multimodal-2026:25a1e7517b74ec98",
+  "basis": {
+    "task_sha256": "04cb5815a6d12ebb725d483f93edaf2cabea88bd16be8ec9482dae746b665b7b",
+    "screening_acceptance_sha256": "e471c40158c226d150bf18bf68a5da46a8ad8710d5df3d063eab23f32f5863d9",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "ev-vmd038",
+      "canonical_name": "VQA (Antol et al., 2016)",
+      "entity_type": "DATASET",
+      "organization": null,
+      "canonical_url": "https://arxiv.org/abs/1505.00468"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "ev-vmd038",
+    "artifact_type": "DATASET",
+    "canonical_name": "VQA (Antol et al., 2016)",
+    "canonical_url": "https://arxiv.org/abs/1505.00468"
+  },
+  "temporal": {
+    "observed_at": "2026-09-30T14:24:47Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2015-05",
+        "subject_id": "ev-vmd038",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "event_id": "event-2",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2016-12",
+        "subject_id": "ev-vmd038",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "supplement-src-2931815e4c48399b"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/1505.00468",
+      "source_class": "PRIMARY_PAPER",
+      "title": "VQA: Visual Question Answering (Antol et al.)",
+      "published_at": "2015-05",
+      "accessed_at": "2026-09-30T14:24:47Z",
+      "role": "Discovery-bounded source used for factual verification"
+    },
+    {
+      "source_id": "supplement-src-2931815e4c48399b",
+      "url": "https://arxiv.org/abs/1612.00837",
+      "source_class": "PRIMARY_PAPER",
+      "title": "Making the V in VQA Matter: Elevating the Role of Image Understanding in Visual Question Answering (Goyal et al.)",
+      "published_at": "2016-12-02T00:00:00Z",
+      "accessed_at": "2026-10-07T01:30:00Z",
+      "role": "VQA-v2 balancing authority: complementary-pair construction + language-prior mitigation (source enrichment of the existing VM-D038 candidate)"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Free-form open-ended VQA task + dataset (~0.25M images, ~0.76M questions, ~10M answers) demanding finer image understanding and complex reasoning than generic captioning, with automatic evaluation via short/multiple-choice answers.",
+      "subject_id": "ev-vmd038",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Full-paper abstract/conclusion; scale numbers paper-reported."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Task-predecessor role: the benchmark family in which the language-prior shortcut was later exposed — D10 control origin shared with VM-O11.",
+      "subject_id": "ev-vmd038",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Edition-level analytical synthesis by the Work operator (lineage/selection/boundary/contract judgment, not a literal statement of the cited source); structural home for edition rationale."
+    },
+    {
+      "statement_id": "claim-3",
+      "text": "VQA v2 counters language priors by balancing the dataset with complementary image pairs: every question is associated with a pair of similar images that yield two different answers, approximately doubling image-question pairs; state-of-art VQA models perform significantly worse on the balanced set, indicating prior exploitation. The mitigation reduces exploitable question/answer priors and requires greater use of image evidence; it does not eliminate language priors completely.",
+      "subject_id": "ev-vmd038",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "supplement-src-2931815e4c48399b"
+      ],
+      "context": "arXiv:1612.00837v3 Abstract + §§1/3/4 (already-bound + newly bound primary sources)."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "VQA-family accuracy can exploit question/answer priors; VQA v2 reduces this bias using complementary image pairs, so dataset version/split and answer extraction must remain bound to evaluation claims.",
+      "subject_id": "ev-vmd038",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1",
+        "supplement-src-2931815e4c48399b"
+      ],
+      "context": "arXiv:1612.00837v3 (complementary-pair mitigation) + arXiv:1505.00468 (predecessor scope)."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Full body consumed: task definition, dataset scale, evaluation design verified.",
+        "subject_ids": [
+          "ev-vmd038"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "Targeted authority correction (VM-D038 VQA-v2 binding + limitation-semantics repair)",
+        "status": "VERIFIED",
+        "finding": "Bound primary source re-verified read-only 2026-10-07 (arXiv HTML of the newly bound locator https://arxiv.org/abs/1612.00837 v3, 216781 bytes; no new Discovery). Abstract + §§1/3-4: language priors countered via complementary images (same question + similar image pair + two different answers); balanced dataset ~2x pairs; SOTA models worse on balanced set (exploit language priors). The source carries no such wording. VQA v1 predecessor role preserved (open-ended formulation, dataset/evaluation predecessor, QA lineage). Removed the prior source-unbound limitation wording; replaced with language-prior / answer-prior / dataset-bias + complementary-pair semantics. No VQA-CP added.",
+        "subject_ids": [
+          "ev-vmd038"
+        ],
+        "source_ids": [
+          "src-1",
+          "supplement-src-2931815e4c48399b"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

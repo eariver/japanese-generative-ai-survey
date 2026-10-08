@@ -1,0 +1,97 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-vision-multimodal-2026",
+  "evidence_task_id": "evidence:SP-vision-multimodal-2026:654257bfd25b2055",
+  "basis": {
+    "task_sha256": "99ca1bd934f4657291cfa1c9d88d6b7ea70f0128d8d707e2e56e0aaeb90b7038",
+    "screening_acceptance_sha256": "e471c40158c226d150bf18bf68a5da46a8ad8710d5df3d063eab23f32f5863d9",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "ev-vmd032",
+      "canonical_name": "Swin Transformer (Liu et al., 2021)",
+      "entity_type": "MODEL",
+      "organization": "Microsoft",
+      "canonical_url": "https://arxiv.org/abs/2103.14030"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "ev-vmd032",
+    "artifact_type": "PAPER",
+    "canonical_name": "Swin Transformer (Liu et al., 2021)",
+    "canonical_url": "https://arxiv.org/abs/2103.14030"
+  },
+  "temporal": {
+    "observed_at": "2026-09-30T14:24:47Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2021-03",
+        "subject_id": "ev-vmd032",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2103.14030",
+      "source_class": "PRIMARY_PAPER",
+      "title": "Swin Transformer (Liu et al.)",
+      "published_at": "2021-03",
+      "accessed_at": "2026-09-30T14:24:47Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Hierarchical Transformer with shifted-window attention (local windows + cross-window connection; linear complexity in image size): 87.3 ImageNet-1K top-1, 58.7 box AP / 51.1 mask AP COCO test-dev (+2.7/+2.6 over prior SOTA), 53.5 mIoU ADE20K (+3.2); code+models released.",
+      "subject_id": "ev-vmd032",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Full-paper abstract/conclusion; numbers paper-reported."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Hierarchy-completeness role; short treatment.",
+      "subject_id": "ev-vmd032",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Full body consumed: shifted-window design and dense-task results verified.",
+        "subject_ids": [
+          "ev-vmd032"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

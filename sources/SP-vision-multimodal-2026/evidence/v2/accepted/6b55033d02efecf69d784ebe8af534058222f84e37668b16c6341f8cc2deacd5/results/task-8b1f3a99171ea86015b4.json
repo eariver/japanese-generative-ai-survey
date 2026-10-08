@@ -1,0 +1,130 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-vision-multimodal-2026",
+  "evidence_task_id": "evidence:SP-vision-multimodal-2026:20d1ebc2759ddd61",
+  "basis": {
+    "task_sha256": "885357ed01ba75ab01431187fa52ed023069b21acc6ee861df9f957a4e2c359e",
+    "screening_acceptance_sha256": "e471c40158c226d150bf18bf68a5da46a8ad8710d5df3d063eab23f32f5863d9",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "ev-vmd039",
+      "canonical_name": "CLIP (Radford et al., 2021)",
+      "entity_type": "MODEL",
+      "organization": "OpenAI",
+      "canonical_url": "https://arxiv.org/abs/2103.00020"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "ev-vmd039",
+    "artifact_type": "PAPER",
+    "canonical_name": "CLIP (Radford et al., 2021)",
+    "canonical_url": "https://arxiv.org/abs/2103.00020"
+  },
+  "temporal": {
+    "observed_at": "2026-09-30T14:24:47Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2021-02",
+        "subject_id": "ev-vmd039",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2103.00020",
+      "source_class": "PRIMARY_PAPER",
+      "title": "Learning Transferable Visual Models / CLIP (Radford et al.)",
+      "published_at": "2021-02",
+      "accessed_at": "2026-09-30T14:24:47Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Caption-prediction pre-training on 400M web pairs learns transferable representations addressable by natural language: zero-shot transfer to 30+ datasets incl. OCR, video action recognition, geolocalization, fine-grained classification; matches the supervised ResNet-50 baseline on ImageNet without using any of its 1.28M training examples; code+weights released.",
+      "subject_id": "ev-vmd039",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Full-paper abstract (199KB body consumed at abstract+sections+limits depth); numbers paper-reported."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Break reading: fixed predetermined-category supervision replaced by image-text supervision with language as the concept-reference interface — the addressability transition (TS-003 angle; conditioning reuse by reference to TS-002).",
+      "subject_id": "ev-vmd039",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Paper's own fixed-vs-natural-language framing in abstract/introduction."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Original-paper zero-shot limits: weak fine-grained classification (car models, flower species, aircraft variants), counting (CLEVRCounts), near-random novel systematic tasks (KITTI distance); out-of-distribution brittleness (MNIST 88%, below a pixel baseline); ~1000x compute estimated to reach overall SOTA (infeasible on current hardware).",
+      "subject_id": "ev-vmd039",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Paper §6 Limitations + §3.1.5 (arXiv:2103.00020v1)."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Complete CLIP paper body consumed via arXiv HTML (199KB text): fixed-vs-natural-language framing, 400M-pair recipe, 30+ dataset transfer results, code/weights release, Limitations section verified.",
+        "subject_ids": [
+          "ev-vmd039"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "Targeted authority correction (CLIP BoW misattribution removed)",
+        "status": "VERIFIED",
+        "finding": "Bound primary paper re-verified read-only 2026-10-06 (arXiv HTML of the already-bound locator; no new source). The 2021 original paper contains no bag-of-words/compositionality limitation claim (BoW appears only for the Joulin et al. baseline method and the caption-prediction ablation in §2.3/Fig.2); the prior target is superseded and the limitation replaced with §6/§3.1.5 scope.",
+        "subject_ids": [
+          "ev-vmd039"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "Targeted authority correction (CLIP 1.28M unit fix)",
+        "status": "VERIFIED",
+        "finding": "Bound primary paper re-verified read-only (already-bound locator; no new source). Corrected the claim unit from labels to training examples per the original CLIP paper; all other corrected semantics preserved (400M pairs, addressability, zero-shot, limitation scope, no BoW misattribution).",
+        "subject_ids": [
+          "ev-vmd039"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

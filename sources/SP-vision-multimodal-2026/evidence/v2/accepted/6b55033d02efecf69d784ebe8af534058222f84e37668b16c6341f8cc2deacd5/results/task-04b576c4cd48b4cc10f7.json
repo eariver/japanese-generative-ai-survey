@@ -1,0 +1,97 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-vision-multimodal-2026",
+  "evidence_task_id": "evidence:SP-vision-multimodal-2026:8025f5dd3a9f4a6c",
+  "basis": {
+    "task_sha256": "85cd3e5c03880e07f17ad2e04d044648a66f6e4c3d2c8ce06dd10533bf268fa7",
+    "screening_acceptance_sha256": "e471c40158c226d150bf18bf68a5da46a8ad8710d5df3d063eab23f32f5863d9",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "ev-vmd105",
+      "canonical_name": "Genie (Bruce et al., 2024)",
+      "entity_type": "MODEL",
+      "organization": "Google DeepMind",
+      "canonical_url": "https://arxiv.org/abs/2402.15391"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "ev-vmd105",
+    "artifact_type": "PAPER",
+    "canonical_name": "Genie (Bruce et al., 2024)",
+    "canonical_url": "https://arxiv.org/abs/2402.15391"
+  },
+  "temporal": {
+    "observed_at": "2026-09-30T14:24:47Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2024-02",
+        "subject_id": "ev-vmd105",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2402.15391",
+      "source_class": "PRIMARY_PAPER",
+      "title": "Genie: Generative Interactive Environments (Bruce et al.)",
+      "published_at": "2024-02",
+      "accessed_at": "2026-09-30T14:24:47Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "First generative interactive environment: 11B-parameter model trained on unlabelled Internet video: spatiotemporal tokenizer + autoregressive dynamics + scalable latent-action model enabling frame-by-frame action control without ground-truth action labels; latent actions train agents by imitation from unseen videos — a foundation-world-model claim.",
+      "subject_id": "ev-vmd105",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Full-paper abstract; architecture + capability claims consumed."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Unsupervised-video scope; controllability granularity needs Genie-3-side sources.",
+      "subject_id": "ev-vmd105",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Full body consumed: three-component design and latent-action mechanism verified.",
+        "subject_ids": [
+          "ev-vmd105"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}
