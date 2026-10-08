@@ -6,12 +6,12 @@
   "package_id": "P02",
   "basis": {
     "production_profile_sha256": "e4d16027d66d379848378031e47198a09f0b27a961e27a0ab250923a07a57444",
-    "architecture_sha256": "56658960dff0269a89bf38d5b3027147dea7159f5c15337ff8a74d6ea7e4d773",
-    "architecture_review_summary_sha256": "69a17899ae022ee0198e8a48feaf1401689b275a020d5d4d202abf0aa3b1017c",
-    "architecture_approval_sha256": "78be057a2961827ddff4d1110daf78224816626b268f21efa5fb97390e8fd4b1",
-    "candidate_matrix_sha256": "6d714c45e02899168933360bd973e8d5b1e1cddafe80aef5b2b0b27c31b8a6a4",
-    "candidate_selection_sha256": "facf3d5c24a40fbc3ac7766397569c85915b927aa049005436dc4a6de3522198",
-    "evidence_acceptance_sha256": "1bb1c4f3b3cc7e115350fd9e5656c6af0a9671aa72015ab3d6c5e94d5039e9fe"
+    "architecture_sha256": "cd37a969fe4d49b54517cb5253bb283931d5bf9e5eb795315b74c0e40339a1af",
+    "architecture_review_summary_sha256": "150081f2a015bc227016a31f874fa35f78fd6993379f0ea9194b1bafd57ddbff",
+    "architecture_approval_sha256": "385b390f5c0faae026f5447dafff737a3c635e6d973a3bd5ca2425753d35af02",
+    "candidate_matrix_sha256": "80754cca3c43223b6a99572f46c93971f901651cbe18b72ed2dc1aad58235dd8",
+    "candidate_selection_sha256": "c631069330a645b287a6fdb8cafa72b2b48a3aa0bccd130055844ee0a7f7c155",
+    "evidence_acceptance_sha256": "326e7a7bfe134047be80588a15a377e0e97d29fff1be91dd72282c0ef65b69c4"
   },
   "package": {
     "title": "Detection and structured localization",
@@ -23,16 +23,23 @@
       "candidate:SP-vision-multimodal-2026:c7b7f6abc8a242d2",
       "candidate:SP-vision-multimodal-2026:f07007f4cf1ff207",
       "candidate:SP-vision-multimodal-2026:73b035353dec1954",
-      "candidate:SP-vision-multimodal-2026:0491441302a2203a"
+      "candidate:SP-vision-multimodal-2026:0491441302a2203a",
+      "candidate:SP-vision-multimodal-2026:6018779ae64eed93",
+      "candidate:SP-vision-multimodal-2026:c7fd3834cd4f0ee2"
     ],
     "supporting_candidate_ids": [
       "candidate:SP-vision-multimodal-2026:d48ed3892c125e6e",
-      "candidate:SP-vision-multimodal-2026:6aa553442c44f66f"
+      "candidate:SP-vision-multimodal-2026:6aa553442c44f66f",
+      "candidate:SP-vision-multimodal-2026:d277a60ff2531b80"
     ],
     "must_cover_requirements": [
       "VM-O02 lineage complete incl. DINO-name disambiguation",
       "Anchors/NMS read as fossilized machinery DETR removes",
-      "X02 box in/out contracts explicit"
+      "X02 box in/out contracts explicit",
+      "Deformable DETR bridge: multi-scale sparse deformable attention with reference-point sampling; faster convergence and small-object repair (transition node; not a general deformable-attention survey)",
+      "DAB-DETR bridge: dynamic anchor-box queries with layer-by-layer updates and explicit positional priors (brief supporting treatment; feeds DINO anchor-query formulation)",
+      "DN-DETR bridge: query denoising training against bipartite-matching instability (transition node; not diffusion denoising)",
+      "DINO as convergence of DETR-successor techniques (DN-style denoising improved, DAB-style dynamic anchors, deformable-style attention/query selection); parallel/convergent branches, not a one-hop vanilla-DETR succession"
     ],
     "boundaries": [
       "One-stage history not reduced to one product family; version-bound YOLO claims only",
@@ -45,7 +52,11 @@
       "YOLO product-line confusion risk; version-bound claims only; edge-deployment burden noted as motivation, not established result.",
       "Default-box tiling vs receptive-field alignment left as future work by the paper itself; thin treatment per lineage-completeness role.",
       "Loss-centric contribution; architecture claims require detector-side sources; thin treatment per role.",
-      "Matching cost (assignment) vs matched-pair training loss kept distinct; auxiliary decoder losses are standard-recipe, never architecture-mandatory."
+      "Matching cost (assignment) vs matched-pair training loss kept distinct; auxiliary decoder losses are standard-recipe, never architecture-mandatory.",
+      "Single-scale vs multi-scale variant scope; two-stage query-selection and iterative refinement are optional extensions; FPN-general survey stays outside this bridge role.",
+      "Single-scale DETR-baseline scope; Anchor/Conditional DETR taxonomy stays outside; brief supporting treatment only.",
+      "Uniform-distribution noise sampling only; query-denoising training, not diffusion-model denoising; transition-node treatment only.",
+      "DETR-successor branches are parallel/convergent (deformable attention, dynamic anchors, denoising training), not a single strictly linear genealogy; DINO integrates them."
     ]
   },
   "candidate_matrix": {
@@ -54,10 +65,10 @@
     "research_profile": "THEMATIC",
     "basis": {
       "production_profile_sha256": "e4d16027d66d379848378031e47198a09f0b27a961e27a0ab250923a07a57444",
-      "profile_completeness_sha256": "a547545cd9bb0e2888d88cdac76d5480728e12b50e40d4618b25cad046dc1565",
-      "materiality_ledger_sha256": "24db9d4929475c56ea10398ffb9be51b00b2cd81aaa42a3336f96c22d1cc19f3",
-      "evidence_acceptance_sha256": "1bb1c4f3b3cc7e115350fd9e5656c6af0a9671aa72015ab3d6c5e94d5039e9fe",
-      "edition_views_acceptance_sha256": "7372ecb2224f037567d60c2b193cf475cdac8ed88c24a84335053df54f49d357"
+      "profile_completeness_sha256": "6c9d3ede45dcf3a00d5303135d6dcdd1ee4f613c77d96071b1c8f3952d349835",
+      "materiality_ledger_sha256": "42ca408b827442d73de7966214924d801989a6a239c38347cdd137033ecb3fb7",
+      "evidence_acceptance_sha256": "326e7a7bfe134047be80588a15a377e0e97d29fff1be91dd72282c0ef65b69c4",
+      "edition_views_acceptance_sha256": "83f7548fd778198e2fc48777138c1ec810e736c5fb2fead2ca258f027dbccb35"
     },
     "rows": [
       {
@@ -66,8 +77,8 @@
         "discovery_ids": [
           "VM-D040"
         ],
-        "evidence_sha256": "74f89b1cc6478230fa966039ce54770a9fda64d9a12eda16a40c5e1fa0c7c5e1",
-        "edition_view_sha256": "da3563709c0cd8e21ccd1e5478381b4da4c3d5cc6922236f3e98695f454f18ec",
+        "evidence_sha256": "313a65fed58685e063018dc5d8b428f425f8bd8c364fc0046941bd98a08e9c68",
+        "edition_view_sha256": "c16216061df054da74d6dabd4c5e3bb501631f2a4a6f5beb68055f5aa7ec43e9",
         "title": "ALIGN (Jia et al., 2021)",
         "artifact_type": "PAPER",
         "evidence_status": "VERIFIED",
@@ -105,8 +116,8 @@
         "discovery_ids": [
           "VM-D014"
         ],
-        "evidence_sha256": "977a9a25880118f4e028ef2ce008d3c4dd1193289903bad7c5697006d53ee0cd",
-        "edition_view_sha256": "2385431be8b53ce8955ded4ac3aeb48020053e113e20cb0a191405ae2eefcf40",
+        "evidence_sha256": "0cd57bb3977a39b45f503dce10bc6fcbaade3b2a1067e14283bf7051e1dd36b1",
+        "edition_view_sha256": "f30a6aa6133e3c080f4add16f771b731fb72f69bcfe55f0a9b83fc76a8c6b006",
         "title": "U-Net (Ronneberger et al., 2015)",
         "artifact_type": "PAPER",
         "evidence_status": "VERIFIED",
@@ -144,8 +155,8 @@
         "discovery_ids": [
           "VM-D059"
         ],
-        "evidence_sha256": "9baeb0a5a0819adb2cc4567869710fb18fc9c37860044b9eb3986edb736aa2a7",
-        "edition_view_sha256": "276aabf2f645160995004cd4004ca187fb5b756222a24b270fb768ad0c33e275",
+        "evidence_sha256": "12995b321c5e7456de4ddc88e19f8062aaea50f33b1449028b57d203df40c48c",
+        "edition_view_sha256": "3a292bb61f0e550d97eb52e0401e5aca18c79e21db5d31bac2ad763d8c35a866",
         "title": "BLIP-2 (Li et al., 2023)",
         "artifact_type": "PAPER",
         "evidence_status": "VERIFIED",
@@ -183,8 +194,8 @@
         "discovery_ids": [
           "VM-D118"
         ],
-        "evidence_sha256": "d294c2e4d240e52c1c47ac889551ae6b56291c28eb5ef3ffb02caeede0349690",
-        "edition_view_sha256": "c515d73de9f2ce407140fd3ac87ee5511e6b2222054080417eba30f4b16a81cb",
+        "evidence_sha256": "30cb5b4b02a80c4e280799f097213aacb4875cc705e140a1ba2c43d34b9b12b9",
+        "edition_view_sha256": "4b0318e35d824663493511bcb3e5a034273d1d4a2c3ab8c6e373dcec06111eb7",
         "title": "AIMv2 (Apple, 2024)",
         "artifact_type": "PAPER",
         "evidence_status": "VERIFIED",
@@ -222,8 +233,8 @@
         "discovery_ids": [
           "VM-D036"
         ],
-        "evidence_sha256": "2718394dbeeab293eb586a6cafd588c2e50735b5f9d89761119afd132a177788",
-        "edition_view_sha256": "f46a7946c2d7429e9e164a3d44e809bac80672eb144ad30475ae56f7db0c4d53",
+        "evidence_sha256": "9e6cc44339c977e86c1d44646f23b498406a1bf7fc416433e92e6393803e1d9d",
+        "edition_view_sha256": "c76ce958c121703223ea7f1756c6c8a64428c6801280d9174c47bd33918d4d84",
         "title": "SigLIP (Zhai et al., 2023)",
         "artifact_type": "PAPER",
         "evidence_status": "VERIFIED",
@@ -264,8 +275,8 @@
         "discovery_ids": [
           "VM-D114"
         ],
-        "evidence_sha256": "fc946cddade5efb2fdb90bb1a022cf9fae5abd3e0022d2a4633d9a14f695a342",
-        "edition_view_sha256": "28cd7c78bdb8c683e49ce6e06ef2b63858a25d280b9ea786d5c9d89f1bc74143",
+        "evidence_sha256": "9df085c73ca5cd4344900fdcc049bd1baf398082da9da12c199fadcdcccf99cc",
+        "edition_view_sha256": "ff55e1dd422ea70d9b51d44dab08a079842c35e5c16b343f7c789b627d8206c7",
         "title": "SigLIP 2 (Zhai et al., 2025)",
         "artifact_type": "PAPER",
         "evidence_status": "VERIFIED",
@@ -305,8 +316,8 @@
         "discovery_ids": [
           "VM-D043"
         ],
-        "evidence_sha256": "bc8a65e8409d38fc3f614092009db3df19c9687baf28c3ded650f78e02a37ef9",
-        "edition_view_sha256": "a37013403d91872178db13a5a1856228bffb28c301c8f7713f8430ec36132bbe",
+        "evidence_sha256": "0c9e06b6f0d153379c0328fb2a57f1879b947faa03077ea1241f7860623f7bd1",
+        "edition_view_sha256": "f0c50c955947a5b9a97b163905e5afdba509223486238a709d9d55fac574074f",
         "title": "OVR-CNN (Zareian et al., 2021)",
         "artifact_type": "PAPER",
         "evidence_status": "VERIFIED",
@@ -344,8 +355,8 @@
         "discovery_ids": [
           "VM-D050"
         ],
-        "evidence_sha256": "de6c2deefb81708b3096b3fe974888dcf9cc64b4c09391a43fac686efd4db423",
-        "edition_view_sha256": "6db3f67b1ccf7b7528b84811619c6dac1c67820d810774860273dcbcf646ec61",
+        "evidence_sha256": "1a7ffbd814aa381af707ac44482dcf2ec311dac6825a6e821144391fecfc9891",
+        "edition_view_sha256": "416966b19902afdb4878c60773df00374c6493a7f869af223cd5dcbd679d00ba",
         "title": "Grounding DINO (Liu et al., 2024)",
         "artifact_type": "PAPER",
         "evidence_status": "VERIFIED",
@@ -383,8 +394,8 @@
         "discovery_ids": [
           "VM-D085"
         ],
-        "evidence_sha256": "8135f2a653a20fa9c7f04992224b90c39831817b1f9ff054514041c355fb627d",
-        "edition_view_sha256": "851a17274c5a539738a6850925f9d38f168861498140d1d9bb34d0251b449e3b",
+        "evidence_sha256": "6d248eeb8d87f09b286b7b87d19691c11fcd7059e17290ba3453e89629722365",
+        "edition_view_sha256": "239be3807ff57e1d8c60ad00345e75cbd6dc556e2d6c51fa82ba6d4052032484",
         "title": "Ego4D",
         "artifact_type": "DATASET",
         "evidence_status": "VERIFIED",
@@ -425,8 +436,8 @@
         "discovery_ids": [
           "VM-D101"
         ],
-        "evidence_sha256": "9b70bb665e66e70560def89e708be1e9b8e78abc08a98bba7f13621038884ab7",
-        "edition_view_sha256": "f8182390aadc44103c922c3cd622def61f1cb78534c7c1b2b99179864f54ec8f",
+        "evidence_sha256": "8f618d869d3044d234c6c23293a5b0798dd0114a8b71dd8a92714b900ef958be",
+        "edition_view_sha256": "3dc5257cdd06dd8dc36355b8ad9c8e07708d422f9f310de370ae1f0707bb5e85",
         "title": "World Models (Ha & Schmidhuber, 2018)",
         "artifact_type": "PAPER",
         "evidence_status": "VERIFIED",
@@ -465,8 +476,8 @@
         "discovery_ids": [
           "VM-D120"
         ],
-        "evidence_sha256": "1748e50bc208407e4c0cfe151aa162e1ec6425898dedf5cc1c372cae7d312fc8",
-        "edition_view_sha256": "fa20334b2b9dfd21150dc8fa1924023a0191d7c8fcbfc1060e956c355044b047",
+        "evidence_sha256": "eef1e8cb17c1bb066bed4913e82d09d4c7f21f63fa081dd3dab657796aef6cc4",
+        "edition_view_sha256": "e173c94c7cffebd17cac49dc4d93eaed3ed8696fcc2bf3774a8c5dacf4af4ea7",
         "title": "ScreenSpot-Pro (2025)",
         "artifact_type": "PAPER",
         "evidence_status": "VERIFIED",
@@ -504,8 +515,8 @@
         "discovery_ids": [
           "VM-D012"
         ],
-        "evidence_sha256": "bef5eb214b53ebf99538d10baadf4caa642c1c571a533512d0d60e872635eb3e",
-        "edition_view_sha256": "482a0106a308db49e83fad8fd9560a3d3ec98bfd81bb71f6e9515848b50ec99b",
+        "evidence_sha256": "2c1b45a1f76b9d9f7611df4188954d43d44cdfed2367dd69cb583f2df4897979",
+        "edition_view_sha256": "97fdc80a58ad7c47aa2d6e8fa3f98ce3a16fece0b64431a8af4fd856af2f7b2f",
         "title": "YOLO-World (Cheng et al., 2024)",
         "artifact_type": "PAPER",
         "evidence_status": "VERIFIED",
@@ -545,8 +556,8 @@
         "discovery_ids": [
           "VM-D027"
         ],
-        "evidence_sha256": "5c25866b0ed211e287eb15c3752a8ee416de35dc2cf404392efcba07a04ca43f",
-        "edition_view_sha256": "c91e7c31715c78ffdbd00ca1b1a6973fc30e743ba7c93ea4f219bd8d6c6577b2",
+        "evidence_sha256": "f490ee1e83c7111b0ef1ac879c639de66e2db9d004a52a9bb0730e0ac4c83f48",
+        "edition_view_sha256": "0b5527534d9c17906020cddb69f0a2a0f5086916e6168d33ef43e8ce0b819f59",
         "title": "Nougat (Blecher et al., 2023)",
         "artifact_type": "PAPER",
         "evidence_status": "VERIFIED",
@@ -584,8 +595,8 @@
         "discovery_ids": [
           "VM-D064"
         ],
-        "evidence_sha256": "e808577555914e6d3c748107c0029c35232431b7df7ae05b9213bb50596b7094",
-        "edition_view_sha256": "3a6b72205195eaf768bb455c675cdb701b3b3be83c2179c00f511ed6b3af05b3",
+        "evidence_sha256": "4b3155a76cfbb5deeaeafe9040e7b6703f51ef8ca95a4b06e66acae755314e30",
+        "edition_view_sha256": "65fad3ff36a91401de1250e9fa348afa554237a5589ecef8e00a83bf51608ca5",
         "title": "Qwen2.5-VL (Qwen Team, 2025)",
         "artifact_type": "PAPER",
         "evidence_status": "VERIFIED",
@@ -623,8 +634,8 @@
         "discovery_ids": [
           "VM-D039"
         ],
-        "evidence_sha256": "1fae90a18a5e6b47ca8f8d66b12a4ce1cf76a4b3bb42046bc26daf517c6fc430",
-        "edition_view_sha256": "c1382c2afb1bedb86e5e2678554dd61952967aa6198a171c5fc19eb49b878172",
+        "evidence_sha256": "1a382f89efd2a73bf1f86ef5ad243760404d0249a635b8b4532f9db7d1a466c8",
+        "edition_view_sha256": "767e637bff77511a5b73eccc10d03a4a25400c73f6abdfab80e7ff2391b929d0",
         "title": "CLIP (Radford et al., 2021)",
         "artifact_type": "PAPER",
         "evidence_status": "VERIFIED",
@@ -662,8 +673,8 @@
         "discovery_ids": [
           "VM-D015"
         ],
-        "evidence_sha256": "109cce5915b0e0c0cbe344d8124256601d32ffc37eb723101059d03fe548aa0b",
-        "edition_view_sha256": "94cd66973e227de0f7dff6bb4d3acd398b0e10c512edc30e4ff257142f4a8f62",
+        "evidence_sha256": "a19333f2303c9a245a503217e3afc8fc029f6df9e89f785b4a030a16d495fc84",
+        "edition_view_sha256": "76d78f5afb96569a6a0b35fa27b9baad2ffb5d5cd858034a9f286c0990aa3315",
         "title": "Mask R-CNN (He et al., 2017)",
         "artifact_type": "PAPER",
         "evidence_status": "VERIFIED",
@@ -701,8 +712,8 @@
         "discovery_ids": [
           "VM-D038"
         ],
-        "evidence_sha256": "202b7b85894f6f6fdd5674b90d7d9a56f0332ef07d77887c97196c332d47ddb2",
-        "edition_view_sha256": "d54ab449e8fc505dca5d70de5678ed441406fac299eee08faedba685ef3d354f",
+        "evidence_sha256": "75a99d83fc415186e5d151e32dba198328655b268df839c549d800a3803fd8ae",
+        "edition_view_sha256": "5ce68f749522c9b186705e64a6a5b3ddc57556b2ad9fd4923a6a8d3a7f33e78a",
         "title": "VQA (Antol et al., 2016)",
         "artifact_type": "DATASET",
         "evidence_status": "VERIFIED",
@@ -741,8 +752,8 @@
         "discovery_ids": [
           "VM-D002"
         ],
-        "evidence_sha256": "4b76e55e29124c7d22594a17aa35d41484bf98e10f1b4d6537be3717e61a6a0f",
-        "edition_view_sha256": "015224d195d2cb9b912a4a4fcacc81a1b2460360812615d640127447d37d8522",
+        "evidence_sha256": "b69d75d50f3d603570fd26b5d592e2d9c596db2b9508d55e48d66f8742a3ff9a",
+        "edition_view_sha256": "fd734d36ec4127c46394e4aede880236a63a0e4574789e1e83c8212b1788ec71",
         "title": "Gradient-Based Learning Applied to Document Recognition / LeNet (LeCun et al., 1998)",
         "artifact_type": "PAPER",
         "evidence_status": "PARTIAL",
@@ -781,8 +792,8 @@
         "discovery_ids": [
           "VM-D006"
         ],
-        "evidence_sha256": "11d5155d10e760a26b2b838559213033876f1cff9c18438d75119c238ef544ca",
-        "edition_view_sha256": "d1a20074168500a6b3eb8a8e822ed3692b7c51cb4e412c8c312cbc8ce7c85116",
+        "evidence_sha256": "7e142324d5f651fb6822a02e9eb68330f6f695cf58d80aff6db6b15fb38709a5",
+        "edition_view_sha256": "f3833602c94c3d0242f608aad38ab9c5730aa8e75c8429a63a07a6f599e01b00",
         "title": "Faster R-CNN (Ren et al., 2015)",
         "artifact_type": "PAPER",
         "evidence_status": "VERIFIED",
@@ -820,8 +831,8 @@
         "discovery_ids": [
           "VM-D044"
         ],
-        "evidence_sha256": "4324f1dec1c6522f87da66f09a5b05930db00804c49874fcb4c7023f6dd62d13",
-        "edition_view_sha256": "634d8d446f251551ff48620bcc3ee9e003c04effb60de2ce9c616d7d1e896149",
+        "evidence_sha256": "552b001742d819a4f6065608fe7005001254be83e6cb4df703c065b78605050f",
+        "edition_view_sha256": "28c2f7dedf8c5779088702037f8c3a4d720808451fddab1e038847f973827da2",
         "title": "ViLD (Gu et al., 2022)",
         "artifact_type": "PAPER",
         "evidence_status": "VERIFIED",
@@ -859,8 +870,8 @@
         "discovery_ids": [
           "VM-D031"
         ],
-        "evidence_sha256": "20067fe22edf98b5353a24fa958407d131aee76315c16a8b4c86280d69e34126",
-        "edition_view_sha256": "9b662c3ac6c51ee4dc2821a4cd08298ac9b9f2d6eaecd2f15161dae218d5b488",
+        "evidence_sha256": "b6084a27bbf871d04079f26cf132b27eaf07e64ba9cf9d833aa5cd47f881e6bb",
+        "edition_view_sha256": "48b11c246f54c9cb28a61877dbeb801ed8a2ca8585b7fb985fc6186b7b3476f3",
         "title": "DeiT (Touvron et al., 2021)",
         "artifact_type": "PAPER",
         "evidence_status": "VERIFIED",
@@ -898,8 +909,8 @@
         "discovery_ids": [
           "VM-D004"
         ],
-        "evidence_sha256": "7a422a7d85ee876cdb12645770d3101a0eeadf0bcb6970a7ce47269e16fc4f05",
-        "edition_view_sha256": "3fd0f0f89ba06539b67c14ace33afe1ce25478653d8fa8acddd6f932f98f94f0",
+        "evidence_sha256": "b2c7619e468e521f338f8287a06e9a30f6627ee055161b62725909adaebd4ef4",
+        "edition_view_sha256": "587bc0ab596c8566e491401d576d7ab464cb5cc38a80eba016b3ca702812b7b8",
         "title": "Deep Residual Learning for Image Recognition / ResNet (He et al., 2015)",
         "artifact_type": "PAPER",
         "evidence_status": "VERIFIED",
@@ -938,8 +949,8 @@
         "discovery_ids": [
           "VM-D005"
         ],
-        "evidence_sha256": "f6c7ee176dce9a0a5439b7c2800ac4c0dbd764226bb8f373d0b57126f604d314",
-        "edition_view_sha256": "1f23ec0d981b18839087611bd1bfa1d8fd89772a45646f720e78dcaf9bd8ffcf",
+        "evidence_sha256": "6d76c515cabc1ed8d01922b1a322aa37234febe01660c3c7e05653bb2fec5a7d",
+        "edition_view_sha256": "93f6c1694fcf6a8a52dfd39a508dbef216f822cee5733f52194a828e2b76ccae",
         "title": "R-CNN (Girshick et al., 2014)",
         "artifact_type": "PAPER",
         "evidence_status": "VERIFIED",
@@ -978,8 +989,8 @@
         "discovery_ids": [
           "VM-D035"
         ],
-        "evidence_sha256": "d55f457fba1fe6e4bd4920251cd4287e63ea049194308875ac3ed185824fb789",
-        "edition_view_sha256": "dbe16ad51bed9cbc2f41c81a7ca2a17887f91eb9e1dc3299426b715fecafabc8",
+        "evidence_sha256": "cf06817d8f457808199b8b78586381abb7e0f84905db2dd276dc50c96d64c6c8",
+        "edition_view_sha256": "749a3eafc6e2bcffe9e7d5597b7e7ad49e16326f2c5fb1eb04fc96b8dff80afe",
         "title": "DINOv2 (Oquab et al., 2024)",
         "artifact_type": "PAPER",
         "evidence_status": "VERIFIED",
@@ -1017,8 +1028,8 @@
         "discovery_ids": [
           "VM-D092"
         ],
-        "evidence_sha256": "1188bdb5de568e8452295d86ac1499737297ab166d72ae9d7bcdb14c24fa4bf2",
-        "edition_view_sha256": "35623d2b7fbbf511fad73dc4c0545959a2a82c846236bb14b58030b6ddb853ec",
+        "evidence_sha256": "ffb2b9dbff44711d51164e0a3474da9ea547fb5a131ad33c85ed39cc9872bf40",
+        "edition_view_sha256": "712ba5b1fff34cb9f4d03089819b8eb9b01d2badc571e55f01e41903680da3dc",
         "title": "SeeClick / ScreenSpot",
         "artifact_type": "BENCHMARK",
         "evidence_status": "VERIFIED",
@@ -1057,8 +1068,8 @@
         "discovery_ids": [
           "VM-D086"
         ],
-        "evidence_sha256": "1c4e9f334a11696d529889b5997cbf7914a50e4e54e689a052e6f03722ce7b53",
-        "edition_view_sha256": "c18d17564b248f05e02c7b7e3b63a8a91fe526d6c188859d53efabf0ece9e0d0",
+        "evidence_sha256": "e0dd733cbeef0e805872c3b064e57bdaf9c6c47fada9255b572bf87a43bd4f4a",
+        "edition_view_sha256": "b3904ddcfa7fbeb80385a38f126928208ef231da4767bd99dbae0fdf80d82baf",
         "title": "Video-MME",
         "artifact_type": "BENCHMARK",
         "evidence_status": "VERIFIED",
@@ -1097,8 +1108,8 @@
         "discovery_ids": [
           "VM-D084"
         ],
-        "evidence_sha256": "87fb75f7fbfe44add7e77fb1a21d1e01207f5afcb9b9c71020bfccf38aa32cde",
-        "edition_view_sha256": "397c5c721a35427cd905505b404093d8cb77f3c679309cacc428d81401361696",
+        "evidence_sha256": "1a94c5caa48df9b2a1cf551b59136936c2e407fddad9604e4b1255afee51e6d4",
+        "edition_view_sha256": "393503fac0550c4f278da3a3ef8d0f073680e357f50226a64a8e5db19d90a025",
         "title": "Something-Something V1",
         "artifact_type": "DATASET",
         "evidence_status": "VERIFIED",
@@ -1136,8 +1147,8 @@
         "discovery_ids": [
           "VM-D017"
         ],
-        "evidence_sha256": "214b99f5b5879c5cd6728befc92495e7a9cacd9ab1f2b51ed301e0ffc2acbb3f",
-        "edition_view_sha256": "6888585051b739cb34e45fa5b60329acf6c0baad18293d658a5639fa530b207a",
+        "evidence_sha256": "20a14fcf9f68ad246c763cd73078b02eef8da561b903248ea7414560165fdf79",
+        "edition_view_sha256": "782a94ff70554c691c2a0b5bc752b42e87206b8a9fc709c82300c46185a54c26",
         "title": "Segment Anything / SAM (Kirillov et al., 2023)",
         "artifact_type": "PAPER",
         "evidence_status": "VERIFIED",
@@ -1170,13 +1181,52 @@
         }
       },
       {
+        "candidate_id": "candidate:SP-vision-multimodal-2026:d277a60ff2531b80",
+        "evidence_task_id": "evidence:SP-vision-multimodal-2026:43c5bc5adec4ac9a",
+        "discovery_ids": [
+          "VM-D124"
+        ],
+        "evidence_sha256": "bbcd9147a5aebf52dceecfb6e30bcfb1f34a3fb196b6438300da301e51ba8e5d",
+        "edition_view_sha256": "0f7269f5a511b864fb58f99ce043a0c223c54e0026a3a49b97b7cbea729c285f",
+        "title": "DAB-DETR (Liu et al., 2022)",
+        "artifact_type": "PAPER",
+        "evidence_status": "VERIFIED",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "detection_structured_localization"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 2,
+          "metric_count": 0,
+          "limitation_count": 1,
+          "unresolved_question_count": 0,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Single-scale DETR-baseline scope; Anchor/Conditional DETR taxonomy stays outside; brief supporting treatment only."
+        ],
+        "profile_extensions": {
+          "lineage_role": "BRIDGE",
+          "branch_ids": [
+            "d02-dynamic-anchor-query"
+          ],
+          "transition_ids": [
+            "d02-query-to-dynamic-anchor"
+          ],
+          "inheritance_note": "Dynamic anchor-box query bridge: 4D box-coordinate queries with layer-by-layer updates and explicit positional priors; feeds DINO anchor-query formulation; brief supporting treatment.",
+          "historical_attribution_caveat": null
+        }
+      },
+      {
         "candidate_id": "candidate:SP-vision-multimodal-2026:d392201275c96332",
         "evidence_task_id": "evidence:SP-vision-multimodal-2026:46a40e71f36174e1",
         "discovery_ids": [
           "VM-D041"
         ],
-        "evidence_sha256": "407d93bdde7034dc0c4a79bbb782ca4d8dc6c8029cdfbfe3c37d3a722f75c4a3",
-        "edition_view_sha256": "9d00e29e173ba6378fcfe03bddcbae0dde51bdd815a8b0477c9148427d01832b",
+        "evidence_sha256": "6cebfd1c46beeddec364bb99d547b9f229e0a0dd1a38cb7d7ded0973f3bb787f",
+        "edition_view_sha256": "390252544cc7953a535681e602b9bde832ef20e0eb66a0d71c249f317a12e0b8",
         "title": "Flickr30k Entities (Plummer et al., 2015)",
         "artifact_type": "PAPER",
         "evidence_status": "VERIFIED",
@@ -1214,8 +1264,8 @@
         "discovery_ids": [
           "VM-D047"
         ],
-        "evidence_sha256": "245ca32c17d3efdc4f7a2456ddbb8328b18f2a08eae2f1c4eb744cc5e09fcb49",
-        "edition_view_sha256": "4c9487aa772a294d5dd4d657b5c520aac40829cf7055f90600f9275b9ce6eff6",
+        "evidence_sha256": "e520f5d101760123c336bb33d8f0afd77f9b821c5c5b3f308ae5f5c3c616837c",
+        "edition_view_sha256": "f4c82167a6a1e41413dc9a4b57c4fd7d1e5bf60e1cf0b34308c90072ff52cd21",
         "title": "GLIP (Li et al., 2022)",
         "artifact_type": "PAPER",
         "evidence_status": "VERIFIED",
@@ -1254,8 +1304,8 @@
         "discovery_ids": [
           "VM-D045"
         ],
-        "evidence_sha256": "0ccb84602e214af06b9110ecd7ed6869e25e225d9501d89cbd08a5a7b432f0bc",
-        "edition_view_sha256": "bc91357442f84305e18ee5bc52f6fe73ad2087da902e68da6d1fde3b7204f64a",
+        "evidence_sha256": "a4de7f8be4d40f9a0f5d828c3af38917966362a6425a0dafce1f518eae6667b0",
+        "edition_view_sha256": "d39a56bed78ed47a526731614ae9dfc3208b0a701eb9af8268db51717271cc35",
         "title": "RegionCLIP (Zhong et al., 2022)",
         "artifact_type": "PAPER",
         "evidence_status": "VERIFIED",
@@ -1293,8 +1343,8 @@
         "discovery_ids": [
           "VM-D062"
         ],
-        "evidence_sha256": "5702be2aac543b8b123313f53e0da7213c238e23824bfb082d5e32a325c87d59",
-        "edition_view_sha256": "c04e928572afa8ffa96d168b1befd6012aed6a5a33ee37f28854bed140f6c00a",
+        "evidence_sha256": "74f4a30c3692b2d91c2126a084306fa133a1965d30bbbd1eb332becb621fcbb5",
+        "edition_view_sha256": "61d0e91561a36a01a739b0fe697c298275f34b97a69b34bb88a25c6d80049eab",
         "title": "LLaVA (Liu et al., 2023)",
         "artifact_type": "PAPER",
         "evidence_status": "VERIFIED",
@@ -1332,8 +1382,8 @@
         "discovery_ids": [
           "VM-D075"
         ],
-        "evidence_sha256": "f42cc795b215941255194f22fa75dee5f3817d7c84689659202615ddf3cf32bd",
-        "edition_view_sha256": "27ecf5a8cd5fcc6fa7a96d54215454dd339f50bcddeb3cbe23d0bb40bfd7da58",
+        "evidence_sha256": "19b978351487ec871374e8c0f8ebbc759720c2d63660903988984c485fdfa6e6",
+        "edition_view_sha256": "17bfbdc8db163714f904d23792300a995df0d69ea76636a536fddaaa2d19220d",
         "title": "Qwen3-Omni repository (code + weights)",
         "artifact_type": "OPEN_WEIGHT",
         "evidence_status": "VERIFIED",
@@ -1372,8 +1422,8 @@
         "discovery_ids": [
           "VM-D018"
         ],
-        "evidence_sha256": "ecb50671cc57d1350184dd4846c52b28bb84aae5ab4cb173d3f3ec971dfd6c3f",
-        "edition_view_sha256": "64355eb663828e2b81bf1776c78051f0f2a1466e5aa0430e8f5b769d2f9230b4",
+        "evidence_sha256": "a3e608d7efd4107ad3e26f66e72b6fbcbc85deb8e898e63689368a6543124a0b",
+        "edition_view_sha256": "3cf19a291c63840b901e1ebcb5f8b3477cc9a6fae3cabe9a22276b943233b78c",
         "title": "SAM 2 (Ravi et al., 2024)",
         "artifact_type": "PAPER",
         "evidence_status": "VERIFIED",
@@ -1413,8 +1463,8 @@
         "discovery_ids": [
           "VM-D023"
         ],
-        "evidence_sha256": "be5d84f1b0a3159d9490ac4dcc3b84021b30d1660f05a3102e3c69f7dca77072",
-        "edition_view_sha256": "847ea7324891f12655775fb3d133adc5b9591d857c4ef109478ddcb88d5b3809",
+        "evidence_sha256": "b5b1f2ad50f99c71b45dcaa0008dc52fa03f28a8866e1c7c68faa1aa522ce933",
+        "edition_view_sha256": "6ae10e9de52aabbce668981c14ee005ca9dd54ee3135dc40f4b23032cd9fc613",
         "title": "LayoutLM (Xu et al., 2020)",
         "artifact_type": "PAPER",
         "evidence_status": "VERIFIED",
@@ -1452,8 +1502,8 @@
         "discovery_ids": [
           "VM-D070"
         ],
-        "evidence_sha256": "70f8fb754b66abf286fe74ebb0a7f8f931cf361ef70ca423a548b2078423a33f",
-        "edition_view_sha256": "55fdb29663ae70f2defe4e600f5d2af963803ff1bae10a2d291bf5a04e2b81d9",
+        "evidence_sha256": "5bf07f74640aa1856d77e4b0957a905d4a415ec930f5ce0c3c2a3f5eb8313c61",
+        "edition_view_sha256": "ef8d1c6d71770a44374b7622be2afeb29b6f16e5cb3de65cd959b165badbc6e8",
         "title": "InternVL3 (Zhu et al., 2025)",
         "artifact_type": "PAPER",
         "evidence_status": "VERIFIED",
@@ -1491,8 +1541,8 @@
         "discovery_ids": [
           "VM-D033"
         ],
-        "evidence_sha256": "b05e840c4911c956d9524dcd389fc79ac2730f035854c525e326eecbb3ef6623",
-        "edition_view_sha256": "df453d58d6f6c8417de6d35ddf1395a02f08e511927adb1441b80a9d7c614b2a",
+        "evidence_sha256": "e6b52e4e528764b1d9ea3b300edacce4638223a187b55129e689180cde6cb23b",
+        "edition_view_sha256": "bd73f6faeb5e5ace556412015e0a6c1f8c674201d1fae2e43ebb13d56142a4b9",
         "title": "Masked Autoencoders / MAE (He et al., 2022)",
         "artifact_type": "PAPER",
         "evidence_status": "VERIFIED",
@@ -1530,8 +1580,8 @@
         "discovery_ids": [
           "VM-D071"
         ],
-        "evidence_sha256": "77523907ec0b2a1c195f4539dcc2a39517e55376c841f5421d5c46f8adb68dc5",
-        "edition_view_sha256": "84c2ff95fcca75593ef35a0e2159a8f92873ce7469ba1eca1e489cff99d28d45",
+        "evidence_sha256": "d42ca531a365f9a5f9a54178bc969eecfc4aa7a61cf5f5ad7082255b507106f4",
+        "edition_view_sha256": "35ee160e5db3c37dd28155227e52e8012d251e0c7f805f973b3c7b0583cb0d29",
         "title": "Molmo 2 (Clark et al., 2026)",
         "artifact_type": "PAPER",
         "evidence_status": "VERIFIED",
@@ -1571,8 +1621,8 @@
         "discovery_ids": [
           "VM-D065"
         ],
-        "evidence_sha256": "8bfd8b94db56889cc064289a8f4459d3900308ce09404b1f5dcc506d9124476a",
-        "edition_view_sha256": "6dde1c60d534557e7f83344452635e75f69b985d1b67bab41a4a132e6979f815",
+        "evidence_sha256": "63d30f2acbdcf5a916d7be5304f524fc57b1d51f8d515231cbe2078ea3918efd",
+        "edition_view_sha256": "88ec88c5d951e531813ae2923660ca7cbdff0505faa2a7c27908750c23e1a4ba",
         "title": "Qwen3-VL (Qwen Team, 2025)",
         "artifact_type": "PAPER",
         "evidence_status": "VERIFIED",
@@ -1610,8 +1660,8 @@
         "discovery_ids": [
           "VM-D104"
         ],
-        "evidence_sha256": "7a7ab349a9b05936eaf87cf4996bef9018be52d618e6b43f446d1f6d00e5ca2b",
-        "edition_view_sha256": "bac9163f58ca173f3945abb0397811e41276ed4f4621403b2558d95df07b9843",
+        "evidence_sha256": "c8bc3229dd5496e2f46bbea3b93292534290dd67591b2f77dc842685ee82c7cb",
+        "edition_view_sha256": "145fd41065ffdb6230299cb9106bbc4b4263d12e44e41c8d92831d7c79cb63ca",
         "title": "V-JEPA (Bardes et al., 2024)",
         "artifact_type": "PAPER",
         "evidence_status": "VERIFIED",
@@ -1649,8 +1699,8 @@
         "discovery_ids": [
           "VM-D026"
         ],
-        "evidence_sha256": "4407fa14c833c54dbd6ed5781f8d73af79cc8efdc51ccc48f21000e8614c24ed",
-        "edition_view_sha256": "052d7b703845a57cea1173d00faee3caa0d76a24dd7ca6d705ea9295849588a8",
+        "evidence_sha256": "64f09b80032c21145e63e1afc08a87a48242d102b799fedf23e04b5c9c2ea637",
+        "edition_view_sha256": "aba8e723e7408605c51b66e770479e88cd75544d9af5901b16e4d6ea81b12048",
         "title": "Pix2Struct (Lee et al., 2023)",
         "artifact_type": "PAPER",
         "evidence_status": "VERIFIED",
@@ -1688,8 +1738,8 @@
         "discovery_ids": [
           "VM-D068"
         ],
-        "evidence_sha256": "2300201b03bcdadda0e4036eb21ad11a64c16b28949fce4c4fb44cdffc9cb519",
-        "edition_view_sha256": "7be72bd2484b0de18aeb93d2c74d14b4cc13210c5b7f134526ab6e3d83afd2e6",
+        "evidence_sha256": "64e5b5ba049dccc314dcf1de01c91cda9d585e22c78abe3b5fefcd2dae9962a1",
+        "edition_view_sha256": "cea9c365c6d113d68a8bb7dfbeaeac04497dc199b7de3eea7a818d3d5f83f4d9",
         "title": "BEATs (Chen et al., 2023)",
         "artifact_type": "PAPER",
         "evidence_status": "VERIFIED",
@@ -1727,8 +1777,8 @@
         "discovery_ids": [
           "VM-D103"
         ],
-        "evidence_sha256": "202fecff4b9f4aac6873f9c3c5ca0f93f88daf3f6dd23143dbb6043f7e48f0fa",
-        "edition_view_sha256": "df27f2a04ee8185b1db4c7ccafb0779c88f8992cf0b7d1aafbbf2300f4e8c8bd",
+        "evidence_sha256": "bd2cf663388597e9dabfe562fdc2dd9c8fd568e55e035044c7d600da95b3dd78",
+        "edition_view_sha256": "e170a3aaf3a174f10f6a196093cd28bf55212a011156dbde202e4073ab8d1008",
         "title": "I-JEPA (LeCun et al., 2023)",
         "artifact_type": "PAPER",
         "evidence_status": "VERIFIED",
@@ -1766,8 +1816,8 @@
         "discovery_ids": [
           "VM-D003"
         ],
-        "evidence_sha256": "547000ecbbfdbabfa2d4916203ac920153521f78e45c16970d42f596d3b8bf51",
-        "edition_view_sha256": "5a1d08b9fd209c3db9b67137f4eb881f736166c7798de8efe6a22a484d9aeb36",
+        "evidence_sha256": "1762af6c310d296f94b14fcb7a6b1fe26b9ed8c2bc3d3bf0c5a980af5e70a05c",
+        "edition_view_sha256": "1906f51e4a1d480ca24b346d6abea77cb16083e9b6e1257df1831ac7f6992ce1",
         "title": "ImageNet Classification with Deep CNNs / AlexNet (Krizhevsky, Sutskever, Hinton, 2012)",
         "artifact_type": "PAPER",
         "evidence_status": "VERIFIED",
@@ -1806,8 +1856,8 @@
         "discovery_ids": [
           "VM-D116"
         ],
-        "evidence_sha256": "294b7b6bf5e5783ac6d46119fb57428b4739477917d0fd68ae5a2a7341ef6541",
-        "edition_view_sha256": "244bc89f5f84dbda1d8eb36de22dd49349a4282bda239db09834fca1162c003e",
+        "evidence_sha256": "6998eeb5f2b09acc2c632ec0aca7c15403123af1d2fe6ed7d602f5ce842d9d58",
+        "edition_view_sha256": "14509f35087cd5577cee4c87a0872a73486b8b04c898f684e1ca2d9450252465",
         "title": "pi-zero (Physical Intelligence, 2024)",
         "artifact_type": "PAPER",
         "evidence_status": "VERIFIED",
@@ -1845,8 +1895,8 @@
         "discovery_ids": [
           "VM-D032"
         ],
-        "evidence_sha256": "844cca21e019abb23e0467004cc96004901e0d07ac87781fbb561c5ba24e7b40",
-        "edition_view_sha256": "57721ac020186725e0b9a651e6926be1f65e5904042ad4bfe387ade1386e44d4",
+        "evidence_sha256": "bcf5dce1838f0312ccc3beb32b87645ed557baaf5e43a89a75a2e4e4219c5e0c",
+        "edition_view_sha256": "f884247f08660c1b4ff9a634e4daf54454f82fc04fc89ff11a0ed773dfea2ff3",
         "title": "Swin Transformer (Liu et al., 2021)",
         "artifact_type": "PAPER",
         "evidence_status": "VERIFIED",
@@ -1884,8 +1934,8 @@
         "discovery_ids": [
           "VM-D091"
         ],
-        "evidence_sha256": "24bba0dd25a3c8ade4594cb142d5b2bf64be5963caedd4c6ddff6ecc937375b0",
-        "edition_view_sha256": "0b919a26ca5e76ed0d1847789f3d7e4b19d5059e95899e6dfe08f5a5a14fa53c",
+        "evidence_sha256": "87ae0f94e4ad19eb05a8608db61175afc93695323c6630b58289734425e4a6fa",
+        "edition_view_sha256": "f165dd8b4c54c909e3621505552ea183194d31bf3c319be3b422d0bdde344567",
         "title": "OSWorld 2.0",
         "artifact_type": "BENCHMARK",
         "evidence_status": "VERIFIED",
@@ -1924,8 +1974,8 @@
         "discovery_ids": [
           "VM-D108"
         ],
-        "evidence_sha256": "780c7352e74272805c22be073ef66ab08ba329b8eb5f26bee5d722bfb60b55e6",
-        "edition_view_sha256": "700c74debf500dcadab2a69d5ac2c800fc4da65bcbda7b118ea6a2b23ee832e1",
+        "evidence_sha256": "4ee8f04b6355f18658c9f81502942718e5f7ce05041a2d3cf0115ba11fc615cd",
+        "edition_view_sha256": "ae0a9f69b8e2191e2de5be67f4acc6e0aea091ee7e95d09907361919f573aecb",
         "title": "DocVQA",
         "artifact_type": "BENCHMARK",
         "evidence_status": "VERIFIED",
@@ -1965,8 +2015,8 @@
         "discovery_ids": [
           "VM-D072"
         ],
-        "evidence_sha256": "b379b4d7f6ca683cc484678a7a7be529674f3d65cedd4cbe6bf1665115929523",
-        "edition_view_sha256": "a03b8cdd93f142c3c8aa72b89583ab767ffe6bb684dacb666917968f328c5344",
+        "evidence_sha256": "2ad164b4b032d3f44a9a88c69e7d7f13962415fb8256bd8c6b264933135e9695",
+        "edition_view_sha256": "ae408b82cac8dfd6efe0be8785b6cd9067196ece1d4a109f9a24f8f0b97649dd",
         "title": "Gemini 3.1 Pro (Google, 2026)",
         "artifact_type": "MODEL",
         "evidence_status": "VERIFIED",
@@ -2005,8 +2055,8 @@
         "discovery_ids": [
           "VM-D025"
         ],
-        "evidence_sha256": "8ccd450150d11758ff3b5ef2f6eecbd86caf521845b9c9ae46b7664ae7934db9",
-        "edition_view_sha256": "f9ca08c6e5aa837085e12e767708aff2788f90d57ec18be0de74b47af28843aa",
+        "evidence_sha256": "512891201144cb62073a33e5e24291ed015d8b6643cd444f8a08058cf1707477",
+        "edition_view_sha256": "4be3953a65cae34ebe3f7831ddcbc86036064e44b2ed1a2006621db49a7e05aa",
         "title": "Donut (Kim et al., 2022)",
         "artifact_type": "PAPER",
         "evidence_status": "VERIFIED",
@@ -2044,8 +2094,8 @@
         "discovery_ids": [
           "VM-D016"
         ],
-        "evidence_sha256": "4b2541dcd47650a424d5d6f3e56a6dfc54bed478aec70390291c5dff264ccb0b",
-        "edition_view_sha256": "43e498397aca2d71df106eaa0aae4f5f7cc097aa0ea6a08355b75d51beea5d0a",
+        "evidence_sha256": "4e33c67b4a9d38705faef2489f2db196b034adf1f8ba767f651802cec932489f",
+        "edition_view_sha256": "59ce7cefef13563e6e930ecba70b9c42738308101bc953ab94e6d4a2b8406ece",
         "title": "Panoptic Segmentation (Kirillov et al., 2019)",
         "artifact_type": "PAPER",
         "evidence_status": "VERIFIED",
@@ -2078,13 +2128,52 @@
         }
       },
       {
+        "candidate_id": "candidate:SP-vision-multimodal-2026:c7fd3834cd4f0ee2",
+        "evidence_task_id": "evidence:SP-vision-multimodal-2026:796e6c3c2cac7f26",
+        "discovery_ids": [
+          "VM-D125"
+        ],
+        "evidence_sha256": "c667eeee828ef4a44c86f60e80f6713e179a93ce9f7417370ff911409052bc1e",
+        "edition_view_sha256": "be669ea80e3db5b346b59592a73951094e7a575c83cad10cc5e219ac3e039dc4",
+        "title": "DN-DETR (Li et al., 2022)",
+        "artifact_type": "PAPER",
+        "evidence_status": "VERIFIED",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "detection_structured_localization"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 2,
+          "metric_count": 0,
+          "limitation_count": 1,
+          "unresolved_question_count": 0,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Uniform-distribution noise sampling only; query-denoising training, not diffusion-model denoising; transition-node treatment only."
+        ],
+        "profile_extensions": {
+          "lineage_role": "CORE",
+          "branch_ids": [
+            "d02-denoising-training"
+          ],
+          "transition_ids": [
+            "d02-matching-to-denoising-training"
+          ],
+          "inheritance_note": "Denoising-training bridge: bipartite-matching instability diagnosis; noised GT reconstruction; built on DAB-DETR; feeds DINO contrastive denoising.",
+          "historical_attribution_caveat": null
+        }
+      },
+      {
         "candidate_id": "candidate:SP-vision-multimodal-2026:04b576c4cd48b4cc",
         "evidence_task_id": "evidence:SP-vision-multimodal-2026:8025f5dd3a9f4a6c",
         "discovery_ids": [
           "VM-D105"
         ],
-        "evidence_sha256": "f02b2deb3526e75178d8d2ffa4ffbf89bc1bd3b18e981c1d5cd8713bb1c2e14f",
-        "edition_view_sha256": "79587d8f65c8ef3c86ad36b7dc5d90d01868a6939fe89b0e6137b560916a11f9",
+        "evidence_sha256": "31046a0dad813961326fa5ebccef33f9be4ff0ec293e825fe8826f763ef00de8",
+        "edition_view_sha256": "ba2623d9d4923c27b62c2b1f62d5830ad430ad89f9ae8ffccea24cbe5fd9a8ec",
         "title": "Genie (Bruce et al., 2024)",
         "artifact_type": "PAPER",
         "evidence_status": "VERIFIED",
@@ -2122,8 +2211,8 @@
         "discovery_ids": [
           "VM-D063"
         ],
-        "evidence_sha256": "84f4fcf72ccf8778087701f5a75c4212a59db04f2eec7786e5fb2cc840b98058",
-        "edition_view_sha256": "37445d7ae4d7bc56645f2bfe82b4f3fa97785ae3e4f6bac2ec01f0c9faee351a",
+        "evidence_sha256": "317131e0ea751507e5e7d5540ab3eead4cb91462626d665fea7697d6cb96c890",
+        "edition_view_sha256": "2a0d41507349a054147c33a7b876d7883b0eb39069449fab505642b13e3c73a2",
         "title": "Molmo / PixMo (Deitke et al., 2024)",
         "artifact_type": "PAPER",
         "evidence_status": "VERIFIED",
@@ -2163,8 +2252,8 @@
         "discovery_ids": [
           "VM-D051"
         ],
-        "evidence_sha256": "82efb704d268500889dfd0a8a4c4a5d59ad4691b33dfc4b73619efd791339a09",
-        "edition_view_sha256": "29a5480837d3a17ad0db8fc9457881ab48c3a025bb0e5aadf497ce8a4e682e88",
+        "evidence_sha256": "da99a713883d3045061993919e88e9642d3f4a33263c5bee0886a63ff7698f71",
+        "edition_view_sha256": "b474f204fc30610ab3ecc0a2aa50cf91df9c31bbba71055fafb7ac391a0b22a7",
         "title": "OWL-ST / OWLv2 (Minderer et al., 2023)",
         "artifact_type": "PAPER",
         "evidence_status": "VERIFIED",
@@ -2202,8 +2291,8 @@
         "discovery_ids": [
           "VM-D046"
         ],
-        "evidence_sha256": "ae84f5106ec8dc06dfdd78b79db7dd369e033e78adc685bacb41835855bc5beb",
-        "edition_view_sha256": "6705d7c02193fce09eb4aa0e44e20dd1eea42a9f255c37bf09e0fc13bbae957f",
+        "evidence_sha256": "a7e75a2e624c53e1a0a2509ce456610a77bbb063d30cf6eac9d1c329cee3f928",
+        "edition_view_sha256": "a7c15ede3e28a125d5279c814da09b8ef2fa40fdee742c4becf167a6c9f6efa7",
         "title": "Detic (Zhou et al., 2022)",
         "artifact_type": "PAPER",
         "evidence_status": "VERIFIED",
@@ -2241,8 +2330,8 @@
         "discovery_ids": [
           "VM-D099"
         ],
-        "evidence_sha256": "16ef58c9669eb9417c670ca0bdb664f32fca4455624ade3359ed0bf45d4c1088",
-        "edition_view_sha256": "688887ad75b37fa8fd9132149269486d7dcfa9c6826d2789186380bc5ff3d71d",
+        "evidence_sha256": "bf98ba48bff9ef109f2c1dbed082909af307dfa77065f3d058188a4d3739d6b1",
+        "edition_view_sha256": "2ba5fc9d573bc9a783f4d061f2322e0d46bde1bcd64844698d042de23e4213bc",
         "title": "Gemini Robotics 2 (Google DeepMind, 2026)",
         "artifact_type": "MODEL",
         "evidence_status": "VERIFIED",
@@ -2280,8 +2369,8 @@
         "discovery_ids": [
           "VM-D090"
         ],
-        "evidence_sha256": "be73f6164ab0e74c1d1c531cb0e0c9450f5665af77ba648aa0428326b1f5ef84",
-        "edition_view_sha256": "c021d78e5d1c1adb808e5d302e66036ac760676beca9b36510c5b16d7e60abbf",
+        "evidence_sha256": "5b8292c5cdd10adb4f915f636cdaff6de2f26fae332ef9d6ccd3432394eb37e6",
+        "edition_view_sha256": "90f96c241b996b0ac59fe5fd944749aa94c7d210d9437db75fe0088c8a058df3",
         "title": "OSWorld",
         "artifact_type": "BENCHMARK",
         "evidence_status": "VERIFIED",
@@ -2319,8 +2408,8 @@
         "discovery_ids": [
           "VM-D019"
         ],
-        "evidence_sha256": "99bd9aa882f957f462bc39370c28f53231c9d52e3378cf616067c687557c0bee",
-        "edition_view_sha256": "804ca5be1f9e91b24a2dac0cfad6dbad66a5b1db78a9cdaeadd158ee5a2af711",
+        "evidence_sha256": "440615f16793e972a89de07adaa4229d5f91a90237aa766c5083cb37aba929e3",
+        "edition_view_sha256": "474f3a1e7c20d8413e84010df2bb79cbe9f58685de77cb3b422fdb1280bd4e24",
         "title": "MiDaS (Ranftl et al., 2019/2022)",
         "artifact_type": "PAPER",
         "evidence_status": "VERIFIED",
@@ -2358,8 +2447,8 @@
         "discovery_ids": [
           "VM-D080"
         ],
-        "evidence_sha256": "920e3027ad1b13dc84a7f92b62ea3b7a3996406727eb8419c8f17db676762ac3",
-        "edition_view_sha256": "ba7af9d6a19b535ad4517e2c69070ed859993ca973c431ebc782886547e8e2c5",
+        "evidence_sha256": "5de16e81e6e0f612f35c1c35c42afc64f8007b855a3133c4b39945a79272b5d6",
+        "edition_view_sha256": "5fcf6fe7f6365726f327775030c6d9244d0421e295321311a0bec07e14da016c",
         "title": "HallusionBench",
         "artifact_type": "BENCHMARK",
         "evidence_status": "VERIFIED",
@@ -2398,8 +2487,8 @@
         "discovery_ids": [
           "VM-D095"
         ],
-        "evidence_sha256": "921fcfea5324022c1ed6e9bc0773614f4ae7f1e62dfd3bb98eb2c758d02dc7a4",
-        "edition_view_sha256": "3fc2078fde4c8c4b2b02bff4f4dbb8742eb2c04f10a0849ac246b8c8effdcd37",
+        "evidence_sha256": "177b769e7d5294a9765e27a1441671bdb369d084ecbde2fbaccc071ef42b6eee",
+        "edition_view_sha256": "a75f211de22db9581514fde376134a3d1f0160d98168f2d5633337160bd739f4",
         "title": "PaLM-E (Driess et al., 2023)",
         "artifact_type": "PAPER",
         "evidence_status": "VERIFIED",
@@ -2437,8 +2526,8 @@
         "discovery_ids": [
           "VM-D001"
         ],
-        "evidence_sha256": "490a15397800c6f94296ed3f10aeafcf42ec6e5225443bc8637c8330435414ca",
-        "edition_view_sha256": "127d9dd1379dcded38bf473cc0d5310ae8d5e600ccf41ba0f0172af39d7b3df5",
+        "evidence_sha256": "053b429991b50dff6a1ff0a91018c6d5986bc3ff4b90bab945f8a884ce7257e1",
+        "edition_view_sha256": "5f2820ff825b51a412298f88c6a24a666963a6cbb7258c6fcb826ebc0f995729",
         "title": "Neocognitron (Fukushima, 1980)",
         "artifact_type": "PAPER",
         "evidence_status": "PARTIAL",
@@ -2477,8 +2566,8 @@
         "discovery_ids": [
           "VM-D076"
         ],
-        "evidence_sha256": "c22d985a3e7bee284e7ff02f266fc45c974406c9422404b53f06bc987f56a07f",
-        "edition_view_sha256": "03bb20ae0e555afdcd9566a1680e03518f50e52e45e9edb606c06277a64b8dd2",
+        "evidence_sha256": "7b9b5a6c4ae814c5869f7892e6b62493a0573c600b320fec0a6e6a530738b8f2",
+        "edition_view_sha256": "896ce7a822e8f3e1d4f8edf9759eac64e3a3f4e9fcb1318139de393488106bf1",
         "title": "InternVL repository (code + weights + data)",
         "artifact_type": "OPEN_WEIGHT",
         "evidence_status": "PARTIAL",
@@ -2517,8 +2606,8 @@
         "discovery_ids": [
           "VM-D077"
         ],
-        "evidence_sha256": "a816002257ac068a7804b5733c2389638c8ee16028d83b0f36866dad7b35bef1",
-        "edition_view_sha256": "809dc89e779faf80141c5ea4db3665d0e0e9251a4a366a783b4c68c1ded371da",
+        "evidence_sha256": "c93c010358a29b2f9c4d51604a498523a2330d7405d463075e3f55191a4a4967",
+        "edition_view_sha256": "72adc33ea65932f79c5f06fdb9ae3684b85c65d3a4f8a2226f456f220d9e0192",
         "title": "allenai/molmo2 repository",
         "artifact_type": "OPEN_WEIGHT",
         "evidence_status": "PARTIAL",
@@ -2557,8 +2646,8 @@
         "discovery_ids": [
           "VM-D058"
         ],
-        "evidence_sha256": "a874d8997d4fbbee35cb3aea898cde371dfd24af42b629c0ccf6cded498b6ec2",
-        "edition_view_sha256": "2c3b4be3e05d73bb4ce6bb4d73a8e2b7f2a8b4318875dc3a17f0a579b6957bb9",
+        "evidence_sha256": "b6bbd03f599aef4ccceaf6d223bf1ebf0be9304c38120d5663b96891833edc65",
+        "edition_view_sha256": "29f8fad9d059b561f49056eacd7067dacd50fa927422ed53186dad30f4f209ee",
         "title": "Flamingo (Alayrac et al., 2022)",
         "artifact_type": "PAPER",
         "evidence_status": "VERIFIED",
@@ -2596,8 +2685,8 @@
         "discovery_ids": [
           "VM-D081"
         ],
-        "evidence_sha256": "1c560e2a38b9c6253bbeed10caf9347600a551c3df62a9f0c59f083d5a2db2ed",
-        "edition_view_sha256": "afb2e452bc8b0e00b8d7887643f4021b4108244649a93bca0ac1516be3de4950",
+        "evidence_sha256": "b0a8f54d97455abf96f1f580948bc56840d4b58a99028be38d9782756522df4d",
+        "edition_view_sha256": "dfbfd28ee4ea9acecb4ff0338b0d566e1c53cc3312169a02399b83308531108b",
         "title": "MMBench",
         "artifact_type": "BENCHMARK",
         "evidence_status": "VERIFIED",
@@ -2635,8 +2724,8 @@
         "discovery_ids": [
           "VM-D054"
         ],
-        "evidence_sha256": "5fb331e4e908b1e0c09b005fa2e2de9155063af87ea16bb566a3d49722548b51",
-        "edition_view_sha256": "181797efbd3349a27635adab05d0c32c540be9e3dd44fa8c803a0cdb17bfe0e3",
+        "evidence_sha256": "141ba54c9673c7ce02d44b7b41e5a8a712ff3ba3130fa74470f478605457f4c2",
+        "edition_view_sha256": "590c1db55aba335f553a73b42f120b58545bd4dd95fb5bdef31d49d2d53f4195",
         "title": "OpenSeg (Ghiasi et al., 2022)",
         "artifact_type": "PAPER",
         "evidence_status": "VERIFIED",
@@ -2674,8 +2763,8 @@
         "discovery_ids": [
           "VM-D089"
         ],
-        "evidence_sha256": "938981c971529468b80179a8472c91af717042f3462d7b96e2ca3f9673e8028a",
-        "edition_view_sha256": "2a59fc13c4214ac1268bacf6ff2c00c7971e5a4cbdc44a9313e621e8fd5ce121",
+        "evidence_sha256": "cc385adad019d897afd3ef3a36d317abffcc757cbea8f4dc55cc0573a84b21ec",
+        "edition_view_sha256": "f765cdcc6383c1c9f35f28a93379fde641f050530f76e15cf840e961b025aadb",
         "title": "Flash-VStream",
         "artifact_type": "PAPER",
         "evidence_status": "VERIFIED",
@@ -2713,8 +2802,8 @@
         "discovery_ids": [
           "VM-D034"
         ],
-        "evidence_sha256": "55c3c258cddac449928671be76054094b57046dd7df4e4febe17912d96835d79",
-        "edition_view_sha256": "049e82d05fc483743ac00f6f8452c98d04988283bbf03045143fd5d4213f1639",
+        "evidence_sha256": "cf3015fa233a922b447d660937fc1b232364f072089059144455487b2c27383e",
+        "edition_view_sha256": "e47815f6939c0dae35fc666587cfd1c198aa6d5495a43cd996ceacf838b13f7c",
         "title": "DINO self-supervised (Caron et al., 2021)",
         "artifact_type": "PAPER",
         "evidence_status": "VERIFIED",
@@ -2752,8 +2841,8 @@
         "discovery_ids": [
           "VM-D069"
         ],
-        "evidence_sha256": "846bf94e7b5c51373c1c72302ac081672aad6c283747d6ad4183fa8e50309eb7",
-        "edition_view_sha256": "13e6323c97426670564980e8399e77fbcd9da6769000bd9153ebff4efad4c6fd",
+        "evidence_sha256": "01dc804df0882ff2e261f9a2d74db46981622012b884eafe0e1826d819989ced",
+        "edition_view_sha256": "f237d7791dad8f1f46ed1a1a87f1a9f424b21169365a6d6ca967a1b29db980dc",
         "title": "CLAP (Elizalde et al., 2023)",
         "artifact_type": "PAPER",
         "evidence_status": "VERIFIED",
@@ -2786,13 +2875,52 @@
         }
       },
       {
+        "candidate_id": "candidate:SP-vision-multimodal-2026:6018779ae64eed93",
+        "evidence_task_id": "evidence:SP-vision-multimodal-2026:a04ef197904a57c0",
+        "discovery_ids": [
+          "VM-D123"
+        ],
+        "evidence_sha256": "8ae75a952abf8067a18150ee4250318253edad23c06dbc4f454509cf662b0e1c",
+        "edition_view_sha256": "08a577e5994f144be2c7b70dcfb5bd1077d4714d1a71b8fb7add0cc4a24a2ec3",
+        "title": "Deformable DETR (Zhu et al., 2020)",
+        "artifact_type": "PAPER",
+        "evidence_status": "VERIFIED",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "detection_structured_localization"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 3,
+          "metric_count": 0,
+          "limitation_count": 1,
+          "unresolved_question_count": 0,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Single-scale vs multi-scale variant scope; two-stage query-selection and iterative refinement are optional extensions; FPN-general survey stays outside this bridge role."
+        ],
+        "profile_extensions": {
+          "lineage_role": "CORE",
+          "branch_ids": [
+            "d02-deformable-attention"
+          ],
+          "transition_ids": [
+            "d02-detr-to-deformable-attention"
+          ],
+          "inheritance_note": "Efficient multi-scale sparse-attention bridge: small sampling set around a reference point; 10x fewer epochs; small-object repair; DINO build-on branch.",
+          "historical_attribution_caveat": null
+        }
+      },
+      {
         "candidate_id": "candidate:SP-vision-multimodal-2026:8a740dd7b6642284",
         "evidence_task_id": "evidence:SP-vision-multimodal-2026:a09c80fa9231ebf2",
         "discovery_ids": [
           "VM-D119"
         ],
-        "evidence_sha256": "35f521619f9345003a60cfef4957c2a58b3819800d73f8bda1cfa7d8960df598",
-        "edition_view_sha256": "34c766e7e1b7975e3489ab4a4fd048b6169d75f3c36876d3e3abc4e0567ffd2e",
+        "evidence_sha256": "397a3c5cbcb0cf93b9ea9a9b0685199e5d219f31707a5344452d30045f36ad0d",
+        "edition_view_sha256": "b3342a737b51ff14d1d916b4bd0ed1dac7bb424a5a5bd3570bea89ed43834a34",
         "title": "UGround (2024)",
         "artifact_type": "PAPER",
         "evidence_status": "VERIFIED",
@@ -2831,8 +2959,8 @@
         "discovery_ids": [
           "VM-D029"
         ],
-        "evidence_sha256": "9baf4343d600fec0e8f71f10a78afebaa30870c12aee4d1617b28a57f6d5f754",
-        "edition_view_sha256": "4a08f27795fdbbb75d36379a25da7cdc161ef267d0381de981b9c192cc1d77ec",
+        "evidence_sha256": "8f5070f0288abf37d80ce0a08f1b8dbb7cc854218ec79ba6198d650d73f5a84b",
+        "edition_view_sha256": "179034ecce2acf622b61dcf33fa78704a22b0804a647b43a882da20a8e9787b5",
         "title": "Qwen3-VL-Embedding / Reranker (Qwen Team, 2026)",
         "artifact_type": "PAPER",
         "evidence_status": "VERIFIED",
@@ -2871,8 +2999,8 @@
         "discovery_ids": [
           "VM-D121"
         ],
-        "evidence_sha256": "7cb153cdfcc2bcef7d4561daa1bcf39a95c7f57739f824765223eef371bb4fda",
-        "edition_view_sha256": "e0e6fe3b15046a441fe79b5c7b1101772494239228d99883be44aba30c873cc6",
+        "evidence_sha256": "29284b2c3ba3908d13aee8ad3f69f5686b8b3ed2a1c451d5aeea8d17261564d5",
+        "edition_view_sha256": "8c22495b1011dc7ff3dc31ced7a225045822a50a2c7e3621585d269404dc8da7",
         "title": "V-JEPA 2 / V-JEPA 2-AC (Meta, 2025)",
         "artifact_type": "PAPER",
         "evidence_status": "VERIFIED",
@@ -2910,8 +3038,8 @@
         "discovery_ids": [
           "VM-D102"
         ],
-        "evidence_sha256": "7e97a13536df42b69a4905b2972bd9096f89d46984cda49cf491b60c37c77801",
-        "edition_view_sha256": "cf934d15002996ec7d8ab7121c1c603afabebfb0bce37ac02fdfd93fe4b51b6e",
+        "evidence_sha256": "c7ca5a67683428593dddd0dc6d87268dc440ee7ed6c192867975ba4f3d504196",
+        "edition_view_sha256": "ad89073916891298cf0af3823b8ffd746637ae484628350b061f5e0d2079a392",
         "title": "DreamerV3 (Hafner et al., 2023)",
         "artifact_type": "PAPER",
         "evidence_status": "VERIFIED",
@@ -2949,8 +3077,8 @@
         "discovery_ids": [
           "VM-D096"
         ],
-        "evidence_sha256": "c82d89dfabc0306e16065000fbc4dae797d59526c4a469f87ff819fd8cea11f7",
-        "edition_view_sha256": "d4df4aab8a3c7073d7e496dee21c813b2b2a21f3563d88627677d7886b8258fd",
+        "evidence_sha256": "e18ba86ccbacdf0a290968a4a404197c6d1fed60f3b8d1979c5f3fa313fb4ea0",
+        "edition_view_sha256": "a7756100cd0c495f89d481bebef88bffdeed0d6ed9066fe6e0595b939b9cfa78",
         "title": "Open X-Embodiment (O'Neill et al., 2023)",
         "artifact_type": "DATASET",
         "evidence_status": "VERIFIED",
@@ -2988,8 +3116,8 @@
         "discovery_ids": [
           "VM-D022"
         ],
-        "evidence_sha256": "fbf681b4d0548f5e0b789bacd8b1cef61365764bbb21bd72d92f7d34100bc96a",
-        "edition_view_sha256": "923fb91b88ac92a5e522fe5ad2e7dd68887759a025f51d34a1ec343198b4f7fe",
+        "evidence_sha256": "5b0970db3a6a6c2534ae048b7d5a643f343fe27cd71451ec7025db66b05a778a",
+        "edition_view_sha256": "6fcb3db74bac9e59661d75fd4919d155c17d368b74b4614fe34b802fd2c00447",
         "title": "DUSt3R (Wang et al., 2024)",
         "artifact_type": "PAPER",
         "evidence_status": "VERIFIED",
@@ -3027,8 +3155,8 @@
         "discovery_ids": [
           "VM-D042"
         ],
-        "evidence_sha256": "625b2ed758cc444611283e4e9962ea0586dd9fdbbf4cff529f194f8c4c4e1675",
-        "edition_view_sha256": "b67b6acdaf4cfea889a2b29d74413cbb075bf483a99b0cb1f53aeaa2ba64847b",
+        "evidence_sha256": "ecb1865a6b1e2327e26f20449c8c64e45df9529fdbd6c6676dbd799f1d28fd96",
+        "edition_view_sha256": "cd5727c6c256e140059785849be645ee3f47b6c97157fa350a1c1297629a556f",
         "title": "Modeling Context in Referring Expressions / RefCOCO (Yu et al., 2016)",
         "artifact_type": "PAPER",
         "evidence_status": "VERIFIED",
@@ -3066,8 +3194,8 @@
         "discovery_ids": [
           "VM-D028"
         ],
-        "evidence_sha256": "4a0b0c89222df0e62958d63ee2b4db47c0320f3980fdfc7afe71d3f8296f36da",
-        "edition_view_sha256": "654486cfd220c0adcf11e719311c2031346f4f6ef23a8bbfae4c980b8563933b",
+        "evidence_sha256": "525daf29096fd0d00d341971fe2b65b7588c47763deb79b56515b5b067085a79",
+        "edition_view_sha256": "2aa02186aad130230717b3ee3c3eac56fa5024c39e5e8305c928323e8bda7f59",
         "title": "GOT / General OCR Theory (Wei et al., 2024)",
         "artifact_type": "PAPER",
         "evidence_status": "VERIFIED",
@@ -3105,8 +3233,8 @@
         "discovery_ids": [
           "VM-D111"
         ],
-        "evidence_sha256": "c9a25b2e143b1eb1d20824a5aec5aa4c32725f1fe23820deb62462ce8a30b6d2",
-        "edition_view_sha256": "e18fe76e872924a4bb251e28b67d833dbfd22f3f0367979db48cef610d758b46",
+        "evidence_sha256": "ddf8c866cd4e3bd91a3db5472a327806c1e84714e34257b3221995a111462622",
+        "edition_view_sha256": "9564f902ea7b0fd60ffaf6c1a29fd6eb76a4f96caf33eb0ccc0a4351d6c64a9c",
         "title": "VSI-Bench",
         "artifact_type": "BENCHMARK",
         "evidence_status": "PARTIAL",
@@ -3148,8 +3276,8 @@
         "discovery_ids": [
           "VM-D021"
         ],
-        "evidence_sha256": "dec6380d50cfa8ad4b9f7d1438d7db3edf46b39024e839d18dcada3dca83c873",
-        "edition_view_sha256": "577a5b0acd6a912bbf1713631458deae8d8b2add29175018c2a439e0ca115cd5",
+        "evidence_sha256": "8053d7fed73a06a3772953d28f90be254c971aa5e8a71ad84b8a55d8620e477b",
+        "edition_view_sha256": "65819a31044fc60b14c33224dacd3bf310b3f05696cc051b1b029dfad2dda34f",
         "title": "Visual Genome (Krishna et al., 2017)",
         "artifact_type": "DATASET",
         "evidence_status": "VERIFIED",
@@ -3190,8 +3318,8 @@
         "discovery_ids": [
           "VM-D061"
         ],
-        "evidence_sha256": "86b0a3982ec6838caa3ff28d22fcac848f7e287e38b38fd409b49e51bf81ac00",
-        "edition_view_sha256": "ca61404915ca7d1c19e11e77f5de125e9ca2e4ac12de15a1372d268d83bf6022",
+        "evidence_sha256": "cbc63ed08a2fbd3ea4482c185986bb28761c669f166b5f7d8975025d8b3415ee",
+        "edition_view_sha256": "46bf9952cb9af61c71edb6fe4e9b61e9ee1fa21da4ead712001230e3a5895d6d",
         "title": "MiniGPT-4 (Zhu et al., 2023)",
         "artifact_type": "PAPER",
         "evidence_status": "VERIFIED",
@@ -3229,8 +3357,8 @@
         "discovery_ids": [
           "VM-D106"
         ],
-        "evidence_sha256": "f082467ecca310e37faac9008572c6fc85e6ae699902f1156109016183322995",
-        "edition_view_sha256": "ce8cdd3c92fa5be716b7c4a5848ad8435b6869db988a2f48e564cb19079cdbf4",
+        "evidence_sha256": "68911b0e16a555905569f8267cc09c2979cdb645d5b70996887c4f35261f23ce",
+        "edition_view_sha256": "155358bad8cab129b8a22060971c0ab1d7955acfe2b18a45923edb7cc30141de",
         "title": "Genie 3 (Google DeepMind, 2025)",
         "artifact_type": "MODEL",
         "evidence_status": "VERIFIED",
@@ -3268,8 +3396,8 @@
         "discovery_ids": [
           "VM-D020"
         ],
-        "evidence_sha256": "2259725575e7044824d8ff55fda438d4181f17492be47cf620d7ed9c4e074bc7",
-        "edition_view_sha256": "130080d0900575a3cbc3e4fbf2394f597005c4f2e4acaf3c1a8b6e46078e366c",
+        "evidence_sha256": "2a7958a38f1fac2dc94eeeb6384f7b7447783943da602800059038b0c40bc3b1",
+        "edition_view_sha256": "d42cde54d33aa4e68601c8eb769436c4787b0d447b10feaa858ee29961291acc",
         "title": "OpenPose (Cao et al., 2019)",
         "artifact_type": "PAPER",
         "evidence_status": "VERIFIED",
@@ -3307,8 +3435,8 @@
         "discovery_ids": [
           "VM-D107"
         ],
-        "evidence_sha256": "d7a181053f61af9d889b5437102c967ecbea8657984273879e821839fb92d1cc",
-        "edition_view_sha256": "1cc4850f136d5bd91e9238ff1215fec6c8bf17bf5149e3ba2aa5397f2941e753",
+        "evidence_sha256": "91d09521f197da1a90b1163a1538b75aabe56494fb38c982b74f4523f6691b58",
+        "edition_view_sha256": "eae5f16a79428fc01d763d64526c4cc2a54037c6509f07351d979b9540059811",
         "title": "Genie 3 model page (Google DeepMind, 2025)",
         "artifact_type": "MODEL",
         "evidence_status": "VERIFIED",
@@ -3346,8 +3474,8 @@
         "discovery_ids": [
           "VM-D073"
         ],
-        "evidence_sha256": "7bf6b3ebc3f54f8fa1fdfcb44791c2b83b18ae2857f6a172d4bbfb50ac14fee1",
-        "edition_view_sha256": "7f437fa5901e519eb8f147fd795071a53dd74e6df7715b1d113c032503afdc5a",
+        "evidence_sha256": "008f85b86a9315132ae546178524e7291603de7057d41d17bf038d889c512221",
+        "edition_view_sha256": "0b8955b41cb99e9e258db7f484d06ed45300b7416e8412976f70937a426c0dce",
         "title": "Gemini 3.6 Flash (Google, 2026)",
         "artifact_type": "MODEL",
         "evidence_status": "VERIFIED",
@@ -3385,8 +3513,8 @@
         "discovery_ids": [
           "VM-D060"
         ],
-        "evidence_sha256": "e5959246c24506c9c7c341ccac1c8d2995b81dd942c4a1a73c26638ab56909b1",
-        "edition_view_sha256": "41dee259b06dc62253faa41c5c72a63673862dddc5bdf3e810409311183ca8ce",
+        "evidence_sha256": "d8db6c9e3b09cb8c9e31f5ed1be157080652f9d9902c9a4be4c79d86392872b7",
+        "edition_view_sha256": "6492b73d5af0c2ad23e1102d8e3fc67e3b014b11a076a839769d1a714192a4c3",
         "title": "InstructBLIP (Dai et al., 2023)",
         "artifact_type": "PAPER",
         "evidence_status": "VERIFIED",
@@ -3424,8 +3552,8 @@
         "discovery_ids": [
           "VM-D011"
         ],
-        "evidence_sha256": "c0ad79e55822c5afde344d9c304e2f174ff8e2ceca80d6a73f1f4debbc01a11d",
-        "edition_view_sha256": "60ee989ed07da66e0f4b808498391e21060da88d721acea41d0d0f6aa96e901e",
+        "evidence_sha256": "cb921b4d5ebcc1e15c35b79eda69bf4283f4b85f40e2a774b87511691d1b78df",
+        "edition_view_sha256": "2b8ea8a285d60745a6844f6a2a45deb37e7576aace9373249ced00052bc1bf9a",
         "title": "DINO detector (Zhang et al., 2022)",
         "artifact_type": "PAPER",
         "evidence_status": "VERIFIED",
@@ -3436,7 +3564,7 @@
         ],
         "comparison": {
           "source_count": 1,
-          "claim_count": 2,
+          "claim_count": 3,
           "metric_count": 0,
           "limitation_count": 1,
           "unresolved_question_count": 0,
@@ -3465,8 +3593,8 @@
         "discovery_ids": [
           "VM-D094"
         ],
-        "evidence_sha256": "5347cc360e30635746df2189565b9ef11a65c29b002064e3bd23bd5106ecefde",
-        "edition_view_sha256": "f70eeb564eb6c643a1c5272b5a705c6372f751e3e62d2567dcec2ad606b40efc",
+        "evidence_sha256": "1ed1aaa5b5f128e581515adcebd9becb73a5709e20f08377ae408d13c03f3283",
+        "edition_view_sha256": "bb056f279f972b67b608c5cdcaf966df82062419cbc88c06b6ae36b8dccb99cc",
         "title": "RT-1 (Brohan et al., 2022)",
         "artifact_type": "PAPER",
         "evidence_status": "VERIFIED",
@@ -3504,8 +3632,8 @@
         "discovery_ids": [
           "VM-D010"
         ],
-        "evidence_sha256": "9e9af4e8f2a04f9ce8436b0851a90e5576d602508f9ebc6c771510c1768287f7",
-        "edition_view_sha256": "5d8ef596f0b1b82c082007c9ea97cbc5000450d442d2f0dc7a89556e1895ffbb",
+        "evidence_sha256": "444ba78e523c53b445a1633d6bbce5993fae63d36de51944369101a812ec4394",
+        "edition_view_sha256": "07c783654d1e4e998c69e0fe21196ca4584f76b17b90b77a204de46682986b7d",
         "title": "DETR (Carion et al., 2020)",
         "artifact_type": "PAPER",
         "evidence_status": "VERIFIED",
@@ -3543,8 +3671,8 @@
         "discovery_ids": [
           "VM-D009"
         ],
-        "evidence_sha256": "6caf8d8ed8476b0a2ffb4dd88fb3750d45c16e50a33876e8b9c491d6eb2d49f8",
-        "edition_view_sha256": "78e35071ff3772c9df3bcaf1201e3e3a11e18697e06aeab6e55fe42a844e7884",
+        "evidence_sha256": "c47055ff530c4a80064aab955f708921d06393de7449358983b700f48c014047",
+        "edition_view_sha256": "8cdf38a71916275a779c821fc4a03cb7c0b4ef2dcaa10bd45dfffa2f79e8617f",
         "title": "RetinaNet / Focal Loss (Lin et al., 2017)",
         "artifact_type": "PAPER",
         "evidence_status": "VERIFIED",
@@ -3582,8 +3710,8 @@
         "discovery_ids": [
           "VM-D078"
         ],
-        "evidence_sha256": "7ef939e73e531024e3e16762b8495b6b6d5cdff7ccd9086d1dfb6d5af1ec3ce6",
-        "edition_view_sha256": "e533637b5cce8ac3884f83edd468dc61104abff38a535651f8fb4018ae2d160a",
+        "evidence_sha256": "4c70c32cc6f24c95f1cf5081ef75e69f69392ea49dfb8c649ff661d38f9d65a5",
+        "edition_view_sha256": "3239b09d9c55dd98eae5a729cf60396d76d850cc46b9dff4c98328a447a1a90e",
         "title": "MMMU",
         "artifact_type": "BENCHMARK",
         "evidence_status": "VERIFIED",
@@ -3621,8 +3749,8 @@
         "discovery_ids": [
           "VM-D112"
         ],
-        "evidence_sha256": "d73a731f8deab993c6c9c2810e7c2eaa6b666bf98c4acefbb44dbbf5f2542c52",
-        "edition_view_sha256": "021f6e4e6bad75391cf29d7f29480a4b9ea507373e90becd6708c68a5b4af5e9",
+        "evidence_sha256": "b363de6a8286e1e21b085fccce416f157ec38e31865c7ffef359cfb18699103e",
+        "edition_view_sha256": "949c6f90c3b9fe0f811bc1e90d8e7e9b9067020f8e4a90bc2be6304d6dcb96d7",
         "title": "Agentic Video Understanding (Google, 2026)",
         "artifact_type": "MODEL",
         "evidence_status": "VERIFIED",
@@ -3664,8 +3792,8 @@
         "discovery_ids": [
           "VM-D100"
         ],
-        "evidence_sha256": "08538a71ae02feee7eb4c0f3bbc3fb0818dcbdef06aef2e7dfd16f713dbf3462",
-        "edition_view_sha256": "74264ea8ca01261701ef1d699ccc3c0e75a7c23c93adff682843a02300d528aa",
+        "evidence_sha256": "80c316ea37d9c2a2e6758f015e7d2e9e811c14420e6ca08185374057c4e08f47",
+        "edition_view_sha256": "f73e6569441cb017873c65e7094cdf4cd1c5878272bfe984e24f5d01eced4ee3",
         "title": "Gemini Robotics On-Device 2 (Google DeepMind, 2026)",
         "artifact_type": "MODEL",
         "evidence_status": "VERIFIED",
@@ -3703,8 +3831,8 @@
         "discovery_ids": [
           "VM-D117"
         ],
-        "evidence_sha256": "5d1a8ae2f7ef4ff5b528c28ccfd1be348edb2e4520aba2af43ca998d34b537b8",
-        "edition_view_sha256": "60b86e2640b507a9366567a7166570b8adf0e33ccc10e43d69a8e4ebacd17c8b",
+        "evidence_sha256": "f6b1dc469da857e69558375227c353d917c3ee481e5f4144a0747eff566c6c54",
+        "edition_view_sha256": "52b80ab7f4b7a3498b69cbfff9f2f763ba6b6a8c3afa118cbe5cf77a9d5eca68",
         "title": "FAST (Pertsch et al., 2025)",
         "artifact_type": "PAPER",
         "evidence_status": "VERIFIED",
@@ -3742,8 +3870,8 @@
         "discovery_ids": [
           "VM-D067"
         ],
-        "evidence_sha256": "bbe9b5cb8e97d5bae6d6c101b7d0bc1b812c1cedc422b211ddbe5a3ef5975948",
-        "edition_view_sha256": "d53fbe2eeb0eff1a4b51083e9d5de381c5057eba5899b948fbad5c1ebb7bd513",
+        "evidence_sha256": "39369471c7d55ffc6496ec9cc78adb2444ab1d40a038a2e466f69868fdcf75ea",
+        "edition_view_sha256": "e078316b4335e15e9bb0983689a8fbd611baff98ef209f44ed99f57ab2147338",
         "title": "Whisper (Radford et al., 2023)",
         "artifact_type": "PAPER",
         "evidence_status": "VERIFIED",
@@ -3781,8 +3909,8 @@
         "discovery_ids": [
           "VM-D007"
         ],
-        "evidence_sha256": "f0418fc0f61633d0fa4f4d73b1c2f55064325ce490d6949c524c7903c18c9d80",
-        "edition_view_sha256": "f967a6bf34dca01953562f26b3c6964a539bf41b7f91883dcfa9f2c2ada4d259",
+        "evidence_sha256": "8323944690280bf26dfe0aebf64b0b1b42ad291f0ce7769af899aca464e7260e",
+        "edition_view_sha256": "ed8ad81dbae3d138ff070a759fdb1f4b0fa6989a1d2706c8ab2399793a68c4a7",
         "title": "YOLO (Redmon et al., 2016)",
         "artifact_type": "PAPER",
         "evidence_status": "VERIFIED",
@@ -3820,8 +3948,8 @@
         "discovery_ids": [
           "VM-D083"
         ],
-        "evidence_sha256": "47a0f19282c8ad788f29c384c5fc1df0d3518ff47763dbbdca6ce5cb18609039",
-        "edition_view_sha256": "170ccf44ad99cd5369b934ba3c5ccefaafbbde22e28ece9a87c84ab4d9083993",
+        "evidence_sha256": "59674d1bd764e21dba919bec357e0bf71f4d25d4df619428686dc6872f6248ea",
+        "edition_view_sha256": "90a891a97263939d069804340281c87d160037f7928d56877ed8eea208899b0e",
         "title": "Kinetics",
         "artifact_type": "DATASET",
         "evidence_status": "VERIFIED",
@@ -3859,8 +3987,8 @@
         "discovery_ids": [
           "VM-D109"
         ],
-        "evidence_sha256": "aee0903a0210b63809d6dfc949044ded84faad091134b33dfd72dc4a0d1632d0",
-        "edition_view_sha256": "87f0a0d4212c40359de82ffc1c5c2739dfbd92df8ea041baa7f4b5cb49cae603",
+        "evidence_sha256": "31a2d0a81d0db4ae0e007354cdb3f893902898428a256409995d1f88ec16f657",
+        "edition_view_sha256": "fc5ca08d5a5a88aedb7e998b5a27e7081cb7d56a328d8479f5221d498817d768",
         "title": "ChartQA",
         "artifact_type": "BENCHMARK",
         "evidence_status": "VERIFIED",
@@ -3900,8 +4028,8 @@
         "discovery_ids": [
           "VM-D037"
         ],
-        "evidence_sha256": "1c7d97b7564aea3effecf34a91cc5ed436df7e6ce6b3e552572782642e45d1ea",
-        "edition_view_sha256": "b72927803c117e041db4767b22497df792c8617e93e1a57b2203b58a39280f01",
+        "evidence_sha256": "e2c8d7599e4da7563cc115ae10c06c2ac12370052e84b549dbd648428e7059a9",
+        "edition_view_sha256": "c1638a656db67f3199a477a9371e6b7058fba36ccba8258c39c3ba8c654cd6a1",
         "title": "Show and Tell / NIC (Vinyals et al., 2015)",
         "artifact_type": "PAPER",
         "evidence_status": "VERIFIED",
@@ -3939,8 +4067,8 @@
         "discovery_ids": [
           "VM-D066"
         ],
-        "evidence_sha256": "a0fa022ae83bf110841675e48dbc93f20e92fe5145d8ea1736117ac6dc8128cf",
-        "edition_view_sha256": "bf3a75fa2c9c37a735e88701a0aa6ee1738fcd5543de45adbca348fa52e5f03f",
+        "evidence_sha256": "3936c98ca98ffb18a6d2b4e97e583b231c1feea789b86e59fc2ea91d7912a773",
+        "edition_view_sha256": "32ba6da28eae752e48ce9733b4718b5bd041a2b34b5b73d860dd827be4afaa17",
         "title": "Qwen3-Omni (Qwen Team, 2025)",
         "artifact_type": "PAPER",
         "evidence_status": "VERIFIED",
@@ -3978,8 +4106,8 @@
         "discovery_ids": [
           "VM-D088"
         ],
-        "evidence_sha256": "38235a09f304ca34d6a751d9e524bff741bae2db9ebb5a246d862bc65759c966",
-        "edition_view_sha256": "42cfbf483bc2c4c7e4ff002b120d9f530147aae018a4fb058d314efb55e467b2",
+        "evidence_sha256": "adcbd191db6decfd63d404a81eb9d5b5449905375581513636ae50e851e10306",
+        "edition_view_sha256": "61bc8a8d2ab8a38ce058d3973ea6e899b863f7dc85da88849d9f37ba98626c8f",
         "title": "StreamingBench",
         "artifact_type": "BENCHMARK",
         "evidence_status": "VERIFIED",
@@ -4019,8 +4147,8 @@
         "discovery_ids": [
           "VM-D049"
         ],
-        "evidence_sha256": "135031f9b969607949a0df4d4d3b1376ef52f038612774f542b9f00b1d41abf9",
-        "edition_view_sha256": "6afe082abaa6f62d036348c4404a63c57f39947ada172f2ae0726699e8bd9a93",
+        "evidence_sha256": "6dc186189f80204fb032999d2af6e95a6378d91d8960b94bedf136dcdf31296d",
+        "edition_view_sha256": "1516916b1c50089e5481aa4d857404e70c88178c02bb2b0178e1335f876e58a6",
         "title": "OWL-ViT (Minderer et al., 2022)",
         "artifact_type": "PAPER",
         "evidence_status": "VERIFIED",
@@ -4058,8 +4186,8 @@
         "discovery_ids": [
           "VM-D056"
         ],
-        "evidence_sha256": "d7dabf605735ae7bf0c2268d0c3b2c8eb6a85ef46fd1bbadccb4b1d3ce53f0c1",
-        "edition_view_sha256": "0c71abd85b3f2b79d0b8c6bd263bc709bf3c79bf726bf74c522ea84c1966a95f",
+        "evidence_sha256": "630b75418f5fabce01fcad1b1d9197f638c2f7ab9223ab5f44fad3de6ecc1265",
+        "edition_view_sha256": "070f700bfe5f1a71edf4d26e715d9c5fe978bdbe109d40d3dcb330f746a8c3a7",
         "title": "LVIS (Gupta et al., 2019)",
         "artifact_type": "DATASET",
         "evidence_status": "VERIFIED",
@@ -4099,8 +4227,8 @@
         "discovery_ids": [
           "VM-D055"
         ],
-        "evidence_sha256": "96b4e4a465767ad0b7241a1229f02eefcf949975f813b8d5ff272c199529a2ac",
-        "edition_view_sha256": "f43245c5b29cff5db23168d5a91d6bb441a979bb7e9fa6d637b3f78397ada3af",
+        "evidence_sha256": "7d1e9509ead3fee2bf0e3c8bab2b3ce18cd6f1dd504eacda854e57ac596117a6",
+        "edition_view_sha256": "f2ae7df79ca06a00dfd5a181bf6996abc97e76cf5b32e97f2f31a02305fa94fe",
         "title": "ODISE (Xu et al., 2023)",
         "artifact_type": "PAPER",
         "evidence_status": "VERIFIED",
@@ -4138,8 +4266,8 @@
         "discovery_ids": [
           "VM-D098"
         ],
-        "evidence_sha256": "31b176656d0640502498985a372dbf7d41123a6e4cdf20bd5f534fbabed3f861",
-        "edition_view_sha256": "c3acbabd4fd6f13fb0b5d847af6dc4165422ce0612b9f1b944fe07a4d406e178",
+        "evidence_sha256": "2cbaa116aef76368d684327a17aa404d6d8ccd6606a06936456d3538934465a0",
+        "edition_view_sha256": "872553cd7e3825505c72d0ef24f3a2b0312176db7e01a20d8cb5c55d98b8120e",
         "title": "OpenVLA (Kim et al., 2024)",
         "artifact_type": "PAPER",
         "evidence_status": "VERIFIED",
@@ -4177,8 +4305,8 @@
         "discovery_ids": [
           "VM-D074"
         ],
-        "evidence_sha256": "6b3557505a2156829eb543301f2a546d931e0be6f68072a4c7d3c20ff659c956",
-        "edition_view_sha256": "1e9d9f73da1195d6481cf1e0f0a8badd3a5a39a08b09e73b98e1b50f1809aa58",
+        "evidence_sha256": "a50c08287416b20de79810ea91fb475518bd6a68d1430178066b436918da7169",
+        "edition_view_sha256": "be7ae6a5b2257606c6fad02f21d30ede0ee757adf3cce5b7f5b0f90f9ec4702f",
         "title": "Qwen3-VL repository (code + weights)",
         "artifact_type": "OPEN_WEIGHT",
         "evidence_status": "VERIFIED",
@@ -4217,8 +4345,8 @@
         "discovery_ids": [
           "VM-D013"
         ],
-        "evidence_sha256": "22c6ec9fa6f45d882fcdbd65c88a7712a659a4da96de2972aadf425f623ed25c",
-        "edition_view_sha256": "384cf46d07c9396eea1af4fbd8d7194e5c8e942ae3581842451611555584d4a0",
+        "evidence_sha256": "88af2fcbf3f36b50fdf72c980c1abdf97b63bae5ab53b0331d379df5dc54141a",
+        "edition_view_sha256": "0ca40e29739c18717c35967f9d10fd51b2ede2059dd877ec155daeb4aeb2d991",
         "title": "Fully Convolutional Networks / FCN (Long et al., 2015)",
         "artifact_type": "PAPER",
         "evidence_status": "VERIFIED",
@@ -4256,8 +4384,8 @@
         "discovery_ids": [
           "VM-D113"
         ],
-        "evidence_sha256": "cec2a53caacc9ae976c98ea53cc8727330b6a91139dba118dce9ade50e637e57",
-        "edition_view_sha256": "9b89d1a0a59fa2bab6528e8d4a837447907bc5899d8fe6100ac226cbe31112a2",
+        "evidence_sha256": "c4b1b343b324847eedd5207864f5ac805873a015cbcbcadcc4191d3f8a7aaa63",
+        "edition_view_sha256": "d1e66f2d6c276ee979a880673d960e8c5815580dfe1c4d1310d53e0df322536c",
         "title": "DINOv3 (Meta AI, 2025)",
         "artifact_type": "PAPER",
         "evidence_status": "VERIFIED",
@@ -4295,8 +4423,8 @@
         "discovery_ids": [
           "VM-D053"
         ],
-        "evidence_sha256": "ee4ea7242424c22492387bb297458bde9d20a5582c19547a4b07a381f6733dc8",
-        "edition_view_sha256": "6fbd977ea82abebab4eb102e77a5036295e596cc4fde8531250e8ffd99432547",
+        "evidence_sha256": "8f7640869eb55caef2030c68ef040718fe6b9732a0ad31a3e80adc042ae94fa9",
+        "edition_view_sha256": "81d3a30cd0dd4d20ffb391fc5470e5d15b527ec4481a71cfb25de78fe436cedd",
         "title": "X-Decoder (Zou et al., 2023)",
         "artifact_type": "PAPER",
         "evidence_status": "VERIFIED",
@@ -4334,8 +4462,8 @@
         "discovery_ids": [
           "VM-D097"
         ],
-        "evidence_sha256": "9abe3f118ef964944e38ecbf09c701e1a045fdfde947446b916a2ca92d31cc81",
-        "edition_view_sha256": "bdf2e543e25ec5c9d35bc21d4cb7f377c32ad99cdf2e4925dc46c4e169153747",
+        "evidence_sha256": "2e03e5a8770de817a22a23074b472fda575cee8901cb4e990338fbd67aedb072",
+        "edition_view_sha256": "9ff1fa24938f0972522dba3a132a26f05db846a80824bde91b9d5ce05021fceb",
         "title": "RT-2 (Brohan et al., 2023)",
         "artifact_type": "PAPER",
         "evidence_status": "VERIFIED",
@@ -4373,8 +4501,8 @@
         "discovery_ids": [
           "VM-D082"
         ],
-        "evidence_sha256": "3e0e88baa45850d239acd65882737e86fe4e49ad6e2885e6d0f6bbba58677728",
-        "edition_view_sha256": "fdf1f4f404a8f005050c1cb9e26531ead99f1f2f19e8ae2e30636807168c9571",
+        "evidence_sha256": "7a81b0b0c3869e1edd68fec5ae2f8ef050e7e61a51517b0ab7a2f19a4ec7b383",
+        "edition_view_sha256": "4c479a7e045e85fe4ed266ee2e86ce4f7e770b1919dececd40f91df07f03b7cb",
         "title": "MathVista",
         "artifact_type": "BENCHMARK",
         "evidence_status": "VERIFIED",
@@ -4412,8 +4540,8 @@
         "discovery_ids": [
           "VM-D024"
         ],
-        "evidence_sha256": "2e219ec8f879e295fae702778f335c1e2ef0418d47dab40b4abbcd576ad84497",
-        "edition_view_sha256": "fbc548f322cb9b5aa574ea1ce350213929edb4ba0da498b2ed49dbf7309b7937",
+        "evidence_sha256": "032d7a2eaf998946ebc3e8fe1dbb0f014655149c773db72883ca70bd1fed3b8e",
+        "edition_view_sha256": "e0c36354ffa79d701b562100e7ab7ad12b9360499f1b5d4e63e4e9e547a2868a",
         "title": "LayoutLMv3 (Huang et al., 2023)",
         "artifact_type": "PAPER",
         "evidence_status": "VERIFIED",
@@ -4451,8 +4579,8 @@
         "discovery_ids": [
           "VM-D110"
         ],
-        "evidence_sha256": "5baf2b2449c3b200b82730351ca5a7b16f55aa6d372a982d0a5950cc3c129283",
-        "edition_view_sha256": "c8ae17ac724411f36995b96ca28c666962ad359c602c54c89231a7e16ccc9e7a",
+        "evidence_sha256": "e57d8bf563ac5b21931bf81c64923281cea033909ec79b25261c4ddcc8d5d54d",
+        "edition_view_sha256": "64b3905a251130f02e316b41907663a907377a532ae79f1bb3463f70a0593145",
         "title": "OCRBench v2",
         "artifact_type": "BENCHMARK",
         "evidence_status": "VERIFIED",
@@ -4493,8 +4621,8 @@
         "discovery_ids": [
           "VM-D079"
         ],
-        "evidence_sha256": "7c7d401ce76d2fa64b6a1960c584a15f38b4d49b0632512e6ba4448ba975b72f",
-        "edition_view_sha256": "c3d3841e0f2c1825be1d56a222dafa20b0c0b5d86fe8b5ace2c90edbbce27aa6",
+        "evidence_sha256": "f9cb4f6bd44b02e5b991f8b8093526be27d684e229931492195df7876a6e4240",
+        "edition_view_sha256": "c689beda6bdf3f168fa46859a7787951bb6d5296e1c65ac7df4cc6793f7c54ff",
         "title": "POPE",
         "artifact_type": "BENCHMARK",
         "evidence_status": "VERIFIED",
@@ -4533,8 +4661,8 @@
         "discovery_ids": [
           "VM-D057"
         ],
-        "evidence_sha256": "2640e26fb34fd02eefb06bb0700df7de4a2c6e53fbf485501b061837b96bd6c0",
-        "edition_view_sha256": "3bf0698bcc849388b4463d9b8229e92f17848665ae7852c30798837f7676181f",
+        "evidence_sha256": "ba4daf9085bfa9ff586a836dec55bc9961eb571c9ba2c1b4a82e0c580af0302e",
+        "edition_view_sha256": "4a26ab07356526692eb05dae4e18662ed67eecae56cb4e4a19d595e6765caa1d",
         "title": "Frozen (Tsimpoukelli et al., 2021)",
         "artifact_type": "PAPER",
         "evidence_status": "VERIFIED",
@@ -4572,8 +4700,8 @@
         "discovery_ids": [
           "VM-D008"
         ],
-        "evidence_sha256": "c4e1ebeaed0a520a4653fcc1c6dfe04a50d52072f7d50de58b115916fb6629ab",
-        "edition_view_sha256": "1e3eb6dc3d6e6a10f59db3481ee500c5474a229d9c36f45edce5ed9b9464b47e",
+        "evidence_sha256": "754c9a7d7cea782bd8e31f5359dd74b40a459382a9e7aeb6914aff92ddf111c2",
+        "edition_view_sha256": "1fdea6df00d1c3214bc76222da751710bd46ad0fe398d3f689d8b0e1e25fe438",
         "title": "SSD (Liu et al., 2016)",
         "artifact_type": "PAPER",
         "evidence_status": "VERIFIED",
@@ -4611,8 +4739,8 @@
         "discovery_ids": [
           "VM-D093"
         ],
-        "evidence_sha256": "d0855a999cb9aaf3d66b7f35d6b8d51a5a750b2cba185a2b9c09d9c35a58a2d7",
-        "edition_view_sha256": "9ccf12a42800ddc1c4a883a07ae4516b50cb43a31724d9b173231b14be464272",
+        "evidence_sha256": "8c876a2c367d283a489604e4ebf869cac88b8040a005f85d2bf150b84224c23b",
+        "edition_view_sha256": "56bdcab66be7d935a0baf776594d4152f243a295878b4f8c0093bd48de3afda0",
         "title": "SayCan (Ahn et al., 2022)",
         "artifact_type": "PAPER",
         "evidence_status": "VERIFIED",
@@ -4650,8 +4778,8 @@
         "discovery_ids": [
           "VM-D052"
         ],
-        "evidence_sha256": "d5aae54b9fed62dbcaf017b64d5d804c7651732fb9c890c75b1783f31b130107",
-        "edition_view_sha256": "f11a29c366f97980ed1a048d777508dc471748b83fd687ba7dbeb6b1424c4dc0",
+        "evidence_sha256": "a6370d0ef6766377bbeb9d535ac98f504a17e37b650fe0ad12419899b7688608",
+        "edition_view_sha256": "d9459d21c01fd570bc098cabdde9d25ab21dbebdcc20ec5dc7f46c221ef3eb5d",
         "title": "LSeg (Li et al., 2022)",
         "artifact_type": "PAPER",
         "evidence_status": "VERIFIED",
@@ -4689,8 +4817,8 @@
         "discovery_ids": [
           "VM-D048"
         ],
-        "evidence_sha256": "13639145019dbd7be857c4588bcec422f7ba4acb3732c1dcb76927be766923d0",
-        "edition_view_sha256": "8c09f350a903f8a50c2ca27da2f98419d15390ce15440240e79ea15e4bd9c7e6",
+        "evidence_sha256": "8905ec168abea3a0f6a798cd047ceaa35e9ea231761beead517e2afe58900f9b",
+        "edition_view_sha256": "3cbbdee0154190631c6f83c23ecd9b95a9fe3618651b5bd3174c114751b50047",
         "title": "MDETR (Kamath et al., 2021)",
         "artifact_type": "PAPER",
         "evidence_status": "VERIFIED",
@@ -4728,8 +4856,8 @@
         "discovery_ids": [
           "VM-D115"
         ],
-        "evidence_sha256": "5ec4e3bac8cadf6813c4d1fa8b1127da4b1ba84f4bf581c08a5d05d5e398588e",
-        "edition_view_sha256": "73e1e726f345f7d7558b38ddc82b4265432b6bc730053775ff104afa8572f060",
+        "evidence_sha256": "102f424c21bb038b2784036371be1e5d0f551e45848cc474d0c883cc0c8dbe6e",
+        "edition_view_sha256": "eb39623a22e6db2bb824cfdc6685060799e03d8aac84fbf8901ecf8c394da92b",
         "title": "SAM 3: Segment Anything with Concepts (Meta, 2025)",
         "artifact_type": "PAPER",
         "evidence_status": "VERIFIED",
@@ -4769,8 +4897,8 @@
         "discovery_ids": [
           "VM-D087"
         ],
-        "evidence_sha256": "c3a270d4a61166799ae64e82fd4d298a76c16617c150fdeaa90abac5d40af9a8",
-        "edition_view_sha256": "e6cee6edb024d1e2eff9a6fabe248d6293b23a5f3376b9edc789a6f7938316ae",
+        "evidence_sha256": "f1cbf6f9183588b98bfee0b3150b53a30248caa06f9f3a5a64edd6e0b3420394",
+        "edition_view_sha256": "2686a20b73ae86d50c8793ace6b23a56851fb4a550a58f10c7717e2dc4d6d13a",
         "title": "LongVideoBench",
         "artifact_type": "BENCHMARK",
         "evidence_status": "VERIFIED",
@@ -4809,8 +4937,8 @@
         "discovery_ids": [
           "VM-D030"
         ],
-        "evidence_sha256": "a09be92ae18e8c4a9fbb80a03a17a7a6634fa3b1dcc4104d3f9330b8caaf9ea4",
-        "edition_view_sha256": "8284babef7db9773d81e00fb3aa4d6357b1a5e4724c5e9153d5722de9c280336",
+        "evidence_sha256": "3f90cedc915a8552f1cb0a223491e8a31e7760abf0a91f1d607f4329965ed393",
+        "edition_view_sha256": "6bbf99a9726b9cb0e1d16142bb8a574680f01621cf298be47ea9b1bbc0d5db28",
         "title": "Vision Transformer / ViT (Dosovitskiy et al., 2021)",
         "artifact_type": "PAPER",
         "evidence_status": "VERIFIED",
@@ -4844,14 +4972,14 @@
       }
     ],
     "summary": {
-      "candidate_count": 121,
+      "candidate_count": 124,
       "materiality_counts": {
         "CONTEXT": 10,
-        "MATERIAL": 111
+        "MATERIAL": 114
       },
       "evidence_status_counts": {
         "PARTIAL": 5,
-        "VERIFIED": 116
+        "VERIFIED": 119
       }
     }
   },
@@ -4859,17 +4987,17 @@
     "schema_version": "2.0-rc1",
     "issue_id": "SP-vision-multimodal-2026",
     "research_profile": "THEMATIC",
-    "result_set_sha256": "1311b55593ecd4420193619bc60766828af0e2b9ebeffd45801e80080d93087d",
-    "package_sha256": "598044ea9e5d694057e7f053ef58af29e569ed8cba55aeec255806743da75598",
-    "screening_acceptance_sha256": "2fd98e8602ca6cc3f530ecd33965fef0dec7b41604604085ca0bd5b38972499c",
-    "result_count": 121,
+    "result_set_sha256": "6b55033d02efecf69d784ebe8af534058222f84e37668b16c6341f8cc2deacd5",
+    "package_sha256": "9860d7319e43b24725a4a21cc90dccbe7817d7d81ec2ac654f252cfcd2c844d1",
+    "screening_acceptance_sha256": "e471c40158c226d150bf18bf68a5da46a8ad8710d5df3d063eab23f32f5863d9",
+    "result_count": 124,
     "results": [
       {
         "evidence_task_id": "evidence:SP-vision-multimodal-2026:000811ab2cedb843",
         "discovery_ids": [
           "VM-D040"
         ],
-        "sha256": "74f89b1cc6478230fa966039ce54770a9fda64d9a12eda16a40c5e1fa0c7c5e1",
+        "sha256": "313a65fed58685e063018dc5d8b428f425f8bd8c364fc0046941bd98a08e9c68",
         "status": "VERIFIED",
         "filename": "task-8f06e5812cd02fc84ddc.json"
       },
@@ -4878,7 +5006,7 @@
         "discovery_ids": [
           "VM-D014"
         ],
-        "sha256": "977a9a25880118f4e028ef2ce008d3c4dd1193289903bad7c5697006d53ee0cd",
+        "sha256": "0cd57bb3977a39b45f503dce10bc6fcbaade3b2a1067e14283bf7051e1dd36b1",
         "status": "VERIFIED",
         "filename": "task-3788211927ae5b5ce67b.json"
       },
@@ -4887,7 +5015,7 @@
         "discovery_ids": [
           "VM-D059"
         ],
-        "sha256": "9baeb0a5a0819adb2cc4567869710fb18fc9c37860044b9eb3986edb736aa2a7",
+        "sha256": "12995b321c5e7456de4ddc88e19f8062aaea50f33b1449028b57d203df40c48c",
         "status": "VERIFIED",
         "filename": "task-b70cd4b09c32667cce46.json"
       },
@@ -4896,7 +5024,7 @@
         "discovery_ids": [
           "VM-D118"
         ],
-        "sha256": "d294c2e4d240e52c1c47ac889551ae6b56291c28eb5ef3ffb02caeede0349690",
+        "sha256": "30cb5b4b02a80c4e280799f097213aacb4875cc705e140a1ba2c43d34b9b12b9",
         "status": "VERIFIED",
         "filename": "task-1679e8fef59b16582b98.json"
       },
@@ -4905,7 +5033,7 @@
         "discovery_ids": [
           "VM-D036"
         ],
-        "sha256": "2718394dbeeab293eb586a6cafd588c2e50735b5f9d89761119afd132a177788",
+        "sha256": "9e6cc44339c977e86c1d44646f23b498406a1bf7fc416433e92e6393803e1d9d",
         "status": "VERIFIED",
         "filename": "task-94d6c9e9f8f71019bfb6.json"
       },
@@ -4914,7 +5042,7 @@
         "discovery_ids": [
           "VM-D114"
         ],
-        "sha256": "fc946cddade5efb2fdb90bb1a022cf9fae5abd3e0022d2a4633d9a14f695a342",
+        "sha256": "9df085c73ca5cd4344900fdcc049bd1baf398082da9da12c199fadcdcccf99cc",
         "status": "VERIFIED",
         "filename": "task-1a72aa57c29bc267c245.json"
       },
@@ -4923,7 +5051,7 @@
         "discovery_ids": [
           "VM-D043"
         ],
-        "sha256": "bc8a65e8409d38fc3f614092009db3df19c9687baf28c3ded650f78e02a37ef9",
+        "sha256": "0c9e06b6f0d153379c0328fb2a57f1879b947faa03077ea1241f7860623f7bd1",
         "status": "VERIFIED",
         "filename": "task-aa3110ee7dcaf702a74d.json"
       },
@@ -4932,7 +5060,7 @@
         "discovery_ids": [
           "VM-D050"
         ],
-        "sha256": "de6c2deefb81708b3096b3fe974888dcf9cc64b4c09391a43fac686efd4db423",
+        "sha256": "1a7ffbd814aa381af707ac44482dcf2ec311dac6825a6e821144391fecfc9891",
         "status": "VERIFIED",
         "filename": "task-f9123c42738f19ae7f1b.json"
       },
@@ -4941,7 +5069,7 @@
         "discovery_ids": [
           "VM-D085"
         ],
-        "sha256": "8135f2a653a20fa9c7f04992224b90c39831817b1f9ff054514041c355fb627d",
+        "sha256": "6d248eeb8d87f09b286b7b87d19691c11fcd7059e17290ba3453e89629722365",
         "status": "VERIFIED",
         "filename": "task-0eea40f3fa799cb87c70.json"
       },
@@ -4950,7 +5078,7 @@
         "discovery_ids": [
           "VM-D101"
         ],
-        "sha256": "9b70bb665e66e70560def89e708be1e9b8e78abc08a98bba7f13621038884ab7",
+        "sha256": "8f618d869d3044d234c6c23293a5b0798dd0114a8b71dd8a92714b900ef958be",
         "status": "VERIFIED",
         "filename": "task-c3343cd536df62fa28b9.json"
       },
@@ -4959,7 +5087,7 @@
         "discovery_ids": [
           "VM-D120"
         ],
-        "sha256": "1748e50bc208407e4c0cfe151aa162e1ec6425898dedf5cc1c372cae7d312fc8",
+        "sha256": "eef1e8cb17c1bb066bed4913e82d09d4c7f21f63fa081dd3dab657796aef6cc4",
         "status": "VERIFIED",
         "filename": "task-3cea06c11283ca9edeb1.json"
       },
@@ -4968,7 +5096,7 @@
         "discovery_ids": [
           "VM-D012"
         ],
-        "sha256": "bef5eb214b53ebf99538d10baadf4caa642c1c571a533512d0d60e872635eb3e",
+        "sha256": "2c1b45a1f76b9d9f7611df4188954d43d44cdfed2367dd69cb583f2df4897979",
         "status": "VERIFIED",
         "filename": "task-0491441302a2203a7d2c.json"
       },
@@ -4977,7 +5105,7 @@
         "discovery_ids": [
           "VM-D027"
         ],
-        "sha256": "5c25866b0ed211e287eb15c3752a8ee416de35dc2cf404392efcba07a04ca43f",
+        "sha256": "f490ee1e83c7111b0ef1ac879c639de66e2db9d004a52a9bb0730e0ac4c83f48",
         "status": "VERIFIED",
         "filename": "task-9f8312be8572494559e0.json"
       },
@@ -4986,7 +5114,7 @@
         "discovery_ids": [
           "VM-D064"
         ],
-        "sha256": "e808577555914e6d3c748107c0029c35232431b7df7ae05b9213bb50596b7094",
+        "sha256": "4b3155a76cfbb5deeaeafe9040e7b6703f51ef8ca95a4b06e66acae755314e30",
         "status": "VERIFIED",
         "filename": "task-0b1230b648d4f489d42f.json"
       },
@@ -4995,7 +5123,7 @@
         "discovery_ids": [
           "VM-D039"
         ],
-        "sha256": "1fae90a18a5e6b47ca8f8d66b12a4ce1cf76a4b3bb42046bc26daf517c6fc430",
+        "sha256": "1a382f89efd2a73bf1f86ef5ad243760404d0249a635b8b4532f9db7d1a466c8",
         "status": "VERIFIED",
         "filename": "task-8b1f3a99171ea86015b4.json"
       },
@@ -5004,7 +5132,7 @@
         "discovery_ids": [
           "VM-D015"
         ],
-        "sha256": "109cce5915b0e0c0cbe344d8124256601d32ffc37eb723101059d03fe548aa0b",
+        "sha256": "a19333f2303c9a245a503217e3afc8fc029f6df9e89f785b4a030a16d495fc84",
         "status": "VERIFIED",
         "filename": "task-57573d846b0142b96e19.json"
       },
@@ -5013,7 +5141,7 @@
         "discovery_ids": [
           "VM-D038"
         ],
-        "sha256": "202b7b85894f6f6fdd5674b90d7d9a56f0332ef07d77887c97196c332d47ddb2",
+        "sha256": "75a99d83fc415186e5d151e32dba198328655b268df839c549d800a3803fd8ae",
         "status": "VERIFIED",
         "filename": "task-ef44aaa8129b123ba9ab.json"
       },
@@ -5022,7 +5150,7 @@
         "discovery_ids": [
           "VM-D002"
         ],
-        "sha256": "4b76e55e29124c7d22594a17aa35d41484bf98e10f1b4d6537be3717e61a6a0f",
+        "sha256": "b69d75d50f3d603570fd26b5d592e2d9c596db2b9508d55e48d66f8742a3ff9a",
         "status": "PARTIAL",
         "filename": "task-5e184c5d3d4a1e8d1ae6.json"
       },
@@ -5031,7 +5159,7 @@
         "discovery_ids": [
           "VM-D006"
         ],
-        "sha256": "11d5155d10e760a26b2b838559213033876f1cff9c18438d75119c238ef544ca",
+        "sha256": "7e142324d5f651fb6822a02e9eb68330f6f695cf58d80aff6db6b15fb38709a5",
         "status": "VERIFIED",
         "filename": "task-ced29c1d1b590c610087.json"
       },
@@ -5040,7 +5168,7 @@
         "discovery_ids": [
           "VM-D044"
         ],
-        "sha256": "4324f1dec1c6522f87da66f09a5b05930db00804c49874fcb4c7023f6dd62d13",
+        "sha256": "552b001742d819a4f6065608fe7005001254be83e6cb4df703c065b78605050f",
         "status": "VERIFIED",
         "filename": "task-afba093ce7c3c13b03f8.json"
       },
@@ -5049,7 +5177,7 @@
         "discovery_ids": [
           "VM-D031"
         ],
-        "sha256": "20067fe22edf98b5353a24fa958407d131aee76315c16a8b4c86280d69e34126",
+        "sha256": "b6084a27bbf871d04079f26cf132b27eaf07e64ba9cf9d833aa5cd47f881e6bb",
         "status": "VERIFIED",
         "filename": "task-21f7d7488b7487af3a03.json"
       },
@@ -5058,7 +5186,7 @@
         "discovery_ids": [
           "VM-D004"
         ],
-        "sha256": "7a422a7d85ee876cdb12645770d3101a0eeadf0bcb6970a7ce47269e16fc4f05",
+        "sha256": "b2c7619e468e521f338f8287a06e9a30f6627ee055161b62725909adaebd4ef4",
         "status": "VERIFIED",
         "filename": "task-9b5cb3550a96c686cd59.json"
       },
@@ -5067,7 +5195,7 @@
         "discovery_ids": [
           "VM-D005"
         ],
-        "sha256": "f6c7ee176dce9a0a5439b7c2800ac4c0dbd764226bb8f373d0b57126f604d314",
+        "sha256": "6d76c515cabc1ed8d01922b1a322aa37234febe01660c3c7e05653bb2fec5a7d",
         "status": "VERIFIED",
         "filename": "task-26484475941d982320aa.json"
       },
@@ -5076,7 +5204,7 @@
         "discovery_ids": [
           "VM-D035"
         ],
-        "sha256": "d55f457fba1fe6e4bd4920251cd4287e63ea049194308875ac3ed185824fb789",
+        "sha256": "cf06817d8f457808199b8b78586381abb7e0f84905db2dd276dc50c96d64c6c8",
         "status": "VERIFIED",
         "filename": "task-5fd983cfcd6299b488dc.json"
       },
@@ -5085,7 +5213,7 @@
         "discovery_ids": [
           "VM-D092"
         ],
-        "sha256": "1188bdb5de568e8452295d86ac1499737297ab166d72ae9d7bcdb14c24fa4bf2",
+        "sha256": "ffb2b9dbff44711d51164e0a3474da9ea547fb5a131ad33c85ed39cc9872bf40",
         "status": "VERIFIED",
         "filename": "task-52ea0a56f7d6f8c4d8d1.json"
       },
@@ -5094,7 +5222,7 @@
         "discovery_ids": [
           "VM-D086"
         ],
-        "sha256": "1c4e9f334a11696d529889b5997cbf7914a50e4e54e689a052e6f03722ce7b53",
+        "sha256": "e0dd733cbeef0e805872c3b064e57bdaf9c6c47fada9255b572bf87a43bd4f4a",
         "status": "VERIFIED",
         "filename": "task-7d3ae458d2c65b568567.json"
       },
@@ -5103,7 +5231,7 @@
         "discovery_ids": [
           "VM-D084"
         ],
-        "sha256": "87fb75f7fbfe44add7e77fb1a21d1e01207f5afcb9b9c71020bfccf38aa32cde",
+        "sha256": "1a94c5caa48df9b2a1cf551b59136936c2e407fddad9604e4b1255afee51e6d4",
         "status": "VERIFIED",
         "filename": "task-caff6c39bcb48a23b468.json"
       },
@@ -5112,16 +5240,25 @@
         "discovery_ids": [
           "VM-D017"
         ],
-        "sha256": "214b99f5b5879c5cd6728befc92495e7a9cacd9ab1f2b51ed301e0ffc2acbb3f",
+        "sha256": "20a14fcf9f68ad246c763cd73078b02eef8da561b903248ea7414560165fdf79",
         "status": "VERIFIED",
         "filename": "task-f52d1729f630ecc4c482.json"
+      },
+      {
+        "evidence_task_id": "evidence:SP-vision-multimodal-2026:43c5bc5adec4ac9a",
+        "discovery_ids": [
+          "VM-D124"
+        ],
+        "sha256": "bbcd9147a5aebf52dceecfb6e30bcfb1f34a3fb196b6438300da301e51ba8e5d",
+        "status": "VERIFIED",
+        "filename": "task-d277a60ff2531b806327.json"
       },
       {
         "evidence_task_id": "evidence:SP-vision-multimodal-2026:46a40e71f36174e1",
         "discovery_ids": [
           "VM-D041"
         ],
-        "sha256": "407d93bdde7034dc0c4a79bbb782ca4d8dc6c8029cdfbfe3c37d3a722f75c4a3",
+        "sha256": "6cebfd1c46beeddec364bb99d547b9f229e0a0dd1a38cb7d7ded0973f3bb787f",
         "status": "VERIFIED",
         "filename": "task-d392201275c96332456b.json"
       },
@@ -5130,7 +5267,7 @@
         "discovery_ids": [
           "VM-D047"
         ],
-        "sha256": "245ca32c17d3efdc4f7a2456ddbb8328b18f2a08eae2f1c4eb744cc5e09fcb49",
+        "sha256": "e520f5d101760123c336bb33d8f0afd77f9b821c5c5b3f308ae5f5c3c616837c",
         "status": "VERIFIED",
         "filename": "task-7f5805f2f8f34541641b.json"
       },
@@ -5139,7 +5276,7 @@
         "discovery_ids": [
           "VM-D045"
         ],
-        "sha256": "0ccb84602e214af06b9110ecd7ed6869e25e225d9501d89cbd08a5a7b432f0bc",
+        "sha256": "a4de7f8be4d40f9a0f5d828c3af38917966362a6425a0dafce1f518eae6667b0",
         "status": "VERIFIED",
         "filename": "task-b55c9277ea0f8d6e41ef.json"
       },
@@ -5148,7 +5285,7 @@
         "discovery_ids": [
           "VM-D062"
         ],
-        "sha256": "5702be2aac543b8b123313f53e0da7213c238e23824bfb082d5e32a325c87d59",
+        "sha256": "74f4a30c3692b2d91c2126a084306fa133a1965d30bbbd1eb332becb621fcbb5",
         "status": "VERIFIED",
         "filename": "task-2ca5c465106302004bdd.json"
       },
@@ -5157,7 +5294,7 @@
         "discovery_ids": [
           "VM-D075"
         ],
-        "sha256": "f42cc795b215941255194f22fa75dee5f3817d7c84689659202615ddf3cf32bd",
+        "sha256": "19b978351487ec871374e8c0f8ebbc759720c2d63660903988984c485fdfa6e6",
         "status": "VERIFIED",
         "filename": "task-07a829a9dacd4350963c.json"
       },
@@ -5166,7 +5303,7 @@
         "discovery_ids": [
           "VM-D018"
         ],
-        "sha256": "ecb50671cc57d1350184dd4846c52b28bb84aae5ab4cb173d3f3ec971dfd6c3f",
+        "sha256": "a3e608d7efd4107ad3e26f66e72b6fbcbc85deb8e898e63689368a6543124a0b",
         "status": "VERIFIED",
         "filename": "task-ff155becaad734b4dba1.json"
       },
@@ -5175,7 +5312,7 @@
         "discovery_ids": [
           "VM-D023"
         ],
-        "sha256": "be5d84f1b0a3159d9490ac4dcc3b84021b30d1660f05a3102e3c69f7dca77072",
+        "sha256": "b5b1f2ad50f99c71b45dcaa0008dc52fa03f28a8866e1c7c68faa1aa522ce933",
         "status": "VERIFIED",
         "filename": "task-1c76f61ee3f9f56ccd6c.json"
       },
@@ -5184,7 +5321,7 @@
         "discovery_ids": [
           "VM-D070"
         ],
-        "sha256": "70f8fb754b66abf286fe74ebb0a7f8f931cf361ef70ca423a548b2078423a33f",
+        "sha256": "5bf07f74640aa1856d77e4b0957a905d4a415ec930f5ce0c3c2a3f5eb8313c61",
         "status": "VERIFIED",
         "filename": "task-d63bb394ff2d8f35eaa8.json"
       },
@@ -5193,7 +5330,7 @@
         "discovery_ids": [
           "VM-D033"
         ],
-        "sha256": "b05e840c4911c956d9524dcd389fc79ac2730f035854c525e326eecbb3ef6623",
+        "sha256": "e6b52e4e528764b1d9ea3b300edacce4638223a187b55129e689180cde6cb23b",
         "status": "VERIFIED",
         "filename": "task-c9f9fb43d725196e90df.json"
       },
@@ -5202,7 +5339,7 @@
         "discovery_ids": [
           "VM-D071"
         ],
-        "sha256": "77523907ec0b2a1c195f4539dcc2a39517e55376c841f5421d5c46f8adb68dc5",
+        "sha256": "d42ca531a365f9a5f9a54178bc969eecfc4aa7a61cf5f5ad7082255b507106f4",
         "status": "VERIFIED",
         "filename": "task-dfbdfdc43d16a0ae506e.json"
       },
@@ -5211,7 +5348,7 @@
         "discovery_ids": [
           "VM-D065"
         ],
-        "sha256": "8bfd8b94db56889cc064289a8f4459d3900308ce09404b1f5dcc506d9124476a",
+        "sha256": "63d30f2acbdcf5a916d7be5304f524fc57b1d51f8d515231cbe2078ea3918efd",
         "status": "VERIFIED",
         "filename": "task-4b3f237d9498fe166a31.json"
       },
@@ -5220,7 +5357,7 @@
         "discovery_ids": [
           "VM-D104"
         ],
-        "sha256": "7a7ab349a9b05936eaf87cf4996bef9018be52d618e6b43f446d1f6d00e5ca2b",
+        "sha256": "c8bc3229dd5496e2f46bbea3b93292534290dd67591b2f77dc842685ee82c7cb",
         "status": "VERIFIED",
         "filename": "task-124e52b0d8292849c1b0.json"
       },
@@ -5229,7 +5366,7 @@
         "discovery_ids": [
           "VM-D026"
         ],
-        "sha256": "4407fa14c833c54dbd6ed5781f8d73af79cc8efdc51ccc48f21000e8614c24ed",
+        "sha256": "64f09b80032c21145e63e1afc08a87a48242d102b799fedf23e04b5c9c2ea637",
         "status": "VERIFIED",
         "filename": "task-33693bb99ec7fe55d4b3.json"
       },
@@ -5238,7 +5375,7 @@
         "discovery_ids": [
           "VM-D068"
         ],
-        "sha256": "2300201b03bcdadda0e4036eb21ad11a64c16b28949fce4c4fb44cdffc9cb519",
+        "sha256": "64e5b5ba049dccc314dcf1de01c91cda9d585e22c78abe3b5fefcd2dae9962a1",
         "status": "VERIFIED",
         "filename": "task-789341a47f3564334bec.json"
       },
@@ -5247,7 +5384,7 @@
         "discovery_ids": [
           "VM-D103"
         ],
-        "sha256": "202fecff4b9f4aac6873f9c3c5ca0f93f88daf3f6dd23143dbb6043f7e48f0fa",
+        "sha256": "bd2cf663388597e9dabfe562fdc2dd9c8fd568e55e035044c7d600da95b3dd78",
         "status": "VERIFIED",
         "filename": "task-e6441282a47d636e9ff7.json"
       },
@@ -5256,7 +5393,7 @@
         "discovery_ids": [
           "VM-D003"
         ],
-        "sha256": "547000ecbbfdbabfa2d4916203ac920153521f78e45c16970d42f596d3b8bf51",
+        "sha256": "1762af6c310d296f94b14fcb7a6b1fe26b9ed8c2bc3d3bf0c5a980af5e70a05c",
         "status": "VERIFIED",
         "filename": "task-2b653694528f8a601418.json"
       },
@@ -5265,7 +5402,7 @@
         "discovery_ids": [
           "VM-D116"
         ],
-        "sha256": "294b7b6bf5e5783ac6d46119fb57428b4739477917d0fd68ae5a2a7341ef6541",
+        "sha256": "6998eeb5f2b09acc2c632ec0aca7c15403123af1d2fe6ed7d602f5ce842d9d58",
         "status": "VERIFIED",
         "filename": "task-a8ddfe446424a5d4def9.json"
       },
@@ -5274,7 +5411,7 @@
         "discovery_ids": [
           "VM-D032"
         ],
-        "sha256": "844cca21e019abb23e0467004cc96004901e0d07ac87781fbb561c5ba24e7b40",
+        "sha256": "bcf5dce1838f0312ccc3beb32b87645ed557baaf5e43a89a75a2e4e4219c5e0c",
         "status": "VERIFIED",
         "filename": "task-d102e0cbe5cbd64e5fdb.json"
       },
@@ -5283,7 +5420,7 @@
         "discovery_ids": [
           "VM-D091"
         ],
-        "sha256": "24bba0dd25a3c8ade4594cb142d5b2bf64be5963caedd4c6ddff6ecc937375b0",
+        "sha256": "87ae0f94e4ad19eb05a8608db61175afc93695323c6630b58289734425e4a6fa",
         "status": "VERIFIED",
         "filename": "task-048657a8506e4170670a.json"
       },
@@ -5292,7 +5429,7 @@
         "discovery_ids": [
           "VM-D108"
         ],
-        "sha256": "780c7352e74272805c22be073ef66ab08ba329b8eb5f26bee5d722bfb60b55e6",
+        "sha256": "4ee8f04b6355f18658c9f81502942718e5f7ce05041a2d3cf0115ba11fc615cd",
         "status": "VERIFIED",
         "filename": "task-c3e6715b985e78f9aaf7.json"
       },
@@ -5301,7 +5438,7 @@
         "discovery_ids": [
           "VM-D072"
         ],
-        "sha256": "b379b4d7f6ca683cc484678a7a7be529674f3d65cedd4cbe6bf1665115929523",
+        "sha256": "2ad164b4b032d3f44a9a88c69e7d7f13962415fb8256bd8c6b264933135e9695",
         "status": "VERIFIED",
         "filename": "task-d813fa04c6102a02b0bc.json"
       },
@@ -5310,7 +5447,7 @@
         "discovery_ids": [
           "VM-D025"
         ],
-        "sha256": "8ccd450150d11758ff3b5ef2f6eecbd86caf521845b9c9ae46b7664ae7934db9",
+        "sha256": "512891201144cb62073a33e5e24291ed015d8b6643cd444f8a08058cf1707477",
         "status": "VERIFIED",
         "filename": "task-5ec53b058f2afa5a2e07.json"
       },
@@ -5319,16 +5456,25 @@
         "discovery_ids": [
           "VM-D016"
         ],
-        "sha256": "4b2541dcd47650a424d5d6f3e56a6dfc54bed478aec70390291c5dff264ccb0b",
+        "sha256": "4e33c67b4a9d38705faef2489f2db196b034adf1f8ba767f651802cec932489f",
         "status": "VERIFIED",
         "filename": "task-713ba8dd0b0bd3324bcf.json"
+      },
+      {
+        "evidence_task_id": "evidence:SP-vision-multimodal-2026:796e6c3c2cac7f26",
+        "discovery_ids": [
+          "VM-D125"
+        ],
+        "sha256": "c667eeee828ef4a44c86f60e80f6713e179a93ce9f7417370ff911409052bc1e",
+        "status": "VERIFIED",
+        "filename": "task-c7fd3834cd4f0ee2c5b3.json"
       },
       {
         "evidence_task_id": "evidence:SP-vision-multimodal-2026:8025f5dd3a9f4a6c",
         "discovery_ids": [
           "VM-D105"
         ],
-        "sha256": "f02b2deb3526e75178d8d2ffa4ffbf89bc1bd3b18e981c1d5cd8713bb1c2e14f",
+        "sha256": "31046a0dad813961326fa5ebccef33f9be4ff0ec293e825fe8826f763ef00de8",
         "status": "VERIFIED",
         "filename": "task-04b576c4cd48b4cc10f7.json"
       },
@@ -5337,7 +5483,7 @@
         "discovery_ids": [
           "VM-D063"
         ],
-        "sha256": "84f4fcf72ccf8778087701f5a75c4212a59db04f2eec7786e5fb2cc840b98058",
+        "sha256": "317131e0ea751507e5e7d5540ab3eead4cb91462626d665fea7697d6cb96c890",
         "status": "VERIFIED",
         "filename": "task-b9caff502da1565c82d3.json"
       },
@@ -5346,7 +5492,7 @@
         "discovery_ids": [
           "VM-D051"
         ],
-        "sha256": "82efb704d268500889dfd0a8a4c4a5d59ad4691b33dfc4b73619efd791339a09",
+        "sha256": "da99a713883d3045061993919e88e9642d3f4a33263c5bee0886a63ff7698f71",
         "status": "VERIFIED",
         "filename": "task-bd477edd8732ac3fe7ab.json"
       },
@@ -5355,7 +5501,7 @@
         "discovery_ids": [
           "VM-D046"
         ],
-        "sha256": "ae84f5106ec8dc06dfdd78b79db7dd369e033e78adc685bacb41835855bc5beb",
+        "sha256": "a7e75a2e624c53e1a0a2509ce456610a77bbb063d30cf6eac9d1c329cee3f928",
         "status": "VERIFIED",
         "filename": "task-1d0ff0d0f054808ab178.json"
       },
@@ -5364,7 +5510,7 @@
         "discovery_ids": [
           "VM-D099"
         ],
-        "sha256": "16ef58c9669eb9417c670ca0bdb664f32fca4455624ade3359ed0bf45d4c1088",
+        "sha256": "bf98ba48bff9ef109f2c1dbed082909af307dfa77065f3d058188a4d3739d6b1",
         "status": "VERIFIED",
         "filename": "task-eb9d3e8819d0d5631ebf.json"
       },
@@ -5373,7 +5519,7 @@
         "discovery_ids": [
           "VM-D090"
         ],
-        "sha256": "be73f6164ab0e74c1d1c531cb0e0c9450f5665af77ba648aa0428326b1f5ef84",
+        "sha256": "5b8292c5cdd10adb4f915f636cdaff6de2f26fae332ef9d6ccd3432394eb37e6",
         "status": "VERIFIED",
         "filename": "task-119af0334915af1ec4e2.json"
       },
@@ -5382,7 +5528,7 @@
         "discovery_ids": [
           "VM-D019"
         ],
-        "sha256": "99bd9aa882f957f462bc39370c28f53231c9d52e3378cf616067c687557c0bee",
+        "sha256": "440615f16793e972a89de07adaa4229d5f91a90237aa766c5083cb37aba929e3",
         "status": "VERIFIED",
         "filename": "task-0eca89f0522a1732cba0.json"
       },
@@ -5391,7 +5537,7 @@
         "discovery_ids": [
           "VM-D080"
         ],
-        "sha256": "920e3027ad1b13dc84a7f92b62ea3b7a3996406727eb8419c8f17db676762ac3",
+        "sha256": "5de16e81e6e0f612f35c1c35c42afc64f8007b855a3133c4b39945a79272b5d6",
         "status": "VERIFIED",
         "filename": "task-e3ed005b735b36af8ae4.json"
       },
@@ -5400,7 +5546,7 @@
         "discovery_ids": [
           "VM-D095"
         ],
-        "sha256": "921fcfea5324022c1ed6e9bc0773614f4ae7f1e62dfd3bb98eb2c758d02dc7a4",
+        "sha256": "177b769e7d5294a9765e27a1441671bdb369d084ecbde2fbaccc071ef42b6eee",
         "status": "VERIFIED",
         "filename": "task-ea7ae35b333808dc41f6.json"
       },
@@ -5409,7 +5555,7 @@
         "discovery_ids": [
           "VM-D001"
         ],
-        "sha256": "490a15397800c6f94296ed3f10aeafcf42ec6e5225443bc8637c8330435414ca",
+        "sha256": "053b429991b50dff6a1ff0a91018c6d5986bc3ff4b90bab945f8a884ce7257e1",
         "status": "PARTIAL",
         "filename": "task-6a0daaf1c7fb56666fd8.json"
       },
@@ -5418,7 +5564,7 @@
         "discovery_ids": [
           "VM-D076"
         ],
-        "sha256": "c22d985a3e7bee284e7ff02f266fc45c974406c9422404b53f06bc987f56a07f",
+        "sha256": "7b9b5a6c4ae814c5869f7892e6b62493a0573c600b320fec0a6e6a530738b8f2",
         "status": "PARTIAL",
         "filename": "task-b295578156b38584b346.json"
       },
@@ -5427,7 +5573,7 @@
         "discovery_ids": [
           "VM-D077"
         ],
-        "sha256": "a816002257ac068a7804b5733c2389638c8ee16028d83b0f36866dad7b35bef1",
+        "sha256": "c93c010358a29b2f9c4d51604a498523a2330d7405d463075e3f55191a4a4967",
         "status": "PARTIAL",
         "filename": "task-a8ccb33bb2e5cbfa57cf.json"
       },
@@ -5436,7 +5582,7 @@
         "discovery_ids": [
           "VM-D058"
         ],
-        "sha256": "a874d8997d4fbbee35cb3aea898cde371dfd24af42b629c0ccf6cded498b6ec2",
+        "sha256": "b6bbd03f599aef4ccceaf6d223bf1ebf0be9304c38120d5663b96891833edc65",
         "status": "VERIFIED",
         "filename": "task-0c63e7be8d8f13a7e832.json"
       },
@@ -5445,7 +5591,7 @@
         "discovery_ids": [
           "VM-D081"
         ],
-        "sha256": "1c560e2a38b9c6253bbeed10caf9347600a551c3df62a9f0c59f083d5a2db2ed",
+        "sha256": "b0a8f54d97455abf96f1f580948bc56840d4b58a99028be38d9782756522df4d",
         "status": "VERIFIED",
         "filename": "task-ce38773126337d6cf37d.json"
       },
@@ -5454,7 +5600,7 @@
         "discovery_ids": [
           "VM-D054"
         ],
-        "sha256": "5fb331e4e908b1e0c09b005fa2e2de9155063af87ea16bb566a3d49722548b51",
+        "sha256": "141ba54c9673c7ce02d44b7b41e5a8a712ff3ba3130fa74470f478605457f4c2",
         "status": "VERIFIED",
         "filename": "task-1bf5836aad93bcbc82f3.json"
       },
@@ -5463,7 +5609,7 @@
         "discovery_ids": [
           "VM-D089"
         ],
-        "sha256": "938981c971529468b80179a8472c91af717042f3462d7b96e2ca3f9673e8028a",
+        "sha256": "cc385adad019d897afd3ef3a36d317abffcc757cbea8f4dc55cc0573a84b21ec",
         "status": "VERIFIED",
         "filename": "task-04b0bdd5b776404c1ad6.json"
       },
@@ -5472,7 +5618,7 @@
         "discovery_ids": [
           "VM-D034"
         ],
-        "sha256": "55c3c258cddac449928671be76054094b57046dd7df4e4febe17912d96835d79",
+        "sha256": "cf3015fa233a922b447d660937fc1b232364f072089059144455487b2c27383e",
         "status": "VERIFIED",
         "filename": "task-ac41dfc9f3562e219300.json"
       },
@@ -5481,16 +5627,25 @@
         "discovery_ids": [
           "VM-D069"
         ],
-        "sha256": "846bf94e7b5c51373c1c72302ac081672aad6c283747d6ad4183fa8e50309eb7",
+        "sha256": "01dc804df0882ff2e261f9a2d74db46981622012b884eafe0e1826d819989ced",
         "status": "VERIFIED",
         "filename": "task-74ace770fe80e050a253.json"
+      },
+      {
+        "evidence_task_id": "evidence:SP-vision-multimodal-2026:a04ef197904a57c0",
+        "discovery_ids": [
+          "VM-D123"
+        ],
+        "sha256": "8ae75a952abf8067a18150ee4250318253edad23c06dbc4f454509cf662b0e1c",
+        "status": "VERIFIED",
+        "filename": "task-6018779ae64eed934b57.json"
       },
       {
         "evidence_task_id": "evidence:SP-vision-multimodal-2026:a09c80fa9231ebf2",
         "discovery_ids": [
           "VM-D119"
         ],
-        "sha256": "35f521619f9345003a60cfef4957c2a58b3819800d73f8bda1cfa7d8960df598",
+        "sha256": "397a3c5cbcb0cf93b9ea9a9b0685199e5d219f31707a5344452d30045f36ad0d",
         "status": "VERIFIED",
         "filename": "task-8a740dd7b6642284f553.json"
       },
@@ -5499,7 +5654,7 @@
         "discovery_ids": [
           "VM-D029"
         ],
-        "sha256": "9baf4343d600fec0e8f71f10a78afebaa30870c12aee4d1617b28a57f6d5f754",
+        "sha256": "8f5070f0288abf37d80ce0a08f1b8dbb7cc854218ec79ba6198d650d73f5a84b",
         "status": "VERIFIED",
         "filename": "task-6d3217e51fbe4e7f1f5d.json"
       },
@@ -5508,7 +5663,7 @@
         "discovery_ids": [
           "VM-D121"
         ],
-        "sha256": "7cb153cdfcc2bcef7d4561daa1bcf39a95c7f57739f824765223eef371bb4fda",
+        "sha256": "29284b2c3ba3908d13aee8ad3f69f5686b8b3ed2a1c451d5aeea8d17261564d5",
         "status": "VERIFIED",
         "filename": "task-853457714c9556c4ba50.json"
       },
@@ -5517,7 +5672,7 @@
         "discovery_ids": [
           "VM-D102"
         ],
-        "sha256": "7e97a13536df42b69a4905b2972bd9096f89d46984cda49cf491b60c37c77801",
+        "sha256": "c7ca5a67683428593dddd0dc6d87268dc440ee7ed6c192867975ba4f3d504196",
         "status": "VERIFIED",
         "filename": "task-4a2a2592b0deb9329d41.json"
       },
@@ -5526,7 +5681,7 @@
         "discovery_ids": [
           "VM-D096"
         ],
-        "sha256": "c82d89dfabc0306e16065000fbc4dae797d59526c4a469f87ff819fd8cea11f7",
+        "sha256": "e18ba86ccbacdf0a290968a4a404197c6d1fed60f3b8d1979c5f3fa313fb4ea0",
         "status": "VERIFIED",
         "filename": "task-582a2fe27ffde0e7d200.json"
       },
@@ -5535,7 +5690,7 @@
         "discovery_ids": [
           "VM-D022"
         ],
-        "sha256": "fbf681b4d0548f5e0b789bacd8b1cef61365764bbb21bd72d92f7d34100bc96a",
+        "sha256": "5b0970db3a6a6c2534ae048b7d5a643f343fe27cd71451ec7025db66b05a778a",
         "status": "VERIFIED",
         "filename": "task-aeaa1f0a26e631e643b2.json"
       },
@@ -5544,7 +5699,7 @@
         "discovery_ids": [
           "VM-D042"
         ],
-        "sha256": "625b2ed758cc444611283e4e9962ea0586dd9fdbbf4cff529f194f8c4c4e1675",
+        "sha256": "ecb1865a6b1e2327e26f20449c8c64e45df9529fdbd6c6676dbd799f1d28fd96",
         "status": "VERIFIED",
         "filename": "task-8cc1bbb91c3822b4f849.json"
       },
@@ -5553,7 +5708,7 @@
         "discovery_ids": [
           "VM-D028"
         ],
-        "sha256": "4a0b0c89222df0e62958d63ee2b4db47c0320f3980fdfc7afe71d3f8296f36da",
+        "sha256": "525daf29096fd0d00d341971fe2b65b7588c47763deb79b56515b5b067085a79",
         "status": "VERIFIED",
         "filename": "task-fde26e368b684b808edd.json"
       },
@@ -5562,7 +5717,7 @@
         "discovery_ids": [
           "VM-D111"
         ],
-        "sha256": "c9a25b2e143b1eb1d20824a5aec5aa4c32725f1fe23820deb62462ce8a30b6d2",
+        "sha256": "ddf8c866cd4e3bd91a3db5472a327806c1e84714e34257b3221995a111462622",
         "status": "PARTIAL",
         "filename": "task-632555d86cc7e1d9aeaf.json"
       },
@@ -5571,7 +5726,7 @@
         "discovery_ids": [
           "VM-D021"
         ],
-        "sha256": "dec6380d50cfa8ad4b9f7d1438d7db3edf46b39024e839d18dcada3dca83c873",
+        "sha256": "8053d7fed73a06a3772953d28f90be254c971aa5e8a71ad84b8a55d8620e477b",
         "status": "VERIFIED",
         "filename": "task-a201fa376d9fb1865c09.json"
       },
@@ -5580,7 +5735,7 @@
         "discovery_ids": [
           "VM-D061"
         ],
-        "sha256": "86b0a3982ec6838caa3ff28d22fcac848f7e287e38b38fd409b49e51bf81ac00",
+        "sha256": "cbc63ed08a2fbd3ea4482c185986bb28761c669f166b5f7d8975025d8b3415ee",
         "status": "VERIFIED",
         "filename": "task-c054e666a37678203cf5.json"
       },
@@ -5589,7 +5744,7 @@
         "discovery_ids": [
           "VM-D106"
         ],
-        "sha256": "f082467ecca310e37faac9008572c6fc85e6ae699902f1156109016183322995",
+        "sha256": "68911b0e16a555905569f8267cc09c2979cdb645d5b70996887c4f35261f23ce",
         "status": "VERIFIED",
         "filename": "task-6cb16f1acb9419f74460.json"
       },
@@ -5598,7 +5753,7 @@
         "discovery_ids": [
           "VM-D020"
         ],
-        "sha256": "2259725575e7044824d8ff55fda438d4181f17492be47cf620d7ed9c4e074bc7",
+        "sha256": "2a7958a38f1fac2dc94eeeb6384f7b7447783943da602800059038b0c40bc3b1",
         "status": "VERIFIED",
         "filename": "task-beaab092f488bffe8be9.json"
       },
@@ -5607,7 +5762,7 @@
         "discovery_ids": [
           "VM-D107"
         ],
-        "sha256": "d7a181053f61af9d889b5437102c967ecbea8657984273879e821839fb92d1cc",
+        "sha256": "91d09521f197da1a90b1163a1538b75aabe56494fb38c982b74f4523f6691b58",
         "status": "VERIFIED",
         "filename": "task-789458927ad51b8ae9a5.json"
       },
@@ -5616,7 +5771,7 @@
         "discovery_ids": [
           "VM-D073"
         ],
-        "sha256": "7bf6b3ebc3f54f8fa1fdfcb44791c2b83b18ae2857f6a172d4bbfb50ac14fee1",
+        "sha256": "008f85b86a9315132ae546178524e7291603de7057d41d17bf038d889c512221",
         "status": "VERIFIED",
         "filename": "task-5a7c0d7b92e8dbaff298.json"
       },
@@ -5625,7 +5780,7 @@
         "discovery_ids": [
           "VM-D060"
         ],
-        "sha256": "e5959246c24506c9c7c341ccac1c8d2995b81dd942c4a1a73c26638ab56909b1",
+        "sha256": "d8db6c9e3b09cb8c9e31f5ed1be157080652f9d9902c9a4be4c79d86392872b7",
         "status": "VERIFIED",
         "filename": "task-30d88a4fde4356395d17.json"
       },
@@ -5634,7 +5789,7 @@
         "discovery_ids": [
           "VM-D011"
         ],
-        "sha256": "c0ad79e55822c5afde344d9c304e2f174ff8e2ceca80d6a73f1f4debbc01a11d",
+        "sha256": "cb921b4d5ebcc1e15c35b79eda69bf4283f4b85f40e2a774b87511691d1b78df",
         "status": "VERIFIED",
         "filename": "task-73b035353dec1954a85d.json"
       },
@@ -5643,7 +5798,7 @@
         "discovery_ids": [
           "VM-D094"
         ],
-        "sha256": "5347cc360e30635746df2189565b9ef11a65c29b002064e3bd23bd5106ecefde",
+        "sha256": "1ed1aaa5b5f128e581515adcebd9becb73a5709e20f08377ae408d13c03f3283",
         "status": "VERIFIED",
         "filename": "task-362a3d892f28cee62ca1.json"
       },
@@ -5652,7 +5807,7 @@
         "discovery_ids": [
           "VM-D010"
         ],
-        "sha256": "9e9af4e8f2a04f9ce8436b0851a90e5576d602508f9ebc6c771510c1768287f7",
+        "sha256": "444ba78e523c53b445a1633d6bbce5993fae63d36de51944369101a812ec4394",
         "status": "VERIFIED",
         "filename": "task-f07007f4cf1ff207bf00.json"
       },
@@ -5661,7 +5816,7 @@
         "discovery_ids": [
           "VM-D009"
         ],
-        "sha256": "6caf8d8ed8476b0a2ffb4dd88fb3750d45c16e50a33876e8b9c491d6eb2d49f8",
+        "sha256": "c47055ff530c4a80064aab955f708921d06393de7449358983b700f48c014047",
         "status": "VERIFIED",
         "filename": "task-6aa553442c44f66ff579.json"
       },
@@ -5670,7 +5825,7 @@
         "discovery_ids": [
           "VM-D078"
         ],
-        "sha256": "7ef939e73e531024e3e16762b8495b6b6d5cdff7ccd9086d1dfb6d5af1ec3ce6",
+        "sha256": "4c70c32cc6f24c95f1cf5081ef75e69f69392ea49dfb8c649ff661d38f9d65a5",
         "status": "VERIFIED",
         "filename": "task-2841621a87e753f105d1.json"
       },
@@ -5679,7 +5834,7 @@
         "discovery_ids": [
           "VM-D112"
         ],
-        "sha256": "d73a731f8deab993c6c9c2810e7c2eaa6b666bf98c4acefbb44dbbf5f2542c52",
+        "sha256": "b363de6a8286e1e21b085fccce416f157ec38e31865c7ffef359cfb18699103e",
         "status": "VERIFIED",
         "filename": "task-69b72bb7fcd308eca02a.json"
       },
@@ -5688,7 +5843,7 @@
         "discovery_ids": [
           "VM-D100"
         ],
-        "sha256": "08538a71ae02feee7eb4c0f3bbc3fb0818dcbdef06aef2e7dfd16f713dbf3462",
+        "sha256": "80c316ea37d9c2a2e6758f015e7d2e9e811c14420e6ca08185374057c4e08f47",
         "status": "VERIFIED",
         "filename": "task-03bffb104e90229ff38b.json"
       },
@@ -5697,7 +5852,7 @@
         "discovery_ids": [
           "VM-D117"
         ],
-        "sha256": "5d1a8ae2f7ef4ff5b528c28ccfd1be348edb2e4520aba2af43ca998d34b537b8",
+        "sha256": "f6b1dc469da857e69558375227c353d917c3ee481e5f4144a0747eff566c6c54",
         "status": "VERIFIED",
         "filename": "task-14b04c375155f8baeed4.json"
       },
@@ -5706,7 +5861,7 @@
         "discovery_ids": [
           "VM-D067"
         ],
-        "sha256": "bbe9b5cb8e97d5bae6d6c101b7d0bc1b812c1cedc422b211ddbe5a3ef5975948",
+        "sha256": "39369471c7d55ffc6496ec9cc78adb2444ab1d40a038a2e466f69868fdcf75ea",
         "status": "VERIFIED",
         "filename": "task-e7380b614524091c0001.json"
       },
@@ -5715,7 +5870,7 @@
         "discovery_ids": [
           "VM-D007"
         ],
-        "sha256": "f0418fc0f61633d0fa4f4d73b1c2f55064325ce490d6949c524c7903c18c9d80",
+        "sha256": "8323944690280bf26dfe0aebf64b0b1b42ad291f0ce7769af899aca464e7260e",
         "status": "VERIFIED",
         "filename": "task-c7b7f6abc8a242d2cf60.json"
       },
@@ -5724,7 +5879,7 @@
         "discovery_ids": [
           "VM-D083"
         ],
-        "sha256": "47a0f19282c8ad788f29c384c5fc1df0d3518ff47763dbbdca6ce5cb18609039",
+        "sha256": "59674d1bd764e21dba919bec357e0bf71f4d25d4df619428686dc6872f6248ea",
         "status": "VERIFIED",
         "filename": "task-a7bc3b7176dd71b093e3.json"
       },
@@ -5733,7 +5888,7 @@
         "discovery_ids": [
           "VM-D109"
         ],
-        "sha256": "aee0903a0210b63809d6dfc949044ded84faad091134b33dfd72dc4a0d1632d0",
+        "sha256": "31a2d0a81d0db4ae0e007354cdb3f893902898428a256409995d1f88ec16f657",
         "status": "VERIFIED",
         "filename": "task-e6dd2fbc277faefa4e55.json"
       },
@@ -5742,7 +5897,7 @@
         "discovery_ids": [
           "VM-D037"
         ],
-        "sha256": "1c7d97b7564aea3effecf34a91cc5ed436df7e6ce6b3e552572782642e45d1ea",
+        "sha256": "e2c8d7599e4da7563cc115ae10c06c2ac12370052e84b549dbd648428e7059a9",
         "status": "VERIFIED",
         "filename": "task-80645ca5fe29f9c9e758.json"
       },
@@ -5751,7 +5906,7 @@
         "discovery_ids": [
           "VM-D066"
         ],
-        "sha256": "a0fa022ae83bf110841675e48dbc93f20e92fe5145d8ea1736117ac6dc8128cf",
+        "sha256": "3936c98ca98ffb18a6d2b4e97e583b231c1feea789b86e59fc2ea91d7912a773",
         "status": "VERIFIED",
         "filename": "task-3fd5e0dbb8baa816fce5.json"
       },
@@ -5760,7 +5915,7 @@
         "discovery_ids": [
           "VM-D088"
         ],
-        "sha256": "38235a09f304ca34d6a751d9e524bff741bae2db9ebb5a246d862bc65759c966",
+        "sha256": "adcbd191db6decfd63d404a81eb9d5b5449905375581513636ae50e851e10306",
         "status": "VERIFIED",
         "filename": "task-5fb38b61f91e1f6216d0.json"
       },
@@ -5769,7 +5924,7 @@
         "discovery_ids": [
           "VM-D049"
         ],
-        "sha256": "135031f9b969607949a0df4d4d3b1376ef52f038612774f542b9f00b1d41abf9",
+        "sha256": "6dc186189f80204fb032999d2af6e95a6378d91d8960b94bedf136dcdf31296d",
         "status": "VERIFIED",
         "filename": "task-a6b0c7b329124fe5c718.json"
       },
@@ -5778,7 +5933,7 @@
         "discovery_ids": [
           "VM-D056"
         ],
-        "sha256": "d7dabf605735ae7bf0c2268d0c3b2c8eb6a85ef46fd1bbadccb4b1d3ce53f0c1",
+        "sha256": "630b75418f5fabce01fcad1b1d9197f638c2f7ab9223ab5f44fad3de6ecc1265",
         "status": "VERIFIED",
         "filename": "task-5c05d351e68173ee4fe4.json"
       },
@@ -5787,7 +5942,7 @@
         "discovery_ids": [
           "VM-D055"
         ],
-        "sha256": "96b4e4a465767ad0b7241a1229f02eefcf949975f813b8d5ff272c199529a2ac",
+        "sha256": "7d1e9509ead3fee2bf0e3c8bab2b3ce18cd6f1dd504eacda854e57ac596117a6",
         "status": "VERIFIED",
         "filename": "task-28f7ea381f59f1d48cae.json"
       },
@@ -5796,7 +5951,7 @@
         "discovery_ids": [
           "VM-D098"
         ],
-        "sha256": "31b176656d0640502498985a372dbf7d41123a6e4cdf20bd5f534fbabed3f861",
+        "sha256": "2cbaa116aef76368d684327a17aa404d6d8ccd6606a06936456d3538934465a0",
         "status": "VERIFIED",
         "filename": "task-285960b48aeb090906d7.json"
       },
@@ -5805,7 +5960,7 @@
         "discovery_ids": [
           "VM-D074"
         ],
-        "sha256": "6b3557505a2156829eb543301f2a546d931e0be6f68072a4c7d3c20ff659c956",
+        "sha256": "a50c08287416b20de79810ea91fb475518bd6a68d1430178066b436918da7169",
         "status": "VERIFIED",
         "filename": "task-2f755509900cc43ce675.json"
       },
@@ -5814,7 +5969,7 @@
         "discovery_ids": [
           "VM-D013"
         ],
-        "sha256": "22c6ec9fa6f45d882fcdbd65c88a7712a659a4da96de2972aadf425f623ed25c",
+        "sha256": "88af2fcbf3f36b50fdf72c980c1abdf97b63bae5ab53b0331d379df5dc54141a",
         "status": "VERIFIED",
         "filename": "task-9b2c7357b784e1933ea1.json"
       },
@@ -5823,7 +5978,7 @@
         "discovery_ids": [
           "VM-D113"
         ],
-        "sha256": "cec2a53caacc9ae976c98ea53cc8727330b6a91139dba118dce9ade50e637e57",
+        "sha256": "c4b1b343b324847eedd5207864f5ac805873a015cbcbcadcc4191d3f8a7aaa63",
         "status": "VERIFIED",
         "filename": "task-a6b488c3023091d3aef3.json"
       },
@@ -5832,7 +5987,7 @@
         "discovery_ids": [
           "VM-D053"
         ],
-        "sha256": "ee4ea7242424c22492387bb297458bde9d20a5582c19547a4b07a381f6733dc8",
+        "sha256": "8f7640869eb55caef2030c68ef040718fe6b9732a0ad31a3e80adc042ae94fa9",
         "status": "VERIFIED",
         "filename": "task-b275a622e36e2cdae384.json"
       },
@@ -5841,7 +5996,7 @@
         "discovery_ids": [
           "VM-D097"
         ],
-        "sha256": "9abe3f118ef964944e38ecbf09c701e1a045fdfde947446b916a2ca92d31cc81",
+        "sha256": "2e03e5a8770de817a22a23074b472fda575cee8901cb4e990338fbd67aedb072",
         "status": "VERIFIED",
         "filename": "task-c48e13f6d1a3c5a3b601.json"
       },
@@ -5850,7 +6005,7 @@
         "discovery_ids": [
           "VM-D082"
         ],
-        "sha256": "3e0e88baa45850d239acd65882737e86fe4e49ad6e2885e6d0f6bbba58677728",
+        "sha256": "7a81b0b0c3869e1edd68fec5ae2f8ef050e7e61a51517b0ab7a2f19a4ec7b383",
         "status": "VERIFIED",
         "filename": "task-80ce5a64603f61616a06.json"
       },
@@ -5859,7 +6014,7 @@
         "discovery_ids": [
           "VM-D024"
         ],
-        "sha256": "2e219ec8f879e295fae702778f335c1e2ef0418d47dab40b4abbcd576ad84497",
+        "sha256": "032d7a2eaf998946ebc3e8fe1dbb0f014655149c773db72883ca70bd1fed3b8e",
         "status": "VERIFIED",
         "filename": "task-dc8c49d9babd648293dd.json"
       },
@@ -5868,7 +6023,7 @@
         "discovery_ids": [
           "VM-D110"
         ],
-        "sha256": "5baf2b2449c3b200b82730351ca5a7b16f55aa6d372a982d0a5950cc3c129283",
+        "sha256": "e57d8bf563ac5b21931bf81c64923281cea033909ec79b25261c4ddcc8d5d54d",
         "status": "VERIFIED",
         "filename": "task-0202917391a980c0420f.json"
       },
@@ -5877,7 +6032,7 @@
         "discovery_ids": [
           "VM-D079"
         ],
-        "sha256": "7c7d401ce76d2fa64b6a1960c584a15f38b4d49b0632512e6ba4448ba975b72f",
+        "sha256": "f9cb4f6bd44b02e5b991f8b8093526be27d684e229931492195df7876a6e4240",
         "status": "VERIFIED",
         "filename": "task-eea9e6dfac34a4522694.json"
       },
@@ -5886,7 +6041,7 @@
         "discovery_ids": [
           "VM-D057"
         ],
-        "sha256": "2640e26fb34fd02eefb06bb0700df7de4a2c6e53fbf485501b061837b96bd6c0",
+        "sha256": "ba4daf9085bfa9ff586a836dec55bc9961eb571c9ba2c1b4a82e0c580af0302e",
         "status": "VERIFIED",
         "filename": "task-0841bf382c8f981266c8.json"
       },
@@ -5895,7 +6050,7 @@
         "discovery_ids": [
           "VM-D008"
         ],
-        "sha256": "c4e1ebeaed0a520a4653fcc1c6dfe04a50d52072f7d50de58b115916fb6629ab",
+        "sha256": "754c9a7d7cea782bd8e31f5359dd74b40a459382a9e7aeb6914aff92ddf111c2",
         "status": "VERIFIED",
         "filename": "task-d48ed3892c125e6e11c6.json"
       },
@@ -5904,7 +6059,7 @@
         "discovery_ids": [
           "VM-D093"
         ],
-        "sha256": "d0855a999cb9aaf3d66b7f35d6b8d51a5a750b2cba185a2b9c09d9c35a58a2d7",
+        "sha256": "8c876a2c367d283a489604e4ebf869cac88b8040a005f85d2bf150b84224c23b",
         "status": "VERIFIED",
         "filename": "task-acc1476a7210d9ffc461.json"
       },
@@ -5913,7 +6068,7 @@
         "discovery_ids": [
           "VM-D052"
         ],
-        "sha256": "d5aae54b9fed62dbcaf017b64d5d804c7651732fb9c890c75b1783f31b130107",
+        "sha256": "a6370d0ef6766377bbeb9d535ac98f504a17e37b650fe0ad12419899b7688608",
         "status": "VERIFIED",
         "filename": "task-d678d52b9328746e6868.json"
       },
@@ -5922,7 +6077,7 @@
         "discovery_ids": [
           "VM-D048"
         ],
-        "sha256": "13639145019dbd7be857c4588bcec422f7ba4acb3732c1dcb76927be766923d0",
+        "sha256": "8905ec168abea3a0f6a798cd047ceaa35e9ea231761beead517e2afe58900f9b",
         "status": "VERIFIED",
         "filename": "task-b625ea9cc8642bd022fd.json"
       },
@@ -5931,7 +6086,7 @@
         "discovery_ids": [
           "VM-D115"
         ],
-        "sha256": "5ec4e3bac8cadf6813c4d1fa8b1127da4b1ba84f4bf581c08a5d05d5e398588e",
+        "sha256": "102f424c21bb038b2784036371be1e5d0f551e45848cc474d0c883cc0c8dbe6e",
         "status": "VERIFIED",
         "filename": "task-bcd865fd3ef9f02b47e3.json"
       },
@@ -5940,7 +6095,7 @@
         "discovery_ids": [
           "VM-D087"
         ],
-        "sha256": "c3a270d4a61166799ae64e82fd4d298a76c16617c150fdeaa90abac5d40af9a8",
+        "sha256": "f1cbf6f9183588b98bfee0b3150b53a30248caa06f9f3a5a64edd6e0b3420394",
         "status": "VERIFIED",
         "filename": "task-58672f226741bd8d1882.json"
       },
@@ -5949,7 +6104,7 @@
         "discovery_ids": [
           "VM-D030"
         ],
-        "sha256": "a09be92ae18e8c4a9fbb80a03a17a7a6634fa3b1dcc4104d3f9330b8caaf9ea4",
+        "sha256": "3f90cedc915a8552f1cb0a223491e8a31e7760abf0a91f1d607f4329965ed393",
         "status": "VERIFIED",
         "filename": "task-55c94f6611c28111f8e6.json"
       }
@@ -5960,14 +6115,14 @@
       "candidate_id": "candidate:SP-vision-multimodal-2026:26484475941d9823",
       "architecture_usage": "PRIMARY",
       "evidence_task_id": "evidence:SP-vision-multimodal-2026:392343dab0a3215c",
-      "evidence_sha256": "f6c7ee176dce9a0a5439b7c2800ac4c0dbd764226bb8f373d0b57126f604d314",
+      "evidence_sha256": "6d76c515cabc1ed8d01922b1a322aa37234febe01660c3c7e05653bb2fec5a7d",
       "evidence_card": {
         "schema_version": "2.0-rc1",
         "issue_id": "SP-vision-multimodal-2026",
         "evidence_task_id": "evidence:SP-vision-multimodal-2026:392343dab0a3215c",
         "basis": {
-          "task_sha256": "1b4d1533d934f2792f84047ec6590fd32555461b147e5cf452779492b5c215b2",
-          "screening_acceptance_sha256": "2fd98e8602ca6cc3f530ecd33965fef0dec7b41604604085ca0bd5b38972499c",
+          "task_sha256": "296ad0a8bd410ab6e42845bbe9bca658ec41bba80aa4a73c1b20807254d8ce24",
+          "screening_acceptance_sha256": "e471c40158c226d150bf18bf68a5da46a8ad8710d5df3d063eab23f32f5863d9",
           "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
           "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
         },
@@ -6096,14 +6251,14 @@
       "candidate_id": "candidate:SP-vision-multimodal-2026:ced29c1d1b590c61",
       "architecture_usage": "PRIMARY",
       "evidence_task_id": "evidence:SP-vision-multimodal-2026:2ca2b01d89b9f6f3",
-      "evidence_sha256": "11d5155d10e760a26b2b838559213033876f1cff9c18438d75119c238ef544ca",
+      "evidence_sha256": "7e142324d5f651fb6822a02e9eb68330f6f695cf58d80aff6db6b15fb38709a5",
       "evidence_card": {
         "schema_version": "2.0-rc1",
         "issue_id": "SP-vision-multimodal-2026",
         "evidence_task_id": "evidence:SP-vision-multimodal-2026:2ca2b01d89b9f6f3",
         "basis": {
-          "task_sha256": "5b80827786f37f1f79ed71936528a4dee104614d26e5e692da9825392af09404",
-          "screening_acceptance_sha256": "2fd98e8602ca6cc3f530ecd33965fef0dec7b41604604085ca0bd5b38972499c",
+          "task_sha256": "7866a5390e203a156ccb41e4ddd05f1d1c4564ad9e87d7e40b57c3c6a5c0ffaa",
+          "screening_acceptance_sha256": "e471c40158c226d150bf18bf68a5da46a8ad8710d5df3d063eab23f32f5863d9",
           "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
           "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
         },
@@ -6210,14 +6365,14 @@
       "candidate_id": "candidate:SP-vision-multimodal-2026:c7b7f6abc8a242d2",
       "architecture_usage": "PRIMARY",
       "evidence_task_id": "evidence:SP-vision-multimodal-2026:c8c632d0be6a2fc6",
-      "evidence_sha256": "f0418fc0f61633d0fa4f4d73b1c2f55064325ce490d6949c524c7903c18c9d80",
+      "evidence_sha256": "8323944690280bf26dfe0aebf64b0b1b42ad291f0ce7769af899aca464e7260e",
       "evidence_card": {
         "schema_version": "2.0-rc1",
         "issue_id": "SP-vision-multimodal-2026",
         "evidence_task_id": "evidence:SP-vision-multimodal-2026:c8c632d0be6a2fc6",
         "basis": {
-          "task_sha256": "c7622c5f341ab8619c9fed71d1dbf2a4ea083e0acbe8beb28171ed20d3f42f63",
-          "screening_acceptance_sha256": "2fd98e8602ca6cc3f530ecd33965fef0dec7b41604604085ca0bd5b38972499c",
+          "task_sha256": "b0ae3d079fbe90873cdb5b5d34e56905068af7f9a89548cf5935fbc42b49f3ce",
+          "screening_acceptance_sha256": "e471c40158c226d150bf18bf68a5da46a8ad8710d5df3d063eab23f32f5863d9",
           "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
           "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
         },
@@ -6335,14 +6490,14 @@
       "candidate_id": "candidate:SP-vision-multimodal-2026:f07007f4cf1ff207",
       "architecture_usage": "PRIMARY",
       "evidence_task_id": "evidence:SP-vision-multimodal-2026:b7de06e9d5276cc1",
-      "evidence_sha256": "9e9af4e8f2a04f9ce8436b0851a90e5576d602508f9ebc6c771510c1768287f7",
+      "evidence_sha256": "444ba78e523c53b445a1633d6bbce5993fae63d36de51944369101a812ec4394",
       "evidence_card": {
         "schema_version": "2.0-rc1",
         "issue_id": "SP-vision-multimodal-2026",
         "evidence_task_id": "evidence:SP-vision-multimodal-2026:b7de06e9d5276cc1",
         "basis": {
-          "task_sha256": "1619ac7867f60658e29d0ff41698a5cab2074252aebcbf8c3d657e6e2ff59b0a",
-          "screening_acceptance_sha256": "2fd98e8602ca6cc3f530ecd33965fef0dec7b41604604085ca0bd5b38972499c",
+          "task_sha256": "ed29ed12d0476efde8a07097200a0cf7a0e7742aa7e46263bd55898f6c42e155",
+          "screening_acceptance_sha256": "e471c40158c226d150bf18bf68a5da46a8ad8710d5df3d063eab23f32f5863d9",
           "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
           "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
         },
@@ -6471,14 +6626,14 @@
       "candidate_id": "candidate:SP-vision-multimodal-2026:73b035353dec1954",
       "architecture_usage": "PRIMARY",
       "evidence_task_id": "evidence:SP-vision-multimodal-2026:b10c9e111b6ab1e8",
-      "evidence_sha256": "c0ad79e55822c5afde344d9c304e2f174ff8e2ceca80d6a73f1f4debbc01a11d",
+      "evidence_sha256": "cb921b4d5ebcc1e15c35b79eda69bf4283f4b85f40e2a774b87511691d1b78df",
       "evidence_card": {
         "schema_version": "2.0-rc1",
         "issue_id": "SP-vision-multimodal-2026",
         "evidence_task_id": "evidence:SP-vision-multimodal-2026:b10c9e111b6ab1e8",
         "basis": {
-          "task_sha256": "d353f282817da4ef9163058e4d02d13aa2bee3e9b6d53902dd7379ac45dc6044",
-          "screening_acceptance_sha256": "2fd98e8602ca6cc3f530ecd33965fef0dec7b41604604085ca0bd5b38972499c",
+          "task_sha256": "2a8ce4d00a0113cf71aff9c855a7bdab144a8deeeddb093331167441b80732a5",
+          "screening_acceptance_sha256": "e471c40158c226d150bf18bf68a5da46a8ad8710d5df3d063eab23f32f5863d9",
           "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
           "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
         },
@@ -6546,6 +6701,17 @@
               "src-1"
             ],
             "context": "Edition-level analytical synthesis by the Work operator (lineage/selection/boundary/contract judgment, not a literal statement of the cited source); structural home for edition rationale."
+          },
+          {
+            "statement_id": "claim-3",
+            "text": "DINO design lineage as paper-stated: new DETR-like model based on DN-DETR, DAB-DETR, and Deformable DETR; decoder queries as dynamic anchor boxes refined step-by-step across decoder layers (DAB line); denoising training improved to contrastive denoising (DN line); deformable attention adopted for computational efficiency with query-selection inheritance for positional-query initialization (Deformable line); contrastive denoising, mixed query selection, and look-forward-twice box prediction are DINO's own improvements.",
+            "subject_id": "ev-vmd011",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "AUTHOR_CLAIM",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": "DINO paper abstract/§§1/3 (based-on DN/DAB/Deformable statement; dynamic anchor boxes; contrastive denoising; mixed query selection; look-forward-twice)."
           }
         ],
         "metrics": [],
@@ -6596,14 +6762,14 @@
       "candidate_id": "candidate:SP-vision-multimodal-2026:0491441302a2203a",
       "architecture_usage": "PRIMARY",
       "evidence_task_id": "evidence:SP-vision-multimodal-2026:1619d326d81a5223",
-      "evidence_sha256": "bef5eb214b53ebf99538d10baadf4caa642c1c571a533512d0d60e872635eb3e",
+      "evidence_sha256": "2c1b45a1f76b9d9f7611df4188954d43d44cdfed2367dd69cb583f2df4897979",
       "evidence_card": {
         "schema_version": "2.0-rc1",
         "issue_id": "SP-vision-multimodal-2026",
         "evidence_task_id": "evidence:SP-vision-multimodal-2026:1619d326d81a5223",
         "basis": {
-          "task_sha256": "c86929e3cbd82a045ca506f3d807b728b739927839e1dcda3a88a041d1ce874e",
-          "screening_acceptance_sha256": "2fd98e8602ca6cc3f530ecd33965fef0dec7b41604604085ca0bd5b38972499c",
+          "task_sha256": "7730f5e539554df700815a83a7558a39708acb4894b5db0b329e82c248df3cc1",
+          "screening_acceptance_sha256": "e471c40158c226d150bf18bf68a5da46a8ad8710d5df3d063eab23f32f5863d9",
           "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
           "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
         },
@@ -6707,17 +6873,256 @@
       }
     },
     {
+      "candidate_id": "candidate:SP-vision-multimodal-2026:6018779ae64eed93",
+      "architecture_usage": "PRIMARY",
+      "evidence_task_id": "evidence:SP-vision-multimodal-2026:a04ef197904a57c0",
+      "evidence_sha256": "8ae75a952abf8067a18150ee4250318253edad23c06dbc4f454509cf662b0e1c",
+      "evidence_card": {
+        "schema_version": "2.0-rc1",
+        "issue_id": "SP-vision-multimodal-2026",
+        "evidence_task_id": "evidence:SP-vision-multimodal-2026:a04ef197904a57c0",
+        "basis": {
+          "task_sha256": "32c6717f8769ec02cb7d27f8a96c540f49e67a7a9771d93b9c110a472b15bdb8",
+          "screening_acceptance_sha256": "e471c40158c226d150bf18bf68a5da46a8ad8710d5df3d063eab23f32f5863d9",
+          "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+          "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+        },
+        "status": "VERIFIED",
+        "entities": [
+          {
+            "entity_id": "ev-vmd123",
+            "canonical_name": "Deformable DETR (Zhu et al., 2020)",
+            "entity_type": "MODEL",
+            "organization": null,
+            "canonical_url": "https://arxiv.org/abs/2010.04159"
+          }
+        ],
+        "artifact": {
+          "primary_subject_id": "ev-vmd123",
+          "artifact_type": "PAPER",
+          "canonical_name": "Deformable DETR (Zhu et al., 2020)",
+          "canonical_url": "https://arxiv.org/abs/2010.04159"
+        },
+        "temporal": {
+          "observed_at": "2026-10-08T00:00:00Z",
+          "events": [
+            {
+              "event_id": "event-1",
+              "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+              "event_date": "2020-10",
+              "subject_id": "ev-vmd123",
+              "subject_role": "PRIMARY_SUBJECT",
+              "source_ids": [
+                "src-1"
+              ]
+            }
+          ]
+        },
+        "sources": [
+          {
+            "source_id": "src-1",
+            "url": "https://arxiv.org/abs/2010.04159",
+            "source_class": "PRIMARY_PAPER",
+            "title": "Deformable DETR: Deformable Transformers for End-to-End Object Detection",
+            "published_at": "2020-10",
+            "accessed_at": "2026-10-08T00:00:00Z",
+            "role": "Discovery-bounded source used for factual verification"
+          }
+        ],
+        "claims": [
+          {
+            "statement_id": "claim-1",
+            "text": "DETR motivation repair: slow convergence and limited feature spatial resolution from Transformer attention limits on image feature maps; deformable attention attends only a small set of key sampling points around a reference point.",
+            "subject_id": "ev-vmd123",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "AUTHOR_CLAIM",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": "Paper abstract/§1/§4 (motivation + deformable attention mechanism)."
+          },
+          {
+            "statement_id": "claim-2",
+            "text": "Multi-scale handling without FPN help (small objects from high-resolution maps); 10x fewer training epochs than DETR with better performance especially on small objects; COCO benchmark; code released; ICLR 2021 Oral.",
+            "subject_id": "ev-vmd123",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "AUTHOR_CLAIM",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": "Paper abstract/§4-5 (multi-scale design + COCO convergence/small-object results)."
+          },
+          {
+            "statement_id": "claim-3",
+            "text": "Reference-point/query machinery native to Deformable DETR: 2D reference points as queries, two-stage query-selection variant selecting top-K encoder features as priors, and iterative box refinement.",
+            "subject_id": "ev-vmd123",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "AUTHOR_CLAIM",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": "Paper §4 (reference-point formulation, two-stage variant, iterative refinement); no later-paper lineage asserted here."
+          }
+        ],
+        "metrics": [],
+        "limitations": [
+          {
+            "statement_id": "limitation-1",
+            "text": "Single-scale vs multi-scale variant scope; two-stage query-selection and iterative refinement are optional extensions; FPN-general survey stays outside this bridge role.",
+            "subject_id": "ev-vmd123",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "AUTHOR_CLAIM",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": "Evidence boundary retained for downstream editorial use."
+          }
+        ],
+        "verification": {
+          "targets": [
+            {
+              "target": "Evidence-stage full-body verification",
+              "status": "VERIFIED",
+              "finding": "Deformable DETR body consumed via arXiv HTML: motivation, deformable attention mechanism, multi-scale handling, convergence and small-object results verified as the P02 bridge.",
+              "subject_ids": [
+                "ev-vmd123"
+              ],
+              "source_ids": [
+                "src-1"
+              ]
+            }
+          ],
+          "unresolved_questions": [],
+          "contradictions": []
+        }
+      }
+    },
+    {
+      "candidate_id": "candidate:SP-vision-multimodal-2026:c7fd3834cd4f0ee2",
+      "architecture_usage": "PRIMARY",
+      "evidence_task_id": "evidence:SP-vision-multimodal-2026:796e6c3c2cac7f26",
+      "evidence_sha256": "c667eeee828ef4a44c86f60e80f6713e179a93ce9f7417370ff911409052bc1e",
+      "evidence_card": {
+        "schema_version": "2.0-rc1",
+        "issue_id": "SP-vision-multimodal-2026",
+        "evidence_task_id": "evidence:SP-vision-multimodal-2026:796e6c3c2cac7f26",
+        "basis": {
+          "task_sha256": "2db29d11ef7e2ad5a5c609639dea611c9b26a1f2378d319568cc2b1c55a4fea9",
+          "screening_acceptance_sha256": "e471c40158c226d150bf18bf68a5da46a8ad8710d5df3d063eab23f32f5863d9",
+          "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+          "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+        },
+        "status": "VERIFIED",
+        "entities": [
+          {
+            "entity_id": "ev-vmd125",
+            "canonical_name": "DN-DETR (Li et al., 2022)",
+            "entity_type": "MODEL",
+            "organization": null,
+            "canonical_url": "https://arxiv.org/abs/2203.01305"
+          }
+        ],
+        "artifact": {
+          "primary_subject_id": "ev-vmd125",
+          "artifact_type": "PAPER",
+          "canonical_name": "DN-DETR (Li et al., 2022)",
+          "canonical_url": "https://arxiv.org/abs/2203.01305"
+        },
+        "temporal": {
+          "observed_at": "2026-10-08T00:00:00Z",
+          "events": [
+            {
+              "event_id": "event-1",
+              "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+              "event_date": "2022-03",
+              "subject_id": "ev-vmd125",
+              "subject_role": "PRIMARY_SUBJECT",
+              "source_ids": [
+                "src-1"
+              ]
+            }
+          ]
+        },
+        "sources": [
+          {
+            "source_id": "src-1",
+            "url": "https://arxiv.org/abs/2203.01305",
+            "source_class": "PRIMARY_PAPER",
+            "title": "DN-DETR: Accelerate DETR Training by Introducing Query DeNoising",
+            "published_at": "2022-03",
+            "accessed_at": "2026-10-08T00:00:00Z",
+            "role": "Discovery-bounded source used for factual verification"
+          }
+        ],
+        "claims": [
+          {
+            "statement_id": "claim-1",
+            "text": "Slow convergence diagnosed as bipartite-graph-matching instability (inconsistent early optimization goals); noised GT boxes and labels fed to the decoder as a denoising part alongside the matching part; reconstruction of original targets; attention mask blocks leakage.",
+            "subject_id": "ev-vmd125",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "AUTHOR_CLAIM",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": "Paper abstract/§§3-4 (instability diagnosis + denoising mechanism)."
+          },
+          {
+            "statement_id": "claim-2",
+            "text": "Built on DAB-DETR 4D-anchor formulation (decoder embedding as label embedding for box+label denoising); +1.9 AP over DAB-DETR same setting (43.4/48.6 AP R50 at 12/50 epochs); parity at ~50% epochs; also applied to Deformable DETR, Anchor DETR, Faster R-CNN, Mask2Former; CVPR 2022 Oral.",
+            "subject_id": "ev-vmd125",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "AUTHOR_CLAIM",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": "Paper abstract/§§4-6 (DAB-based evaluation + generality results)."
+          }
+        ],
+        "metrics": [],
+        "limitations": [
+          {
+            "statement_id": "limitation-1",
+            "text": "Uniform-distribution noise sampling only; query-denoising training, not diffusion-model denoising; transition-node treatment only.",
+            "subject_id": "ev-vmd125",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "AUTHOR_CLAIM",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": "Evidence boundary retained for downstream editorial use."
+          }
+        ],
+        "verification": {
+          "targets": [
+            {
+              "target": "Evidence-stage full-body verification",
+              "status": "VERIFIED",
+              "finding": "DN-DETR abstract/body consumed via CVPR open access: instability diagnosis, denoising mechanism, DAB-based results and generality verified as the P02 bridge.",
+              "subject_ids": [
+                "ev-vmd125"
+              ],
+              "source_ids": [
+                "src-1"
+              ]
+            }
+          ],
+          "unresolved_questions": [],
+          "contradictions": []
+        }
+      }
+    },
+    {
       "candidate_id": "candidate:SP-vision-multimodal-2026:d48ed3892c125e6e",
       "architecture_usage": "SUPPORTING",
       "evidence_task_id": "evidence:SP-vision-multimodal-2026:f63075086ce1c194",
-      "evidence_sha256": "c4e1ebeaed0a520a4653fcc1c6dfe04a50d52072f7d50de58b115916fb6629ab",
+      "evidence_sha256": "754c9a7d7cea782bd8e31f5359dd74b40a459382a9e7aeb6914aff92ddf111c2",
       "evidence_card": {
         "schema_version": "2.0-rc1",
         "issue_id": "SP-vision-multimodal-2026",
         "evidence_task_id": "evidence:SP-vision-multimodal-2026:f63075086ce1c194",
         "basis": {
-          "task_sha256": "0e676ef9fad681273b7561b8971567465271ab4c2aaff9b37fed8df39e0035fa",
-          "screening_acceptance_sha256": "2fd98e8602ca6cc3f530ecd33965fef0dec7b41604604085ca0bd5b38972499c",
+          "task_sha256": "444e7f66cfec1add5a711441eba08d0bf4fe28baae935a310444d6c19b278c5f",
+          "screening_acceptance_sha256": "e471c40158c226d150bf18bf68a5da46a8ad8710d5df3d063eab23f32f5863d9",
           "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
           "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
         },
@@ -6813,14 +7218,14 @@
       "candidate_id": "candidate:SP-vision-multimodal-2026:6aa553442c44f66f",
       "architecture_usage": "SUPPORTING",
       "evidence_task_id": "evidence:SP-vision-multimodal-2026:bfd74d856a35f1c7",
-      "evidence_sha256": "6caf8d8ed8476b0a2ffb4dd88fb3750d45c16e50a33876e8b9c491d6eb2d49f8",
+      "evidence_sha256": "c47055ff530c4a80064aab955f708921d06393de7449358983b700f48c014047",
       "evidence_card": {
         "schema_version": "2.0-rc1",
         "issue_id": "SP-vision-multimodal-2026",
         "evidence_task_id": "evidence:SP-vision-multimodal-2026:bfd74d856a35f1c7",
         "basis": {
-          "task_sha256": "50d772acf5d9963b642e775c3c0cedab717e9f0e8b5f94c65d5010ef7b7eda1c",
-          "screening_acceptance_sha256": "2fd98e8602ca6cc3f530ecd33965fef0dec7b41604604085ca0bd5b38972499c",
+          "task_sha256": "254878a747b170ac07591072cef088df4325017b7ede9d584cb6819ac1b52985",
+          "screening_acceptance_sha256": "e471c40158c226d150bf18bf68a5da46a8ad8710d5df3d063eab23f32f5863d9",
           "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
           "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
         },
@@ -6911,6 +7316,120 @@
           "contradictions": []
         }
       }
+    },
+    {
+      "candidate_id": "candidate:SP-vision-multimodal-2026:d277a60ff2531b80",
+      "architecture_usage": "SUPPORTING",
+      "evidence_task_id": "evidence:SP-vision-multimodal-2026:43c5bc5adec4ac9a",
+      "evidence_sha256": "bbcd9147a5aebf52dceecfb6e30bcfb1f34a3fb196b6438300da301e51ba8e5d",
+      "evidence_card": {
+        "schema_version": "2.0-rc1",
+        "issue_id": "SP-vision-multimodal-2026",
+        "evidence_task_id": "evidence:SP-vision-multimodal-2026:43c5bc5adec4ac9a",
+        "basis": {
+          "task_sha256": "005f53948be640d0681ffe64cfb46a9f5494ae8122e0bb76da61a06a79d3d0e1",
+          "screening_acceptance_sha256": "e471c40158c226d150bf18bf68a5da46a8ad8710d5df3d063eab23f32f5863d9",
+          "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+          "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+        },
+        "status": "VERIFIED",
+        "entities": [
+          {
+            "entity_id": "ev-vmd124",
+            "canonical_name": "DAB-DETR (Liu et al., 2022)",
+            "entity_type": "MODEL",
+            "organization": null,
+            "canonical_url": "https://arxiv.org/abs/2201.12329"
+          }
+        ],
+        "artifact": {
+          "primary_subject_id": "ev-vmd124",
+          "artifact_type": "PAPER",
+          "canonical_name": "DAB-DETR (Liu et al., 2022)",
+          "canonical_url": "https://arxiv.org/abs/2201.12329"
+        },
+        "temporal": {
+          "observed_at": "2026-10-08T00:00:00Z",
+          "events": [
+            {
+              "event_id": "event-1",
+              "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+              "event_date": "2022-01",
+              "subject_id": "ev-vmd124",
+              "subject_role": "PRIMARY_SUBJECT",
+              "source_ids": [
+                "src-1"
+              ]
+            }
+          ]
+        },
+        "sources": [
+          {
+            "source_id": "src-1",
+            "url": "https://arxiv.org/abs/2201.12329",
+            "source_class": "PRIMARY_PAPER",
+            "title": "DAB-DETR: Dynamic Anchor Boxes are Better Queries for DETR",
+            "published_at": "2022-01",
+            "accessed_at": "2026-10-08T00:00:00Z",
+            "role": "Discovery-bounded source used for factual verification"
+          }
+        ],
+        "claims": [
+          {
+            "statement_id": "claim-1",
+            "text": "Decoder queries directly formulated as 4D box coordinates (x, y, w, h) with layer-by-layer dynamic anchor updates; explicit positional priors improve query-to-feature similarity and convergence; width/height modulate positional attention.",
+            "subject_id": "ev-vmd124",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "AUTHOR_CLAIM",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": "Paper abstract/§3 (dynamic anchor-box query formulation)."
+          },
+          {
+            "statement_id": "claim-2",
+            "text": "Queries read as layer-by-layer cascade soft ROI pooling; 45.7 AP on COCO with ResNet50-DC5 at 50 epochs (best among DETR-like under same setting); code released; ICLR 2022.",
+            "subject_id": "ev-vmd124",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "AUTHOR_CLAIM",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": "Paper abstract/§4-5 (cascade reading + COCO results)."
+          }
+        ],
+        "metrics": [],
+        "limitations": [
+          {
+            "statement_id": "limitation-1",
+            "text": "Single-scale DETR-baseline scope; Anchor/Conditional DETR taxonomy stays outside; brief supporting treatment only.",
+            "subject_id": "ev-vmd124",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "AUTHOR_CLAIM",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": "Evidence boundary retained for downstream editorial use."
+          }
+        ],
+        "verification": {
+          "targets": [
+            {
+              "target": "Evidence-stage full-body verification",
+              "status": "VERIFIED",
+              "finding": "DAB-DETR abstract/body consumed: dynamic anchor-box formulation, layer-wise updates, COCO result verified as the P02 supporting bridge.",
+              "subject_ids": [
+                "ev-vmd124"
+              ],
+              "source_ids": [
+                "src-1"
+              ]
+            }
+          ],
+          "unresolved_questions": [],
+          "contradictions": []
+        }
+      }
     }
   ],
   "drafting_constraints": {
@@ -6931,11 +7450,14 @@
       ],
       "TRANSITION_NODE_TREATMENT": [
         "VM-D005",
-        "VM-D007"
+        "VM-D007",
+        "VM-D123",
+        "VM-D125"
       ],
       "BRIEF_CONTEXT_OR_AUTHORITY": [
         "VM-D008",
-        "VM-D009"
+        "VM-D009",
+        "VM-D124"
       ]
     }
   }

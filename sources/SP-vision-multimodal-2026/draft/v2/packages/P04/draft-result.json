@@ -4,22 +4,22 @@
   "research_profile": "THEMATIC",
   "publication_profile": "LONGFORM_SPECIAL",
   "package_id": "P04",
-  "draft_version": "fresh-121-r8-rev5",
+  "draft_version": "fresh-124-r9",
   "status": "ESTABLISHED",
   "basis": {
-    "draft_package_sha256": "d551b297b6f653489c0e3bae1aaeca32711a34646232d29cd1d62703097906ea",
+    "draft_package_sha256": "7a51b3be8ab654434f8c88438ffb1508116af4fa1dc99cb3fc1cdb38ae5c8999",
     "prompt_id": "article-drafting-v2",
     "prompt_sha256": "b687313312a23025228c16c3f10cb68f669b910cd7215e41886d4dd91f44fe11"
   },
   "runner": {
     "provider": "Muse",
     "model": "Muse Spark (Work execution role; not a Sol/Human decision)",
-    "invocation": "TS-003 Draft closure revision r8-rev5 from Architecture r8 APPROVED (same authority; edition-local terminology-authority reconciliation plus reader-surface normalization across segmentation, box, hallucination, latent dynamics, encoder/decoder, detector stage, feature map, attention, tuning, post-training, open weights, MoE, dense, network, streaming and new known-failure families; r8 authority unchanged; no TeX/PDF; DRAFT_COMPLETE held for differential language review)",
-    "generated_at": "2026-10-08T00:00:00Z",
+    "invocation": "TS-003 fresh 124-authority Draft from Architecture r9 APPROVED (Evidence 124 VERIFIED 119/PARTIAL 5, Selection 124, 16 packages newly authored; P02 DETR-successor lineage + attribution closure, P12 proxy framing, P15 four-role taxonomy, DUSt3R editorial synthesis, Molmo scope, ResNet controlled comparison, Dreamer non-ancestry, video role separation, P07A/B separation, Japanese terminology conformance; rev5 as regression reference only, 0 blocks identical; no TeX/PDF; DRAFT_COMPLETE then STOP)",
+    "generated_at": "2026-10-09T00:00:00Z",
     "run_reference": null
   },
-  "headline": "奥行き・姿勢・関係・立体を状態として持つ",
-  "deck": "分類名だけでは奥行きも姿勢も関係も立体も残らない。MiDaS・OpenPose・Visual Genome・DUSt3Rの四つの限定事例で、後の推論や行動が前提にする空間状態の形と実環境での汎化の測り方をたどる。",
+  "headline": "ラベルにない幾何と空間状態",
+  "deck": "奥行きと姿勢と関係構造と無姿勢再構成の四点だけが、後の推論の仮定する世界を支える。",
   "deck_attribution_mode": "MIXED",
   "deck_evidence_refs": [
     {
@@ -41,6 +41,34 @@
       "kind": "CLAIM",
       "evidence_id": "claim-3",
       "subject_id": "ev-vmd019",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-vision-multimodal-2026:ad9033f18ee4f668",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1",
+      "subject_id": "ev-vmd020",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-vision-multimodal-2026:ad9033f18ee4f668",
+      "kind": "CLAIM",
+      "evidence_id": "claim-2",
+      "subject_id": "ev-vmd020",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-vision-multimodal-2026:ab41a7643858ee00",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1",
+      "subject_id": "ev-vmd021",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-vision-multimodal-2026:ab41a7643858ee00",
+      "kind": "CLAIM",
+      "evidence_id": "claim-2",
+      "subject_id": "ev-vmd021",
       "subject_role": "PRIMARY_SUBJECT"
     },
     {
@@ -69,7 +97,7 @@
     {
       "block_id": "p04-b1",
       "block_type": "PARAGRAPH",
-      "text": "対象の名前だけでは、画面の奥行きは定まらない。MiDaSは互換性のない深度データ群、すなわちステレオ撮影とレーザー測距と構造化光に3D映画由来の素材までを、スケールとシフトに左右されない頑健な目的関数のもとで一括して学ぶ手順を示した。単なる混合より多目的のパレート最適な配合が勝り、補助課題で事前に学んだエンコーダが効くことが確かめられ、モデルは公開されたと原論文は述べる。単一収集条件の深度ではなく条件をまたいで使える相対深度という表現が得られ、収集方式の違いを吸収する学習が計算対象となった。既存の深度データそのものが制約だという所見は、論文の結論部に含まれる。",
+      "text": "対象の名前だけでは画面の奥行きは定まらない。MiDaSは互換性のない深度データ群、すなわちステレオ撮影とレーザー測距と構造化光に3D映画由来の素材までを、スケールとシフトに不変な頑健目的で混ぜ合わせる多目的混合で束ねた。素朴な混合に対するパレート最適な混合の優位、補助課題でのエンコーダ事前学習の寄与、モデルの公開が著者の主張として記録されている。入力は多様な由来の画像と深度であり、出力は相対深度であって計量深度ではないという入出力の区切りが要点になる。学習表現の変化は、単一データの作法から非互換集合の混合作法への移行にある。",
       "attribution_mode": "ATTRIBUTED",
       "evidence_refs": [
         {
@@ -98,8 +126,8 @@
     {
       "block_id": "p04-b2",
       "block_type": "PARAGRAPH",
-      "text": "測り方の約束は、一部のデータで学習し、残りの未知データで試すゼロショット横断にある。DIW・ETH3D・Sintel・KITTI・NYU・TUMを含む未知データでの転移を、実環境における汎化の代理として測る点が要点である。数値はいずれも原論文の測定に属し、条件の異なる評価と横に並べて順位づけることはしない。主張は版に結びつけて読む。論文自身が残す境界は、既存深度データの不足が未解決である点にある。扱いは相対深度の範囲であり、メートル単位の深度の主張は他の資料に委ね、基準は2019年当時のものである。四つの限定事例に上限を保ち、3D視覚の網羅へは広げないことが本節の約束である。",
-      "attribution_mode": "ATTRIBUTED",
+      "text": "測り方の約束は、一部のデータで学習し残りの未知データで試すゼロショット横断にある。DIWやETH3DやSintelやKITTIやNYUやTUMを含む未知データでの転移を野外代理とする設計が、頑健さ測定の exhibits として示されている。既存の深度データこそが制約要因になりうるという開かれた問題は論文自身の境界である。本書では相対深度の範囲を守り、計量深度の主張は他資料に委ね、比較対象の2019年当時の基線という条件を切り離さない。後継の追加は新しい契約を生まないものとして cap の外に置く。",
+      "attribution_mode": "MIXED",
       "evidence_refs": [
         {
           "evidence_task_id": "evidence:SP-vision-multimodal-2026:85bc25df6171e3dd",
@@ -121,13 +149,20 @@
           "evidence_id": "claim-3",
           "subject_id": "ev-vmd019",
           "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:85bc25df6171e3dd",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd019",
+          "subject_role": "PRIMARY_SUBJECT"
         }
       ]
     },
     {
       "block_id": "p04-b3",
       "block_type": "PARAGRAPH",
-      "text": "分類特徴だけでは、身体の関節の並びと人物同士の対応づけは残らない。OpenPoseは四肢の位置と向きを運ぶ二次元ベクトル場のPart Affinity Fieldsと貪欲な二部マッチングを組み合わせ、多人数の二次元ポーズを人数に依存せずボトムアップに組み立てる手順へ変えた。部位とPAFを同時に精緻化するのではなくPAFのみを精緻化する選択が、実行速度を2倍にし正解率を約7%押し上げたと原論文の測定は伝える。身体と足部を一体で検出し、速度と部位ごとの精度を保ったまま135キーポイントのオープンソースの体系になった。対象中心の空間状態と対応づけそのものを表現に載せた点が役割であり、分類特徴のままでは行動へ進めない理由が示される。扱いは二次元ポーズの範囲に属し、三次元への持ち上げは上限により除き、速度の基準は2019年当時の計算機による。",
+      "text": "分類特徴だけでは身体関節の並びと人物同士の対応づけは残らない。OpenPoseは四肢の位置と向きを運ぶ二次元ベクトル場のPart Affinity Fieldsと貪欲な二部照合により、多人数の二次元ポーズを人数によらずリアルタイムに組み立てる。部位と場の同時精緻化ではなく場のみの精緻化が実行性能を倍化しつつ精度を約7パーセント押し上げ、身体と足部の統合検出が速度と部品精度を保つこと、135キーポイント体系の公開が著者の主張として記録されている。分類では駆動できない行動側の状態として、対象中心の空間状態と対応づけ自体の表現化を示す exhibits である。二次元姿勢の範囲に留まり、三次元持ち上げは cap により扱わず、実行時間の基線は2019年当時の hardware に結びつけて読む。",
       "attribution_mode": "MIXED",
       "evidence_refs": [
         {
@@ -141,6 +176,13 @@
           "evidence_task_id": "evidence:SP-vision-multimodal-2026:ad9033f18ee4f668",
           "kind": "CLAIM",
           "evidence_id": "claim-2",
+          "subject_id": "ev-vmd020",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:ad9033f18ee4f668",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
           "subject_id": "ev-vmd020",
           "subject_role": "PRIMARY_SUBJECT"
         }
@@ -149,7 +191,7 @@
     {
       "block_id": "p04-b4",
       "block_type": "PARAGRAPH",
-      "text": "対象名だけでは、関係と属性の構造は残らない。Visual Genomeは10万枚を超える画像に、1画像あたり約21の対象・約18の属性・約18の関係、42を超える領域記述・約17のQA対を収め、WordNetのsynsetに対応づけたとされる。関係と属性を一級の要素としてシーングラフに定式化した点が核心であり、検索性能やキャプションの改善に資することが当該論文に記されている。単体の認識から関係を含む場面構造へ表現が移り、領域記述を伴う関係の学習と評価が可能になった。密度の数値は原論文の測定に属する。",
+      "text": "対象名だけでは関係と属性の構造は残らない。Visual Genomeは10万枚を超える画像に、1画像あたり約21の対象と約18の属性と約18の関係、42を超える領域記述と約17の問答対を集め、WordNet synsetへ正準化した。関係と属性を一級ならぬ明示的な構成要素として据え、シーングラフ定式が検索とキャプション生成を改善することが、著者の主張として示されている。クラウドソーシング由来の雑音と正準化の限界が付随し、規模の数値は資料収集時点の条件に結びつけて読む。後の接地データ作法への連なりは次ブロックで切り分ける。",
       "attribution_mode": "MIXED",
       "evidence_refs": [
         {
@@ -163,6 +205,13 @@
           "evidence_task_id": "evidence:SP-vision-multimodal-2026:ab41a7643858ee00",
           "kind": "CLAIM",
           "evidence_id": "claim-2",
+          "subject_id": "ev-vmd021",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:ab41a7643858ee00",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
           "subject_id": "ev-vmd021",
           "subject_role": "PRIMARY_SUBJECT"
         }
@@ -171,7 +220,7 @@
     {
       "block_id": "p04-b5",
       "block_type": "PARAGRAPH",
-      "text": "関係構造の来歴として、Visual Genomeは領域記述データの先行形態にも位置づけられる。後の検出-グラウンディング統一学習（GLIPの語句グラウンディングへの書き直し）が前提にする領域と言語の対応づけの原型を示す点に、ここへ置く理由がある。GoldGの構成の詳細や直接の来歴関係までは主張せず、本節では関係構造の限定事例として扱い、語彙拡張の系統史へは広げない。独立した第三者の再現ではなく原論文の測定として読む。",
+      "text": "関係構造の来歴として、Visual Genomeは領域記述データの先行形態にも位置づけられる。後の検出とグラウンディング（grounding）の統一学習における接地データ作法がこの data regime から降りるという見立ては、本書の比較判断として述べるものであり、資料に裏付けられた直接の因果継承としては扱わない。以後はグラウンディングと記す。GoldG級の組成主張はGLIP側の資料に委ね、本ブロックでは先行形態の位置づけに留める。関係構造ノードと言語対応データ先行の二重役割を保つのが本パッケージの規律である。",
       "attribution_mode": "MIXED",
       "evidence_refs": [
         {
@@ -189,10 +238,10 @@
           "subject_role": "PRIMARY_SUBJECT"
         },
         {
-          "evidence_task_id": "evidence:SP-vision-multimodal-2026:48b74d1180cca336",
-          "kind": "CLAIM",
-          "evidence_id": "claim-1",
-          "subject_id": "ev-vmd047",
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:ab41a7643858ee00",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd021",
           "subject_role": "PRIMARY_SUBJECT"
         }
       ]
@@ -200,7 +249,7 @@
     {
       "block_id": "p04-b6",
       "block_type": "PARAGRAPH",
-      "text": "カメラの内部パラメータも姿勢も未知の画像対から立体を起こせないという欠落に対し、DUSt3Rは、キャリブレーションなし・姿勢なしの画像対からポイントマップ回帰で単眼と両眼の再構成を統一する手順へ変えた。共通座標系への大域整合で多視点を束ね、カメラと深度と対応を下流で回収でき、単眼と多視点の深度と相対姿勢で最先端相当であることが原論文の測定として示されている。標準的なTransformerのエンコーダとデコーダで学習済みモデルを活用する。幾何は処理体系への入力ではなくネットワーク出力の状態に移り、後の言語モデル的融合や行動が前提にできる形になった。",
+      "text": "カメラ内部パラメータも姿勢も未知の画像対から立体を起こせないという欠落に対し、DUSt3Rはキャリブレーション不要かつ姿勢不要の画像対からポイントマップ回帰で再構成する。単眼と両眼の再構成を統一し、多視点では大域位置合わせで共通座標へ載せ、カメラと深度と対応を下流で取り出せる。単眼と多視点の深度および相対姿勢で当時最先端を示すこと、標準Transformerのエンコーダとデコーダに事前学習済み模型を活かすことが、著者の主張として記録されている。較正パイプラインへの入力ではなく、幾何を網の出力状態として得る転換が要点であり、後の融合や身体系への受け渡し exhibits になる。",
       "attribution_mode": "MIXED",
       "evidence_refs": [
         {
@@ -229,7 +278,7 @@
     {
       "block_id": "p04-b7",
       "block_type": "PARAGRAPH",
-      "text": "論文自身の境界として、ポイントマップは不定スケールまでの回帰であり、汎用構成が幾何制約を明示的に強制することはなく、事前知識は幾何整合な学習ポイントマップからのみ来る。スケールの曖昧さと学習済み事前知識への依存が残り、後継は新たな契約を加えないものとして除く。幾何を出力状態として持つ所見が、本節から後の推論や行動への適用拡張の根拠になる。四つの限定事例に上限を保ち、NeRFやSLAM、MVS、3D検出、人体復元、指標の網羅へは広げない。次の計算に十分な表現は何かという問いから見れば、ラベルにない奥行きと姿勢と関係と立体のうち、後の計算が要する最小の空間状態がここで示された。",
+      "text": "論文自身の境界として、ポイントマップは不定スケールまでの回帰であり、汎用構成が幾何制約を明示的に強制することはなく、事前知識は幾何整合な学習ポイントマップからのみ来る。スケール不定と学習事前分布への依存が限界として残り、後継の追加は新しい契約を生まないものとして cap の外に置く。下流の推論や行動への接続は、資料が直接の因果継承を支えるものではなく、本サーベイの編集上の比較判断として明示する。四ノードの上限を守り、NeRFや3DGSやSLAMやMVSや三次元検出や骨格模型やベンチマーク集への拡張は行わない。",
       "attribution_mode": "MIXED",
       "evidence_refs": [
         {
@@ -252,13 +301,20 @@
           "evidence_id": "claim-3",
           "subject_id": "ev-vmd022",
           "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:a6b4065d7ddd17fd",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd022",
+          "subject_role": "PRIMARY_SUBJECT"
         }
       ]
     },
     {
       "block_id": "P04-boundaries",
       "block_type": "CLAIM_BOUNDARY",
-      "text": "本節を読む際の区切りは次の通り。四つの限定事例に上限を保ち、3D再構成史へは広げない。奥行きは相対深度の範囲であり、メートル尺度の主張はしない。速度の基準は報告当時の計算機による。",
+      "text": "四ノードの上限を守り、NeRFや3DGSやSLAMやMVSや三次元検出や骨格模型や評価集への拡張は行わない。相対深度と二次元姿勢の範囲を守り、計量や三次元持ち上げは他資料に委ねる。DUSt3Rの下流接続は編集上の比較判断として明示し、資料由来の直接因果としない。",
       "attribution_mode": "INFERENCE",
       "evidence_refs": [
         {
