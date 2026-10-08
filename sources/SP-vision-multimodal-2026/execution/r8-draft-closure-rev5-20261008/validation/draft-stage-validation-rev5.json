@@ -1,16 +1,19 @@
 {
   "schema_version": "2.0-rc1",
+  "check_id": "CORE_STAGE_CONTRACT",
+  "status": "PASS",
   "issue_id": "SP-vision-multimodal-2026",
   "from_state": "ARCHITECTURE_ESTABLISHED",
   "to_state": "DRAFT_COMPLETE",
-  "checkpoints": [
-    "draft"
-  ],
-  "recorded_at": "2026-10-08T01:41:34Z",
-  "implementation": {
-    "repository_commit_sha": "1bbb86d7ad32508023970dae05f81bc920f207ab",
-    "orchestrator_version": "survey-production-core-v2/0.15-postintegration-transport-thematic"
+  "production_state": {
+    "path": "sources/SP-vision-multimodal-2026/production-state.json",
+    "sha256": "ffb94dfd77f3b5142eb5ee1b86024fed71e4c18bd790a5ab59530395df393539"
   },
+  "production_profile": {
+    "path": "sources/SP-vision-multimodal-2026/production-profile.json",
+    "sha256": "e4d16027d66d379848378031e47198a09f0b27a961e27a0ab250923a07a57444"
+  },
+  "implementation_commit_sha": "1bbb86d7ad32508023970dae05f81bc920f207ab",
   "contract": {
     "pipeline_contract_version": "2.0-rc1",
     "pipeline_contract_sha256": "ee89796245c22072cec98f34931180214a4928c24f399280793cd6420a4c8e71",
@@ -193,18 +196,5 @@
       "sha256": "7afe33fb941ebed02405b9e87a2d7845db557495cd21d993bb22c7d1dbc0a471"
     }
   ],
-  "reviews": [
-    {
-      "check_id": "CORE_STAGE_CONTRACT",
-      "kind": "DETERMINISTIC",
-      "status": "PASS",
-      "executor": "Muse Spark (Work execution role; deterministic tool result, not a Sol/Human decision)",
-      "evidence": "Deterministic drafting-synthesis validation for TS-003 Draft closure revision r8-rev5 (terminology-authority reconciliation + reader-surface normalization from Architecture r8 APPROVED; lifecycle stays DRAFT_COMPLETE): 16 draft-package/result pairs revalidated against unchanged r8 authority (packages re-derived identical, results revised to draft_version fresh-121-r8-rev5) + 8/16 canonical Draft validation PASS + 8/16 edition-local overlay PASS (P04/P05/P06/P07A/P07B/P10/P11/P15 over 35-entry effective map incl. D047->P04) + synthesis input derivation match (overlay-aware) + regenerated synthesis valid (payloads refreshed) + edition-local terminology QA PASS (Pass A/B/C per cumulative map: segmentation, box, hallucination, latent dynamics, encoder/decoder, one-stage/two-stage, feature map, Swin specificity, fine-tuning, post-training, open weights, MoE, dense, network labels, streaming, new §3.10 failures, FINAL effective consumption, J1-J4 + K01-K16 negative fixtures). Machine validation only; differential language review owed.",
-      "result": {
-        "path": "sources/SP-vision-multimodal-2026/execution/r8-draft-closure-rev5-20261008/validation/draft-stage-validation-rev5.json",
-        "sha256": "6452bd6c710811db041eebfda3d51fb49c9a1f521e0ad81264151aeb18a4b8e2"
-      }
-    }
-  ],
-  "summary": "TS-003 Draft closure revision r8-rev5 from Architecture r8 APPROVED (unchanged): terminology authority reconciled (grounding normative, Swin row, §3.10 new failures) + reader-surface normalization across 17 terminology families; VM-D122 excluded; no TeX/PDF; STOP for differential language review"
+  "recorded_at": "2026-10-08T01:41:34Z"
 }

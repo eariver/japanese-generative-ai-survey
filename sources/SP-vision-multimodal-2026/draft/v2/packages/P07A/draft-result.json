@@ -4,7 +4,7 @@
   "research_profile": "THEMATIC",
   "publication_profile": "LONGFORM_SPECIAL",
   "package_id": "P07A",
-  "draft_version": "fresh-121-r8-rev4",
+  "draft_version": "fresh-121-r8-rev5",
   "status": "ESTABLISHED",
   "basis": {
     "draft_package_sha256": "7bc06da25de3835ff81e5e0f8ab1b657e7dad383e0a54df20073276cd00bf250",
@@ -14,7 +14,7 @@
   "runner": {
     "provider": "Muse",
     "model": "Muse Spark (Work execution role; not a Sol/Human decision)",
-    "invocation": "TS-003 Draft closure revision r8-rev4 from Architecture r8 APPROVED (same authority; minimal publication-blocker closure: P06 VM-D065/claim-3 purge, P11 VM-D112 purge, P07B val/test-dev split fix, final two ML 接地 normalizations, adjacent データ実践 cleanup; r8 authority unchanged; no TeX/PDF; DRAFT_COMPLETE held for final differential content review)",
+    "invocation": "TS-003 Draft closure revision r8-rev5 from Architecture r8 APPROVED (same authority; edition-local terminology-authority reconciliation plus reader-surface normalization across segmentation, box, hallucination, latent dynamics, encoder/decoder, detector stage, feature map, attention, tuning, post-training, open weights, MoE, dense, network, streaming and new known-failure families; r8 authority unchanged; no TeX/PDF; DRAFT_COMPLETE held for differential language review)",
     "generated_at": "2026-10-08T00:00:00Z",
     "run_reference": null
   },
@@ -62,7 +62,7 @@
     {
       "block_id": "P07A-B01",
       "block_type": "PARAGRAPH",
-      "text": "画像と言語を結ぶ初期には、画像全体から文を起こす手段自体が欠けていた。Show and TellすなわちNICはCNN符号化器からRNN復号器へ尤度学習で説明文を起こす端到端の構成であり、PascalでBLEU-1が59、従来25、人間約69、Flickr30kで66、SBUで28、COCOでBLEU-4が27.7と伝えられる。コンパクトな視覚表現から生成が成り立つことを示した点が先行事例としての意義である。画像内容の言語化が新たに開かれた。生成側の作り込みは別巻の領域であり、本節では画像と言語の対応の起点としてのみ扱う。",
+      "text": "画像と言語を結ぶ初期には、画像全体から文を起こす手段自体が欠けていた。Show and TellすなわちNICはCNNエンコーダからRNNデコーダへ尤度学習で説明文を起こす端到端の構成であり、PascalでBLEU-1が59、従来25、人間約69、Flickr30kで66、SBUで28、COCOでBLEU-4が27.7と伝えられる。コンパクトな視覚表現から生成が成り立つことを示した点が先行事例としての意義である。画像内容の言語化が新たに開かれた。生成側の作り込みは別巻の領域であり、本節では画像と言語の対応の起点としてのみ扱う。",
       "attribution_mode": "ATTRIBUTED",
       "evidence_refs": [
         {
@@ -77,7 +77,7 @@
     {
       "block_id": "P07A-B02",
       "block_type": "PARAGRAPH",
-      "text": "説明文の生成だけでは、画像理解と推論を分けて測る物差しが足りなかった。VQAは約25万画像、約76万質問、約1000万回答からなるopen-endedの質問応答であり、短答や選択式による自動評価で汎用的な説明より細かな画像理解と込み入った推論を求めた。質問や答えの事前分布だけに頼る近道をあぶり出す評価族の起点になったことが位置づけである。後のVQA v2では同一の質問に外見の近い画像対を添え、正解が異なる相補的な組により、質問や答えの偏りだけでは解けない条件を整えた。すなわち同じ質問と見た目の近い相補的画像と異なる正答の組が偏りを抑え、画像根拠の利用を強く求めるが、言語の事前分布を消し去るものではない。版や区分と答え抽出規則を明示して数値を扱う必要がある。",
+      "text": "説明文の生成だけでは、画像理解と推論を分けて測る指標が足りなかった。VQAは約25万画像、約76万質問、約1000万回答からなるopen-endedの質問応答であり、短答や選択式による自動評価で汎用的な説明より細かな画像理解と込み入った推論を求めた。質問や答えの事前分布だけに頼る近道をあぶり出す評価族の起点になったことが位置づけである。後のVQA v2では同一の質問に外見の近い画像対を添え、正解が異なる相補的な組により、質問や答えの偏りだけでは解けない条件を整えた。すなわち同じ質問と見た目の近い相補的画像と異なる正答の組が偏りを抑え、画像根拠の利用を強く求めるが、言語の事前分布を消し去るものではない。版や区分と答え抽出規則を明示して数値を扱う必要がある。",
       "attribution_mode": "MIXED",
       "evidence_refs": [
         {
@@ -128,7 +128,7 @@
     {
       "block_id": "P07A-B04",
       "block_type": "PARAGRAPH",
-      "text": "整えた資料が前提のままでは、雑音の多い大規模代替文で足りるかが確かめられなかった。ALIGNは10億超の代替文対に最小限の頻度洗浄だけを行い、規模が雑音を補うことを示した。二重符号化器による対照対応づけで表現学習とゼロショット分類、Flickr30KやMSCOCOの検索で交差注意型を上回るとされる。精選を前提としない規模拡大の実践が開かれた。本節では変種としての位置づけに留め、記述は簡潔にする。画像全体と文の意味対応という契約はCLIPと共通し、位置や領域へのグラウンディングとは別の評価で測られる。",
+      "text": "整えた資料が前提のままでは、雑音の多い大規模代替文で足りるかが確かめられなかった。ALIGNは10億超の代替文対に最小限の頻度洗浄だけを行い、規模が雑音を補うことを示した。デュアルエンコーダによる対照対応づけで表現学習とゼロショット分類、Flickr30KやMSCOCOの検索で交差注意型を上回るとされる。精選を前提としない規模拡大の実践が開かれた。本節では変種としての位置づけに留め、記述は簡潔にする。画像全体と文の意味対応という契約はCLIPと共通し、位置や領域へのグラウンディングとは別の評価で測られる。",
       "attribution_mode": "ATTRIBUTED",
       "evidence_refs": [
         {
@@ -186,7 +186,7 @@
     {
       "block_id": "P07A-B06",
       "block_type": "PARAGRAPH",
-      "text": "画像水準の流れは、説明生成から質問応答の評価を経て、固定分類から言語指定できる対応づけへ進み、雑音規模の実践で補強された。共通の論点は次の演算に見合う画像全体の表現は何かであり、文生成か、問い答えか、対照表現かは別の演算に対応する。本節の契約はゼロショット分類と画像文検索のRecall@Kであり、語句グラウンディングや検出のAPとは別の指標で測る。画像文対の大規模契約は、大規模画像テキスト対による教師信号の系譜に位置づけられる。単一構成の勝利を結論とせず、細粒度や数え上げや新規系統課題の弱さを残したままグラウンディング側へ受け渡す。",
+      "text": "画像水準の流れは、説明生成から質問応答の評価を経て、固定分類から言語指定できる対応づけへ進み、雑音規模の実践で補強された。共通の論点は次の演算に見合う画像全体の表現は何かであり、文生成か、問い答えか、対照表現かは別の演算に対応する。本節の契約はゼロショット分類と画像文検索のRecall@Kであり、語句グラウンディングや検出のAPとは別の指標で測る。画像文対の大規模契約は、大規模画像テキスト対による教師信号の系譜に位置づけられる。単一構成の勝利を結論とせず、細粒度や数え上げや新規系統課題の弱さを残したままグラウンディング側の議論へ引き継ぐ。",
       "attribution_mode": "MIXED",
       "evidence_refs": [
         {

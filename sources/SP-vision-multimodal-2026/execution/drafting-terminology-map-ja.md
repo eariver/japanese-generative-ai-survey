@@ -46,6 +46,9 @@ The map therefore functions as a cumulative regression-prevention authority, not
 r3 cumulative update log (2026-10-02, during r3 Pass C, before prose repair):
 `§3.3 added (encoder-目, pipeline-管, 多作物, 汎用手, fusion variants); §3.2 fusion rows refined; terminal state unchanged`.
 
+r5 cumulative update log (2026-10-08, independent-review reconciliation, before rev5 prose repair):
+`§1 grounding row corrected to grounding（グラウンディング）→ 以後はグラウンディング normative (rev3/rev4 reader policy retained; ML/CV/VLM technical 接地 no longer preferred); §2 phrase/GUI grounding rows corrected to 語句グラウンディング / GUI要素のグラウンディング; §2 shifted-window attention (Swin) row added; §2 box avoid extended (境界ボックス), one-stage/two-stage avoid extended (一段化/二段化), dense avoid extended (model-type 密モデル), latent-dynamics avoid extended (潜在動力学); §3.10 added (夢学習, 専門法, オープン帯/開放帯, 流れ記憶); §3.4 grounding-repair row, §0.2 first-use example, §7 P12 note corrected to グラウンディング`.
+
 ### 0.2 Context rule — this is not a blind banned-word list
 
 An Avoid form is blocking only when it substitutes for the identified technical concept or creates the same reader-surface defect.
@@ -61,7 +64,7 @@ Examples:
 
 Every QA scan must therefore classify hits semantically rather than replacing strings globally.
 
-First-use pattern: natural Japanese + term once when useful (for example `接地（grounding）`), then the shortest unambiguous established form. Do not repeat English glosses mechanically.
+First-use pattern: natural Japanese + term once when useful (for example `グラウンディング（grounding）`), then the shortest unambiguous established form. Do not repeat English glosses mechanically.
 
 ---
 
@@ -69,7 +72,7 @@ First-use pattern: natural Japanese + term once when useful (for example `接地
 
 | English / concept | Preferred reader-facing form | Avoid / regression forms | Note |
 |---|---|---|---|
-| grounding | 接地（grounding）→ 以後は接地 | 接地化、grounding と alignment の混用 | 言語概念を位置・領域・座標へ結びつける操作 |
+| grounding | grounding（グラウンディング）→ 以後はグラウンディング | ML/CV/VLM technical senseの接地・接地化、grounding と alignment の混用 | 言語概念を位置・領域・座標へ結びつける操作。rev3/rev4 reader policyを保持する。純粋な座標課題の位置特定は別契約 |
 | alignment | アライメント | 整列化、整合化、接地との混用 | 画像全体とテキストの意味対応づけ。grounding と別契約 |
 | perception | 知覚（perception）→ 以後は知覚 | 知覚化、recognition との混用 | reasoning と対置するときは英語併記可 |
 | reasoning | 推論 | 推論化、知覚との混用 | 考える側 |
@@ -104,7 +107,7 @@ First-use pattern: natural Japanese + term once when useful (for example `接地
 | Computer Use | Computer Use（コンピュータ操作）→ 以後はComputer Use | 計算機利用、電脳使用 |
 | open-vocabulary | オープンボキャブラリー | 開放語彙、開語彙、開かれた語彙、開いた語彙 |
 | referring expression | 指示表現 | 参照表現への機械的寄せ |
-| phrase grounding | フレーズの接地 | 句接地 |
+| phrase grounding | 語句グラウンディング（初出のみ phrase grounding 併記可） | フレーズの接地、句接地、句グラウンディング |
 | REC / OVD / OVS | REC / OVD / OVS（初出のみ説明） | 漢語略称の新造 |
 | zero-shot | ゼロショット | 無学習推論 |
 | prompt / promptable | プロンプト / プロンプトで指示できる | プロンプト可能 |
@@ -122,13 +125,14 @@ First-use pattern: natural Japanese + term once when useful (for example `接地
 | encoder / decoder / backbone | エンコーダ / デコーダ / バックボーン | 符号器、復号器、architecture/component senseのbare 復号、基幹網、technical backbone senseの背骨 |
 | resampler / Q-Former / cross-attention | リサンプラ / Q-Former / cross-attention | 交差注意への機械的漢語化 |
 | attention / window attention / attention map | アテンション / ウィンドウアテンション / アテンションマップ | mechanism名としての注意、窓注意 |
+| shifted-window attention (Swin) | シフトウィンドウアテンション（初出のみ shifted-window attention 併記可）→ 以後はシフトウィンドウアテンション | ずらし窓注意、mechanism名としての窓注意への平坦化 |
 | query / query vector | クエリ / クエリベクトル | Q-Former/Transformer文脈の問い合わせ、問い合わせベクトル |
 | shortcut / shortcut connection | ショートカット接続 | ResNet機構名としての近道 |
-| one-stage / two-stage detector | one-stage / two-stage（初出のみ「1段型/2段型」併記可） | detector architecture名としての一段・二段 |
+| one-stage / two-stage detector | one-stage / two-stage（初出のみ「1段型/2段型」併記可） | detector architecture名としての一段・二段・一段化・二段化 |
 | feature map | 特徴マップ | feature mapを表す特徴量地図、特徴地図 |
 | dual encoder / two-tower | デュアルエンコーダ / two-tower（初出のみ説明） | 二塔、塔をarchitecture名として使うこと |
 | Mixture-of-Experts / MoE | Mixture-of-Experts（MoE）→ 以後はMoE | 混合専門家、専門家混合を固有architecture名の代用にすること |
-| dense model / dense architecture | denseモデル / dense構成（初出のみ説明） | model typeを表す稠密 |
+| dense model / dense architecture | denseモデル / dense構成（初出のみ説明） | model typeを表す稠密・密モデル |
 | model checkpoint | チェックポイント | モデル検査点、検査点 |
 | trainable parameters | 学習可能パラメータ / trainable parameters（初出のみ併記可） | 学習変数 |
 | model/configuration variant | バリアント / 派生モデル（文脈に応じる） | model/configuration senseの変種 |
@@ -145,7 +149,7 @@ First-use pattern: natural Japanese + term once when useful (for example `接地
 | context window / context length | コンテキスト / コンテキスト長 | 文脈長への機械的寄せ |
 | KV cache / memory pressure | KVキャッシュ / メモリ負荷 | 鍵値緩衝 |
 | resolution | 解像度 | 解像化 |
-| box / mask / coordinate | ボックス / マスク / 座標 | technical boxとしての箱・枠、覆面をtechnical termの代用にすること |
+| box / mask / coordinate | ボックス / マスク / 座標 | technical boxとしての箱・枠・境界ボックス、覆面をtechnical termの代用にすること |
 | anchor / NMS / region proposal | アンカー / NMS / 領域提案 | 非極大抑制の毎回展開 |
 | set prediction / dense prediction | 集合予測 / 密な予測 | 集合化 |
 | panoptic / instance / semantic | パノプティック / インスタンス / セマンティック | 汎分割 |
@@ -161,13 +165,13 @@ First-use pattern: natural Japanese + term once when useful (for example `接地
 | timestamp / proactive response | タイムスタンプ / 能動応答 | 先回り化 |
 | omni | オムニ | 全様式 |
 | screenshot | スクリーンショット | 画面撮影化 |
-| GUI element grounding | GUI要素の接地 | 図形界面要素接地化 |
+| GUI element grounding | GUI要素のグラウンディング | GUI要素の接地、図形界面要素接地化 |
 | trajectory | 軌道 | ロボット文脈での無秩序な軌跡との揺れ |
 | planner | プランナ / 計画器（分野で定着している方を選び全巻で揃える） | 文脈を無視した新造語 |
 | RL policy | 方策 / policy（必要なら初出併記） | 一律に日常語「方針」へ落とすこと |
 | embodiment / embodied | エンボディメント / 身体をもつ〜 | 具現化 |
 | cross-embodiment | 異なる機体にまたがる〜（cross-embodiment） | 機体横断化 |
-| latent dynamics | 潜在ダイナミクス | 潜在力学化 |
+| latent dynamics | 潜在ダイナミクス | 潜在力学化、潜在動力学 |
 | simulator | シミュレータ | 模擬器 |
 | action token | 行動トークン | 動作符号化 |
 | open weights | オープンウェイト | 開かれた重み、公開重み化 |
@@ -281,7 +285,7 @@ These items were still present after the Worker r3 PASS_WITH_NOTES and are now p
 | scaffold senseの足場 | scaffold / auxiliary procedure | scaffold（補助的手順） / 補助的手順 | Sol Draft Review r3 |
 | foundation/base/backbone senseの土台（例: 拡散土台、識別土台、学習の土台の名） | foundation model / base model / backbone / base representation | 基盤モデル / 基盤 / バックボーン / 基盤表現を文脈に応じて明示 | Sol Draft Review r3 |
 | 載せ方 / 組み方 / 式と移し をtechnical axis名として使う | tokenization/formulation / architecture / objective / distillation or transfer | 実際の技術軸（トークン化、アーキテクチャ、目的関数、蒸留、転移等）を直接書く | Sol Draft Review r3 |
-| 呼びの到達 / 結びの仕組み | global alignment / grounding transition | アライメント / 接地 / 位置・領域への対応づけを直接書く | Sol Draft Review r3 |
+| 呼びの到達 / 結びの仕組み | global alignment / grounding transition | アライメント / グラウンディング / 位置・領域への対応づけを直接書く | Sol Draft Review r3 |
 | 教師モデルの写しの産物 | teacher-model / pseudo-label dependence | 教師モデルの出力に依存 / 疑似ラベルに依存 / 教師モデル由来を具体化 | Sol Draft Review r3 |
 | streaming senseの流れの契約 / 流れのオムニ | streaming input/processing/deployment | ストリーミング入力 / ストリーミング処理 / ストリーミング対応 | Sol Draft Review r3 |
 | release/availability senseの配り方 / 配りの範囲 | availability / release / deployment scope | 提供形態 / 提供範囲 / 公開形態 / デプロイ形態 | Sol Draft Review r3 |
@@ -442,7 +446,26 @@ Context exceptions:
 - ordinary 「渡す」 is allowed; technical adaptation/transition must name the actual adaptation, fine-tuning, or transfer;
 - punctuation defects are not terminology concepts, but are recorded here because they were introduced by a terminology-only repair and must be regression-checked before publication regeneration.
 
-### 3.10 Regression principle
+### 3.10 Independent-review residual failures — terminology/readability substitutions (rev5 binding)
+
+Independent review found unnatural technical substitutions that survived all prior passes.
+They are terminology/readability repairs only; associated technical claims are unchanged.
+
+| Observed form | Intended concept / function | Preferred repair | First formalized |
+|---|---|---|---|
+| 技術ラベルとしての夢学習（例: 歴史定式の夢学習） | learning inside imagined latent rollouts (World Models / Dreamer relation) | 想像した潜在軌道内での学習 | Independent review (rev5) |
+| 幻の夢（技術的 dream の文学的代用） | model-internal imagined environment | 想像した潜在環境 | Independent review (rev5) |
+| 専門法 | specialist method (comparative class) | 専門手法 | Independent review (rev5) |
+| モデル区分としてのオープン帯 / 開放帯 | open-model group | オープンモデル群 | Independent review (rev5) |
+| 技術区分としての流れ記憶 | streaming-time memory/state management | ストリーミング時のメモリ管理 | Independent review (rev5) |
+
+Context exceptions:
+
+- ordinary literal `夢` (night dream) is unaffected; only the World Models / Dreamer technical label is normalized;
+- ordinary `専門家` (human expert) and `専門家モデル` (domain-specialist model, non-MoE) are unaffected; only architecture-name `混合専門家` uses Mixture-of-Experts（MoE）/ MoE;
+- `開放データ` / `開放コード` as such are normalized to オープンデータ / オープンコード where they name open release artifacts.
+
+### 3.11 Regression principle
 
 Do not “fix” one known form by inventing another metaphor.
 
@@ -554,7 +577,7 @@ Core validator PASSはlanguage PASSではない。
 - P08/P09/P10/P11: repository/software codeを`符号`と書かない。actual encodingの`符号化`とは区別する。
 - P09: `マルチモーダル`, `ポストトレーニング`, `デプロイ`をmapどおり使う。解像度・融合・時刻の三問で整理する。
 - P10: benchmark名とdiagnostic roleを分ける。`幻のふるい`等の比喩で役割を表さない。
-- P12: GUI要素の接地とタスク成功を分ける。
+- P12: GUI要素のグラウンディングとタスク成功を分ける。
 - P13: 機体の運動や制御則の中身に踏み込まない。
 - P14: 四極の分類自体はArchitectureに従うが、`錨`などのeditorial metaphorで接続しない。
 - P15: benchmark catalogueにしない。`幻覚`, `投票の素描`, `二言語の輪切り`, `配りの極`を使わない。source/evaluator roleを明示する。
@@ -566,6 +589,8 @@ Terminal map state:
 `TS-003_TERMINOLOGY_MAP_CUMULATIVE_R9_BINDING`
 
 `KNOWN_FAILURES_THROUGH_SOL_DRAFT_REVIEW_R8_INCORPORATED`
+
+`INDEPENDENT_REVIEW_R5_RECONCILIATION_INCORPORATED_2026-10-08`
 
 `SEMANTIC_QA_REQUIRED`
 
