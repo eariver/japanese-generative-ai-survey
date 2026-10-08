@@ -1,0 +1,108 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-vision-multimodal-2026",
+  "evidence_task_id": "evidence:SP-vision-multimodal-2026:1619d326d81a5223",
+  "basis": {
+    "task_sha256": "7730f5e539554df700815a83a7558a39708acb4894b5db0b329e82c248df3cc1",
+    "screening_acceptance_sha256": "e471c40158c226d150bf18bf68a5da46a8ad8710d5df3d063eab23f32f5863d9",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "ev-vmd012",
+      "canonical_name": "YOLO-World (Cheng et al., 2024)",
+      "entity_type": "MODEL",
+      "organization": null,
+      "canonical_url": "https://arxiv.org/abs/2401.17270"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "ev-vmd012",
+    "artifact_type": "PAPER",
+    "canonical_name": "YOLO-World (Cheng et al., 2024)",
+    "canonical_url": "https://arxiv.org/abs/2401.17270"
+  },
+  "temporal": {
+    "observed_at": "2026-09-30T14:24:47Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2024-01",
+        "subject_id": "ev-vmd012",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2401.17270",
+      "source_class": "PRIMARY_PAPER",
+      "title": "YOLO-World: Real-Time Open-Vocabulary Object Detection (Cheng et al.)",
+      "published_at": "2024-01",
+      "accessed_at": "2026-09-30T14:24:47Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "RepVL-PAN (re-parameterizable vision-language aggregation) + region-text contrastive loss bring open-vocabulary detection into the YOLO operating point; LVIS 35.4 AP at 52 FPS (V100) zero-shot; fine-tuned variants extend to detection and open-vocabulary instance segmentation.",
+      "subject_id": "ev-vmd012",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Full-paper abstract/conclusion; numbers paper-reported."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Stated trade-off: fine-tuning on O365/LVIS-style closed vocabularies can degrade zero-shot generalization (CLIP generalization eroded by 365-category fine-tuning); pre-training with fine-annotated + pseudo-annotated data combination performs better — an X01 data-contract finding.",
+      "subject_id": "ev-vmd012",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Paper's limitation/discussion passages consumed; supports the supervision-contract reading."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "YOLO product-line confusion risk; version-bound claims only; edge-deployment burden noted as motivation, not established result.",
+      "subject_id": "ev-vmd012",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Full body consumed: RepVL-PAN, contrastive loss, LVIS numbers, and fine-tuning-vs-zero-shot trade-off verified.",
+        "subject_ids": [
+          "ev-vmd012"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

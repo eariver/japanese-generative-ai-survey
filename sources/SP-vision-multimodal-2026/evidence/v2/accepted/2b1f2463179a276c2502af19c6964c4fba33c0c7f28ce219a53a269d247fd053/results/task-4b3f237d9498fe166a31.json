@@ -1,0 +1,163 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-vision-multimodal-2026",
+  "evidence_task_id": "evidence:SP-vision-multimodal-2026:5261f13662aabd9b",
+  "basis": {
+    "task_sha256": "383ed4d7266d3cd9eb10e1da8d335c3905ad144581d1a32fcf82e8fb888a3d45",
+    "screening_acceptance_sha256": "e471c40158c226d150bf18bf68a5da46a8ad8710d5df3d063eab23f32f5863d9",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "ev-vmd065",
+      "canonical_name": "Qwen3-VL (Qwen Team, 2025)",
+      "entity_type": "MODEL_FAMILY",
+      "organization": "Alibaba Qwen",
+      "canonical_url": "https://arxiv.org/abs/2511.21631"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "ev-vmd065",
+    "artifact_type": "PAPER",
+    "canonical_name": "Qwen3-VL (Qwen Team, 2025)",
+    "canonical_url": "https://arxiv.org/abs/2511.21631"
+  },
+  "temporal": {
+    "observed_at": "2026-09-30T14:24:47Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2025-11",
+        "subject_id": "ev-vmd065",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2511.21631",
+      "source_class": "PRIMARY_PAPER",
+      "title": "Qwen3-VL Technical Report (Bai et al.)",
+      "published_at": "2025-11",
+      "accessed_at": "2026-09-30T14:24:47Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Three upgrades: interleaved-MRoPE (spatial-temporal modeling), DeepStack multi-level ViT features for tighter VL alignment, text-based time alignment evolving T-RoPE to explicit textual timestamps for precise temporal grounding; 256K native interleaved context (books, hours-long video, full recall, second-level indexing); dense 2B-32B + MoE 30B-A3B/235B-A22B; Instruct + Thinking editions.",
+      "subject_id": "ev-vmd065",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Qwen3-VL technical report body (interleaved-MRoPE, DeepStack, text-timestamp alignment sections) consumed from complete arXiv HTML; architecture claims are report-stated, author/developer self-reported numbers quarantined."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Three pillars: stronger pure-text understanding (beats text-only backbones in cases); 256K long-context retention/retrieval/cross-referencing; leading MMMU/visual-math reasoning; sqrt-reweighting protects text while boosting multimodal.",
+      "subject_id": "ev-vmd065",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Report pillars section consumed; text-retention and reasoning claims are author/developer self-reported, not independent fact."
+    },
+    {
+      "statement_id": "claim-3",
+      "text": "Vision-to-LLM projection uses a two-layer MLP merger compressing 2x2 visual features into one visual token matched to the LLM hidden size; DeepStack adds dedicated merger modules projecting features from three ViT levels into visual tokens added via residual connections to the first three LLM layers with no extra context length. The vision encoder is SigLIP-2 (SO-400M default; Large-300M for 2B/4B) with dynamic native-resolution input, 2D-RoPE and size-interpolated absolute embeddings; grounding coordinates are normalized to [0,1000].",
+      "subject_id": "ev-vmd065",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "arXiv:2511.21631v2 §2 Model Architecture (Vision Encoder + MLP-based Vision-Language Merger) + §2.2 DeepStack + Fig.1 + §3.2.4 grounding coordinates."
+    },
+    {
+      "statement_id": "claim-4",
+      "text": "Video time is encoded as explicit textual timestamp tokens prefixing each temporal patch (e.g. <3.0 seconds>); training uses both seconds and HMS (hours:minutes:seconds) formats so the model reads diverse timecodes. This replaces Qwen2.5-VL absolute-time positional alignment, avoiding large sparse temporal position IDs on long video and heavy uniform multi-fps sampling, at the cost of a modest context-length increase; it targets video grounding and dense captioning.",
+      "subject_id": "ev-vmd065",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "arXiv:2511.21631v2 §2.3 Video Timestamp."
+    },
+    {
+      "statement_id": "claim-5",
+      "text": "Pre-training runs four stages: S0 trains only the merger on ~67B tokens at 8,192 length with encoder and LLM frozen; S1 full-parameter joint training on ~1T tokens at 8,192; S2 long-context training on ~1T tokens at 32,768 with more video/agent data; S3 ultra-long adaptation on 100B tokens at 262,144 focused on long video/document tasks. Text-only data is mixed throughout to preserve language ability; per-token square-root-normalized loss balances text and multimodal contributions.",
+      "subject_id": "ev-vmd065",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "arXiv:2511.21631v2 §3.1 Training Recipe + Table 1 (S0-S3 budgets/lengths) + Intro square-root loss note."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "All benchmark claims are author/developer self-reported measurements (G05); token/config figures config-bound (CV2-DM-020); independent reproduction pending; repo commit binding at later stages.",
+      "subject_id": "ev-vmd065",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Complete report body consumed via arXiv HTML (134KB text): abstract, three-upgrade architecture sections (interleaved-MRoPE, DeepStack multi-level ViT features, text-timestamp video alignment), three-pillar results, sqrt-reweighting recipe, 256K-context claims verified as first-party report statements with role caps; no repository surface facts retained in this paper-bound card.",
+        "subject_ids": [
+          "ev-vmd065"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "author-claim quarantine",
+        "status": "VERIFIED",
+        "finding": "Author/developer self-reported claims isolated with explicit attribution and role caps; no independent-evaluation inference performed.",
+        "subject_ids": [
+          "ev-vmd065"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "config-bound token claims",
+        "status": "VERIFIED",
+        "finding": "Token/config figures recorded as config-bound author/developer self-reported claims per CV2-DM-020; no cross-config tabulation.",
+        "subject_ids": [
+          "ev-vmd065"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

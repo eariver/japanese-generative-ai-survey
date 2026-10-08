@@ -6,10 +6,10 @@
   "status": "PROPOSED",
   "basis": {
     "production_profile_sha256": "e4d16027d66d379848378031e47198a09f0b27a961e27a0ab250923a07a57444",
-    "profile_completeness_sha256": "a547545cd9bb0e2888d88cdac76d5480728e12b50e40d4618b25cad046dc1565",
-    "materiality_ledger_sha256": "24db9d4929475c56ea10398ffb9be51b00b2cd81aaa42a3336f96c22d1cc19f3",
-    "candidate_matrix_sha256": "6d714c45e02899168933360bd973e8d5b1e1cddafe80aef5b2b0b27c31b8a6a4",
-    "candidate_selection_sha256": "facf3d5c24a40fbc3ac7766397569c85915b927aa049005436dc4a6de3522198"
+    "profile_completeness_sha256": "6be67ff48cf57583268c221ed74e138d012d29fe5c0cf51ee07c53480b3800ff",
+    "materiality_ledger_sha256": "1b5ccfc73c507255f916d51cb9b9b7170b903d5ba8ce8d0be96b49f6a45c160d",
+    "candidate_matrix_sha256": "0d01121fec340f7cc5757bef8c3759115e29ebfd194611e632f86fa6a2a86b74",
+    "candidate_selection_sha256": "bfb187084dad88a7269588894d320e6c58612ba22044d38794ba3e98c917526d"
   },
   "editorial_thesis": "TS-003 completes the three-volume arc — TS-001 computes intelligence, TS-002 generates the world, TS-003 perceives, grounds, reasons about, predicts and acts in it — by reconstructing partially independent technical lineages that converge late, organized as interacting problem layers (representation, recognition, localization/structure, language alignment, grounding, fusion, temporal/spatial state, reasoning, action/prediction) rather than a single model chronology. The cross-cutting test throughout is what representation of the world is sufficient for the next computation: what each stage preserves, discards, localizes, tokenizes, grounds, reasons over, predicts or acts upon.",
   "architecture_goals": [
@@ -84,16 +84,23 @@
         "candidate:SP-vision-multimodal-2026:c7b7f6abc8a242d2",
         "candidate:SP-vision-multimodal-2026:f07007f4cf1ff207",
         "candidate:SP-vision-multimodal-2026:73b035353dec1954",
-        "candidate:SP-vision-multimodal-2026:0491441302a2203a"
+        "candidate:SP-vision-multimodal-2026:0491441302a2203a",
+        "candidate:SP-vision-multimodal-2026:6018779ae64eed93",
+        "candidate:SP-vision-multimodal-2026:c7fd3834cd4f0ee2"
       ],
       "supporting_candidate_ids": [
         "candidate:SP-vision-multimodal-2026:d48ed3892c125e6e",
-        "candidate:SP-vision-multimodal-2026:6aa553442c44f66f"
+        "candidate:SP-vision-multimodal-2026:6aa553442c44f66f",
+        "candidate:SP-vision-multimodal-2026:d277a60ff2531b80"
       ],
       "must_cover_requirements": [
         "VM-O02 lineage complete incl. DINO-name disambiguation",
         "Anchors/NMS read as fossilized machinery DETR removes",
-        "X02 box in/out contracts explicit"
+        "X02 box in/out contracts explicit",
+        "Deformable DETR bridge: multi-scale sparse deformable attention with reference-point sampling; faster convergence and small-object repair (transition node; not a general deformable-attention survey)",
+        "DAB-DETR bridge: dynamic anchor-box queries with layer-by-layer updates and explicit positional priors (brief supporting treatment; feeds DINO anchor-query formulation)",
+        "DN-DETR bridge: query denoising training against bipartite-matching instability (transition node; not diffusion denoising)",
+        "DINO as convergence of DETR-successor techniques (DN-style denoising improved, DAB-style dynamic anchors, deformable-style attention/query selection); parallel/convergent branches, not a one-hop vanilla-DETR succession"
       ],
       "boundaries": [
         "One-stage history not reduced to one product family; version-bound YOLO claims only",
@@ -106,7 +113,11 @@
         "YOLO product-line confusion risk; version-bound claims only; edge-deployment burden noted as motivation, not established result.",
         "Default-box tiling vs receptive-field alignment left as future work by the paper itself; thin treatment per lineage-completeness role.",
         "Loss-centric contribution; architecture claims require detector-side sources; thin treatment per role.",
-        "Matching cost (assignment) vs matched-pair training loss kept distinct; auxiliary decoder losses are standard-recipe, never architecture-mandatory."
+        "Matching cost (assignment) vs matched-pair training loss kept distinct; auxiliary decoder losses are standard-recipe, never architecture-mandatory.",
+        "Single-scale vs multi-scale variant scope; two-stage query-selection and iterative refinement are optional extensions; FPN-general survey stays outside this bridge role.",
+        "Single-scale DETR-baseline scope; Anchor/Conditional DETR taxonomy stays outside; brief supporting treatment only.",
+        "Uniform-distribution noise sampling only; query-denoising training, not diffusion-model denoising; transition-node treatment only.",
+        "DETR-successor branches are parallel/convergent (deformable attention, dynamic anchors, denoising training), not a single strictly linear genealogy; DINO integrates them."
       ],
       "drafting_order": 2,
       "profile_extensions": {},
@@ -121,11 +132,14 @@
           ],
           "TRANSITION_NODE_TREATMENT": [
             "VM-D005",
-            "VM-D007"
+            "VM-D007",
+            "VM-D123",
+            "VM-D125"
           ],
           "BRIEF_CONTEXT_OR_AUTHORITY": [
             "VM-D008",
-            "VM-D009"
+            "VM-D009",
+            "VM-D124"
           ]
         }
       }

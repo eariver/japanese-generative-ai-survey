@@ -1,0 +1,33 @@
+{
+  "schema_version": "1.0",
+  "record_kind": "corrective-single-stage-reset",
+  "issue_id": "SP-vision-multimodal-2026",
+  "cause": "phase_b carry-basis error: oldest 122-acceptance used instead of current; void acceptance 8769eab4 carried D122 KEEP instead of DROP",
+  "core_machinery": [
+    "survey_human_gate_v2._revised_state",
+    "survey_human_gate_v2._superseded_paths_for_regeneration",
+    "survey_production_v2.write_json",
+    "survey_agent_control_v2.validate_agent_state"
+  ],
+  "human_gate_decision_functions_called": [],
+  "gate_context": "ARCHITECTURE_REVIEW",
+  "regeneration_boundary": "DISCOVERY_COLLECTED",
+  "prior_state": {
+    "sha256": "048ab515b49bb67e0a32f0232c1df2c482ee7d75870e3dc92ecb660b905f0117",
+    "lifecycle_state": "CANDIDATES_NORMALIZED"
+  },
+  "new_state": {
+    "sha256": "ee0ecd637242281f5e3221acd9ce9f14a6e1b4beb14c4ce93c2479f1ed35c426",
+    "lifecycle_state": "DISCOVERY_COLLECTED"
+  },
+  "removed_paths": [
+    "sources/SP-vision-multimodal-2026/orchestration/v2/checkpoints/DISCOVERY_COLLECTED.json",
+    "sources/SP-vision-multimodal-2026/execution/p02-detr-bridge-intake-r9-20261008/screening-package-125 (void phase_b output)",
+    "sources/SP-vision-multimodal-2026/execution/p02-detr-bridge-intake-r9-20261008/screening-results-125 (void phase_b output)",
+    "sources/SP-vision-multimodal-2026/screening/v2/accepted/8769eab491f44f3529433a3ade2507ac16ac63199f9d80187f52e5e794a44303 (void phase_b output)",
+    "sources/SP-vision-multimodal-2026/execution/p02-detr-bridge-intake-r9-20261008/validation/screening-stage-validation-125.json (void phase_b output)",
+    "sources/SP-vision-multimodal-2026/execution/p02-detr-bridge-intake-r9-20261008/validation/screening-stage-reviews-125.json (void phase_b output)"
+  ],
+  "recorded_at": "2026-10-08T13:58:23Z",
+  "executor": "Muse Spark (Work execution role; corrective reset, not a Human/Sol decision)"
+}
