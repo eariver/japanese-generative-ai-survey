@@ -19,15 +19,28 @@ Started: `2026-10-09T16:18:28Z`
 ## Actions actually performed
 
 - Initialized the canonical edition-local execution record tree.
-- Replace/add concise stage-grouped bullets here as material production actions occur.
+- Canonical `INITIALIZE_WEEKLY` request `c32e778508b914a040acb09bf099d545b68053ca` accepted by the default-branch operator bridge, run https://github.com/eariver/japanese-generative-ai-survey/actions/runs/37958279393 (`completed/success`).
+- Core generated the canonical Production Profile, State and execution records at HEAD `4096af94e39b7c243daeeee7b4f53a27fb54a66e`.
+- Confirmed time window exactly 2026-09-25 18:00 through 2026-10-02 18:00 EDT (end-exclusive).
+- Created edition-local mandatory Grok task and `AWAITING_GROK` manifest; source task SHA `89c58553b4c337f297a92d4ba9e929922f0fec1d5ac64b79b4a5cb647e881917`.
+- Prepared first-party discovery leads under `execution/source-intake/w40-first-party-scout-r0.md`, not accepted as complete Source Intake.
+- Verified Drive run folder `Grok_X_SourseIntake/Weekly/2026-W40/weekly-x-2026-W40` and native Google Doc `grok-task.md` with paragraph text/position mapping to the committed Markdown source.
+- Preserved all W39 carry-over obligations as open W40 recheck leads; no Evidence or Selection decision made.
 
 ## External handoff
 
-- None recorded yet. When Grok/X is used, record only the exact Drive task-file path/reference, returned result reference, imported Raw authority and disposition.
+- Exact task reference: `Grok_X_SourseIntake/Weekly/2026-W40/weekly-x-2026-W40/grok-task.md`.
+- Drive document: https://docs.google.com/document/d/1bdv10xJgmqgqmT9fTvBEa7hqT9rINz93vBcoRnjiSvo/edit?usp=drivesdk.
+- Expected result file: `Grok_X_SourseIntake/Weekly/2026-W40/weekly-x-2026-W40/grok-x-result.md`.
+- Task source: `sources/2026-W40/external/x/weekly-x-2026-W40/grok-task.md` (SHA-256 `89c58553b4c337f297a92d4ba9e929922f0fec1d5ac64b79b4a5cb647e881917`).
+- Pending Human-mediated task-path delivery to Grok. No Grok execution/result/import or Discovery disposition has occurred.
+- Native Google Doc represents the exact task text structurally, but it is not a raw Markdown binary. Do not claim byte identity for Drive storage.
 
 ## Deviations / failures
 
-- None recorded yet. Classify material failures as `EDITION_LOCAL`, `TRANSIENT_EXECUTION`, or `SHARED_CORE_DEFECT`.
+- `EDITION_LOCAL / TRANSPORT_FORMAT`: Direct raw Markdown upload through available Drive connector was unavailable; source-matched text was placed in a native Google Doc. This does not alter repository task SHA or Core contracts.
+- `TRANSIENT_EXECUTION / NONE`: Initial Core operator bridge completed successfully. 
+- No shared-Core modification performed.
 
 ## End state
 
