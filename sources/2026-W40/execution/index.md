@@ -51,6 +51,7 @@ This is the current human-readable navigation record for the edition. Machine li
 - Gap-fill priorities: FLUX 3 Image (Oct 1), Clef/Strands decision models (Oct 1), NVIDIA Open Agent Safety Platform (Sep 28), Sonnet 5.5 (Sep 28); independent primary URLs recorded in the reconciliation JSON.
 - Sol claim-level primary-source register r1: `execution/source-intake/w40-sol-source-intake-register-r1.json`, 21 leads (17 ordinary / 1 pre-window / 1 X-only unconfirmed / 2 W39 carryover HOLD); not exact source-page Raw or accepted Discovery.
 - Targeted negative-space gap-fill r2: `execution/source-intake/w40-targeted-lane-expansion-r2.json` (audio, video, agent observability, embedded tooling, Oct 2 hardware boundary).
+- Muse r3 (2026-10-09Z): 24 primary Raw files + collector-run/raw-index (schema PASS) under `collectors/primary/runs/20261009T171300Z-muse-r1/`; `discovery/discovery-v2.jsonl` 29 records (schema 29/29 PASS); X manifest COMPLETE/PARTIAL binding `w40-grok-x-ledger-20261009`; acceptance structural proposal only (`execution/validation/proposed-not-accepted/`, PROPOSED_NOT_ACCEPTED, validated); preflight log `execution/validation/muse-r3-deterministic-preflight-20261009.log`; handoff `execution/SOL_DISCOVERY_COMPLETENESS_REVIEW_HANDOFF.md`. State remains `ISSUE_INITIALIZED`; no Screening/Evidence/Selection/Architecture.
 - Conventional full collector Raw, exact source admission and final independent Discovery-completeness review remain pending.
 - This is a retrospective compilation of a completed W40 window; do not mix later W41 announcements into ordinary-window scope.
 
@@ -73,6 +74,7 @@ This is the current human-readable navigation record for the edition. Machine li
 ## Sessions
 
 - `sessions/sol-w40-initial-20261010.md`
+- `sessions/muse-w40-source-intake-20261009.md` (Muse bounded Source Intake through Sol Discovery Review prep; stops at completeness review)
 
 ## Final disposition
 
