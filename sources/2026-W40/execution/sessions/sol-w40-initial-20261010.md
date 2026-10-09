@@ -26,6 +26,8 @@ Started: `2026-10-09T16:18:28Z`
 - Prepared first-party discovery leads under `execution/source-intake/w40-first-party-scout-r0.md`, not accepted as complete Source Intake.
 - Verified Drive run folder `Grok_X_SourseIntake/Weekly/2026-W40/weekly-x-2026-W40` and native Google Doc `grok-task.md` with paragraph text/position mapping to the committed Markdown source.
 - Preserved all W39 carry-over obligations as open W40 recheck leads; no Evidence or Selection decision made.
+- Retrospective Sol primary issuer/author research registered 21 bounded lead records (17 in-window), with source URLs, temporal classes, exact claim boundaries, and hold reasons. This register is not a byte-identical original-web snapshot.
+- Gap-filling additional weak lanes (speech/audio, visual AI serving, agent trace, embedded design, local hardware) identified from issuer documents, with reproducibility/rollout uncertainties noted.
 
 ## External handoff
 

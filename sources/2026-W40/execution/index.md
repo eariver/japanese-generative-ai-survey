@@ -49,7 +49,9 @@ This is the current human-readable navigation record for the edition. Machine li
 - Grok Raw imported, but formal X result disposition / Discovery binding remains pending a sound auditable coverage basis.
 - Daily X source supplements (09-27, 09-28, 09-29, 09-30, 10-02) independently reviewed for leads; missing 10-01/10-03 interval reports do not imply quiet periods.
 - Gap-fill priorities: FLUX 3 Image (Oct 1), Clef/Strands decision models (Oct 1), NVIDIA Open Agent Safety Platform (Sep 28), Sonnet 5.5 (Sep 28); independent primary URLs recorded in the reconciliation JSON.
-- Conventional collector Raw, full Discovery and negative-space/sufficiency review remain pending.
+- Sol claim-level primary-source register r1: `execution/source-intake/w40-sol-source-intake-register-r1.json`, 21 leads (17 ordinary / 1 pre-window / 1 X-only unconfirmed / 2 W39 carryover HOLD); not exact source-page Raw or accepted Discovery.
+- Targeted negative-space gap-fill r2: `execution/source-intake/w40-targeted-lane-expansion-r2.json` (audio, video, agent observability, embedded tooling, Oct 2 hardware boundary).
+- Conventional full collector Raw, exact source admission and final independent Discovery-completeness review remain pending.
 - This is a retrospective compilation of a completed W40 window; do not mix later W41 announcements into ordinary-window scope.
 
 ## Deviations
