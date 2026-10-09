@@ -38,13 +38,18 @@ This is the current human-readable navigation record for the edition. Machine li
 - Repository task: `sources/2026-W40/external/x/weekly-x-2026-W40/grok-task.md` (SHA-256 `89c58553b4c337f297a92d4ba9e929922f0fec1d5ac64b79b4a5cb647e881917`)
 - X intake manifest: `sources/2026-W40/external/x/x-source-intake-v2.json` (`AWAITING_GROK`)
 - Drive task representation: native Google Doc named `grok-task.md`; readback paragraph content/index positions match the GitHub Markdown source text. Native binary identity is not asserted.
-- Latest result disposition: `PENDING`; no Grok result has been imported. Source Intake / Discovery acceptance remain incomplete.
+- Latest result disposition: `RAW_RECEIVED_UNALTERED / COMPLETENESS_NOT_ACCEPTED`; source file `external/x/weekly-x-2026-W40/raw/grok-x-result.md` (20,477 bytes; SHA-256 `10b3d7735befa1ec435462aa5254cb45b76b3d59d6f4fca0e15fc54db0dca79f`).
+- Receipt: `execution/source-intake/w40-grok-dailyx-reconciliation-r0.json`; editorial audit: `execution/source-intake/w40-grok-dailyx-review-r0.md`. 4 verifiable X direct post URLs versus claimed >25; full X lane coverage not independently accepted.
+- X manifest currently `AWAITING_GROK` (result=null) deliberately, pending accepted W40 Discovery mapping/completeness disposition. This does not imply no Grok Raw was imported.
 
 ## Source Intake progress
 
 - Preliminary first-party lead list: `execution/source-intake/w40-first-party-scout-r0.md`; reconnaissance only, not accepted Evidence or complete discovery.
 - W39 two HOLD candidates must receive documented W40 rechecks. No promotion without new primary authority.
-- Conventional collector Raw, Grok imported Raw, complete Discovery and negative-space/sufficiency review are pending.
+- Grok Raw imported, but formal X result disposition / Discovery binding remains pending a sound auditable coverage basis.
+- Daily X source supplements (09-27, 09-28, 09-29, 09-30, 10-02) independently reviewed for leads; missing 10-01/10-03 interval reports do not imply quiet periods.
+- Gap-fill priorities: FLUX 3 Image (Oct 1), Clef/Strands decision models (Oct 1), NVIDIA Open Agent Safety Platform (Sep 28), Sonnet 5.5 (Sep 28); independent primary URLs recorded in the reconciliation JSON.
+- Conventional collector Raw, full Discovery and negative-space/sufficiency review remain pending.
 - This is a retrospective compilation of a completed W40 window; do not mix later W41 announcements into ordinary-window scope.
 
 ## Deviations

@@ -33,13 +33,17 @@ Started: `2026-10-09T16:18:28Z`
 - Drive document: https://docs.google.com/document/d/1bdv10xJgmqgqmT9fTvBEa7hqT9rINz93vBcoRnjiSvo/edit?usp=drivesdk.
 - Expected result file: `Grok_X_SourseIntake/Weekly/2026-W40/weekly-x-2026-W40/grok-x-result.md`.
 - Task source: `sources/2026-W40/external/x/weekly-x-2026-W40/grok-task.md` (SHA-256 `89c58553b4c337f297a92d4ba9e929922f0fec1d5ac64b79b4a5cb647e881917`).
-- Pending Human-mediated task-path delivery to Grok. No Grok execution/result/import or Discovery disposition has occurred.
+- Grok executed the task; returned `grok-x-result.md` in the specified Drive folder. Exact raw bytes (20,477B, SHA-256 `10b3d7735befa1ec435462aa5254cb45b76b3d59d6f4fca0e15fc54db0dca79f`) imported to `sources/2026-W40/external/x/weekly-x-2026-W40/raw/grok-x-result.md` without alteration.
+- Import observed and technical triage saved under `execution/source-intake/w40-grok-dailyx-review-r0.md` and `...reconciliation-r0.json`.
+- Grok Raw contains 10 candidate rows and 4 auditable direct status URLs against a >25 URL self-report; completeness and definitive Discovery disposition are **not** accepted. No artificial positive X status or fake URL is recorded.
 - Native Google Doc represents the exact task text structurally, but it is not a raw Markdown binary. Do not claim byte identity for Drive storage.
 
 ## Deviations / failures
 
 - `EDITION_LOCAL / TRANSPORT_FORMAT`: Direct raw Markdown upload through available Drive connector was unavailable; source-matched text was placed in a native Google Doc. This does not alter repository task SHA or Core contracts.
 - `TRANSIENT_EXECUTION / NONE`: Initial Core operator bridge completed successfully. 
+- `EDITION_LOCAL / SOURCE_INTAKE_QUALITY`: Grok self-reported >25 ordinary X URLs but only 4 were in delivered Raw text. Daily X exposes omitted material first-party candidates; bounded gap-fill and per-status audit required.
+- `EDITION_LOCAL / DAILY_X_TEMPORAL_COVERAGE`: 09-27/28/29/30 and 10-02 reports cover five daily slices. Reports ending 10-01 and 10-03 07:00 JST absent, and 09-26 ends at the W40 start boundary. Do not infer those periods were quiet.
 - No shared-Core modification performed.
 
 ## End state
