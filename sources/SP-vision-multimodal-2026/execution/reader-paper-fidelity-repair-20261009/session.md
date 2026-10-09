@@ -81,3 +81,42 @@ Prior R02/R04/R05: `PASS / CLOSED` (preserved, non-regression verified).
 `INDEPENDENT_DIFFERENTIAL_REVIEW_PENDING` / `PUBLICATION_CANDIDATE_HOLD`
 
 Only the new edition-local staging directory is committed (normal commit, non-force push). STOP.
+
+## VF-01 / VF-02 QA Provenance Closure (2026-10-10)
+
+Prior sections above are preserved unchanged. This section records QA evidence closure only:
+no body edit, no PDF rewrite, no Core change. Fixed PDF re-verified at start AND end
+(`b2de8449…`, 708782 bytes, 39 pages); `main.tex`/`references.bib`/`jgaisurvey.sty` unchanged.
+
+### Work performed
+
+1. Adopted independent-audit verdict `STAGED_TECHNICAL_FIDELITY_VERIFICATION_INCOMPLETE`
+   (PR-01/02/03 `TECHNICAL_CONTENT_ACCEPTED`; remaining VF-01/VF-02) as Sol.
+2. Extended `validate_paper_fidelity_repair.py`: frozen PDF authority pins asserted against
+   real-file computation (FAIL on any byte change); input SHAs + extraction hashes recorded in
+   `pdf-qa.json`; mechanical preflight vs human observation split (other pages `NOT_REVIEWED`).
+3. Regenerated `qa-p05-05.png` / `qa-p31-31.png` from the fixed PDF bytes (byte-identical,
+   `40a3a81d…` / `36735c34…`); recorded renderer `poppler pdftoppm 26.01.0` + options.
+4. Ran validator — PASS: refreshed `pdf-qa.json`, `citation-evidence-check.json`, `text-diff.txt`
+   (content results unchanged) and wrote `pdf-text-verification.json` (39-page extraction,
+   full-text SHA `e2d09fa3…`), `visual-source-manifest.json`, `qa-provenance.json`.
+5. Captured existing build evidence (`main.log` `57ab878e…`, `main.bbl` `3382f45e…`, 23:25 JST,
+   LuaHBTeX 1.24.0 / Biber 2.22 / 124 citekeys / 0 warnings) and ran an isolated
+   `REPRODUCTION_RUN` (`/tmp/opencode/repro-paper-fidelity`, same input SHAs): 39 pages,
+   708782 bytes, identical BBL, byte-identical extracted text and p05/p31 renders; PDF bytes
+   differ only by timestamps. Recorded in `build-reproduction-record.json`; formal `main.pdf`
+   NOT overwritten; existing vs reproduction evidence kept separate.
+6. Human-reviewed the two corrected-page images (p.5 PR-01, p.31 PR-02/03): corrected sentences
+   legible, no tofu/clipping/overflow/heading/blank defects. No full-39-page review claimed.
+7. Appended this section + the `sol-decision-record.md` closure section.
+
+### Invariants re-verified
+
+- Fixed PDF bytes identical (`b2de8449…`); body sources untouched; prior R02/R04/R05 staging,
+  canonical, Architecture/Evidence/Draft, checkpoints, gates, Production State, Core v2: all unchanged.
+- QA-only diff confined to the new staging directory; no fabricated PASS (all values computed).
+
+### Closure terminal
+
+`VF_01_VF_02_EVIDENCE_READY` / `PAPER_CONTENT_UNCHANGED` / `PDF_BINARY_UNCHANGED` /
+`CORE_V2_UNCHANGED` / `INDEPENDENT_QA_CLOSURE_REVIEW_PENDING` / `PUBLICATION_CANDIDATE_HOLD`

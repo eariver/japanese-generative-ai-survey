@@ -4,10 +4,14 @@
 Basis (read-only): prior R02-01-final staging main.tex.
 Subject: new staging main.tex / main.pdf.
 Writes ONLY inside the new staging directory:
-  text-diff.txt, citation-evidence-check.json, pdf-qa.json
+  text-diff.txt, citation-evidence-check.json, pdf-qa.json,
+  pdf-text-verification.json, visual-source-manifest.json, qa-provenance.json
 Fails closed on any violation, including R02/R04/R05 regression.
+VF-01/VF-02 closure: the fixed PDF's SHA-256/size/pages are computed from the
+real file and asserted against the frozen authority pins; QA image bytes are
+bound to the exact source PDF bytes. Mechanical preflight and human visual
+observation are recorded separately (non-inspected pages: NOT_REVIEWED).
 """
-
 import difflib
 import hashlib
 import json
@@ -22,6 +26,12 @@ BASIS_BIB = BASIS / "references.bib"
 BASIS_BBL = BASIS / "main.bbl"
 BASIS_PDF = BASIS / "main.pdf"
 STAGING = REPO / "sources/SP-vision-multimodal-2026/execution/reader-paper-fidelity-repair-20261009"
+
+# Frozen fixed-PDF authority (VF-01). Computed from the real file, asserted
+# here; any byte change FAILs the QA instead of being re-pinned.
+EXPECTED_PDF_SHA256 = "b2de84493f2215e26d16e569498c5f4b6476ebc314230cbb4e01540a72742093"
+EXPECTED_PDF_BYTES = 708782
+EXPECTED_PDF_PAGES = 39
 
 
 def sha256(p: Path) -> str:
@@ -178,6 +188,12 @@ def main() -> int:
         errors.append(f"citation-structure: {cite_check}")
 
     # 7. PDF QA (all pages preflight; corrected pages get visual QA separately).
+    # VF-01: bind QA to the exact PDF bytes (computed, never hard-coded PASS).
+    pdf_path = STAGING / "main.pdf"
+    pdf_actual_sha = sha256(pdf_path)
+    pdf_actual_bytes = pdf_path.stat().st_size
+    if pdf_actual_sha != EXPECTED_PDF_SHA256 or pdf_actual_bytes != EXPECTED_PDF_BYTES:
+        errors.append(f"fixed-pdf-authority: sha={pdf_actual_sha} bytes={pdf_actual_bytes}")
     log = (STAGING / "main.log").read_text(encoding="utf-8", errors="replace")
     basis_pages = int(re.search(r"Pages:\s+(\d+)",
                                 subprocess.run(["pdfinfo", str(BASIS_PDF)],
@@ -191,6 +207,19 @@ def main() -> int:
     # Two-column PDF extraction inserts spaces/line-breaks inside CJK phrases
     # (e.g. '300 エポック', 'yes/no 形式'); normalize whitespace for phrase checks.
     staged_norm = re.sub(r"\s+", "", staged_text)
+    # VF-02 extraction evidence: full-text bytes hash (raw + normalized).
+    full_raw = subprocess.run(["pdftotext", str(STAGING / "main.pdf"), "-"],
+                              capture_output=True, check=True).stdout
+    full_norm = re.sub(rb"\s+", b"", full_raw)
+    # VF-01/VF-02 provenance inputs (all computed from real files).
+    input_shas = {
+        "main_tex_sha256": sha256(STAGING / "main.tex"),
+        "references_bib_sha256": sha256(STAGING / "references.bib"),
+        "jgaisurvey_sty_sha256": sha256(STAGING / "jgaisurvey.sty"),
+        "main_bbl_sha256": sha256(STAGING / "main.bbl"),
+        "main_pdf_sha256": pdf_actual_sha,
+        "main_pdf_bytes": pdf_actual_bytes,
+    }
     pdf_old = {
         "300から500エポックに及ぶ": staged_norm.count("300から500エポックに及ぶ"),
         "POPEは投票型": staged_norm.count("POPEは投票型"),
@@ -206,8 +235,25 @@ def main() -> int:
         "選択式設問": staged_norm.count("選択式設問"),
     }
     pdf_qa = {
+        "pdf_authority": {
+            "expected_sha256": EXPECTED_PDF_SHA256,
+            "expected_bytes": EXPECTED_PDF_BYTES,
+            "expected_pages": EXPECTED_PDF_PAGES,
+            "actual_sha256": pdf_actual_sha,
+            "actual_bytes": pdf_actual_bytes,
+            "authority_match": (pdf_actual_sha == EXPECTED_PDF_SHA256
+                                and pdf_actual_bytes == EXPECTED_PDF_BYTES),
+        },
+        "input_shas": input_shas,
+        "extraction": {
+            "command": "pdftotext main.pdf -",
+            "full_text_bytes": len(full_raw),
+            "full_text_sha256": hashlib.sha256(full_raw).hexdigest(),
+            "normalized_text_sha256": hashlib.sha256(full_norm).hexdigest(),
+        },
         "pages": [basis_pages, staged_pages],
         "page_count": staged_pages,
+        "page_count_matches_authority": staged_pages == EXPECTED_PDF_PAGES,
         "no_padding_added": True,
         "overfull": len(re.findall(r".*Overfull.*", log)),
         "underfull": len(re.findall(r".*Underfull.*", log)),
@@ -216,10 +262,33 @@ def main() -> int:
         "undefined_citations": len(re.findall(r".*Citation .* undefined.*", log)),
         "pdf_text_old_zero": pdf_old,
         "pdf_text_new_fragments": pdf_new_frags,
-        "visual_pages_inspected": ["p05 (PR-01 DETR L86)", "p31 (PR-02/PR-03 S16 L391)"],
-        "visual_defects": "none observed (no tofu/clipping/overflow/heading/blank defects)",
+        "mechanical_preflight": "computed from main.log + pdfinfo (see counts above)",
+        "human_visual_observation": [
+            {"image": "qa-p05-05.png",
+             "source_pdf_sha256": pdf_actual_sha,
+             "page": 5,
+             "renderer": "poppler pdftoppm 26.01.0",
+             "options": "-png -r 80 -f 5 -l 5",
+             "image_sha256": sha256(STAGING / "qa-p05-05.png"),
+             "status": "REVIEWED",
+             "observation": "PR-01 corrected DETR sentence legible in left column "
+                            "(300-epoch base / ~3 days / 500-epoch comparison split); "
+                            "no tofu/clipping/overflow/heading/blank defects"},
+            {"image": "qa-p31-31.png",
+             "source_pdf_sha256": pdf_actual_sha,
+             "page": 31,
+             "renderer": "poppler pdftoppm 26.01.0",
+             "options": "-png -r 80 -f 31 -l 31",
+             "image_sha256": sha256(STAGING / "qa-p31-31.png"),
+             "status": "REVIEWED",
+             "observation": "PR-02 yes/no polling + PR-03 EN/ZH MMBench sentences legible; "
+                            "no tofu/clipping/overflow/heading/blank defects"},
+        ],
+        "other_pages": "NOT_REVIEWED (no claim of full 39-page human review)",
     }
-    if not (pdf_qa["overfull"] == 0 and pdf_qa["underfull"] == 0
+    if not (pdf_qa["pdf_authority"]["authority_match"]
+            and pdf_qa["page_count_matches_authority"]
+            and pdf_qa["overfull"] == 0 and pdf_qa["underfull"] == 0
             and pdf_qa["missing_characters"] == 0 and pdf_qa["latex_errors"] == 0
             and pdf_qa["undefined_citations"] == 0
             and all(v == 0 for v in pdf_old.values())
@@ -251,6 +320,65 @@ def main() -> int:
     (STAGING / "pdf-qa.json").write_text(json.dumps({
         "scope": "staged fidelity-repaired PDF, all pages",
         "pdf_qa": pdf_qa,
+        "result": "PASS" if not errors else "FAIL",
+    }, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+
+    # 9. VF-01/VF-02 provenance artifacts (all computed from real files).
+    per_page = []
+    for p in range(1, staged_pages + 1):
+        raw = subprocess.run(["pdftotext", "-f", str(p), "-l", str(p),
+                              str(STAGING / "main.pdf"), "-"],
+                             capture_output=True, check=True).stdout
+        per_page.append({
+            "page": p,
+            "bytes": len(raw),
+            "sha256": hashlib.sha256(raw).hexdigest(),
+            "normalized_sha256": hashlib.sha256(re.sub(rb"\s+", b"", raw)).hexdigest(),
+        })
+    (STAGING / "pdf-text-verification.json").write_text(json.dumps({
+        "scope": "39-page mechanical text extraction from the fixed PDF bytes",
+        "source_pdf_sha256": pdf_actual_sha,
+        "extraction_command": "pdftotext main.pdf -  (+ per-page -f N -l N)",
+        "extractor": "poppler pdftotext 26.01.0",
+        "full_text_bytes": len(full_raw),
+        "full_text_sha256": hashlib.sha256(full_raw).hexdigest(),
+        "normalized_text_sha256": hashlib.sha256(full_norm).hexdigest(),
+        "pages_extracted": len(per_page),
+        "per_page": per_page,
+        "pr_checks_on_normalized_text": {"old_zero": pdf_old, "new_fragments": pdf_new_frags},
+        "result": "PASS" if not errors else "FAIL",
+    }, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+
+    (STAGING / "visual-source-manifest.json").write_text(json.dumps({
+        "scope": "human-reviewed QA images bound to exact source PDF bytes",
+        "source_pdf_sha256": pdf_actual_sha,
+        "renderer": "poppler pdftoppm 26.01.0",
+        "images": pdf_qa["human_visual_observation"],
+        "other_pages": pdf_qa["other_pages"],
+        "result": "PASS" if not errors else "FAIL",
+    }, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+
+    (STAGING / "qa-provenance.json").write_text(json.dumps({
+        "scope": "VF-01 binary-to-QA binding for the frozen fixed PDF",
+        "verdict_adopted": "STAGED_TECHNICAL_FIDELITY_VERIFICATION_INCOMPLETE",
+        "pdf_authority": pdf_qa["pdf_authority"],
+        "input_shas": input_shas,
+        "qa_artifacts": {
+            "pdf_qa_json_sha256": sha256(STAGING / "pdf-qa.json"),
+            "citation_evidence_check_json_sha256": sha256(STAGING / "citation-evidence-check.json"),
+            "text_diff_txt_sha256": sha256(STAGING / "text-diff.txt"),
+            "pdf_text_verification_json_sha256": sha256(STAGING / "pdf-text-verification.json"),
+            "visual_source_manifest_json_sha256": sha256(STAGING / "visual-source-manifest.json"),
+            "before_after_json_sha256": sha256(STAGING / "before-after.json"),
+            "technical_fidelity_ledger_json_sha256": sha256(STAGING / "technical-fidelity-ledger.json"),
+        },
+        "qa_images": [
+            {"image": "qa-p05-05.png",
+             "image_sha256": sha256(STAGING / "qa-p05-05.png")},
+            {"image": "qa-p31-31.png",
+             "image_sha256": sha256(STAGING / "qa-p31-31.png")},
+        ],
+        "technical_content": "UNCHANGED in this closure (PR-01/02/03 already TECHNICAL_CONTENT_ACCEPTED)",
         "result": "PASS" if not errors else "FAIL",
     }, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
 

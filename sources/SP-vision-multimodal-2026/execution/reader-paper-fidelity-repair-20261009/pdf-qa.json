@@ -1,11 +1,34 @@
 {
  "scope": "staged fidelity-repaired PDF, all pages",
  "pdf_qa": {
+  "pdf_authority": {
+   "expected_sha256": "b2de84493f2215e26d16e569498c5f4b6476ebc314230cbb4e01540a72742093",
+   "expected_bytes": 708782,
+   "expected_pages": 39,
+   "actual_sha256": "b2de84493f2215e26d16e569498c5f4b6476ebc314230cbb4e01540a72742093",
+   "actual_bytes": 708782,
+   "authority_match": true
+  },
+  "input_shas": {
+   "main_tex_sha256": "867e46d7bc95195f0e9a6cb44dad1960c4b658fae9bb82faadc52722bc1f0f0a",
+   "references_bib_sha256": "9c1e60fbefa4c2679f6a6cc465f803efc24f891ac215ef87782e4f636aeb3c1a",
+   "jgaisurvey_sty_sha256": "a9b31a60b7f7e5a9edfcf82af662e2e6a1d8c79b813fd8ba428384eabbaf62b1",
+   "main_bbl_sha256": "3382f45ef8d8efa36de4a6850c3da5fd539b9de1c16d7aa8d77d3db38ca5a126",
+   "main_pdf_sha256": "b2de84493f2215e26d16e569498c5f4b6476ebc314230cbb4e01540a72742093",
+   "main_pdf_bytes": 708782
+  },
+  "extraction": {
+   "command": "pdftotext main.pdf -",
+   "full_text_bytes": 189699,
+   "full_text_sha256": "e2d09fa38951a4f454a8a4a0f82a50eab274a2527c6da318a7a20e4814c9588e",
+   "normalized_text_sha256": "4f608996ad329135ed06d163d1f44dc5d438372ac94718945c36b8942fa4654d"
+  },
   "pages": [
    39,
    39
   ],
   "page_count": 39,
+  "page_count_matches_authority": true,
   "no_padding_added": true,
   "overfull": 0,
   "underfull": 0,
@@ -26,11 +49,30 @@
    "英語・中国語": 1,
    "選択式設問": 1
   },
-  "visual_pages_inspected": [
-   "p05 (PR-01 DETR L86)",
-   "p31 (PR-02/PR-03 S16 L391)"
+  "mechanical_preflight": "computed from main.log + pdfinfo (see counts above)",
+  "human_visual_observation": [
+   {
+    "image": "qa-p05-05.png",
+    "source_pdf_sha256": "b2de84493f2215e26d16e569498c5f4b6476ebc314230cbb4e01540a72742093",
+    "page": 5,
+    "renderer": "poppler pdftoppm 26.01.0",
+    "options": "-png -r 80 -f 5 -l 5",
+    "image_sha256": "40a3a81d77ee1fd659aa7f847377643c3005d3a6c4f5179a5da534e88991b347",
+    "status": "REVIEWED",
+    "observation": "PR-01 corrected DETR sentence legible in left column (300-epoch base / ~3 days / 500-epoch comparison split); no tofu/clipping/overflow/heading/blank defects"
+   },
+   {
+    "image": "qa-p31-31.png",
+    "source_pdf_sha256": "b2de84493f2215e26d16e569498c5f4b6476ebc314230cbb4e01540a72742093",
+    "page": 31,
+    "renderer": "poppler pdftoppm 26.01.0",
+    "options": "-png -r 80 -f 31 -l 31",
+    "image_sha256": "36735c34c1face64fff47c0d626eb8f23d2e83d52686fa8d61b8712ce20eedac",
+    "status": "REVIEWED",
+    "observation": "PR-02 yes/no polling + PR-03 EN/ZH MMBench sentences legible; no tofu/clipping/overflow/heading/blank defects"
+   }
   ],
-  "visual_defects": "none observed (no tofu/clipping/overflow/heading/blank defects)"
+  "other_pages": "NOT_REVIEWED (no claim of full 39-page human review)"
  },
  "result": "PASS"
 }

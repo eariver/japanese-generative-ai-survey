@@ -41,3 +41,36 @@
 `PAPER_REVIEW_TECHNICAL_REPAIR_STAGED` / `PR_01_PR_02_PR_03_CORRECTED` /
 `CANONICAL_AUTHORITY_PRESERVED` / `CORE_V2_UNCHANGED` /
 `INDEPENDENT_DIFFERENTIAL_REVIEW_PENDING` / `PUBLICATION_CANDIDATE_HOLD`. STOP.
+
+## VF-01 / VF-02 QA Evidence Closure (2026-10-10; verdict adopted as Sol)
+
+Prior sections above are preserved unchanged as the repair history.
+This section records QA evidence closure only; technical body, PDF binary,
+Core v2, and all authority records are unchanged.
+
+- Accepted verdict: `STAGED_TECHNICAL_FIDELITY_VERIFICATION_INCOMPLETE`
+- PR-01 / PR-02 / PR-03: `TECHNICAL_CONTENT_ACCEPTED` (no body edit in this closure)
+- VF-01 (binary-to-QA binding): CLOSED — fixed `main.pdf`
+  (`b2de8449…`, 708782 bytes, 39 pages) re-verified byte-identical at start and end;
+  validator now computes PDF SHA/size/pages from the real file and FAILs on mismatch;
+  `qa-provenance.json` binds PDF/TeX/Bib/style/BBL SHAs to every QA artifact hash and both
+  QA image hashes; `pdf-text-verification.json` stores the real 39-page extraction
+  (full-text SHA `e2d09fa3…`, per-page hashes) with PR new-present/old-absent checks;
+  `visual-source-manifest.json` binds each QA image to source PDF SHA + page + renderer/options.
+- VF-02 (build/extraction evidence): CLOSED — existing `main.log`/`main.bbl` captured with
+  generation history (23:25 JST build, LuaHBTeX 1.24.0, Biber 2.22, 124 citekeys, 0 warnings);
+  isolated `REPRODUCTION_RUN` (`/tmp/opencode/repro-paper-fidelity`) from identical input SHAs
+  rebuilt 39 pages / 708782 bytes / identical BBL / byte-identical extracted text and p05/p31
+  renders (PDF bytes differ only by CreationDate/ModDate timestamps); recorded in
+  `build-reproduction-record.json`. Rebuilt PDF was NOT written over the formal `main.pdf`;
+  existing vs reproduction evidence are kept separate in that record.
+- Visual QA record: mechanical preflight (computed PASS) and human observation are now separate.
+  REVIEWED: p.5 (`qa-p05-05.png`) and p.31 (`qa-p31-31.png`) with per-image observation, no defects.
+  All other pages: `NOT_REVIEWED` — no claim of full 39-page human review is made.
+- Unverified / out of scope: human review of the remaining 37 pages; any future formal Human Gate
+  decision; Publication Candidate remains HOLD.
+
+## Closure terminal
+
+`VF_01_VF_02_EVIDENCE_READY` / `PAPER_CONTENT_UNCHANGED` / `PDF_BINARY_UNCHANGED` /
+`CORE_V2_UNCHANGED` / `INDEPENDENT_QA_CLOSURE_REVIEW_PENDING` / `PUBLICATION_CANDIDATE_HOLD`.
