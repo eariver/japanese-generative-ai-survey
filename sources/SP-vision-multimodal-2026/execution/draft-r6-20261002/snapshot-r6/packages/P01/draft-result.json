@@ -1,0 +1,424 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-vision-multimodal-2026",
+  "research_profile": "THEMATIC",
+  "publication_profile": "LONGFORM_SPECIAL",
+  "package_id": "P01",
+  "draft_version": "r6",
+  "status": "REVISED",
+  "basis": {
+    "draft_package_sha256": "b32e4295e97079d4935f6004e4b813b13ae270ce9b854327f33e0221dc2e5791",
+    "prompt_id": "article-drafting-v2",
+    "prompt_sha256": "b687313312a23025228c16c3f10cb68f669b910cd7215e41886d4dd91f44fe11"
+  },
+  "runner": {
+    "provider": "Muse",
+    "model": "Muse Spark (Work execution role; not a Sol/Human decision)",
+    "invocation": "TS-003 Draft r6 P09 terminology closure from approved Architecture r2 (Human APPROVED r2, Sol Draft Review r1 REQUEST_CHANGES F1-F5): full-volume prose rewrite, zero duplicate sentences, metaphor-substitution eliminated, evaluator classes explicit, boundary reader surface repaired; G01-G06 and 5 PARTIAL preserved semantically; no cross-task ranking; no new research",
+    "generated_at": "2026-10-02T00:06:39Z",
+    "run_reference": "ts003-draft-r6-20261002"
+  },
+  "headline": "学んだ表現が土台になるとき",
+  "deck": "手書きの特徴量からImageNet規模の学習への転換を追う。AlexNetの容量と実装の組み合わせとResNetの残差学習を読み、分類で鍛えた表現が検出とセグメンテーションの出発点になる筋を確認する。単一データの射程と学習レシピの読みの両義性を保つ。",
+  "deck_attribution_mode": "ATTRIBUTED",
+  "deck_evidence_refs": [
+    {
+      "evidence_task_id": "evidence:SP-vision-multimodal-2026:649b3797fd83a762",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1",
+      "subject_id": "ev-vmd003",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-vision-multimodal-2026:649b3797fd83a762",
+      "kind": "CLAIM",
+      "evidence_id": "claim-2",
+      "subject_id": "ev-vmd003",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-vision-multimodal-2026:649b3797fd83a762",
+      "kind": "CLAIM",
+      "evidence_id": "claim-3",
+      "subject_id": "ev-vmd003",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-vision-multimodal-2026:380dc979ab3f132d",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1",
+      "subject_id": "ev-vmd004",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-vision-multimodal-2026:380dc979ab3f132d",
+      "kind": "CLAIM",
+      "evidence_id": "claim-2",
+      "subject_id": "ev-vmd004",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-vision-multimodal-2026:380dc979ab3f132d",
+      "kind": "CLAIM",
+      "evidence_id": "claim-3",
+      "subject_id": "ev-vmd004",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-vision-multimodal-2026:380dc979ab3f132d",
+      "kind": "CLAIM",
+      "evidence_id": "claim-4",
+      "subject_id": "ev-vmd004",
+      "subject_role": "PRIMARY_SUBJECT"
+    }
+  ],
+  "blocks": [
+    {
+      "block_id": "p01-b1",
+      "block_type": "PARAGRAPH",
+      "text": "手書きの特徴量で濃淡の勾配や輪郭の断片を組み立てる段階では、設計の質が人の経験に依存した。Neocognitronは特徴抽出を担うS細胞相当の層と位置ずれを吸収するC細胞相当の層を重ね、最終層のC細胞が位置によらず刺激パターンに選択的に応答し、形状や大きさの小さな変化を許容すると述べた。畳み込みの階層の発想の出所として扱うのが本書の範囲であり、本文の入手に制限があるため仕組みの細部には立ち入らず、性能の主張はこの資料からは引き継がない。LeNetは畳み込みニューラルネットワークを勾配法で端から端まで学習させ、文書の文字認識に適用して、手書きの特徴量ではなく学習した階層で実務課題を解ける例を示した。画像を見る階層を学習で得る道がある点に、規模の転換の前史としての意義がある。こちらもLeNet論文の著者公開PDFの文字コードの問題で本文の機械的な読み取りができないため、抄録水準に留めて文書画像の範囲の話として扱い、規模の主張はImageNet世代の資料に譲る。AlexNet論文の著者らは、障害として二点を挙げた。すなわち、ラベル付きデータが小規模な点と、高解像度画像を扱う大規模CNNの計算負荷である。これに対する組み合わせは、ImageNetのデータ規模、深さと幅を調整した容量と局所性・定常性を生かす畳み込みの前提、GPUで効率よく回る二次元畳み込みの実装、飽和しにくいユニット、過学習を抑えるdropoutであった。規模は1.2M枚のImageNet画像に対し、60Mのパラメータと650Kのユニットをもつ5層の畳み込みと3層の全結合、1000通りのsoftmaxからなる深いCNNであり、LSVRC-2010でtop-1誤り37.5%とtop-5誤り17.0%、ILSVRC-2012ではtop-5で15.3%を次点の26.2%に対して示し、3GBのGTX 580を2枚使って5〜6日かけたと、モデル論文の著者測定として報告している。同論文は高速なGPUと大規模データがあれば結果はさらに伸びると結んでおり、本書ではここに大規模な教師あり学習を再利用可能な例にするという読みの根拠を置く。ただしこの読みは編集上の合成であり、ImageNet単一の範囲を超える転移の主張は後継の記録に譲る。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:8d13b894941b9513",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd001",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:8d13b894941b9513",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ev-vmd001",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:25ffb37e8ae8213c",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd002",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:25ffb37e8ae8213c",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ev-vmd002",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:649b3797fd83a762",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd003",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:649b3797fd83a762",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ev-vmd003",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:649b3797fd83a762",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "ev-vmd003",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p01-b2",
+      "block_type": "PARAGRAPH",
+      "text": "層を増やすと学習誤差そのものが上昇する劣化を、ResNet論文の著者らは診断の起点に据えた。勾配の爆発や消失は初期値と正規化でほぼ解消した後も、素朴に深くしたモデルでは学習誤差が増え、これは試験時の悪化ではなく学習の停滞、すなわち過学習ではなく最適化の問題だと述べた。深い側が浅い側と同じ写像をたどれるなら悪化するはずがない、という恒等写像の論拠が診断の中心にある。そこで学習対象をH(x)そのものから残差F(x)=H(x)-xへ置き換え、次元が一致する箇所の近道はパラメータなしの恒等写像とし、次元合わせが必要な箇所のみ式2の射影Wsを置く。通り抜けできる分だけ各層は積み上げる差分に専念でき、1x1-3x3-1x1のボトルネックで計算量を抑えて152層で11.3 GFLOPsとVGG-19より軽い。結果もモデル論文の著者測定に属し、152層単体で検証top-5誤り4.49%、集成でテストtop-5誤り3.57%を示してILSVRC 2015の1位、COCO検出で6.0ポイントの上積みを相対で28%の伸びとして学習表現のみに帰し、ImageNet検出・位置特定とCOCOセグメンテーションでも1位と報告している。検出の伸びは2015年当時のFaster R-CNN系列を基準にした評価条件での話であり、現在の評価軸での優劣は主張しない。",
+      "attribution_mode": "ATTRIBUTED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:649b3797fd83a762",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd003",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:649b3797fd83a762",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ev-vmd003",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:649b3797fd83a762",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "ev-vmd003",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:380dc979ab3f132d",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd004",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:380dc979ab3f132d",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ev-vmd004",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:380dc979ab3f132d",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "ev-vmd004",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:380dc979ab3f132d",
+          "kind": "CLAIM",
+          "evidence_id": "claim-4",
+          "subject_id": "ev-vmd004",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p01-b3",
+      "block_type": "PARAGRAPH",
+      "text": "AlexNetの主張はImageNet単一の範囲にあり、別課題への転移はResNetの記録が裏づけを与える構成になっている。COCOでの上積みと各部門の1位は、分類で鍛えた表現が検出とセグメンテーションの出発点になる例であり、分類から検出への転移と並ぶもう一つの継承として読む。ただし深層化に際限はなく、CIFARで1202層まで積むと学習誤差は0.1%を切る一方でテストでは悪化し、maxoutやdropoutなしでは過学習が残ると著者ら自身が記している。深くできる点と深くして通用させる点は別であり、深さの拡大に正則化側の境がある点は開かれた問いとして残る。同時代のhighway networkとの対比は同時代の位置づけに留め、後にDeiTやSwinが学習手順側の読み直しでモデルの形状の新規性の称賛を限定した点も併せて記す。本節は形状の新規性を称える読みと、データ規模と計算実装と学習の回し方で結果を動かす学習レシピの読みの双方を保ち、後者は同論文自身の結びに支えられる編集上の合成として扱う。効率の用語はTS-001の資産を借りるだけで本節では説き直さず、大量のラベル付き画像で鍛えた表現を出発点に載せる大規模教師ありの契約が見える形になった点を確認して、検出の節へ接続する。",
+      "attribution_mode": "ATTRIBUTED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:649b3797fd83a762",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd003",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:649b3797fd83a762",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ev-vmd003",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:649b3797fd83a762",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "ev-vmd003",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:380dc979ab3f132d",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd004",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:380dc979ab3f132d",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ev-vmd004",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:380dc979ab3f132d",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "ev-vmd004",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:380dc979ab3f132d",
+          "kind": "CLAIM",
+          "evidence_id": "claim-4",
+          "subject_id": "ev-vmd004",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "P01-boundaries",
+      "block_type": "CLAIM_BOUNDARY",
+      "text": "この節の読解上の境界: 本節の転移の主張はImageNetという一つのデータの範囲に留まる。別課題への転換は後継の記録が担う。検出の伸びは2015年当時の条件の上での報告であり、現在の基準での優劣ではない。LeNetの機構の細部は抄録水準に留める。",
+      "attribution_mode": "INFERENCE",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:649b3797fd83a762",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd003",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:649b3797fd83a762",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "ev-vmd003",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:380dc979ab3f132d",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd004",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:380dc979ab3f132d",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "ev-vmd004",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:8d13b894941b9513",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd001",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:8d13b894941b9513",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "ev-vmd001",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:25ffb37e8ae8213c",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd002",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:25ffb37e8ae8213c",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "ev-vmd002",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    }
+  ],
+  "must_cover_coverage": [
+    {
+      "requirement": "VM-O01 context-capped scope holds; no pre-deep CV expansion",
+      "block_ids": [
+        "p01-b1",
+        "p01-b2",
+        "p01-b3",
+        "P01-boundaries"
+      ]
+    },
+    {
+      "requirement": "X01 large-scale supervised contract visible",
+      "block_ids": [
+        "p01-b1",
+        "p01-b2",
+        "p01-b3",
+        "P01-boundaries"
+      ]
+    },
+    {
+      "requirement": "TS-001 efficiency vocabulary reused, not retold",
+      "block_ids": [
+        "p01-b1",
+        "p01-b2",
+        "p01-b3",
+        "P01-boundaries"
+      ]
+    }
+  ],
+  "boundary_dispositions": [
+    {
+      "boundary": "Pre-deep history stays context-only; scaling-recipe reading over novelty reading",
+      "handling": "RESPECTED_BY_OMISSION",
+      "block_ids": [],
+      "rationale": "Internal drafting guard; omission of the unsupported claim suffices."
+    },
+    {
+      "boundary": "No transfer claims beyond successor evidence",
+      "handling": "RESPECTED_BY_OMISSION",
+      "block_ids": [],
+      "rationale": "Internal drafting guard; omission of the unsupported claim suffices."
+    },
+    {
+      "boundary": "Single-dataset (ImageNet) scope; transfer claims require successor sources (ResNet record).",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P01-boundaries"
+      ],
+      "rationale": "Reader-facing limitation; concise Japanese limitation text carries it."
+    },
+    {
+      "boundary": "Recipe reading vs architectural-novelty reading must both be carried; the paper's own framing supports the recipe side.",
+      "handling": "RESPECTED_BY_OMISSION",
+      "block_ids": [],
+      "rationale": "Internal drafting guard; omission of the unsupported claim suffices."
+    },
+    {
+      "boundary": "Highway-network comparison is concurrent-work framing; later pretraining-recipe readings (DeiT/Swin) qualify architecture-triumphalism.",
+      "handling": "RESPECTED_BY_OMISSION",
+      "block_ids": [],
+      "rationale": "Internal drafting guard; omission of the unsupported claim suffices."
+    },
+    {
+      "boundary": "Detection gains use Faster R-CNN baselines of 2015 vintage.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P01-boundaries"
+      ],
+      "rationale": "Reader-facing limitation; concise Japanese limitation text carries it."
+    },
+    {
+      "boundary": "Full-text body behind paywall; mechanism detail stays at abstract level by D01 cap design.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P01-boundaries"
+      ],
+      "rationale": "Reader-facing limitation; concise Japanese limitation text carries it."
+    },
+    {
+      "boundary": "No performance/comparison claims carried from this source.",
+      "handling": "RESPECTED_BY_OMISSION",
+      "block_ids": [],
+      "rationale": "Internal drafting guard; omission of the unsupported claim suffices."
+    },
+    {
+      "boundary": "Author PDF uses custom font encoding; full-body machine reading blocked — PARTIAL recorded honestly; no detail beyond predecessor-context scope is claimed.",
+      "handling": "RESPECTED_BY_OMISSION",
+      "block_ids": [],
+      "rationale": "Internal drafting guard; omission of the unsupported claim suffices."
+    },
+    {
+      "boundary": "Document-domain scope; scaling claims require ImageNet-era sources.",
+      "handling": "RESPECTED_BY_OMISSION",
+      "block_ids": [],
+      "rationale": "Internal drafting guard; omission of the unsupported claim suffices."
+    }
+  ],
+  "profile_extensions": {},
+  "publication_extensions": {
+    "page_budget_body_pages": 4,
+    "depth_classes": {
+      "FULL_MECHANISM_TREATMENT": [
+        "VM-D003",
+        "VM-D004"
+      ],
+      "TRANSITION_NODE_TREATMENT": [],
+      "BRIEF_CONTEXT_OR_AUTHORITY": [
+        "VM-D001",
+        "VM-D002"
+      ]
+    }
+  }
+}

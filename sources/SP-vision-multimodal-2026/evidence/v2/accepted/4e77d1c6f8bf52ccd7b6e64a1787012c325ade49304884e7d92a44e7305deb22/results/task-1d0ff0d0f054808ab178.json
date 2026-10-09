@@ -1,0 +1,108 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-vision-multimodal-2026",
+  "evidence_task_id": "evidence:SP-vision-multimodal-2026:83eb37cf4723f9fb",
+  "basis": {
+    "task_sha256": "1de86c021d32002fd59403922026b9dfa8488ada1e5b325f4055f5e28cff6121",
+    "screening_acceptance_sha256": "3f6be59d8dec325e5561ef118bf6025cd200f943d6ea161b4b7b40070d3af087",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "ev-vmd046",
+      "canonical_name": "Detic (Zhou et al., 2022)",
+      "entity_type": "MODEL",
+      "organization": "Meta",
+      "canonical_url": "https://arxiv.org/abs/2201.02605"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "ev-vmd046",
+    "artifact_type": "PAPER",
+    "canonical_name": "Detic (Zhou et al., 2022)",
+    "canonical_url": "https://arxiv.org/abs/2201.02605"
+  },
+  "temporal": {
+    "observed_at": "2026-09-30T14:24:47Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2022-01",
+        "subject_id": "ev-vmd046",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2201.02605",
+      "source_class": "PRIMARY_PAPER",
+      "title": "Detecting Twenty-thousand Classes using Image-level Supervision / Detic (Zhou et al.)",
+      "published_at": "2022-01",
+      "accessed_at": "2026-09-30T14:24:47Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Image-level supervision (ImageNet-21K) trains detector classifiers via max-size-proposal assignment without complex assignment schemes: +2.4 mAP all / +8.3 novel on open-vocabulary LVIS; 41.7 mAP standard LVIS (all and rare); first 21K-class detector generalizing without finetuning; code open.",
+      "subject_id": "ev-vmd046",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Full-paper abstract/limitations/conclusion; ECCV 2022."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Paper's own limit: all image labels supervised to the same region without dataset-statistics modeling — the assignment-heuristic boundary.",
+      "subject_id": "ev-vmd046",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Limitations section consumed."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Max-proposal assignment heuristic; ID corrected at intake (Round B guess wrong).",
+      "subject_id": "ev-vmd046",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Full body consumed: classifier-training scheme, LVIS gains, and stated assignment limit verified.",
+        "subject_ids": [
+          "ev-vmd046"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

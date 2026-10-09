@@ -1,0 +1,108 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-vision-multimodal-2026",
+  "evidence_task_id": "evidence:SP-vision-multimodal-2026:4c4e58ac13a1d141",
+  "basis": {
+    "task_sha256": "ed93988620d7875286c432058506afe0d7e6cba12c1b7af7f3681abb46e591a3",
+    "screening_acceptance_sha256": "7c76cdb6214e01ac88280ab7c85f0488951ddaf6b5bc9b0229b4d97acb795868",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "ev-vmd018",
+      "canonical_name": "SAM 2 (Ravi et al., 2024)",
+      "entity_type": "MODEL",
+      "organization": "Meta",
+      "canonical_url": "https://arxiv.org/abs/2408.00714"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "ev-vmd018",
+    "artifact_type": "PAPER",
+    "canonical_name": "SAM 2 (Ravi et al., 2024)",
+    "canonical_url": "https://arxiv.org/abs/2408.00714"
+  },
+  "temporal": {
+    "observed_at": "2026-09-30T14:24:47Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2024-08",
+        "subject_id": "ev-vmd018",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2408.00714",
+      "source_class": "PRIMARY_PAPER",
+      "title": "SAM 2: Segment Anything in Images and Videos (Ravi et al.)",
+      "published_at": "2024-08",
+      "accessed_at": "2026-09-30T14:24:47Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Promptable segmentation extended to video via streaming memory over prompts/predictions plus SA-V data engine (largest video segmentation dataset): 3x fewer interactions on video, 6x faster and more accurate than SAM on images; model+data+training code released.",
+      "subject_id": "ev-vmd018",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Full-paper abstract/conclusion; numbers paper-reported."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Role (VM-O03/VM-O12): streaming-memory ARCHITECTURE pointer bridging dense perception to temporal state; not a streaming-system case (system status decided by Flash-VStream-side sources).",
+      "subject_id": "ev-vmd018",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Edition-level analytical synthesis by the Work operator (lineage/selection/boundary/contract judgment, not a literal statement of the cited source); structural home for edition rationale."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Memory-architecture scope; online-deployment latency claims need system-side sources.",
+      "subject_id": "ev-vmd018",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Full body consumed: memory design, SA-V engine, video/image results verified.",
+        "subject_ids": [
+          "ev-vmd018"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

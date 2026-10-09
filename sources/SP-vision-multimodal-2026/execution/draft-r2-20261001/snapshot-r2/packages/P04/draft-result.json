@@ -1,0 +1,378 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-vision-multimodal-2026",
+  "research_profile": "THEMATIC",
+  "publication_profile": "LONGFORM_SPECIAL",
+  "package_id": "P04",
+  "draft_version": "r2",
+  "status": "REVISED",
+  "basis": {
+    "draft_package_sha256": "43b6c3d12463efa01ac978b2582b923a20e9628288d9bf1d484c972032290c3f",
+    "prompt_id": "article-drafting-v2",
+    "prompt_sha256": "b687313312a23025228c16c3f10cb68f669b910cd7215e41886d4dd91f44fe11"
+  },
+  "runner": {
+    "provider": "Muse",
+    "model": "Muse Spark (Work execution role; not a Sol/Human decision)",
+    "invocation": "TS-003 Draft r2 reader-surface repair from approved Architecture r2 (Human APPROVED r2, Sol Draft Review r1 REQUEST_CHANGES F1-F5): full-volume prose rewrite, zero duplicate sentences, metaphor-substitution eliminated, evaluator classes explicit, boundary reader surface repaired; G01-G06 and 5 PARTIAL preserved semantically; no cross-task ranking; no new research",
+    "generated_at": "2026-10-01T15:44:38Z",
+    "run_reference": "ts003-draft-r2-20261001"
+  },
+  "headline": "推論を支える空間と幾何",
+  "deck": "名と箱にはない奥行きと姿勢と関係を後の推論の例として置く。相対の深さ、身体の配置、情景の関係、較正なしの幾何の四つの例を見る。尺度の不定と人手の揺れの限りも含めて射程を明記し、四つの例は単独の概説ではなく後の推論が仮定する状態の目録として読む。",
+  "deck_attribution_mode": "MIXED",
+  "deck_evidence_refs": [
+    {
+      "evidence_task_id": "evidence:SP-vision-multimodal-2026:85bc25df6171e3dd",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1",
+      "subject_id": "ev-vmd019",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-vision-multimodal-2026:85bc25df6171e3dd",
+      "kind": "CLAIM",
+      "evidence_id": "claim-2",
+      "subject_id": "ev-vmd019",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-vision-multimodal-2026:85bc25df6171e3dd",
+      "kind": "CLAIM",
+      "evidence_id": "claim-3",
+      "subject_id": "ev-vmd019",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-vision-multimodal-2026:ad9033f18ee4f668",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1",
+      "subject_id": "ev-vmd020",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-vision-multimodal-2026:ad9033f18ee4f668",
+      "kind": "CLAIM",
+      "evidence_id": "claim-2",
+      "subject_id": "ev-vmd020",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-vision-multimodal-2026:ab41a7643858ee00",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1",
+      "subject_id": "ev-vmd021",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-vision-multimodal-2026:ab41a7643858ee00",
+      "kind": "CLAIM",
+      "evidence_id": "claim-2",
+      "subject_id": "ev-vmd021",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-vision-multimodal-2026:a6b4065d7ddd17fd",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1",
+      "subject_id": "ev-vmd022",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-vision-multimodal-2026:a6b4065d7ddd17fd",
+      "kind": "CLAIM",
+      "evidence_id": "claim-2",
+      "subject_id": "ev-vmd022",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-vision-multimodal-2026:a6b4065d7ddd17fd",
+      "kind": "CLAIM",
+      "evidence_id": "claim-3",
+      "subject_id": "ev-vmd022",
+      "subject_role": "PRIMARY_SUBJECT"
+    }
+  ],
+  "blocks": [
+    {
+      "block_id": "p04-b1",
+      "block_type": "PARAGRAPH",
+      "text": "物の名と箱だけでは後の推論が要する奥行きと立体が足りず、MiDaSは相対的な深さを野外で通用させる例である。モデル論文の著者らによれば、尺度とずれに頑健な目的関数でステレオやレーザ、構造光、3D映画由来まで相容れない深さデータを混ぜ、素朴な混合をパレート最適な多目的の混合で上回り、補助課題で事前学習したエンコーダが効くと報告し、モデルを公開したと述べている。評価の契約が要点であり、一部のデータで学習してDIWやETH3D、Sintel、KITTI、NYU、TUMを含む未見のデータで測るゼロショットの転移を野外の頑健さの指標に据え、見たことのない場面で通用するかを中心に置く。既存の深さデータこそ限りだと同論文自身が残して開いた問いとしており、相対の深さの範囲の話として尺度つきの主張は他の資料に譲り、2019年当時の評価条件の話として読む。DUSt3Rは較正なしの幾何の状態をモデルの出力として出す例であり、内部の値も姿勢も与えない画像対から点群地図を回帰して単眼と両眼の再構成を一本にし、全体の位置合わせで共通の枠に載せる。較正の数値を入力に要求せず対応する立体を出力として得る逆転であり、下流でカメラや深さや対応が取り出せ、単眼と多視点の深さと相対姿勢で当時の最上位、定番のTransformerのエンコーダ・デコーダで事前学習の資産を使うと報告している。ただし点群地図は不定の尺度までであり、幾何の制約を設計で明示的に課さず、整合した学習データの事前分布に頼ると明記している。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:85bc25df6171e3dd",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd019",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:85bc25df6171e3dd",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ev-vmd019",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:85bc25df6171e3dd",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "ev-vmd019",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:a6b4065d7ddd17fd",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd022",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:a6b4065d7ddd17fd",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ev-vmd022",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:a6b4065d7ddd17fd",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "ev-vmd022",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p04-b2",
+      "block_type": "PARAGRAPH",
+      "text": "分類の特徴量だけでは身体は動かず、OpenPoseは多人数の2次元姿勢を下から積む例である。手足の位置と向きを入れた2次元ベクトル場、すなわちPart Affinity Fieldsで四肢を表して貪欲な二部マッチングで組み立て、部位の点を追うのではなく四肢の流れの場でつながりを表す点が設計の中心である。人数によらず実時間で動き、場だけの洗練が実行速度を倍にして精度を約7%上げ、身体と足を合わせた検出が速さと部品ごとの精度を保ち、135点のキーポイントの仕組みを公開したと、モデル論文の著者らが報告している。物中心の空間状態と対応づけ自体を表現にする実演が要点であり、何であるかではなくどう配置にあるかが要る課題の例として、分類の特徴量が行動を直接駆動できない理由を示す。2次元の姿勢の範囲であり3次元への持ち上げは扱わず、2019年当時の計算機の評価条件の話として読む。Visual Genomeは関係の構造を一級に据えた例であり、Visual Genome論文の著者らによれば10万超の画像に1枚あたり約21の物体、約18の属性、約18の関係、42超の領域記述、約17の問答を載せ、WordNetのsynsetに正準化し、情景グラフの定式が検索と文生成を押し上げたと報告している。物と性質と関係を同じ表に載せて領域ごとの言葉を添える分厚い注釈であり、関係と属性を主役に据えた点が情景の構造の読み、同時に領域記述が後の言葉との接地のデータの源流になる。混み入った人手の揺れと正準化の限りは明記し、GoldG流の来歴の主張はGLIP側の資料に譲る。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:ad9033f18ee4f668",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd020",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:ad9033f18ee4f668",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ev-vmd020",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:ab41a7643858ee00",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd021",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:ab41a7643858ee00",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ev-vmd021",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p04-b3",
+      "block_type": "PARAGRAPH",
+      "text": "ラベルにはないものがここでの主題であり、物の名のラベルは奥行きを定めず箱のラベルは身体の向きを定めない。MiDaSの相対の深さとOpenPoseの2次元姿勢は、その欠けを埋める状態の例であり、深さの状態は遮蔽の前後や床の広がりを推論の下に敷き、姿勢の状態は手足の配置と人物の向きを行動の下に敷く。どちらが手前にあるかという順序が後の判断の前提になり、どう配置にあるかが後の動作の前提になり、後の検出や推論が当然のように仮定する空間がここで例として用意される。箱の入出力だけでは足りない分を状態の入出力が補う関係が空間の契約の内実であり、深さは相対のまま姿勢は2次元のままという射程の明記と対で読む。トークンに刻んでも残るものは何かという問いに対し、奥行きの順序と身体の配置が残るべき状態だという整理が本節前半のまとめである。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:85bc25df6171e3dd",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd019",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:85bc25df6171e3dd",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ev-vmd019",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:85bc25df6171e3dd",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "ev-vmd019",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:ad9033f18ee4f668",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd020",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:ad9033f18ee4f668",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ev-vmd020",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p04-b4",
+      "block_type": "PARAGRAPH",
+      "text": "関係と幾何がそろうと情景は物の列挙ではなくなり、Visual Genomeの関係と属性とDUSt3Rの較正なしの点群地図はその例である。誰が何を持ち何の上にあるかという関係の状態と、見る位置が変わっても保たれる幾何の状態が後の接地と推論の下に敷かれ、言葉が指す相手を決める課題にも見えの奥行きを読む課題にも同じ例が効く。較正の配管を要求せずモデルの出力として幾何を得る設計は統合や行動の節への橋になり、数値を入れて解くのではなく学習したモデルが出す状態から始める逆転である。限りも明確にし、人手の揺れと正準化の難しさ、尺度の不定、学習済みの事前分布への依存は残り、NeRFや3DGS、SLAM、MVS、3次元検出への拡張はしない。後継は新しい契約を足さないため範囲から除く。四つの例は概説ではなく後の推論が仮定する状態の目録であり、密な知覚の節から言葉と推論の節へ渡る手前で空間と幾何の例を確認した。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:ab41a7643858ee00",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd021",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:ab41a7643858ee00",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ev-vmd021",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:a6b4065d7ddd17fd",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd022",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:a6b4065d7ddd17fd",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ev-vmd022",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:a6b4065d7ddd17fd",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "ev-vmd022",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "P04-boundaries",
+      "block_type": "CLAIM_BOUNDARY",
+      "text": "この節の読解上の境界: 深さは相対の範囲に留まり、尺度つきの主張はしない。姿勢は2次元の範囲に留まり、3次元への持ち上げは扱わない。いずれも2019年当時の条件の上での記録である。",
+      "attribution_mode": "INFERENCE",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:85bc25df6171e3dd",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd019",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:ad9033f18ee4f668",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd020",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:ab41a7643858ee00",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd021",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:a6b4065d7ddd17fd",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd022",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    }
+  ],
+  "must_cover_coverage": [
+    {
+      "requirement": "D04 four-node hard cap holds (MiDaS/OpenPose/VisualGenome/DUSt3R)",
+      "block_ids": [
+        "p04-b1",
+        "p04-b2",
+        "p04-b3",
+        "p04-b4",
+        "P04-boundaries"
+      ]
+    },
+    {
+      "requirement": "X02 spatial-state contracts feed D10/D12/D13",
+      "block_ids": [
+        "p04-b1",
+        "p04-b2",
+        "p04-b3",
+        "p04-b4",
+        "P04-boundaries"
+      ]
+    }
+  ],
+  "boundary_dispositions": [
+    {
+      "boundary": "No NeRF/3DGS/SLAM/MVS/3D-detection/SMPL/benchmark-zoo expansion; successors add no new contract",
+      "handling": "RESPECTED_BY_OMISSION",
+      "block_ids": [],
+      "rationale": "Internal drafting guard; omission of the unsupported claim suffices."
+    },
+    {
+      "boundary": "Relative-depth scope; metric-depth claims need other sources; 2019-vintage baselines.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P04-boundaries"
+      ],
+      "rationale": "Reader-facing limitation; concise Japanese limitation text carries it."
+    },
+    {
+      "boundary": "2D pose scope; 3D lifting excluded by cap; 2019-vintage runtime hardware baseline.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P04-boundaries"
+      ],
+      "rationale": "Reader-facing limitation; concise Japanese limitation text carries it."
+    },
+    {
+      "boundary": "Crowdsourced noise and canonicalization limits; GoldG-descent claims need GLIP-side sources.",
+      "handling": "RESPECTED_BY_OMISSION",
+      "block_ids": [],
+      "rationale": "Internal drafting guard; omission of the unsupported claim suffices."
+    },
+    {
+      "boundary": "Scale ambiguity; learned-prior dependence; successors add no new contract (excluded).",
+      "handling": "RESPECTED_BY_OMISSION",
+      "block_ids": [],
+      "rationale": "Internal drafting guard; omission of the unsupported claim suffices."
+    }
+  ],
+  "profile_extensions": {},
+  "publication_extensions": {
+    "page_budget_body_pages": 4,
+    "depth_classes": {
+      "FULL_MECHANISM_TREATMENT": [],
+      "TRANSITION_NODE_TREATMENT": [
+        "VM-D019",
+        "VM-D020",
+        "VM-D021",
+        "VM-D022"
+      ],
+      "BRIEF_CONTEXT_OR_AUTHORITY": []
+    }
+  }
+}

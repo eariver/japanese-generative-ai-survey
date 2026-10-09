@@ -1,0 +1,130 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-vision-multimodal-2026",
+  "evidence_task_id": "evidence:SP-vision-multimodal-2026:e80cab6730b37dae",
+  "basis": {
+    "task_sha256": "4c11f04f1fefdb8d17e613e17d6d1d2f0caad02c2862df6e0d0a350fb9073250",
+    "screening_acceptance_sha256": "3bc6edb4c60ad6fba40626b0900f6cf5656544b98a95e4b3d4415f049d3f1a94",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "ev-vmd113",
+      "canonical_name": "DINOv3 (Meta AI, 2025)",
+      "entity_type": "MODEL",
+      "organization": null,
+      "canonical_url": "https://arxiv.org/abs/2508.10104"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "ev-vmd113",
+    "artifact_type": "PAPER",
+    "canonical_name": "DINOv3 (Meta AI, 2025)",
+    "canonical_url": "https://arxiv.org/abs/2508.10104"
+  },
+  "temporal": {
+    "observed_at": "2026-10-05T00:00:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2025-08",
+        "subject_id": "ev-vmd113",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2508.10104",
+      "source_class": "PRIMARY_PAPER",
+      "title": "DINOv3 (Meta AI, 2025)",
+      "published_at": "2025-08",
+      "accessed_at": "2026-10-05T00:00:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "7B self-supervised vision model on LVD-1689M (1,689M hierarchical sampling); objective L_Pre = L_DINO + L_iBOT + 0.1*L_DKoleo with Sinkhorn-Knopp replacing centering, axial RoPE, constant schedule over 1M iterations.",
+      "subject_id": "ev-vmd113",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Paper §3 (data/scale/objective/architecture)."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Dense feature maps degrade under long training (VOC mIoU peaks ~200k then declines); fixed by Gram anchoring against an early Gram-teacher, preserving patch consistency without pinning features.",
+      "subject_id": "ev-vmd113",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Paper §3.2/§4.1-4.3 (degradation diagnosis + Gram refinement)."
+    },
+    {
+      "statement_id": "claim-3",
+      "text": "Post-hoc adaptation without retraining: resolution scaling, multi-student distillation to ViT-S/B/L/H+ and ConvNeXt, plus dino.txt LiT-style text alignment on frozen vision.",
+      "subject_id": "ev-vmd113",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Paper §5 (adaptation suite)."
+    },
+    {
+      "statement_id": "claim-4",
+      "text": "Inherits DINOv2 DINO+iBOT/multi-crop/Koleo/registers; changes scale, RoPE, Sinkhorn, Gram phase. Frozen reusable dense representation reaching task SOTA without fine-tuning.",
+      "subject_id": "ev-vmd113",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Paper §1/§6-8 (lineage + frozen-backbone results)."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Training compute/carbon cost; fairness gaps vs DINOv2 narrowed but present; OCR-heavy content hard for SSL; intermediate-layer use ill-conditioned without normalization.",
+      "subject_id": "ev-vmd113",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "DINOv3 paper body consumed via arXiv HTML: objective/scale, Gram refinement, adaptation suite, frozen results verified.",
+        "subject_ids": [
+          "ev-vmd113"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

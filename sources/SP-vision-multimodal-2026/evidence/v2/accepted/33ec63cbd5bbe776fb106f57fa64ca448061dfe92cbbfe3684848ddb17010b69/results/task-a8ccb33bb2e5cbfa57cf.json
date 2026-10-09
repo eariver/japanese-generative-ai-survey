@@ -1,0 +1,110 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-vision-multimodal-2026",
+  "evidence_task_id": "evidence:SP-vision-multimodal-2026:9193275622858906",
+  "basis": {
+    "task_sha256": "6db752f0eb2fcf4e1a8792ab303c5ca6174020a5f14c5a9b47c079c3da9960a9",
+    "screening_acceptance_sha256": "3f6be59d8dec325e5561ef118bf6025cd200f943d6ea161b4b7b40070d3af087",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "ev-vmd077",
+      "canonical_name": "allenai/molmo2 repository",
+      "entity_type": "MODEL",
+      "organization": "Ai2",
+      "canonical_url": "https://github.com/allenai/molmo2"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "ev-vmd077",
+    "artifact_type": "OPEN_WEIGHT",
+    "canonical_name": "allenai/molmo2 repository",
+    "canonical_url": "https://github.com/allenai/molmo2"
+  },
+  "temporal": {
+    "observed_at": "2026-09-30T14:24:47Z",
+    "events": []
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://github.com/allenai/molmo2",
+      "source_class": "PRIMARY_REPOSITORY",
+      "title": "allenai/molmo2 repository (training + eval code)",
+      "published_at": null,
+      "accessed_at": "2026-09-30T14:24:47Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Full-stack openness scope verified at repo depth: data prep, pre-training/SFT/long-context-SFT, eval tooling, vLLM inference, checkpoint conversion, MolmoPoint extension, model collections linked from the repo README.",
+      "subject_id": "ev-vmd077",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PROJECT_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Repo README TOC + scope sections consumed 2026-09-30; scope facts only, not license facts."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "License buckets, repo-bound portion only: code — Apache 2.0 (repo-root LICENSE file of the bound repository, verified 2026-09-30). Model-weight license, released-data availability, and per-dataset license/usage terms remain unresolved in canonical Evidence; third-party mixture constraints unresolved.",
+      "subject_id": "ev-vmd077",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PROJECT_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Repo-root LICENSE file consumed; per-dataset terms remain UNRESOLVED (PARTIAL preserved)."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "PARTIAL: training-data license mix (academic/non-commercial third-party) unbound (INSPECT target).",
+      "subject_id": "ev-vmd077",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Training/eval pipeline scope verified at README depth.",
+        "subject_ids": [
+          "ev-vmd077"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "data license mix binding",
+        "status": "UNRESOLVED",
+        "finding": "Training-data license mix not bound; carried as INSPECT item for later stages.",
+        "subject_ids": [
+          "ev-vmd077"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      "data license mix binding: Training-data license mix not bound; carried as INSPECT item for later stages."
+    ],
+    "contradictions": []
+  }
+}

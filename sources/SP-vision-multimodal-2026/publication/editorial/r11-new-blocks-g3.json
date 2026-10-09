@@ -1,0 +1,659 @@
+{
+ "new_blocks": [
+  {
+   "after_block_id": "p02-b2",
+   "block_id": "p02-b7",
+   "block_type": "PARAGRAPH",
+   "evidence_refs": [
+    {
+     "evidence_id": "claim-1",
+     "evidence_task_id": "evidence:SP-vision-multimodal-2026:2ca2b01d89b9f6f3",
+     "kind": "CLAIM",
+     "subject_id": "ev-vmd006",
+     "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+     "evidence_id": "claim-2",
+     "evidence_task_id": "evidence:SP-vision-multimodal-2026:2ca2b01d89b9f6f3",
+     "kind": "CLAIM",
+     "subject_id": "ev-vmd006",
+     "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+     "evidence_id": "claim-1",
+     "evidence_task_id": "evidence:SP-vision-multimodal-2026:f63075086ce1c194",
+     "kind": "CLAIM",
+     "subject_id": "ev-vmd008",
+     "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+     "evidence_id": "claim-1",
+     "evidence_task_id": "evidence:SP-vision-multimodal-2026:bfd74d856a35f1c7",
+     "kind": "CLAIM",
+     "subject_id": "ev-vmd009",
+     "subject_role": "PRIMARY_SUBJECT"
+    }
+   ],
+   "package_id": "P02",
+   "reader_text": "two-stageの到達点は、その後の検出の主張が共通に指す比較対象になった。Faster R-CNNはRegion Proposal Networkを検出器と畳み込み特徴量で共有し、提案の計算をほぼ不要にした。完全畳み込みのRPNは各位置で物の輪郭と物らしさを予測し、画像あたり300提案、VGG-16で毎秒5フレームという条件でVOC 2007と2012、COCOの当時最上位に並び、ILSVRCとCOCOの2015年1位の基盤になったとモデル論文の著者らが報告している。以降の三つの主張は同じ点を基準にする。SSD512はFaster R-CNNを上回り3倍の速さ、RetinaNetはone-stageの速さを保ったままtwo-stageの精度を超えた、DETRは同じ程度のパラメータで念入りに調整されたFaster R-CNNとCOCO検証で互角と報告している。到達点が比較の基準として系譜に残った。一方でアンカーの設計とNMSは人手で決めたまま残り、小さな物や縁の振る舞いは後継の資料に譲る。ここで定まった代表値の敷き詰めと重なりの後始末こそ、DETRが外す前提である。",
+   "serves_nodes": [
+    "VM-D006"
+   ]
+  },
+  {
+   "after_block_id": "p02-b4",
+   "block_id": "p02-b8",
+   "block_type": "PARAGRAPH",
+   "evidence_refs": [
+    {
+     "evidence_id": "claim-1",
+     "evidence_task_id": "evidence:SP-vision-multimodal-2026:b7de06e9d5276cc1",
+     "kind": "CLAIM",
+     "subject_id": "ev-vmd010",
+     "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+     "evidence_id": "claim-2",
+     "evidence_task_id": "evidence:SP-vision-multimodal-2026:b7de06e9d5276cc1",
+     "kind": "CLAIM",
+     "subject_id": "ev-vmd010",
+     "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+     "evidence_id": "claim-3",
+     "evidence_task_id": "evidence:SP-vision-multimodal-2026:b7de06e9d5276cc1",
+     "kind": "CLAIM",
+     "subject_id": "ev-vmd010",
+     "subject_role": "PRIMARY_SUBJECT"
+    }
+   ],
+   "package_id": "P02",
+   "reader_text": "DETRの転換は損失を数える順序にある。予測の集合と正解の集合をハンガリアン法の二部マッチングで一対一に対応づけてから、クラスの負対数尤度とL1と尺度不変のGIoUによるボックスの損失を数える。Transformerのエンコーダ・デコーダと学習した物体クエリと並列デコーディングを組み合わせ、代表値の敷き詰めも重なりの後始末も要さず、専用の仕掛けも特殊なライブラリも使わないとモデル論文の著者らが述べている。重なりの抑え込みは後のデコーダ層で起き、NMSが不要と言えるのは後の層からという所見はself-attentionの働きの記録として読む。補助のデコーディング損失は必須で、クエリ枠は分業して物を拾う。代償として300エポックの学習設定（AdamW、16枚のV100で約3日の学習期間）と、Faster R-CNN比較のための500エポックの長期設定が明記される。同じ程度のパラメータで念入りに調整されたFaster R-CNNとCOCO検証で互角という結果のうち、大きな物で+7.8 APL、小さな物で−5.5 APSという開きは、全体を見る目が大きな物のつながりを拾い小さな物の細部に弱い特性の記録である。小さな物の弱さと学習の重さは同論文自身が開いた課題としてFPN流の後継に譲る。",
+   "serves_nodes": [
+    "VM-D010"
+   ]
+  },
+  {
+   "after_block_id": "p02-b5",
+   "block_id": "p02-b9",
+   "block_type": "PARAGRAPH",
+   "evidence_refs": [
+    {
+     "evidence_id": "claim-1",
+     "evidence_task_id": "evidence:SP-vision-multimodal-2026:1619d326d81a5223",
+     "kind": "CLAIM",
+     "subject_id": "ev-vmd012",
+     "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+     "evidence_id": "claim-2",
+     "evidence_task_id": "evidence:SP-vision-multimodal-2026:1619d326d81a5223",
+     "kind": "CLAIM",
+     "subject_id": "ev-vmd012",
+     "subject_role": "PRIMARY_SUBJECT"
+    }
+   ],
+   "package_id": "P02",
+   "reader_text": "固定語彙の検出器は、訓練の表示にない言葉で指された物に応答できない。YOLO-Worldはこの語彙の契約を実時間の動作点で解いた。付け替え可能な視覚言語の集約RepVL-PANと領域と文の対照学習による損失で、決まった語彙の外の言葉で指された物をボックスで捉える。モデル論文の著者測定ではLVISで35.4 APをV100で毎秒52フレーム、ゼロショットで出したと報告している。ファインチューニングしたバリアントは検出とオープンボキャブラリーのインスタンスセグメンテーションに広がる。一方でO365やLVIS流の閉じた語彙でファインチューニングするとゼロショットの汎用が落ち、CLIPの汎用が365区分の追加学習で削れるという関係が報告される。決まった言葉に寄せると未知の言葉への応答が鈍る。細かく注釈したデータと疑似注釈のデータの混合事前学習が良いという所見は、何で学ぶかが振る舞いを決めるデータの契約の記録として読む。ボックスを出す仕掛けの話が言葉で指せる物の話へ接続する手前までが本節の射程であり、言葉との接地の振る舞いはGrounding DINO側の資料に譲る。",
+   "serves_nodes": [
+    "VM-D012"
+   ]
+  },
+  {
+   "after_block_id": "p11-b3",
+   "block_id": "p11-b7",
+   "block_type": "PARAGRAPH",
+   "evidence_refs": [
+    {
+     "evidence_id": "claim-1",
+     "evidence_task_id": "evidence:SP-vision-multimodal-2026:fd5ebde668f4efc3",
+     "kind": "CLAIM",
+     "subject_id": "ev-vmd087",
+     "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+     "evidence_id": "claim-1",
+     "evidence_task_id": "evidence:SP-vision-multimodal-2026:3fbf8ea3cf05480a",
+     "kind": "CLAIM",
+     "subject_id": "ev-vmd086",
+     "subject_role": "PRIMARY_SUBJECT"
+    }
+   ],
+   "package_id": "P11",
+   "reader_text": "長い文脈の尋ね方には広さとは別の契約がある。LongVideoBenchの著者の知見では、入力フレームを増やして初めて点が伸び、入力フレーム数の効き方が明らかになったと報告している。対してVideo-MMEは長さとモダリティの広さを一つの契約で測る。900本の動画と254時間、2700問、6領域・30細目、11秒から1時間の長さ、字幕と音声のモダリティ、専門家の注釈を備え、版の結びつけはv3の記録に置く。指された文脈の取り出しと推論という契約は、長さの広さで測る評価とは取り替えが利かない。録りためた長さをどこまで保って答えるかという問いと、指された所を取り出して筋を通す問いを同じ主張に載せない。尋ね方の契約と広さの契約の区別が、長い文脈の評価の要点である。",
+   "serves_nodes": [
+    "VM-D087",
+    "VM-D086"
+   ]
+  },
+  {
+   "after_block_id": "p11-b7",
+   "block_id": "p11-b8",
+   "block_type": "PARAGRAPH",
+   "evidence_refs": [
+    {
+     "evidence_id": "claim-1",
+     "evidence_task_id": "evidence:SP-vision-multimodal-2026:cfc2b4578045db93",
+     "kind": "CLAIM",
+     "subject_id": "ev-vmd088",
+     "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+     "evidence_id": "claim-2",
+     "evidence_task_id": "evidence:SP-vision-multimodal-2026:cfc2b4578045db93",
+     "kind": "CLAIM",
+     "subject_id": "ev-vmd088",
+     "subject_role": "PRIMARY_SUBJECT"
+    }
+   ],
+   "package_id": "P11",
+   "reader_text": "流れる映像の評価は、録りためた動画の評価とは別の契約に立つ。StreamingBenchは初めて流れる動画のマルチモーダルモデルを幅広く測り、900本の動画と4500問、18課題を三区分で扱う。流れの途中でタイムスタンプ付きの問いを投げ、止めた絵ではなく流れる途中に問う。コードとデータは公開された。変換の点と実時間の点は別の値として読む。視聴覚の評価の役割も兼ね、音声を含む測定の役割を担う。時刻つきの途中の問い、非同期の問い応答、記憶の方針はオンラインの側に属し、オフラインの長いコンテキストの契約とは別の列で扱う。",
+   "serves_nodes": [
+    "VM-D088"
+   ]
+  },
+  {
+   "after_block_id": "p13-b3",
+   "block_id": "p13-b9",
+   "block_type": "PARAGRAPH",
+   "evidence_refs": [
+    {
+     "evidence_id": "claim-1",
+     "evidence_task_id": "evidence:SP-vision-multimodal-2026:f782cb97c291fdef",
+     "kind": "CLAIM",
+     "subject_id": "ev-vmd093",
+     "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+     "evidence_id": "claim-2",
+     "evidence_task_id": "evidence:SP-vision-multimodal-2026:f782cb97c291fdef",
+     "kind": "CLAIM",
+     "subject_id": "ev-vmd093",
+     "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+     "evidence_id": "claim-1",
+     "evidence_task_id": "evidence:SP-vision-multimodal-2026:8b9c3bd9b50fd8e7",
+     "kind": "CLAIM",
+     "subject_id": "ev-vmd095",
+     "subject_role": "PRIMARY_SUBJECT"
+    }
+   ],
+   "package_id": "P13",
+   "reader_text": "出発点の分業と一体の表現の違いが、界面の最初の変化である。SayCanは凍結した大規模言語モデルの意味知識を言う側に置き、学習済み技能の価値関数をできる側に置いた。CoRL 2022で発表された。この記録は計画側の先行事例であり、言語と知覚と行動を一つの表現にまとめていない。PaLM-Eはその境界をなくした。視覚や状態推定といった連続した感覚モダリティを交互に織り交ぜたマルチモーダルな文として流し込み、凍結から結合へと進む言語モデルと端から端まで一緒に学習した。扱う内容は操作の計画と視覚質問応答と画像説明にまたがり、PaLM-E-562Bは視覚言語の汎用モデルとしても立ち、OK-VQAで最良の成績を収め、規模を大きくしても言語の力を保ったと報告されている。Webで学んだ見方が身体の内容に効き、身体で学んだ手順が言葉の内容に効く正の転移も報告される。掛け合わせは境界を残し、一つの表現へのまとめは境界をなくす。ただし562B級の結合学習は費用と複雑さの点で再現の裾野を狭める。",
+   "serves_nodes": [
+    "VM-D093",
+    "VM-D095"
+   ]
+  },
+  {
+   "after_block_id": "p13-b4",
+   "block_id": "p13-b10",
+   "block_type": "PARAGRAPH",
+   "evidence_refs": [
+    {
+     "evidence_id": "claim-1",
+     "evidence_task_id": "evidence:SP-vision-multimodal-2026:b57c9615772bd967",
+     "kind": "CLAIM",
+     "subject_id": "ev-vmd094",
+     "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+     "evidence_id": "claim-2",
+     "evidence_task_id": "evidence:SP-vision-multimodal-2026:b57c9615772bd967",
+     "kind": "CLAIM",
+     "subject_id": "ev-vmd094",
+     "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+     "evidence_id": "claim-1",
+     "evidence_task_id": "evidence:SP-vision-multimodal-2026:a6938620bf41e2be",
+     "kind": "CLAIM",
+     "subject_id": "ev-vmd096",
+     "subject_role": "PRIMARY_SUBJECT"
+    }
+   ],
+   "package_id": "P13",
+   "reader_text": "行動を言葉に載せる定式の前に、実演の列を集める仕事があった。RT-1はRobotics Transformerと名づけられた取り組みで、課題を限定しない開かれた学習と容量の大きなアーキテクチャを組み合わせ、多様な実ロボットのデータを吸い上げたと報告されている。汎化はデータとモデルの大きさと多様性の関数として、実際に動くロボットの実際の作業の上で調べられた。実演の軌道をトークンとして並べ、観測から行動への対応を学習できる形にした。以後は軌道と呼ぶ。行動の記録が言葉と同じ列に載ることで、次の定式化への道が開けた。機体をまたぐ条件整備の記録では、22台のロボット、527の技能、16万件を超える課題を21機関から集めて標準化し、RT-Xという容量の大きなモデルは機体をまたぐ正の転移を示したと報告されている。ただし語るのはデータの条件であり方策の組み立てではなく、対象は操作の領域にとどまる。集めた列の質と量が後の結合の成否を縛る。データの契約が整って初めて、Webの知識を身体に載せる結合が始まる。",
+   "serves_nodes": [
+    "VM-D094",
+    "VM-D096"
+   ]
+  },
+  {
+   "after_block_id": "p13-b6",
+   "block_id": "p13-b11",
+   "block_type": "PARAGRAPH",
+   "evidence_refs": [
+    {
+     "evidence_id": "claim-1",
+     "evidence_task_id": "evidence:SP-vision-multimodal-2026:ea37cef9e6cd91ef",
+     "kind": "CLAIM",
+     "subject_id": "ev-vmd097",
+     "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+     "evidence_id": "claim-1",
+     "evidence_task_id": "evidence:SP-vision-multimodal-2026:e4d1370818155fa8",
+     "kind": "CLAIM",
+     "subject_id": "ev-vmd098",
+     "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+     "evidence_id": "claim-2",
+     "evidence_task_id": "evidence:SP-vision-multimodal-2026:e4d1370818155fa8",
+     "kind": "CLAIM",
+     "subject_id": "ev-vmd098",
+     "subject_role": "PRIMARY_SUBJECT"
+    }
+   ],
+   "package_id": "P13",
+   "reader_text": "RT-2の定式化は二つの約束に支えられる。一つはRT-1が整えた実演の軌道を列に載せる約束であり、もう一つはWeb規模の視覚言語モデルがもつ見方と言葉の知識である。行動の表し方を言葉の列に寄せることで、観測と行動の対応を一つのモデルにまとめた点が定式化の中心である。軌道の約束がなければ行動は列に載らず、Webの知識がなければ初見の命令への汎化は支えられない。二段の依存がVLAの条件である。OpenVLAはこの定式をオープンウェイトで確かめ直した。97万件の実演で学ぶ70億級の構成が、非公開の大規模モデルを埋め込み評価で上回ったと報告されている。重みが開かれているため誰でも確かめられるが、この記録が結びつける独立した評価軸への接続はなく、独立評価の隔たりは残る。到達点側が語るのは能力と運用の範囲に限られる。",
+   "serves_nodes": [
+    "VM-D097",
+    "VM-D098"
+   ]
+  },
+  {
+   "after_block_id": "p14-b3",
+   "block_id": "p14-b8",
+   "block_type": "PARAGRAPH",
+   "evidence_refs": [
+    {
+     "evidence_id": "claim-1",
+     "evidence_task_id": "evidence:SP-vision-multimodal-2026:6230bc6427c4f5c0",
+     "kind": "CLAIM",
+     "subject_id": "ev-vmd103",
+     "subject_role": "PRIMARY_SUBJECT"
+    }
+   ],
+   "package_id": "P14",
+   "reader_text": "I-JEPAは予測表現の起点だ。以後は予測表現と呼ぶ。生成せずに予測する。記録ごとの拘束を束ねると、表される状態は意味の水準にある目標ブロックの表現、予測の目標は見えている断片から見えていない部分の意味、条件づけは一つの文脈ブロックと散らばった文脈からの支え、画素ではなく潜在での一致、利用は凍結したままの転移である。設計の鍵は意味の水準の目標と分散した文脈で、どこを見るかではなく何を狙いどこから支えるかが要点だ。重い生成の経路を回さずに表現の質で勝負する。ただしこの記録の対象は画像の側にあり、動画への継承はV-JEPAの側の記録が引き受ける。",
+   "serves_nodes": [
+    "VM-D103"
+   ]
+  },
+  {
+   "after_block_id": "p14-b5",
+   "block_id": "p14-b9",
+   "block_type": "PARAGRAPH",
+   "evidence_refs": [
+    {
+     "evidence_id": "claim-1",
+     "evidence_task_id": "evidence:SP-vision-multimodal-2026:8025f5dd3a9f4a6c",
+     "kind": "CLAIM",
+     "subject_id": "ev-vmd105",
+     "subject_role": "PRIMARY_SUBJECT"
+    }
+   ],
+   "package_id": "P14",
+   "reader_text": "生成的環境の側の起点にGenieを置く。無注釈のウェブ動画を大量に用い、対話で操れる生成環境を作った記録である。時空の切り分けと自己回帰の先読みと伸ばせる潜在行動の三つを組み合わせ、正解の行動ラベルなしに一コマずつ行動で操れるようにした点が仕組みの中心である。記録ごとの拘束を束ねると、表される状態はトークン化された時空の文脈と動画の中に潜む動き、予測の目標は次のコマの生成による操作可能性、条件づけは推定された潜在行動、利用は見たことのない動画からの模倣でエージェントを育てる使い方であり、基礎ワールドモデルの主張につながる。教えられた動きではなく、見た動画から潜ませた動きで操る。仕組みを読める形で開かれたことが、この記録の重みである。操れる細かさの評価はGenie 3側の記録に譲る。どの向きにも直接の系譜は主張せず、HaからGenieへの技術の継承も含めない。類似と継承は別の内容として扱う。",
+   "serves_nodes": [
+    "VM-D105"
+   ]
+  },
+  {
+   "after_block_id": "p14-b2",
+   "block_id": "p14-b10",
+   "block_type": "PARAGRAPH",
+   "evidence_refs": [
+    {
+     "evidence_id": "claim-1",
+     "evidence_task_id": "evidence:SP-vision-multimodal-2026:a6411d38b3a6d7eb",
+     "kind": "CLAIM",
+     "subject_id": "ev-vmd102",
+     "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+     "evidence_id": "claim-2",
+     "evidence_task_id": "evidence:SP-vision-multimodal-2026:a6411d38b3a6d7eb",
+     "kind": "CLAIM",
+     "subject_id": "ev-vmd102",
+     "subject_role": "PRIMARY_SUBJECT"
+    }
+   ],
+   "package_id": "P14",
+   "reader_text": "記録ごとの拘束を束ねると、表される状態は潜在のダイナミクス状態、予測の目標は想像の中の軌道の収益、条件づけは潜在ダイナミクスによる先読み、利用は想像の中で方策を磨き現実に戻して動かすことである。一つの設定のまま150件を超える課題にわたり専用の手法を上回り、人の実演も手本もなしにMinecraftで初めてダイヤモンドを集めたことも報告されている。想像の中で磨き現実に戻して動かす使い方が、潜在ダイナミクスの契約である。収益の対象に見た目の評価を持ち込んではならず、制御の評価で測る対象だ。",
+   "serves_nodes": [
+    "VM-D102"
+   ]
+  },
+  {
+   "after_block_id": "p03-b2",
+   "block_id": "p03-b6",
+   "block_type": "PARAGRAPH",
+   "evidence_refs": [
+    {
+     "evidence_id": "claim-1",
+     "evidence_task_id": "evidence:SP-vision-multimodal-2026:e64042250de2535e",
+     "kind": "CLAIM",
+     "subject_id": "ev-vmd013",
+     "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+     "evidence_id": "claim-1",
+     "evidence_task_id": "evidence:SP-vision-multimodal-2026:231a944a9fd799b8",
+     "kind": "CLAIM",
+     "subject_id": "ev-vmd015",
+     "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+     "evidence_id": "claim-1",
+     "evidence_task_id": "evidence:SP-vision-multimodal-2026:7407b38e6e4d1286",
+     "kind": "CLAIM",
+     "subject_id": "ev-vmd016",
+     "subject_role": "PRIMARY_SUBJECT"
+    }
+   ],
+   "package_id": "P03",
+   "reader_text": "画素の契約は三つの水準で言い分ける。セマンティックセグメンテーションは画素ごとにカテゴリを割り当て、インスタンスセグメンテーションは個々の物体ごとにマスクを分離し、パノプティックセグメンテーションは両者を一つの整合した出力に統合してPanoptic Qualityという指標を添える。Fully Convolutional Networksは分類モデルを画素から画素へのモデルに書き換えて端から端まで学習させ、粗い深層と細かい浅層をスキップで足し合わせて分類からセグメンテーションへの転移の契約を定めたと、モデル論文の著者測定として報告されている。Mask R-CNNはFaster R-CNNにマスクの枝を並列に足してRoIAlign級の位置合わせで検出とインスタンスマスクを同時に解き、COCOの三部門で最上位に立ったと報告されているが、ボックスに依存した作りでありボックスに依存しない密な予測はFCNやSAM側の資料に譲る。パノプティックは契約を言い換える深さに留まり、隠れた部分の扱いは射程の外でアモーダルな拡張は同論文自身が今後の課題として残している。輪郭の粗さは後の評価軸での留保であり、磨き上げは後継の資料に譲る。三水準の区別を保つことが、プロンプトで指示できる切り出しの議論をSAM側の記録に正しく渡す前提になる。",
+   "serves_nodes": [
+    "VM-D013",
+    "VM-D015",
+    "VM-D016"
+   ]
+  },
+  {
+   "after_block_id": "p03-b4",
+   "block_id": "p03-b7",
+   "block_type": "PARAGRAPH",
+   "evidence_refs": [
+    {
+     "evidence_id": "claim-1",
+     "evidence_task_id": "evidence:SP-vision-multimodal-2026:4c4e58ac13a1d141",
+     "kind": "CLAIM",
+     "subject_id": "ev-vmd018",
+     "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+     "evidence_id": "claim-2",
+     "evidence_task_id": "evidence:SP-vision-multimodal-2026:4c4e58ac13a1d141",
+     "kind": "CLAIM",
+     "subject_id": "ev-vmd018",
+     "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+     "evidence_id": "claim-1",
+     "evidence_task_id": "evidence:SP-vision-multimodal-2026:430f58620318dee9",
+     "kind": "CLAIM",
+     "subject_id": "ev-vmd017",
+     "subject_role": "PRIMARY_SUBJECT"
+    }
+   ],
+   "package_id": "P03",
+   "reader_text": "画像で指示に応える仕組みを動画に延ばすと、時刻が進んでも指示の対象を保ち続けることが課題になる。SAM 2はプロンプトと予測をまたぐストリーミングのメモリを置き、過去の予測を覚えて次の切り出しに生かすことでこの課題に応える。SA-Vというデータエンジン、すなわち最大規模の動画セグメンテーションデータが学習を支えると、モデル論文の著者測定として報告されている。動画では対話が3分の1に減り、画像ではSAMとの直接の比較条件で6倍速く精度も高いと報告され、モデルとデータと学習のコードを公開したと述べている。本書ではこの成果を時間の状態をどう持つかという設計の指し示しとして読み、後の節の前提に置く。密な構造を切り出す話が時刻に沿って保つ話へ接続する、その接続だけを本節の出口に置く。",
+   "serves_nodes": [
+    "VM-D018"
+   ]
+  },
+  {
+   "after_block_id": "p06-b3",
+   "block_id": "p06-b7",
+   "block_type": "PARAGRAPH",
+   "evidence_refs": [
+    {
+     "evidence_id": "claim-1",
+     "evidence_task_id": "evidence:SP-vision-multimodal-2026:4e994d899261cc65",
+     "kind": "CLAIM",
+     "subject_id": "ev-vmd033",
+     "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+     "evidence_id": "claim-1",
+     "evidence_task_id": "evidence:SP-vision-multimodal-2026:9dce7c29b30f2b61",
+     "kind": "CLAIM",
+     "subject_id": "ev-vmd034",
+     "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+     "evidence_id": "claim-1",
+     "evidence_task_id": "evidence:SP-vision-multimodal-2026:0eb3420fb03f017e",
+     "kind": "CLAIM",
+     "subject_id": "ev-vmd036",
+     "subject_role": "PRIMARY_SUBJECT"
+    }
+   ],
+   "package_id": "P06",
+   "reader_text": "ラベルなしで学ぶ流れは目的関数の違いで言い分ける。MAEは非対称のエンコーダ・デコーダを置き、エンコーダは見えるパッチだけを受けて軽いデコーダが欠けた所を戻し、75%を隠す高いマスク率で学習を3倍超速めながら精度も上げたと、モデル論文の著者測定として報告されている。DINO自己教師ありはラベルなしの自己蒸留で教師の役割を動かし続け、検出器のDINOとは同名別物として呼び分け、CLSアテンションマップに意味的セグメンテーションの情報が現れると報告されている。モメンタムエンコーダとマルチクロップと小さなパッチが効くと述べている。SigLIPはペアごとのシグモイド損失で学んで大域ソフトマックス正規化を排し、各画像・テキスト対を独立に判定する置き換えであり、32Kで足り小さなバッチでもよく働くと報告されている。再構成と表現の読み分けは保ち、画素を戻せることが下流課題の強さを意味しない点と、アテンションの片鱗がそのまま検出のボックスにならない点は留保する。戻す目的関数と蒸留と一対判定の三筋を分けて読むことが、基盤の節の要点になる。",
+   "serves_nodes": [
+    "VM-D033",
+    "VM-D034",
+    "VM-D036"
+   ]
+  },
+  {
+   "after_block_id": "p06-b5",
+   "block_id": "p06-b8",
+   "block_type": "PARAGRAPH",
+   "evidence_refs": [
+    {
+     "evidence_id": "claim-1",
+     "evidence_task_id": "evidence:SP-vision-multimodal-2026:3c9024041edb1a4a",
+     "kind": "CLAIM",
+     "subject_id": "ev-vmd035",
+     "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+     "evidence_id": "claim-2",
+     "evidence_task_id": "evidence:SP-vision-multimodal-2026:0eb3420fb03f017e",
+     "kind": "CLAIM",
+     "subject_id": "ev-vmd036",
+     "subject_role": "PRIMARY_SUBJECT"
+    }
+   ],
+   "package_id": "P06",
+   "reader_text": "基盤の流れは視覚言語モデルの視覚エンコーダに集まる。DINOv2は自動で整えるデータパイプラインと拡張した学習で1B級ViTを学んで小さなモデルへ蒸留し、人手のファインチューニングなしに汎用の特徴が弱教師ありの代替に迫り、画像と画素の多くのベンチマークでOpenCLIPを上回ったと、モデル論文の著者測定として報告されている。Qwen系での再利用の事実は2026年時点の報告として受け止め、正確な引用対応は未確定のまま残ると記す。汎用の特徴とプロンプトで指示できる界面は基盤という同じ言葉で別物を指し、強い特徴と指示のインターフェースは別の契約である。凍結評価の転移の範囲に留まる点も保ち、凍結で測った強さがファインチューニング先の強さを約束しない。効率の一般論はTS-001の資産を借りるだけで説き直さず、本巻はトークン化とアーキテクチャと目的関数と蒸留の切り分けを保ったまま、言語と結ばれる前の仕組みの話を接地の節へ渡す。",
+   "serves_nodes": [
+    "VM-D035",
+    "VM-D036"
+   ]
+  },
+  {
+   "after_block_id": "p07a-b2",
+   "block_id": "p07a-b5",
+   "block_type": "PARAGRAPH",
+   "evidence_refs": [
+    {
+     "evidence_id": "claim-1",
+     "evidence_task_id": "evidence:SP-vision-multimodal-2026:20d1ebc2759ddd61",
+     "kind": "CLAIM",
+     "subject_id": "ev-vmd039",
+     "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+     "evidence_id": "claim-2",
+     "evidence_task_id": "evidence:SP-vision-multimodal-2026:20d1ebc2759ddd61",
+     "kind": "CLAIM",
+     "subject_id": "ev-vmd039",
+     "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+     "evidence_id": "claim-1",
+     "evidence_task_id": "evidence:SP-vision-multimodal-2026:25a1e7517b74ec98",
+     "kind": "CLAIM",
+     "subject_id": "ev-vmd038",
+     "subject_role": "PRIMARY_SUBJECT"
+    }
+   ],
+   "package_id": "P07A",
+   "reader_text": "決まった分類名から言葉で指せる画像の意味への転換は、画像・テキスト対の契約で支えられる。CLIPはウェブ由来の4億ペアでキャプション予測の事前学習を行い、自然言語で呼び出せる転移可能な表現を学んだと、モデル論文の著者測定として報告されている。ImageNetの128万枚のラベルを一つも使わず教師ありResNet-50に並び、OCRや動画の行動認識や位置推定や細粒度分類を含む30超のデータセットへゼロショット転送し、コードと重みを開く。測り方はゼロショット転送と検索の契約であり、位置や領域を測る契約とは別物である。画像全体とテキストの意味対応づけをアライメントと呼び、後の節の接地の操作と混ぜない。VQA-v2の学習分割の混入と言葉の癖で当たる問いの混入は留保となり、学習分割と答えの抽出規則を数値と組で読む。画像全体の一括対応づけは語の並びや帰属の読みを落とし、この限界が任意の言葉を位置や領域へ結ぶ仕組みを要請する。呼び出し可能性の到達を起点に接地の仕組みへ進む。",
+   "serves_nodes": [
+    "VM-D039"
+   ]
+  },
+  {
+   "after_block_id": "p07a-b3",
+   "block_id": "p07a-b6",
+   "block_type": "PARAGRAPH",
+   "evidence_refs": [
+    {
+     "evidence_id": "claim-1",
+     "evidence_task_id": "evidence:SP-vision-multimodal-2026:000811ab2cedb843",
+     "kind": "CLAIM",
+     "subject_id": "ev-vmd040",
+     "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+     "evidence_id": "claim-2",
+     "evidence_task_id": "evidence:SP-vision-multimodal-2026:20d1ebc2759ddd61",
+     "kind": "CLAIM",
+     "subject_id": "ev-vmd039",
+     "subject_role": "PRIMARY_SUBJECT"
+    }
+   ],
+   "package_id": "P07A",
+   "reader_text": "丁寧な洗浄と規模の関係を別系統で確かめたのがALIGNである。10億超の代替テキストペアに最小限の頻度洗浄だけを施して規模で雑音を補い、デュアルエンコーダの対照アライメントでゼロショット分類とFlickr30KとMSCOCOの検索で到達点に届き、cross-attention型を上回ったと、モデル論文の著者測定として報告されている。エンコーダを分けて照合する素朴な構成が規模の前では込み入った構成を上回る点に、対照の裾野の広さの記録がある。最小限の洗浄で足りるという主張はバリアントとしての位置に留め、洗浄の免罪にはしない。CLIP側の限りは論文自身のLimitationsの節が名指しし、画像全体とテキストの一括対応づけが語の並びや帰属の読みを落とす点は次の接地の節への動機として残す。効率や規模への批判は後継の記録に譲り、SigLIPの目的関数の組み替えがその対応であることは基盤の節に記した。ゼロショットと検索の数値は位置特定の数値と並べて優劣を付けない。",
+   "serves_nodes": [
+    "VM-D040",
+    "VM-D039"
+   ]
+  },
+  {
+   "after_block_id": "p10-b2",
+   "block_id": "p10-b5",
+   "block_type": "PARAGRAPH",
+   "evidence_refs": [
+    {
+     "evidence_id": "claim-1",
+     "evidence_task_id": "evidence:SP-vision-multimodal-2026:f13e584f76331ad8",
+     "kind": "CLAIM",
+     "subject_id": "ev-vmd079",
+     "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+     "evidence_id": "claim-1",
+     "evidence_task_id": "evidence:SP-vision-multimodal-2026:8843ba1fc533e700",
+     "kind": "CLAIM",
+     "subject_id": "ev-vmd080",
+     "subject_role": "PRIMARY_SUBJECT"
+    }
+   ],
+   "package_id": "P10",
+   "reader_text": "物体のハルシネーションの一次検査を担うのがPOPEである。物体のハルシネーションを初めて体系だてて調べ、POPE (Polling-based Object Probing Evaluation)による問いかけ型の物体存在プロービングで、安定かつ柔軟に測ると、ベンチマーク論文の著者による第三者測定として報告されている。現れやすい物や一緒に現れる指示対象ほど幻を生みやすいという知見が、問いかけの設計の根拠になる。ポーリングによる問いかけは問いかけの範囲に留まり、開かれた応答の忠実さは制御ペアの道具が担う。投票ではなく問いかけ型と呼ぶ言い分けを守り、ハルシネーションの表記に統一する。一次検査でふるい分け、制御ペアで言語と視覚の責任を分ける順序が本節の作法であり、POPEによる問いかけ型評価と回転と視覚数学の道具の違いを混ぜない。ポーリングの数値を自由記述の忠実さの根拠に拡張しない。",
+   "serves_nodes": [
+    "VM-D079"
+   ]
+  },
+  {
+   "after_block_id": "p10-b5",
+   "block_id": "p10-b6",
+   "block_type": "PARAGRAPH",
+   "evidence_refs": [
+    {
+     "evidence_id": "claim-1",
+     "evidence_task_id": "evidence:SP-vision-multimodal-2026:8843ba1fc533e700",
+     "kind": "CLAIM",
+     "subject_id": "ev-vmd080",
+     "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+     "evidence_id": "claim-1",
+     "evidence_task_id": "evidence:SP-vision-multimodal-2026:c2d0b6fc3b59c6ad",
+     "kind": "CLAIM",
+     "subject_id": "ev-vmd078",
+     "subject_role": "PRIMARY_SUBJECT"
+    }
+   ],
+   "package_id": "P10",
+   "reader_text": "失敗を分ける中心の道具は制御ペアによる診断である。制御ペアの問いは対の構造で組む。対の片方はもとの画像、もう片方は人の手で直した画像であり、直しの前後で問いを組むと言語の先入観か根拠の利用かが切り分けられる。ベンチマーク論文の著者による第三者測定では、GPT-4Vが対精度で31.42%、他はすべて16%未満に留まったと報告されている。対の両方で正答した場合にのみ点が入る厳しい評価軸での値であり、15モデルの測定として記す。手作りの小さな規模であり、順位表として読まず診断として読む。合成点をもって賢さ一般を語らず、使うたびにscaffold（補助的手順）の切り分けと汚染の不透明さを添える。制御ペアの診断を基準に置くことが、言語と視覚の責任分担を明らかにする。",
+   "serves_nodes": [
+    "VM-D080"
+   ]
+  },
+  {
+   "after_block_id": "p10-b3",
+   "block_id": "p10-b7",
+   "block_type": "PARAGRAPH",
+   "evidence_refs": [
+    {
+     "evidence_id": "claim-1",
+     "evidence_task_id": "evidence:SP-vision-multimodal-2026:c2d0b6fc3b59c6ad",
+     "kind": "CLAIM",
+     "subject_id": "ev-vmd078",
+     "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+     "evidence_id": "claim-1",
+     "evidence_task_id": "evidence:SP-vision-multimodal-2026:99fe5e3d8da3e4af",
+     "kind": "CLAIM",
+     "subject_id": "ev-vmd081",
+     "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+     "evidence_id": "claim-1",
+     "evidence_task_id": "evidence:SP-vision-multimodal-2026:ea3bed97631f4e83",
+     "kind": "CLAIM",
+     "subject_id": "ev-vmd082",
+     "subject_role": "PRIMARY_SUBJECT"
+    }
+   ],
+   "package_id": "P10",
+   "reader_text": "点を使うたびに帰属の作法を同行させる。MMMUは1.15万問の専門家課題で総合的な推論の評価条件となり、GPT-4Vが56%、Gemini Ultraが59%に届くと報告されているが、合成点は汎用知能の根拠にはならない。scaffold（補助的手順）の有無で点が動くため、アブレーションを添えない帰属は避け、閉じたモデルでは汚染の見通しが利かない点を合わせて記す。MMBenchは英中二言語の3000問超を選択式で20の能力軸に束ね、CircularEvalと呼ぶ選択肢の回転で一貫性を確かめ、GPT-4による選択肢の取り出しで弱い指示追従を吸収する。取り出しは人手と91.5%で一致すると報告されているが、判定への依存は点と組で読み、対象言語も英中の範囲に限定する。MathVistaは6141例で7種の推論と5種の課題を交差させ、知覚のつまずきか推論のつまずきかの帰属にはCoTやPoTや道具の有無の切り分けが使うたびに要る。POPEによる問いかけ型評価は一次検査、制御ペアは言語と視覚の分離、回転は選択のぶれの吸収、視覚数学は図を読む推論の切り分けであり、四者を混ぜない。",
+   "serves_nodes": [
+    "VM-D078",
+    "VM-D081",
+    "VM-D082"
+   ]
+  },
+  {
+   "after_block_id": "p12-b2",
+   "block_id": "p12-b6",
+   "block_type": "PARAGRAPH",
+   "evidence_refs": [
+    {
+     "evidence_id": "claim-1",
+     "evidence_task_id": "evidence:SP-vision-multimodal-2026:6852a5755398b866",
+     "kind": "CLAIM",
+     "subject_id": "ev-vmd091",
+     "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+     "evidence_id": "claim-2",
+     "evidence_task_id": "evidence:SP-vision-multimodal-2026:6852a5755398b866",
+     "kind": "CLAIM",
+     "subject_id": "ev-vmd091",
+     "subject_role": "PRIMARY_SUBJECT"
+    }
+   ],
+   "package_id": "P12",
+   "reader_text": "長い作業では失敗の中心が移る。OSWorld 2.0は108件の長い手順で人が要する時間の中央値が1.6時間に達し、道具の呼び出し回数が約318回にのぼると報告されている。課題には作業の途中で新しい情報が届き最初の手順を変更しなければならない場合、環境が動的に変わる場合、複数の出所を見比べて考えなければ答えが出ない場合、画面に書かれていない暗黙の状態を推測しなければならない場合が織り込まれている。ベンチマーク論文の著者による測定で最良だった構成は二値の成否が20.6%、部分点が54.8%だったと報告され、最後までやり切る割合と途中まで進める割合の開きが到達点を示す。数値はモデルと設定と道具と手順数と版に結びつけて読み、条件を外して比べない。",
+   "serves_nodes": [
+    "VM-D091"
+   ]
+  },
+  {
+   "after_block_id": "p12-b4",
+   "block_id": "p12-b7",
+   "block_type": "PARAGRAPH",
+   "evidence_refs": [
+    {
+     "evidence_id": "claim-1",
+     "evidence_task_id": "evidence:SP-vision-multimodal-2026:3d4f179a082773fd",
+     "kind": "CLAIM",
+     "subject_id": "ev-vmd092",
+     "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+     "evidence_id": "claim-1",
+     "evidence_task_id": "evidence:SP-vision-multimodal-2026:85268ad1dbd5f285",
+     "kind": "CLAIM",
+     "subject_id": "ev-vmd090",
+     "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+     "evidence_id": "claim-1",
+     "evidence_task_id": "evidence:SP-vision-multimodal-2026:6852a5755398b866",
+     "kind": "CLAIM",
+     "subject_id": "ev-vmd091",
+     "subject_role": "PRIMARY_SUBJECT"
+    }
+   ],
+   "package_id": "P12",
+   "reader_text": "Computer Useの評価は層をなす。まずスクリーンショットが入力になり、次に画面の中の要素へ接地して押す場所を定め、定めた座標や道具で実際に操作し、最後に長い手順の状態を保ち続ける。SeeClickとScreenSpotは要素の位置を定める力を課題成否から切り分けて測る記録であり、ScreenSpotは600件を超えるスクリーンショットと1200件を超える指示からなる純粋な位置特定の条件で、指示された要素の位置を言い当てられるかだけを測ると報告されている。ここで上がった位置特定の力はMiniWobやAITW、Mind2Webの遂行にも波及したと報告されている。OSWorldは実OS上の短い課題の成否を担い、OSWorld 2.0が長い手順の状態管理を担う。下の層が上がっても上の層が自動で解けるわけではなく、1.0と2.0の数値を並べて優劣を語ることはできない。安全性の報告は評価に添えられた材料として読み、運用の可否を決める根拠にはしない。本節はエージェントの構成一般を論じない。",
+   "serves_nodes": [
+    "VM-D090",
+    "VM-D092"
+   ]
+  }
+ ]
+}

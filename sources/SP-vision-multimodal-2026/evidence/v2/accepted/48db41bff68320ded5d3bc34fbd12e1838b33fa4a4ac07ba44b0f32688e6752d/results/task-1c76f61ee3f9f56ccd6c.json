@@ -1,0 +1,108 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-vision-multimodal-2026",
+  "evidence_task_id": "evidence:SP-vision-multimodal-2026:4ca2413b8167abe8",
+  "basis": {
+    "task_sha256": "9b9145c23ea846a895761c80c87973b26433ca1cea579c23ba307942a0e436d4",
+    "screening_acceptance_sha256": "3bc6edb4c60ad6fba40626b0900f6cf5656544b98a95e4b3d4415f049d3f1a94",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "ev-vmd023",
+      "canonical_name": "LayoutLM (Xu et al., 2020)",
+      "entity_type": "PAPER",
+      "organization": "Microsoft Research Asia",
+      "canonical_url": "https://arxiv.org/abs/1912.13318"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "ev-vmd023",
+    "artifact_type": "PAPER",
+    "canonical_name": "LayoutLM (Xu et al., 2020)",
+    "canonical_url": "https://arxiv.org/abs/1912.13318"
+  },
+  "temporal": {
+    "observed_at": "2026-09-30T14:24:47Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2019-12",
+        "subject_id": "ev-vmd023",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/1912.13318",
+      "source_class": "PRIMARY_PAPER",
+      "title": "LayoutLM (Xu et al.)",
+      "published_at": "2019-12",
+      "accessed_at": "2026-09-30T14:24:47Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Pre-training with text + layout (token + layout + image embeddings) in one Transformer framework, self-supervised on large unlabeled scanned documents; evaluated on form understanding, receipt understanding, and scanned-document classification, substantially outperforming prior SOTA pre-trained models.",
+      "subject_id": "ev-vmd023",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Full-paper conclusion/future-work + architecture description consumed. Outperformance numbers are paper-reported."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Paper's own forward program: more data/compute, LARGE architecture with image embeddings in pre-training, new architectures and self-supervised objectives — the data/compute scaling reading for document AI.",
+      "subject_id": "ev-vmd023",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Future Work section consumed."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Base-version scope; unified successors (v3) needed for image-modality completeness.",
+      "subject_id": "ev-vmd023",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Full body consumed: multimodal input design, three task evaluations, and scaling program verified.",
+        "subject_ids": [
+          "ev-vmd023"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

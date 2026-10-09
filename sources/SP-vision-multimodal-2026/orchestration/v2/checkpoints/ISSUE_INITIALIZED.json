@@ -1,0 +1,45 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-vision-multimodal-2026",
+  "from_state": "ISSUE_INITIALIZED",
+  "to_state": "DISCOVERY_COLLECTED",
+  "checkpoints": [
+    "discovery"
+  ],
+  "recorded_at": "2026-10-08T13:57:03Z",
+  "implementation": {
+    "repository_commit_sha": "8456ac9d4bc787e2fa1c6f2ce894546b07dff554",
+    "orchestrator_version": "survey-production-core-v2/0.15-postintegration-transport-thematic"
+  },
+  "contract": {
+    "pipeline_contract_version": "2.0-rc1",
+    "pipeline_contract_sha256": "ee89796245c22072cec98f34931180214a4928c24f399280793cd6420a4c8e71",
+    "quality_contract_version": "2.0-rc1",
+    "quality_contract_sha256": "b5b955d524fb438c0f1b2c9490bea1da2083e79028d67a55ca424bbfc20f2958",
+    "research_profile_version": "2.0-rc1",
+    "research_profile_sha256": "0f575e6d97caec72b2bf8b7f6b78a562d97ca67b2071193417b968ba3d73e6e8",
+    "publication_profile_version": "2.0-rc1",
+    "publication_profile_sha256": "a6859559dd1b9d42ab8fb4402b74b7bdd8611dbe65c8e02a7b022b545c20f4eb"
+  },
+  "artifacts": [
+    {
+      "name": "discovery-acceptance",
+      "path": "sources/SP-vision-multimodal-2026/discovery/discovery-accepted-v2.json",
+      "sha256": "fb13e6f84e83c4540938966e61c76209c3f2a52aafa6fb19aa1a86e0f0f511ea"
+    }
+  ],
+  "reviews": [
+    {
+      "check_id": "CORE_STAGE_CONTRACT",
+      "kind": "DETERMINISTIC",
+      "status": "PASS",
+      "executor": "Muse Spark (Work execution role; deterministic tool result, not a Sol/Human decision)",
+      "evidence": "Discovery stage-contract validation passed over canonical 125-record acceptance (122 carried + VM-D123/VM-D124/VM-D125 P02 bridge admissions). Machine validation only; Sol review owed.",
+      "result": {
+        "path": "sources/SP-vision-multimodal-2026/execution/p02-detr-bridge-intake-r9-20261008/validation/discovery-stage-validation-125.json",
+        "sha256": "dfac763b2ccce95bef169efc6827a0835ad5aa7fa12ae01a64ce59721e6dbb0f"
+      }
+    }
+  ],
+  "summary": "TS-003 Discovery complete: 125 BASE root records (122 carried + Deformable DETR, DAB-DETR, DN-DETR P02 bridge admissions). Proceed to Screening."
+}

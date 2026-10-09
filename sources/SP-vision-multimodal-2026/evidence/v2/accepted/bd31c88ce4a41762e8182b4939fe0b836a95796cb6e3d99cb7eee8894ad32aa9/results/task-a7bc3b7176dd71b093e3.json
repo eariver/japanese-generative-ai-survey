@@ -1,0 +1,97 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-vision-multimodal-2026",
+  "evidence_task_id": "evidence:SP-vision-multimodal-2026:c960bc12fffca2f0",
+  "basis": {
+    "task_sha256": "634ed1a22e2cf8928e19a36d37eece9ef3971332d8dc6b9d3992b9d27d88c329",
+    "screening_acceptance_sha256": "3f6be59d8dec325e5561ef118bf6025cd200f943d6ea161b4b7b40070d3af087",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "ev-vmd083",
+      "canonical_name": "Kinetics",
+      "entity_type": "DATASET",
+      "organization": "DeepMind",
+      "canonical_url": "https://arxiv.org/abs/1705.06950"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "ev-vmd083",
+    "artifact_type": "DATASET",
+    "canonical_name": "Kinetics",
+    "canonical_url": "https://arxiv.org/abs/1705.06950"
+  },
+  "temporal": {
+    "observed_at": "2026-09-30T14:24:47Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2017-05",
+        "subject_id": "ev-vmd083",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/1705.06950",
+      "source_class": "PRIMARY_PAPER",
+      "title": "The Kinetics Human Action Video Dataset (Kay et al.)",
+      "published_at": "2017-05",
+      "accessed_at": "2026-09-30T14:24:47Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "400 human-action classes x 400+ 10s YouTube clips; classification (not temporal localization) scope; large-scale training-from-scratch + architecture-comparison benchmark with imbalance-bias analysis.",
+      "subject_id": "ev-vmd083",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Full-paper abstract/introduction; CVPR 2017."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Short-clip classification scope only; temporal reasoning needs successors.",
+      "subject_id": "ev-vmd083",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Full body consumed: collection design, classification scope, baseline purpose verified.",
+        "subject_ids": [
+          "ev-vmd083"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

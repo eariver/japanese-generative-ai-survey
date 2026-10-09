@@ -1,0 +1,108 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-vision-multimodal-2026",
+  "evidence_task_id": "evidence:SP-vision-multimodal-2026:f782cb97c291fdef",
+  "basis": {
+    "task_sha256": "3fadc66e656382f40cf405144c2563ffdf71849e83bc8792cc69272c9a236cbb",
+    "screening_acceptance_sha256": "3bc6edb4c60ad6fba40626b0900f6cf5656544b98a95e4b3d4415f049d3f1a94",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "ev-vmd093",
+      "canonical_name": "SayCan (Ahn et al., 2022)",
+      "entity_type": "PAPER",
+      "organization": "Google",
+      "canonical_url": "https://arxiv.org/abs/2204.01691"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "ev-vmd093",
+    "artifact_type": "PAPER",
+    "canonical_name": "SayCan (Ahn et al., 2022)",
+    "canonical_url": "https://arxiv.org/abs/2204.01691"
+  },
+  "temporal": {
+    "observed_at": "2026-09-30T14:24:47Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2022-04",
+        "subject_id": "ev-vmd093",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2204.01691",
+      "source_class": "PRIMARY_PAPER",
+      "title": "Do As I Can, Not As I Say / SayCan (Ahn et al.)",
+      "published_at": "2022-04",
+      "accessed_at": "2026-09-30T14:24:47Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Planner-side grounding WITHOUT joint representation: frozen LLM semantic knowledge (Say) multiplied by pretrained-skill affordance value functions (Can); LLM as planner, robot skills as hands/eyes; 101 real kitchen tasks on mobile manipulator; grounding nearly doubles non-grounded baselines; CoRL 2022.",
+      "subject_id": "ev-vmd093",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Full-paper abstract; PMLR v205 proceedings venue confirmed."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Chain role: planner-side predecessor making PaLM-E's joint-embedding step the visible break (refined Round B reading).",
+      "subject_id": "ev-vmd093",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Edition-level analytical synthesis by the Work operator (lineage/selection/boundary/contract judgment, not a literal statement of the cited source); structural home for edition rationale."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Planner-side only; joint-representation break needs PaLM-E-side sources.",
+      "subject_id": "ev-vmd093",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Complete SayCan paper body consumed via arXiv HTML (105KB text): Say-times-Can formulation, skill grounding, kitchen results verified.",
+        "subject_ids": [
+          "ev-vmd093"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

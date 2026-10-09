@@ -1,0 +1,108 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-vision-multimodal-2026",
+  "evidence_task_id": "evidence:SP-vision-multimodal-2026:578045dad3cb91df",
+  "basis": {
+    "task_sha256": "33a291f308fdc1ce3d87b21bc42d277d1c633ff2761ecdb5111b18ba393ab349",
+    "screening_acceptance_sha256": "2b50dd1c205efc957c16a848fe185f9de7fb5eca10a5729c1b58c5bb250e7aff",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "ev-vmd104",
+      "canonical_name": "V-JEPA (Bardes et al., 2024)",
+      "entity_type": "MODEL",
+      "organization": "Meta FAIR",
+      "canonical_url": "https://arxiv.org/abs/2404.08471"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "ev-vmd104",
+    "artifact_type": "PAPER",
+    "canonical_name": "V-JEPA (Bardes et al., 2024)",
+    "canonical_url": "https://arxiv.org/abs/2404.08471"
+  },
+  "temporal": {
+    "observed_at": "2026-09-30T14:24:47Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2024-02",
+        "subject_id": "ev-vmd104",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2404.08471",
+      "source_class": "PRIMARY_PAPER",
+      "title": "Revisiting Feature Prediction / V-JEPA (Bardes et al.)",
+      "published_at": "2024-02",
+      "accessed_at": "2026-09-30T14:24:47Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Feature-prediction-only video SSL (no pretrained encoders, text, negatives, reconstruction, or other supervision) on 2M public videos: frozen-backbone versatility on motion + appearance tasks — ViT-H/16 video-only reaches K400 81.9 / SSv2 72.2 / IN1K 77.9; code open; 2026-08-24 correspondence version.",
+      "subject_id": "ev-vmd104",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Full-paper abstract; numbers paper-reported."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Diffusion-pixel decoder exists only as a post-hoc grounding probe with encoder frozen — not a generative claim; the frozen-eval transfer WITHOUT generative decoder is the distinguishing evidence.",
+      "subject_id": "ev-vmd104",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Design section consumed; anti-collapse reading."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Representation-probe scope; planning-use claims need dynamics-side sources.",
+      "subject_id": "ev-vmd104",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Complete V-JEPA paper body consumed via arXiv HTML (90KB text): supervision exclusions, frozen-eval results, probe-decoder role verified.",
+        "subject_ids": [
+          "ev-vmd104"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

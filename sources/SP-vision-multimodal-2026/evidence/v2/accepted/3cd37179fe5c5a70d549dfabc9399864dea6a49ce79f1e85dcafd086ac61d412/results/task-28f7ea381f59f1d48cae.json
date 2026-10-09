@@ -1,0 +1,119 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-vision-multimodal-2026",
+  "evidence_task_id": "evidence:SP-vision-multimodal-2026:e4620df23bff5b48",
+  "basis": {
+    "task_sha256": "89864eb0950a78798e9872767f067608dc15ac3a229d0f57fb92d1542a8d0532",
+    "screening_acceptance_sha256": "c851605b219be55c746671e950a808b0f6821a514600b0e0d7fd582e9298b603",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "ev-vmd055",
+      "canonical_name": "ODISE (Xu et al., 2023)",
+      "entity_type": "MODEL",
+      "organization": "NVIDIA",
+      "canonical_url": "https://arxiv.org/abs/2303.04803"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "ev-vmd055",
+    "artifact_type": "PAPER",
+    "canonical_name": "ODISE (Xu et al., 2023)",
+    "canonical_url": "https://arxiv.org/abs/2303.04803"
+  },
+  "temporal": {
+    "observed_at": "2026-09-30T14:24:47Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2023-03",
+        "subject_id": "ev-vmd055",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2303.04803",
+      "source_class": "PRIMARY_PAPER",
+      "title": "Open-Vocabulary Panoptic Segmentation with Text-to-Image Diffusion Models / ODISE (Xu et al.)",
+      "published_at": "2023-03",
+      "accessed_at": "2026-09-30T14:24:47Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Frozen text-to-image diffusion + CLIP discriminative backbones for open-vocabulary panoptic segmentation: COCO-training-only reaches 23.4 PQ / 30.0 mIoU on ADE20K (+8.3/+7.9 over prior SOTA); diffusion internal representations shown semantically grouped via K-means probe; code+models open; CVPR 2023 Highlight.",
+      "subject_id": "ev-vmd055",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Full-paper abstract; numbers paper-reported."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "TS-002 crossover flagged: diffusion-backbone mechanism policed per-paragraph at later stages.",
+      "subject_id": "ev-vmd055",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Edition-level analytical synthesis by the Work operator (lineage/selection/boundary/contract judgment, not a literal statement of the cited source); structural home for edition rationale."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Diffusion-feature dependence; crossover boundary must be policed.",
+      "subject_id": "ev-vmd055",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Full body consumed: frozen-backbone design, K-means probe, SOTA margins verified.",
+        "subject_ids": [
+          "ev-vmd055"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "TS-002/TS-003 boundary: diffusion backbone crossover",
+        "status": "VERIFIED",
+        "finding": "Crossover flagged; per-paragraph policing required at later stages.",
+        "subject_ids": [
+          "ev-vmd055"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

@@ -1,0 +1,119 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-vision-multimodal-2026",
+  "evidence_task_id": "evidence:SP-vision-multimodal-2026:796e6c3c2cac7f26",
+  "basis": {
+    "task_sha256": "2db29d11ef7e2ad5a5c609639dea611c9b26a1f2378d319568cc2b1c55a4fea9",
+    "screening_acceptance_sha256": "e471c40158c226d150bf18bf68a5da46a8ad8710d5df3d063eab23f32f5863d9",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "ev-vmd125",
+      "canonical_name": "DN-DETR (Li et al., 2022)",
+      "entity_type": "MODEL",
+      "organization": null,
+      "canonical_url": "https://arxiv.org/abs/2203.01305"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "ev-vmd125",
+    "artifact_type": "PAPER",
+    "canonical_name": "DN-DETR (Li et al., 2022)",
+    "canonical_url": "https://arxiv.org/abs/2203.01305"
+  },
+  "temporal": {
+    "observed_at": "2026-10-08T00:00:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2022-03",
+        "subject_id": "ev-vmd125",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2203.01305",
+      "source_class": "PRIMARY_PAPER",
+      "title": "DN-DETR: Accelerate DETR Training by Introducing Query DeNoising",
+      "published_at": "2022-03",
+      "accessed_at": "2026-10-08T00:00:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Slow convergence diagnosed as bipartite-graph-matching instability (inconsistent early optimization goals); noised GT boxes and labels fed to the decoder as a denoising part alongside the matching part; reconstruction of original targets; attention mask blocks leakage.",
+      "subject_id": "ev-vmd125",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Paper abstract/§§3-4 (instability diagnosis + denoising mechanism)."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Built on DAB-DETR 4D-anchor formulation (decoder embedding as label embedding for box+label denoising); +1.9 AP over DAB-DETR same setting (43.4/48.6 AP R50 at 12/50 epochs); parity at ~50% epochs; also applied to Deformable DETR, Anchor DETR, Faster R-CNN, Mask2Former; CVPR 2022 Oral.",
+      "subject_id": "ev-vmd125",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Paper abstract/§§4-6 (DAB-based evaluation + generality results)."
+    },
+    {
+      "statement_id": "claim-3",
+      "text": "Denoising-training branch directly feeds DINO contrastive denoising (DINO improves DN-style denoising and reports +6.0/+2.7 AP over DN-DETR at 12/24 epochs).",
+      "subject_id": "ev-vmd125",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "DINO abstract (DN-DETR as previous best + improvement margin)."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Uniform-distribution noise sampling only; query-denoising training, not diffusion-model denoising; transition-node treatment only.",
+      "subject_id": "ev-vmd125",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "DN-DETR abstract/body consumed via CVPR open access: instability diagnosis, denoising mechanism, DAB-based results and generality verified as the P02 bridge.",
+        "subject_ids": [
+          "ev-vmd125"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

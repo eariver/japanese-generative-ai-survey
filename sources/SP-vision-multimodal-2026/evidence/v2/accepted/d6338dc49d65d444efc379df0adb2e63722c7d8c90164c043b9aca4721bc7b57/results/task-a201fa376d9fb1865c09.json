@@ -1,0 +1,108 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-vision-multimodal-2026",
+  "evidence_task_id": "evidence:SP-vision-multimodal-2026:ab41a7643858ee00",
+  "basis": {
+    "task_sha256": "f2a9e82ea279c5339855a041582bb0e8dc61c6332cfdc698662de9a2dac58f18",
+    "screening_acceptance_sha256": "2b50dd1c205efc957c16a848fe185f9de7fb5eca10a5729c1b58c5bb250e7aff",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "ev-vmd021",
+      "canonical_name": "Visual Genome (Krishna et al., 2017)",
+      "entity_type": "DATASET",
+      "organization": "Stanford",
+      "canonical_url": "https://arxiv.org/abs/1602.07332"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "ev-vmd021",
+    "artifact_type": "DATASET",
+    "canonical_name": "Visual Genome (Krishna et al., 2017)",
+    "canonical_url": "https://arxiv.org/abs/1602.07332"
+  },
+  "temporal": {
+    "observed_at": "2026-09-30T14:24:47Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2016-02",
+        "subject_id": "ev-vmd021",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/1602.07332",
+      "source_class": "PRIMARY_PAPER",
+      "title": "Visual Genome (Krishna et al.)",
+      "published_at": "2016-02",
+      "accessed_at": "2026-09-30T14:24:47Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "100K+ images with ~21 objects / ~18 attributes / ~18 relations per image plus 42+ region descriptions and ~17 QA pairs each, canonicalized to WordNet synsets; relationships/attributes as first-class citizens; scene-graph formalization improving retrieval/captioning.",
+      "subject_id": "ev-vmd021",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Full-paper abstract/dataset sections; density numbers paper-reported."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Dual role (VM-O04/VM-O08): relational scene-structure node AND region-description grounding-data predecessor from whose data regime GLIP-era GoldG practice descends.",
+      "subject_id": "ev-vmd021",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Edition-level analytical synthesis by the Work operator (lineage/selection/boundary/contract judgment, not a literal statement of the cited source); structural home for edition rationale."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Crowdsourced noise and canonicalization limits; GoldG-descent claims need GLIP-side sources.",
+      "subject_id": "ev-vmd021",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Full body consumed: annotation schema, density statistics, scene-graph formalization, cognitive-task motivation verified.",
+        "subject_ids": [
+          "ev-vmd021"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

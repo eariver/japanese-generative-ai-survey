@@ -1,0 +1,163 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-vision-multimodal-2026",
+  "evidence_task_id": "evidence:SP-vision-multimodal-2026:4e6ee193ed14e437",
+  "basis": {
+    "task_sha256": "f4c071bf4c1c5a986b7309b6fb4d06c53fe87ffc79151ab371e12503728b1c6a",
+    "screening_acceptance_sha256": "2fd98e8602ca6cc3f530ecd33965fef0dec7b41604604085ca0bd5b38972499c",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "ev-vmd070",
+      "canonical_name": "InternVL3 (Zhu et al., 2025)",
+      "entity_type": "MODEL_FAMILY",
+      "organization": "Shanghai AI Lab",
+      "canonical_url": "https://arxiv.org/abs/2504.10479"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "ev-vmd070",
+    "artifact_type": "PAPER",
+    "canonical_name": "InternVL3 (Zhu et al., 2025)",
+    "canonical_url": "https://arxiv.org/abs/2504.10479"
+  },
+  "temporal": {
+    "observed_at": "2026-09-30T14:24:47Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2025-04",
+        "subject_id": "ev-vmd070",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2504.10479",
+      "source_class": "PRIMARY_PAPER",
+      "title": "InternVL3 (Zhu et al.)",
+      "published_at": "2025-04",
+      "accessed_at": "2026-09-30T14:24:47Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Native joint multimodal+text pre-training (single stage, no post-hoc text-LLM retrofit) resolving post-hoc alignment complexity; V2PE extended multimodal contexts; SFT + MPO post-training; test-time scaling; 1B-78B family; 78B 72.2 MMMU open-SOTA (report-date, vendor-measured) competitive with 4o/3.5-Sonnet/Gemini-2.5-Pro with strong pure-language retention; weights + training data to be released.",
+      "subject_id": "ev-vmd070",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Full-paper abstract; paradigm-contrast content consumed."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Paradigm contrast vs Qwen staged bridge/extend recipe: native-joint vs staged — the anti-Qwen-only structural exhibit (not popularity).",
+      "subject_id": "ev-vmd070",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Edition-level analytical synthesis by the Work operator (lineage/selection/boundary/contract judgment, not a literal statement of the cited source); structural home for edition rationale."
+    },
+    {
+      "statement_id": "claim-3",
+      "text": "Architecture follows ViT-MLP-LLM: InternViT-300M (1B-14B models) or InternViT-6B (38B/78B) with Qwen2.5 (0.5B-72B) or InternLM3-8B bases (no instruction-tuned initialization), joined by a randomly initialized two-layer MLP projector; pixel-unshuffle cuts visual tokens to one quarter so each 448x448 tile yields 256 tokens, with dynamic-resolution tiling extended to multi-image and video.",
+      "subject_id": "ev-vmd070",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "arXiv:2504.10479v3 §2.1 Model Architecture + Table 1 (encoder/LLM pairings)."
+    },
+    {
+      "statement_id": "claim-4",
+      "text": "V2PE assigns position indices recursively with +1 per text token but +δ<1 per visual token (Eqs.1-3); during training δ is sampled per image (held constant within an image) from {1,1/2,...,1/256} (Eq.4), and chosen at inference by sequence length to stay inside the context window; δ=1 reverts to standard encoding. Visual tokens thus spend less positional budget, extending multimodal context without dropping tokens (unlike pooling compression).",
+      "subject_id": "ev-vmd070",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "arXiv:2504.10479v3 §2.1 Variable Visual Position Encoding, Eqs.(1)-(4)."
+    },
+    {
+      "statement_id": "claim-5",
+      "text": "SFT grows 16.3M→21.7M samples (tools/3D/GUI/long-context/video/diagrams/CoT added) retaining random JPEG compression, square-loss reweighting and multimodal packing; MPO trains all models on ~300K pairs with weighted preference/quality/generation losses (Eq.9); test-time Best-of-N uses the VisualPRM-8B critic; the extended InternEVO framework (data/tensor/sequence/pipeline parallelism, dynamic visual-language load balancing, head+sequence parallel) supports sequences up to 32K tokens.",
+      "subject_id": "ev-vmd070",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "arXiv:2504.10479v3 §2.3 Post-training (SFT/MPO/Eq.9) + §2.4 Test-Time Scaling (VisualPRM-8B/BoN) + §2.5 Infrastructure (InternEVO/32K)."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Vendor-measured evals at this read level (G05); 3.5-series supersession checks belong to later stages.",
+      "subject_id": "ev-vmd070",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Complete InternVL3 report body consumed via arXiv HTML (108KB text): native-joint paradigm, V2PE/MPO, family table, MMMU scope verified as first-party statements.",
+        "subject_ids": [
+          "ev-vmd070"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "vendor-claim quarantine",
+        "status": "VERIFIED",
+        "finding": "Vendor-measured claims isolated with explicit attribution and role caps; no independent-evaluation inference performed.",
+        "subject_ids": [
+          "ev-vmd070"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "3.5-series currency check",
+        "status": "VERIFIED",
+        "finding": "3.5-series currency: a newer InternVL line is known to exist; no currency fact is carried by this paper-bound card — the provenance note lives in repo-bound VM-D076; corpus not substituted.",
+        "subject_ids": [
+          "ev-vmd070"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

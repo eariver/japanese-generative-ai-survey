@@ -1,0 +1,60 @@
+{
+ "decision": "PAPER_REVIEW_TECHNICAL_FIDELITY_REPAIR",
+ "blocking_scope": [
+  "PR-01",
+  "PR-02",
+  "PR-03"
+ ],
+ "prior_closed": [
+  "R02",
+  "R04",
+  "R05"
+ ],
+ "repair_basis": {
+  "basis": "sources/SP-vision-multimodal-2026/execution/reader-r02-r04-r05-repair-20261009/main.tex",
+  "main_tex_sha256": "f09a808d1ed8ec7b18713e64dadafe6fbb0925d585df22881d0d27df37577342",
+  "references_bib_sha256": "9c1e60fbefa4c2679f6a6cc465f803efc24f891ac215ef87782e4f636aeb3c1a"
+ },
+ "rules": [
+  {
+   "rule_id": "PR-01-DETR-L86",
+   "finding": "PR-01",
+   "occurrences": 1,
+   "before": "小物体の5.5ポイント不足と300から500エポックに及ぶAdamW日程、16枚のV100で3日という訓練負担が論文自身の開かれた課題である。",
+   "after": "小物体の5.5ポイント不足と長い学習期間が、論文自身の挙げる課題である。AdamWを用いた基準設定は300エポックで、16枚のV100による学習に約3日を要する。Faster R-CNNとの比較には500エポックの長期設定を用いている。",
+   "context_before": "APであることが原論文の測定として示されている。大物体の7.8ポイント上振れは大域自己アテンションの寄与として述べられ、小物体の5.5ポイント不足と300から500エポックに及ぶAdamW日程、16枚のV100で3日という訓練負担が論文自身の開かれた課題である。パノプティック拡張ではテスト46 PQでとくにstuff側に強いことも同条件の報告として添えられる。小物体と学習負担の修",
+   "context_after": "APであることが原論文の測定として示されている。大物体の7.8ポイント上振れは大域自己アテンションの寄与として述べられ、小物体の5.5ポイント不足と長い学習期間が、論文自身の挙げる課題である。AdamWを用いた基準設定は300エポックで、16枚のV100による学習に約3日を要する。Faster R-CNNとの比較には500エポックの長期設定を用いている。パノプティック拡張ではテスト46 PQでとくにstuff側に強いことも同条件の報告として添えられる。小物体と学習負担の修"
+  },
+  {
+   "rule_id": "PR-02-POPE-L391",
+   "finding": "PR-02",
+   "occurrences": 1,
+   "before": "POPEは投票型の設問で物体ハルシネーションを安定に測る範囲に属し、",
+   "after": "POPEは物体の有無をyes/no形式で問うポーリング方式により、物体ハルシネーションを安定的に評価し、",
+   "context_before": "測定に属し、総合得点を一般知能に読み替えない。思考条件の異なるアブレーションと汚染の不透明性への目配りが条件として残る。POPEは投票型の設問で物体ハルシネーションを安定に測る範囲に属し、頻出や共起の対象が作られやすいという知見を示したが、開かれた生成の忠実さは制御対照の器具を要する。HallusionBe",
+   "context_after": "測定に属し、総合得点を一般知能に読み替えない。思考条件の異なるアブレーションと汚染の不透明性への目配りが条件として残る。POPEは物体の有無をyes/no形式で問うポーリング方式により、物体ハルシネーションを安定的に評価し、頻出や共起の対象が作られやすいという知見を示したが、開かれた生成の忠実さは制御対照の器具を要する。HallusionBe"
+  },
+  {
+   "rule_id": "PR-03-MMBENCH-L391a",
+   "finding": "PR-03",
+   "occurrences": 1,
+   "before": "MMBenchは3000件超の日英設問を20能力軸で整え、",
+   "after": "MMBenchは3000件超の英語・中国語の選択式設問を20の能力軸で整え、",
+   "context_before": "GPT-4Vが対精度で31.42\\%、他が16\\%未満という診断を示した。小規模手作りの診断であり、順位表には用いない。MMBenchは3000件超の日英設問を20能力軸で整え、選択肢回転のCircularEvalとGPT-4による選択抽出で頑健化したが、判定依存と英中の言語範囲が条件として残る。",
+   "context_after": "GPT-4Vが対精度で31.42\\%、他が16\\%未満という診断を示した。小規模手作りの診断であり、順位表には用いない。MMBenchは3000件超の英語・中国語の選択式設問を20の能力軸で整え、選択肢回転のCircularEvalとGPT-4による選択抽出で頑健化したが、判定依存と英中の言語範囲が条件として残る。"
+  },
+  {
+   "rule_id": "PR-03-MMBENCH-L391b",
+   "finding": "PR-03",
+   "occurrences": 1,
+   "before": "判定依存と英中の言語範囲が条件として残る。",
+   "after": "判定方法への依存と英語・中国語という二言語の評価範囲が条件として残る。",
+   "context_before": "・中国語の選択式設問を20の能力軸で整え、選択肢回転のCircularEvalとGPT-4による選択抽出で頑健化したが、判定依存と英中の言語範囲が条件として残る。CoTの条件差は明示して読む。\\autocite{vmd078,vmd079,vmd080,vmd081}\\par\\me",
+   "context_after": "・中国語の選択式設問を20の能力軸で整え、選択肢回転のCircularEvalとGPT-4による選択抽出で頑健化したが、判定方法への依存と英語・中国語という二言語の評価範囲が条件として残る。CoTの条件差は明示して読む。\\autocite{vmd078,vmd079,vmd080,vmd081}\\par\\me"
+  }
+ ],
+ "total_occurrences": 4,
+ "outputs_confined_to": "/home/eariver/git/japanese-generative-ai-survey/sources/SP-vision-multimodal-2026/execution/reader-paper-fidelity-repair-20261009",
+ "basis_untouched": true,
+ "canonical_untouched": true
+}

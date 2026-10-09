@@ -1,0 +1,667 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-vision-multimodal-2026",
+  "research_profile": "THEMATIC",
+  "publication_profile": "LONGFORM_SPECIAL",
+  "package_id": "P05",
+  "draft_version": "fresh-124-r9",
+  "status": "ESTABLISHED",
+  "basis": {
+    "draft_package_sha256": "489d1186489eff4b1cdd6a85a55a90ddf941e17692661de31302f2bb5276f36f",
+    "prompt_id": "article-drafting-v2",
+    "prompt_sha256": "b687313312a23025228c16c3f10cb68f669b910cd7215e41886d4dd91f44fe11"
+  },
+  "runner": {
+    "provider": "Muse",
+    "model": "Muse Spark (Work execution role; not a Sol/Human decision)",
+    "invocation": "TS-003 fresh 124-authority Draft from Architecture r9 APPROVED (Evidence 124 VERIFIED 119/PARTIAL 5, Selection 124, 16 packages newly authored; P02 DETR-successor lineage + attribution closure, P12 proxy framing, P15 four-role taxonomy, DUSt3R editorial synthesis, Molmo scope, ResNet controlled comparison, Dreamer non-ancestry, video role separation, P07A/B separation, Japanese terminology conformance; rev5 as regression reference only, 0 blocks identical; no TeX/PDF; DRAFT_COMPLETE then STOP)",
+    "generated_at": "2026-10-09T00:00:00Z",
+    "run_reference": null
+  },
+  "headline": "文字の読み取りから配置と構造の理解へ",
+  "deck": "テキストと二次元配置を同時に学ぶ手法から、文書画像を直接構造化出力へ写す手法へ。スクリーンショットの解析、科学文書のマークアップ化、光学信号の捉え直し、検索用埋め込みまでを、条件の異なる数値で序列化せず、入出力と教師信号と評価条件の違いで比べる。",
+  "deck_attribution_mode": "MIXED",
+  "deck_evidence_refs": [
+    {
+      "evidence_task_id": "evidence:SP-vision-multimodal-2026:7224dfc5069331e2",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1",
+      "subject_id": "ev-vmd025",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-vision-multimodal-2026:7224dfc5069331e2",
+      "kind": "CLAIM",
+      "evidence_id": "claim-2",
+      "subject_id": "ev-vmd025",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-vision-multimodal-2026:5991ba15eeeb4c53",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1",
+      "subject_id": "ev-vmd026",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-vision-multimodal-2026:5991ba15eeeb4c53",
+      "kind": "CLAIM",
+      "evidence_id": "claim-2",
+      "subject_id": "ev-vmd026",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-vision-multimodal-2026:18525095708ea29a",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1",
+      "subject_id": "ev-vmd027",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-vision-multimodal-2026:18525095708ea29a",
+      "kind": "CLAIM",
+      "evidence_id": "claim-2",
+      "subject_id": "ev-vmd027",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-vision-multimodal-2026:18525095708ea29a",
+      "kind": "CLAIM",
+      "evidence_id": "claim-3",
+      "subject_id": "ev-vmd027",
+      "subject_role": "PRIMARY_SUBJECT"
+    }
+  ],
+  "blocks": [
+    {
+      "block_id": "p05-b1",
+      "block_type": "PARAGRAPH",
+      "text": "テキストだけを取り出しても、ページ上のどこに置かれ見出しとどう対応するかは残らない。LayoutLMはテキストと二次元レイアウトを同時に学ぶ事前学習でこの欠落に応えた。入力語の15%を80/10/10の方策でマスクし、x0/y0/x1/y1を0から1000へ換算した位置埋め込みは保持したまま、言語と配置の文脈から復元する。IIT-CDIPの600万超文書・1100万超画像をTesseractのhOCR付きで学び、BERT起点のBASE 113MとLARGE 343Mを備え、IIT-CDIPタグによる多ラベル文書分類MDCを任意に選べる。三つの明示的な構成要素として、MVLMによる言語と配置の学習、MDCによる文書分類、Faster R-CNNによる画像特徴の利用がある。Visual Genomeで学んだResNet-101背景のFaster R-CNN領域特徴と画像全体の[CLS]埋め込みはFUNSD・SROIE・RVL-CDIPでのファインチューニングと評価に加わるが、事前学習の目的関数には含まれない。この条件で160M規模はFUNSD 0.7927、SROIE LARGE 0.9524、RVL-CDIP 94.42%と論文著者が報告する。画像埋め込みを事前学習に含める作業は論文末尾の今後の課題に属し、基本版の範囲外である。",
+      "attribution_mode": "ATTRIBUTED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:4ca2413b8167abe8",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd023",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:4ca2413b8167abe8",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ev-vmd023",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:4ca2413b8167abe8",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "ev-vmd023",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:4ca2413b8167abe8",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd023",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p05-b2",
+      "block_type": "PARAGRAPH",
+      "text": "学習済みCNNやFaster R-CNNに依存する構成に対し、LayoutLMv3は線形パッチ埋め込みだけで組み立てる設計へ変えた。核はマスク言語モデリングへマスク画像モデリングと言葉・パッチのアライメントを並置した統一目的にある。画像側の再構成先はコードブック由来の離散トークンであり、視覚語彙8192、約40%のブロック単位マスクを交差エントロピーで解くため、生画素や領域特徴ではなく高水準の配置構造が身につく。アブレーションでは、線形パッチだけでは画像側の学習目的なしに成立しないこと、色再構成やトークン再構成のアブレーション条件が下流を落とすことが確かめられた。異なるアブレーションバリアントの比較が目的設計の根拠になる。大規模なデータと計算への拡張とfew-shotやゼロショット対応は確立した成果ではなく、今後の課題として残ると論文著者が述べる。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:ece87f85960ba2b4",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd024",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:ece87f85960ba2b4",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ev-vmd024",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:ece87f85960ba2b4",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "ev-vmd024",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:ece87f85960ba2b4",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd024",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p05-b3",
+      "block_type": "PARAGRAPH",
+      "text": "活字認識を別工程に分ける構成では、処理の重さと硬直に加え、前段の誤りが後段へ伝わる難点が避けられなかった。Donutは文書画像を構造化出力へ直接写すOCRフリーのエンコーダ・デコーダ型Transformerとして、この連鎖を切った。画素から文字列や構造を起こす経路で文書理解を一段にまとめ、合成生成器SynthDoGで言語や領域の柔軟性を補い、コードとモデルを公開した。事前学習とファインチューニングの振る舞いは入力解像度に強く依存し、高解像度では系列長が膨らむため、画素だけで読む方式に共通する隘路が表れると論文著者が述べる。この解像度とトークン量の関係は文書系の入力経済を考える手がかりになる。合成学習への依存と解像度感受性が領域転移を縛り、実環境での転移能力は別途の検証を要する。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:7224dfc5069331e2",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd025",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:7224dfc5069331e2",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ev-vmd025",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:7224dfc5069331e2",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd025",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p05-b4",
+      "block_type": "PARAGRAPH",
+      "text": "活字文書に絞った理解だけでは、図解や操作画面や自然画像が別系統の処理に残る。Pix2Structはマスクしたウェブのスクリーンショットから簡略化HTMLを起こす事前学習で、光学文字認識と言語モデルと画像説明の信号を一つの視覚理解にまとめたと論文著者が説明する。可変解像度の入力と、画像面上に言語を描いて指示する方式を採り、文書と図解とUIと自然画像にまたがる9課題のうち6課題で単一モデルとしての到達を示したと論文著者が報告する。携帯端末の応用やボタンや様式を同じ純粋視覚の枠組みで扱える点が変化である。UI理解はComputer Use側の検討に委ねる前提でここでは文書の延長として置く。解像度の隘路はDonut系統の画素だけの方式と共通し、論文自身の考察として残るとされる。数値は論文著者の自己報告に属し、独立した第三者再現ではない。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:5991ba15eeeb4c53",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd026",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:5991ba15eeeb4c53",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ev-vmd026",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:5991ba15eeeb4c53",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd026",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p05-b5",
+      "block_type": "PARAGRAPH",
+      "text": "科学論文のPDFを相手にする局面では、数式や表をテキストとして正しく起こす表現が足りなかった。NougatはDonut系統のSwinエンコーダとデコーダで、科学系PDFのページ画像から本文と数式LaTeXや表を含むマークアップを起こす専門手法として位置づけられると論文著者が説明する。arXivやPMCやIDL由来の学習対を用い、モデルとコードを公開した。ページ画像から構造付きマークアップへの直接変換がここで開かれた。一方で繰り返し生成の失敗様式、研究論文構造への偏り、ほぼ英語中心の学習でラテン系言語の確認が小規模に限られる点が論文自身の記述として残る。評価は独自のマークアップ一致とGROBIDやPDFテキスト抽出との比較に限られ、条件の異なるモデル間の数値優劣には踏み込まないことが比較上の規律として明記される。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:18525095708ea29a",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd027",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:18525095708ea29a",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ev-vmd027",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:18525095708ea29a",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "ev-vmd027",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:18525095708ea29a",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd027",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p05-b6",
+      "block_type": "PARAGRAPH",
+      "text": "文字読みを活字認識に狭める枠組みでは、数式や表や楽譜や図形や図表を同じ対象として扱えなかった。GOTは人工的な光学信号をすべて文字と捉えるOCR-2.0の考えと580Mの統一エンドツーエンドモデルを掲げると論文著者が説明する。80Mの高圧縮エンコーダが1024画素画像を256トークンへ変換し、長いコンテキストのデコーダがプレーン出力と整形出力を担い、markdownやtikzやsmilesやkernを起こせる。領域指定による対話的OCRや動的解像度や複数ページ処理も同じ枠組みに入る。学習はPaddleOCR由来の疑似正解や数式・表・音楽・図形・図表の描画手段や合成中心のデータエンジンとCommon-CrawlのPDF抽出に支えられ、描画・疑似中心であって完全合成のみではないとされる。評価は独自系列に限られ、汎用モデルとの同一条件比較は確認されていないというG03の欠落が残る。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:aa38689cb7a40158",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd028",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:aa38689cb7a40158",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ev-vmd028",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:aa38689cb7a40158",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "ev-vmd028",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:aa38689cb7a40158",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd028",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p05-b7",
+      "block_type": "PARAGRAPH",
+      "text": "生成や抽出に傾いた文書理解だけでは、大量文書から該当箇所を探す検索が別の経路として要った。Qwen3-VL-EmbeddingとRerankerは視覚言語モデルを基盤とする検索用構成で、埋め込みモデルとクロスエンコーダ型の再順位づけを組にすると論文著者が説明する。埋め込みは多段階の対照事前学習から再順位づけ蒸留へ進み、Matryoshka次元と32K入力に対応し、2Bと8Bの規模で用意される。8BはMMEB-V2で77.8を示し、2026年1月8日時点で第一位だったことが著者測定として残る。多言語30言語以上の対応はQwen3-VLから受け継がれる。本記録は著者測定でプレプリント段階であり、独立した第三者再現は未確認である。文書検索の入力インターフェースという限定的な副経路であり、文書理解の中核とは別の評価軸で扱う。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:a3d0f0452d7e3282",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd029",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:a3d0f0452d7e3282",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ev-vmd029",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:a3d0f0452d7e3282",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd029",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p05-b8",
+      "block_type": "PARAGRAPH",
+      "text": "文書の質問応答を測るには、配置に依存した問いを系統的に評価する基盤が要った。DocVQAは12K超の文書画像に約50Kの質問を集め、9種の推論類型と80対10対10の区分で組み立て、ANLSを主指標とし正解率を併せるとベンチマーク論文著者が報告する。LoRRAやM4CやBERT-QAを起点に置き、人間の94.36%が参照点として示される。ANLSはST-VQA由来の平均正規化レーベンシュタイン類似度で、軽微なOCR誤差を過度に罰しない設計である。データセットとコードとリーダーボードが公開されている。抜き出し型回答への近道の脆さは資料に裏づけられた設計上の懸念であり、後の大規模事前学習モデルの評価では学習データの重なりを別途監査すべきである。原論文は混入率を測定せず危険度判定を付与しない。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:70a2a554e22606a9",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd108",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:70a2a554e22606a9",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ev-vmd108",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:70a2a554e22606a9",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "ev-vmd108",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:70a2a554e22606a9",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd108",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p05-b9",
+      "block_type": "PARAGRAPH",
+      "text": "実写のグラフや図表を問う評価は、合成図版中心の時代には手薄だった。ChartQAは人手作成9.6K件と自動生成23.1K件を束ねずに組み合わせ、見ることと論理操作の両方を問う構成を採るとベンチマーク論文著者が説明する。FigureQAやDVQAやPlotQAの合成系列を背景とし、実世界の図表を扱う点に位置がある。報告時点でVisionTaPasが参照点として示され、リポジトリが公開されている。指標はrelaxed accuracyであり、許容の意味を切り離して数値を読むことはできない。CoTのような外部の段階的推論手順を仮定せず、画像と言語の対応と論理操作を一体で評価する点に特徴がある。合成由来の先行研究は背景情報に留まり、許容条件と抽出規則とともに数値を扱うことが求められる。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:ca420082868a82a9",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd109",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:ca420082868a82a9",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd109",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p05-b10",
+      "block_type": "PARAGRAPH",
+      "text": "文書系の流れは、配置を学ぶ方式から画素から直接読む方式へ進み、科学文書のマークアップ化と統一OCRの構想へ分岐し、検索への接続が副経路として整った。共通の論点は次の演算に見合う文書表現は何かであり、画素列か配置埋め込みかマークアップか検索用埋め込みかは用途で異なる。本節では専門手法と汎用モデルを対象文書と出力形式と教師信号と解像度とトークン量と評価条件の違いで質的に比べ、条件の異なる数値を並べて優劣を決めない。テキストLLMを基盤とする汎用VLMと文書専門モデルは教師の契約が異なり、同一条件の直接比較は確認されていない。画面操作はComputer Use側の課題であり、ここで完結させない。単一構成への収束を結論とせず、残る課題を残したまま次の融合の議論へ引き継ぐ。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:4ca2413b8167abe8",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd023",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:4ca2413b8167abe8",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ev-vmd023",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:4ca2413b8167abe8",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "ev-vmd023",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:4ca2413b8167abe8",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd023",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:5991ba15eeeb4c53",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd026",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:5991ba15eeeb4c53",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ev-vmd026",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:5991ba15eeeb4c53",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd026",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:aa38689cb7a40158",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd028",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:aa38689cb7a40158",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ev-vmd028",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:aa38689cb7a40158",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "ev-vmd028",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:aa38689cb7a40158",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd028",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "P05-boundaries",
+      "block_type": "CLAIM_BOUNDARY",
+      "text": "数値はすべて論文著者またはベンチマーク論文著者の自己報告に属し、条件の異なる評価を並べて序列化しない。専門家と汎用の同一条件比較は確認されていない欠落として保つ。抜き出し型回答への近道の脆さは資料に裏づけられた設計上の懸念であり、ウェブ文書との事前学習の重なりは版レベルの監査事項であって論文測定の混入率ではない。検索の接続は文書検索の副経路に留め、画面操作はComputer Use側の課題としてここでは完結させない。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:4ca2413b8167abe8",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd023",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:ece87f85960ba2b4",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd024",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:7224dfc5069331e2",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd025",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:5991ba15eeeb4c53",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd026",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:18525095708ea29a",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd027",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:aa38689cb7a40158",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd028",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:a3d0f0452d7e3282",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd029",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:70a2a554e22606a9",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd108",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:ca420082868a82a9",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd109",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    }
+  ],
+  "must_cover_coverage": [
+    {
+      "requirement": "VM-O05 normal weight; NO_CROSS_MODEL_NUMERIC_COMPARISON holds (G03)",
+      "block_ids": [
+        "p05-b1",
+        "p05-b2",
+        "p05-b3",
+        "p05-b4",
+        "p05-b5",
+        "p05-b6",
+        "p05-b7",
+        "p05-b8",
+        "p05-b9",
+        "p05-b10",
+        "P05-boundaries"
+      ]
+    },
+    {
+      "requirement": "Retrieval bounded sub-lane only; screenshot/UI hands off to P12 by paragraph",
+      "block_ids": [
+        "p05-b1",
+        "p05-b2",
+        "p05-b3",
+        "p05-b4",
+        "p05-b5",
+        "p05-b6",
+        "p05-b7",
+        "p05-b8",
+        "p05-b9",
+        "p05-b10",
+        "P05-boundaries"
+      ]
+    }
+  ],
+  "boundary_dispositions": [
+    {
+      "boundary": "Specialist failure profiles (repetition/language/structure) over rankings; resolution/token policies bound",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P05-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Base-version scope; unified successors (v3) needed for image-modality completeness.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P05-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Scaling to larger data/compute and few/zero-shot capability stated as future work, not established.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P05-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Synthetic-training dependence; resolution sensitivity bounds domain transfer.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P05-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Resolution bottleneck shared with Donut-class pixel-only models (paper's own discussion).",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P05-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Own-suite evaluation only; repetition + language + structure biases paper-stated.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P05-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Own-suite evaluation; same-protocol generalist head-to-head not found (gap G03 preserved).",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P05-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Author-measured leaderboard; preprint status confirmed at intake; independent reproduction pending (G05).",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P05-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Extractive-shortcut vulnerability is a source-supported design concern; possible web-document pretraining overlap is an edition-level audit concern, not a paper-measured contamination rate.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P05-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Relaxed-accuracy tolerance semantics must travel with scores; synthetic predecessors are context.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P05-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "LayoutLM v1 pre-trains text + 2D layout (MVLM, optional MDC); Faster R-CNN image features integrate at downstream fine-tuning; image-embedding pre-training is stated future work belonging to successors.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P05-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    }
+  ],
+  "profile_extensions": {},
+  "publication_extensions": {
+    "page_budget_body_pages": 7,
+    "depth_classes": {
+      "FULL_MECHANISM_TREATMENT": [
+        "VM-D026",
+        "VM-D027",
+        "VM-D028"
+      ],
+      "TRANSITION_NODE_TREATMENT": [
+        "VM-D023",
+        "VM-D024",
+        "VM-D025"
+      ],
+      "BRIEF_CONTEXT_OR_AUTHORITY": [
+        "VM-D029",
+        "VM-D108",
+        "VM-D109"
+      ]
+    }
+  }
+}

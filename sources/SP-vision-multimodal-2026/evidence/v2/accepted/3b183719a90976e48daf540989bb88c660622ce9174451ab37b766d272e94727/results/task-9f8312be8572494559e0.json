@@ -1,0 +1,130 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-vision-multimodal-2026",
+  "evidence_task_id": "evidence:SP-vision-multimodal-2026:18525095708ea29a",
+  "basis": {
+    "task_sha256": "8e21981cf76b1e439ddc861de45821c993ca62a60ffe38c72b46786d21ceecf9",
+    "screening_acceptance_sha256": "2b50dd1c205efc957c16a848fe185f9de7fb5eca10a5729c1b58c5bb250e7aff",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "ev-vmd027",
+      "canonical_name": "Nougat (Blecher et al., 2023)",
+      "entity_type": "MODEL",
+      "organization": "Meta AI",
+      "canonical_url": "https://arxiv.org/abs/2308.13418"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "ev-vmd027",
+    "artifact_type": "PAPER",
+    "canonical_name": "Nougat (Blecher et al., 2023)",
+    "canonical_url": "https://arxiv.org/abs/2308.13418"
+  },
+  "temporal": {
+    "observed_at": "2026-09-30T11:46:48Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2023-08",
+        "subject_id": "ev-vmd027",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2308.13418",
+      "source_class": "PRIMARY_PAPER",
+      "title": "Nougat: Neural Optical Understanding for Academic Documents (Blecher et al.)",
+      "published_at": "2023-08",
+      "accessed_at": "2026-09-30T11:46:48Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Donut-lineage Swin encoder-decoder converting scientific PDFs to markup (text + LaTeX math + tables); arXiv/PMC/IDL-derived training pairs; models+code released for scientific-text recognition.",
+      "subject_id": "ev-vmd027",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Full-paper abstract/architecture/data sections."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Paper's own limits: repetition failure mode; research-paper structural bias (other documents convert but worse); nearly all-English training with only small Latin-language tests — the specialist failure-profile exhibit.",
+      "subject_id": "ev-vmd027",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Limitations & Future Work section consumed verbatim-class."
+    },
+    {
+      "statement_id": "claim-3",
+      "text": "Comparison discipline: own-test markup agreement vs GROBID/pdf-text only; NO_CROSS_MODEL_NUMERIC_COMPARISON preserved.",
+      "subject_id": "ev-vmd027",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Eval-scope reading per Round E."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Own-suite evaluation only; repetition + language + structure biases paper-stated.",
+      "subject_id": "ev-vmd027",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Full body consumed: architecture, data composition, markup output, and stated limits verified.",
+        "subject_ids": [
+          "ev-vmd027"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "NO_CROSS_MODEL_NUMERIC_COMPARISON",
+        "status": "VERIFIED",
+        "finding": "No cross-model numeric ranking constructed; qualitative contract preserved.",
+        "subject_ids": [
+          "ev-vmd027"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

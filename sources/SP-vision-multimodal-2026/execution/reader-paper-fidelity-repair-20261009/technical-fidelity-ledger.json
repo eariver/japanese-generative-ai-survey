@@ -1,0 +1,76 @@
+{
+ "scope": "paper-review technical-fidelity correction only (PR-01/02/03); R02/R04/R05 closed and preserved",
+ "repair_basis": {
+  "basis": "sources/SP-vision-multimodal-2026/execution/reader-r02-r04-r05-repair-20261009/main.tex",
+  "main_tex_sha256": "f09a808d1ed8ec7b18713e64dadafe6fbb0925d585df22881d0d27df37577342",
+  "references_bib_sha256": "9c1e60fbefa4c2679f6a6cc465f803efc24f891ac215ef87782e4f636aeb3c1a",
+  "basis_untouched": true
+ },
+ "corrections": [
+  {
+   "id": "PR-01",
+   "target": "§2, staged main.tex L86",
+   "before": "小物体の5.5ポイント不足と300から500エポックに及ぶAdamW日程、16枚のV100で3日という訓練負担が論文自身の開かれた課題である。",
+   "after": "小物体の5.5ポイント不足と長い学習期間が、論文自身の挙げる課題である。AdamWを用いた基準設定は300エポックで、16枚のV100による学習に約3日を要する。Faster R-CNNとの比較には500エポックの長期設定を用いている。",
+   "primary_source": "https://arxiv.org/pdf/2005.12872",
+   "primary_basis": "original paper §4, training schedule paragraph (300-epoch AdamW baseline ≈3 days on 16 V100; 500-epoch schedule for the Faster R-CNN comparison)",
+   "evidence": "VM-D010 / claim-3",
+   "evidence_precision_note": "Accepted Evidence claim-3 retains the compressed '300〜500エポック / 3日間' phrasing. This staged correction is an editorial precision refinement against the primary source; the Evidence body itself is unchanged (change prohibited).",
+   "preserved": "DETR mechanism, AP values, claim boundaries, and citations otherwise unchanged"
+  },
+  {
+   "id": "PR-02",
+   "target": "§16, staged main.tex L391",
+   "before": "POPEは投票型の設問で物体ハルシネーションを安定に測る範囲に属し、",
+   "after": "POPEは物体の有無をyes/no形式で問うポーリング方式により、物体ハルシネーションを安定的に評価し、",
+   "primary_source": "https://aclanthology.org/2023.emnlp-main.20/",
+   "evidence": "VM-D079",
+   "consistency": "§11 L284 already describes POPE as ポーリング方式のyes-no形式の質問; §16 now matches it. No majority-voting implication remains."
+  },
+  {
+   "id": "PR-03a",
+   "target": "§16, staged main.tex L391",
+   "before": "MMBenchは3000件超の日英設問を20能力軸で整え、",
+   "after": "MMBenchは3000件超の英語・中国語の選択式設問を20の能力軸で整え、",
+   "primary_sources": [
+    "https://arxiv.org/abs/2307.06281",
+    "https://github.com/open-compass/MMBench"
+   ],
+   "evidence": "VM-D081",
+   "consistency": "§11 L286 already describes MMBench as 3000を超える英語と中国語の選択式の質問を20の能力の観点; §16 now matches it."
+  },
+  {
+   "id": "PR-03b",
+   "target": "§16, staged main.tex L391",
+   "before": "判定依存と英中の言語範囲が条件として残る。",
+   "after": "判定方法への依存と英語・中国語という二言語の評価範囲が条件として残る。",
+   "primary_sources": [
+    "https://arxiv.org/abs/2307.06281",
+    "https://github.com/open-compass/MMBench"
+   ],
+   "evidence": "VM-D081",
+   "consistency": "§11 L292 boundary (判定依存と二言語の範囲) and L286 (二言語の範囲は英語と中国語に留まる) remain consistent with the refined §16 range statement."
+  }
+ ],
+  "non_blocking_record_only": {
+   "issue_534_terms": {
+    "模型": "basis 8 -> staged 8, unchanged (record only, not corrected)",
+    "基線": "basis 2 -> staged 2, unchanged (record only, not corrected)",
+    "hardware": "basis 1 -> staged 1, unchanged (record only, not corrected)"
+   },
+  "issue_559_relation": "recorded as related context; Issue #559 is NOT closed by this repair"
+ },
+ "authority_preservation": {
+  "prior_staging_untouched": true,
+  "canonical_untouched": true,
+  "architecture_r9_unchanged": true,
+  "evidence_124_unchanged": true,
+  "selection_unchanged": true,
+  "draft_fresh_124_r9_unchanged": true,
+  "human_architecture_approval_unchanged": true,
+  "shared_core_v2_unchanged": true,
+  "production_state": "Publication Preview pending (unchanged; this Paper Review is an editorial review, not a formal Core Human Gate record)",
+  "reviewed_core_change_reuse": "not used",
+  "publication_candidate": "HOLD"
+ }
+}

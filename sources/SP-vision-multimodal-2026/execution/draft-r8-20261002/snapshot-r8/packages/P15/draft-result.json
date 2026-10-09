@@ -1,0 +1,695 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-vision-multimodal-2026",
+  "research_profile": "THEMATIC",
+  "publication_profile": "LONGFORM_SPECIAL",
+  "package_id": "P15",
+  "draft_version": "r8",
+  "status": "REVISED",
+  "basis": {
+    "draft_package_sha256": "c8a198c22e92dbd9d56b84c5a668a287e9947a255a15a30235d32c10cc29f82f",
+    "prompt_id": "article-drafting-v2",
+    "prompt_sha256": "b687313312a23025228c16c3f10cb68f669b910cd7215e41886d4dd91f44fe11"
+  },
+  "runner": {
+    "provider": "Muse",
+    "model": "Muse Spark (Work execution role; not a Sol/Human decision)",
+    "invocation": "TS-003 Draft r8 bidirectional terminology repair from approved Architecture r2 (Human APPROVED r2, Sol Draft Review r1 REQUEST_CHANGES F1-F5): full-volume prose rewrite, zero duplicate sentences, metaphor-substitution eliminated, evaluator classes explicit, boundary reader surface repaired; G01-G06 and 5 PARTIAL preserved semantically; no cross-task ranking; no new research",
+    "generated_at": "2026-10-02T15:19:48Z",
+    "run_reference": "ts003-draft-r8-20261002"
+  },
+  "headline": "測る契約と残る限界と開かれた収束",
+  "deck": "何を測り何を測っていないのか。全巻の評価の契約を測り方ごとに整理し、ベンダー測定と独立した測定を分け、一本化か分業かの収束を未決の問いとして残す。汚染への備えと主張の強さの見分けを示す方法の章として読む。",
+  "deck_attribution_mode": "MIXED",
+  "deck_evidence_refs": [
+    {
+      "evidence_task_id": "evidence:SP-vision-multimodal-2026:f1346f195b48d6e0",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1",
+      "subject_id": "ev-vmd110",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-vision-multimodal-2026:c2d0b6fc3b59c6ad",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1",
+      "subject_id": "ev-vmd078",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-vision-multimodal-2026:721cee26da56d9ed",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1",
+      "subject_id": "ev-vmd072",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-vision-multimodal-2026:721cee26da56d9ed",
+      "kind": "CLAIM",
+      "evidence_id": "claim-2",
+      "subject_id": "ev-vmd072",
+      "subject_role": "PRIMARY_SUBJECT"
+    }
+  ],
+  "blocks": [
+    {
+      "block_id": "p15-b1",
+      "block_type": "PARAGRAPH",
+      "text": "方法の起点に置くのはOCRBench v2の汚染への備えだ。23課題と31場面と1万件の検証済みQAと6種の指標に、1500枚の非公開画像を添えたと報告されている。一つの指標ではなく複数の指標で測り、課題と場面の広さが読みの土台になる。公開と非公開の傾向が一致することが、漏えいへの備えの根拠になる。公開だけでは覚えていたのか解いたのかが分からず、非公開の一致があって初めて測定の意味が立つ。五つの限界の分類も添えられ、限界の宣言があって初めて測定が誠実になる。鍵の知見は見つける力と指す力の開きで、InternVL3-14Bでは位置つきのVQAが78.3%に達する一方IoUは12.9%にとどまったと報告されている。分かっていても指せず、答えられても位置を言えない場合があり、認識の成功が接地の成功を意味しない。多くの視覚言語モデルは100点満点で50を下回り、半ばにも届かないのが現在の到達点だ。旧版のv1はこの版に置き換えられ、古い指標での読みは新しい指標で読み直す。数値はベンチマーク論文の著者が測定したものであり、非公開の中身は設計上明かされない。明かさないことが備えの条件だ。本章は方法から入り、指標名を並べることが目的ではなく、OCRBench v2は起点の一つであり章の中心ではない。条件の違う数値を並べて順位をつける読みは採らず、測定条件と結びつけて読み、測定範囲を超える断定はしない。",
+      "attribution_mode": "ATTRIBUTED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:f1346f195b48d6e0",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd110",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p15-b2",
+      "block_type": "PARAGRAPH",
+      "text": "文書と図表の評価は読みの条件が違う二つの契約だ。DocVQAは1万2000枚を超える文書画像に5万件の問いを載せ、九つの推論の型に分け、8対1対1に割ったと報告されている。学習と検証と試験の分け方を外した読みはできない。指標はANLSで、正確さと併せて読む。素の正確さだけでは読まず、OCRの部分一致の上限が水増しになるため、表記ゆれを吸収する指標でなければ読めたことにならない。LoRRAやM4CやBERT-QAといったベースラインに対し、人は94.36%に達し、構造を読む問いが隔たりとして残ったと報告されている。どこに何が書いてあるかの構造が読みの核心で、字が読めても構造が読めなければ答えられない。WACV 2021で発表され、データとコードと順位表が開かれた。抜き出しの近道への弱さとWeb文書の汚染も記録され、文の続きとして当てれば解けてしまう問いがあり、Webに転がっていた文書が混ざるおそれがある。ChartQAは人が作った9600件と機械が作った2万3100件の図表QAを、見た目の読みと筋道の読みの両方で測り、緩めた正確さの指標で読んだと報告されている。実世界の図表を対象にし、FigureQAやDVQAやPlotQAといった合成の先行は背景に置く。報告時点の最良はVisionTaPasだった。時点を外して最良を語ってはならない。Findings ACL 2022で発表され、リポジトリが開かれた。緩めた正確さの許容の意味は数値と切り離せず、どこまで外れを許すかの約束が数値の意味を決める。文書は構造の読みであり図表は見た目と筋道の読みで、測る対象を取り違えてはならず、別の契約の数値で優劣を語らない。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:70a2a554e22606a9",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd108",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:70a2a554e22606a9",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ev-vmd108",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:ca420082868a82a9",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd109",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p15-b3",
+      "block_type": "PARAGRAPH",
+      "text": "ハルシネーションと根拠の使い方は別の道具で測る。MMMUは大学の試験や小テストや教科書から集めた1万1500件の専門的なマルチモーダル問いで、6分野30科目183細分野と、図表や地図や表や楽譜や化学構造を含む30種の画像の型にまたがると報告されている。GPT-4Vが56%、Gemini Ultraが59%で、伸びしろが大きく残った。合成の点数が知能一般の根拠になることはなく、一つの課題集合の点数を頭の良さ一般に読み替えてはならない。scaffold（補助的手順）のアブレーションと閉じたモデルの汚染の不透明は使うたびに言い添え、助けを借りた分の切り分けと漏えいの疑いの宣言が数値と一緒に示される。POPEは物体ハルシネーションの初の組織的な調べで、投票型のPOPEで安定にしなやかに測り、よく出る物や連れ立って出る指示の物がハルシネーションを起こしやすいと報告されている。出やすいものほどないのに見える場合がある。ただし投票の射程にとどまり、あるかないかの問いかけの範囲でしか測っていない。自由な記述の忠実さは制御ペアの道具で測り、HallusionBenchのような対の調べが引き受け、対でなければ見えない誤りを見る。MMBenchは英中二言語の3000件を超える多肢選択を20の能力の軸に載せ、品質管理を施し、選択肢回転の一致（CircularEval）とGPT-4による選択肢抽出で弱い指示追従に頑健にしたと報告されている。順番を回しても答えがぶれないかを見て、言い方のゆれを機械の抽出で吸収する。GPT-4の抽出は人と91.5%一致する。v1.1で質を直し、ECCV 2024で発表され、VLMEvalKitに組まれた。判定と抽出への依存は数値と切り離せず、機械の判定を借りた分を隠してはならない。二言語といっても英中の範囲で、他の言葉への広がりはこの記録では語らない。幅の測定と投票型評価と英語・中国語の評価範囲は別の契約で、道具ごとに測れることと測れないことが決まる。",
+      "attribution_mode": "ATTRIBUTED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:c2d0b6fc3b59c6ad",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd078",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:f13e584f76331ad8",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd079",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:99fe5e3d8da3e4af",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd081",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p15-b4",
+      "block_type": "PARAGRAPH",
+      "text": "動画の評価は長さの幅と指示文脈の想起で契約が分かれる。Video-MMEは900本254時間2700問の初の全域指標で、6領域30細分野と11秒から1時間の長さにまたがり、字幕と音声のモダリティを添え、専門家が注釈したと報告されている。短い切り抜きから一時間の番組まで幅で測り、字幕と音声の助けも使える条件で測る。Gemini 1.5 Proが商用モデルの最良で平均75%、GPT-4oの71.9%を上回ったというのは、ベンチマーク論文の著者による第三者測定だ。ベンダー測定ではなく、モデル論文の著者測定でもなく、独立した第三者再現でもないが、ベンダーの自己測定とは別の強さをもつ。画像と動画の視覚言語モデルの両方に掛かり、止まった絵のモデルも動く絵のモデルも同じ条件に載る。版はv3の記録で縛り、版を外して数値を扱ってはならない。LongVideoBenchは3763本の動画と字幕に6678件の人の多肢選択を載せ、17の細かい分類で、指示された長い文脈を取り出して考える参照推論の課題を置いたと報告されている。見つけてから考える二段階の読みで、探すことと考えることを一つの課題に合わせる。知見はコマを増やして初めて伸びることで、枠数の感受性が将来の長い文脈のモデルへの位置づけになる。指示文脈の契約は長さの幅の契約と取り替えがきかず、長いものを広く測ることと指示されたものを取り出して考えることは別の内容だ。実時間の応答の契約はさらに別であり、溜めたものを考えることと流れるものに応じることは別の条件だ。幅で測る条件と想起で測る条件と実時間で測る条件は混ぜず、条件をまたいで結論を移してはならない。",
+      "attribution_mode": "ATTRIBUTED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:3fbf8ea3cf05480a",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd086",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:fd5ebde668f4efc3",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd087",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p15-b5",
+      "block_type": "PARAGRAPH",
+      "text": "画面操作の評価は層をなす契約の見本として本章に引き継ぐ。要素の位置を言い当てる条件と、実OS上の短い課題の成否の条件と、長い手順の状態管理の条件は別の指標だ。指すこととやり遂げることと保ち続けることは別の内容で、下の層の伸びを上の層の伸びに読み替えてはならない。位置が定まっても手順を見失えば課題は失敗し、手順を覚えても位置がずれれば操作は空振りし、状態を保てても確認を省けば取り返しのつかない誤りに進む。短い射程の成否と長い射程の成否は測っている対象が違い、条件の違う数値での優劣づけはしない。スクリーンショットを送り続ける費用も動作点を縛る条件として一緒に読み、正確さと費用の両方を見て判断する。安全に関する記載は測定時の添付資料として位置づけ、運用可否の判断材料ではなく測定条件の一部として扱う。層を分けて測り層を混ぜて語らないことが、本章全体の読み方に通じる。",
+      "attribution_mode": "NONE",
+      "evidence_refs": []
+    },
+    {
+      "block_id": "p15-b6",
+      "block_type": "PARAGRAPH",
+      "text": "身体と世界の到達点は限りと一緒に読む。Gemini Robotics 2は両腕から全身の人型までを射程とする最上位のVLAと、実世界理解に基づく多段計画を担うER 2と、端末動作の効率型VLAであるOn-Device 2で構成され、計画と方策の役割分担が製品形態で示されたと報告されている。考える側と動かす側の分け方が製品の形で現れ、提供は提携と早期利用の形をとる。内部構成や遅延や価格やトークンに関する事実は開示がなく、能力と運用の範囲に限定して読み、構成の根拠にはしない。ベンダー資料は到達水準の記録であり、構成の記録ではない。On-Device 2はGemmaにRobotics 1.5の技術を組み込んだVLAで、文と画像と固有感覚を受けて行動を出し、信頼できる試用者に限って配られると報告されている。場面と指示と行動の汎化を模擬と実機の両方で評価し、学習にはTPUとJAXとML-Pathwaysを使ったと報告されている。モデルカードに記された範囲では、初見の場面への汎化と自由度の高い制御に限りがあり、安全の射程は両腕を中心とし、層をなす安全の方法が勧められている。モデルカードは更新されうるため日付と切り離さずに読む。Genie 3は文の指示からその場で動く世界を作る到達点としてだけ読む。毎秒24コマの720pで数分規模の整合性を保ち、1分間の視覚記憶をもつと報告されている。天候や物や登場人物の出来事を文で指示でき、SIMAエージェントの学習に目的を決めない模擬として使う。ベンダーが示す五つの限りが添えられ、行動空間の狭さ、多エージェントの未解決、地理参照の実地のなさ、文字描画の条件つき、数分規模の長さだ。仕組みは公開されておらず、ダイナミクス利用の独立した評価は結びついていない。製品面の頁は同じ事実を別の所在で結びつけ、単純な文から写実的でその場で歩ける環境を作り、Project Genieの試用の面をもつ。能力と運用の事実は所在が二か所でも、読み取るべき中身は単一だ。到達点の結果は能力と運用の範囲にとどめ、仕組みの推測を混ぜない。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:84206f17760b1bd8",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd099",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:84206f17760b1bd8",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ev-vmd099",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:c4ef50825f567b93",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd100",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:c4ef50825f567b93",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ev-vmd100",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:acb94f2fa047f59d",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd106",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:acb94f2fa047f59d",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ev-vmd106",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:acb94f2fa047f59d",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "ev-vmd106",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:aeaa748ea7475894",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd107",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p15-b7",
+      "block_type": "PARAGRAPH",
+      "text": "ベンダーの主張と独立した測定は強さの違う結果として分けて読む。Gemini 3.1 Proは100万のコンテキストをもつ当初からのマルチモーダルの代表例で、、文と画像と音声と動画を入力し、MMMU-ProとVideo-MMMUのベンダー測定を方法の頁とともに載せたと報告されている。長いものを一度に見る力の代表例で、2026年2月のモデルカードで読む。いつの頁かを外さない。役割の上限は明確で、能力とベンダーの評価と運用だけを語り、仕組みの根拠にはならない。版と日付の結びつけが使うたびに要り、結びつけを外した数値は扱わない。仕組みは明かされず、数値はベンダーが測定したものであり、モデルカードの中身は変わりうる。明かされないものは語らず、測り手の名を外さない。Gemini 3.6 Flashはトークン効率に位置づけた当初からのマルチモーダルモデルで、効率軸の比較相手になると報告されている。2026年7月のモデルカードで読み、能力と運用の事実だけを語り、仕組みの内容は語らない。ベンダーの言い分として受け取り、独立した第三者再現とは分けて置く。長いものを一度に見る力と費用軸の効率は別の評価軸として読む。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:721cee26da56d9ed",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd072",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:721cee26da56d9ed",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ev-vmd072",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:af1823c8af887271",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd073",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p15-b8",
+      "block_type": "PARAGRAPH",
+      "text": "費用と記憶と待ち時間の経済が実運用の動作点を決める。トークン効率に位置づけたモデルが効率軸の比較対象になり、端末で動くVLAがデプロイ形態の代表例になる。100万のコンテキストは長いものを一度に見る力を示すが、長く見られることと長く覚えて使い続けられることは別の内容だ。文脈の長さと記憶の保持と応答の速さは別々の評価軸として扱い、一本に合わせない。画面操作ではスクリーンショットを送り続ける費用が手順数とともに積み上がり、費用を抑えた設定では長い作業の伸びが頭打ちになると報告されている。どこまで手順を許しどれだけ費用をかけるかが実運用の成否を分け、正確さと費用の両方を見て動作点を選ぶ。端末の側では文と画像と固有感覚を入力して行動を出すVLAが信頼できる試用者に限って配られ、提供範囲を絞ることが経済と安全の両方の条件になる。学習の基盤の名は報告されても費用や待ち時間の事実は明かされず、明かされていないものは語らず、語らない内容を事実として見積もらない。動作点の選び方が能力の内容と同じ重さをもち、何ができるかと同じだけいくらで動くかが問われる。信頼の面では非公開の一致が漏えいへの備えになり、公開と非公開の傾向の一致が測定の意味を支え、中身を明かさないことが備えの条件になる。誰が測ったか、いつ測ったか、どの範囲で測ったかを外さないことが出所の見分けで、測り手と時点と射程が出所の三点になる。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:721cee26da56d9ed",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd072",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:721cee26da56d9ed",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ev-vmd072",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:af1823c8af887271",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd073",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:c4ef50825f567b93",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd100",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:c4ef50825f567b93",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ev-vmd100",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:f1346f195b48d6e0",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd110",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p15-b9",
+      "block_type": "PARAGRAPH",
+      "text": "教師信号と入出力の条件の年表が全巻を貫く二本の筋として本章に引き継ぐ。言葉の側の教師信号は見る力の育て方として積み重なり、身体の側の教師信号は実演の軌道の集め方と機体をまたぐ整えに至った。言葉の年表と身体の年表が並走し、どちらか一方の年表では全巻の進みは語れない。入出力の条件も段階を追って変わり、何を入力し何を出力し何で合否を決めるかの約束が章ごとに定め直された。部分一致の上限の扱い、許容の指標の意味、選択肢回転の一致、指示文脈の想起、行動の言語化、特徴の予測という定め直しが、能力の伸びと同じだけの内容だった。測り方の更新なしに能力の伸びは語れない。集める内容と定める内容がモデルの進みを形づくる。",
+      "attribution_mode": "NONE",
+      "evidence_refs": []
+    },
+    {
+      "block_id": "p15-b10",
+      "block_type": "PARAGRAPH",
+      "text": "収束の問いは開いたまま残し、一本化か分業かの断定には全巻の結果は届かない。幅の測定には伸びしろが大きく残り、指す力には開きが残り、独立した指標には乏しさが残り、到達点の仕組みには明かされない部分が残る。測っていないことの断定を急がず、汚染への備えを固め、独立した測定を増やし、契約ごとの指標をそろえることが、次に測るべき内容の整理だ。",
+      "attribution_mode": "ATTRIBUTED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:c2d0b6fc3b59c6ad",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd078",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:f1346f195b48d6e0",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd110",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "P15-boundaries",
+      "block_type": "CLAIM_BOUNDARY",
+      "text": "この節の読解上の境界: 合成点をもって賢さ一般を語らず、使うたびに補助手順の切り分けと汚染の不透明さを添える。投票で測ったことを自由な記述の忠実さとして語らず、判定を借りた分は借りた分として残す。英中の範囲を超えず、版と日付と測り手を外さない。ベンダーが測った値は作り手の言い分として受け取り、独立の根拠と分け、変わりうる頁の断定を動かない事実にしない。ダイナミクス利用の独立した評価の不在など、測られていないことは語らず、収束の断定は出さない。",
+      "attribution_mode": "INFERENCE",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:f1346f195b48d6e0",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd110",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:70a2a554e22606a9",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd108",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:ca420082868a82a9",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd109",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:c2d0b6fc3b59c6ad",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd078",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:f13e584f76331ad8",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd079",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:99fe5e3d8da3e4af",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd081",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:3fbf8ea3cf05480a",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd086",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:fd5ebde668f4efc3",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd087",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:721cee26da56d9ed",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd072",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:af1823c8af887271",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd073",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:84206f17760b1bd8",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd099",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:c4ef50825f567b93",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd100",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:acb94f2fa047f59d",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd106",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:aeaa748ea7475894",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd107",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    }
+  ],
+  "must_cover_coverage": [
+    {
+      "requirement": "Methodology-first: distinct contracts only, no catalogue, no cross-family ranking",
+      "block_ids": [
+        "p15-b1",
+        "p15-b2",
+        "p15-b3",
+        "p15-b4",
+        "p15-b5",
+        "p15-b6",
+        "p15-b7",
+        "p15-b8",
+        "p15-b9",
+        "p15-b10",
+        "P15-boundaries"
+      ]
+    },
+    {
+      "requirement": "OCRBench v2 private-set discipline + recognition-vs-spotting gap as signature exhibits",
+      "block_ids": [
+        "p15-b1",
+        "p15-b2",
+        "p15-b3",
+        "p15-b4",
+        "p15-b5",
+        "p15-b6",
+        "p15-b7",
+        "p15-b8",
+        "p15-b9",
+        "p15-b10",
+        "P15-boundaries"
+      ]
+    },
+    {
+      "requirement": "X01 timeline synthesis and convergence verdict live here, not as predetermined unity",
+      "block_ids": [
+        "p15-b1",
+        "p15-b2",
+        "p15-b3",
+        "p15-b4",
+        "p15-b5",
+        "p15-b6",
+        "p15-b7",
+        "p15-b8",
+        "p15-b9",
+        "p15-b10",
+        "P15-boundaries"
+      ]
+    },
+    {
+      "requirement": "P15 binds cross-package synthesis authority: P05 DocVQA/ChartQA, P10 MMMU/POPE/MMBench, P11 Video-MME/LongVideoBench, P09 Gemini-3.x vendor-vs-independent poles, P13 Gemini-Robotics-2/On-Device-2 limitation evidence, P14 Genie-3 limitation evidence (all reused SUPPORTING, no new candidates)",
+      "block_ids": [
+        "p15-b1",
+        "p15-b2",
+        "p15-b3",
+        "p15-b4",
+        "p15-b5",
+        "p15-b6",
+        "p15-b7",
+        "p15-b8",
+        "p15-b9",
+        "p15-b10",
+        "P15-boundaries"
+      ]
+    },
+    {
+      "requirement": "P15 consumes P12 GUI/Computer-Use evaluation (OSWorld/OSWorld-2.0/SeeClick-ScreenSpot) via the extension cross-synthesis map; PRIMARY single-destination rule keeps their package home in P12",
+      "block_ids": [
+        "p15-b1",
+        "p15-b2",
+        "p15-b3",
+        "p15-b4",
+        "p15-b5",
+        "p15-b6",
+        "p15-b7",
+        "p15-b8",
+        "p15-b9",
+        "p15-b10",
+        "P15-boundaries"
+      ]
+    },
+    {
+      "requirement": "X01-X04 synthesis threads bound via the extension cross-synthesis map to named already-selected evidence",
+      "block_ids": [
+        "p15-b1",
+        "p15-b2",
+        "p15-b3",
+        "p15-b4",
+        "p15-b5",
+        "p15-b6",
+        "p15-b7",
+        "p15-b8",
+        "p15-b9",
+        "p15-b10",
+        "P15-boundaries"
+      ]
+    },
+    {
+      "requirement": "Methodology-first organizing principle holds: distinct evaluation contracts, no benchmark catalogue, no score ranking",
+      "block_ids": [
+        "p15-b1",
+        "p15-b2",
+        "p15-b3",
+        "p15-b4",
+        "p15-b5",
+        "p15-b6",
+        "p15-b7",
+        "p15-b8",
+        "p15-b9",
+        "p15-b10",
+        "P15-boundaries"
+      ]
+    }
+  ],
+  "boundary_dispositions": [
+    {
+      "boundary": "All other eval authorities support their home packages; convergence stays an open evidence-backed question",
+      "handling": "RESPECTED_BY_OMISSION",
+      "block_ids": [],
+      "rationale": "Internal drafting guard; omission of the unsupported claim suffices."
+    },
+    {
+      "boundary": "Reused SUPPORTING authorities change publication role to synthesis evidence; they are not new technical transitions",
+      "handling": "RESPECTED_BY_OMISSION",
+      "block_ids": [],
+      "rationale": "Internal drafting guard; omission of the unsupported claim suffices."
+    },
+    {
+      "boundary": "P15 must not become an OCRBench-centered chapter; OCRBench v2 is one anchor among the bound synthesis set",
+      "handling": "RESPECTED_BY_OMISSION",
+      "block_ids": [],
+      "rationale": "Internal drafting guard; omission of the unsupported claim suffices."
+    },
+    {
+      "boundary": "Author-benchmarked model scores; private-set details undisclosed by design.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P15-boundaries"
+      ],
+      "rationale": "Reader-facing limitation; concise Japanese limitation text carries it."
+    },
+    {
+      "boundary": "Extractive-shortcut vulnerability; web-document contamination.",
+      "handling": "RESPECTED_BY_OMISSION",
+      "block_ids": [],
+      "rationale": "Internal drafting guard; omission of the unsupported claim suffices."
+    },
+    {
+      "boundary": "Relaxed-accuracy tolerance semantics must travel with scores; synthetic predecessors are context.",
+      "handling": "RESPECTED_BY_OMISSION",
+      "block_ids": [],
+      "rationale": "Internal drafting guard; omission of the unsupported claim suffices."
+    },
+    {
+      "boundary": "Composite score must not stand as general intelligence; scaffold ablations and contamination opacity (closed models) required per use.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P15-boundaries"
+      ],
+      "rationale": "Reader-facing limitation; concise Japanese limitation text carries it."
+    },
+    {
+      "boundary": "Polling scope only; open-ended faithfulness needs control-pair instruments (HallusionBench).",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P15-boundaries"
+      ],
+      "rationale": "Reader-facing limitation; concise Japanese limitation text carries it."
+    },
+    {
+      "boundary": "Judge/choice-extraction dependence (GPT-4) must travel with every score; bilingual scope is EN/CN only.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P15-boundaries"
+      ],
+      "rationale": "Reader-facing limitation; concise Japanese limitation text carries it."
+    },
+    {
+      "boundary": "Version-bind at Evidence (v3); commercial-model numbers author-measured.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P15-boundaries"
+      ],
+      "rationale": "Reader-facing limitation; concise Japanese limitation text carries it."
+    },
+    {
+      "boundary": "Distinct referred-context contract; not interchangeable with duration-breadth benches.",
+      "handling": "RESPECTED_BY_OMISSION",
+      "block_ids": [],
+      "rationale": "Internal drafting guard; omission of the unsupported claim suffices."
+    },
+    {
+      "boundary": "No mechanism disclosure; scores vendor-measured; card content may drift (bind date).",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P15-boundaries"
+      ],
+      "rationale": "Reader-facing limitation; concise Japanese limitation text carries it."
+    },
+    {
+      "boundary": "No mechanism; vendor-measured framing.",
+      "handling": "RESPECTED_BY_OMISSION",
+      "block_ids": [],
+      "rationale": "Internal drafting guard; omission of the unsupported claim suffices."
+    },
+    {
+      "boundary": "No mechanism disclosure; no latency/price/token facts published.",
+      "handling": "RESPECTED_BY_OMISSION",
+      "block_ids": [],
+      "rationale": "Internal drafting guard; omission of the unsupported claim suffices."
+    },
+    {
+      "boundary": "Card-scoped eval only; OOD/whole-body outside stated scope; card may update (bind date).",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P15-boundaries"
+      ],
+      "rationale": "Reader-facing limitation; concise Japanese limitation text carries it."
+    },
+    {
+      "boundary": "Architecture undisclosed; consistency/SIMA claims vendor-stated; no independent dynamics-use eval (G02).",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P15-boundaries"
+      ],
+      "rationale": "Reader-facing limitation; concise Japanese limitation text carries it."
+    },
+    {
+      "boundary": "Same cap as VM-D106; kept as separate locator for deployment facts.",
+      "handling": "RESPECTED_BY_OMISSION",
+      "block_ids": [],
+      "rationale": "Internal drafting guard; omission of the unsupported claim suffices."
+    }
+  ],
+  "profile_extensions": {},
+  "publication_extensions": {
+    "page_budget_body_pages": 16,
+    "depth_classes": {
+      "FULL_MECHANISM_TREATMENT": [
+        "VM-D110"
+      ],
+      "TRANSITION_NODE_TREATMENT": [
+        "VM-D108",
+        "VM-D109",
+        "VM-D078",
+        "VM-D079",
+        "VM-D081",
+        "VM-D086",
+        "VM-D087",
+        "VM-D072",
+        "VM-D073",
+        "VM-D099",
+        "VM-D100",
+        "VM-D106",
+        "VM-D107"
+      ],
+      "BRIEF_CONTEXT_OR_AUTHORITY": []
+    }
+  }
+}

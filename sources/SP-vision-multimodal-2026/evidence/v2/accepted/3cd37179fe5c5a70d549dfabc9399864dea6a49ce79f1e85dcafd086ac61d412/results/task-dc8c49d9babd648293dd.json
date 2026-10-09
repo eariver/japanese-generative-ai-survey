@@ -1,0 +1,130 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-vision-multimodal-2026",
+  "evidence_task_id": "evidence:SP-vision-multimodal-2026:ece87f85960ba2b4",
+  "basis": {
+    "task_sha256": "e6a828d6bcf4f6e728884fca1244256c371103030b0d062ace1f30cfd5466010",
+    "screening_acceptance_sha256": "c851605b219be55c746671e950a808b0f6821a514600b0e0d7fd582e9298b603",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "ev-vmd024",
+      "canonical_name": "LayoutLMv3 (Huang et al., 2023)",
+      "entity_type": "PAPER",
+      "organization": "Microsoft",
+      "canonical_url": "https://arxiv.org/abs/2204.08387"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "ev-vmd024",
+    "artifact_type": "PAPER",
+    "canonical_name": "LayoutLMv3 (Huang et al., 2023)",
+    "canonical_url": "https://arxiv.org/abs/2204.08387"
+  },
+  "temporal": {
+    "observed_at": "2026-09-30T14:24:47Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2022-04",
+        "subject_id": "ev-vmd024",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2204.08387",
+      "source_class": "PRIMARY_PAPER",
+      "title": "LayoutLMv3 (Huang et al.)",
+      "published_at": "2022-04",
+      "accessed_at": "2026-09-30T14:24:47Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Redesigned architecture/objectives: no pre-trained CNN or Faster R-CNN visual backbone (parameter savings, no region annotations); unified text+image masking objectives (MLM, masked image modeling, word-patch alignment); generality/superiority on text-centric and image-centric Document AI tasks.",
+      "subject_id": "ev-vmd024",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Full-paper conclusion consumed."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Stated ablations: linear patch embeddings fail without image-modality pre-training objectives; color/token reconstruction variants degrade downstream — the objective-design evidence.",
+      "subject_id": "ev-vmd024",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Limitation-adjacent passages consumed."
+    },
+    {
+      "statement_id": "claim-3",
+      "text": "MIM target is discrete image tokens from a codebook tokenizer (8,192 visual vocabulary, DiT-initialized), reconstructed with cross-entropy under ~40% blockwise masking — high-level layout structures, not raw pixels or region features.",
+      "subject_id": "ev-vmd024",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Paper §§1/2.2/3.2 + Fig.2/Fig.3/Eq.(2) (arXiv:2204.08387)."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Scaling to larger data/compute and few/zero-shot capability stated as future work, not established.",
+      "subject_id": "ev-vmd024",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Full body consumed: backbone removal, unified masking objectives, and ablation limits verified.",
+        "subject_ids": [
+          "ev-vmd024"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "Targeted Evidence depth repair (LayoutLMv3 discrete-token target)",
+        "status": "VERIFIED",
+        "finding": "Primary full-body re-verified 2026-10-04 against bound locator (read-only web fetch of arXiv HTML); pinpoints recorded per claim context. Correct locator arXiv:2204.08387 (not 2204.08374).",
+        "subject_ids": [
+          "ev-vmd024"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

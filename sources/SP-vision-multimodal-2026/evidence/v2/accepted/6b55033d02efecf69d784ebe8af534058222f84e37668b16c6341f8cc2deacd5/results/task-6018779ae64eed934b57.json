@@ -1,0 +1,119 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-vision-multimodal-2026",
+  "evidence_task_id": "evidence:SP-vision-multimodal-2026:a04ef197904a57c0",
+  "basis": {
+    "task_sha256": "32c6717f8769ec02cb7d27f8a96c540f49e67a7a9771d93b9c110a472b15bdb8",
+    "screening_acceptance_sha256": "e471c40158c226d150bf18bf68a5da46a8ad8710d5df3d063eab23f32f5863d9",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "ev-vmd123",
+      "canonical_name": "Deformable DETR (Zhu et al., 2020)",
+      "entity_type": "MODEL",
+      "organization": null,
+      "canonical_url": "https://arxiv.org/abs/2010.04159"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "ev-vmd123",
+    "artifact_type": "PAPER",
+    "canonical_name": "Deformable DETR (Zhu et al., 2020)",
+    "canonical_url": "https://arxiv.org/abs/2010.04159"
+  },
+  "temporal": {
+    "observed_at": "2026-10-08T00:00:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2020-10",
+        "subject_id": "ev-vmd123",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2010.04159",
+      "source_class": "PRIMARY_PAPER",
+      "title": "Deformable DETR: Deformable Transformers for End-to-End Object Detection",
+      "published_at": "2020-10",
+      "accessed_at": "2026-10-08T00:00:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "DETR motivation repair: slow convergence and limited feature spatial resolution from Transformer attention limits on image feature maps; deformable attention attends only a small set of key sampling points around a reference point.",
+      "subject_id": "ev-vmd123",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Paper abstract/§1/§4 (motivation + deformable attention mechanism)."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Multi-scale handling without FPN help (small objects from high-resolution maps); 10x fewer training epochs than DETR with better performance especially on small objects; COCO benchmark; code released; ICLR 2021 Oral.",
+      "subject_id": "ev-vmd123",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Paper abstract/§4-5 (multi-scale design + COCO convergence/small-object results)."
+    },
+    {
+      "statement_id": "claim-3",
+      "text": "Reference-point/query machinery native to Deformable DETR: 2D reference points as queries, two-stage query-selection variant selecting top-K encoder features as priors, and iterative box refinement.",
+      "subject_id": "ev-vmd123",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Paper §4 (reference-point formulation, two-stage variant, iterative refinement); no later-paper lineage asserted here."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Single-scale vs multi-scale variant scope; two-stage query-selection and iterative refinement are optional extensions; FPN-general survey stays outside this bridge role.",
+      "subject_id": "ev-vmd123",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Deformable DETR body consumed via arXiv HTML: motivation, deformable attention mechanism, multi-scale handling, convergence and small-object results verified as the P02 bridge.",
+        "subject_ids": [
+          "ev-vmd123"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

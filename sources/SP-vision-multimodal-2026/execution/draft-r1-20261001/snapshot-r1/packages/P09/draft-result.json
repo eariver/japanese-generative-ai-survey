@@ -1,0 +1,691 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-vision-multimodal-2026",
+  "research_profile": "THEMATIC",
+  "publication_profile": "LONGFORM_SPECIAL",
+  "package_id": "P09",
+  "draft_version": "r1",
+  "status": "ESTABLISHED",
+  "basis": {
+    "draft_package_sha256": "1b811443e72639b70461aa53096775a1a246e6cc964bc6e8b936acefc8ae2ccc",
+    "prompt_id": "article-drafting-v2",
+    "prompt_sha256": "b687313312a23025228c16c3f10cb68f669b910cd7215e41886d4dd91f44fe11"
+  },
+  "runner": {
+    "provider": "Muse",
+    "model": "Muse Spark (Work execution role; not a Sol/Human decision)",
+    "invocation": "TS-003 Draft r1: 16-package Japanese long-form drafting from approved Architecture r2 (Human APPROVED r2); evidence-bounded prose under edition-local language policy drafting-language-policy-ja.md + terminology map; G01-G06 and 5 PARTIAL records preserved; vendor claims attributed; no cross-task ranking",
+    "generated_at": "2026-10-01T04:03:22Z",
+    "run_reference": "ts003-draft-r1-20261001"
+  },
+  "headline": "解像度と融合と時刻を問う",
+  "deck": "画像・動画・音声をトークンや状態の列に変える手順を、解像度と融合の深さと時刻合わせの三つの問いで整理する。音声は入力側だけを扱い、開かれた系と閉じた系を分け、数値は報告として読み分ける。解像度の保ち方、融合の段取り、時刻の結び方を問い分け、モデルごとの列挙にしない。",
+  "deck_attribution_mode": "MIXED",
+  "deck_evidence_refs": [
+    {
+      "evidence_task_id": "evidence:SP-vision-multimodal-2026:5261f13662aabd9b",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1",
+      "subject_id": "ev-vmd065",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-vision-multimodal-2026:5261f13662aabd9b",
+      "kind": "CLAIM",
+      "evidence_id": "claim-2",
+      "subject_id": "ev-vmd065",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-vision-multimodal-2026:4e6ee193ed14e437",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1",
+      "subject_id": "ev-vmd070",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-vision-multimodal-2026:4e6ee193ed14e437",
+      "kind": "CLAIM",
+      "evidence_id": "claim-2",
+      "subject_id": "ev-vmd070",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-vision-multimodal-2026:cec74d4ca95d2ecb",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1",
+      "subject_id": "ev-vmd066",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-vision-multimodal-2026:cec74d4ca95d2ecb",
+      "kind": "CLAIM",
+      "evidence_id": "claim-2",
+      "subject_id": "ev-vmd066",
+      "subject_role": "PRIMARY_SUBJECT"
+    }
+  ],
+  "blocks": [
+    {
+      "block_id": "p09-b1",
+      "block_type": "PARAGRAPH",
+      "text": "一つ目の問いは解像度である。画像を粗く縮めずに読むには、受け側の作りが要る。縮めてから読む流儀では細部が落ち、文書や図表の読み取りが損なわれる。先行するQwen2.5-VLは、動的な解像度に対応するViTを最初から学び、窓注意で計算を抑えた。作り直しの要点は二つある。本来の細かさのまま受け止める点と、窓に区切って計算の無駄を抑える点である。著者らによれば、本来の解像度のまま計算の無駄を抑え、動的な解像度と絶対時刻の符号化で数時間の動画から秒単位で出来事を探し当てたと報告している。長さと時刻の両面を一つの受け口で扱う。ボックスや点による接地、定型の抜き出し、課題別の調整なしでの計算機操作や携帯端末の操作も同じ土台に載るという。読む力と動かす力の土台が共通である。ただし主張は先行の範囲に留まり、置き換え後の判断はQwen3側の根拠に譲る。先行の深さを超える主張は行わない。後継のQwen3-VLは三つの更新を束ねる。空間と時刻を合わせて扱うinterleaved-MRoPE、ViTの複数層の特徴を重ねて視覚と言語の対応を密にするDeepStack、T-RoPEを進めて時刻を文面のタイムスタンプで明示する時間合わせである。一層だけを見るのではなく、複数層を重ねて対応を密にする点が進みである。時刻も埋め込みの中に隠さず、文面に書き出す。著者らによれば、256Kの長いコンテキストをそのまま受け、書籍や数時間の動画を丸ごと保ち、秒単位の索引づけに応じると報告している。保つ長さと思い出す細かさの両立が売りである。密な2Bから32B、混合専門家の30B-A3Bと235B-A22Bを用意し、指示版と思考版を分ける。末端から大規模までの幅と、従う版と考える版の分け方が用意される。三つの柱として、純粋な文章理解の強さ、長いコンテキストの保持と想起と照合、MMMUや視覚数学の推論の先頭を挙げ、平方根の重みづけ直しが文章側を守りながら多様式側を伸ばすという。文章の力を落とさずに視覚を足す工夫である。いずれもベンダー測定の主張であり、トークンや設定の数値は設定に結びつく読みに留め、独立した再現は今後の課題として残す。異なる設定の数値を並べて優劣をつけない。解像度の問いへの答えは、本来の細かさを保ちつつ複数層で重ねる点にある。窓注意の節約とDeepStackの重ね合わせが対をなす。三つの更新は別々の持ち場を持つ。interleaved-MRoPEが空間と時刻の扱いを担い、DeepStackが層の重ね合わせを担い、文面のタイムスタンプが時刻の明示を担う。持ち場の分担が要点である。三つの柱も別々の面を示す。文章の力、長さの保持と思い出しと照合、推論の先頭である。平方根の重みづけ直しは文章側を守る工夫として添えられる。密な規模の幅と二つの版の分け方は、使う場の広さを示す。いずれも設定に結びつく読みを守り、異なる設定の数値を並べて優劣をつけない。独立した再現は今後の課題として残す。先行の窓注意の節約と後継の重ね合わせの対比が、解像度の歴史の読み方である。",
+      "attribution_mode": "ATTRIBUTED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:20afa93899477fd2",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd064",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:5261f13662aabd9b",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd065",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:5261f13662aabd9b",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ev-vmd065",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p09-b2",
+      "block_type": "PARAGRAPH",
+      "text": "二つ目の問いは融合の深さであり、Qwenだけの物語にしないことが要点である。一つの家系だけを追えば、設計の選択肢が見えなくなる。InternVL3は対極の処方を示す。文章の言語モデルに後から視覚を継ぎ足すのではなく、多様式と文章を最初から一緒に事前学習する一段の手順を取る。後付けの継ぎ足しでは、継ぎ目の調整が重くなるという行き詰まりがある。最初から一緒に学ぶことでこの重さを解く。著者らによれば、後付けの複雑さが解け、V2PEで多様式の長いコンテキストを伸ばし、SFTとMPOの事後学習と実行時のスケーリングを重ねると報告している。学びの段取り自体が一段であり、仕上げの手順も束ねられる。1Bから78Bの家族を用意し、78BではMMMUで72.2に達して公開の最先端に届き、4oや3.5-Sonnet、Gemini-2.5-Proと並び、純粋な言語側の保持も強いという。一緒に学んでも文章の力が落ちない点が要点である。いずれも読解時点のベンダー測定であり、3.5系との新旧の確認は後の段階に譲る。日付を結んだ読みに留める。重みと学習データは公開予定とされる。予定は予定として読む。Qwenの段階的な継ぎ足しと比べ、最初から一緒に学ぶか後から足すかという設計の対比が構造の見どころである。人気ではなく処方の違いで読む。規模の話ではなく段取りの話である。検査のしやすさはQwen3-VLのリポジトリが担う。稠密と混合専門家で末端からクラウドまで、FP8の変種、TransformersやvLLMへの対応、指示版と思考版、視覚エージェントによる画面操作、2次元と3次元の接地、256Kから1Mへの拡張が記される。三つの部品の積み重ねは符号の上で確かめられるが、重みだけでは評価の主張は立たない。見えるのは置き方であり、点の裏づけは別である。符号はApache 2.0で公開が確認され、重みの許諾は未確定のまま残る。確かめられたことと未確定のことを分けて書く。生きた文書として版の結びつけは後に譲り、説明文の売り文句は設計の根拠から切り分ける。売り文句の調子と仕組みの記述は別の列に置く。一段の手順と段階的な継ぎ足しは、学びの段取りが異なる。最初から一緒に学ぶか、文章の基盤に後から足すかという選択である。選択の違いで読むことが、家系の人気比べにしない読み方である。V2PEによる長さの伸ばし、SFTとMPOの仕上げ、実行時の伸ばしが一段の手順に重なる。1Bから78Bの幅は使う場の広さを示す。文章の力の保持は、一緒に学んでも失われないことを示す。重みと学習データの公開予定は予定として読む。検査のしやすさは符号の上で確かめる。三つの部品の置き方は見えるが、点の裏づけは別である。符号の許諾の確認と重みの許諾の未確定を分けて書く。生きた文書の版結びは後に譲り、売り文句と設計を切り分ける姿勢を守る。最初から一緒に学ぶ段取りと後から足す段取りの対比が、構造の見どころである。対比の所在を示す。段取りの違いで読むことが、人気比べにしない読み方である。公開予定の記述は予定として読む。予定と確定を混ぜない。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:4e6ee193ed14e437",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd070",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:4e6ee193ed14e437",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ev-vmd070",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:e543b8e20cd2e54c",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd074",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:e543b8e20cd2e54c",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ev-vmd074",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:e543b8e20cd2e54c",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "ev-vmd074",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p09-b3",
+      "block_type": "PARAGRAPH",
+      "text": "融合の問いには接地で測る比較軸も要る。対応の密さだけでは、指し示す力が測れない。Molmo 2は設計の極ではなく比較の軸である。極として立てるのではなく、測りの軸として置く。論文自身の三つ組の表示では、オープンウェイト、蒸留なしのオープンデータ、オープンコードを掲げる。蒸留に頼らない点が表示の要点である。著者らによれば、8Bが公開級の短い動画や数え上げ、説明文で先頭に立ち、長い動画でも競り、動画の数え上げで35.5に対してQwen3-VLが29.6、指さしのF1で38.4に対してGemini 3 Proが20.0、追跡のJ&Fで56.2に対して41.1と報告している。数え上げと指さしと追跡という接地寄りの物差しで測った値である。比較の相手は報告に記される。9種の公開データには指さしと追跡の二種、説明文、質問応答が含まれ、完全に開かれたOlmo変種もあり、2026年4月のv4が記される。資料の顔ぶれと版の日付が添えられる。ただし8Bと4BはQwen3の基盤を使い回し、部分的な依存は開示される。競う相手の基盤に載るという関係を隠さない。価値は開放の度合いと接地で測る動画評価にある。仕組みの新しさではなく、測り方と開き方の寄与である。論文自身が閉じた依存も明かす。Olmo変種でも画像エンコーダのSigLIP 2は閉じたデータに頼り、競える開かれたエンコーダがないことが共同体への呼びかけとして記される。足りないものを足りないと書く。データ生成の文章専用モデルも閉じており、MathVistaやMMMUの推論、10分を超える長い動画の学習データでは後れることが結果の議論に記される。推論と長尺の二点で後れることが論文自身の言葉で残る。閉じた系は能力の比較に留める。Gemini 3.1 Proは1Mのコンテキストで文章と画像と音声と動画を受け、MMMU-ProとVideo-MMMUの主張を手法の頁と2026年2月のモデルカードに記す。受け口の広さと評価の主張が記される。Gemini 3.6 Flashはトークンの効率寄りの位置づけで2026年7月のカードに記される。効率の極としての比較軸である。いずれも能力と評価と導入の事実だけを借り、仕組みの根拠にはしない。仕組みの開示がない以上、設計の証しには使わない。数値はベンダー測定であり、日付と版の結びつけが要る。開かれた三つ組の表示は、重みとデータと符号の三面を示す。蒸留に頼らない点が表示の要点である。8Bと4Bの基盤の使い回しは、競う相手に載る関係を示す。依存の開示が価値の裏づけとなる。閉じた画像エンコーダへの依存は、競える開かれた選択肢がないことの裏返しである。共同体への呼びかけとして記される。文章専用モデルの閉じた依存も同様である。推論の二課題と10分超の長尺の遅れは、論文自身の結果の議論に残る。遅れを隠さない姿勢が、主張の強さを保つ。閉じた二者の役割は能力と評価と導入に絞る。仕組みの証しには使わない。版と日付を結んだ読みを守る。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:4f6ee34ec83ed509",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd071",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:4f6ee34ec83ed509",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ev-vmd071",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:4f6ee34ec83ed509",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "ev-vmd071",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:721cee26da56d9ed",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd072",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:721cee26da56d9ed",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ev-vmd072",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:af1823c8af887271",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd073",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p09-b4",
+      "block_type": "PARAGRAPH",
+      "text": "三つ目の問いは時刻と音声であり、音声は入力側だけを扱う。作る側の合成は別巻に譲り、ここでは受け止めて列に変える契約だけを扱う。Whisperは話し言葉の入口の前例である。68万時間の多言語・多課題の弱い教師信号で学び、教師なしに近い転移で十分に教師ありの結果に迫り、人の正確さと頑健さに近づくと報告している。規模の大きい弱い教師信号が頑健さの源である。モデルと推論符号が公開され、頑健な処理の土台となる。開かれた土台として残る。役割は話し言葉をトークンに変える契約に絞り、合成の歴史は別巻に譲る。話す側の仕組みはここでは扱わない。話し言葉の範囲に限られ、一般の音はBEATs側の根拠が要る。話し言葉を超える主張は行わない。BEATsは音全般の自己教師の入口を担う。音響トークナイザと音の自己教師を交互に鍛え、再構成ではなく覆った離散ラベルの予測で学ぶ。トークナイザは各周で教師の意味を受け継ぐ。交互に鍛える点が要点である。著者らの測定では、AudioSet-2Mで50.6%のmAPを音のみで、ESC-50で98.1%に達し、データや変数の大きい先行を上回ったという。音だけでの値を分けて読む。分類の評価の範囲に留まり、融合の振る舞いはオムニ側の根拠が要る。分類の強さと融合の強さは別の話である。CLAPは音側の呼び出し可能性を足す。言語と音声の二塔を対照学習で事前学習し、12.8万組で学ぶ。二つの塔を対応づける点が要点である。著者らによれば、音の出来事や音楽や話し言葉の16課題・8領域でゼロショットの最先端に届き、教師ありの5課題でも最先端に達したという。触れていない課題での振る舞いが問われる。CLIPとの並びが明示され、音側の番地づけが埋まる。画像側のCLIPに対する音側の答えである。ただし12.8万組はCLIP級の規模ではなく、後のオムニのエンコーダが比較を限定する。規模の違いを超える主張は行わない。三者の契約は入力側に絞られる。話し言葉の受け口、音全般の受け口、音と言語の対応づけである。作る側の合成は別巻に譲る。後のオムニの束ねへの前史として読む。分類の強さと融合の強さは別の話であることを守る。前史の三つの契約は、後の束ねへの土台となる。土台の所在を示し、合成の側に踏み込まない。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:c6d9aec0a063b225",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd067",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:c6d9aec0a063b225",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ev-vmd067",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:60046d90c45dbfe3",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd068",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:9ee5b39b27eced77",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd069",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p09-b5",
+      "block_type": "PARAGRAPH",
+      "text": "音の入口を束ねて時刻で合わせるのがQwen3-Omniである。ばらばらの入口を束ね、時刻の軸で結ぶ。Thinker-Talkerの混合専門家で知覚と生成をまたぎ、音声エンコーダを最初から学ぶ。考える側と話す側を分け、音声の受け口は作り直す。M-RoPEの系譜の糸はここにつながる。位置の符号化の系譜が時刻の同期に受け継がれる。TM-RoPEで絶対時刻を合わせ、音声と映像のずれを80msに抑える。相対ではなく絶対で合わせる点が要点である。著者らによれば、40分の音声認識と言語理解の例を受け、19言語の話し言葉の理解と10言語の生成に応じると報告している。長い事例と多くの言語が受け口の広さを示す。理論上234msで最初の音を返す流れに乗り、36の音声・視聴覚の評価で公開の最先端32、全体の最先端22に達したという。比較対象は報告に記される。冷間始動の理論値として読む。境界は明確である。TalkerやCode2Wavの合成の細部は別巻の側に置き、ここでは入力のエンコーダとTM-RoPEの同期、入力としての流れの契約だけを担う。作る側の仕組みは別巻に譲る。Thinker-Talkerの流れの語りは入力と融合の側に従う。流れの実現の語りは従とする。劣化なしや首位の主張はベンダー測定であり、234msは理論上の冷間始動である。実測の配備値としては読まない。Whisperの話し言葉からトークンへの契約、CLAPの音と言語の対応づけを前史とし、最初から学ぶ音声エンコーダと絶対時刻の同期が、40分の事例と多言語の理解を支える。前史の二つの契約が束ねられる。生成側を除くことで、時刻合わせと入力の保ち方が主題として残る。何を除き何を残すかが明確である。考える側と話す側の分担は、入力と融合の側に従う。話す側の実現の語りは従とする。音声の受け口を作り直す点が、束ねの要点である。前史の受け口を使い回すのではなく、最初から学ぶ。絶対時刻での結びは、相対のずれを残さない工夫である。80msの値は報告として読む。40分の事例は長さの受け止めを示し、19言語と10言語は受け口の広さを示す。理解と生成の言語数が記される。234msは冷間始動の理論値であり、実測の配備値としては読まない。理論と実測を混ぜない。36の評価での32と22の首位は、報告に記される比較対象との関係で読む。比較の相手を添えて読む。劣化なしの主張も同様である。TalkerとCode2Wavの細部は別巻に置く。置く場所を明確にする。入力のエンコーダと時刻の同期と流れの契約の三点が、ここでの持ち場である。持ち場を超える主張は行わない。M-RoPEの系譜からTM-RoPEへの継承が、位置から時刻への橋渡しとなる。束ねの要点は、ばらばらの入口を時刻の軸で結ぶ点にある。結ぶ軸の所在を示す。作り直しの受け口と絶対時刻の結びが、長い事例と多くの言語を支える。支えの所在を示す。報告の値として受け取り、実測と理論を混ぜない。理論値と実測値の区別を守る。持ち場の三点を超える主張は行わない。三点の範囲を守る。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:cec74d4ca95d2ecb",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd066",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:cec74d4ca95d2ecb",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ev-vmd066",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:c6d9aec0a063b225",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd067",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:c6d9aec0a063b225",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ev-vmd067",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:9ee5b39b27eced77",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd069",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p09-b6",
+      "block_type": "PARAGRAPH",
+      "text": "流れの契約は導入の姿で確かめる。仕様の記述だけではなく、動かす面での裏づけが要る。Qwen3-Omniのリポジトリは流れのオムニ導入の面を示し、作例集や実演を備える。手順書と動く見本が添えられる。Talkerを止めたThinkerのみの運用が文書に記される。作る側を止め、受け止めて考える側だけで動かす運用である。入力と同期の契約を生成から切り離して確かめる手がかりとなる。2025年9月26日に話題の首位に立ったことは、読み物の知らせとして記される出所の記述であり、技術の根拠ではない。人気の合図を技術の権威と取り違えない。重みと符号の許諾は未確定のまま残り、確かめられたことと未確定のことを分けて書く。Qwen3-Omni本体の数値は設定に結びつく読みを守る。80msの時刻合わせや234msの理論値、40分の事例や19言語・10言語の対応、36評価での32と22の首位は、いずれも著者とベンダーの測定として受け取り、独立した再現を待つ。設定の違う数値を並べて優劣をつけない。入力側の保ち方、絶対時刻での音声と映像の結び、流れの中での問い応答という三点が、導入面と仕様の記述で裏づけられる。三点を超える主張は行わない。異なる設定の数値を並べない約束を守る。生きた文書の一つとして扱わず、版を結んだ後の確認に委ねる。版の結びつけは後の段階に譲る。作例集と実演は、手順書と動く見本の二役を担う。見本の動きが契約の裏づけとなる。Thinkerのみの運用は、作る側を止めた形での確かめである。止めた形での値として読む。話題の首位の記述は、読み物の知らせの出所を示すに留まる。技術の根拠には使わない。人気の合図と技術の権威の区別を守る。重みの許諾と符号の許諾の未確定は、確かめられた符号の許諾と分けて書く。分けて書くことが主張の強さを保つ。80msや234msや40分や言語数や32と22の値は、いずれも設定に結びつく読みに留める。設定の違う数値を並べない。入力の保ち方と時刻の結びと流れの問い応答の三点を超える主張は行わない。三点の範囲を守る。売り文句と設計を切り分け、導入面の記述は仕様の記述と合わせて読む。合わせ読みの範囲に留める。設定に結びつく読みの約束を守る。独立した再現は今後の課題として残す。手順書と動く見本の二役は、契約の裏づけとなる。裏づけの所在を示す。止めた形での確かめは、生成を除いた入力側の保ち方の実証である。実証の範囲に留める。知らせの出所と技術の根拠の区別を守る。区別が主張の強さを保つ。確かめられた許諾と未確定の許諾の区別を守る。区別を隠さない。設定に結びつく読みの約束を守り、異なる設定の数値を並べない。並べない約束を守る。三点の範囲を超える主張は行わない。生きた文書の版結びは後に譲る。譲る先を明確にする。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:4b007409a575a02d",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd075",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:cec74d4ca95d2ecb",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd066",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:cec74d4ca95d2ecb",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ev-vmd066",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p09-b7",
+      "block_type": "PARAGRAPH",
+      "text": "開放の度合いは二つの家系で確かめる。一つの家だけでは開放の物差しが偏る。InternVLのリポジトリは第二の家の開放を示し、重みに加えてInternVL-Dataの学習データを出す。重みだけでなく学びの糧も出す点が要点である。1.0から3.5までの系譜を論文の結び目でたどり、3.5-GPT-OSS系で学習符号を開く。系譜の結び目が論文に残る。読み物の見出しは3.5系を記し、報告2508.18265の241B-A28B級と2025年8月30日の学習符号の公開が添えられるが、発見の集成は変わらない。新しい見出しは出所の記述であり、集成の置き換えではない。ただし資料公開の細部の範囲は未確認であり、見出しの深さに留まる。細部の確認は後の段階に譲る。molmo2のリポジトリは全層の開放を見せる。データの用意、事前学習とSFTと長いコンテキストのSFT、評価の道具、vLLMによる推論、検査点の変換、MolmoPointの拡張、モデル群の結び目が見出しからたどれる。用意から推論までの鎖が見える。符号はApache 2.0で公開が確認され、重みの許諾や公開データの有無、資料ごとの許諾と利用条件は未確定のまま残る。確かめられた符号の許諾と未確定の重み・資料の許諾を分ける。学術や非商用の第三者の混ざりも結んでいない。混ざりの整理は先送りとする。Molmo 2の論文の三つ組と合わせると、開かれた重みとデータと符号の側と、SigLIP 2や文章専用モデルに頼る閉じた側のまだらが残る。開かれた側と閉じた側のまだらを隠さない。未確定は未確定と書くことが、開放の主張の強さを保つ。分からないものを分からないと書く。重みと学びの糧の両面を出す点が、第二の家の特徴である。片面だけでは物差しが偏る。1.0から3.5までの系譜は、論文の結び目でたどる。結び目の所在が記される。3.5系の見出しと報告番号と公開日は、出所の記述として読む。集成の置き換えではない。発見の集成は変わらない。細部の範囲の未確認は、見出しの深さに留まることを示す。深さを超える主張は行わない。全層の開放は、用意から推論までの鎖の可視性を示す。鎖の各環が見出しからたどれる。符号の許諾の確認は、重みと資料の許諾の未確定と分ける。確かめられたことと未確定のことの区別である。第三者の混ざりの未整理は、先送りの項目として残す。隠さず残す。開かれた側と閉じた側のまだらを記すことが、正直な物差しである。第二の家の両面出しは、物差しの偏りを正す工夫である。偏りを正す所在を示す。系譜の結び目の所在は、論文に残る。見出しの出所記述と集成の区別を守る。細部の未確認は、深さの限定として読む。限定を超える主張は行わない。全層の鎖の可視性は、各環のたどり可能性を示す。第三者の混ざりの先送りは、項目として残す。まだらの記録が、正直な物差しとなる。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:914cf36ce25f198b",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd076",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:914cf36ce25f198b",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ev-vmd076",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:9193275622858906",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd077",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:9193275622858906",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ev-vmd077",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:4f6ee34ec83ed509",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd071",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:4f6ee34ec83ed509",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ev-vmd071",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:4f6ee34ec83ed509",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "ev-vmd071",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "P09-boundaries",
+      "block_type": "CLAIM_BOUNDARY",
+      "text": "この節の読解上の境界: M-RoPE lineage thread; Thinker-Talker streaming subordinated to input/fusion side / All benchmark claims vendor-measured (G05); token/config figures config-bound (CV2-DM-020); independent reproduction pending; repo commit binding at later stages. / No-degradation and leaderboard claims vendor-measured (G05); 234ms is theoretical cold-start; generation-side excluded by boundary. / Speech-domain scope; general-audio needs BEATs-side sources. / Classification-benchmark scope; fusion behavior needs omni-side sources. / 128k-pair scale vs CLIP-scale; later omni encoders qualify the comparison. / Vendor-measured evals at this read level (G05); 3.5-series supersession checks belong to later stages. / Author-measured comparisons; Qwen-backbone dependence disclosed; long-video competitiveness is partial. / Superseded claims need Qwen3-side sources; predecessor depth only. / No mechanism disclosure; scores vendor-measured; card content may drift (bind date). / No mechanism; vendor-measured framing. / Living surface: commit/version binding required at later stages; README marketing register quarantined from architecture. / repo commit/version binding: Living-repo commit/version binding deferred to later stages; README-depth consumption recorded. / Living surface; commit binding required; popularity signals are not technical authority. / Weight/code licenses remain unresolved in canonical Evidence. / PARTIAL: data-release file-level scope unverified (INSPECT target); README header depth only. / data-release scope verification: File-level data-release scope not verified; carried as INSPECT item for later stages. / PARTIAL: training-data license mix (academic/non-commercial third-party) unbound (INSPECT target). / data license mix binding: Training-data license mix not bound; carried as INSPECT item for later stages.",
+      "attribution_mode": "INFERENCE",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:5261f13662aabd9b",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd065",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:cec74d4ca95d2ecb",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd066",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:c6d9aec0a063b225",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd067",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:60046d90c45dbfe3",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd068",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:9ee5b39b27eced77",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd069",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:4e6ee193ed14e437",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd070",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:4f6ee34ec83ed509",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd071",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:20afa93899477fd2",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd064",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:721cee26da56d9ed",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd072",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:af1823c8af887271",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd073",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:e543b8e20cd2e54c",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd074",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:4b007409a575a02d",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd075",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:4b007409a575a02d",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "ev-vmd075",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:914cf36ce25f198b",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd076",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:9193275622858906",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd077",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    }
+  ],
+  "must_cover_coverage": [
+    {
+      "requirement": "Two technically distinct open families (InternVL3 paradigm contrast, Molmo 2 grounding comparator); no Qwen-only narrative",
+      "block_ids": [
+        "p09-b1",
+        "p09-b2",
+        "p09-b3",
+        "p09-b4",
+        "p09-b5",
+        "p09-b6",
+        "p09-b7",
+        "P09-boundaries"
+      ]
+    },
+    {
+      "requirement": "Audio chain Whisper/BEATs/CLAP/omni-sync with synthesis excluded (TS-002)",
+      "block_ids": [
+        "p09-b1",
+        "p09-b2",
+        "p09-b3",
+        "p09-b4",
+        "p09-b5",
+        "p09-b6",
+        "p09-b7",
+        "P09-boundaries"
+      ]
+    },
+    {
+      "requirement": "Vendor latency/token figures config-bound (CV2-DM-020); X03 fields multimodal-specific only",
+      "block_ids": [
+        "p09-b1",
+        "p09-b2",
+        "p09-b3",
+        "p09-b4",
+        "p09-b5",
+        "p09-b6",
+        "p09-b7",
+        "P09-boundaries"
+      ]
+    }
+  ],
+  "boundary_dispositions": [
+    {
+      "boundary": "M-RoPE lineage thread; Thinker-Talker streaming subordinated to input/fusion side",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P09-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "All benchmark claims vendor-measured (G05); token/config figures config-bound (CV2-DM-020); independent reproduction pending; repo commit binding at later stages.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P09-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "No-degradation and leaderboard claims vendor-measured (G05); 234ms is theoretical cold-start; generation-side excluded by boundary.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P09-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Speech-domain scope; general-audio needs BEATs-side sources.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P09-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Classification-benchmark scope; fusion behavior needs omni-side sources.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P09-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "128k-pair scale vs CLIP-scale; later omni encoders qualify the comparison.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P09-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Vendor-measured evals at this read level (G05); 3.5-series supersession checks belong to later stages.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P09-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Author-measured comparisons; Qwen-backbone dependence disclosed; long-video competitiveness is partial.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P09-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Superseded claims need Qwen3-side sources; predecessor depth only.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P09-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "No mechanism disclosure; scores vendor-measured; card content may drift (bind date).",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P09-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "No mechanism; vendor-measured framing.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P09-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Living surface: commit/version binding required at later stages; README marketing register quarantined from architecture.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P09-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "repo commit/version binding: Living-repo commit/version binding deferred to later stages; README-depth consumption recorded.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P09-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Living surface; commit binding required; popularity signals are not technical authority.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P09-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Weight/code licenses remain unresolved in canonical Evidence.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P09-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "PARTIAL: data-release file-level scope unverified (INSPECT target); README header depth only.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P09-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "data-release scope verification: File-level data-release scope not verified; carried as INSPECT item for later stages.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P09-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "PARTIAL: training-data license mix (academic/non-commercial third-party) unbound (INSPECT target).",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P09-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "data license mix binding: Training-data license mix not bound; carried as INSPECT item for later stages.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P09-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    }
+  ],
+  "profile_extensions": {},
+  "publication_extensions": {
+    "page_budget_body_pages": 10,
+    "depth_classes": {
+      "FULL_MECHANISM_TREATMENT": [
+        "VM-D065",
+        "VM-D066",
+        "VM-D070",
+        "VM-D071"
+      ],
+      "TRANSITION_NODE_TREATMENT": [
+        "VM-D067",
+        "VM-D068",
+        "VM-D069"
+      ],
+      "BRIEF_CONTEXT_OR_AUTHORITY": [
+        "VM-D064",
+        "VM-D072",
+        "VM-D073",
+        "VM-D074",
+        "VM-D075",
+        "VM-D076",
+        "VM-D077"
+      ]
+    }
+  }
+}

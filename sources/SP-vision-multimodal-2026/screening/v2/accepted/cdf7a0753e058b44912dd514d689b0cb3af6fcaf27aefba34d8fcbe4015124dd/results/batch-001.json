@@ -1,0 +1,685 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-vision-multimodal-2026",
+  "batch_id": "batch-001",
+  "basis": {
+    "package_sha256": "28c81460a566d857d9033828ac4e7751dddcba771c3a3bc0757e1a11c838215d",
+    "batch_sha256": "f37992d4721589c6dfade39de9d69f119e28336b2874f14dac92a963dcb8f653",
+    "profile_sha256": "e4d16027d66d379848378031e47198a09f0b27a961e27a0ab250923a07a57444",
+    "state_sha256": "ee0ecd637242281f5e3221acd9ce9f14a6e1b4beb14c4ce93c2479f1ed35c426",
+    "prompt_sha256": "3e45900ead73688eab8734036e6e476c1ec4f1a7ce38da42d5ca52a68ef0a862",
+    "result_contract_sha256": "a05b65b41efbcaf654df5c3c5944254a76d93d8a28cab961f2c06f6d580da5a2"
+  },
+  "decisions": [
+    {
+      "discovery_id": "VM-D001",
+      "decision": "INSPECT",
+      "reason": "Neocognitron origin context for learned hierarchies; paywalled journal page needs content binding at Evidence; context depth only per D01 cap.",
+      "scope_tags": [
+        "VM-O01"
+      ],
+      "verification_targets": [
+        "Evidence-stage full-body verification",
+        "paywall content binding"
+      ],
+      "duplicate_group": null,
+      "confidence": "medium"
+    },
+    {
+      "discovery_id": "VM-D002",
+      "decision": "KEEP",
+      "reason": "LeNet end-to-end CNN origin; anti-abrupt-start predecessor context.",
+      "scope_tags": [
+        "VM-O01"
+      ],
+      "verification_targets": [
+        "Evidence-stage full-body verification",
+        "author-PDF content binding"
+      ],
+      "duplicate_group": null,
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "VM-D003",
+      "decision": "KEEP",
+      "reason": "AlexNet large-scale supervised + GPU scaling break; required D01 anchor.",
+      "scope_tags": [
+        "VM-O01"
+      ],
+      "verification_targets": [
+        "Evidence-stage full-body verification",
+        "proceedings-page content binding"
+      ],
+      "duplicate_group": null,
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "VM-D004",
+      "decision": "KEEP",
+      "reason": "ResNet residual-optimization break with detection/segmentation transfer; required D01 anchor.",
+      "scope_tags": [
+        "VM-O01"
+      ],
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "duplicate_group": null,
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "VM-D005",
+      "decision": "KEEP",
+      "reason": "R-CNN region-proposal detection origin; required D02 anchor.",
+      "scope_tags": [
+        "VM-O02"
+      ],
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "duplicate_group": null,
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "VM-D006",
+      "decision": "KEEP",
+      "reason": "Faster R-CNN two-stage capstone with RPN; anchor/NMS machinery reference.",
+      "scope_tags": [
+        "VM-O02"
+      ],
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "duplicate_group": null,
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "VM-D007",
+      "decision": "KEEP",
+      "reason": "YOLO one-stage operating-point origin; latency/accuracy trade-off reference.",
+      "scope_tags": [
+        "VM-O02"
+      ],
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "duplicate_group": null,
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "VM-D008",
+      "decision": "MAYBE",
+      "reason": "SSD non-YOLO one-stage branch; retained thin for lineage completeness, short treatment.",
+      "scope_tags": [
+        "VM-O02"
+      ],
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "duplicate_group": null,
+      "confidence": "medium"
+    },
+    {
+      "discovery_id": "VM-D009",
+      "decision": "MAYBE",
+      "reason": "RetinaNet dense-imbalance treatment; retained thin for lineage completeness, short treatment.",
+      "scope_tags": [
+        "VM-O02"
+      ],
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "duplicate_group": null,
+      "confidence": "medium"
+    },
+    {
+      "discovery_id": "VM-D010",
+      "decision": "KEEP",
+      "reason": "DETR set-prediction transition removing anchors/NMS; required D02 anchor.",
+      "scope_tags": [
+        "VM-O02"
+      ],
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "duplicate_group": null,
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "VM-D011",
+      "decision": "KEEP",
+      "reason": "DINO detector: DETR-lineage capstone and Grounding DINO base; DINO-name disambiguation enforced.",
+      "scope_tags": [
+        "VM-O02",
+        "VM-O08"
+      ],
+      "verification_targets": [
+        "Evidence-stage full-body verification",
+        "DINO detector vs self-supervised disambiguation"
+      ],
+      "duplicate_group": null,
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "VM-D012",
+      "decision": "KEEP",
+      "reason": "YOLO-World GLIP-formulation open-vocabulary YOLO; D02->D07B bridge case.",
+      "scope_tags": [
+        "VM-O02",
+        "VM-O08"
+      ],
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "duplicate_group": null,
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "VM-D013",
+      "decision": "KEEP",
+      "reason": "FCN dense-prediction origin; required D03 anchor.",
+      "scope_tags": [
+        "VM-O03"
+      ],
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "duplicate_group": null,
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "VM-D014",
+      "decision": "KEEP",
+      "reason": "U-Net segmentation-role node; TS-002 diffusion-backbone role explicitly excluded.",
+      "scope_tags": [
+        "VM-O03"
+      ],
+      "verification_targets": [
+        "Evidence-stage full-body verification",
+        "TS-002/TS-003 boundary: segmentation role only"
+      ],
+      "duplicate_group": null,
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "VM-D015",
+      "decision": "KEEP",
+      "reason": "Mask R-CNN instance-segmentation bridge; required D03 anchor.",
+      "scope_tags": [
+        "VM-O03"
+      ],
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "duplicate_group": null,
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "VM-D016",
+      "decision": "MAYBE",
+      "reason": "Panoptic contract node (definition + citation depth); retained for semantic/instance unification contract.",
+      "scope_tags": [
+        "VM-O03"
+      ],
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "duplicate_group": null,
+      "confidence": "medium"
+    },
+    {
+      "discovery_id": "VM-D017",
+      "decision": "KEEP",
+      "reason": "SAM promptable task/model/data system; first vision-foundation event; dual reading carried.",
+      "scope_tags": [
+        "VM-O03"
+      ],
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "duplicate_group": null,
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "VM-D018",
+      "decision": "KEEP",
+      "reason": "SAM 2 streaming-memory bridge D03->D11; architecture pointer, not a system case.",
+      "scope_tags": [
+        "VM-O03",
+        "VM-O12"
+      ],
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "duplicate_group": null,
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "VM-D019",
+      "decision": "KEEP",
+      "reason": "MiDaS relative-depth support node; zero-shot-transfer eval contract; X01 mixing exhibit.",
+      "scope_tags": [
+        "VM-O04"
+      ],
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "duplicate_group": null,
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "VM-D020",
+      "decision": "KEEP",
+      "reason": "OpenPose keypoint/association support node; why classification features cannot drive action.",
+      "scope_tags": [
+        "VM-O04"
+      ],
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "duplicate_group": null,
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "VM-D021",
+      "decision": "KEEP",
+      "reason": "Visual Genome relational-structure + region-language support node; grounding-data predecessor.",
+      "scope_tags": [
+        "VM-O04",
+        "VM-O08"
+      ],
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "duplicate_group": null,
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "VM-D022",
+      "decision": "KEEP",
+      "reason": "DUSt3R learned geometric-state support node; calibration-free pointmap contract.",
+      "scope_tags": [
+        "VM-O04"
+      ],
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "duplicate_group": null,
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "VM-D023",
+      "decision": "KEEP",
+      "reason": "LayoutLM text+layout pre-training origin; required D05 anchor.",
+      "scope_tags": [
+        "VM-O05"
+      ],
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "duplicate_group": null,
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "VM-D024",
+      "decision": "KEEP",
+      "reason": "LayoutLMv3 unified text-layout-image successor; required D05 node.",
+      "scope_tags": [
+        "VM-O05"
+      ],
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "duplicate_group": null,
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "VM-D025",
+      "decision": "KEEP",
+      "reason": "Donut OCR-free branch; Nougat/GOT lineage predecessor.",
+      "scope_tags": [
+        "VM-O05"
+      ],
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "duplicate_group": null,
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "VM-D026",
+      "decision": "KEEP",
+      "reason": "Pix2Struct screenshot-parsing transition; UI-as-document bridge with D12 handoff.",
+      "scope_tags": [
+        "VM-O05"
+      ],
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "duplicate_group": null,
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "VM-D027",
+      "decision": "KEEP",
+      "reason": "Nougat specialist pole (open ARCHITECTURE_CASE); markup contract; no numeric ranking.",
+      "scope_tags": [
+        "VM-O05"
+      ],
+      "verification_targets": [
+        "Evidence-stage full-body verification",
+        "NO_CROSS_MODEL_NUMERIC_COMPARISON"
+      ],
+      "duplicate_group": null,
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "VM-D028",
+      "decision": "KEEP",
+      "reason": "GOT OCR-2.0 specialist pole (open ARCHITECTURE_CASE); resolution/token policy exhibit.",
+      "scope_tags": [
+        "VM-O05"
+      ],
+      "verification_targets": [
+        "Evidence-stage full-body verification",
+        "NO_CROSS_MODEL_NUMERIC_COMPARISON"
+      ],
+      "duplicate_group": null,
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "VM-D029",
+      "decision": "KEEP",
+      "reason": "Qwen3-VL-Embedding retrieval sub-lane anchor; document-RAG interface; preprint status to confirm at Evidence.",
+      "scope_tags": [
+        "VM-O05",
+        "VM-O10"
+      ],
+      "verification_targets": [
+        "Evidence-stage full-body verification",
+        "preprint version/status binding"
+      ],
+      "duplicate_group": null,
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "VM-D030",
+      "decision": "KEEP",
+      "reason": "ViT convolution-to-sequence break; fusion precondition; required D06 anchor.",
+      "scope_tags": [
+        "VM-O06"
+      ],
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "duplicate_group": null,
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "VM-D031",
+      "decision": "KEEP",
+      "reason": "DeiT data-efficiency/recipe bridge; architecture-vs-scale debate exhibit.",
+      "scope_tags": [
+        "VM-O06"
+      ],
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "duplicate_group": null,
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "VM-D032",
+      "decision": "KEEP",
+      "reason": "Swin hierarchy node; lineage completeness.",
+      "scope_tags": [
+        "VM-O06"
+      ],
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "duplicate_group": null,
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "VM-D033",
+      "decision": "KEEP",
+      "reason": "MAE masked label-free pretraining anchor; required D06 node.",
+      "scope_tags": [
+        "VM-O06"
+      ],
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "duplicate_group": null,
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "VM-D034",
+      "decision": "KEEP",
+      "reason": "DINO self-supervised anchor with emergent boundaries; DINO-name disambiguation enforced.",
+      "scope_tags": [
+        "VM-O06"
+      ],
+      "verification_targets": [
+        "Evidence-stage full-body verification",
+        "DINO detector vs self-supervised disambiguation"
+      ],
+      "duplicate_group": null,
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "VM-D035",
+      "decision": "KEEP",
+      "reason": "DINOv2 all-purpose-features anchor; SAM-contrast pole.",
+      "scope_tags": [
+        "VM-O06"
+      ],
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "duplicate_group": null,
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "VM-D036",
+      "decision": "KEEP",
+      "reason": "SigLIP alignment-variant + encoder-reuse lineage into Qwen3-VL/Omni; SigLIP2 citation binding at Evidence (G06).",
+      "scope_tags": [
+        "VM-O06",
+        "VM-O07"
+      ],
+      "verification_targets": [
+        "Evidence-stage full-body verification",
+        "G06 SigLIP2 citation binding"
+      ],
+      "duplicate_group": null,
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "VM-D037",
+      "decision": "KEEP",
+      "reason": "Show and Tell captioning predecessor; anti-CLIP-abruptness context.",
+      "scope_tags": [
+        "VM-O07"
+      ],
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "duplicate_group": null,
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "VM-D038",
+      "decision": "KEEP",
+      "reason": "VQA task predecessor and language-prior-shortcut origin; D10 control shared.",
+      "scope_tags": [
+        "VM-O07",
+        "VM-O11"
+      ],
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "duplicate_group": null,
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "VM-D039",
+      "decision": "KEEP",
+      "reason": "CLIP addressability break + zero-shot transfer; TS-003 angle is addressability, conditioning reused by reference.",
+      "scope_tags": [
+        "VM-O07"
+      ],
+      "verification_targets": [
+        "Evidence-stage full-body verification",
+        "bag-of-words limitation preserved"
+      ],
+      "duplicate_group": null,
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "VM-D040",
+      "decision": "KEEP",
+      "reason": "ALIGN noisy web-scale scaling point; variant node.",
+      "scope_tags": [
+        "VM-O07"
+      ],
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "duplicate_group": null,
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "VM-D041",
+      "decision": "KEEP",
+      "reason": "Flickr30k Entities phrase-localization task origin; required D07B node.",
+      "scope_tags": [
+        "VM-O08"
+      ],
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "duplicate_group": null,
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "VM-D042",
+      "decision": "INSPECT",
+      "reason": "RefCOCO REC contract home; ACL locator content binding needed at Evidence (arXiv ID corrected at intake).",
+      "scope_tags": [
+        "VM-O08"
+      ],
+      "verification_targets": [
+        "Evidence-stage full-body verification",
+        "ACL D16-1212 content binding"
+      ],
+      "duplicate_group": null,
+      "confidence": "medium"
+    },
+    {
+      "discovery_id": "VM-D043",
+      "decision": "KEEP",
+      "reason": "OVR-CNN OVD formulation origin; recognition/localization disentanglement.",
+      "scope_tags": [
+        "VM-O08"
+      ],
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "duplicate_group": null,
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "VM-D044",
+      "decision": "KEEP",
+      "reason": "ViLD CLIP-distillation transfer; LVIS-rare protocol entry.",
+      "scope_tags": [
+        "VM-O08"
+      ],
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "duplicate_group": null,
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "VM-D045",
+      "decision": "KEEP",
+      "reason": "RegionCLIP region-pretraining pole (distinct from ViLD distillation); domain-shift diagnosis.",
+      "scope_tags": [
+        "VM-O08"
+      ],
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "duplicate_group": null,
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "VM-D046",
+      "decision": "KEEP",
+      "reason": "Detic vocabulary-scaling pole; ID corrected at intake.",
+      "scope_tags": [
+        "VM-O08"
+      ],
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "duplicate_group": null,
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "VM-D047",
+      "decision": "KEEP",
+      "reason": "GLIP detection-as-grounding reformulation + GoldG practice; required D07B anchor.",
+      "scope_tags": [
+        "VM-O08"
+      ],
+      "verification_targets": [
+        "Evidence-stage full-body verification",
+        "GoldG composition at Evidence"
+      ],
+      "duplicate_group": null,
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "VM-D048",
+      "decision": "KEEP",
+      "reason": "MDETR modulated multi-task detector; early-fusion pole.",
+      "scope_tags": [
+        "VM-O08"
+      ],
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "duplicate_group": null,
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "VM-D049",
+      "decision": "KEEP",
+      "reason": "OWL-ViT minimal-head late-fusion pole; architecture-minimal contrast.",
+      "scope_tags": [
+        "VM-O08"
+      ],
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "duplicate_group": null,
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "VM-D050",
+      "decision": "KEEP",
+      "reason": "Grounding DINO tight-fusion unification; detection + REC framework.",
+      "scope_tags": [
+        "VM-O08"
+      ],
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "duplicate_group": null,
+      "confidence": "high"
+    }
+  ]
+}

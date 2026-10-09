@@ -1,0 +1,384 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-vision-multimodal-2026",
+  "research_profile": "THEMATIC",
+  "publication_profile": "LONGFORM_SPECIAL",
+  "package_id": "P06",
+  "draft_version": "r3",
+  "status": "REVISED",
+  "basis": {
+    "draft_package_sha256": "ba899cffe1417b6ea63f110321fb06154db3153f7df42e02314ce15e92b824b8",
+    "prompt_id": "article-drafting-v2",
+    "prompt_sha256": "b687313312a23025228c16c3f10cb68f669b910cd7215e41886d4dd91f44fe11"
+  },
+  "runner": {
+    "provider": "Muse",
+    "model": "Muse Spark (Work execution role; not a Sol/Human decision)",
+    "invocation": "TS-003 Draft r3 cumulative-terminology repair from approved Architecture r2 (Human APPROVED r2, Sol Draft Review r1 REQUEST_CHANGES F1-F5): full-volume prose rewrite, zero duplicate sentences, metaphor-substitution eliminated, evaluator classes explicit, boundary reader surface repaired; G01-G06 and 5 PARTIAL preserved semantically; no cross-task ranking; no new research",
+    "generated_at": "2026-10-01T16:44:49Z",
+    "run_reference": "ts003-draft-r3-20261002"
+  },
+  "headline": "Transformerと自己教師の土台",
+  "deck": "畳み込みからパッチ系列へ。トークンの定式と階層と目的関数と蒸留を分け、視覚の土台が言語と結ばれる前の仕組みと残る問いを整える。規模かレシピかの論点を添え、載せ方と組み方と式と移しを分けて読む。効率の一般論には踏み込まない。",
+  "deck_attribution_mode": "MIXED",
+  "deck_evidence_refs": [
+    {
+      "evidence_task_id": "evidence:SP-vision-multimodal-2026:fea277ab42f86a90",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1",
+      "subject_id": "ev-vmd030",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-vision-multimodal-2026:fea277ab42f86a90",
+      "kind": "CLAIM",
+      "evidence_id": "claim-2",
+      "subject_id": "ev-vmd030",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-vision-multimodal-2026:9dce7c29b30f2b61",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1",
+      "subject_id": "ev-vmd034",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-vision-multimodal-2026:9dce7c29b30f2b61",
+      "kind": "CLAIM",
+      "evidence_id": "claim-2",
+      "subject_id": "ev-vmd034",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-vision-multimodal-2026:0eb3420fb03f017e",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1",
+      "subject_id": "ev-vmd036",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-vision-multimodal-2026:0eb3420fb03f017e",
+      "kind": "CLAIM",
+      "evidence_id": "claim-2",
+      "subject_id": "ev-vmd036",
+      "subject_role": "PRIMARY_SUBJECT"
+    }
+  ],
+  "blocks": [
+    {
+      "block_id": "p06-b1",
+      "block_type": "PARAGRAPH",
+      "text": "Vision Transformerは畳み込みから系列への組み替えである。Dosovitskiyらによれば、画像をパッチに切り、パッチ系列に素のTransformerを載せ、パッチ切り出しのほかは画像固有の帰納バイアスをほぼ排する。仮定を外した分、データと計算で補う。大規模な事前学習と転移でCNNの到達点に並び、超えると、モデル論文の著者測定として報告している。同じ到達度ではCNNより少ない計算で学べるとも述べる。本巻の読み筋は効率ではなく、トークンの定式にある。画像を系列として扱う約束が、後の視覚と言語のトークン融合の前提になる。100B級パラメータの時代を背景に置く。ただし大規模な事前学習への依存が残り、データが乏しい所では振るわない。DeiTはこの依存に対する学習レシピ側の答えである。Touvronらによれば、学習手順の改善とTransformer専用の蒸留トークンでデータ効率を上げ、蒸留トークン経由で畳み込み教師モデルの教師信号を借りる。外部データなし・86Mパラメータ・単一マシン3日弱でImageNet top-1の83.1%に達し、蒸留で85.2%まで伸び、転移も競ると、モデル論文の著者測定として報告している。畳み込みモデルが十年かけて積んだ構成と最適化の蓄積に対し、水増しと正則化の学習レシピを借りて目新しい仕掛けなしに並ぶ点が、規模かレシピかの論点になる。構成探索が過適合に陥りがちな例も引き、規模とレシピの論点を支える。ただし教師モデルへの依存が残り、橋渡しとして短く扱う。Swin Transformerは階層を保つ側の完全性を担う。Liuらによれば、局所ウィンドウとずらしによる窓間結合で注意を組み、画像寸法に線形の計算量で解く。ImageNet-1K top-1で87.3、COCO test-devでボックスAP 58.7・マスクAP 51.1と先行を2.7と2.6上回り、ADE20KでmIoU 53.5と3.2上回ったと、モデル論文の著者測定として報告し、コードとモデルを開く。階層を要する検出や密な予測にTransformerを渡す役割であり、本節では短く置く。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:fea277ab42f86a90",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd030",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:fea277ab42f86a90",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ev-vmd030",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:35ac530167b1aead",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd031",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:35ac530167b1aead",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ev-vmd031",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:654257bfd25b2055",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd032",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p06-b2",
+      "block_type": "PARAGRAPH",
+      "text": "MAEはラベルなしで学ぶマスク再構成の柱である。Heらによれば、非対称のエンコーダ・デコーダを置き、エンコーダは見えるパッチだけを受け、軽いデコーダが欠けた所を戻す。75%を隠す高いマスク率で、学習を3倍超速めながら精度も上げたと、モデル論文の著者測定として報告している。符号化の量を絞る分、学習が速い。大きな容量のモデルほど伸びる。仕組みの要点は、見える所だけを符号化する点にある。隠す割合を上げると課題が難しくなり、表層の写しではなく使える表現が残る。易しい写しでは残らないものが、難しいマスク再構成では残る。目的関数の群では再構成の側に立ち、対照や蒸留とは別の流れである。ただし再構成と表現の読み分けが要る。画素を戻せることが、そのまま下流課題の強さを意味しない。転移の主張には課題側の指標による根拠が要り、本節では仕組みの範囲に留める。",
+      "attribution_mode": "ATTRIBUTED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:4e994d899261cc65",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd033",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p06-b3",
+      "block_type": "PARAGRAPH",
+      "text": "DINO自己教師ありは、ラベルなしの自己蒸留から立ち上がる。検出器のDINOとは同名別物であり、本節ではつねに自己教師ありと呼ぶ。Caronらによれば、ViTへのラベルなし自己蒸留が、教師ありViTや畳み込みモデルに見られない創発の性質を生む。CLS注意マップに意味的セグメンテーションの情報が現れ、小さなViTでImageNet kNN top-1の78.3%に達したと、モデル論文の著者測定として報告している。モメンタムエンコーダとマルチクロップと小さなパッチが効き、ViT-Baseでは線形評価top-1の80.1%に届く。仕組みの要点は、教師モデルなしに教師の役割を動かし続ける点にある。蒸留の群に属し、対照や再構成とは別の流れである。ただし創発の射程は区切る。注意に現れた片鱗が、そのまま検出のボックスになるとは限らない。DINOv2はこの流れを大規模化し、土台の特徴に育てた。Oquabらによれば、自動で整えるデータパイプラインと拡張した学習で1B級ViTを学び、小さなモデルへ蒸留する。人手の微調整なしに汎用の特徴が弱教師ありの代替に迫り、画像と画素の多くのベンチマークでOpenCLIPを上回ったと、モデル論文の著者測定として報告している。汎用の特徴とプロンプトで指示できる界面は、土台という同じ言葉で別物を指す。強い特徴と指示のインターフェースは別の契約である。ただし凍結評価の転移の範囲に留まり、凍結で測った強さが微調整先の強さを約束しない。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:9dce7c29b30f2b61",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd034",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:9dce7c29b30f2b61",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ev-vmd034",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:3c9024041edb1a4a",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd035",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:3c9024041edb1a4a",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ev-vmd035",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p06-b4",
+      "block_type": "PARAGRAPH",
+      "text": "SigLIPはアライメントの目的関数を組み替えた。Zhaiらによれば、ペアごとのシグモイド損失で学び、大域ソフトマックス正規化を排する。バッチ規模と損失の結びを解き、1M級バッチまで拡張できるが伸びは鈍り、32Kで足り、小さなバッチでもよく働くと、モデル論文の著者測定として報告している。画像側を凍結した調整では、SigLiTが4枚のTPUv4で2日かけImageNetゼロショット84.5%に達した。視覚エンコーダを凍らせ、言葉側だけを締める調整である。ICCV 2023オーラルで発表し、モデルを開く。仕組みの要点は、正規化の大域性を捨てて一対の判定に還す点にある。目的関数の群に属し、定式や階層や蒸留とは別の流れである。継承の事実もある。Qwen側の報告によれば、SigLIP2-So400mがQwen3-VLとOmniのエンコーダの中に続く。2026年時点の再利用の事実として受け止める。ただし正確な引用の結びは残る。損失の仕組みの記述は抄録頁の水準に留まり、正確な典拠は結ばれていない。結ばれていない引用は結ばれていないと書く。",
+      "attribution_mode": "ATTRIBUTED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:0eb3420fb03f017e",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd036",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:0eb3420fb03f017e",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ev-vmd036",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p06-b5",
+      "block_type": "PARAGRAPH",
+      "text": "土台の流れは視覚言語モデルのエンコーダに集まる。Qwen側の報告によれば、SigLIP系のエンコーダがQwen3-VLとOmniのエンコーダの中に続く。再利用の事実は報告として受け止め、正確な典拠の結びのなさも同時に記す。ViTが載せ方を定め、Swinが組み方の完全性を保ち、MAEが戻す目的関数を示し、DINO自己教師ありが蒸留による創発を示し、SigLIPが一対判定の目的関数に組み替えた。載せ方と組み方と目的関数と蒸留の切り分けが、土台の節の要点である。効率の一般論は別巻に譲り、本巻は表現の契約を読む。分けた整理が、結びの節の入口になる。残る問いは三つである。大規模事前学習への依存、再構成と表現の読み分け、正確な典拠の結びのなさであり、次の節の結びの話に渡す。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:3c9024041edb1a4a",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd035",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:3c9024041edb1a4a",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ev-vmd035",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:0eb3420fb03f017e",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd036",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:0eb3420fb03f017e",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ev-vmd036",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "P06-boundaries",
+      "block_type": "CLAIM_BOUNDARY",
+      "text": "この節の読解上の境界: ViTの到達は大規模な事前学習への依存の上にあり、DeiTは手順の借りでこれを緩和する。SigLIPの損失の仕組みの消費は抄録頁の水準に留まり、正確な典拠の結びは残る。",
+      "attribution_mode": "INFERENCE",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:fea277ab42f86a90",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd030",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:4e994d899261cc65",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd033",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:9dce7c29b30f2b61",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd034",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:3c9024041edb1a4a",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd035",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:0eb3420fb03f017e",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd036",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:35ac530167b1aead",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd031",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:654257bfd25b2055",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd032",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    }
+  ],
+  "must_cover_coverage": [
+    {
+      "requirement": "VM-O06 lineage complete; G06 SigLIP2 citation residual bounded",
+      "block_ids": [
+        "p06-b1",
+        "p06-b2",
+        "p06-b3",
+        "p06-b4",
+        "p06-b5",
+        "P06-boundaries"
+      ]
+    },
+    {
+      "requirement": "TS-001 owns generic attention efficiency; TS-003 owns representation contract",
+      "block_ids": [
+        "p06-b1",
+        "p06-b2",
+        "p06-b3",
+        "p06-b4",
+        "p06-b5",
+        "P06-boundaries"
+      ]
+    }
+  ],
+  "boundary_dispositions": [
+    {
+      "boundary": "No generic Transformer-efficiency retelling; recipe reading preserved",
+      "handling": "RESPECTED_BY_OMISSION",
+      "block_ids": [],
+      "rationale": "Internal drafting guard; omission of the unsupported claim suffices."
+    },
+    {
+      "boundary": "Large-scale pre-training dependence (DeiT qualifies); 100B-parameter era context noted in intro.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P06-boundaries"
+      ],
+      "rationale": "Reader-facing limitation; concise Japanese limitation text carries it."
+    },
+    {
+      "boundary": "Reconstruction-vs-representation reading; downstream transfer needs probe sources.",
+      "handling": "RESPECTED_BY_OMISSION",
+      "block_ids": [],
+      "rationale": "Internal drafting guard; omission of the unsupported claim suffices."
+    },
+    {
+      "boundary": "Emergent-property scope; OVD pseudo-label use needs downstream sources.",
+      "handling": "RESPECTED_BY_OMISSION",
+      "block_ids": [],
+      "rationale": "Internal drafting guard; omission of the unsupported claim suffices."
+    },
+    {
+      "boundary": "Frozen-eval transfer scope; task-specific limits need eval-side sources.",
+      "handling": "RESPECTED_BY_OMISSION",
+      "block_ids": [],
+      "rationale": "Internal drafting guard; omission of the unsupported claim suffices."
+    },
+    {
+      "boundary": "Abs-page-level consumption for the loss mechanism (HTML extraction thin); SigLIP2 citation unbound (G06).",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P06-boundaries"
+      ],
+      "rationale": "Reader-facing limitation; concise Japanese limitation text carries it."
+    },
+    {
+      "boundary": "G06 SigLIP2 citation binding: SigLIP2 exact citation unbound; G06 gap preserved.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P06-boundaries"
+      ],
+      "rationale": "Reader-facing limitation; concise Japanese limitation text carries it."
+    },
+    {
+      "boundary": "Distillation-teacher dependence; short treatment per bridge role.",
+      "handling": "RESPECTED_BY_OMISSION",
+      "block_ids": [],
+      "rationale": "Internal drafting guard; omission of the unsupported claim suffices."
+    },
+    {
+      "boundary": "Hierarchy-completeness role; short treatment.",
+      "handling": "RESPECTED_BY_OMISSION",
+      "block_ids": [],
+      "rationale": "Internal drafting guard; omission of the unsupported claim suffices."
+    }
+  ],
+  "profile_extensions": {},
+  "publication_extensions": {
+    "page_budget_body_pages": 5,
+    "depth_classes": {
+      "FULL_MECHANISM_TREATMENT": [
+        "VM-D030",
+        "VM-D036"
+      ],
+      "TRANSITION_NODE_TREATMENT": [
+        "VM-D033",
+        "VM-D034",
+        "VM-D035"
+      ],
+      "BRIEF_CONTEXT_OR_AUTHORITY": [
+        "VM-D031",
+        "VM-D032"
+      ]
+    }
+  }
+}

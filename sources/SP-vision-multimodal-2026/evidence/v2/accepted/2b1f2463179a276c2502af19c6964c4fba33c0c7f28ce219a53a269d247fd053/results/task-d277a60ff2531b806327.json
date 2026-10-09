@@ -1,0 +1,119 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-vision-multimodal-2026",
+  "evidence_task_id": "evidence:SP-vision-multimodal-2026:43c5bc5adec4ac9a",
+  "basis": {
+    "task_sha256": "005f53948be640d0681ffe64cfb46a9f5494ae8122e0bb76da61a06a79d3d0e1",
+    "screening_acceptance_sha256": "e471c40158c226d150bf18bf68a5da46a8ad8710d5df3d063eab23f32f5863d9",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "ev-vmd124",
+      "canonical_name": "DAB-DETR (Liu et al., 2022)",
+      "entity_type": "MODEL",
+      "organization": null,
+      "canonical_url": "https://arxiv.org/abs/2201.12329"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "ev-vmd124",
+    "artifact_type": "PAPER",
+    "canonical_name": "DAB-DETR (Liu et al., 2022)",
+    "canonical_url": "https://arxiv.org/abs/2201.12329"
+  },
+  "temporal": {
+    "observed_at": "2026-10-08T00:00:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2022-01",
+        "subject_id": "ev-vmd124",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2201.12329",
+      "source_class": "PRIMARY_PAPER",
+      "title": "DAB-DETR: Dynamic Anchor Boxes are Better Queries for DETR",
+      "published_at": "2022-01",
+      "accessed_at": "2026-10-08T00:00:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Decoder queries directly formulated as 4D box coordinates (x, y, w, h) with layer-by-layer dynamic anchor updates; explicit positional priors improve query-to-feature similarity and convergence; width/height modulate positional attention.",
+      "subject_id": "ev-vmd124",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Paper abstract/§3 (dynamic anchor-box query formulation)."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Queries read as layer-by-layer cascade soft ROI pooling; 45.7 AP on COCO with ResNet50-DC5 at 50 epochs (best among DETR-like under same setting); code released; ICLR 2022.",
+      "subject_id": "ev-vmd124",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Paper abstract/§4-5 (cascade reading + COCO results)."
+    },
+    {
+      "statement_id": "claim-3",
+      "text": "4D anchor-box query formulation directly feeds DINO anchor-query design (DINO refines dynamic anchor boxes step-by-step across decoder layers following DAB-DETR).",
+      "subject_id": "ev-vmd124",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "DINO §§1/3 build-on statement (dynamic anchor-box adoption)."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Single-scale DETR-baseline scope; Anchor/Conditional DETR taxonomy stays outside; brief supporting treatment only.",
+      "subject_id": "ev-vmd124",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "DAB-DETR abstract/body consumed: dynamic anchor-box formulation, layer-wise updates, COCO result verified as the P02 supporting bridge.",
+        "subject_ids": [
+          "ev-vmd124"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

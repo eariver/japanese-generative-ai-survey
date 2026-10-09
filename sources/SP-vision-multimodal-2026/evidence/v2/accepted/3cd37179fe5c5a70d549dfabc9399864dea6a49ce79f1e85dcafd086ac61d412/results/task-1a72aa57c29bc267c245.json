@@ -1,0 +1,119 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-vision-multimodal-2026",
+  "evidence_task_id": "evidence:SP-vision-multimodal-2026:0f5a5b1f4eb4032e",
+  "basis": {
+    "task_sha256": "60a1a992febc328ff884aa1e0d450ee807819663c0bc96ec13e50d255a777727",
+    "screening_acceptance_sha256": "c851605b219be55c746671e950a808b0f6821a514600b0e0d7fd582e9298b603",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "ev-vmd114",
+      "canonical_name": "SigLIP 2 (Zhai et al., 2025)",
+      "entity_type": "MODEL",
+      "organization": null,
+      "canonical_url": "https://arxiv.org/abs/2502.14786"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "ev-vmd114",
+    "artifact_type": "PAPER",
+    "canonical_name": "SigLIP 2 (Zhai et al., 2025)",
+    "canonical_url": "https://arxiv.org/abs/2502.14786"
+  },
+  "temporal": {
+    "observed_at": "2026-10-05T00:00:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2025-02",
+        "subject_id": "ev-vmd114",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2502.14786",
+      "source_class": "PRIMARY_PAPER",
+      "title": "SigLIP 2 (Zhai et al., 2025)",
+      "published_at": "2025-02",
+      "accessed_at": "2026-10-05T00:00:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Keeps SigLIP sigmoid per-pair loss; staged recipe adds captioning decoder (LocCa), self-distillation (SILC local-to-global) and masked prediction (TIPS/DINO-line) with online data curation.",
+      "subject_id": "ev-vmd114",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Paper §1/§2.2/§2.3/§2.5 (staged recipe)."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Multilingual WebLI mixture (109 langs) with de-bias filtering; native aspect ratio and multi-resolution training (NaFlex); gains attributed to recipe combination, not a new loss.",
+      "subject_id": "ev-vmd114",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Paper §2.1/§2.4/§5 (data + resolution + conclusion)."
+    },
+    {
+      "statement_id": "claim-3",
+      "text": "Localization and dense transfer: RefCOCO grounding, OWL-ViT open-vocabulary detection and dense probes improve over SigLIP; frozen-encoder VLM transfer gains in PaliGemma-style setups.",
+      "subject_id": "ev-vmd114",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Paper §3.2-3.4 (localization/detection/VLM transfer)."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "NaFlex omits self-distillation/masked losses and extrapolates poorly; RefCOCO still below English-only LocCa (multilingual tradeoff); small-model gains depend on distillation stage.",
+      "subject_id": "ev-vmd114",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "SigLIP 2 paper body consumed via arXiv HTML: recipe, data, resolution, localization and VLM transfer verified.",
+        "subject_ids": [
+          "ev-vmd114"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

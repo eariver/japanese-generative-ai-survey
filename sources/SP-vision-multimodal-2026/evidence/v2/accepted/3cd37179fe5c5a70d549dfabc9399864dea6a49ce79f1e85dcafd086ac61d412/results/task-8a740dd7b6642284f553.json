@@ -1,0 +1,108 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-vision-multimodal-2026",
+  "evidence_task_id": "evidence:SP-vision-multimodal-2026:a09c80fa9231ebf2",
+  "basis": {
+    "task_sha256": "b90049fd9a02669f66430173283318e990f7ee124e5775e4ca0a53fcbe067aaf",
+    "screening_acceptance_sha256": "c851605b219be55c746671e950a808b0f6821a514600b0e0d7fd582e9298b603",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "ev-vmd119",
+      "canonical_name": "UGround (2024)",
+      "entity_type": "MODEL",
+      "organization": null,
+      "canonical_url": "https://arxiv.org/abs/2410.05243"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "ev-vmd119",
+    "artifact_type": "PAPER",
+    "canonical_name": "UGround (2024)",
+    "canonical_url": "https://arxiv.org/abs/2410.05243"
+  },
+  "temporal": {
+    "observed_at": "2026-10-05T00:00:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2024-10",
+        "subject_id": "ev-vmd119",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2410.05243",
+      "source_class": "PRIMARY_PAPER",
+      "title": "UGround (2024)",
+      "published_at": "2024-10",
+      "accessed_at": "2026-10-05T00:00:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Universal screenshot grounder trained on a 10M-element web-synthetic grounding recipe (1.3M screenshots).",
+      "subject_id": "ev-vmd119",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Paper data recipe (residual-sweep admission)."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Vision-only screenshot plus pixel-action interface break over accessibility-tree/DOM tooling (SeeAct-V folded here as interface context, not a separate node).",
+      "subject_id": "ev-vmd119",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Edition interface-contract reading over the paper."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Web-synthetic domain limits; live-OS long-horizon state needs OSWorld-side sources.",
+      "subject_id": "ev-vmd119",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage verification",
+        "status": "VERIFIED",
+        "finding": "UGround recipe and interface claims verified against the bound paper locator.",
+        "subject_ids": [
+          "ev-vmd119"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

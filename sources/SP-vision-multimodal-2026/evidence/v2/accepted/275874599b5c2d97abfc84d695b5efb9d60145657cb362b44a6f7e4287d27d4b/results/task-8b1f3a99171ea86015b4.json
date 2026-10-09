@@ -1,0 +1,130 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-vision-multimodal-2026",
+  "evidence_task_id": "evidence:SP-vision-multimodal-2026:20d1ebc2759ddd61",
+  "basis": {
+    "task_sha256": "e10d987280a9bb6aa58f3fd93fbd41f19a442d9457c149bfa322d6253f7eec81",
+    "screening_acceptance_sha256": "7c76cdb6214e01ac88280ab7c85f0488951ddaf6b5bc9b0229b4d97acb795868",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "ev-vmd039",
+      "canonical_name": "CLIP (Radford et al., 2021)",
+      "entity_type": "MODEL",
+      "organization": "OpenAI",
+      "canonical_url": "https://arxiv.org/abs/2103.00020"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "ev-vmd039",
+    "artifact_type": "PAPER",
+    "canonical_name": "CLIP (Radford et al., 2021)",
+    "canonical_url": "https://arxiv.org/abs/2103.00020"
+  },
+  "temporal": {
+    "observed_at": "2026-09-30T14:24:47Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2021-02",
+        "subject_id": "ev-vmd039",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2103.00020",
+      "source_class": "PRIMARY_PAPER",
+      "title": "Learning Transferable Visual Models / CLIP (Radford et al.)",
+      "published_at": "2021-02",
+      "accessed_at": "2026-09-30T14:24:47Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Caption-prediction pre-training on 400M web pairs learns transferable representations addressable by natural language: zero-shot transfer to 30+ datasets incl. OCR, video action recognition, geolocalization, fine-grained classification; matches supervised ResNet-50 on ImageNet with zero of its 1.28M labels; code+weights released.",
+      "subject_id": "ev-vmd039",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Full-paper abstract (199KB body consumed at abstract+sections+limits depth); numbers paper-reported."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Break reading: fixed predetermined-category supervision replaced by image-text supervision with language as the concept-reference interface — the addressability transition (TS-003 angle; conditioning reuse by reference to TS-002).",
+      "subject_id": "ev-vmd039",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Paper's own fixed-vs-natural-language framing in abstract/introduction."
+    },
+    {
+      "statement_id": "claim-3",
+      "text": "Paper's own Limitations section exists and names residual CLIP weaknesses — carried as the bag-of-words/limitation pointer motivating D07B (record the limitation, do not smooth it).",
+      "subject_id": "ev-vmd039",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Limitations section presence verified; detailed limits read at abstract depth."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Bag-of-words alignment limits; efficiency/scale critiques need successor sources (SigLIP record).",
+      "subject_id": "ev-vmd039",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Complete CLIP paper body consumed via arXiv HTML (199KB text): fixed-vs-natural-language framing, 400M-pair recipe, 30+ dataset transfer results, code/weights release, Limitations section verified.",
+        "subject_ids": [
+          "ev-vmd039"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "bag-of-words limitation preserved",
+        "status": "VERIFIED",
+        "finding": "Alignment limitation recorded as the D07B motivator, not smoothed.",
+        "subject_ids": [
+          "ev-vmd039"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

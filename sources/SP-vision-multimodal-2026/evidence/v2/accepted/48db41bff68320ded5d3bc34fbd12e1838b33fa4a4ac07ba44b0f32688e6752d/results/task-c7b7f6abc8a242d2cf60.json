@@ -1,0 +1,119 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-vision-multimodal-2026",
+  "evidence_task_id": "evidence:SP-vision-multimodal-2026:c8c632d0be6a2fc6",
+  "basis": {
+    "task_sha256": "e77fb772aab6f8eb6960bad4f5d86a13f5799fe8000f743af90ecaacf944f8df",
+    "screening_acceptance_sha256": "3bc6edb4c60ad6fba40626b0900f6cf5656544b98a95e4b3d4415f049d3f1a94",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "ev-vmd007",
+      "canonical_name": "YOLO (Redmon et al., 2016)",
+      "entity_type": "MODEL",
+      "organization": null,
+      "canonical_url": "https://arxiv.org/abs/1506.02640"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "ev-vmd007",
+    "artifact_type": "PAPER",
+    "canonical_name": "YOLO (Redmon et al., 2016)",
+    "canonical_url": "https://arxiv.org/abs/1506.02640"
+  },
+  "temporal": {
+    "observed_at": "2026-09-30T14:24:47Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2015-06",
+        "subject_id": "ev-vmd007",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/1506.02640",
+      "source_class": "PRIMARY_PAPER",
+      "title": "You Only Look Once (Redmon et al.)",
+      "published_at": "2015-06",
+      "accessed_at": "2026-09-30T14:24:47Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Detection reframed as regression to spatially separated boxes + class probabilities in one evaluation: base model 45 FPS real-time, Fast YOLO 155 FPS at 2x mAP of other real-time detectors; fewer background false positives than R-CNN-family, more localization errors.",
+      "subject_id": "ev-vmd007",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Full-paper abstract/experiments; speed/accuracy operating-point numbers paper-reported."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Stated limitations (paper's own): grid-cell spatial constraints (2 boxes/1 class per cell) cap nearby-object counts; small grouped objects (flocks), unusual aspect ratios, coarse features, and small-box IOU sensitivity; main error source is localization.",
+      "subject_id": "ev-vmd007",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Paper's Limitations section, consumed verbatim-class; carried as the operating-point cost record."
+    },
+    {
+      "statement_id": "claim-3",
+      "text": "Generalization claim: YOLO representations transfer natural-images-to-artwork better than DPM/R-CNN — the operating-point generality exhibit.",
+      "subject_id": "ev-vmd007",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Abstract + comparison sections."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Accuracy lags state-of-the-art systems of its generation by the paper's own account; later YOLO versions are distinct products.",
+      "subject_id": "ev-vmd007",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Full body consumed including the paper's own Limitations section; operating-point reading verified.",
+        "subject_ids": [
+          "ev-vmd007"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

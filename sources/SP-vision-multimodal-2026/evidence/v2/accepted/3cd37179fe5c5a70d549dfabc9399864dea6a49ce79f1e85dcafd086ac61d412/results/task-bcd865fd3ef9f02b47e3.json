@@ -1,0 +1,119 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-vision-multimodal-2026",
+  "evidence_task_id": "evidence:SP-vision-multimodal-2026:fb77b0019ffe81dc",
+  "basis": {
+    "task_sha256": "abf1fcee7758451a66ba49485aaad674f0200b8d65707993da671d54187a5a8a",
+    "screening_acceptance_sha256": "c851605b219be55c746671e950a808b0f6821a514600b0e0d7fd582e9298b603",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "ev-vmd115",
+      "canonical_name": "SAM 3: Segment Anything with Concepts (Meta, 2025)",
+      "entity_type": "MODEL",
+      "organization": null,
+      "canonical_url": "https://arxiv.org/abs/2511.16719"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "ev-vmd115",
+    "artifact_type": "PAPER",
+    "canonical_name": "SAM 3: Segment Anything with Concepts (Meta, 2025)",
+    "canonical_url": "https://arxiv.org/abs/2511.16719"
+  },
+  "temporal": {
+    "observed_at": "2026-10-05T00:00:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2025-11",
+        "subject_id": "ev-vmd115",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2511.16719",
+      "source_class": "PRIMARY_PAPER",
+      "title": "SAM 3 (Meta Superintelligence Labs, 2025)",
+      "published_at": "2025-11",
+      "accessed_at": "2026-10-05T00:00:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Promptable Concept Segmentation contract: detect, segment and track all instances of a visual concept in image or short video, returning masks plus unique identities.",
+      "subject_id": "ev-vmd115",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Paper Abstract/§2 (PCS definition)."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Prompts are simple text noun phrases, image exemplars (positive/negative boxes) and SAM 2-style visual clicks; DETR-paradigm image detector plus memory-based video tracker share one Perception Encoder; presence-token decoupling separates recognition from localization.",
+      "subject_id": "ev-vmd115",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Paper §3 (prompts/detector/tracker/backbone/decoupling)."
+    },
+    {
+      "statement_id": "claim-3",
+      "text": "Inherits SAM/SAM2 point-visual prompting and memory machinery; novelty is the language-grounded concept interface over image+video data scale. SAM 3D excluded; SAM 3.1 is successor context only.",
+      "subject_id": "ev-vmd115",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Paper §1/§5/§7 (lineage + data + related work)."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Fine-grained out-of-domain zero-shot weak; simple noun phrases only (no long referring queries); video cost linear in object count.",
+      "subject_id": "ev-vmd115",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "SAM 3 paper body consumed via arXiv HTML: PCS contract, prompts, detector/tracker, lineage and limits verified.",
+        "subject_ids": [
+          "ev-vmd115"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

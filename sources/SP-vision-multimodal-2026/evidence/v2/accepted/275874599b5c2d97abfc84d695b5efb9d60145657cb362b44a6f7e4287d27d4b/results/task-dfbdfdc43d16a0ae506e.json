@@ -1,0 +1,163 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-vision-multimodal-2026",
+  "evidence_task_id": "evidence:SP-vision-multimodal-2026:4f6ee34ec83ed509",
+  "basis": {
+    "task_sha256": "ba270a5d2a629d64aafc6c3e6d8ac3c928a7841c2c63861e2f6de452fb751cef",
+    "screening_acceptance_sha256": "7c76cdb6214e01ac88280ab7c85f0488951ddaf6b5bc9b0229b4d97acb795868",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "ev-vmd071",
+      "canonical_name": "Molmo 2 (Clark et al., 2026)",
+      "entity_type": "MODEL_FAMILY",
+      "organization": "Ai2",
+      "canonical_url": "https://arxiv.org/abs/2601.10611"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "ev-vmd071",
+    "artifact_type": "PAPER",
+    "canonical_name": "Molmo 2 (Clark et al., 2026)",
+    "canonical_url": "https://arxiv.org/abs/2601.10611"
+  },
+  "temporal": {
+    "observed_at": "2026-09-30T14:24:47Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-01",
+        "subject_id": "ev-vmd071",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2601.10611",
+      "source_class": "PRIMARY_PAPER",
+      "title": "Molmo2 (Clark et al.)",
+      "published_at": "2026-01",
+      "accessed_at": "2026-09-30T14:24:47Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Open release posture in the paper's own tripartite labeling — 'Open weights, Open data (no distillation), Open code' (paper tables): 8B leads open class on short video/counting/captioning, competitive long-video; video-counting 35.5 vs Qwen3-VL 29.6, pointing F1 38.4 vs Gemini 3 Pro 20.0, tracking J&F 56.2 vs 41.1 (author-measured); 9 released datasets (2 pointing/tracking, captions, QA); fully-open Olmo variant; v4 Apr 2026.",
+      "subject_id": "ev-vmd071",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Molmo2 report body consumed from complete arXiv HTML including results tables and Section 4-6 findings; NO undifferentiated Apache-2.0-on-data claim (license buckets live in repo-bound VM-D077)."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Comparator role (not paradigm pole): 8B/4B reuse Qwen3 backbones — partial Qwen dependence disclosed; value is openness gradient + grounding-measured video evals.",
+      "subject_id": "ev-vmd071",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Edition-level analytical synthesis by the Work operator (lineage/selection/boundary/contract judgment, not a literal statement of the cited source); structural home for edition rationale."
+    },
+    {
+      "statement_id": "claim-3",
+      "text": "Paper's self-disclosed closed dependencies: closed-data SigLIP 2 image encoder even in the Olmo variant (no competitive open-data encoder available, paper's call to community) and closed text-only LLMs for data generation; behind on MathVista/MMMU reasoning and 10min+ long-video training data per the paper's own results discussion.",
+      "subject_id": "ev-vmd071",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Report results/limitations sections consumed; carried as the paper's own openness-boundary statement."
+    },
+    {
+      "statement_id": "claim-4",
+      "text": "Images use one downscaled global crop plus up to K overlapping tiling crops (K=8 training, K=24 inference; untilable images downscaled); SFT uses 24 crops for 30% of pointing-annotated images. Video frames are single crops sampled at S=2 fps up to F=128 frames (F=384 long-context training), with uniform F-frame sampling beyond F/S seconds and the last frame always included; video pointing trains on examples with up to 60 annotated points.",
+      "subject_id": "ev-vmd071",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "arXiv:2601.10611v4 §3.1 Cropping (+ SFT 24-crop pointing note)."
+    },
+    {
+      "statement_id": "claim-5",
+      "text": "The connector fuses third-to-last and ninth-from-last ViT layers: 2x2 patch windows for images (3x3 for video frames to cut tokens) pooled by multi-head attention using window means as queries, with shared image/video parameters and a shared MLP projection. The LLM receives visual tokens interleaved with text timestamps (video) or image indices (multi-image), column tokens for multi-crop aspect ratio (omitted for square single-crop), image/frame start tokens, and subtitles as timestamped text; vision tokens forward-attend across frames/images.",
+      "subject_id": "ev-vmd071",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "arXiv:2601.10611v4 §3.1 Vision-language connector + LLM paragraphs."
+    },
+    {
+      "statement_id": "claim-6",
+      "text": "Three stages: lightweight image-only pre-training, joint video/image SFT (30k steps, batch 128, max length 16,384), then short long-context SFT on the same mixture (2k steps, length 36,864, F=384) with 8-GPU context-parallel groups (Ulysses attention) distributing ViT/pooling work. Packing jointly packs ViT crops and LLM tokens with message-tree encoding and masking (blocking cross-example and cross-QA attention); bidirectional attention over vision tokens and a token-weighting strategy add report-stated gains.",
+      "subject_id": "ev-vmd071",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "arXiv:2601.10611v4 §3.2 Training (three-stage; 30k/bs128/16384; 2k/36864/F=384/CPx8/Ulysses) + Fig.3 packing/mask + Abstract recipe sentence."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Author-measured comparisons; Qwen-backbone dependence disclosed; long-video competitiveness is partial.",
+      "subject_id": "ev-vmd071",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Complete report body consumed via arXiv HTML (160KB text): datasets, recipe, video/image/grounding results tables, openness labeling, and closed-dependency disclosures verified as first-party report statements; license-bucket detail lives in repo-bound VM-D077.",
+        "subject_ids": [
+          "ev-vmd071"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "vendor-claim quarantine",
+        "status": "VERIFIED",
+        "finding": "Vendor-measured claims isolated with explicit attribution and role caps; no independent-evaluation inference performed.",
+        "subject_ids": [
+          "ev-vmd071"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

@@ -1,0 +1,1237 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-vision-multimodal-2026",
+  "research_profile": "THEMATIC",
+  "publication_profile": "LONGFORM_SPECIAL",
+  "package_id": "P09",
+  "draft_version": "fresh-124-r9",
+  "status": "ESTABLISHED",
+  "basis": {
+    "draft_package_sha256": "b141f86bf1b779e328d6adc6c50f78a3c2cb11a5607eecec08e79c36b0936a07",
+    "prompt_id": "article-drafting-v2",
+    "prompt_sha256": "b687313312a23025228c16c3f10cb68f669b910cd7215e41886d4dd91f44fe11"
+  },
+  "runner": {
+    "provider": "Muse",
+    "model": "Muse Spark (Work execution role; not a Sol/Human decision)",
+    "invocation": "TS-003 fresh 124-authority Draft from Architecture r9 APPROVED (Evidence 124 VERIFIED 119/PARTIAL 5, Selection 124, 16 packages newly authored; P02 DETR-successor lineage + attribution closure, P12 proxy framing, P15 four-role taxonomy, DUSt3R editorial synthesis, Molmo scope, ResNet controlled comparison, Dreamer non-ancestry, video role separation, P07A/B separation, Japanese terminology conformance; rev5 as regression reference only, 0 blocks identical; no TeX/PDF; DRAFT_COMPLETE then STOP)",
+    "generated_at": "2026-10-09T00:00:00Z",
+    "run_reference": null
+  },
+  "headline": "画像と映像と音声をトークン列へ変換する方式と費用の設計",
+  "deck": "画像と映像と音声をモデルが消費できるトークン列へ変換する過程をたどる。元の解像度の保持と切り出し、融合の深さ、時刻の対応づけ、問いに応じた選択的取得が、トークンとコンテキストの費用を左右する。ここでのネイティブは共通トークナイザではなく学習と統合の提供契約を指す。Qwen3-VLとQwen3-OmniとInternVL3とMolmo2の論文数値は著者と開発元の自己報告、Geminiのカードとエージェント型映像の上限値は提供元とベンダーの報告、独立した第三者再現は未確認として区別する。",
+  "deck_attribution_mode": "MIXED",
+  "deck_evidence_refs": [
+    {
+      "evidence_task_id": "evidence:SP-vision-multimodal-2026:5261f13662aabd9b",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1",
+      "subject_id": "ev-vmd065",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-vision-multimodal-2026:5261f13662aabd9b",
+      "kind": "CLAIM",
+      "evidence_id": "claim-2",
+      "subject_id": "ev-vmd065",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-vision-multimodal-2026:5261f13662aabd9b",
+      "kind": "CLAIM",
+      "evidence_id": "claim-3",
+      "subject_id": "ev-vmd065",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-vision-multimodal-2026:5261f13662aabd9b",
+      "kind": "CLAIM",
+      "evidence_id": "claim-4",
+      "subject_id": "ev-vmd065",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-vision-multimodal-2026:5261f13662aabd9b",
+      "kind": "CLAIM",
+      "evidence_id": "claim-5",
+      "subject_id": "ev-vmd065",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-vision-multimodal-2026:cec74d4ca95d2ecb",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1",
+      "subject_id": "ev-vmd066",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-vision-multimodal-2026:cec74d4ca95d2ecb",
+      "kind": "CLAIM",
+      "evidence_id": "claim-2",
+      "subject_id": "ev-vmd066",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-vision-multimodal-2026:cec74d4ca95d2ecb",
+      "kind": "CLAIM",
+      "evidence_id": "claim-3",
+      "subject_id": "ev-vmd066",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-vision-multimodal-2026:cec74d4ca95d2ecb",
+      "kind": "CLAIM",
+      "evidence_id": "claim-4",
+      "subject_id": "ev-vmd066",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-vision-multimodal-2026:cec74d4ca95d2ecb",
+      "kind": "CLAIM",
+      "evidence_id": "claim-5",
+      "subject_id": "ev-vmd066",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-vision-multimodal-2026:4e6ee193ed14e437",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1",
+      "subject_id": "ev-vmd070",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-vision-multimodal-2026:4e6ee193ed14e437",
+      "kind": "CLAIM",
+      "evidence_id": "claim-2",
+      "subject_id": "ev-vmd070",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-vision-multimodal-2026:4e6ee193ed14e437",
+      "kind": "CLAIM",
+      "evidence_id": "claim-3",
+      "subject_id": "ev-vmd070",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-vision-multimodal-2026:4e6ee193ed14e437",
+      "kind": "CLAIM",
+      "evidence_id": "claim-4",
+      "subject_id": "ev-vmd070",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-vision-multimodal-2026:4e6ee193ed14e437",
+      "kind": "CLAIM",
+      "evidence_id": "claim-5",
+      "subject_id": "ev-vmd070",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-vision-multimodal-2026:c4177b264109ceec",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1",
+      "subject_id": "ev-vmd112",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-vision-multimodal-2026:c4177b264109ceec",
+      "kind": "CLAIM",
+      "evidence_id": "claim-2",
+      "subject_id": "ev-vmd112",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-vision-multimodal-2026:c4177b264109ceec",
+      "kind": "CLAIM",
+      "evidence_id": "claim-3",
+      "subject_id": "ev-vmd112",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-vision-multimodal-2026:c4177b264109ceec",
+      "kind": "CLAIM",
+      "evidence_id": "claim-4",
+      "subject_id": "ev-vmd112",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-vision-multimodal-2026:c4177b264109ceec",
+      "kind": "CLAIM",
+      "evidence_id": "claim-5",
+      "subject_id": "ev-vmd112",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-vision-multimodal-2026:c4177b264109ceec",
+      "kind": "CLAIM",
+      "evidence_id": "claim-6",
+      "subject_id": "ev-vmd112",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-vision-multimodal-2026:c4177b264109ceec",
+      "kind": "CLAIM",
+      "evidence_id": "claim-7",
+      "subject_id": "ev-vmd112",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-vision-multimodal-2026:c4177b264109ceec",
+      "kind": "CLAIM",
+      "evidence_id": "claim-8",
+      "subject_id": "ev-vmd112",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-vision-multimodal-2026:c4177b264109ceec",
+      "kind": "CLAIM",
+      "evidence_id": "claim-9",
+      "subject_id": "ev-vmd112",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-vision-multimodal-2026:c4177b264109ceec",
+      "kind": "CLAIM",
+      "evidence_id": "claim-10",
+      "subject_id": "ev-vmd112",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-vision-multimodal-2026:c4177b264109ceec",
+      "kind": "CLAIM",
+      "evidence_id": "claim-11",
+      "subject_id": "ev-vmd112",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-vision-multimodal-2026:c4177b264109ceec",
+      "kind": "CLAIM",
+      "evidence_id": "claim-12",
+      "subject_id": "ev-vmd112",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-vision-multimodal-2026:c4177b264109ceec",
+      "kind": "CLAIM",
+      "evidence_id": "claim-13",
+      "subject_id": "ev-vmd112",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-vision-multimodal-2026:c4177b264109ceec",
+      "kind": "CLAIM",
+      "evidence_id": "claim-14",
+      "subject_id": "ev-vmd112",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-vision-multimodal-2026:c4177b264109ceec",
+      "kind": "CLAIM",
+      "evidence_id": "claim-15",
+      "subject_id": "ev-vmd112",
+      "subject_role": "PRIMARY_SUBJECT"
+    }
+  ],
+  "blocks": [
+    {
+      "block_id": "p09-b1",
+      "block_type": "PARAGRAPH",
+      "text": "Qwen2.5-VLは前史として置く。一から学習した可変解像度対応の動的ViTを基盤とし、ウィンドウアテンションにより本来の解像度を保ったまま計算負担を抑える。可変解像度と絶対時刻の符号化により、長時間の映像を秒単位の出来事特定とともに扱い、ボックスと点による位置の対応づけや構造化抽出を支えると論文著者は述べる。課題ごとの作り替えなしに計算機操作や携帯端末操作へ接続された点も伝えられる。固定解像度から可変解像度への転換と時刻の明示化がこの世代の寄与であり、性能の主張はQwen3-VL側の評価に譲り、本節では機構の系譜に範囲を限って数値の優劣には立ち入らない。",
+      "attribution_mode": "ATTRIBUTED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:20afa93899477fd2",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd064",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p09-b2",
+      "block_type": "PARAGRAPH",
+      "text": "Qwen3-VLは三つの更新で前史の構成を置き換える。空間と時間を同時に扱うinterleaved-MRoPE、複数層のViT特徴で視覚と言語の対応づけを強めるDeepStack、T-RoPEを発展させたテキスト形式の時刻合わせがそれである。視覚エンコーダはSigLIP 2（denseモデルの既定はSO-400M、2B・4B規模はLarge-300M）で、可変のネイティブ解像度入力と2D-RoPE、大きさの補間を伴う絶対埋め込みを採用する。視覚から言語モデルへの写像は2x2の視覚特徴を1トークンにまとめる2層MLPのmergerが担い、DeepStackは三つのViT層から専用mergerで視覚トークンを射影し、残差接続で最初の三つの大規模言語モデル層へ加える。文脈長を余分に食わない点が要点である。denseモデルの2Bから32B、Mixture-of-Experts（MoE）の30B-A3Bと235B-A22B、指示調整版と思考版を取りそろえる。いずれも論文と開発元の自己報告の範囲であり、独立した第三者再現は未確認である。",
+      "attribution_mode": "ATTRIBUTED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:5261f13662aabd9b",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd065",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:5261f13662aabd9b",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ev-vmd065",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:5261f13662aabd9b",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "ev-vmd065",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:5261f13662aabd9b",
+          "kind": "CLAIM",
+          "evidence_id": "claim-4",
+          "subject_id": "ev-vmd065",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:5261f13662aabd9b",
+          "kind": "CLAIM",
+          "evidence_id": "claim-5",
+          "subject_id": "ev-vmd065",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p09-b3",
+      "block_type": "PARAGRAPH",
+      "text": "時刻合わせと学習手順が融合の中身を定める。映像の時刻は各時間パッチの直前に置くテキスト形式のタイムスタンプトークンとして符号化され、秒表記と時分秒表記の両方で学習されるため多様な時刻表示を読み解ける。Qwen2.5-VLの絶対時刻の位置合わせを置き換えるもので、長時間でまばらになる巨大な時刻位置IDや一様な多fps標本化を避け、わずかなコンテキスト増で映像の位置特定と密な字幕付けを狙う。事前学習は四段階で、S0ではエンコーダと大規模言語モデルを凍結してmergerのみ約670億トークン・長さ8192で学び、S1で約1兆トークン・長さ8192の全パラメータ同時学習、S2で約1兆トークン・長さ32768の長文脈学習、S3で1000億トークン・長さ262144の超長適応を行う。言語能力保持のためテキストのみのデータを加えて学び、平方根重みづけでテキストとマルチモーダルの寄与をならす。トークン数と構成の数値は設定に依存し、評価の主張は著者と開発元の自己報告である。",
+      "attribution_mode": "ATTRIBUTED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:5261f13662aabd9b",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd065",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:5261f13662aabd9b",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ev-vmd065",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:5261f13662aabd9b",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "ev-vmd065",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:5261f13662aabd9b",
+          "kind": "CLAIM",
+          "evidence_id": "claim-4",
+          "subject_id": "ev-vmd065",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:5261f13662aabd9b",
+          "kind": "CLAIM",
+          "evidence_id": "claim-5",
+          "subject_id": "ev-vmd065",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p09-b4",
+      "block_type": "PARAGRAPH",
+      "text": "Qwen3-Omniは視覚とテキストから音声を含む入力側への拡張を担う。知覚を統一するThinker-TalkerのMoEを採り、音声エンコーダは一から作ったAuTである。16kHzへ再標本化した128次元メルスペクトログラムを約0.6Bのアテンション機構付きエンコーダ・デコーダへ入れ、2000万時間の教師あり音声で学習する。Conv2Dで8分の1に間引き12.5Hz相当のトークン列とし、1秒から8秒の可変窓でflash attentionを用いる。事前学習S1では固定した大規模言語モデルのもとで音声と視覚のアダプタを先に学ぶ。時刻合わせはTM-RoPEで回転埋め込みを時間と高さと幅へ分け、音声80ミリ秒ごとに一つの時間IDを与え、映像フレームも実時刻で同粒度に刻み、方式間で連番とする。Qwen2.5-Omniの2秒固定チャンクに代えて絶対時刻IDの直接対応づけで合わせる。理論上のコールドスタート初回パケット遅延は同時実行1で音声234ミリ秒・映像547ミリ秒と著者らは算出する。234ミリ秒は理論値であり実運用の確約ではない。生成側の合成の詳細はTS-002側に属し、本節は入力エンコーダと時刻同期とストリーミング入力の契約だけを扱う。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:cec74d4ca95d2ecb",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd066",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:cec74d4ca95d2ecb",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ev-vmd066",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:cec74d4ca95d2ecb",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "ev-vmd066",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:cec74d4ca95d2ecb",
+          "kind": "CLAIM",
+          "evidence_id": "claim-4",
+          "subject_id": "ev-vmd066",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:cec74d4ca95d2ecb",
+          "kind": "CLAIM",
+          "evidence_id": "claim-5",
+          "subject_id": "ev-vmd066",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p09-b5",
+      "block_type": "PARAGRAPH",
+      "text": "音声入力の三つの系譜がオムニ統合の下地となる。Whisperは68万時間の多言語多課題の弱教師あり学習でゼロショット転移を示し、完全教師ありに匹敵して人間に近い頑健さに迫ったと論文著者は測定として伝える。役割は音声からトークンへの入力側契約に限られ、音声認識の範囲である。BEATsは音響トークナイザと音声の自己教師あり学習の反復同時最適化であり、再構成ではなくマスクされた離散ラベル予測で学ぶ。トークナイザは各周回で教師モデルの意味を蒸留し、AudioSet-2Mで50.6% mAP、ESC-50で98.1%と論文著者は測定として伝える。分類評価の範囲であり、融合の振る舞いはオムニ側の記録に委ねる。CLAPは言語音声のデュアルエンコーダの対照学習を12万8000対で行い、16課題8領域のゼロショットと5件の教師あり到達を報告する。CLIPとの対比は音声側の対応づけを開いた点にあり、規模の違いは後のオムニエンコーダが限定する。各数値は各論文著者の測定であり、手順の異なる評価と横並びで優劣をつけない。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:c6d9aec0a063b225",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd067",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:c6d9aec0a063b225",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ev-vmd067",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:60046d90c45dbfe3",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd068",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:9ee5b39b27eced77",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd069",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p09-b6",
+      "block_type": "PARAGRAPH",
+      "text": "InternVL3は段階的接続と対置される同時学習の対照軸である。テキスト用言語モデルへの事後的な付け替えではなく、マルチモーダルとテキストの単一段階同時事前学習で複雑さを解くと主張する。構成はViT-MLP-LLMであり、InternViT-300M（1Bから14B規模）や6B（38B・78B規模）とQwen2.5系列やInternLM3-8Bを無作為初期化2層MLPの射影で接合する。pixel-unshuffleで視覚トークンを4分の1にし、448四方のタイルあたり256トークンとして可変解像度タイリングを複数画像と映像へ延ばす。可変視覚位置符号化V2PEはテキスト1トークンに1ずつ、視覚1トークンに1未満のδを割り当て、学習時は画像ごとにδを集合から抽選し、推論時は系列長で選ぶことで、トークンを落とさずに位置予算を節約する。SFTは1630万件から2170万件へツール・3D・GUI・長文脈・映像・図解・CoTを追加して育て、MPOは約30万対で選好・品質・生成の重みつき損失を学び、テスト時はVisualPRM-8BによるBest-of-Nを用いる。78BのMMMU72.2は報告時点のオープン最高と開発元と著者の自己測定で伝えられる。1Bから78Bのモデル群という数え方は規模の記述であり、人気の根拠にはしない。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:4e6ee193ed14e437",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd070",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:4e6ee193ed14e437",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ev-vmd070",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:4e6ee193ed14e437",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "ev-vmd070",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:4e6ee193ed14e437",
+          "kind": "CLAIM",
+          "evidence_id": "claim-4",
+          "subject_id": "ev-vmd070",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:4e6ee193ed14e437",
+          "kind": "CLAIM",
+          "evidence_id": "claim-5",
+          "subject_id": "ev-vmd070",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p09-b7",
+      "block_type": "PARAGRAPH",
+      "text": "Molmo2は位置特定で測る映像評価を持ち込む対照軸である。論文自身の三つの区分でオープンウェイトと蒸留なしのオープンデータとオープンコードを掲げる。8B規模のモデル群は短尺映像や計数や字幕付けのオープンモデル群で先頭に立ち、長尺では競合すると論文著者は同一手順内の測定として伝える。映像計数35.5対Qwen3-VL29.6、指さし出力F1で38.4対Gemini 3 Pro20.0、追跡J&F56.2対41.1はいずれも同一手順内の著者測定であり、モデル一般の優劣へ敷衍しない。他方で画像エンコーダにはSigLIP 2の非公開データを用い、データ生成にも非公開テキストモデルを用いたと論文自身が開示し、MathVistaやMMMUの推論や10分超の長尺は遅れると認める。Qwen3の基盤を8B・4B規模で再利用する点も開示され、依存の度合いは読み手が割り引いて読む。解像度処理は縮小した全体像に重なり合うタイリングを重ね、映像は毎秒2フレーム・上限128フレームで単一切り出しを並べる。接続部はViTの後ろから3層目と9層目の特徴を2x2窓（映像は3x3）でマルチヘッドアテンションにより集約し、テキストのタイムスタンプと交互に言語モデルへ渡す。学習は画像のみの軽い事前学習、映像・画像の同時SFT、長文脈SFTの三段階である。9種の公開データ群と完全オープン版のOlmo向けバリアントを備える。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:4f6ee34ec83ed509",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd071",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:4f6ee34ec83ed509",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ev-vmd071",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:4f6ee34ec83ed509",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "ev-vmd071",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:4f6ee34ec83ed509",
+          "kind": "CLAIM",
+          "evidence_id": "claim-4",
+          "subject_id": "ev-vmd071",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:4f6ee34ec83ed509",
+          "kind": "CLAIM",
+          "evidence_id": "claim-5",
+          "subject_id": "ev-vmd071",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:4f6ee34ec83ed509",
+          "kind": "CLAIM",
+          "evidence_id": "claim-6",
+          "subject_id": "ev-vmd071",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p09-b8",
+      "block_type": "PARAGRAPH",
+      "text": "非公開モデル側の到達点は能力と評価と提供形態の範囲で置く。Gemini 3.1 Proは100万コンテキストでテキストと画像と音声と映像を入力し、MMMU-ProとVideo-MMMUの主張を方法論ページ付きで示すと2026年2月モデルカードの提供元測定で伝えられる。機構開示はなく、構成の根拠にはしない。Gemini 3.6 Flashは2026年7月カードのトークン効率寄りのネイティブマルチモーダルであり、効率寄りの比較軸である。ここでのネイティブは共通トークナイザを意味せず、複数モダリティを一つのモデルで受けて長期コンテキストで扱う提供契約を指す。いずれも提供元測定の枠で扱い、版と日付で限定して読み、総合点として一括せず契約ごとに読む。独立した第三者再現は未確認である。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:721cee26da56d9ed",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd072",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:721cee26da56d9ed",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ev-vmd072",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:721cee26da56d9ed",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd072",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:af1823c8af887271",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd073",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:af1823c8af887271",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd073",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p09-b9",
+      "block_type": "PARAGRAPH",
+      "text": "確認可能性はリポジトリ側の記録で支える。Qwen3-VLリポジトリはdenseとMoEのエッジデバイスからクラウドまでの提供形態を示し、FP8バリアントやTransformersとvLLM対応、指示調整版と思考版、視覚エージェント操作、2次元と3次元の位置特定、25万6000のネイティブコンテキストから100万への拡張をプロジェクト主張として記す。三つの構成要素の積み重ねはコードで確認できるが、モデルの重み自体が評価主張を自立させない。コードはApache 2.0であり、8B-Instructのモデルの重みも確認済みカード範囲でApache 2.0の適用として束縛される。Qwen3-Omniリポジトリはストリーミング対応の提供内容と事例集を示し、Thinkerのみ動作が文書化される。コードはApache 2.0、30B-A3B-Instructの重みは確認済みカード範囲でApache 2.0であり、確認範囲を超える一般化はしない。READMEの宣伝的記述は構成の根拠とせず、公開リポジトリは版固定と日付で読む。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:e543b8e20cd2e54c",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd074",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:e543b8e20cd2e54c",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ev-vmd074",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:e543b8e20cd2e54c",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "ev-vmd074",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:e543b8e20cd2e54c",
+          "kind": "CLAIM",
+          "evidence_id": "claim-4",
+          "subject_id": "ev-vmd074",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:e543b8e20cd2e54c",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd074",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:4b007409a575a02d",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd075",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:4b007409a575a02d",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ev-vmd075",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:4b007409a575a02d",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd075",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p09-b10",
+      "block_type": "PARAGRAPH",
+      "text": "第二の系譜の開放性はモデルの重みとデータの提供で示される。InternVLリポジトリはモデルの重みとInternVL-Dataの公開、1.0から3.5までの報告系譜と論文対応、3.5-GPT-OSS系の学習コード公開を確認できる範囲で示す。3.5世代への言及は系譜注記に留める。公開範囲を超える提供内容までは確認できないため、本節の主張は公開リポジトリで確認できる範囲に留まる。molmo2リポジトリはデータ準備と事前学習やSFTや長文脈SFT、評価ツール群、vLLM推論、チェックポイント変換、MolmoPoint拡張をコード水準で確認する。コードの許諾はApache 2.0である。モデルの重みの許諾は別の区分であり、Molmo2-8BやO-7Bの確認済みカード範囲でApache 2.0に束縛される。公開データ群の有無は第一者コレクションで確認できるが、個別第三者データの許諾文書とSource Attributionの中身は未確認であり、学習データの混合条件は学術・非商用の区分と手続き要の項目の範囲づけに留まり、個別文書の確認は後の確認課題として残る。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:914cf36ce25f198b",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd076",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:914cf36ce25f198b",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ev-vmd076",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:914cf36ce25f198b",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd076",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:9193275622858906",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd077",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:9193275622858906",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ev-vmd077",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:9193275622858906",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "ev-vmd077",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:9193275622858906",
+          "kind": "CLAIM",
+          "evidence_id": "claim-4",
+          "subject_id": "ev-vmd077",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:9193275622858906",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd077",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p09-b11",
+      "block_type": "PARAGRAPH",
+      "text": "選択的取得がトークンとコンテキストの経済を変える。静止的処理は既定で毎秒1フレームをコンテキストへ一括投入し、音声は単一チャンネル毎秒1キロビットで秒ごとに時刻を付すため、速い動きの細部が落ちる場合がある。エージェント型理解は事前の全時間軸取り込みをやめ、推論とツールの循環で映像フレームと音声と書き起こしを質問ごとに必要な区間のみ取り寄せ、必要な区間の検索が費用を決める。モデルは目的に沿って何をどの速度でどのモダリティで見るかを決め、内部ツールで該当部分を読み込み、関心区間はフレームレートと解像度を上げて再標本化する。長尺条件で最大88%少ないトークン、標準映像分析評価で最大66%低い分析費用、3.7 Flashで最大約7%高い正解率は、いずれも提供元測定の上限であり、トークンと費用と品質の区分を区別する。短尺（5分未満）では内部推論とツール往復で初回トークンまでの時間が延びる場合があり、静止処理が遅延重視の用途に残る。推論トークンは思考トークン、読み込み分はツール利用トークンとして数え、内容と取得方針で変動する。対象は蓄積済み投稿とYouTubeの時間軸であり、連続取り込みのオンライン状態ではない。診断としての意味は診断を扱う節、移動の契約としての位置づけは移動の契約を扱う節に委ね、本節は機構とトークン経済と提供元測定の範囲を担う。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:c4177b264109ceec",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd112",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:c4177b264109ceec",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ev-vmd112",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:c4177b264109ceec",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "ev-vmd112",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:c4177b264109ceec",
+          "kind": "CLAIM",
+          "evidence_id": "claim-4",
+          "subject_id": "ev-vmd112",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:c4177b264109ceec",
+          "kind": "CLAIM",
+          "evidence_id": "claim-5",
+          "subject_id": "ev-vmd112",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:c4177b264109ceec",
+          "kind": "CLAIM",
+          "evidence_id": "claim-6",
+          "subject_id": "ev-vmd112",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:c4177b264109ceec",
+          "kind": "CLAIM",
+          "evidence_id": "claim-7",
+          "subject_id": "ev-vmd112",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:c4177b264109ceec",
+          "kind": "CLAIM",
+          "evidence_id": "claim-8",
+          "subject_id": "ev-vmd112",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:c4177b264109ceec",
+          "kind": "CLAIM",
+          "evidence_id": "claim-9",
+          "subject_id": "ev-vmd112",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:c4177b264109ceec",
+          "kind": "CLAIM",
+          "evidence_id": "claim-10",
+          "subject_id": "ev-vmd112",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:c4177b264109ceec",
+          "kind": "CLAIM",
+          "evidence_id": "claim-11",
+          "subject_id": "ev-vmd112",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:c4177b264109ceec",
+          "kind": "CLAIM",
+          "evidence_id": "claim-12",
+          "subject_id": "ev-vmd112",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:c4177b264109ceec",
+          "kind": "CLAIM",
+          "evidence_id": "claim-13",
+          "subject_id": "ev-vmd112",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:c4177b264109ceec",
+          "kind": "CLAIM",
+          "evidence_id": "claim-14",
+          "subject_id": "ev-vmd112",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:c4177b264109ceec",
+          "kind": "CLAIM",
+          "evidence_id": "claim-15",
+          "subject_id": "ev-vmd112",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:c4177b264109ceec",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd112",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:c4177b264109ceec",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "ev-vmd112",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "P09-boundaries",
+      "block_type": "CLAIM_BOUNDARY",
+      "text": "この節の読解上の境界は次の通り。論文と開発元の数値主張は著者と開発元自身の自己報告であり、独立した第三者の再現を待つ。非公開モデル側の到達点と選択的取得の効率値は提供元とベンダーの報告で上限表示であり、版と日付で限定して読む。トークンと構成の数値は設定に依存する。コードのApache 2.0と確認済みカード範囲のモデルの重みのApache 2.0と公開データ群と混合物の第三者条件は別の区分であり、個別第三者データの全文は未確認である。生成側の合成詳細は扱わない。更新が続く資料であり、版と日付の対応づけを維持する。",
+      "attribution_mode": "INFERENCE",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:5261f13662aabd9b",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd065",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:cec74d4ca95d2ecb",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd066",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:c6d9aec0a063b225",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd067",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:60046d90c45dbfe3",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd068",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:9ee5b39b27eced77",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd069",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:4e6ee193ed14e437",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd070",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:4f6ee34ec83ed509",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd071",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:20afa93899477fd2",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd064",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:721cee26da56d9ed",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd072",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:af1823c8af887271",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd073",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:e543b8e20cd2e54c",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd074",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:4b007409a575a02d",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd075",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:914cf36ce25f198b",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd076",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:9193275622858906",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd077",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:c4177b264109ceec",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd112",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:c4177b264109ceec",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "ev-vmd112",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    }
+  ],
+  "must_cover_coverage": [
+    {
+      "requirement": "Two technically distinct open families (InternVL3 paradigm contrast, Molmo 2 grounding comparator); no Qwen-only narrative",
+      "block_ids": [
+        "p09-b1",
+        "p09-b2",
+        "p09-b3",
+        "p09-b4",
+        "p09-b5",
+        "p09-b6",
+        "p09-b7",
+        "p09-b8",
+        "p09-b9",
+        "p09-b10",
+        "p09-b11",
+        "P09-boundaries"
+      ]
+    },
+    {
+      "requirement": "Audio chain Whisper/BEATs/CLAP/omni-sync with synthesis excluded (TS-002)",
+      "block_ids": [
+        "p09-b1",
+        "p09-b2",
+        "p09-b3",
+        "p09-b4",
+        "p09-b5",
+        "p09-b6",
+        "p09-b7",
+        "p09-b8",
+        "p09-b9",
+        "p09-b10",
+        "p09-b11",
+        "P09-boundaries"
+      ]
+    },
+    {
+      "requirement": "First-party latency/token figures config-bound (CV2-DM-020); X03 fields multimodal-specific only",
+      "block_ids": [
+        "p09-b1",
+        "p09-b2",
+        "p09-b3",
+        "p09-b4",
+        "p09-b5",
+        "p09-b6",
+        "p09-b7",
+        "p09-b8",
+        "p09-b9",
+        "p09-b10",
+        "p09-b11",
+        "P09-boundaries"
+      ]
+    },
+    {
+      "requirement": "Query-driven selective acquisition economics axis via VM-D112 (provider/vendor ceilings, version-bound; token scope only)",
+      "block_ids": [
+        "p09-b1",
+        "p09-b2",
+        "p09-b3",
+        "p09-b4",
+        "p09-b5",
+        "p09-b6",
+        "p09-b7",
+        "p09-b8",
+        "p09-b9",
+        "p09-b10",
+        "p09-b11",
+        "P09-boundaries"
+      ]
+    },
+    {
+      "requirement": "SigLIP 2 encoder-reuse note extends the fusion encoder lineage (supporting)",
+      "block_ids": [
+        "p09-b1",
+        "p09-b2",
+        "p09-b3",
+        "p09-b4",
+        "p09-b5",
+        "p09-b6",
+        "p09-b7",
+        "p09-b8",
+        "p09-b9",
+        "p09-b10",
+        "p09-b11",
+        "P09-boundaries"
+      ]
+    }
+  ],
+  "boundary_dispositions": [
+    {
+      "boundary": "M-RoPE lineage thread; Thinker-Talker streaming subordinated to input/fusion side",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P09-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "All benchmark claims are author/developer self-reported measurements (G05); token/config figures config-bound (CV2-DM-020); independent reproduction pending; repo commit binding at later stages.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P09-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "No-degradation and leaderboard claims are author/developer self-reported (G05); 234ms is theoretical cold-start; generation-side excluded by boundary.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P09-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Speech-domain scope; general-audio needs BEATs-side sources.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P09-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Classification-benchmark scope; fusion behavior needs omni-side sources.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P09-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "128k-pair scale vs CLIP-scale; later omni encoders qualify the comparison.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P09-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Author/developer self-reported evaluation at this read level (G05); 3.5-series supersession checks belong to later stages.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P09-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Author-measured comparisons; Qwen-backbone dependence disclosed; long-video competitiveness is partial.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P09-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Superseded claims need Qwen3-side sources; predecessor depth only.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P09-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "No mechanism disclosure; scores vendor-measured; card content may drift (bind date).",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P09-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "No mechanism; vendor-measured framing.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P09-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Living surface: commit/version binding required at later stages; README marketing register quarantined from architecture.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P09-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "repo commit/version binding: Living-repo commit/version binding deferred to later stages; README-depth consumption recorded.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P09-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Living surface; commit binding required; popularity signals are not technical authority.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P09-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "PARTIAL: data-release file-level scope unverified (INSPECT target); README header depth only.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P09-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "data-release scope verification: File-level data-release scope not verified; carried as INSPECT item for later stages.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P09-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "All efficiency figures vendor-reported up-to ceilings; no independent reproduction; implementation, rates, pricing, and API surface may change after cutoff (bind version + date at use).",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P09-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Benchmark-row binding (incl. LongVideoBench scope + 3.8 Flash row) deferred to downstream use; static-vs-agentic token-math worked example deferred.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P09-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Exact benchmark list/splits behind vendor efficiency ceilings (incl. LongVideoBench scope + 3.8 Flash row) remain binding work for downstream use.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P09-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "PARTIAL: training-data license mix bound at bucket level (academic/non-commercial third-party; manual-license items DocQA/InfoQA/SceneText, LVBench, MLVU/LongVideoBench agreements, manual-download tracking sets) — individual third-party license texts and Source Attribution contents remain unbound (INSPECT target).",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P09-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "individual third-party dataset license texts and Source Attribution contents unbound; carried as INSPECT item for later stages.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P09-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Code licenses canonical: Qwen3-VL, Qwen3-Omni and Molmo 2 code Apache 2.0 confirmed in canonical Evidence (repo-root LICENSE, repo-bound).",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P09-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Model-weight licenses canonical split: Qwen3-VL weights Apache 2.0 within bound model-card scope (8B-Instruct); Qwen3-Omni weights Apache 2.0 within bound model-card scope (30B-A3B-Instruct); Molmo 2 weights Apache 2.0 within the VM-D077 supplement scope; weight license and mixture terms are separate buckets.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P09-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Released-data scope canonical: Molmo 2 dataset family availability within the VM-D077 supplement scope (collection + checked per-dataset terms); individual third-party license texts and attribution contents PARTIAL/INSPECT.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P09-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    }
+  ],
+  "profile_extensions": {},
+  "publication_extensions": {
+    "page_budget_body_pages": 10,
+    "depth_classes": {
+      "FULL_MECHANISM_TREATMENT": [
+        "VM-D065",
+        "VM-D066",
+        "VM-D070",
+        "VM-D071"
+      ],
+      "TRANSITION_NODE_TREATMENT": [
+        "VM-D067",
+        "VM-D068",
+        "VM-D069",
+        "VM-D112"
+      ],
+      "BRIEF_CONTEXT_OR_AUTHORITY": [
+        "VM-D064",
+        "VM-D072",
+        "VM-D073",
+        "VM-D074",
+        "VM-D075",
+        "VM-D076",
+        "VM-D077"
+      ]
+    }
+  }
+}

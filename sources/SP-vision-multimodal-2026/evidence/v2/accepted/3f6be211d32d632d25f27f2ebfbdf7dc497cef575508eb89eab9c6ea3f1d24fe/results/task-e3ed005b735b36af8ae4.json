@@ -1,0 +1,97 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-vision-multimodal-2026",
+  "evidence_task_id": "evidence:SP-vision-multimodal-2026:8843ba1fc533e700",
+  "basis": {
+    "task_sha256": "7e00604bed0bda5b48631228924a284194f4a729ba4cc67aebc83a2b58ac201e",
+    "screening_acceptance_sha256": "2b50dd1c205efc957c16a848fe185f9de7fb5eca10a5729c1b58c5bb250e7aff",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "ev-vmd080",
+      "canonical_name": "HallusionBench",
+      "entity_type": "BENCHMARK",
+      "organization": null,
+      "canonical_url": "https://arxiv.org/abs/2310.14566"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "ev-vmd080",
+    "artifact_type": "BENCHMARK",
+    "canonical_name": "HallusionBench",
+    "canonical_url": "https://arxiv.org/abs/2310.14566"
+  },
+  "temporal": {
+    "observed_at": "2026-09-30T12:18:08Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2023-10",
+        "subject_id": "ev-vmd080",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2310.14566",
+      "source_class": "PRIMARY_PAPER",
+      "title": "HallusionBench (Guan et al.)",
+      "published_at": "2023-10",
+      "accessed_at": "2026-09-30T12:18:08Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "346 images (165 original + 181 human-edited) / 1,129 expert questions with control-group structure separating language hallucination (prior without visual input) from visual illusion (misread input); GPT-4V 31.42% pair-accuracy, all others <16% (author-measured, 15 models); CVPR 2024; code open.",
+      "subject_id": "ev-vmd080",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Full-paper abstract; numbers paper-reported at report date."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Handcrafted small scale; pair-accuracy is a strict metric — report as diagnostic, not leaderboard.",
+      "subject_id": "ev-vmd080",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Complete HallusionBench paper body consumed via arXiv HTML (113KB text): control-pair design, failure taxonomy, baseline results verified.",
+        "subject_ids": [
+          "ev-vmd080"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

@@ -1,0 +1,487 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-vision-multimodal-2026",
+  "research_profile": "THEMATIC",
+  "basis": {
+    "production_profile_sha256": "e4d16027d66d379848378031e47198a09f0b27a961e27a0ab250923a07a57444",
+    "materiality_ledger_sha256": "4d20abcdd39a3ab4bda1d0d0e88d633fa8ff985e571af3650b61515361341e83"
+  },
+  "overall_status": "LIMITED",
+  "obligations": [
+    {
+      "obligation_id": "VM-O01",
+      "dimension": "learned_visual_representation",
+      "description": "D01 MANDATORY/CONTEXT_CAPPED: 学習済み再利用可能表現・大規模教師あり・transferの確立。Neocognitron/LeNet context、AlexNet、ResNet。X01: ImageNet-scale教師あり契約。X02: class-label入出力契約。",
+      "status": "SATISFIED",
+      "discovery_ids": [
+        "VM-D001",
+        "VM-D002",
+        "VM-D003",
+        "VM-D004"
+      ],
+      "evidence_task_ids": [
+        "evidence:SP-vision-multimodal-2026:25ffb37e8ae8213c",
+        "evidence:SP-vision-multimodal-2026:380dc979ab3f132d",
+        "evidence:SP-vision-multimodal-2026:649b3797fd83a762",
+        "evidence:SP-vision-multimodal-2026:8d13b894941b9513"
+      ],
+      "rationale": "Context-capped scope met: Neocognitron/LeNet predecessor context + AlexNet/ResNet anchors with mechanism, bottleneck and transfer detail. LeNet PDF encoding barrier and Neocognitron paywall do not block the context-level claim. No pre-deep CV expansion."
+    },
+    {
+      "obligation_id": "VM-O02",
+      "dimension": "detection_structured_localization",
+      "description": "D02 MANDATORY: 分類からidentity+locationへ。R-CNN系/Faster R-CNN、YOLO系/SSD/RetinaNet operating point、DETR set prediction、DINO detector (self-supervised DINOと区別)、YOLO-World等OV橋。X02: box入出力契約。",
+      "status": "SATISFIED",
+      "discovery_ids": [
+        "VM-D005",
+        "VM-D006",
+        "VM-D007",
+        "VM-D008",
+        "VM-D009",
+        "VM-D010",
+        "VM-D011",
+        "VM-D012"
+      ],
+      "evidence_task_ids": [
+        "evidence:SP-vision-multimodal-2026:1619d326d81a5223",
+        "evidence:SP-vision-multimodal-2026:2ca2b01d89b9f6f3",
+        "evidence:SP-vision-multimodal-2026:392343dab0a3215c",
+        "evidence:SP-vision-multimodal-2026:b10c9e111b6ab1e8",
+        "evidence:SP-vision-multimodal-2026:b7de06e9d5276cc1",
+        "evidence:SP-vision-multimodal-2026:bfd74d856a35f1c7",
+        "evidence:SP-vision-multimodal-2026:c8c632d0be6a2fc6",
+        "evidence:SP-vision-multimodal-2026:f63075086ce1c194"
+      ],
+      "rationale": "Region/two-stage, one-stage operating points, DETR set-prediction transition and OV bridge all bound with mechanism detail; DINO detector/ss disambiguated. OWOD remains a D07B footnote by design."
+    },
+    {
+      "obligation_id": "VM-O03",
+      "dimension": "dense_perception_segmentation",
+      "description": "D03 MANDATORY: boxからdense構造へ。FCN、U-Net (segmentation役割のみ)、Mask R-CNN、panoptic、SAM/SAM2 promptable系。X02: mask入出力契約。",
+      "status": "SATISFIED",
+      "discovery_ids": [
+        "VM-D013",
+        "VM-D014",
+        "VM-D015",
+        "VM-D016",
+        "VM-D017",
+        "VM-D018"
+      ],
+      "evidence_task_ids": [
+        "evidence:SP-vision-multimodal-2026:07b5808887ca079e",
+        "evidence:SP-vision-multimodal-2026:231a944a9fd799b8",
+        "evidence:SP-vision-multimodal-2026:430f58620318dee9",
+        "evidence:SP-vision-multimodal-2026:4c4e58ac13a1d141",
+        "evidence:SP-vision-multimodal-2026:7407b38e6e4d1286",
+        "evidence:SP-vision-multimodal-2026:e64042250de2535e"
+      ],
+      "rationale": "Dense/instance/panoptic/promptable distinctions bound; SAM dual reading and SAM 2 video bridge recorded. U-Net confined to segmentation role (TS-002 boundary intact)."
+    },
+    {
+      "obligation_id": "VM-O04",
+      "dimension": "spatial_geometry_substrate",
+      "description": "D04 MANDATORY_SUPPORT/HARD_CAP: 4-node allow-list (MiDaS/OpenPose/Visual Genome/DUSt3R)。labelにない空間state、後段が仮定する2D/2.5D/3D state、token化時の得失。同等契約の置換のみ許容、拡大禁止。",
+      "status": "SATISFIED",
+      "discovery_ids": [
+        "VM-D019",
+        "VM-D020",
+        "VM-D021",
+        "VM-D022"
+      ],
+      "evidence_task_ids": [
+        "evidence:SP-vision-multimodal-2026:85bc25df6171e3dd",
+        "evidence:SP-vision-multimodal-2026:a6b4065d7ddd17fd",
+        "evidence:SP-vision-multimodal-2026:ab41a7643858ee00",
+        "evidence:SP-vision-multimodal-2026:ad9033f18ee4f668"
+      ],
+      "rationale": "Four-node support cap met exactly (MiDaS/OpenPose/Visual Genome/DUSt3R) with stated limits; support-substrate purpose fulfilled; refusals (NeRF/3DGS/SLAM/MVS) ledgered, not silently omitted."
+    },
+    {
+      "obligation_id": "VM-O05",
+      "dimension": "ocr_document_intelligence",
+      "description": "D05 MANDATORY/NORMAL_WEIGHT: glyphからlayout/symbolicへ。LayoutLM系/Donut/Pix2Struct、specialist (Nougat/GOT) vs general VLM (default NO_CROSS_MODEL_NUMERIC_COMPARISON、5軸qualitative契約)、retrieval bounded sub-lane。X01: document/markup教師契約。",
+      "status": "SATISFIED",
+      "discovery_ids": [
+        "VM-D023",
+        "VM-D024",
+        "VM-D025",
+        "VM-D026",
+        "VM-D027",
+        "VM-D028",
+        "VM-D029",
+        "VM-D108",
+        "VM-D109",
+        "VM-D110"
+      ],
+      "evidence_task_ids": [
+        "evidence:SP-vision-multimodal-2026:18525095708ea29a",
+        "evidence:SP-vision-multimodal-2026:4ca2413b8167abe8",
+        "evidence:SP-vision-multimodal-2026:5991ba15eeeb4c53",
+        "evidence:SP-vision-multimodal-2026:70a2a554e22606a9",
+        "evidence:SP-vision-multimodal-2026:7224dfc5069331e2",
+        "evidence:SP-vision-multimodal-2026:a3d0f0452d7e3282",
+        "evidence:SP-vision-multimodal-2026:aa38689cb7a40158",
+        "evidence:SP-vision-multimodal-2026:ca420082868a82a9",
+        "evidence:SP-vision-multimodal-2026:ece87f85960ba2b4",
+        "evidence:SP-vision-multimodal-2026:f1346f195b48d6e0"
+      ],
+      "rationale": "LayoutLM lineage, OCR-free branch, Nougat/GOT specialist poles with failure profiles, Pix2Struct UI bridge and retrieval sub-lane all bound. Specialist-vs-generalist comparison stands on the qualitative five-axis contract; numeric ranking prohibited by contract (G03 concerns same-protocol head-to-head absence, not a coverage deficit)."
+    },
+    {
+      "obligation_id": "VM-O06",
+      "dimension": "vit_selfsupervised_foundation",
+      "description": "D06 MANDATORY: patch/token formulationとlabel-free再利用表現。ViT/DeiT/Swin、MAE/DINO/DINOv2、SigLIPと後段encoder reuse。X01: self-supervised/masked/distillation目的契約。",
+      "status": "SATISFIED",
+      "discovery_ids": [
+        "VM-D030",
+        "VM-D031",
+        "VM-D032",
+        "VM-D033",
+        "VM-D034",
+        "VM-D035",
+        "VM-D036"
+      ],
+      "evidence_task_ids": [
+        "evidence:SP-vision-multimodal-2026:0eb3420fb03f017e",
+        "evidence:SP-vision-multimodal-2026:35ac530167b1aead",
+        "evidence:SP-vision-multimodal-2026:3c9024041edb1a4a",
+        "evidence:SP-vision-multimodal-2026:4e994d899261cc65",
+        "evidence:SP-vision-multimodal-2026:654257bfd25b2055",
+        "evidence:SP-vision-multimodal-2026:9dce7c29b30f2b61",
+        "evidence:SP-vision-multimodal-2026:fea277ab42f86a90"
+      ],
+      "rationale": "Token-formulation and label-free representation lineage complete (ViT/DeiT/Swin/MAE/DINO/DINOv2) and encoder reuse into Qwen established with exact citation binding now specified: SigLIP2-So400m initialization and dynamic-resolution continual training per Qwen3-VL report Vision Encoder section and Qwen3-Omni report section 2.3/Table 1 (read-only verified 2026-10-03; reuse fact in D065 claim-2)."
+    },
+    {
+      "obligation_id": "VM-O07",
+      "dimension": "image_level_vl_alignment",
+      "description": "D07A MANDATORY/FULL_WEIGHT: 固定ontologyから言語addressable意味へ。DeViSE/captioning/VQA predecessor、CLIP/ALIGN/SigLIP。評価はzero-shot分類・retrieval (D07B指標と統合禁止)。X01: image-text pair教師契約。X02: text<->image入出力契約。",
+      "status": "SATISFIED",
+      "discovery_ids": [
+        "VM-D036",
+        "VM-D037",
+        "VM-D038",
+        "VM-D039",
+        "VM-D040"
+      ],
+      "evidence_task_ids": [
+        "evidence:SP-vision-multimodal-2026:000811ab2cedb843",
+        "evidence:SP-vision-multimodal-2026:0eb3420fb03f017e",
+        "evidence:SP-vision-multimodal-2026:20d1ebc2759ddd61",
+        "evidence:SP-vision-multimodal-2026:25a1e7517b74ec98",
+        "evidence:SP-vision-multimodal-2026:caa9b1c0fdfb5b31"
+      ],
+      "rationale": "Captioning/VQA predecessors, CLIP addressability break with preserved bag-of-words limitation, and ALIGN/SigLIP variants bound; image-level metric identity never merged with grounding metrics."
+    },
+    {
+      "obligation_id": "VM-O08",
+      "dimension": "openvocab_perception_grounding",
+      "description": "D07B MANDATORY/FULL_WEIGHT: 言語概念からbox/mask/coordinate/evidenceへ。Flickr30k/RefCOCO/OVR-CNN/ViLD/RegionCLIP/Detic/GLIP/MDETR/OWL-ViT/Grounding DINO/OWL-ST/LSeg->X-Decoder (OpenSeg/ODISE bounded variant)。CLIP+Grounding DINOへの圧縮禁止。評価はLVIS-rare/ODinW/RefCOCO/phrase Recall@K。X01: caption/grounding/pseudo-label教師契約。",
+      "status": "SATISFIED",
+      "discovery_ids": [
+        "VM-D011",
+        "VM-D012",
+        "VM-D021",
+        "VM-D041",
+        "VM-D042",
+        "VM-D043",
+        "VM-D044",
+        "VM-D045",
+        "VM-D046",
+        "VM-D047",
+        "VM-D048",
+        "VM-D049",
+        "VM-D050",
+        "VM-D051",
+        "VM-D052",
+        "VM-D053",
+        "VM-D054",
+        "VM-D055",
+        "VM-D056"
+      ],
+      "evidence_task_ids": [
+        "evidence:SP-vision-multimodal-2026:121e1a6de76dea8d",
+        "evidence:SP-vision-multimodal-2026:139481c043a93d8c",
+        "evidence:SP-vision-multimodal-2026:1619d326d81a5223",
+        "evidence:SP-vision-multimodal-2026:2cf1e589a946b028",
+        "evidence:SP-vision-multimodal-2026:46a40e71f36174e1",
+        "evidence:SP-vision-multimodal-2026:48b74d1180cca336",
+        "evidence:SP-vision-multimodal-2026:48beece23bd3412f",
+        "evidence:SP-vision-multimodal-2026:81a7c66884ebcdef",
+        "evidence:SP-vision-multimodal-2026:83eb37cf4723f9fb",
+        "evidence:SP-vision-multimodal-2026:9bd1ddfaf58e3004",
+        "evidence:SP-vision-multimodal-2026:a9d2a0a6c600dfb8",
+        "evidence:SP-vision-multimodal-2026:ab41a7643858ee00",
+        "evidence:SP-vision-multimodal-2026:b10c9e111b6ab1e8",
+        "evidence:SP-vision-multimodal-2026:d6cf167fd67e3840",
+        "evidence:SP-vision-multimodal-2026:d79a54d5c58f96d1",
+        "evidence:SP-vision-multimodal-2026:e4620df23bff5b48",
+        "evidence:SP-vision-multimodal-2026:e89653a73e85df3a",
+        "evidence:SP-vision-multimodal-2026:f85edfe8f978dc04",
+        "evidence:SP-vision-multimodal-2026:f8fcad66ad997c8c"
+      ],
+      "rationale": "Full 12-step minimum chain (phrase task, REC contract, OVD formulation, distillation/region/vocabulary poles, reformulation, modulation, fusion poles, web-scale, OVS branch) plus LVIS eval home; redundancy calls recorded; GoldG composition is an Evidence-depth detail, not a coverage gap."
+    },
+    {
+      "obligation_id": "VM-O09",
+      "dimension": "bridging_vision_language",
+      "description": "D08 MANDATORY/FULL_WEIGHT: 別pretrainのvision+LLMからusable VLMへ。Frozen/Flamingo/BLIP-2/InstructBLIP/MiniGPT-4/LLaVA、projector/resampler/Q-Former/cross-attention、visual instruction tuning。X02: embedding/token入出力契約。X03: frozen-component計算効率。",
+      "status": "SATISFIED",
+      "discovery_ids": [
+        "VM-D057",
+        "VM-D058",
+        "VM-D059",
+        "VM-D060",
+        "VM-D061",
+        "VM-D062",
+        "VM-D063"
+      ],
+      "evidence_task_ids": [
+        "evidence:SP-vision-multimodal-2026:0824156b3cbab601",
+        "evidence:SP-vision-multimodal-2026:48f42e295f015ec1",
+        "evidence:SP-vision-multimodal-2026:818fa016dee2b06e",
+        "evidence:SP-vision-multimodal-2026:940c80609fd5a8ec",
+        "evidence:SP-vision-multimodal-2026:ac075257c99d3b88",
+        "evidence:SP-vision-multimodal-2026:b049264287440eba",
+        "evidence:SP-vision-multimodal-2026:f1552ccf02c21138"
+      ],
+      "rationale": "Frozen precursor, Flamingo/BLIP-2 anchors, InstructBLIP/MiniGPT-4 bridge gap filled, and LLaVA instruction-tuning anchor bound with distinct connector strategies; no flattening."
+    },
+    {
+      "obligation_id": "VM-O10",
+      "dimension": "native_omni_fusion",
+      "description": "D09 MANDATORY/FULL_WEIGHT: multimodal信号のtoken/state化。Qwen2.5-VL/Qwen3-VL/Qwen3-Omni、Whisper/BEATs/CLAP input chain、InternVL3/Molmo2 second-family比較、Gemini系closed endpoint (4-role tagging)、resolution/tiling/resampling/fusion/time-alignment。X03 token/memory/latency必須。audio生成側は除外。",
+      "status": "SATISFIED",
+      "discovery_ids": [
+        "VM-D029",
+        "VM-D063",
+        "VM-D064",
+        "VM-D065",
+        "VM-D066",
+        "VM-D067",
+        "VM-D068",
+        "VM-D069",
+        "VM-D070",
+        "VM-D071",
+        "VM-D072",
+        "VM-D073",
+        "VM-D074",
+        "VM-D075",
+        "VM-D076",
+        "VM-D077",
+        "VM-D088"
+      ],
+      "evidence_task_ids": [
+        "evidence:SP-vision-multimodal-2026:20afa93899477fd2",
+        "evidence:SP-vision-multimodal-2026:4b007409a575a02d",
+        "evidence:SP-vision-multimodal-2026:4e6ee193ed14e437",
+        "evidence:SP-vision-multimodal-2026:4f6ee34ec83ed509",
+        "evidence:SP-vision-multimodal-2026:5261f13662aabd9b",
+        "evidence:SP-vision-multimodal-2026:60046d90c45dbfe3",
+        "evidence:SP-vision-multimodal-2026:721cee26da56d9ed",
+        "evidence:SP-vision-multimodal-2026:818fa016dee2b06e",
+        "evidence:SP-vision-multimodal-2026:914cf36ce25f198b",
+        "evidence:SP-vision-multimodal-2026:9193275622858906",
+        "evidence:SP-vision-multimodal-2026:9ee5b39b27eced77",
+        "evidence:SP-vision-multimodal-2026:a3d0f0452d7e3282",
+        "evidence:SP-vision-multimodal-2026:af1823c8af887271",
+        "evidence:SP-vision-multimodal-2026:c6d9aec0a063b225",
+        "evidence:SP-vision-multimodal-2026:cec74d4ca95d2ecb",
+        "evidence:SP-vision-multimodal-2026:cfc2b4578045db93",
+        "evidence:SP-vision-multimodal-2026:e543b8e20cd2e54c"
+      ],
+      "rationale": "Qwen staged recipe, audio-input chain (Whisper/BEATs/CLAP), omni fusion with absolute-time sync, two technically distinct open families (InternVL3 paradigm contrast, Molmo 2 grounding comparator) plus repos; generation side excluded by boundary. G04/G05 are measurement-reproduction gaps, not fusion-coverage gaps."
+    },
+    {
+      "obligation_id": "VM-O11",
+      "dimension": "multimodal_reasoning_failure",
+      "description": "D10 MANDATORY/FULL_WEIGHT: evidence useと言語prior/scaffoldの分離。MMMU系/POPE/HallusionBench/MMBench/visual-math、counting/spatial/chart/multi-image/compositional、tool-assisted perception。composite scoreを一般知能とみなさない。X04 failure-attribution必須。",
+      "status": "SATISFIED",
+      "discovery_ids": [
+        "VM-D038",
+        "VM-D071",
+        "VM-D072",
+        "VM-D078",
+        "VM-D079",
+        "VM-D080",
+        "VM-D081",
+        "VM-D082",
+        "VM-D110"
+      ],
+      "evidence_task_ids": [
+        "evidence:SP-vision-multimodal-2026:25a1e7517b74ec98",
+        "evidence:SP-vision-multimodal-2026:4f6ee34ec83ed509",
+        "evidence:SP-vision-multimodal-2026:721cee26da56d9ed",
+        "evidence:SP-vision-multimodal-2026:8843ba1fc533e700",
+        "evidence:SP-vision-multimodal-2026:99fe5e3d8da3e4af",
+        "evidence:SP-vision-multimodal-2026:c2d0b6fc3b59c6ad",
+        "evidence:SP-vision-multimodal-2026:ea3bed97631f4e83",
+        "evidence:SP-vision-multimodal-2026:f1346f195b48d6e0",
+        "evidence:SP-vision-multimodal-2026:f13e584f76331ad8"
+      ],
+      "rationale": "Polling (POPE), control-pair attribution (HallusionBench), CircularEval/bilingual (MMBench) and visual-math (MathVista) instruments kept distinct; scaffold-vs-perception attribution discipline recorded; no general-intelligence scores."
+    },
+    {
+      "obligation_id": "VM-O12",
+      "dimension": "video_temporal_streaming",
+      "description": "D11 MANDATORY/NORMAL_WEIGHT: frame反復からtemporal stateへ。Kinetics/SSv2/Ego4D predecessor、Video-MME/LongVideoBench、Flash-VStream+VStream-QA/StreamingBench (offline long-contextとonline streamingを分離)、SAM2 memory bridge、AV joint。X02: 時間state入出力契約。",
+      "status": "SATISFIED",
+      "discovery_ids": [
+        "VM-D018",
+        "VM-D083",
+        "VM-D084",
+        "VM-D085",
+        "VM-D086",
+        "VM-D087",
+        "VM-D088",
+        "VM-D089",
+        "VM-D111"
+      ],
+      "evidence_task_ids": [
+        "evidence:SP-vision-multimodal-2026:13d20a4faceb1e74",
+        "evidence:SP-vision-multimodal-2026:3fbf8ea3cf05480a",
+        "evidence:SP-vision-multimodal-2026:407035fb9e069838",
+        "evidence:SP-vision-multimodal-2026:4c4e58ac13a1d141",
+        "evidence:SP-vision-multimodal-2026:9d0a4e5bc8df3260",
+        "evidence:SP-vision-multimodal-2026:ab1c78690bcdd2d7",
+        "evidence:SP-vision-multimodal-2026:c960bc12fffca2f0",
+        "evidence:SP-vision-multimodal-2026:cfc2b4578045db93",
+        "evidence:SP-vision-multimodal-2026:fd5ebde668f4efc3"
+      ],
+      "rationale": "Action/event/egocentric predecessors, duration-breadth (Video-MME), referred-reasoning (LongVideoBench), streaming system (Flash-VStream) and streaming eval (StreamingBench) bound; offline vs online contracts never share a metric column."
+    },
+    {
+      "obligation_id": "VM-O13",
+      "dimension": "computer_use_grounding",
+      "description": "D12 MANDATORY_ENDPOINT/BOUNDED: 知覚からelement grounding、action、persistent task stateへ。OSWorld 1.0/2.0、ScreenSpot/SeeClick、web-agent predecessor context、interface契約比較 (vision/a11y-DOM/API)。state管理thesis。X03 screenshot-loop cost。",
+      "status": "SATISFIED",
+      "discovery_ids": [
+        "VM-D090",
+        "VM-D091",
+        "VM-D092"
+      ],
+      "evidence_task_ids": [
+        "evidence:SP-vision-multimodal-2026:3d4f179a082773fd",
+        "evidence:SP-vision-multimodal-2026:6852a5755398b866",
+        "evidence:SP-vision-multimodal-2026:85268ad1dbd5f285"
+      ],
+      "rationale": "OSWorld grounding thesis, OSWorld 2.0 state-management thesis with cost curves, ScreenSpot pure-localization accuracy and interface-contract comparison bound; endpoint bounded, no agent-survey expansion."
+    },
+    {
+      "obligation_id": "VM-O14",
+      "dimension": "vla_embodied_systems",
+      "description": "D13 MANDATORY_ENDPOINT/HARD_CAP: 表現からphysical action interfaceへ。SayCan/RT-1/PaLM-E/OpenX/RT-2/OpenVLA/Gemini Robotics系。各nodeのrepresentation/interface契約変化のみで選定。独立評価希薄はEVIDENCE_GAP。",
+      "status": "LIMITATION",
+      "discovery_ids": [
+        "VM-D085",
+        "VM-D093",
+        "VM-D094",
+        "VM-D095",
+        "VM-D096",
+        "VM-D097",
+        "VM-D098",
+        "VM-D099",
+        "VM-D100"
+      ],
+      "evidence_task_ids": [
+        "evidence:SP-vision-multimodal-2026:13d20a4faceb1e74",
+        "evidence:SP-vision-multimodal-2026:84206f17760b1bd8",
+        "evidence:SP-vision-multimodal-2026:8b9c3bd9b50fd8e7",
+        "evidence:SP-vision-multimodal-2026:a6938620bf41e2be",
+        "evidence:SP-vision-multimodal-2026:b57c9615772bd967",
+        "evidence:SP-vision-multimodal-2026:c4ef50825f567b93",
+        "evidence:SP-vision-multimodal-2026:e4d1370818155fa8",
+        "evidence:SP-vision-multimodal-2026:ea37cef9e6cd91ef",
+        "evidence:SP-vision-multimodal-2026:f782cb97c291fdef"
+      ],
+      "rationale": "Seven-node minimum chain complete (planner-side, data regime, joint representation, cross-embodiment data, action tokenization, open implementation, card-scoped endpoint) within the representation/action interface; residual is G01: independent/non-vendor VLA evaluation scarcity bounds policy-evaluation claims."
+    },
+    {
+      "obligation_id": "VM-O15",
+      "dimension": "predictive_world_models",
+      "description": "D14 MANDATORY_ENDPOINT/HARD_CAP/TERMINOLOGY_SPLIT: 4-pole (historical定式/latent dynamics Dreamer系/non-generative predictive V-JEPA系/generative interactive Genie系)。各候補はstate/target/conditioning/pixel-latent-reward/useをbind。pixel列のみはTS-002参照。",
+      "status": "LIMITATION",
+      "discovery_ids": [
+        "VM-D101",
+        "VM-D102",
+        "VM-D103",
+        "VM-D104",
+        "VM-D105",
+        "VM-D106",
+        "VM-D107"
+      ],
+      "evidence_task_ids": [
+        "evidence:SP-vision-multimodal-2026:15086161b1c77efb",
+        "evidence:SP-vision-multimodal-2026:578045dad3cb91df",
+        "evidence:SP-vision-multimodal-2026:6230bc6427c4f5c0",
+        "evidence:SP-vision-multimodal-2026:8025f5dd3a9f4a6c",
+        "evidence:SP-vision-multimodal-2026:a6411d38b3a6d7eb",
+        "evidence:SP-vision-multimodal-2026:acb94f2fa047f59d",
+        "evidence:SP-vision-multimodal-2026:aeaa748ea7475894"
+      ],
+      "rationale": "Four-pole separation established (historical formulation, Dreamer latent dynamics, JEPA/V-JEPA predictive representation, Genie interactive generative) with anti-collapse rows and non-ancestry guard; residual is G02: no transferable control-oriented world-model benchmark, bounding dynamics-usability claims."
+    },
+    {
+      "obligation_id": "VM-O16",
+      "dimension": "evaluation_robustness_convergence",
+      "description": "D15 MANDATORY/METHODOLOGY_FIRST: task identity保持、契約比較。DocVQA/ChartQA/OCRBench v2/POPE+HallusionBench/ScreenSpot/OSWorld/Video-MME/LongVideoBench/StreamingBench/VSI-Bench retain-set (distinct contractのみ、count最大化禁止)。version/config/judge/tool/budget/contamination/source-role binding。X01 supervision-timeline synthesisとconvergence verdict (unified-vs-modular)。",
+      "status": "SATISFIED",
+      "discovery_ids": [
+        "VM-D056",
+        "VM-D079",
+        "VM-D080",
+        "VM-D086",
+        "VM-D087",
+        "VM-D088",
+        "VM-D091",
+        "VM-D092",
+        "VM-D108",
+        "VM-D109",
+        "VM-D110",
+        "VM-D111"
+      ],
+      "evidence_task_ids": [
+        "evidence:SP-vision-multimodal-2026:3d4f179a082773fd",
+        "evidence:SP-vision-multimodal-2026:3fbf8ea3cf05480a",
+        "evidence:SP-vision-multimodal-2026:6852a5755398b866",
+        "evidence:SP-vision-multimodal-2026:70a2a554e22606a9",
+        "evidence:SP-vision-multimodal-2026:8843ba1fc533e700",
+        "evidence:SP-vision-multimodal-2026:ab1c78690bcdd2d7",
+        "evidence:SP-vision-multimodal-2026:ca420082868a82a9",
+        "evidence:SP-vision-multimodal-2026:cfc2b4578045db93",
+        "evidence:SP-vision-multimodal-2026:d79a54d5c58f96d1",
+        "evidence:SP-vision-multimodal-2026:f1346f195b48d6e0",
+        "evidence:SP-vision-multimodal-2026:f13e584f76331ad8",
+        "evidence:SP-vision-multimodal-2026:fd5ebde668f4efc3"
+      ],
+      "rationale": "Retain-set benchmarks with distinct contracts, ANLS/relaxed-accuracy/private-set disciplines, version/config/judge/budget/contamination binding rules and vendor-vs-independent separation; catalogue and cross-task ranking refused."
+    }
+  ],
+  "residual_limitations": [
+    "G01 independent/non-vendor VLA evaluation scarcity (bounds O14 policy-evaluation claims).",
+    "G02 transferable control-oriented world-model benchmark absent (bounds O15 dynamics-use claims).",
+    "G03 same-protocol document specialist vs generalist comparison absent (numeric ranking prohibited; qualitative contract stands).",
+    "G04 real-deployment latency/VRAM beyond author-reported values (bounds deployment claims).",
+    "G05 independent reproduction of current vendor/model-report scores (all vendor scores quarantined with attribution).",
+    "Access barriers: LeNet author-PDF custom-font encoding; Neocognitron paywall (both context-scope only).",
+    "Living surfaces: repo commit pinning, vendor page drift, InternVL3.5/ScreenSpot-successor currency deferred to later stages."
+  ],
+  "closure": {
+    "expansion_passes": 1,
+    "final_pass_new_sources": 0,
+    "final_pass_new_material_obligations": 0,
+    "final_pass_new_material_obligations_open": 0,
+    "targeted_gap_fill_completed": true,
+    "open_material_obligations": 0,
+    "limitations": [
+      "G01 independent/non-vendor VLA evaluation scarcity (bounds O14 policy-evaluation claims).",
+      "G02 transferable control-oriented world-model benchmark absent (bounds O15 dynamics-use claims).",
+      "G03 same-protocol document specialist vs generalist comparison absent (numeric ranking prohibited; qualitative contract stands).",
+      "G04 real-deployment latency/VRAM beyond author-reported values (bounds deployment claims).",
+      "G05 independent reproduction of current vendor/model-report scores (all vendor scores quarantined with attribution).",
+      "Access barriers: LeNet author-PDF custom-font encoding; Neocognitron paywall (both context-scope only).",
+      "Living surfaces: repo commit pinning, vendor page drift, InternVL3.5/ScreenSpot-successor currency deferred to later stages."
+    ],
+    "status": "LIMITED"
+  }
+}

@@ -1,0 +1,687 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-vision-multimodal-2026",
+  "research_profile": "THEMATIC",
+  "publication_profile": "LONGFORM_SPECIAL",
+  "package_id": "P06",
+  "draft_version": "fresh-124-r9",
+  "status": "ESTABLISHED",
+  "basis": {
+    "draft_package_sha256": "f02478b92d28be5ae8f74817d7e2386032fad1279bf051b30b01af66728e8097",
+    "prompt_id": "article-drafting-v2",
+    "prompt_sha256": "b687313312a23025228c16c3f10cb68f669b910cd7215e41886d4dd91f44fe11"
+  },
+  "runner": {
+    "provider": "Muse",
+    "model": "Muse Spark (Work execution role; not a Sol/Human decision)",
+    "invocation": "TS-003 fresh 124-authority Draft from Architecture r9 APPROVED (Evidence 124 VERIFIED 119/PARTIAL 5, Selection 124, 16 packages newly authored; P02 DETR-successor lineage + attribution closure, P12 proxy framing, P15 four-role taxonomy, DUSt3R editorial synthesis, Molmo scope, ResNet controlled comparison, Dreamer non-ancestry, video role separation, P07A/B separation, Japanese terminology conformance; rev5 as regression reference only, 0 blocks identical; no TeX/PDF; DRAFT_COMPLETE then STOP)",
+    "generated_at": "2026-10-09T00:00:00Z",
+    "run_reference": null
+  },
+  "headline": "画像をトークン列に直し目的ごと学ぶ基盤表現",
+  "deck": "畳み込みの前提を外して画像をトークン列に直す定式から、再構成と自己蒸留と対応づけの目的を分けて読む。手順と規模の切り分けを保ち、長期化した密な蒸留と段階的な整合や自己回帰の分岐を経て、視覚言語モデルへ受け継がれる条件を確かめる。",
+  "deck_attribution_mode": "MIXED",
+  "deck_evidence_refs": [
+    {
+      "evidence_task_id": "evidence:SP-vision-multimodal-2026:fea277ab42f86a90",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1",
+      "subject_id": "ev-vmd030",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-vision-multimodal-2026:fea277ab42f86a90",
+      "kind": "CLAIM",
+      "evidence_id": "claim-2",
+      "subject_id": "ev-vmd030",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-vision-multimodal-2026:9dce7c29b30f2b61",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1",
+      "subject_id": "ev-vmd034",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-vision-multimodal-2026:9dce7c29b30f2b61",
+      "kind": "CLAIM",
+      "evidence_id": "claim-2",
+      "subject_id": "ev-vmd034",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-vision-multimodal-2026:9dce7c29b30f2b61",
+      "kind": "CLAIM",
+      "evidence_id": "claim-3",
+      "subject_id": "ev-vmd034",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-vision-multimodal-2026:9dce7c29b30f2b61",
+      "kind": "CLAIM",
+      "evidence_id": "claim-4",
+      "subject_id": "ev-vmd034",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-vision-multimodal-2026:0eb3420fb03f017e",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1",
+      "subject_id": "ev-vmd036",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-vision-multimodal-2026:0eb3420fb03f017e",
+      "kind": "CLAIM",
+      "evidence_id": "claim-2",
+      "subject_id": "ev-vmd036",
+      "subject_role": "PRIMARY_SUBJECT"
+    }
+  ],
+  "blocks": [
+    {
+      "block_id": "p06-b1",
+      "block_type": "PARAGRAPH",
+      "text": "畳み込みを前提に置く時代には、画像を言語モデルと同じトークン列の形で扱う定式が欠けていた。Vision Transformerは画像パッチの系列へ素のTransformerを適用し、パッチ化を除く画像固有の帰納バイアスを抑えたと論文著者が説明する。大規模な事前学習と転移でCNNの到達点に肩を並べ、同等水準ではCNN相手より少ない学習計算で済む点が論文著者の自己報告として示された。画像をトークン列に直して扱う道が開け、後の視覚と言語のトークン融合の前提が整った。大規模事前学習への依存は残り、系列化が次の計算に見合うかが本節の焦点になる。効率の一般論はTS-001の範囲であり、ここでは表現の契約として読む。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:fea277ab42f86a90",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd030",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:fea277ab42f86a90",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ev-vmd030",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:fea277ab42f86a90",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd030",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p06-b2",
+      "block_type": "PARAGRAPH",
+      "text": "ViTが大量のデータを求める段階では、手順と階層の手当てが残されていた。DeiTは練り上げた学習手順とTransformer専用の蒸留トークンにより、外部データを用いず86Mの学習可能パラメータで単一計算機3日以内にImageNetで83.1%、蒸留により85.2%へ到達し、転移でも競争力を保つと示したと論文著者が報告する。一方Swin Transformerはシフトウィンドウアテンションでウィンドウ内の局所性とウィンドウをまたぐ接続を両立し、画像規模に線形の計算量で階層性を取り戻した。ImageNetで87.3%、COCOでボックスAP58.7・マスクAP51.1、ADE20Kで53.5mIoUが著者測定として示され、実装とモデルが公開された。二者は移行期の仲介であり、ここでは要点に絞る。データ拡張と正則化の再利用が手順の読みを支える。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:35ac530167b1aead",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd031",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:35ac530167b1aead",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ev-vmd031",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:35ac530167b1aead",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd031",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:654257bfd25b2055",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd032",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:654257bfd25b2055",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd032",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p06-b3",
+      "block_type": "PARAGRAPH",
+      "text": "注釈なしに視覚表現を得るには、再構成と表現の読みを分ける設計が要った。MAEは可視パッチだけを通す非対称エンコーダと軽量デコーダで、75%のマスクにより3倍超の学習高速化と水準向上を両立させたと論文著者が説明する。再構成先は隠したパッチ画素への平均二乗誤差であり、既定のアブレーションでは非正規化画素を用い、最終手順ではパッチ単位で正規化した画素を用いる。PCAやdVAEトークンのバリアントはほぼ同等で、離散化は必須ではない。デコーダ深度1から8で線形プローブは65.5から73.5へ上がる一方、ファインチューニングは84.9前後で平坦であり、マスク率の最適は75%前後、線形は約20ポイント敏感でファインチューニングは40から80%で平坦である。既定手順は8層512次元デコーダ・非正規化画素・800エポック、最終手順は正規化画素・1600エポックで1600まで飽和せず、両者を混同しないことがアブレーション条件の読みに含まれる。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:4e994d899261cc65",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd033",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:4e994d899261cc65",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ev-vmd033",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:4e994d899261cc65",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "ev-vmd033",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:4e994d899261cc65",
+          "kind": "CLAIM",
+          "evidence_id": "claim-4",
+          "subject_id": "ev-vmd033",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:4e994d899261cc65",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd033",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p06-b4",
+      "block_type": "PARAGRAPH",
+      "text": "注釈なし蒸留から表現を引き出すには、教師と生徒の関係を崩壊なく保つ仕掛けが要った。自己教師ありDINOは注釈なしにViTを学び、教師ありViTや畳み込みには見られない創発的性質を示したと論文著者が説明する。CLSアテンションがセマンティックセグメンテーションの情報を含み、小規模ViTでkNNによりImageNetで78.3%、ViT-Baseで線形評価80.1%とされる。教師は勾配を止めたモーメンタムエンコーダで生徒のみ確率的勾配で動かし、マルチクロップと小パッチが効く。崩壊回避には教師出力へのセンタリングと低い教師温度による先鋭化の両方が要り、片方を欠くと崩壊するとアブレーションで確かめられた。教師温度は0.04から0.07への線形ウォームアップ、生徒温度0.1固定、運動量係数0.996から1への余弦変化であり、向きを逆にしない。本節のDINOは検出器のDINOとは別物であり、自己教師ありDINOとして呼ぶ。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:9dce7c29b30f2b61",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd034",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:9dce7c29b30f2b61",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ev-vmd034",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:9dce7c29b30f2b61",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "ev-vmd034",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:9dce7c29b30f2b61",
+          "kind": "CLAIM",
+          "evidence_id": "claim-4",
+          "subject_id": "ev-vmd034",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:9dce7c29b30f2b61",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd034",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p06-b5",
+      "block_type": "PARAGRAPH",
+      "text": "自己教師あり特徴を実用にするには、精選データと規模拡大の手順が要った。DINOv2は自動化された精選データの収集手順と拡張学習で10億規模のViTを小規模モデルへ蒸留し、ファインチューニングなしに弱教師ありの代替に迫る汎用特徴を得たと論文著者が説明する。画像や画素の評価でOpenCLIPを上回るとされる範囲が示された。凍結したまま転移する汎用特徴の利用が新たに開けた。一方でSAMとの対比が重要であり、汎用特徴とプロンプトで指示できるインターフェースは基盤という語の別義である。評価は凍結転移の範囲であり、課題固有の限界は評価側の資料に委ねられる。DINOv2やiBOTのマスク予測は画素再構成ではなく、マスクされたトークンの予測であり、MAE型の画素再構成と同一視しない。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:3c9024041edb1a4a",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd035",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:3c9024041edb1a4a",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ev-vmd035",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:3c9024041edb1a4a",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd035",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p06-b6",
+      "block_type": "PARAGRAPH",
+      "text": "画像と言語の対応づけを広げるには、全体正規化がバッチ規模と損失を結びつける点が重かった。SigLIPは対ごとのシグモイド損失で全体正規化を外し、バッチ規模と損失を切り離したと論文著者が説明する。100万バッチまで広げても収穫は逓減し、32Kで十分なことが示され、小バッチでも有効である。凍結した画像エンコーダを調整するLocked-image TuningであるSigLiTは4基のTPUv4で2日、ImageNetゼロショット84.5%とされる。損失機構の記述は抄録水準に留まる。コードとモデルを公開した完全オープン版として提供された。小規模計算での対照学習の拡張が開かれた。Qwen3-VLとの接続は、Qwen3-VL技術報告が明示する視覚エンコーダの再利用に限って扱う。すなわちSigLIP2-SO-400Mの継続がQwen3-VLとQwen3-Omniのエンコーダに含まれるとの報告内容であり、VM-D065の請求項3で結びつける。VM-D065はP09由来の重なり参照である。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:0eb3420fb03f017e",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd036",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:0eb3420fb03f017e",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ev-vmd036",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:0eb3420fb03f017e",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd036",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:5261f13662aabd9b",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd065",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:5261f13662aabd9b",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ev-vmd065",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:5261f13662aabd9b",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "ev-vmd065",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:5261f13662aabd9b",
+          "kind": "CLAIM",
+          "evidence_id": "claim-4",
+          "subject_id": "ev-vmd065",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:5261f13662aabd9b",
+          "kind": "CLAIM",
+          "evidence_id": "claim-5",
+          "subject_id": "ev-vmd065",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:5261f13662aabd9b",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd065",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p06-b7",
+      "block_type": "PARAGRAPH",
+      "text": "自己蒸留を長期学習に耐える密な表現へ進めるには、特徴マップの劣化が残されていた。DINOv3は70億規模の自己教師あり視覚モデルで、16.89億画像の階層サンプリングによるLVD-1689Mで学ぶと論文著者が説明する。目的はL_DINOとL_iBOTに0.1倍のL_DKoleoを加えた構成で、センタリングに代えてSinkhorn-Knoppを用い、axial RoPEと100万反復の一定計画を採る。ここでiBOTは隠したパッチトークンの予測であり、MAEの画素再構成とは別の目的である。長期学習でのmIoU低下に対し、早期のGram教師に対するGram固定でパッチ一貫性を保ち、特徴固定にはしない。事後適応として解像度拡張と多生徒蒸留と凍結視覚に対するdino.txtの言語対応が再学習なしに可能である。計算や炭素費用、公平性差、OCR含有の難しさ、中間層利用の条件が限界として述べられる。",
+      "attribution_mode": "ATTRIBUTED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:e80cab6730b37dae",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd113",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:e80cab6730b37dae",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ev-vmd113",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:e80cab6730b37dae",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "ev-vmd113",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:e80cab6730b37dae",
+          "kind": "CLAIM",
+          "evidence_id": "claim-4",
+          "subject_id": "ev-vmd113",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:e80cab6730b37dae",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd113",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p06-b8",
+      "block_type": "PARAGRAPH",
+      "text": "対照学習の改良だけでは、位置や密な転移が十分にならなかった。SigLIP 2は対ごとシグモイド損失を保ちつつ、段階的手順として説明デコーダLocCaによるキャプション生成学習、SILCによる局所全体間の自己蒸留、TIPSやDINO系統のマスク予測、オンライン精選を組み合わせたと論文著者が説明する。WebLIの109言語多言語混合と偏り除去選別、元解像度を保つNaFlexによる縦横比保持と多解像度学習が用いられ、改善は新損失ではなく組合せに帰される。RefCOCOのグラウンディングやOWL-ViTによるオープンボキャブラリー検出や密な探索でSigLIPを上回り、PaliGemma型の凍結エンコーダ転移でも改善が示された。一方NaFlexは自己蒸留やマスク損失を含まず外挿が弱いこと、RefCOCOが英語専用LocCaに届かない多言語の代償、小規模モデルの改善が蒸留段階に依存することが限界である。位置への対応づけ自体の評価契約はP07Bの範囲であり、指標を混ぜない。",
+      "attribution_mode": "ATTRIBUTED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:0f5a5b1f4eb4032e",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd114",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:0f5a5b1f4eb4032e",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ev-vmd114",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:0f5a5b1f4eb4032e",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "ev-vmd114",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:0f5a5b1f4eb4032e",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd114",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p06-b9",
+      "block_type": "PARAGRAPH",
+      "text": "マスクや対照や蒸留とは別の目的が要る局面で、自己回帰による視覚学習が提示された。AIMv2は接頭辞付きViTと因果的マルチモーダルデコーダで、生パッチ列の後にテキストトークンを生成し、大バッチ対照を要しない密なトークン単位の信号を得ると論文著者が説明する。凍結した基盤の転移でマスク系や対照系や蒸留系と競争力を持つことが示された。生成順序による密な学習信号の利用が開かれた。ただし単一論文の範囲であり、報告条件を超える規模拡大や頑健性は未確定である。列化と目的の分岐が再利用可能な基盤表現の条件を残し、視覚言語モデルへ受け継がれるが、一本化の勝利ではなく次の演算に見合う表現の条件が残る。テキストLLMとの結合は後段の架橋の範囲であり、ここでは視覚側の目的の違いに留める。",
+      "attribution_mode": "ATTRIBUTED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:0a211dbf194ef13a",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd118",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:0a211dbf194ef13a",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ev-vmd118",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:0a211dbf194ef13a",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd118",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "P06-boundaries",
+      "block_type": "CLAIM_BOUNDARY",
+      "text": "大規模事前学習への依存は残り、効率の一般論は扱わない。損失機構の記述は抄録水準に留まる。Qwen3-VLとの接続は技術報告が明示する視覚エンコーダの再利用に限って扱い、検出器のDINOと自己教師ありDINOを混ぜない。密な転移の伸びは画像水準の対応の延長として読み、位置特定の評価契約は別節の指標で測る。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:fea277ab42f86a90",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd030",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:4e994d899261cc65",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd033",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:9dce7c29b30f2b61",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd034",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:3c9024041edb1a4a",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd035",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:0eb3420fb03f017e",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd036",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:e80cab6730b37dae",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd113",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:0f5a5b1f4eb4032e",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd114",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:35ac530167b1aead",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd031",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:654257bfd25b2055",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd032",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:0a211dbf194ef13a",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd118",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    }
+  ],
+  "must_cover_coverage": [
+    {
+      "requirement": "VM-O06 lineage complete; SigLIP2 encoder reuse bound via VM-D065 claim-3",
+      "block_ids": [
+        "p06-b1",
+        "p06-b2",
+        "p06-b3",
+        "p06-b4",
+        "p06-b5",
+        "p06-b6",
+        "p06-b7",
+        "p06-b8",
+        "p06-b9",
+        "P06-boundaries"
+      ]
+    },
+    {
+      "requirement": "TS-001 owns generic attention efficiency; TS-003 owns representation contract",
+      "block_ids": [
+        "p06-b1",
+        "p06-b2",
+        "p06-b3",
+        "p06-b4",
+        "p06-b5",
+        "p06-b6",
+        "p06-b7",
+        "p06-b8",
+        "p06-b9",
+        "P06-boundaries"
+      ]
+    },
+    {
+      "requirement": "DINOv3 Gram-anchored dense refinement as the self-distillation transition; SigLIP 2 staged alignment recipe as the alignment transition; AIMv2 autoregressive objective as supporting variant",
+      "block_ids": [
+        "p06-b1",
+        "p06-b2",
+        "p06-b3",
+        "p06-b4",
+        "p06-b5",
+        "p06-b6",
+        "p06-b7",
+        "p06-b8",
+        "p06-b9",
+        "P06-boundaries"
+      ]
+    }
+  ],
+  "boundary_dispositions": [
+    {
+      "boundary": "No generic Transformer-efficiency retelling; recipe reading preserved",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P06-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Large-scale pre-training dependence (DeiT qualifies); 100B-parameter era context noted in intro.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P06-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Reconstruction-vs-representation reading; downstream transfer needs probe sources.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P06-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Emergent-property scope; OVD pseudo-label use needs downstream sources.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P06-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Frozen-eval transfer scope; task-specific limits need eval-side sources.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P06-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Distillation-teacher dependence; short treatment per bridge role.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P06-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Hierarchy-completeness role; short treatment.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P06-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Abs-page-level consumption for the loss mechanism (HTML extraction thin); SigLIP2 citation bound via VM-D065 claim-3 (G06 resolved).",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P06-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "NaFlex omits self-distillation/masked losses and extrapolates poorly; RefCOCO still below English-only LocCa (multilingual tradeoff); small-model gains depend on distillation stage.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P06-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Single-paper scope; scaling/robustness beyond reported conditions unbound.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P06-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Training compute/carbon cost; fairness gaps vs DINOv2 narrowed but present; OCR-heavy content hard for SSL; intermediate-layer use ill-conditioned without normalization.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P06-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    }
+  ],
+  "profile_extensions": {},
+  "publication_extensions": {
+    "page_budget_body_pages": 5,
+    "depth_classes": {
+      "FULL_MECHANISM_TREATMENT": [
+        "VM-D030",
+        "VM-D036"
+      ],
+      "TRANSITION_NODE_TREATMENT": [
+        "VM-D033",
+        "VM-D034",
+        "VM-D035",
+        "VM-D113",
+        "VM-D114",
+        "VM-D118"
+      ],
+      "BRIEF_CONTEXT_OR_AUTHORITY": [
+        "VM-D031",
+        "VM-D032"
+      ]
+    }
+  }
+}

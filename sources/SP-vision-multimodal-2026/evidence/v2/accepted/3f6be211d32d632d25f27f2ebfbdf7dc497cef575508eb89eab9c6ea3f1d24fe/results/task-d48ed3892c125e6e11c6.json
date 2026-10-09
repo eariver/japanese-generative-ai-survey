@@ -1,0 +1,97 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-vision-multimodal-2026",
+  "evidence_task_id": "evidence:SP-vision-multimodal-2026:f63075086ce1c194",
+  "basis": {
+    "task_sha256": "967a4548ff847095d8e8f838ae07368c22358f22fbfce69d04f05d6427326883",
+    "screening_acceptance_sha256": "2b50dd1c205efc957c16a848fe185f9de7fb5eca10a5729c1b58c5bb250e7aff",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "ev-vmd008",
+      "canonical_name": "SSD (Liu et al., 2016)",
+      "entity_type": "MODEL",
+      "organization": null,
+      "canonical_url": "https://arxiv.org/abs/1512.02325"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "ev-vmd008",
+    "artifact_type": "PAPER",
+    "canonical_name": "SSD (Liu et al., 2016)",
+    "canonical_url": "https://arxiv.org/abs/1512.02325"
+  },
+  "temporal": {
+    "observed_at": "2026-09-30T12:18:08Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2015-12",
+        "subject_id": "ev-vmd008",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/1512.02325",
+      "source_class": "PRIMARY_PAPER",
+      "title": "SSD: Single Shot MultiBox Detector (Liu et al.)",
+      "published_at": "2015-12",
+      "accessed_at": "2026-09-30T12:18:08Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Single-shot multi-box detector discretizing box space into default boxes over scales/aspect ratios across multi-resolution feature maps; SSD300 74.3-77.2% mAP VOC2007 at 59 FPS Titan X, SSD512 76.9-79.8% outperforming Faster R-CNN at 3x speed.",
+      "subject_id": "ev-vmd008",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Full-paper abstract/conclusion; numbers paper-reported with augmentation ablations."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Default-box tiling vs receptive-field alignment left as future work by the paper itself; thin treatment per lineage-completeness role.",
+      "subject_id": "ev-vmd008",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Full body consumed; non-YOLO one-stage branch role confirmed.",
+        "subject_ids": [
+          "ev-vmd008"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

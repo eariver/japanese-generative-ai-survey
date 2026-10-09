@@ -1,0 +1,130 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-vision-multimodal-2026",
+  "evidence_task_id": "evidence:SP-vision-multimodal-2026:cec74d4ca95d2ecb",
+  "basis": {
+    "task_sha256": "2dc85a71b6f38cca141cd70f85d283d9de132ef5d44b271541317fb25d1fc4d9",
+    "screening_acceptance_sha256": "2b50dd1c205efc957c16a848fe185f9de7fb5eca10a5729c1b58c5bb250e7aff",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "ev-vmd066",
+      "canonical_name": "Qwen3-Omni (Qwen Team, 2025)",
+      "entity_type": "MODEL_FAMILY",
+      "organization": "Alibaba Qwen",
+      "canonical_url": "https://arxiv.org/abs/2509.17765"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "ev-vmd066",
+    "artifact_type": "PAPER",
+    "canonical_name": "Qwen3-Omni (Qwen Team, 2025)",
+    "canonical_url": "https://arxiv.org/abs/2509.17765"
+  },
+  "temporal": {
+    "observed_at": "2026-09-30T14:24:47Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2025-09",
+        "subject_id": "ev-vmd066",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2509.17765",
+      "source_class": "PRIMARY_PAPER",
+      "title": "Qwen3-Omni Technical Report (Xu et al.)",
+      "published_at": "2025-09",
+      "accessed_at": "2026-09-30T14:24:47Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Thinker-Talker MoE unifying perception+generation across text/image/audio/video; from-scratch audio encoder; TM-RoPE absolute-time 80ms audio-video alignment; 40-min ASR/SLU instances; 19-language speech understanding / 10-language generation; 234ms theoretical first-packet streaming; 36 audio/AV benches with open-SOTA 32 and overall 22 (author-measured, report-stated comparators).",
+      "subject_id": "ev-vmd066",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Qwen3-Omni technical report body consumed from complete arXiv HTML; input/fusion claims are report-stated; weights-license term removed (unbound by the report; see repo-bound VM-D075)."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Boundary enforced: Talker/Code2Wav synthesis detail is TS-002-side; TS-003 carries input encoder + TM-RoPE sync + streaming-input contract only.",
+      "subject_id": "ev-vmd066",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Edition-level analytical synthesis by the Work operator (lineage/selection/boundary/contract judgment, not a literal statement of the cited source); structural home for edition rationale."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "No-degradation and leaderboard claims vendor-measured (G05); 234ms is theoretical cold-start; generation-side excluded by boundary.",
+      "subject_id": "ev-vmd066",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Complete report body consumed via arXiv HTML (90KB text): Thinker-Talker architecture, TM-RoPE sync, audio-encoder, latency, language and benchmark-scope sections verified as first-party report statements with role caps; no repository-surface facts retained in this paper-bound card.",
+        "subject_ids": [
+          "ev-vmd066"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "vendor-claim quarantine",
+        "status": "VERIFIED",
+        "finding": "Vendor-measured claims isolated with explicit attribution and role caps; no independent-evaluation inference performed.",
+        "subject_ids": [
+          "ev-vmd066"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "generation-side exclusion",
+        "status": "VERIFIED",
+        "finding": "Synthesis-side detail excluded by TS-002 boundary; card carries input/fusion claims only.",
+        "subject_ids": [
+          "ev-vmd066"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

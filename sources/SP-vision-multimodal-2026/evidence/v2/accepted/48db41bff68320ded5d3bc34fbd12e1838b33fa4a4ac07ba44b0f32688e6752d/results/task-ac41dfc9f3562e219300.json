@@ -1,0 +1,152 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-vision-multimodal-2026",
+  "evidence_task_id": "evidence:SP-vision-multimodal-2026:9dce7c29b30f2b61",
+  "basis": {
+    "task_sha256": "ce52968a5d5ff7a0f9685893b9c4ae64114bda7f0a16688b69dd89b461227888",
+    "screening_acceptance_sha256": "3bc6edb4c60ad6fba40626b0900f6cf5656544b98a95e4b3d4415f049d3f1a94",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "ev-vmd034",
+      "canonical_name": "DINO self-supervised (Caron et al., 2021)",
+      "entity_type": "PAPER",
+      "organization": "Facebook AI / Inria",
+      "canonical_url": "https://arxiv.org/abs/2104.14294"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "ev-vmd034",
+    "artifact_type": "PAPER",
+    "canonical_name": "DINO self-supervised (Caron et al., 2021)",
+    "canonical_url": "https://arxiv.org/abs/2104.14294"
+  },
+  "temporal": {
+    "observed_at": "2026-09-30T14:24:47Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2021-04",
+        "subject_id": "ev-vmd034",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2104.14294",
+      "source_class": "PRIMARY_PAPER",
+      "title": "Emerging Properties in Self-Supervised Vision Transformers / DINO (Caron et al.)",
+      "published_at": "2021-04",
+      "accessed_at": "2026-09-30T14:24:47Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Self-distillation without labels on ViT yields emergent properties absent in supervised ViTs/convnets: CLS-attention maps with explicit semantic-segmentation information and 78.3% kNN ImageNet top-1 (small ViT); momentum encoder + multi-crop + small patches matter; DINO ViT-Base reaches 80.1% linear-eval top-1.",
+      "subject_id": "ev-vmd034",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Full-paper abstract/conclusion; emergent-property findings consumed."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Terminology discipline: ALWAYS 'DINO self-supervised' vs 'DINO detector' (VM-D011); CV2-DM-006 rule.",
+      "subject_id": "ev-vmd034",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Edition-level analytical synthesis by the Work operator (lineage/selection/boundary/contract judgment, not a literal statement of the cited source); structural home for edition rationale."
+    },
+    {
+      "statement_id": "claim-3",
+      "text": "Collapse avoidance requires BOTH centering (bias on teacher output only, EMA-updated) and sharpening (low teacher temperature); either missing collapses (KL->0 or dominated-dimension/uniform per H = h + D_KL decomposition).",
+      "subject_id": "ev-vmd034",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Paper §3.1 Eq.4/Alg.1 + §5.3/Fig.7 + App.D."
+    },
+    {
+      "statement_id": "claim-4",
+      "text": "Temperature direction: TEACHER is centered+sharpened with the SMALLER temperature (student tau_s=0.1 fixed; teacher tau_t linear warmup 0.04->0.07); momentum teacher lambda cosine 0.996->1 with stop-gradient (student-only SGD). The reverse (student sharpened, teacher smoothed) is factually wrong.",
+      "subject_id": "ev-vmd034",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Paper §3.1 Eq.1/Alg.1 + §3.2 Implementation details + §5.2/Fig.6 + App.D."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Emergent-property scope; OVD pseudo-label use needs downstream sources.",
+      "subject_id": "ev-vmd034",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Complete DINO paper body consumed via arXiv HTML (115KB text): self-distillation findings and emergent segmentation verified.",
+        "subject_ids": [
+          "ev-vmd034"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "DINO detector vs self-supervised disambiguation",
+        "status": "VERIFIED",
+        "finding": "Qualifier enforced in card and required in later prose (CV2-DM-006).",
+        "subject_ids": [
+          "ev-vmd034"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "Targeted Evidence depth repair (DINO operators, direction-correct)",
+        "status": "VERIFIED",
+        "finding": "Primary full-body re-verified 2026-10-04 against bound locator (read-only web fetch of arXiv HTML); pinpoints recorded per claim context.",
+        "subject_ids": [
+          "ev-vmd034"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

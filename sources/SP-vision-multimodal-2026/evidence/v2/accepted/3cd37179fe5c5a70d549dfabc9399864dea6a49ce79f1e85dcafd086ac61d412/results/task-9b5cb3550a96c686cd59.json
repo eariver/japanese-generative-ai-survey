@@ -1,0 +1,141 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-vision-multimodal-2026",
+  "evidence_task_id": "evidence:SP-vision-multimodal-2026:380dc979ab3f132d",
+  "basis": {
+    "task_sha256": "c1e44e189f693fed6768ad991daefc0df233c7ee5beaf81256f1a941f6e87a2f",
+    "screening_acceptance_sha256": "c851605b219be55c746671e950a808b0f6821a514600b0e0d7fd582e9298b603",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "ev-vmd004",
+      "canonical_name": "Deep Residual Learning for Image Recognition / ResNet (He et al., 2015)",
+      "entity_type": "PAPER",
+      "organization": "Microsoft Research",
+      "canonical_url": "https://arxiv.org/abs/1512.03385"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "ev-vmd004",
+    "artifact_type": "PAPER",
+    "canonical_name": "Deep Residual Learning for Image Recognition / ResNet (He et al., 2015)",
+    "canonical_url": "https://arxiv.org/abs/1512.03385"
+  },
+  "temporal": {
+    "observed_at": "2026-09-30T14:24:47Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2015-12",
+        "subject_id": "ev-vmd004",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/1512.03385",
+      "source_class": "PRIMARY_PAPER",
+      "title": "Deep Residual Learning for Image Recognition (He et al.)",
+      "published_at": "2015-12",
+      "accessed_at": "2026-09-30T14:24:47Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Degradation diagnosis: beyond vanishing/exploding gradients (addressed by init + normalization), deeper plain nets show higher TRAINING error — an optimization (not overfitting) problem; the constructed identity-mapping argument shows deeper models should do no worse.",
+      "subject_id": "ev-vmd004",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Full-paper sections 1/3.1/4.1 including Fig.1/Fig.4 plain-vs-residual training curves."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Mechanism change: residual reformulation F(x)=H(x)-x with parameter-free identity shortcuts (Eq.1; projection Ws only for dimension matching, Eq.2); bottleneck 1x1-3x3-1x1 blocks for economy; 152-layer net at 11.3 GFLOPs still cheaper than VGG-19.",
+      "subject_id": "ev-vmd004",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Full-paper sections 3.2/3.3/Table 1; identity-vs-projection ablation (options A/B/C) shows projections inessential."
+    },
+    {
+      "statement_id": "claim-3",
+      "text": "Results: 152-layer single-model 4.49% top-5 val; ensemble 3.57% top-5 test (ILSVRC 2015 1st place); COCO detection +6.0 mAP (28% relative) attributed solely to learned representations; 1st places also in ImageNet detection/localization and COCO segmentation.",
+      "subject_id": "ev-vmd004",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Full-paper sections 4.1/4.3/Tables 3-5/8 + appendix detection baselines; transfer-to-detection evidence is load-bearing for D02/D03 reuse."
+    },
+    {
+      "statement_id": "claim-4",
+      "text": "What remains missing: 1202-layer CIFAR model trains (<0.1% train error) but tests worse (overfitting without maxout/dropout) — depth scaling has a regularization boundary the paper leaves open.",
+      "subject_id": "ev-vmd004",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Section 4.2; recorded as the paper's own stated open problem, supporting later pretraining-recipe debates."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Highway-network comparison is concurrent-work framing; later pretraining-recipe readings (DeiT/Swin) qualify architecture-triumphalism.",
+      "subject_id": "ev-vmd004",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "Detection gains use Faster R-CNN baselines of 2015 vintage.",
+      "subject_id": "ev-vmd004",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Full arXiv HTML body consumed including degradation analysis, shortcut ablations, ImageNet/COCO tables, and appendix detection methodology.",
+        "subject_ids": [
+          "ev-vmd004"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

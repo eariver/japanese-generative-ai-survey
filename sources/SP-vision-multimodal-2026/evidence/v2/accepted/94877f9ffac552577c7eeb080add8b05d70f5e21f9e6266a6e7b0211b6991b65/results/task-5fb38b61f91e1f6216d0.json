@@ -1,0 +1,108 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-vision-multimodal-2026",
+  "evidence_task_id": "evidence:SP-vision-multimodal-2026:cfc2b4578045db93",
+  "basis": {
+    "task_sha256": "869aafdb302362e11480760972c468de86517dd52084aef459dd8b6c0a3247ff",
+    "screening_acceptance_sha256": "2b50dd1c205efc957c16a848fe185f9de7fb5eca10a5729c1b58c5bb250e7aff",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "ev-vmd088",
+      "canonical_name": "StreamingBench",
+      "entity_type": "BENCHMARK",
+      "organization": null,
+      "canonical_url": "https://arxiv.org/abs/2411.03628"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "ev-vmd088",
+    "artifact_type": "BENCHMARK",
+    "canonical_name": "StreamingBench",
+    "canonical_url": "https://arxiv.org/abs/2411.03628"
+  },
+  "temporal": {
+    "observed_at": "2026-09-30T14:42:15Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2024-11",
+        "subject_id": "ev-vmd088",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2411.03628",
+      "source_class": "PRIMARY_PAPER",
+      "title": "StreamingBench (Lin et al.)",
+      "published_at": "2024-11",
+      "accessed_at": "2026-09-30T14:42:15Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "First comprehensive streaming-video MLLM bench: 900 videos / 4,500 QA / 18 tasks in 3 categories (real-time visual, omni-source incl. audio, contextual incl. streaming interaction + proactive output); timestamped mid-stream queries; best model (Gemini 1.5 Pro) 67.07% vs human 91.66% (author-measured); code+data open.",
+      "subject_id": "ev-vmd088",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Full-paper abstract; numbers paper-reported at report date."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Streaming-eval contract distinct from offline long-context; also serves the omni audio-visual eval role (R6 node 5).",
+      "subject_id": "ev-vmd088",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Edition-level analytical synthesis by the Work operator (lineage/selection/boundary/contract judgment, not a literal statement of the cited source); structural home for edition rationale."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Most models evaluated via offline conversion; true online-system scores need Flash-VStream-side sources.",
+      "subject_id": "ev-vmd088",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Full body consumed: timestamped-query design, omni-source category, and baseline gaps verified.",
+        "subject_ids": [
+          "ev-vmd088"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

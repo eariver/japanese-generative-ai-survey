@@ -1,0 +1,119 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-vision-multimodal-2026",
+  "evidence_task_id": "evidence:SP-vision-multimodal-2026:72f7875f58def3a2",
+  "basis": {
+    "task_sha256": "e8506fb0737b9d1e97f358ac2835e2791353fee07782433b136738dbce9d7231",
+    "screening_acceptance_sha256": "3bc6edb4c60ad6fba40626b0900f6cf5656544b98a95e4b3d4415f049d3f1a94",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "ev-vmd122",
+      "canonical_name": "The Planning Limits of Latent World Models (2026)",
+      "entity_type": "MODEL",
+      "organization": null,
+      "canonical_url": "https://arxiv.org/abs/2609.39235"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "ev-vmd122",
+    "artifact_type": "PAPER",
+    "canonical_name": "The Planning Limits of Latent World Models (2026)",
+    "canonical_url": "https://arxiv.org/abs/2609.39235"
+  },
+  "temporal": {
+    "observed_at": "2026-10-05T00:00:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-09",
+        "subject_id": "ev-vmd122",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2609.39235",
+      "source_class": "PRIMARY_PAPER",
+      "title": "The Planning Limits of Latent World Models (2026-09-30)",
+      "published_at": "2026-09",
+      "accessed_at": "2026-10-05T00:00:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Cross-backbone action-conditioned predictor evaluation (V-JEPA 2/2.1, VideoMAEv2, VideoPrism, DINOv2) with plannable-range metric P*: reliable only 5-10 steps vs 16-53 needed; V-JEPA 2.1 most consistent.",
+      "subject_id": "ev-vmd122",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Paper §3-4 + Fig.2-3 (metric + cross-backbone result)."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Predictor scaling non-result (81x larger predicts better, plans no further); perfect-prediction limit via simulator reference (92% at L=5 to 41% at L=20): closeness-score weakness, not predictor error.",
+      "subject_id": "ev-vmd122",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Paper §5.1/§5.5 + App (scaling + exact-dynamics reference)."
+    },
+    {
+      "statement_id": "claim-3",
+      "text": "Imagination/MPC/subgoal matrix: pure K=5 23%, K=30 36%, MPC K=30 52%, expert subgoals 76%; VLA candidate-action ranking with π₀ 65% to 77%; sim plus BridgeData offline coverage (offline only, not control).",
+      "subject_id": "ev-vmd122",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Paper §6-7 + App (matrix + VLA ranking + offline scope)."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Single-arm closed-loop scope enabling exact-dynamics swap; paired-episode tests mostly one seed; K ranges are lower bounds; subgoals from same-episode expert (generation without expert is next step).",
+      "subject_id": "ev-vmd122",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Planning-limits paper body consumed via arXiv HTML: metric, horizon/scaling limits, comparison matrix and scope verified.",
+        "subject_ids": [
+          "ev-vmd122"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

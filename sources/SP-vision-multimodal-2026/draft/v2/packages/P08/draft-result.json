@@ -1,0 +1,446 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-vision-multimodal-2026",
+  "research_profile": "THEMATIC",
+  "publication_profile": "LONGFORM_SPECIAL",
+  "package_id": "P08",
+  "draft_version": "fresh-124-r9",
+  "status": "ESTABLISHED",
+  "basis": {
+    "draft_package_sha256": "1f0ace9170be2f533f2ddfd5c6f5898eeeb1b3ccca0ff1d3a03a6effe7e08dd3",
+    "prompt_id": "article-drafting-v2",
+    "prompt_sha256": "b687313312a23025228c16c3f10cb68f669b910cd7215e41886d4dd91f44fe11"
+  },
+  "runner": {
+    "provider": "Muse",
+    "model": "Muse Spark (Work execution role; not a Sol/Human decision)",
+    "invocation": "TS-003 fresh 124-authority Draft from Architecture r9 APPROVED (Evidence 124 VERIFIED 119/PARTIAL 5, Selection 124, 16 packages newly authored; P02 DETR-successor lineage + attribution closure, P12 proxy framing, P15 four-role taxonomy, DUSt3R editorial synthesis, Molmo scope, ResNet controlled comparison, Dreamer non-ancestry, video role separation, P07A/B separation, Japanese terminology conformance; rev5 as regression reference only, 0 blocks identical; no TeX/PDF; DRAFT_COMPLETE then STOP)",
+    "generated_at": "2026-10-09T00:00:00Z",
+    "run_reference": null
+  },
+  "headline": "凍結した構成要素を保ち視覚と言語を接続する方式の世代交代",
+  "deck": "個別に事前学習した視覚エンコーダと大規模言語モデルをいかに一つの視覚言語モデル（VLM）として動かすか。凍結した言語モデルへの前置きからgated cross-attentionによる密な接続、二段階の起動手順、指示形式への変換、最小限の写像、合成指示集合、オープンデータによる接続へ至る経緯を、画像全体のアライメントと位置へのグラウンディング（grounding）の契約を分けてたどる。数値は各論文著者の測定に属し、条件の異なる評価と横並びで優劣をつけない。",
+  "deck_attribution_mode": "ATTRIBUTED",
+  "deck_evidence_refs": [
+    {
+      "evidence_task_id": "evidence:SP-vision-multimodal-2026:940c80609fd5a8ec",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1",
+      "subject_id": "ev-vmd058",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-vision-multimodal-2026:940c80609fd5a8ec",
+      "kind": "CLAIM",
+      "evidence_id": "claim-2",
+      "subject_id": "ev-vmd058",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-vision-multimodal-2026:0824156b3cbab601",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1",
+      "subject_id": "ev-vmd059",
+      "subject_role": "PRIMARY_SUBJECT"
+    }
+  ],
+  "blocks": [
+    {
+      "block_id": "p08-b1",
+      "block_type": "PARAGRAPH",
+      "text": "出発点は、学習済みの自己回帰言語モデルを凍結したまま動かし、視覚エンコーダが作る連続埋め込みを前置き列として渡す構想だった。Frozenでは、この前置きを受け取った凍結言語モデルが説明文生成や少数例からの学習、未知語の取り込み、画像とテキストが交互に並ぶ事例からの質問応答や外部知識を要する応答をこなすと論文著者は述べる。入力は画像と交互配置のテキスト、出力は言語モデルの生成文であり、学習対象は視覚側の写像に限られる。ただし論文自身がこの到達を概念実証の範囲に置く点が境界であり、多課題への拡張や学習集合の設計は後継の課題として残る。固定を崩さずに使える可能性を示した点に、この前史の位置がある。",
+      "attribution_mode": "ATTRIBUTED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:f1552ccf02c21138",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd057",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p08-b2",
+      "block_type": "PARAGRAPH",
+      "text": "Flamingoは、別々に事前学習した視覚側モデルと言語側モデルを、gated cross-attentionの密な層を明示的な構成要素として加えることで接続し、画像と映像を単一モデルで受け取れるようにした。学習には画像とテキストが交互に配置されたウェブ由来の集合を用いる。オープンエンドとクローズドエンドの質問応答や説明文生成を少数例条件でこなし、一部の評価では課題別に調整した従来手法を1000倍規模の課題データなしに上回ったと論文著者は報告する。評価条件は論文が定めた少数例手順の範囲であり、条件の異なる数値と並べて優劣はつけない。論文自身の限定として、事前学習した言語モデルの弱さ、とりわけ言語の先取りに起因するハルシネーションを受け継ぐ点が明記され、診断を扱う節の言語先行分析へつながる。接続の形と交互配置学習と少数例評価と限界をそろえて読むことが、この事例の扱いである。",
+      "attribution_mode": "ATTRIBUTED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:940c80609fd5a8ec",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd058",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:940c80609fd5a8ec",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ev-vmd058",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p08-b3",
+      "block_type": "PARAGRAPH",
+      "text": "BLIP-2は凍結の節約を二段階の起動手順として定式化した。第一段階では画像エンコーダを凍結したままQ-Formerが表象学習を担い、第二段階では大規模言語モデルを凍結した方向へ生成学習を適合させる。Q-Formerは学習対象のクエリが凍結した画像特徴に作用し、言語モデルが消費できるトークン列へ集約するリサンプラであり、単なる圧縮器ではない。学習可能パラメータを大幅に抑えながら視覚言語課題の従来値を更新し、ゼロショットVQAv2の報告条件でFlamingo80Bを8.7ポイント上回り、学習可能パラメータ数は54分の1だったと論文著者は測定として報告する。比較は同一報告内の著者測定であり、条件の異なる評価との優劣づけには使わない。画像からテキストへの指示追従に似た生成が現れた点も報告される。反面、二段階ゆえの計算負担と複雑さは残り、指示への調整はInstructBLIPとLLaVAに委ねられる。",
+      "attribution_mode": "ATTRIBUTED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:0824156b3cbab601",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd059",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p08-b4",
+      "block_type": "PARAGRAPH",
+      "text": "InstructBLIPはBLIP-2の基盤に指示チューニングの整備を加えた。26件の公開データセットを指示形式へ書き直し、指示文を読み取る構造のQ-Formerで調整する。入力は画像と指示文、出力は指示に沿った応答であり、教師集合の作り方が新規性の重心にある。13件のheld-out集合すべてでゼロショット首位に立ち、BLIP-2や規模で上回るFlamingoを超えたと著者らは測定として述べる。画像付きScienceQAでは調整後に90.7%を示し、モデルはオープンソースとして公開された。held-inとheld-outを分ける手順のもとで指示集合の構成が汎化を支える契約となり、多様な指示への追従という空白が埋まった。数値はheld-inとheld-outの手順の範囲に属し、手順の異なる評価と横並びで順位づけない。",
+      "attribution_mode": "ATTRIBUTED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:b049264287440eba",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd060",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p08-b5",
+      "block_type": "PARAGRAPH",
+      "text": "MiniGPT-4は最小限の接続でどこまで組成的振る舞いが現れるかを確かめる文脈的事例である。BLIP-2由来のViT-G/14と学習済みQ-Formerは学習全期間を通じて凍結され、Vicunaも凍結したまま保たれる。MiniGPT-4自身が学習するのは、Q-Former出力をVicuna空間へ変換する単一線形層だけであり、独自のクエリ選択や重いcross-attentionは付加されない。クエリの処理は再利用される凍結Q-Formerの内部で完結する。二段階の選別、すなわち約500万件の短い説明対による位置合わせ事前学習と、手入れした数千件の詳述による仕上げが反復や断片化を抑える。Q-Formerを外してViT出力を直接変換する形は主系ではなくアブレーション条件であり、AOK-VQAやGQAでは主系とほぼ同等で、論文は高度な振る舞いに必須ではないと結論づける。3層線形やQ-Former自体の調整は劣るとされる。短い扱いに留め、接続の脆さの診断は評価側の記録に委ねる。",
+      "attribution_mode": "ATTRIBUTED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:ac075257c99d3b88",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd061",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:ac075257c99d3b88",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ev-vmd061",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:ac075257c99d3b88",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "ev-vmd061",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:ac075257c99d3b88",
+          "kind": "CLAIM",
+          "evidence_id": "claim-4",
+          "subject_id": "ev-vmd061",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p08-b6",
+      "block_type": "PARAGRAPH",
+      "text": "LLaVAは教師集合の作り方を転換した。画像を見ないテキストLLM（言語専用のGPT-4）が指示集合を記述し、画像側は多視点の説明文とボックス座標[x1,y1,x2,y2]の記号列へ変換して教師へ渡される。COCO起点で15万8000件の固有例、内訳は会話5万8000件と詳述2万3000件と複雑推論7万7000件が生成され、人手は種となる少数例に限られると論文著者は述べる。視覚内容を言語モデル向け指示形式へ落とす手順がここで開かれ、機械生成の視覚指示追従集合が規模化の支えとなった。ボックスの記号は位置へのグラウンディングの代理をテキストで表すものであり、画像全体のアライメントとは別の契約として扱う。合成依存という性格は限界として残る。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:48f42e295f015ec1",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd062",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:48f42e295f015ec1",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ev-vmd062",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:48f42e295f015ec1",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "ev-vmd062",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:48f42e295f015ec1",
+          "kind": "CLAIM",
+          "evidence_id": "claim-4",
+          "subject_id": "ev-vmd062",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:48f42e295f015ec1",
+          "kind": "CLAIM",
+          "evidence_id": "claim-5",
+          "subject_id": "ev-vmd062",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:48f42e295f015ec1",
+          "kind": "CLAIM",
+          "evidence_id": "claim-6",
+          "subject_id": "ev-vmd062",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p08-b7",
+      "block_type": "PARAGRAPH",
+      "text": "接続と更新範囲の線引きは段階ごとに厳密である。CLIP ViT-L/14の視覚エンコーダとVicunaは学習対象の単一projection行列W一枚で接続される。第一段階の特徴合わせでは視覚と言語をともに凍結し、学習対象はWだけとしてCC3M由来の約59万5000件を用いる。第二段階の指示調整でも視覚は依然として凍結のままであり、動くのはprojection層と大規模言語モデルである。視覚自体を最後まで動かす同時更新ではなく、系全体のend-to-end表記は調整系と対比した系水準の呼称であり、構成要素水準の同時更新を指すものではない。測定ではLLaVA-Benchで言語専用GPT-4参照に対する相対85.1%、実環境画像で67.3対BLIP-2の38.1、ScienceQAで単独90.92%とGPT-4併用92.53%を論文著者は伝え、判定手順への依存とともに読む。知識・多言語・インターネット検索・高解像度知覚の限界は論文の限定事項として残る。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:48f42e295f015ec1",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd062",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:48f42e295f015ec1",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ev-vmd062",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:48f42e295f015ec1",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "ev-vmd062",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:48f42e295f015ec1",
+          "kind": "CLAIM",
+          "evidence_id": "claim-4",
+          "subject_id": "ev-vmd062",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:48f42e295f015ec1",
+          "kind": "CLAIM",
+          "evidence_id": "claim-5",
+          "subject_id": "ev-vmd062",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:48f42e295f015ec1",
+          "kind": "CLAIM",
+          "evidence_id": "claim-6",
+          "subject_id": "ev-vmd062",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p08-b8",
+      "block_type": "PARAGRAPH",
+      "text": "MolmoとPixMoはデータの開かれ方を接続の条件へ繰り上げた。PixMoは密な説明文と自由形式の質問応答と指さし出力（pointing）と4種の合成集合から構成され、外部の視覚言語モデルを用いずに組み立てられたと論文著者は述べる。72B規模の比較値は、論文が定めた学術ベンチマーク群と大規模な人間評価という二つの範囲に限って、Claude 3.5 SonnetやGemini 1.5 ProやFlashを上回りGPT-4oに次ぐと著者ら自身の測定として示される。ここからモデル一般の優劣へ敷衍しない。MetaCLIPとOLMoによる完全オープン版も用意される。コードとモデルの重みとデータはいずれも公開されると論文は述べるが、コードの許諾と重みの許諾とデータの利用条件は別の区分であり、個別の第三者条件の全文確認は融合を扱う節のMolmo 2側の記録に委ねる。対象は画像中心のv1であり、動画の主張はMolmo 2の記録で扱う。指さし出力は位置へのグラウンディングを直接の出力とするもので、画像全体のアライメントとは別の契約である。",
+      "attribution_mode": "ATTRIBUTED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:818fa016dee2b06e",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd063",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:818fa016dee2b06e",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ev-vmd063",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "P08-boundaries",
+      "block_type": "CLAIM_BOUNDARY",
+      "text": "この節を読む際の区切りは次の通り。end-to-end表記は系水準の呼称であり、構成要素の同時更新を意味しない。数値は各論文著者の測定に属し、実環境での汎化は別根拠に委ねる。凍結した構成要素を再利用可能な基盤表現として保つ読みはTS-001の効率の語彙を引き継ぎ、Qwen系列の積み重ねが分業の持続を示す。再標本化の論点は解像度と融合を扱う節で扱う。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:940c80609fd5a8ec",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd058",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:0824156b3cbab601",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd059",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:b049264287440eba",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd060",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:48f42e295f015ec1",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd062",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:f1552ccf02c21138",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd057",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:ac075257c99d3b88",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd061",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:818fa016dee2b06e",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd063",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    }
+  ],
+  "must_cover_coverage": [
+    {
+      "requirement": "Bridge generations kept distinct (no generic vision-encoder+LLM sentence)",
+      "block_ids": [
+        "p08-b1",
+        "p08-b2",
+        "p08-b3",
+        "p08-b4",
+        "p08-b5",
+        "p08-b6",
+        "p08-b7",
+        "p08-b8",
+        "P08-boundaries"
+      ]
+    },
+    {
+      "requirement": "Frozen-component tradeoff reused from TS-001 vocabulary; durable modularity evidenced by Qwen stack",
+      "block_ids": [
+        "p08-b1",
+        "p08-b2",
+        "p08-b3",
+        "p08-b4",
+        "p08-b5",
+        "p08-b6",
+        "p08-b7",
+        "p08-b8",
+        "P08-boundaries"
+      ]
+    }
+  ],
+  "boundary_dispositions": [
+    {
+      "boundary": "InstructBLIP/MiniGPT-4 gap filled; precursor stays one line",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P08-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Closed training-data regime; resampling predecessor role noted for D09, not duplicated.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P08-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Two-stage cost/complexity; instruction-tuning successors (InstructBLIP/LLaVA) complete the picture.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P08-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Held-in/held-out protocol scope; instruction-data composition is the X01 exhibit.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P08-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Proof-of-concept scope per the paper's own discussion; precursor depth only.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P08-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Short treatment per bridge-function role; alignment-fragility notes need eval-side sources.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P08-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "v1 image-centric scope; video claims belong to Molmo 2 record.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P08-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Synthetic instruction-data dependence; failure cases paper-acknowledged via LLaVA-Bench; knowledge/multilingual/internet-retrieval/high-resolution perception bounds per paper Limitations.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P08-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    }
+  ],
+  "profile_extensions": {},
+  "publication_extensions": {
+    "page_budget_body_pages": 6,
+    "depth_classes": {
+      "FULL_MECHANISM_TREATMENT": [
+        "VM-D059",
+        "VM-D062"
+      ],
+      "TRANSITION_NODE_TREATMENT": [
+        "VM-D058",
+        "VM-D060"
+      ],
+      "BRIEF_CONTEXT_OR_AUTHORITY": [
+        "VM-D057",
+        "VM-D061",
+        "VM-D063"
+      ]
+    }
+  }
+}

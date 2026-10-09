@@ -1,0 +1,130 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-vision-multimodal-2026",
+  "evidence_task_id": "evidence:SP-vision-multimodal-2026:0eb3420fb03f017e",
+  "basis": {
+    "task_sha256": "4423dd2382cbf214cca13a8845823f754765e0cec06f8d9474696e348fa2aaac",
+    "screening_acceptance_sha256": "3f6be59d8dec325e5561ef118bf6025cd200f943d6ea161b4b7b40070d3af087",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "ev-vmd036",
+      "canonical_name": "SigLIP (Zhai et al., 2023)",
+      "entity_type": "PAPER",
+      "organization": "Google",
+      "canonical_url": "https://arxiv.org/abs/2303.15343"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "ev-vmd036",
+    "artifact_type": "PAPER",
+    "canonical_name": "SigLIP (Zhai et al., 2023)",
+    "canonical_url": "https://arxiv.org/abs/2303.15343"
+  },
+  "temporal": {
+    "observed_at": "2026-09-30T14:24:47Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2023-03",
+        "subject_id": "ev-vmd036",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2303.15343",
+      "source_class": "PRIMARY_PAPER",
+      "title": "Sigmoid Loss for Language Image Pre-Training / SigLIP (Zhai et al.)",
+      "published_at": "2023-03",
+      "accessed_at": "2026-09-30T14:24:47Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Pairwise sigmoid loss (no global softmax normalization) disentangles batch size from the loss: scales to 1M batches with diminishing returns (32K sufficient), works better at small batches; + Locked-image Tuning: SigLiT reaches 84.5% ImageNet zero-shot in 2 days on 4 TPUv4 chips; ICCV 2023 Oral; models released.",
+      "subject_id": "ev-vmd036",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "arXiv abs-page abstract consumed (HTML body thin in extraction); loss mechanism + efficiency numbers verified."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Encoder-reuse lineage: SigLIP2-So400m continued inside Qwen3-VL/Omni encoders (2026 reuse fact per Qwen reports); SigLIP2 exact citation binding remains G06 at Evidence.",
+      "subject_id": "ev-vmd036",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Qwen-report cross-reference; G06 gap preserved, not closed by this card."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Abs-page-level consumption for the loss mechanism (HTML extraction thin); SigLIP2 citation bound via VM-D065 claim-3 (G06 resolved).",
+      "subject_id": "ev-vmd036",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Sigmoid-loss mechanism, batch-size findings, and model release verified via abs record; SigLIP2 binding explicitly deferred as G06.",
+        "subject_ids": [
+          "ev-vmd036"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "G06 SigLIP2 citation binding",
+        "status": "UNRESOLVED",
+        "finding": "SigLIP2 exact citation unbound; G06 gap preserved.",
+        "subject_ids": [
+          "ev-vmd036"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "Narrow authority repair: G06 SigLIP2 binding resolved",
+        "status": "VERIFIED",
+        "finding": "SigLIP-2 vision-encoder citation bound via canonical VM-D065 claim-3 (no new source; existing Evidence sufficient); obsolete G06-unbound language superseded.",
+        "subject_ids": [
+          "ev-vmd036"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

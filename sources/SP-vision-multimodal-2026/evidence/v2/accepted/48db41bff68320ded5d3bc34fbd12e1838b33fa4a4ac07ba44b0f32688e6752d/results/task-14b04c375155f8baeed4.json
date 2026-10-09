@@ -1,0 +1,119 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-vision-multimodal-2026",
+  "evidence_task_id": "evidence:SP-vision-multimodal-2026:c6a04d93ad9a0871",
+  "basis": {
+    "task_sha256": "df3db341eadaf3a926b900e2eef77ddb0a17797dcbc60657ee73756488a183b2",
+    "screening_acceptance_sha256": "3bc6edb4c60ad6fba40626b0900f6cf5656544b98a95e4b3d4415f049d3f1a94",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "ev-vmd117",
+      "canonical_name": "FAST (Pertsch et al., 2025)",
+      "entity_type": "MODEL",
+      "organization": null,
+      "canonical_url": "https://arxiv.org/abs/2501.09747"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "ev-vmd117",
+    "artifact_type": "PAPER",
+    "canonical_name": "FAST (Pertsch et al., 2025)",
+    "canonical_url": "https://arxiv.org/abs/2501.09747"
+  },
+  "temporal": {
+    "observed_at": "2026-10-05T00:00:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2025-01",
+        "subject_id": "ev-vmd117",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2501.09747",
+      "source_class": "PRIMARY_PAPER",
+      "title": "FAST (Pertsch et al., 2025)",
+      "published_at": "2025-01",
+      "accessed_at": "2026-10-05T00:00:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Per-dimension/per-timestep discretization fails on high-frequency actions (next-token loss trivialized); DCT frequency-space representation with quantile norm, gamma scaling and BPE-1024 tokens is fully invertible with two hyperparameters.",
+      "subject_id": "ev-vmd117",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Paper §III-V (failure diagnosis + DCT/BPE construction)."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Action-chunk compression up to 13.2x at 50Hz with ~30 tokens per arm per chunk; FAST+ universal tokenizer over ~1M chunks across embodiments; pi-zero/OpenVLA backbones supported.",
+      "subject_id": "ev-vmd117",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Paper §VI-A/C (compression + FAST+ scope)."
+    },
+    {
+      "statement_id": "claim-3",
+      "text": "Autoregressive vs flow trade-off: matched diffusion performance with 5x fewer GPU-hours and better language following, but ~750ms AR inference vs 100ms diffusion per chunk; pi-zero-FAST swaps the head on the same backbone.",
+      "subject_id": "ev-vmd117",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Paper §VI-E/F/§VII (trade-off + pi-zero-FAST)."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Policy evaluation on static manipulators only; alternative compressions and FAST+diffusion untested; inference-speed gap unresolved.",
+      "subject_id": "ev-vmd117",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "FAST paper body consumed via arXiv HTML: representation, compression, FAST+ scope and trade-offs verified.",
+        "subject_ids": [
+          "ev-vmd117"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

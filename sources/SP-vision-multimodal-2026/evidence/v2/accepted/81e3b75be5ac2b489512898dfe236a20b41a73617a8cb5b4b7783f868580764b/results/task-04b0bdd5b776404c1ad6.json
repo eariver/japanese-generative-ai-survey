@@ -1,0 +1,119 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-vision-multimodal-2026",
+  "evidence_task_id": "evidence:SP-vision-multimodal-2026:9d0a4e5bc8df3260",
+  "basis": {
+    "task_sha256": "b9a856a009c49abcca59134b1b6931169d9ef307dff7164f2589b0a160c42380",
+    "screening_acceptance_sha256": "2fd98e8602ca6cc3f530ecd33965fef0dec7b41604604085ca0bd5b38972499c",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "ev-vmd089",
+      "canonical_name": "Flash-VStream",
+      "entity_type": "MODEL",
+      "organization": null,
+      "canonical_url": "https://arxiv.org/abs/2406.08085"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "ev-vmd089",
+    "artifact_type": "PAPER",
+    "canonical_name": "Flash-VStream",
+    "canonical_url": "https://arxiv.org/abs/2406.08085"
+  },
+  "temporal": {
+    "observed_at": "2026-09-30T14:24:47Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2024-06",
+        "subject_id": "ev-vmd089",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2406.08085",
+      "source_class": "PRIMARY_PAPER",
+      "title": "Flash-VStream (Zhang et al.)",
+      "published_at": "2024-06",
+      "accessed_at": "2026-09-30T14:24:47Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Human-memory-mechanism video-language model for online streams: extremely long streams in real time with simultaneous async-query response; significant latency/VRAM reductions; VStream-QA companion bench for online streaming QA; offline-bench SOTA generality check; code/models/datasets stated available.",
+      "subject_id": "ev-vmd089",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Full-paper abstract; 2024."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Covers online input + bounded memory + persistent state + latency/VRAM trade-off — the streaming-system anchor (no LOW_YIELD).",
+      "subject_id": "ev-vmd089",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Edition-level analytical synthesis by the Work operator (lineage/selection/boundary/contract judgment, not a literal statement of the cited source); structural home for edition rationale."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Author-reported latency/VRAM; deployment figures beyond that are G04 gap.",
+      "subject_id": "ev-vmd089",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Complete Flash-VStream paper body consumed via arXiv HTML (50KB text): memory mechanism, async handling, efficiency claims, VSMTream-QA companion role verified.",
+        "subject_ids": [
+          "ev-vmd089"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "deployment figures beyond author-reported are G04",
+        "status": "VERIFIED",
+        "finding": "No deployment figures beyond author-reported values carried; G04 gap preserved.",
+        "subject_ids": [
+          "ev-vmd089"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

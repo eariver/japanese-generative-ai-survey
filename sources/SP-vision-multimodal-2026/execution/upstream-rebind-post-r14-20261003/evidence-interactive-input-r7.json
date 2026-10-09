@@ -1,0 +1,109 @@
+{
+ "schema_version": "2.0-rc1",
+ "issue_id": "SP-vision-multimodal-2026",
+ "runner": {
+  "provider": "muse",
+  "model": "r7-batch",
+  "invocation": "r7 micro-repair view rebuild inputs (materiality rows carried from r4 input, unchanged)",
+  "generated_at": "2026-10-03",
+  "run_reference": "upstream-rebind-post-r14-20261003"
+ },
+ "records": [
+  {
+   "discovery_id": "VM-D010",
+   "status": "VERIFIED",
+   "entity": {
+    "entity_id": "ev-vmd010",
+    "canonical_name": "DETR (Carion et al., 2020)",
+    "entity_type": "MODEL",
+    "organization": "Facebook AI",
+    "canonical_url": "https://arxiv.org/abs/2005.12872"
+   },
+   "artifact_type": "PAPER",
+   "claims": [
+    {
+     "text": "Detection as direct set prediction: bipartite Hungarian matching loss (class NLL + L1 + scale-invariant GIoU box loss) plus Transformer encoder-decoder with learned object queries and parallel decoding; no anchors, no NMS, no specialized libraries.",
+     "evidence_class": "AUTHOR_CLAIM",
+     "context": "Full-paper sections 1/3.1/3.2 including loss equations and FFN/auxiliary-loss design."
+    },
+    {
+     "text": "Results: COCO-val parity with heavily-tuned Faster R-CNN at equal parameters (42 AP R50, 44.9 DC5-R101); large-object dominance APL +7.8 attributed to global self-attention; small-object deficit APS -5.5; panoptic extension competitive (46 PQ test) especially on stuff classes.",
+     "evidence_class": "AUTHOR_CLAIM",
+     "context": "Full-paper sections 4.1/4.4 Tables 1/5; strengths and deficits both paper-stated."
+    },
+    {
+     "text": "Costs stated by the paper: 300-500-epoch AdamW schedules (3 days on 16 V100), auxiliary decoding losses required, object-query slot specialization, NMS provably unnecessary only from later decoder layers (self-attention duplicate inhibition).",
+     "evidence_class": "AUTHOR_CLAIM",
+     "context": "Sections 4.1/4.2 ablations (encoder layers, decoder layers, FFN, positional encodings, NMS study) + conclusion challenges paragraph."
+    }
+   ],
+   "limitations": [
+    "Small-object deficit and training cost are paper-stated open challenges; FPN-style successors address them outside this source."
+   ],
+   "verification": [
+    {
+     "target": "Evidence-stage full-body verification",
+     "status": "VERIFIED",
+     "finding": "Full body consumed: loss formulation, architecture, COCO tables, ablations, panoptic extension, and stated challenges verified."
+    }
+   ],
+   "materiality": "MATERIAL",
+   "materiality_rationale": "Required D02 anchor: anchor/NMS removal transition; base of MDETR, DINO detector, and Grounding DINO.",
+   "scope_dimensions": [
+    "detection_structured_localization"
+   ],
+   "lineage_role": "CORE",
+   "branch_ids": [
+    "d02-set-prediction"
+   ],
+   "transition_ids": [
+    "d02-hand-designed-to-set-prediction"
+   ],
+   "inheritance_note": "Set-prediction + object-query practice inherited by MDETR, DINO detector, and all grounding detectors.",
+   "historical_attribution_caveat": null
+  },
+  {
+   "discovery_id": "VM-D084",
+   "status": "VERIFIED",
+   "entity": {
+    "entity_id": "ev-vmd084",
+    "canonical_name": "Something-Something V2",
+    "entity_type": "DATASET",
+    "organization": null,
+    "canonical_url": "https://arxiv.org/abs/1706.04261"
+   },
+   "artifact_type": "DATASET",
+   "claims": [
+    {
+     "text": "100K+ videos x 174 caption-template classes requiring common-sense physical understanding (crowd-acted); temporal-ordering-sensitive probe origin; ICCV 2017.",
+     "evidence_class": "AUTHOR_CLAIM",
+     "context": "Full-paper abstract/introduction consumed."
+    }
+   ],
+   "limitations": [
+    "Short treatment; template-class scope."
+   ],
+   "verification": [
+    {
+     "target": "Evidence-stage full-body verification",
+     "status": "VERIFIED",
+     "finding": "Full body consumed: template-class design and common-sense motivation verified."
+    }
+   ],
+   "materiality": "MATERIAL",
+   "materiality_rationale": "Ordering-sensitive predecessor for temporal modeling.",
+   "scope_dimensions": [
+    "video_temporal_streaming"
+   ],
+   "lineage_role": "CONTEXT",
+   "branch_ids": [
+    "d11-action-recognition"
+   ],
+   "transition_ids": [
+    "d11-classification-to-ordering"
+   ],
+   "inheritance_note": "Fine-grained temporal-probe practice (also V-JEPA eval).",
+   "historical_attribution_caveat": null
+  }
+ ]
+}

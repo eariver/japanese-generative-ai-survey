@@ -1,0 +1,121 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-vision-multimodal-2026",
+  "evidence_task_id": "evidence:SP-vision-multimodal-2026:4b007409a575a02d",
+  "basis": {
+    "task_sha256": "15a5eb32420e2c668af7050f1165779b5bd5002cb8ec66e5419c19e5c9c5e4c7",
+    "screening_acceptance_sha256": "3f6be59d8dec325e5561ef118bf6025cd200f943d6ea161b4b7b40070d3af087",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "ev-vmd075",
+      "canonical_name": "Qwen3-Omni repository (code + weights)",
+      "entity_type": "MODEL",
+      "organization": "Alibaba Qwen",
+      "canonical_url": "https://github.com/QwenLM/Qwen3-Omni"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "ev-vmd075",
+    "artifact_type": "OPEN_WEIGHT",
+    "canonical_name": "Qwen3-Omni repository (code + weights)",
+    "canonical_url": "https://github.com/QwenLM/Qwen3-Omni"
+  },
+  "temporal": {
+    "observed_at": "2026-09-30T14:24:47Z",
+    "events": []
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://github.com/QwenLM/Qwen3-Omni",
+      "source_class": "PRIMARY_REPOSITORY",
+      "title": "QwenLM/Qwen3-Omni repository (code + weights)",
+      "published_at": null,
+      "accessed_at": "2026-09-30T14:24:47Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Streaming omni deployment surface with cookbooks/demos; thinker-only (talker-disabled) mode documented; trending top-1 2025-09-26 per README news (project-stated). Weights license and code license remain unresolved in canonical Evidence.",
+      "subject_id": "ev-vmd075",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PROJECT_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Repo README consumed 2026-09-30."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Living surface; commit binding required; popularity signals are not technical authority.",
+      "subject_id": "ev-vmd075",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "Qwen3-Omni repository (VM-D075): weight/code license status remains unresolved in canonical Evidence.",
+      "subject_id": "ev-vmd075",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "README consumed: thinker-only mode, deployment surface verified as project statements.",
+        "subject_ids": [
+          "ev-vmd075"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "repo commit/version binding",
+        "status": "UNRESOLVED",
+        "finding": "Living-repo commit/version binding deferred to later stages; README-depth consumption recorded.",
+        "subject_ids": [
+          "ev-vmd075"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "Narrow scope-wording correction (VM-D075 limitation-2)",
+        "status": "VERIFIED",
+        "finding": "Subject/candidate made explicit; no new license fact; status/claims/sources/materiality unchanged.",
+        "subject_ids": [
+          "ev-vmd075"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      "repo commit/version binding: Living-repo commit/version binding deferred to later stages; README-depth consumption recorded."
+    ],
+    "contradictions": []
+  }
+}

@@ -1,0 +1,396 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-vision-multimodal-2026",
+  "research_profile": "THEMATIC",
+  "publication_profile": "LONGFORM_SPECIAL",
+  "package_id": "P06",
+  "draft_version": "r1",
+  "status": "ESTABLISHED",
+  "basis": {
+    "draft_package_sha256": "ba899cffe1417b6ea63f110321fb06154db3153f7df42e02314ce15e92b824b8",
+    "prompt_id": "article-drafting-v2",
+    "prompt_sha256": "b687313312a23025228c16c3f10cb68f669b910cd7215e41886d4dd91f44fe11"
+  },
+  "runner": {
+    "provider": "Muse",
+    "model": "Muse Spark (Work execution role; not a Sol/Human decision)",
+    "invocation": "TS-003 Draft r1: 16-package Japanese long-form drafting from approved Architecture r2 (Human APPROVED r2); evidence-bounded prose under edition-local language policy drafting-language-policy-ja.md + terminology map; G01-G06 and 5 PARTIAL records preserved; vendor claims attributed; no cross-task ranking",
+    "generated_at": "2026-10-01T04:03:22Z",
+    "run_reference": "ts003-draft-r1-20261001"
+  },
+  "headline": "Transformerと自己教師の土台",
+  "deck": "畳み込みからパッチ系列へ。トークンの定式と階層と自己教師の目的関数と蒸留を分け、視覚の土台が言語と結ばれる前の仕組みと残る問いを整える。規模か処方かの論点を通奏に置き、効率の一般論には踏み込まない。載せ方と組み方と式と移しの切り分けが要である。",
+  "deck_attribution_mode": "MIXED",
+  "deck_evidence_refs": [
+    {
+      "evidence_task_id": "evidence:SP-vision-multimodal-2026:fea277ab42f86a90",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1",
+      "subject_id": "ev-vmd030",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-vision-multimodal-2026:fea277ab42f86a90",
+      "kind": "CLAIM",
+      "evidence_id": "claim-2",
+      "subject_id": "ev-vmd030",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-vision-multimodal-2026:9dce7c29b30f2b61",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1",
+      "subject_id": "ev-vmd034",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-vision-multimodal-2026:9dce7c29b30f2b61",
+      "kind": "CLAIM",
+      "evidence_id": "claim-2",
+      "subject_id": "ev-vmd034",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-vision-multimodal-2026:0eb3420fb03f017e",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1",
+      "subject_id": "ev-vmd036",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-vision-multimodal-2026:0eb3420fb03f017e",
+      "kind": "CLAIM",
+      "evidence_id": "claim-2",
+      "subject_id": "ev-vmd036",
+      "subject_role": "PRIMARY_SUBJECT"
+    }
+  ],
+  "blocks": [
+    {
+      "block_id": "p06-b1",
+      "block_type": "PARAGRAPH",
+      "text": "Vision Transformerは、畳み込みから系列への組み替えである。Dosovitskiyらによれば、画像をパッチに切り、パッチ系列に素のTransformerを載せる。絵を細片に切り、細片の列として扱う。パッチ切り出しのほかは画像固有の帰納バイアスをほぼ排し、大規模な事前学習と転移でCNNの到達点に並び、超えると報告している。畳み込みの局所性や平行移動の仮定を外し、系列の注意に委ねる。仮定を外した分、データと計算で補う。同じ到達度ではCNNより少ない計算で学べるとも述べる。並んだ所では、学びが軽い。本巻の読み筋は効率ではなく、トークンの定式にある。画像を系列として扱う約束が、後の視覚と言語のトークン融合の前提になる。言葉と絵を同じ列に載せる段取りがここに始まる。列に載せる約束が、結びの前提である。ただし大規模な事前学習への依存が残る。データが乏しい所では振るわず、処方が要る。量が要る定式であり、量なしには立たない。100B級パラメータの時代を序文に置く。後の規模の話の入口である。DeiTは、この依存に対するレシピ側の答えである。Touvronらによれば、学習手順の改善とTransformer専用の蒸留トークンで、データ効率を上げる。列に先生の印を混ぜ、先生の処方を移す。畳み込みの教員モデルとの相乗りに支えられ、外部データなし・86Mパラメータ・単一マシン3日弱でImageNet top-1の83.1%に達し、蒸留で85.2%まで伸び、転移も競ると報告している。教員の畳み込み網が十年かけて練った処方を、蒸留トークン経由で借りる。外のデータを足さず、手順の借りで伸ばす。読み筋は規模かレシピかである。畳み込み網が十年かけて練った構成と最適化の蓄積に対し、DeiTは水増しと正則化の処方を借りて目新しい仕掛けなしに並ぶ。構成探索が過適合に陥りがちな例も引き、規模と処方の論点を支える。構成をいじるか、処方を磨くかの分かれである。探し回る構成より、借りた処方が効く場合がある。ただし教員への依存が残り、橋渡しとして短く扱う。教員なしの自立ではない。先生あっての伸びである。Swin Transformerは、階層を保つ側の完全性を受けもつ。Liuらによれば、局所ウィンドウとずらしによる窓間結合で注意を組み、画像寸法に線形の計算量で解く。窓の中で注意し、窓をずらしてつなぐ。細部と大域を、窓のずらしで往き来する。ImageNet-1K top-1で87.3、COCO test-devでボックスAP 58.7・マスクAP 51.1と先行を2.7と2.6上回り、ADE20KでmIoU 53.5と3.2上回ったと報告し、コードとモデルを開く。階層を要する検出や密な予測にTransformerを渡す役割であり、本節では短く置く。箱と画素の細かい仕事への渡しである。定式と処方と階層の三筋を分け、効率の一般論には踏み込まない。効率の議論は別巻に譲り、本巻は表現の契約を読む。速さの話ではなく、載せ方の話である。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:fea277ab42f86a90",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd030",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:fea277ab42f86a90",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ev-vmd030",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:35ac530167b1aead",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd031",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:35ac530167b1aead",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ev-vmd031",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:654257bfd25b2055",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd032",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p06-b2",
+      "block_type": "PARAGRAPH",
+      "text": "MAEは、ラベルなしで学ぶマスク再構成の柱である。Heらによれば、非対称のエンコーダ・デコーダを置き、エンコーダは見えるパッチだけを受け、軽いデコーダが欠けた所を戻す。見える二割五分だけを符号化し、残り七割五分を当てに戻す。読む側を絞り、戻す側を軽くする。75%を隠す高いマスク率で、学習を3倍超速めながら精度も上げたと報告している。符号化の量を絞る分、学習が速い。速くして、出来も上げる。大きな容量のモデルほど伸び、汎用に振る舞う。容量を増やすほど、隠し当てが効く。大きい目ほど、欠けから全体を戻せる。仕掛けの要点は、見える所だけを符号化する点にある。隠す割合を上げると課題が難しくなり、表層の写しではなく使える表現が残る。易しい写しでは残らないものが、難しい当て戻しでは残る。目的関数の群では再構成の側に立ち、対照や蒸留とは別の筋である。戻すことで学ぶ筋である。ただし再構成と表現の読み分けが要る。画素を戻せることが、そのまま下流課題の強さを意味しない。戻す力と使う力は別の契約である。戻せても使えない場合がある。転移の主張には探査側の根拠が要り、本節では仕組みの範囲に留める。使う先の強さは、使う先の物差しで測る。マスク再構成の発想は、文書の節の統一マスク学習にも通じるが、本節は視覚の土台の範囲で閉じる。絵の土台の話に留め、文書への渡しは示唆に留める。",
+      "attribution_mode": "ATTRIBUTED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:4e994d899261cc65",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd033",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p06-b3",
+      "block_type": "PARAGRAPH",
+      "text": "DINO自己教師ありは、ラベルなしの自己蒸留から立ち上がる。検出器のDINOとは同名別物であり、本節ではつねに自己教師ありと呼ぶ。名の混同を避け、呼び分けを徹底する。Caronらによれば、ViTへのラベルなし自己蒸留が、教師ありViTや畳み込み網に見られない創発の性質を生む。教員役を動かし続け、生徒が追う。ラベルなしに先生役を立て、追わせて育てる。CLS注意マップに意味的セグメンテーションの情報が現れ、小さなViTでImageNet kNN top-1の78.3%に達したと報告している。どこに何があるかの片鱗が、注意の向きに現れる。見やすい番兵の注意が、物の領域を指す。モメンタムエンコーダと多作物と小さなパッチが効き、ViT-Baseでは線形評価top-1の80.1%に届く。教員役の安定、大小の作物の組み合わせ、細かいパッチの三つが効くと報告している。仕掛けの要点は、教員なしに教員役を動かし続ける点にある。蒸留の群に属し、対照や再構成とは別の筋である。移すことで学ぶ筋である。ただし創発の射程は区切る。疑似ラベルを検出に使う読みは、下流側の根拠が要る。注意に現れた片鱗が、そのまま箱になるとは限らない。片鱗と箱の間には、検出の仕事が残る。DINOv2は、この流れを大規模化した土台の特徴に育てた。Oquabらによれば、自動で整えるデータ管と拡張した学習で1B級ViTを学び、小さなモデルへ蒸留する。データの選りを自動で回し、大きい目で学んで小さい目に移す。人手の微調整なしに汎用の特徴が弱教師ありの代替に迫り、画像と画素の多くのベンチマークでOpenCLIPを上回ったと報告している。手を加えずに使える特徴が、弱い教師の代わりに立つ。対極の読み分けも置く。汎用の特徴と、プロンプトで指示できる界面は、土台という同じ言葉で別物を指す。特徴の強さと指示の受け口は別の契約である。強い目と利く耳は別の仕事である。ただし凍結評価の転移の範囲に留まり、課題ごとの限りは評価側の根拠が要る。凍結で測った強さが、微調整先の強さを約束しない。凍結の物差しと実戦の物差しは別の契約である。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:9dce7c29b30f2b61",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd034",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:9dce7c29b30f2b61",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ev-vmd034",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:3c9024041edb1a4a",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd035",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:3c9024041edb1a4a",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ev-vmd035",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p06-b4",
+      "block_type": "PARAGRAPH",
+      "text": "SigLIPは、アライメントの目的関数を組み替えた。Zhaiらによれば、ペアごとのシグモイド損失で学び、大域ソフトマックス正規化を排する。一対ごとに合うか合わないかを判定し、全体の取り合いを組まない。組の中の順位争いをやめ、一対の可否に還す。バッチ規模と損失の結びを解き、1M級バッチまで拡張できるが伸びは鈍り、32Kで足り、小さなバッチでもよく働くと報告している。バッチを広げても頭打ちが来て、32Kで用が足りる。小さなバッチでの振る舞いもよい。広げても伸びない所と、小さくても立つ所が要点である。画像側を凍結した調整では、SigLiTが4枚のTPUv4で2日かけImageNetゼロショット84.5%に達した。短い日数と少ない枚数での到達である。目を凍らせ、言葉側だけを締める調整である。ICCV 2023オーラルで発表し、モデルを開く。仕掛けの要点は、正規化の大域性を捨てて一対の判定に還す点にある。対照の裾野を広げる設計であり、効率の一般論ではなく表現の契約の話として読む。目的関数の群に属し、定式や階層や蒸留とは別の筋である。式を組み替える筋である。継承の筋もある。Qwen側の報告によれば、SigLIP2-So400mがQwen3-VLとOmniのエンコーダの中に続く。2026年時点の再利用の事実として受け止める。言語と結ばれる前の視覚の土台が、視覚言語モデルの目の中に生きる。土台の目は、結びの目に使い回される。ただし正確な引用の結びは残る。損失の仕組みの消費は抄録頁の水準に留まり、正確な典拠は結ばれていない。頁の薄い所からの消費であり、典拠の結びはまだない。分からないものは分からないと置き、結ばれていない引用は結ばれていないと書く。トークンの定式と構成と目的関数と蒸留を分けたとき、SigLIPの位置は目的関数の組み替えである。蒸留の教員依存や階層の完全性とは別の筋であり、四筋の切り分けが本節の要である。載せ方と組み方と式と移しの四つを分ける。",
+      "attribution_mode": "ATTRIBUTED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:0eb3420fb03f017e",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd036",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:0eb3420fb03f017e",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ev-vmd036",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p06-b5",
+      "block_type": "PARAGRAPH",
+      "text": "土台の四筋は、視覚言語モデルの目に集まる。DINOv2の汎用特徴とSigLIPの対照の目は、結びの前の目である。強い特徴と合う合わないの判定が、言語との結びを待つ。Qwen側の報告によれば、SigLIP系の目がQwen3-VLとOmniのエンコーダの中に続く。土台の目が、結びの目に使い回される。使い回しの事実は報告として受け止め、正確な典拠の結びのなさも同時に運ぶ。あるものとないものを分けて書く。四筋の切り分けを通奏に置く。ViTが載せ方を定め、Swinが組み方の完全性を保ち、MAEが戻す式を示し、DINO自己教師ありが移しの創発を示し、SigLIPが判定の式を組み替えた。載せ方と組み方と戻す式と移しと判定の式の五つが、土台の見取り図である。効率の一般論は別巻に譲り、本巻は表現の契約を読んだ。速さの話に寄せず、目が何を約束するかの話に留めた。残る問いは三つである。大規模事前学習への依存、再構成と表現の読み分け、正確な典拠の結びのなさである。量なしには立たないこと、戻せても使えるとは限らないこと、結ばれていない引用は結ばれていないことの三つを、残る問いとして置く。分からないものは分からないと置き、次の節の結びの話に渡す。載せ方のViTが列の約束を定め、組み方のSwinが階層の完全性を保ち、戻す式のMAEが隠し当てを示し、移しのDINO自己教師ありが創発を示し、判定の式のSigLIPが対照を組み替えた。五つの仕事が、結びの前の目を育てた。Qwen側の報告にある使い回しは、この育ちの行き先である。土台の目が結びの目に生きるという継承の筋を、典拠の留保と組で運ぶ。定式と構成と目的関数と蒸留の切り分けが、土台の節の要である。混ぜずに分けて書くことが、次の節への渡しになる。分けた見取り図が、結びの節の入口になる。載せ方と式と移しの違いを保ったまま、次の節へ進む。違いを保つことが、土台の節の務めである。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:3c9024041edb1a4a",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd035",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:3c9024041edb1a4a",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ev-vmd035",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:0eb3420fb03f017e",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ev-vmd036",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:0eb3420fb03f017e",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ev-vmd036",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "P06-boundaries",
+      "block_type": "CLAIM_BOUNDARY",
+      "text": "この節の読解上の境界: No generic Transformer-efficiency retelling; recipe reading preserved / Large-scale pre-training dependence (DeiT qualifies); 100B-parameter era context noted in intro. / Reconstruction-vs-representation reading; downstream transfer needs probe sources. / Emergent-property scope; OVD pseudo-label use needs downstream sources. / Frozen-eval transfer scope; task-specific limits need eval-side sources. / Abs-page-level consumption for the loss mechanism (HTML extraction thin); SigLIP2 citation unbound (G06). / G06 SigLIP2 citation binding: SigLIP2 exact citation unbound; G06 gap preserved. / Distillation-teacher dependence; short treatment per bridge role. / Hierarchy-completeness role; short treatment.",
+      "attribution_mode": "INFERENCE",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:fea277ab42f86a90",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd030",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:4e994d899261cc65",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd033",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:9dce7c29b30f2b61",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd034",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:3c9024041edb1a4a",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd035",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:0eb3420fb03f017e",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd036",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:35ac530167b1aead",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd031",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-vision-multimodal-2026:654257bfd25b2055",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ev-vmd032",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    }
+  ],
+  "must_cover_coverage": [
+    {
+      "requirement": "VM-O06 lineage complete; G06 SigLIP2 citation residual bounded",
+      "block_ids": [
+        "p06-b1",
+        "p06-b2",
+        "p06-b3",
+        "p06-b4",
+        "p06-b5",
+        "P06-boundaries"
+      ]
+    },
+    {
+      "requirement": "TS-001 owns generic attention efficiency; TS-003 owns representation contract",
+      "block_ids": [
+        "p06-b1",
+        "p06-b2",
+        "p06-b3",
+        "p06-b4",
+        "p06-b5",
+        "P06-boundaries"
+      ]
+    }
+  ],
+  "boundary_dispositions": [
+    {
+      "boundary": "No generic Transformer-efficiency retelling; recipe reading preserved",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P06-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Large-scale pre-training dependence (DeiT qualifies); 100B-parameter era context noted in intro.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P06-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Reconstruction-vs-representation reading; downstream transfer needs probe sources.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P06-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Emergent-property scope; OVD pseudo-label use needs downstream sources.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P06-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Frozen-eval transfer scope; task-specific limits need eval-side sources.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P06-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Abs-page-level consumption for the loss mechanism (HTML extraction thin); SigLIP2 citation unbound (G06).",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P06-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "G06 SigLIP2 citation binding: SigLIP2 exact citation unbound; G06 gap preserved.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P06-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Distillation-teacher dependence; short treatment per bridge role.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P06-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Hierarchy-completeness role; short treatment.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P06-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    }
+  ],
+  "profile_extensions": {},
+  "publication_extensions": {
+    "page_budget_body_pages": 5,
+    "depth_classes": {
+      "FULL_MECHANISM_TREATMENT": [
+        "VM-D030",
+        "VM-D036"
+      ],
+      "TRANSITION_NODE_TREATMENT": [
+        "VM-D033",
+        "VM-D034",
+        "VM-D035"
+      ],
+      "BRIEF_CONTEXT_OR_AUTHORITY": [
+        "VM-D031",
+        "VM-D032"
+      ]
+    }
+  }
+}

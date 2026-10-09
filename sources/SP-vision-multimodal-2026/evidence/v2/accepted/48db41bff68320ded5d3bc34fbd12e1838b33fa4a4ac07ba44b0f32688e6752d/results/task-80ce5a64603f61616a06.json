@@ -1,0 +1,97 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-vision-multimodal-2026",
+  "evidence_task_id": "evidence:SP-vision-multimodal-2026:ea3bed97631f4e83",
+  "basis": {
+    "task_sha256": "91697227f058be2fb45a7c39c24e75faec8e20525b4bd3174d1d98b037cbca3d",
+    "screening_acceptance_sha256": "3bc6edb4c60ad6fba40626b0900f6cf5656544b98a95e4b3d4415f049d3f1a94",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "ev-vmd082",
+      "canonical_name": "MathVista",
+      "entity_type": "BENCHMARK",
+      "organization": null,
+      "canonical_url": "https://arxiv.org/abs/2310.02255"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "ev-vmd082",
+    "artifact_type": "BENCHMARK",
+    "canonical_name": "MathVista",
+    "canonical_url": "https://arxiv.org/abs/2310.02255"
+  },
+  "temporal": {
+    "observed_at": "2026-09-30T14:24:47Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2023-10",
+        "subject_id": "ev-vmd082",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2310.02255",
+      "source_class": "PRIMARY_PAPER",
+      "title": "MathVista (Lu et al.)",
+      "published_at": "2023-10",
+      "accessed_at": "2026-09-30T14:24:47Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "6,141 visual-math examples (28 datasets + IQTest/FunctionQA/PaperQA new); 7 reasoning types x 5 tasks; GPT-4V 49.9% vs Bard 34.8% vs human 60.3% (author-measured); ICLR 2024; perception-vs-reasoning attribution requires scaffold ablations.",
+      "subject_id": "ev-vmd082",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Full-paper abstract (214KB body, abstract-depth + taxonomy consumed)."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "ID verified at intake (not 2311.12505); attribution needs CoT/PoT/tool ablations per use.",
+      "subject_id": "ev-vmd082",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "MathVista paper body consumed via arXiv HTML (214KB text) at abstract+taxonomy+baseline depth: reasoning taxonomy, dataset composition, model gaps verified.",
+        "subject_ids": [
+          "ev-vmd082"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

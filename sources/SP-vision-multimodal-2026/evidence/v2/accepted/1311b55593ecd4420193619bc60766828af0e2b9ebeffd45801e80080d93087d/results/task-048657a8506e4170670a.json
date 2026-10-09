@@ -1,0 +1,119 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-vision-multimodal-2026",
+  "evidence_task_id": "evidence:SP-vision-multimodal-2026:6852a5755398b866",
+  "basis": {
+    "task_sha256": "6c84686a01d20b174f39c2eda9a20d51f9e2effb7cc76900183977be3831c999",
+    "screening_acceptance_sha256": "2fd98e8602ca6cc3f530ecd33965fef0dec7b41604604085ca0bd5b38972499c",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "ev-vmd091",
+      "canonical_name": "OSWorld 2.0",
+      "entity_type": "BENCHMARK",
+      "organization": null,
+      "canonical_url": "https://arxiv.org/abs/2606.29537"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "ev-vmd091",
+    "artifact_type": "BENCHMARK",
+    "canonical_name": "OSWorld 2.0",
+    "canonical_url": "https://arxiv.org/abs/2606.29537"
+  },
+  "temporal": {
+    "observed_at": "2026-09-30T14:24:47Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-06",
+        "subject_id": "ev-vmd091",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2606.29537",
+      "source_class": "PRIMARY_PAPER",
+      "title": "OSWorld 2.0 (Yuan et al.)",
+      "published_at": "2026-06",
+      "accessed_at": "2026-09-30T14:24:47Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "108 long-horizon workflows (median 1.6 human-hours); tool-call scale is config-bound: Claude Opus 4.7 with maximum thinking in single-action setting averages 318.4 calls over the 108 tasks vs ~30 in OSWorld 1.0; challenge phenomena incl. streaming interaction, dynamic environments, cross-source reasoning, implicit-state inference, visual-spatial precision; authentic artifacts + stateful user profiles + safety reports; best 500-step config is separate: Claude Opus 4.8 max-thinking batched 20.6% binary / 54.8% partial (481.8 calls); GPT-5.5 token-efficient plateau ~13%.",
+      "subject_id": "ev-vmd091",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Full-paper abstract (178KB body, abstract-depth consumed); v2 July 2026; all numbers author-measured at report date."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Thesis shift: failures move from GUI control/coding to constraint-tracking, mid-task information arrival, implicit-state recovery, and verification skipping — the state-management bottleneck.",
+      "subject_id": "ev-vmd091",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Abstract findings consumed; lane-reframing exhibit."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Author-measured model results; strictest binding in volume required per use (model+thinking+tool+steps+release).",
+      "subject_id": "ev-vmd091",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Complete OSWorld 2.0 paper body consumed via arXiv HTML (178KB text): workflow design, phenomena taxonomy, binary/partial results, thesis shift verified; v2 status confirmed.",
+        "subject_ids": [
+          "ev-vmd091"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "model+thinking+tool+steps+release binding",
+        "status": "VERIFIED",
+        "finding": "Strict binding fields recorded in claims; per-use binding belongs to later stages.",
+        "subject_ids": [
+          "ev-vmd091"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

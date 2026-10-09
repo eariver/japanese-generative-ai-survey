@@ -1,0 +1,162 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-vision-multimodal-2026",
+  "research_profile": "THEMATIC",
+  "publication_profile": "LONGFORM_SPECIAL",
+  "research_scope": {
+    "question": "AIは、画像・映像を中心とする現実世界の信号を単に分類する段階から、対象・領域・構造・時間・空間状態を表現し、それらを言語や座標へ接地し、複数modalを統合して推論し、予測や行動へ変換できる段階へ、どのように発展してきたのか。各段階で「次の計算に十分な世界表現」は何であり、何が失われ、何が新たに操作可能になったのか。横断的テスト: What representation of the world is sufficient for the next computation?",
+    "inclusion": [
+      "D01 learned visual representation / CNN / ImageNet (CONTEXT_CAPPED): 手作り特徴から学習済み再利用可能表現へ、大規模教師あり学習とGPU scaling、後段知覚タスクへのtransfer。Neocognitron/LeNetは簡潔なanti-abrupt-start context、AlexNet/ResNetを主要anchorとする。",
+      "D02 detection / structured localization: 画像分類では対象identityと位置を結びつけられない問題。region/two-stage、one-stage operating point、anchor/NMS機構からset prediction/DETR系への遷移、language-grounded detectionへの橋渡し。DINO detectorとDINO self-supervisedの用語衝突を常に区別する。",
+      "D03 dense perception / segmentation / promptable vision: boxからdense region/pixel構造へ。semantic/instance/panopticの区別、promptable segmentation/foundation perception (SAM/SAM2系)。U-Netはsegmentation役割のみで扱い、TS-002 diffusion-backbone史を再述しない。",
+      "D04 spatial / geometry support substrate (MANDATORY_SUPPORT / HARD_CAP): category labelにないgeometry/spatial state、後段reasoning/actionが仮定する2D/2.5D/3D state、token/言語表現への変換時の得失。allow-list 4 nodeのみ: MiDaS (dense relative/monocular depth)、OpenPose (keypoint/object-centric stateとassociation)、Visual Genome (relational scene structureと言語linkage)、DUSt3R (calibration-firstでない学習済みgeometric pointmap state)。",
+      "D05 OCR -> Document Intelligence / visual knowledge work (NORMAL_WEIGHT): glyph認識からlayout/structure/symbolic理解へ。document/table/chart/equation/PDF/screenshot理解、specialist pipeline/modelとgeneral VLMのinterface比較。native multimodalがOCR/layout bottleneckを除去したか内在化したかを問う。specialist-vs-generalist数値比較は同一protocol証拠がある場合のみ (default NO_CROSS_MODEL_NUMERIC_COMPARISON)。multimodal retrieval/RAGはdocument interfaceを変える範囲でのみbounded sub-lane。",
+      "D06 ViT / self-supervised visual foundation: convolutional inductive biasからimage patch/token formulationへ、scaleとpretraining recipe、label-free再利用可能表現。ViT/MAE/DINO/DINOv2系遷移と後段VLMへのencoder reuse。generic attention効率はTS-001、visual representation/tokenization契約はTS-003。",
+      "D07A image-level vision-language alignment (FULL_WEIGHT): 固定class ontologyから自然言語でaddressableな画像level意味へ。visual-semantic embedding/captioning/VQAのpredecessor context、CLIP/ALIGN/SigLIP系alignmentとzero-shot transfer。評価はimage-level zero-shot分類・image-text retrieval/Recall@K。D07B指標と統合しない。",
+      "D07B open-vocabulary perception and grounding (FULL_WEIGHT): 任意言語概念からbox/mask/region/coordinate/evidenceへ。phrase grounding / referring expression / OVD / grounded detection / OVS、semantic addressabilityからactionable groundingへの橋。minimum transition set: Flickr30k Entities、RefCOCO系、OVR-CNN、ViLD、RegionCLIP/Detic、GLIP、MDETR、OWL-ViT、Grounding DINO、OWL-ST/OWLv2、LSeg->X-Decoder系 (OpenSeg/ODISEはbounded variant)。評価はLVIS-rare/open-vocabulary AP、ODinW、RefCOCO系grounding accuracy、phrase-localization Recall@K。D07AとD07Bは絶対に統合しない。",
+      "D08 bridging pretrained vision and language systems (FULL_WEIGHT): 別々にpretrainされたvision+LLMからusable VLMへ。projector/resampler/Q-Former/cross-attention、frozen/mostly-frozen componentとdeeper joint trainingの区別、visual instruction tuning。Flamingo/BLIP-2/LLaVA系をanchorとする。",
+      "D09 native/omni multimodal fusion, tokenization and context economics (FULL_WEIGHT): image/video/audioがmodel-consumableなstate/token列になる過程。fixed/dynamic resolution、tiling、resampling、token圧縮/pruning、early/late fusion、cross-attentionとunified sequence、multi-image/long-video/audio-video時間alignment、context/KV/memory/latency含意。TS-001計測語彙を統合するがgeneric量子化/MoE/serving史は再述しない。audio-input scope: speech/audio理解・audiovisual fusion・language-addressable audio・absolute-time/sync/streaming inputはIN、TTS/voice cloning/music/audio生成史はOUT (TS-002)。minimum input-side chain: Whisper -> BEATs -> CLAP -> omni-fusion (Qwen3-Omni系) -> streaming評価。",
+      "D10 multimodal reasoning / perceptual failure decomposition (FULL_WEIGHT): visual evidence useをlanguage priorやreasoning scaffoldと分離。recognition/OCR/counting/spatial/geometry/chart/table/diagram/科学図/multi-image/compositional/hallucination/localization・evidence-use。単一composite benchmarkをgeneral visual intelligenceとみなさない。知覚改善とreasoning elicitation/tool useを区別する。",
+      "D11 video understanding / temporal state / long-horizon memory (NORMAL_WEIGHT): frame毎認識の反復からgenuine temporal stateへ。action recognition、event localization、temporal ordering、causal/physical reasoning、long-video retrieval/memory、online/streaming理解、audioがload-bearingなaudiovisual理解。Flash-VStreamをstreaming-system anchor、StreamingBenchをstreaming-eval anchorとする (canonical Discoveryで再bind)。offline long-contextとonline streamingは別契約で統合metric表を作らない。",
+      "D12 Computer Use / actionable digital grounding (MANDATORY_ENDPOINT / BOUNDED): screenshot/document知覚からelement grounding、coordinate/tool action、persistent task stateへ。pure-vision、accessibility-tree/DOM、API/tool、mixed interfaceをaction契約として比較。click精度ではなくlong-horizon stateとverificationを重視。OSWorld 1.0/2.0を評価anchor、vendor computer-use系はdeployment/capability caseのみ。generic agent architecture surveyへ拡大しない。",
+      "D13 Vision-Language-Action / embodied multimodal systems (MANDATORY_ENDPOINT / HARD_CAP): vision/language表現からexecutable physical action interfaceへ。minimum chain: SayCan (joint表現でないplanner-side grounding) -> RT-1 (実機trajectory data regime) -> PaLM-E (embodied joint表現) -> Open X-Embodiment (cross-embodiment data契約) -> RT-2 (action token+VL co-fine-tuning/VLA定式) -> OpenVLA (inspectable pole) -> Gemini Robotics系endpoint (source roleがsupportする範囲)。kinematics/dynamics/gait/actuator/hardware、locomotion理論、一般robotics safety/policyは除外。独立VLA評価の希薄さはgapとして残す。",
+      "D14 predictive representations / World Models (MANDATORY_ENDPOINT / HARD_CAP / TERMINOLOGY_SPLIT): world modelを単一categoryにしない。4-pole比較契約: (1) historical/latent world-state定式、(2) latent dynamics/model-based decision (Dreamer系)、(3) photorealistic生成なしpredictive表現 (V-JEPA/JEPA系)、(4) generative interactive environment/action-conditioned simulation (Genie系)。各候補はrepresented state/predicted target/action conditioning/pixel-latent-reward/planning-training-eval useをbindする。photorealistic生成のみの事例はTS-002。Genie系first-party pageはcapability/deployment authorityのみ。",
+      "D15 evaluation / robustness / provenance / convergence (METHODOLOGY_FIRST): task identity保持、score羅列でなく評価契約の比較。dataset/version、input policy、tool allowance、thinking/scaffold budget、judge、answer extraction、contamination、model versionをbindし、provider測定と独立再現を分離。retain-set: DocVQA、ChartQA、OCRBench v2 (v1は除外)、POPE+HallusionBench、ScreenSpot系GUI grounding、OSWorld 1.0+2.0、Video-MME、LongVideoBench、StreamingBench、VSI-Bench系spatial reasoning。全benchmark結果の転載は要求しない (minimum Discovery/evaluation map)。"
+    ],
+    "exclusion": [
+      "full handcrafted/pre-deep-learning CV史 (D01 contextを除く)",
+      "full SLAM/SfM/NeRF/3D Gaussian Splatting/3D reconstruction史 (D04 allow-list 4 nodeを除く)",
+      "full speech recognition史、TTS/voice cloning/music/audio生成史 (TS-002所有; TS-003はinput/fusion/reasoning側のみ)",
+      "generic robotics/control/kinematics/locomotion、manipulation hardware survey (D13 refusal list)",
+      "medical vision / autonomous-driving / remote-sensing vertical survey (generic機構点がある場合のみ例外)",
+      "AI policy/safetyのstandalone主題 (技術的にload-bearingな範囲のみ)",
+      "generic multimodal RAG survey (D05 bounded sub-laneを除く)",
+      "generic agent architecture survey (D12 interface契約比較を除く)",
+      "current VLM leaderboardの羅列・横断ranking (条件bindingなき比較の禁止)",
+      "TS-001所有のgeneric attention/memory/MoE/quantization/decoding/serving/local-inference効率史 (multimodal bottleneck変化点のみ再利用)",
+      "TS-002所有のgeneric生成lineage/objective/sampler/control/editing史 (perception/representation/alignment/grounding/state/prediction/actionの問いでのみcross-reference)",
+      "product page/demo/social postからのarchitecture断定 (vendor材料はARCHITECTURE_CASEに昇格させない; CV2-DM-020)",
+      "D07AとD07Bの統合・共有ranking表 (絶対禁止)",
+      "obligation存在を理由としたD04/D12/D13/D14の均等膨張 (endpoint cap: Part IV全体13-18%)"
+    ],
+    "scope_dimensions": [
+      "learned_visual_representation",
+      "detection_structured_localization",
+      "dense_perception_segmentation",
+      "spatial_geometry_substrate",
+      "ocr_document_intelligence",
+      "vit_selfsupervised_foundation",
+      "image_level_vl_alignment",
+      "openvocab_perception_grounding",
+      "bridging_vision_language",
+      "native_omni_fusion",
+      "multimodal_reasoning_failure",
+      "video_temporal_streaming",
+      "computer_use_grounding",
+      "vla_embodied_systems",
+      "predictive_world_models",
+      "evaluation_robustness_convergence"
+    ],
+    "initial_obligations": [
+      {
+        "obligation_id": "VM-O01",
+        "dimension": "learned_visual_representation",
+        "description": "D01 MANDATORY/CONTEXT_CAPPED: 学習済み再利用可能表現・大規模教師あり・transferの確立。Neocognitron/LeNet context、AlexNet、ResNet。X01: ImageNet-scale教師あり契約。X02: class-label入出力契約。"
+      },
+      {
+        "obligation_id": "VM-O02",
+        "dimension": "detection_structured_localization",
+        "description": "D02 MANDATORY: 分類からidentity+locationへ。R-CNN系/Faster R-CNN、YOLO系/SSD/RetinaNet operating point、DETR set prediction、DINO detector (self-supervised DINOと区別)、YOLO-World等OV橋。X02: box入出力契約。"
+      },
+      {
+        "obligation_id": "VM-O03",
+        "dimension": "dense_perception_segmentation",
+        "description": "D03 MANDATORY: boxからdense構造へ。FCN、U-Net (segmentation役割のみ)、Mask R-CNN、panoptic、SAM/SAM2 promptable系。X02: mask入出力契約。"
+      },
+      {
+        "obligation_id": "VM-O04",
+        "dimension": "spatial_geometry_substrate",
+        "description": "D04 MANDATORY_SUPPORT/HARD_CAP: 4-node allow-list (MiDaS/OpenPose/Visual Genome/DUSt3R)。labelにない空間state、後段が仮定する2D/2.5D/3D state、token化時の得失。同等契約の置換のみ許容、拡大禁止。"
+      },
+      {
+        "obligation_id": "VM-O05",
+        "dimension": "ocr_document_intelligence",
+        "description": "D05 MANDATORY/NORMAL_WEIGHT: glyphからlayout/symbolicへ。LayoutLM系/Donut/Pix2Struct、specialist (Nougat/GOT) vs general VLM (default NO_CROSS_MODEL_NUMERIC_COMPARISON、5軸qualitative契約)、retrieval bounded sub-lane。X01: document/markup教師契約。"
+      },
+      {
+        "obligation_id": "VM-O06",
+        "dimension": "vit_selfsupervised_foundation",
+        "description": "D06 MANDATORY: patch/token formulationとlabel-free再利用表現。ViT/DeiT/Swin、MAE/DINO/DINOv2、SigLIPと後段encoder reuse。X01: self-supervised/masked/distillation目的契約。"
+      },
+      {
+        "obligation_id": "VM-O07",
+        "dimension": "image_level_vl_alignment",
+        "description": "D07A MANDATORY/FULL_WEIGHT: 固定ontologyから言語addressable意味へ。DeViSE/captioning/VQA predecessor、CLIP/ALIGN/SigLIP。評価はzero-shot分類・retrieval (D07B指標と統合禁止)。X01: image-text pair教師契約。X02: text<->image入出力契約。"
+      },
+      {
+        "obligation_id": "VM-O08",
+        "dimension": "openvocab_perception_grounding",
+        "description": "D07B MANDATORY/FULL_WEIGHT: 言語概念からbox/mask/coordinate/evidenceへ。Flickr30k/RefCOCO/OVR-CNN/ViLD/RegionCLIP/Detic/GLIP/MDETR/OWL-ViT/Grounding DINO/OWL-ST/LSeg->X-Decoder (OpenSeg/ODISE bounded variant)。CLIP+Grounding DINOへの圧縮禁止。評価はLVIS-rare/ODinW/RefCOCO/phrase Recall@K。X01: caption/grounding/pseudo-label教師契約。"
+      },
+      {
+        "obligation_id": "VM-O09",
+        "dimension": "bridging_vision_language",
+        "description": "D08 MANDATORY/FULL_WEIGHT: 別pretrainのvision+LLMからusable VLMへ。Frozen/Flamingo/BLIP-2/InstructBLIP/MiniGPT-4/LLaVA、projector/resampler/Q-Former/cross-attention、visual instruction tuning。X02: embedding/token入出力契約。X03: frozen-component計算効率。"
+      },
+      {
+        "obligation_id": "VM-O10",
+        "dimension": "native_omni_fusion",
+        "description": "D09 MANDATORY/FULL_WEIGHT: multimodal信号のtoken/state化。Qwen2.5-VL/Qwen3-VL/Qwen3-Omni、Whisper/BEATs/CLAP input chain、InternVL3/Molmo2 second-family比較、Gemini系closed endpoint (4-role tagging)、resolution/tiling/resampling/fusion/time-alignment。X03 token/memory/latency必須。audio生成側は除外。"
+      },
+      {
+        "obligation_id": "VM-O11",
+        "dimension": "multimodal_reasoning_failure",
+        "description": "D10 MANDATORY/FULL_WEIGHT: evidence useと言語prior/scaffoldの分離。MMMU系/POPE/HallusionBench/MMBench/visual-math、counting/spatial/chart/multi-image/compositional、tool-assisted perception。composite scoreを一般知能とみなさない。X04 failure-attribution必須。"
+      },
+      {
+        "obligation_id": "VM-O12",
+        "dimension": "video_temporal_streaming",
+        "description": "D11 MANDATORY/NORMAL_WEIGHT: frame反復からtemporal stateへ。Kinetics/SSv2/Ego4D predecessor、Video-MME/LongVideoBench、Flash-VStream+VStream-QA/StreamingBench (offline long-contextとonline streamingを分離)、SAM2 memory bridge、AV joint。X02: 時間state入出力契約。"
+      },
+      {
+        "obligation_id": "VM-O13",
+        "dimension": "computer_use_grounding",
+        "description": "D12 MANDATORY_ENDPOINT/BOUNDED: 知覚からelement grounding、action、persistent task stateへ。OSWorld 1.0/2.0、ScreenSpot/SeeClick、web-agent predecessor context、interface契約比較 (vision/a11y-DOM/API)。state管理thesis。X03 screenshot-loop cost。"
+      },
+      {
+        "obligation_id": "VM-O14",
+        "dimension": "vla_embodied_systems",
+        "description": "D13 MANDATORY_ENDPOINT/HARD_CAP: 表現からphysical action interfaceへ。SayCan/RT-1/PaLM-E/OpenX/RT-2/OpenVLA/Gemini Robotics系。各nodeのrepresentation/interface契約変化のみで選定。独立評価希薄はEVIDENCE_GAP。"
+      },
+      {
+        "obligation_id": "VM-O15",
+        "dimension": "predictive_world_models",
+        "description": "D14 MANDATORY_ENDPOINT/HARD_CAP/TERMINOLOGY_SPLIT: 4-pole (historical定式/latent dynamics Dreamer系/non-generative predictive V-JEPA系/generative interactive Genie系)。各候補はstate/target/conditioning/pixel-latent-reward/useをbind。pixel列のみはTS-002参照。"
+      },
+      {
+        "obligation_id": "VM-O16",
+        "dimension": "evaluation_robustness_convergence",
+        "description": "D15 MANDATORY/METHODOLOGY_FIRST: task identity保持、契約比較。DocVQA/ChartQA/OCRBench v2/POPE+HallusionBench/ScreenSpot/OSWorld/Video-MME/LongVideoBench/StreamingBench/VSI-Bench retain-set (distinct contractのみ、count最大化禁止)。version/config/judge/tool/budget/contamination/source-role binding。X01 supervision-timeline synthesisとconvergence verdict (unified-vs-modular)。"
+      }
+    ],
+    "temporal_policy": {
+      "mode": "OPEN_HISTORY_AS_OF",
+      "as_of": "2026-09-30T00:31:34Z"
+    }
+  },
+  "paths": {
+    "source_root": "sources/SP-vision-multimodal-2026",
+    "survey_root": "surveys/special/vision-multimodal-2026",
+    "work_branch": "special/vision-multimodal-2026-work"
+  },
+  "contract": {
+    "pipeline_contract_version": "2.0-rc1",
+    "pipeline_contract_sha256": "ee89796245c22072cec98f34931180214a4928c24f399280793cd6420a4c8e71",
+    "quality_contract_version": "2.0-rc1",
+    "quality_contract_sha256": "b5b955d524fb438c0f1b2c9490bea1da2083e79028d67a55ca424bbfc20f2958",
+    "research_profile_version": "2.0-rc1",
+    "research_profile_sha256": "0f575e6d97caec72b2bf8b7f6b78a562d97ca67b2071193417b968ba3d73e6e8",
+    "publication_profile_version": "2.0-rc1",
+    "publication_profile_sha256": "a6859559dd1b9d42ab8fb4402b74b7bdd8611dbe65c8e02a7b022b545c20f4eb"
+  }
+}
