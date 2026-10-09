@@ -63,6 +63,13 @@ This is the current human-readable navigation record for the edition. Machine li
 
 - None recorded at initialization.
 
+## Muse bounded execution handoff
+
+- Execution contract: `sources/2026-W40/execution/instructions/2026-10-10_muse-w40-source-intake-through-sol-discovery-review.md`.
+- Starting HEAD / Tree for Muse: supplied by Sol's exact outer instruction after this contract is committed. Do not use pre-instruction SHA as the new starting HEAD.
+- Scope: primary Raw completion, independent A–L negative-space research, X/Daily X reconciliation, schema-valid Discovery preparation and preflight; **stop before formal Sol completeness approval, State advance, Screening or Human Gate**.
+- Return outcomes: `SOL_DISCOVERY_COMPLETENESS_REVIEW_READY` or `SOL_DISCOVERY_COMPLETENESS_REVIEW_BLOCKED`.
+
 ## Sessions
 
 - `sessions/sol-w40-initial-20261010.md`
