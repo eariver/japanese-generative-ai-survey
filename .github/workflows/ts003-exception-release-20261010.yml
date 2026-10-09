@@ -1,0 +1,93 @@
+name: TS-003 exceptional one-off GitHub Release
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'sources/SP-vision-multimodal-2026/publication/exception-20261010/release-authorization.json'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ts003-exception-20261010-release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    if: github.repository == 'eariver/japanese-generative-ai-survey'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout exact publication ref
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - name: Verify Human approval, exception authorization and immutable publication bytes
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import hashlib, json, pathlib, subprocess
+          p=pathlib.Path("sources/SP-vision-multimodal-2026/publication/exception-20261010")
+          a=json.loads((p/"release-authorization.json").read_text(encoding="utf-8"))
+          f=json.loads((p/"freeze-manifest.json").read_text(encoding="utf-8"))
+          assert a["status"]=="AUTHORIZED_FOR_ONE_OFF_GITHUB_RELEASE"
+          assert f["status"]=="EXCEPTION_FROZEN"
+          assert a["release_tag"]==f["release_identity"]=="special/vision-multimodal-2026"
+          assert a["approved_pdf_sha256"]==f["approval_basis"]["pdf_sha256"]=="b2de84493f2215e26d16e569498c5f4b6476ebc314230cbb4e01540a72742093"
+          pdf=pathlib.Path(a["approved_pdf_path"])
+          raw=pdf.read_bytes()
+          assert len(raw)==a["approved_pdf_bytes"]==708782
+          assert hashlib.sha256(raw).hexdigest()==a["approved_pdf_sha256"]
+          assert subprocess.check_output(["git","hash-object",str(pdf)],text=True).strip()==a["approved_pdf_git_blob_sha"]
+          assert pathlib.Path(a["human_approval"]).is_file()
+          assert a["target_commit_sha"]=="3b0087220ee002c890437297c5a038d1f2a156f9"
+          subprocess.run(["git","merge-base","--is-ancestor",a["target_commit_sha"],"HEAD"],check=True)
+          assert any(x["role"]=="approved-pdf" and x["git_blob_sha"]==a["approved_pdf_git_blob_sha"] for x in f["artifacts"])
+          print("EXCEPTION_FROZEN AND SOURCE-PDF EXACT IDENTITY PASS")
+          PY
+      - name: Publish exact PDF to one-off GitHub Release and download-verify it
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPOSITORY: ${{ github.repository }}
+          TAG: special/vision-multimodal-2026
+          TITLE: Japanese Generative AI Technical Survey Special — vision-multimodal-2026
+          ASSET: Japanese_Generative_AI_Technical_Survey_Special_vision-multimodal-2026.pdf
+          TARGET: 3b0087220ee002c890437297c5a038d1f2a156f9
+          SHA: b2de84493f2215e26d16e569498c5f4b6476ebc314230cbb4e01540a72742093
+        run: |
+          set -euo pipefail
+          cp surveys/special/vision-multimodal-2026/main.pdf "$ASSET"
+          test "$(sha256sum "$ASSET" | awk '{print $1}')" = "$SHA"
+          cat > release-notes.md <<'EOF'
+          Human-approved TS-003 special: Vision & Multimodal AI.
+
+          This publication uses a one-off Human-authorized Core v2 bypass after
+          independent technical review and final PDF QA evidence closure.
+
+          - Exact PDF SHA-256: b2de84493f2215e26d16e569498c5f4b6476ebc314230cbb4e01540a72742093
+          - PDF size: 708782 bytes; 39 pages
+          - Frozen publication commit: 3b0087220ee002c890437297c5a038d1f2a156f9
+          - Core v2 issue: https://github.com/eariver/japanese-generative-ai-survey/issues/560
+          - Exception freeze: sources/SP-vision-multimodal-2026/publication/exception-20261010/freeze-manifest.json
+
+          Historical Core v2 VALIDATED_DRAFT checkpoint and formal Human Preview
+          gate remain unchanged; this exception does not represent a standard Core v2 Release.
+          EOF
+          if gh release view "$TAG" --repo "$REPOSITORY" >/dev/null 2>&1; then
+            meta="$(gh release view "$TAG" --repo "$REPOSITORY" --json tagName,name,isDraft,isPrerelease,targetCommitish,assets)"
+            test "$(printf '%s' "$meta" | jq -r '.tagName')" = "$TAG"
+            test "$(printf '%s' "$meta" | jq -r '.name')" = "$TITLE"
+            test "$(printf '%s' "$meta" | jq -r '.isDraft')" = false
+            test "$(printf '%s' "$meta" | jq -r '.isPrerelease')" = false
+            test "$(printf '%s' "$meta" | jq -r '.targetCommitish')" = "$TARGET"
+            test "$(printf '%s' "$meta" | jq --arg a "$ASSET" '[.assets[] | select(.name==$a)] | length')" = 1
+          else
+            gh release create "$TAG" "$ASSET" --repo "$REPOSITORY" --target "$TARGET" --title "$TITLE" --notes-file release-notes.md
+          fi
+          mkdir -p release-verified
+          gh release download "$TAG" --repo "$REPOSITORY" --dir release-verified --pattern "$ASSET"
+          test "$(sha256sum "release-verified/$ASSET" | awk '{print $1}')" = "$SHA"
+          test "$(wc -c < "release-verified/$ASSET" | tr -d ' ')" = 708782
+          echo "GITHUB_RELEASE_EXACT_BYTES_VERIFIED"
