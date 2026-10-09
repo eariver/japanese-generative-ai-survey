@@ -54,7 +54,7 @@ def main() -> int:
         ("後の融合や身体系への受け渡し exhibits になる", "後の融合や身体系への受け渡しを考える編集上の比較例になる"),
         ("後継の追加は新しい契約を生まないものとして cap の外に置く。",
          "後継の追加は新しい契約を生まないものとして本節の対象外に置く。"),
-        ("三次元持ち上げは cap により扱わず", "三次元持ち上げは本節の対象外として扱わず"),
+        ("三次元持ち上げは cap により扱わず", "三次元への持ち上げは本節の対象外とし"),
         ("範囲として記録する。IDは受入時に修正済みである。", "範囲として記録する。"),
     ]
     for i in changed:
@@ -82,6 +82,15 @@ def main() -> int:
                     "技術的な比較例である": 1, "編集上の比較例になる": 1,
                     "本節の対象外": 4}:
         errors.append(f"presence: {presence}")
+
+    # R02-01 independent-audit final wording (Sol STAGED_READER_REPAIR_REVISION_REQUIRED):
+    # superseded expression must be 0, Sol-final expression must be 1.
+    r0201_old = staged_full.count("三次元持ち上げは本節の対象外として扱わず")
+    r0201_new = staged_full.count("三次元への持ち上げは本節の対象外とし")
+    if r0201_old != 0:
+        errors.append(f"R02-01 superseded expression residual: {r0201_old}")
+    if r0201_new != 1:
+        errors.append(f"R02-01 Sol-final expression presence: {r0201_new}")
 
     # 4. Citations / bib / structure.
     def cites(t): return re.findall(r"\\autocite\{([^}]*)\}", t)

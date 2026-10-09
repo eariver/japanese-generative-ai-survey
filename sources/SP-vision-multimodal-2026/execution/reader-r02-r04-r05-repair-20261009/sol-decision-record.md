@@ -82,3 +82,41 @@ only.
 
 `R02_R04_R05_STAGED_REPAIR_COMPLETE` / `CANONICAL_AUTHORITY_PRESERVED` /
 `CORE_V2_UNCHANGED` / `PUBLICATION_CANDIDATE_HOLD`. STOP.
+
+## R02-01 Independent Audit — Sol Final Revision (2026-10-09, TS-003 R02-01 Final Bounded Staged Repair)
+
+Prior sections above are preserved unchanged as the original repair history.
+This section records only the Sol-final R02-01 correction; no other
+finding or wording was reopened.
+
+- Independent review verdict (adopted as Sol):
+  `STAGED_READER_REPAIR_REVISION_REQUIRED`
+- Blocking finding: R02-01 only. R04, R05, and all other R02 repairs are
+  change-prohibited and were not modified.
+- Sol-final wording (determinative; no re-examination or alternative by Muse):
+  - Before (superseded staged expression):
+    `三次元持ち上げは本節の対象外として扱わず`
+  - After (Sol-final staged expression):
+    `三次元への持ち上げは本節の対象外とし`
+  - Canonical pre-image (unchanged in both scripts):
+    `三次元持ち上げは cap により扱わず`
+- Script changes (edition-local staging only):
+  - `apply_reader_repair_r02_r04_r05.py` `R02-P04-cap-2` replacement updated
+    to the Sol-final After string; canonical pre-image untouched.
+  - `validate_staged_repair.py` expected pair updated identically, plus an
+    explicit assertion: superseded Before count == 0, Sol-final After
+    count == 1.
+- Regenerated records in this repair:
+  `main.tex`, `before-after.json` (wrapper),
+  `main.pdf` (staging TeX rebuild),
+  `text-diff.txt`, `citation-evidence-check.json`, `pdf-qa.json` (validator),
+  `qa-p08-08.png` (corrected-page visual).
+  `qa-p03-03.png`, `qa-p08-09.png`, `qa-p15-15.png` were regenerated from the
+  final PDF exact bytes and verified byte-identical (no reflow beyond p08).
+- Result: old expression 0件 / new expression 1件; canonical-vs-staged
+  9 occurrences / 7 lines maintained; prior-staged-vs-new-staged delta is
+  the single P04 line only; validator PASS; visual QA PASS.
+- Terminal for this revision:
+  `R02_R04_R05_STAGED_REPAIR_COMPLETE` / `R02_01_CORRECTED` /
+  `CANONICAL_AUTHORITY_PRESERVED` / `CORE_V2_UNCHANGED` /
+  `INDEPENDENT_STAGED_REVIEW_PENDING` / `PUBLICATION_CANDIDATE_HOLD`.
