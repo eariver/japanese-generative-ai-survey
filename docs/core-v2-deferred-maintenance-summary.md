@@ -2,8 +2,8 @@
 
 Status: `CORE_CHANGE_PAUSED / LIVING_DEFERRED_MAINTENANCE_INVENTORY`  
 Established: 2026-09-20 JST  
-Last reviewed edition: `2026-W39`  
-Last reviewed `main`: `239ef2703a93fa802f232978c7166d04d6cc3d49`  
+Last reviewed edition: `SP-vision-multimodal-2026`  
+Last reviewed `main`: `7c8e4b1ee913007e4d1e0dc627e2c0a7c2f5ff4f`  
 Frozen Production Line: `774dd39a951c9ac3818e83dfffd4c7666efb0a20`  
 Frozen Production Line tree: `cd46a6f7a6dcc4031e76220cea4c52c7dd1fc481`  
 Update tracker: [Issue #515](https://github.com/eariver/japanese-generative-ai-survey/issues/515)
@@ -224,7 +224,7 @@ Status: `OPEN_CORE`
 Category: Semantic/editorial publication QA  
 Tracking: [Issue #501](https://github.com/eariver/japanese-generative-ai-survey/issues/501) + [Issue #534](https://github.com/eariver/japanese-generative-ai-survey/issues/534)  
 First reproduction: `2026-W36`  
-Latest known reproduction: `2026-W39`
+Latest known reproduction: `SP-vision-multimodal-2026`
 
 W36 exposed mechanically or over-literally normalized Japanese that became semantically opaque to a technically literate reader.
 
@@ -235,6 +235,8 @@ TS-002 (`SP-beyond-text-2026`) reproduced the same generic failure at larger sca
 - TS-002 demonstrates that a simple forbidden-word list is insufficient: seed-list zero counts did not imply closure (Sol r1/r3/r7/r10 each found seed-external residuals after worker zero), context-dependent terms require source-bound adjudication, and canonical model/metric/benchmark/dataset identities require entity-preservation scanning beyond lexical matching.
 
 W39 then reproduced CV2-DM-006 again in a Weekly profile. Publication Preview r1-r4 required repeated edition-local terminology repair under Issue #501, including forced/literal forms such as `模型`, `符号`, `番付`, `腕前の物差し`, `値札`, `手ほどき`, `真としない`, and other seed-external residuals. Three W39-specific additive seed supplements plus a final seed-independent Sol reread were needed before the r6 reader bytes were accepted. This confirms that the defect is not confined to Longform Specials and that zero-hit completion against a fixed seed is not sufficient closure evidence.
+
+TS-003 (`SP-vision-multimodal-2026`) reproduced this failure after `VALIDATED_DRAFT`: independent reader review corrected forced/untranslated editorial terms (`exhibits`, `cap`, `残差 reformulation`) and an ambiguous double-negative in the OpenPose description, while paper review still found `模型` (8), `基線` (2), and `hardware` (1) as nonblocking residuals under Issue #534. The nine bounded reader repairs were accepted before exact-byte Human approval. Edition-local closure does not fix the generic language QA gap.
 
 Generic reusable seed corpus (authority seed for future read-only lint, no auto-rewrite):
 
@@ -443,7 +445,7 @@ Status: `PARTIALLY_IMPLEMENTED / OPEN_CORE`
 Category: Publication semantic boundary  
 Tracking: [Issue #434](https://github.com/eariver/japanese-generative-ai-survey/issues/434)  
 Origin: pre-freeze W33/SP001  
-Post-freeze relevance: W36 reader-surface and language/auditability failures demonstrate remaining boundary gaps
+Post-freeze relevance: W36 and TS-003 reader-surface/authority leakage demonstrate remaining boundary gaps
 
 The frozen Production Line includes the pre-publication reader-surface gate merged by PR #496, but Issue #434 remains open because the broader contract is larger than lexical leakage detection.
 
@@ -455,6 +457,8 @@ Outstanding generic concerns include:
 - source-class-specific Claim Boundary rendering;
 - bibliography publication transform;
 - cross-profile semantic regression coverage.
+
+TS-003 independently caught and removed `IDは受入時に修正済みである。` from P07B/Detic reader prose after earlier publication-layer validation. This is a concrete recurrence of internal editorial/process metadata leaking into the reader surface; its bounded R04 repair is accepted and the general publication-boundary weakness remains open.
 
 This item is included as a pre-freeze carry-over because several post-freeze defects depend on or expose remaining gaps in the same boundary.
 
@@ -650,7 +654,7 @@ Status: `OPEN_CORE / EDITION_FIXED_CORE_DEFERRED`
 Category: Publication QA / claim-source semantic binding  
 Tracking: closed W39 [Issue #551](https://github.com/eariver/japanese-generative-ai-survey/issues/551) + [Issue #515](https://github.com/eariver/japanese-generative-ai-survey/issues/515)  
 First reproduction: `2026-W39`  
-Latest reproduction: `2026-W39`
+Latest reproduction: `SP-vision-multimodal-2026`
 
 W39 Publication Preview demonstrated a generic gap between deterministic citation/key resolution and **semantic correctness of the claim actually bound to that source**. All citation keys could resolve while reader prose still misrepresented novelty, strengthened a source beyond its stated conclusion, flattened conditional/attributed numbers, or bound the wrong source role.
 
@@ -662,7 +666,7 @@ Issue #551 exposed several independent manifestations in one edition:
 - **Opus 5.5 conditions:** `typical workload` cost estimation and `up to 2.5x faster` were flattened into less-qualified reader wording until source read-back restored attribution/conditionality;
 - **source-boundary contradiction:** after binding the official X post as first-party evidence, `99-source-notes.tex` still categorically said public-post ledger material could not establish publication facts, requiring an explicit role-based exception limited to separately cited official first-party posts.
 
-The edition was repaired publication-locally and ultimately released exact Human-approved r6 bytes. No accepted Evidence or Architecture regeneration was required. The generic Core gap remains: citation existence/key resolution and source admission do not prove that the drafted claim preserves the source's subject, novelty, scope, strength, conditions, attribution, or authority role.
+W39 was repaired publication-locally and released exact Human-approved r6 bytes. TS-003 subsequently reproduced the same general gap even though all 178 citations resolved across 124 unique Evidence/Bib keys: independent Human paper review found the DETR 300-epoch / 16 V100 / ~3-day training setting incorrectly conflated with its 500-epoch comparison setting, POPE `polling` mistranslated as voting, and MMBench EN/ZH misidentified as Japanese/English. All three were corrected under PR-01/02/03 and independently checked against primary papers before exact-byte Human approval; the accepted Evidence was preserved with an edition-local correction ledger. The generic Core gap remains: citation existence/key resolution and source admission do not prove that the drafted claim preserves the source's subject, novelty, scope, strength, conditions, attribution, or authority role.
 
 This is related to but distinct from:
 
@@ -680,6 +684,47 @@ Required future Core direction when maintenance resumes:
 - distinguish `citation key resolved` from `claim semantically supported` in QA results;
 - add regression fixtures from W39 ART, Cursor, Claude Code and Opus 5.5;
 - fail closed or require explicit reviewed disposition when a semantic/source-role mismatch is found.
+
+### CV2-DM-021 — Post-VALIDATED_DRAFT reader/editorial corrections have no truthful revalidation reason class
+
+Status: `OPEN_CORE / EDITION_WORKAROUND`  
+Category: Publication-surface revalidation / lifecycle provenance / exact-PDF Freeze and Release  
+Tracking: [Issue #560](https://github.com/eariver/japanese-generative-ai-survey/issues/560) and umbrella [Issue #515](https://github.com/eariver/japanese-generative-ai-survey/issues/515)  
+First reproduction: `SP-vision-multimodal-2026` (TS-003)  
+Latest reproduction: `SP-vision-multimodal-2026` (2026-10-10 JST)
+
+The shared Core v2 already supports an immutable, State-bound post-validation publication-surface revalidation record, but both `scripts/survey_agent_control_v2.py` and `schemas/publication-surface-revalidation.schema.json` allow only the `REVIEWED_CORE_CHANGE` reason class. Legitimate independent/editorial/Human PDF review corrections occurring **after** `VALIDATED_DRAFT` are not a reviewed shared-Core change. Using that reason would misstate review authority; silently rewriting immutable `DRAFT_COMPLETE.json` or publishing its old PDF would violate exact-byte provenance.
+
+TS-003 reproduced this gap:
+
+- Immutable `DRAFT_COMPLETE.json` bound the old canonical `main.pdf` SHA-256 `0916bb5e6222a48de002773eaa1963da9decee90b73b5fc5d292fc08caff3148` and `main.tex` `edcf8ef982a63ac9dc65881aae1963a7daf64fa7fc16de67fbf97825cba090cb`.
+- Human-approved, independently QA-closed corrected PDF was `b2de84493f2215e26d16e569498c5f4b6476ebc314230cbb4e01540a72742093` (708782 bytes, 39 pages) under `execution/reader-paper-fidelity-repair-20261009/`.
+- `production-state.json` remained `VALIDATED_DRAFT`, `publication_preview = pending`, and the stale normal Publication Candidate could not legitimately stand for this approved PDF.
+- The Human Owner explicitly authorized a **one-off Core v2 publication-path bypass conditional on logging the shared-Core defect**. Issue #560 was opened; approved exact bytes plus TeX/Bib/style and research/QA/approval evidence were Freeze-pinned with an explicit `EXCEPTION_FROZEN` manifest and merged via PR #561.
+- Public GitHub Release `special/vision-multimodal-2026` was created and its downloaded PDF reverified at exact approved SHA by successful workflow run `37955511006`. The distinct `EXCEPTION_RELEASED` record was committed on `main`. Normal Core v2 `FROZEN/RELEASED` lifecycle and formal Publication Preview approval are **not** claimed.
+- This bypass solved the TS-003 publication operationally, **not** the generic Core defect, which remains OPEN.
+
+Direct evidence:
+
+- `sources/SP-vision-multimodal-2026/execution/defects/ts003-post-validation-editorial-revalidation-gap-20261010.md`;
+- [Issue #560](https://github.com/eariver/japanese-generative-ai-survey/issues/560);
+- `sources/SP-vision-multimodal-2026/publication/exception-20261010/freeze-manifest.json`;
+- `sources/SP-vision-multimodal-2026/publication/exception-20261010/release-record.json`;
+- [PR #561](https://github.com/eariver/japanese-generative-ai-survey/pull/561);
+- [Release `special/vision-multimodal-2026`](https://github.com/eariver/japanese-generative-ai-survey/releases/tag/special/vision-multimodal-2026);
+- [successful exact-byte publication workflow](https://github.com/eariver/japanese-generative-ai-survey/actions/runs/37955511006).
+
+Required future Core direction:
+
+- define a genuine, narrowly scoped `REVIEWED_EDITORIAL_CORRECTION` or equivalent reason for post-validation reader/source-fidelity corrections, distinct from `REVIEWED_CORE_CHANGE`;
+- preserve the historical validation checkpoint and frozen upstream Architecture/Evidence/Selection/Draft/Human Architecture approvals while requiring new editorial decision/evidence provenance;
+- rebuild and validate exact corrected manuscript, TeX/PDF, quality bundle, semantic/visual review and the State-bound append-only supersession record; reject stale candidate or SHA drift;
+- continue the normal candidate → formally reviewed Human Publication Preview → Freeze → Release chain using the exact new PDF SHA;
+- cover Weekly and Special, legitimate and illegitimate reasons, absence of Human review, forged/invalid provenance, repeated corrections, races/idempotency, and non-regression of the original post-Core-change path.
+
+This item is specifically about **the missing lifecycle/legal reason and authority rebind**, not about the technical content defects already categorized under DM-006/015/020. Do not merge the TS-003 exception itself into Core v2 or mark this item `CORE_FIXED`.
+
+---
 
 ## 6. Items intentionally not treated as current shared-Core defects
 
@@ -756,6 +801,8 @@ A batch repair may close multiple `CV2-DM` items, but each item must receive its
 | `SP-beyond-text-2026` | Final release closure review in r0.6 | No new CV2-DM ID; DM-001/002/003/004/019 recurred; DM-006 materially updated | TS-002 Freeze/Release recurrences with edition-local compat (`ts002-freeze-compat-20260928.py`, recovery PR #549, runs 36333979769/36333984167); CV2-DM-006 latest reproduction + generic seed corpus `docs/editorial/ja-technical-terminology-overtranslation-seed.md` (#533/#539/#543 incorporated); edition RELEASED/COMPLETE with exact Human-approved 78pp PDF; shared Core implementation unchanged. |
 | `2026-W39` | Final release closure review in r0.7 | **DM-020 new**; DM-001/002/003/004/006/013/014 recurred or materially updated | Issue #551 exposed generic claim-to-source semantic-fidelity/source-role weakness (new DM-020); Issue #501 terminology defect recurred across multiple preview rounds (DM-006); DolphinBench/Claude Code temporal identity issues extend DM-013; Freeze compat repeated DM-001/002/003; release run `36581201216` repeated DM-004 and recovery PR #557; final `execution/index.md` remains stale after recovery (DM-014). Edition RELEASED/COMPLETE with exact Human-approved 12pp PDF; shared Core implementation unchanged. |
 
+| `SP-vision-multimodal-2026` | Exceptional release closure review in r0.8 | **DM-021 new**; DM-006/015/020 recurred | TS-003 post-`VALIDATED_DRAFT` editorial and source-fidelity repairs exposed an unsupported publication revalidation reason (`REVIEWED_CORE_CHANGE` only; #560). Human authorized one-off exception: exact approved 39pp PDF SHA `b2de8449…` Freeze-pinned and released with PR #561 and run `37955511006`; distinct exception records preserved, normal Production State remains `VALIDATED_DRAFT`. Prior reader Japanese, editorial process leak and citation semantic-fidelity failures documented in DM-006/015/020; shared Core unchanged. |
+
 Next required update: the next Weekly/Special guarded stop or closure if it occurs first.
 
 ## 10. Revision History
@@ -770,12 +817,16 @@ Next required update: the next Weekly/Special guarded stop or closure if it occu
 | `r0.6` | 2026-09-28 | `SP-beyond-text-2026` final release closure | No new CV2-DM ID. Refreshed DM-001/002/003/004/019 latest reproductions to `SP-beyond-text-2026` with TS-002 evidence (`ts002-freeze-core-defects-20260928.md`, `ts002-release-recovery-20260928.md`, runs 36333979769/36333984167, PRs #548/#549). Materially updated DM-006 (tracking #501+#534, TS-002 #533/#539/#543 evidence, new generic seed corpus path, forbidden-list insufficiency, expanded future scan directions, established-Japanese invariant). Edition RELEASED/COMPLETE; shared Core implementation unchanged. |
 | `r0.7` | 2026-09-30 | `2026-W39` final release closure | Added CV2-DM-020 for claim-to-source semantic fidelity / source-role binding after Issue #551 (ART novelty, Cursor claim strength, Claude Code first-party binding, Opus conditionality, source-note role consistency). Refreshed DM-001/002/003 Freeze recurrences from `w39-freeze-compat-note-20260929.md`, DM-004 release recurrence (run `36581201216`, PR #557), DM-006 Weekly terminology recurrence (#501 + W39 supplements), DM-013 temporal/version/date recurrence (#551), and DM-014 stale execution index after recovery. W39 RELEASED/COMPLETE; shared Core implementation unchanged. |
 
+| `r0.8` | 2026-10-10 | `SP-vision-multimodal-2026` exceptional final release | Added CV2-DM-021 for missing post-validated reader/editorial publication revalidation authority (Issue #560), documenting explicit Human-approved one-off exception Freeze + verified GitHub Release (PR #561; run `37955511006`) without changing formal Core v2 lifecycle. Refreshed DM-006 Japanese terminology, DM-015 internal editorial leakage, DM-020 claim-to-source source-fidelity recurrences. New edition-local defect note linked; existing statuses remain OPEN until consolidated Core maintenance. |
+
 ## 11. Reference authority
 
 Primary evidence for the current inventory includes:
 
 - frozen Production Line: `774dd39a951c9ac3818e83dfffd4c7666efb0a20`;
 - W39 closure-reviewed main: `239ef2703a93fa802f232978c7166d04d6cc3d49`;
+- TS-003 exceptional-release-closure-reviewed main: `7c8e4b1ee913007e4d1e0dc627e2c0a7c2f5ff4f`;
+- [Issue #560](https://github.com/eariver/japanese-generative-ai-survey/issues/560), exception manifest/Release record, PR #561, and workflow run `37955511006` for CV2-DM-021;
 - [Issue #497](https://github.com/eariver/japanese-generative-ai-survey/issues/497);
 - [Issue #501](https://github.com/eariver/japanese-generative-ai-survey/issues/501);
 - [Issue #505](https://github.com/eariver/japanese-generative-ai-survey/issues/505);
