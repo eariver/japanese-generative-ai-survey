@@ -256,3 +256,11 @@ This is the current human-readable navigation record for the edition. Machine li
 - F02: NEW `SOL_W40_R16_HANDOFF_GIT_IDENTITY_CORRECTION_R17.md` (withdraws `HEAD == main` SHA reading; exact r16 identities; three-assertion rule; history preserved).
 - Handoff: `execution/SOL_W40_R17_TWO_MINOR_DOCUMENTATION_HANDOFF.md`; session: `execution/sessions/muse-w40-r17-20261010.md`.
 - Terminal: `SOL_W40_R17_TWO_MINOR_DOCUMENTATION_REVIEW_REQUIRED`. No Acceptance / transition / Architecture / Gate / Freeze / release / supplement / Core fix.
+
+
+## Sol W40 r17 verification — edition-local staging CLOSED (2026-10-10)
+
+- Sol closure authority: `execution/reviews/sol-w40-r17-edition-local-staging-closure-20261010.md`; status `PASS_FOR_R17_STAGING_ONLY / EDITION_LOCAL_STAGING_CLOSED / SELECTION_ACCEPTANCE_HOLD`.
+- Actual Muse r17 HEAD `8ca75821198c371e208aadf415162f653848c2a6`, tree `fd9f42d23954706a79ac560d2c24eeb198c6a88a` (1 FF commit, W40-only); reviewed main `afdb3df3faa20af3bb5798be429bba8dbd2100b1`. Sol independently recalculated nine canonical+stored SHA-256 digests from Selection/Matrix/Coverage/r15 boundary bytes, matching r17 digest report 9/9; F01 CLOSED.
+- R16-F02 Git identity addendum accepted: work HEAD, reviewed main HEAD and symbolic HEAD separate; F02 CLOSED. Accepted technical staging: 28 selected (20P/8S), 113 raw Boundary relations→105 unique strings, zero missing/extra. Historical r13–r17 files preserved.
+- **No production stage transition**: State `EVIDENCE_REVIEWED`, `next_action=stage:selection`; Gates pending/null; AstaBrief/AutoSynthData canonical HOLD; Issue #562 separate Core blocker OPEN. Wait for reviewed Core supersession; no official Selection/Architecture/Freeze/Release approval.
