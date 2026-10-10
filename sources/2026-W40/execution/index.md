@@ -354,3 +354,14 @@ This is the current human-readable navigation record for the edition. Machine li
 - Human Owner in chat explicitly said: OK、承認します。毎回このようにArchitecture Reviewを進めていきましょう。では、Museに続行させましょう。 This refers to the detailed 37-Discovery/35-Evidence/39-source-reference/28-selected/9-package Architecture dossier. Durable decision provenance (NOT canonical Human Gate): execution/human-authorization/2026-10-11_owner-w40-r20-architecture-approved.md.
 - Muse execution contract: execution/instructions/2026-10-11_muse-w40-r21-owner-approved-through-publication-preview.md. First officially record Architecture APPROVED against reviewed r20 SHA using unchanged Core (r1, reviewed_by Human Owner, real UTC formal-record instant). Then draft/validate/render all 28 to canonical fresh PUBLICATION_PREVIEW pending. No Preview approval/Freeze/Release. Core #562 separate; HOLDs excluded.
 - Future owner-requested Human Architecture Review standard: present source counts with independent-source caveat, validated claim/evidence quality, per-Package technical architecture and depth, relative page sizing, omissions and recommendation before seeking approval.
+
+## Muse W40 r21 — Owner-approved Architecture through Publication Preview (2026-10-11)
+
+- Start: remote HEAD `8695430b…`/tree `f1c75278…`/main `afdb3df3…` + 9 preflight SHAs + State/Gate/authority verified read-only (all match); local FF-only to exact Start.
+- Approval FIRST via official CLI (Human Owner, r1, reviewed `3711d777f`, real UTC, pinned references): approval `953f682a…`, record+snapshot+index, State approved, Preview pending. Committed, pushed, readback — before Draft.
+- Draft: 9 pkgs/29 blocks Japanese prose (P6a/P6b depth), typo self-fix, official agent-wrapper runner, stage validation → `DRAFT_COMPLETE`.
+- Reader TeX (main + 12 sections + 28-key bib + style + 4-row ledger); CI `38080645314` success; visual QA → clearpage fix; CI `38081205472` success. Exact PDF 12 pages, 370741 bytes, `f93d15f8…` (artifact `11680681821`).
+- QA chain: manuscript, surface input + surface semantic PASS, deterministic identifier/preflight/binding, quality bundle 3/3, publication semantic 11/11, visual 2/2 (12/12 pages), surface gate; stage validations → `VALIDATED_DRAFT`.
+- Candidate `157c4644…` (`READY_FOR_PUBLICATION_PREVIEW`) → `RELEASE_CANDIDATE / PUBLICATION_PREVIEW / HUMAN_GATE_REACHED`, Preview pending/null. No Preview decision/Freeze/Release/merge/PR. No new branch/force; no Core/Selection/upstream/HOLD-promotion changes.
+- Session: `execution/sessions/muse-w40-r21-20261011.md`; handoff: `execution/SOL_W40_R21_PUBLICATION_PREVIEW_HANDOFF.md`.
+- Terminal: `FRESH_HUMAN_PUBLICATION_PREVIEW_PENDING / W40_R21_READY_FOR_SOL_AND_OWNER_PDF_REVIEW` candidate.
