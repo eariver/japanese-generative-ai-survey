@@ -234,3 +234,15 @@ This is the current human-readable navigation record for the edition. Machine li
 - New primary retrievals (uncommitted /tmp): ar5iv CLM, Ai2 blog, report landing (body inaccessible), AA article, OpenTTS blog, GH repo facts, CLM LICENSE. NOT-retrieved list preserved.
 - Untouched `validate_selection` DIRECTLY re-executed on preview-r13 (see handoff §9 / outer report). Handoff: `execution/SOL_W40_R15_BOUNDARY_AND_TECHNICAL_REVIEW_HANDOFF.md`; session: `execution/sessions/muse-w40-r15-20261010.md`.
 - Terminal: `SOL_W40_R15_BOUNDARY_AND_TECHNICAL_REVIEW_REQUIRED`. No Acceptance / transition / Architecture / Gate / Freeze / release / supplement / Core fix.
+
+## Muse W40 r16 — bounded documentation + Eq.5 repair (2026-10-10, Sol-bounded)
+
+- Instruction: `execution/instructions/2026-10-10_muse-w40-r16-bounded-documentation-and-eq5-repair.md`; Sol accepts independent r15 `BOUNDED_REVISION_REQUIRED` (A01–A05), authorizes bounded r16.
+- Start: remote HEAD `109ddbddd…`/tree `13258c73…`/main `afdb3df3…` read-only verified (all match); local FF-only. Guards PASS (EVIDENCE_REVIEWED, stage:selection, Gates pending/null, exception inactive, 37/37/35/35/37, checkpoints, 4 SHAs byte-matched).
+- Scope A01–A05 ONLY; r15 Boundary JSON / Selection / Matrix / Coverage / r15 drafts byte-identical, untouched.
+- A01/A05: tables rebuilt from bytes (P1 14/12/2, P2 8/8/0, P3 13/13/0, P4 10/8/2, P5 18/17/1, P6a 10/10/0, P6b 15/15/0, P7 19/16/3, P8 6/6/0; TOTAL 113/105/8; dedup strings + multiplicities verified) + successor `architecture-staged-outline-r16.md` (SHA-bound reference, no string duplication).
+- A02: distribution recomputed {7:1, 5:9, 4:7, 3:11} (113, 28 cands); r15 `9×5+17×4+9×3` withdrawn (file untouched).
+- A03: NEW `architecture-boundaries-validation-addendum-r16.json` (unexpected 0, missing 0, dup-in-array 0, ordered-exact true, membership true, roundtrip idempotent with byte-vs-set distinction, Core-rule ephemeral PROPOSED re-run 0 errors, method pseudocode; PASS).
+- A04: NEW `technical-prep-r16/contextlm-eq5-primary-note.md` (ar5iv v1 §4.2 S4.E5 exact symbols + train/dev/held-out loop + in-context vs in-weights; Eq.4 verified/unchanged; Eq.6/metrics untouched).
+- Handoff: `execution/SOL_W40_R16_BOUNDED_DOCUMENTATION_REVIEW_HANDOFF.md`; session: `execution/sessions/muse-w40-r16-20261010.md`.
+- Terminal: `SOL_W40_R16_BOUNDED_DOCUMENTATION_REVIEW_REQUIRED`. No Acceptance / transition / Architecture / Gate / Freeze / release / supplement / Core fix.

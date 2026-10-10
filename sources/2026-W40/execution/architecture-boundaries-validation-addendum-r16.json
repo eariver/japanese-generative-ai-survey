@@ -1,0 +1,129 @@
+{
+ "schema": "W40_R16_ARCHITECTURE_BOUNDARIES_VALIDATION_ADDENDUM",
+ "issue_id": "2026-W40",
+ "checks": {
+  "inputs": {
+   "selection": {
+    "path": "sources/2026-W40/execution/selection/selection-preview-r13.json",
+    "sha256": "dc0247781b0401e62eb8b17980050769b743f2aa313ffda3f5b5704235db0cb1"
+   },
+   "matrix": {
+    "path": "sources/2026-W40/execution/selection/candidate-matrix-r10-staging.json",
+    "sha256": "f07b1166eef02598a1d57ebd7d0068119678fcfc17f1d118ef2b582594a736f6"
+   },
+   "coverage": {
+    "path": "sources/2026-W40/execution/architecture-coverage-r14.json",
+    "sha256": "3de8bd56f71996e6c6ff075157967507a03650de3fd10c15b31e72faebc671cc"
+   },
+   "boundaries_r15": {
+    "path": "sources/2026-W40/execution/architecture-boundaries-r15.json",
+    "sha256": "1736737e9488e3a6e2a94471bfc506fdc43c9f18d5321bbc31b25bb99eb749c7"
+   }
+  },
+  "recomputed": {
+   "ids_28_28": true,
+   "usage_20P_8S": true,
+   "raw_relationships": 113,
+   "unique_package_strings": 105,
+   "per_package": {
+    "P1": [
+     14,
+     12,
+     2
+    ],
+    "P2": [
+     8,
+     8,
+     0
+    ],
+    "P3": [
+     13,
+     13,
+     0
+    ],
+    "P4": [
+     10,
+     8,
+     2
+    ],
+    "P5": [
+     18,
+     17,
+     1
+    ],
+    "P6a": [
+     10,
+     10,
+     0
+    ],
+    "P6b": [
+     15,
+     15,
+     0
+    ],
+    "P7": [
+     19,
+     16,
+     3
+    ],
+    "P8": [
+     6,
+     6,
+     0
+    ]
+   },
+   "candidate_distribution": {
+    "7": 1,
+    "5": 9,
+    "4": 7,
+    "3": 11
+   }
+  },
+  "unexpected_package_boundary_strings_count": 0,
+  "unexpected_package_boundary_strings": [],
+  "missing_literal_memberships_count": 0,
+  "missing_literal_memberships": [],
+  "package_boundary_array_duplicates_count": 0,
+  "candidate_boundary_arrays_exact_match": true,
+  "package_primary_supporting_membership_exact_match": true,
+  "roundtrip": {
+   "rederived_twice_idempotent": true,
+   "stored_ordering": "insertion-order (r15 generator)",
+   "rederivation_ordering": "sorted",
+   "byte_identical": false,
+   "semantic_set_equal": true,
+   "verdict": "stored r15 arrays NOT modified; equality is set-level, not byte-level"
+  },
+  "core_rule_equivalent_rerun": "ephemeral in-memory PROPOSED validate_architecture on unmodified reviewed-main Core: PASS (0 errors); placeholder thesis/goals/empty-must-cover; never written; NOT formal Architecture PASS",
+  "dedup_breakdown": {
+   "P1": {
+    "removed": 2,
+    "strings": {
+     "All benchmark deltas vendor-run; independent reproduction pending.": 2,
+     "Day-only date.": 2
+    }
+   },
+   "P4": {
+    "removed": 2,
+    "strings": {
+     "Day-only date.": 3
+    }
+   },
+   "P5": {
+    "removed": 1,
+    "strings": {
+     "Day-only date.": 2
+    }
+   },
+   "P7": {
+    "removed": 3,
+    "strings": {
+     "Day-only date.": 4
+    }
+   }
+  },
+  "method": "1) load selection/matrix/coverage/boundaries bytes; verify SHAs. 2) SELECTED set from selection dispositions. 3) per-candidate len(remaining_boundaries) from matrix rows; distribution + weighted sum. 4) per-package raw = sum of member lens via coverage mapping; unique = len(stored boundaries array); dedup = raw-unique; duplicate strings via Counter(n>1). 5) unexpected = stored-package-strings MINUS all-member-source-strings. 6) missing = for each entry/package/string, literal membership test. 7) candidate arrays: strict ordered-list equality vs matrix rows. 8) roundtrip: re-derive sorted(set(...)) per package TWICE from matrix+mapping; compare runs; compare to stored (byte vs set). 9) ephemeral PROPOSED validate_architecture with full envelope+basis, in-memory only. 10) PASS only if unexpected==0 and missing==0 and duplicates-in-array==0 and exact matches hold.",
+  "status": "PASS"
+ },
+ "status": "PASS"
+}
