@@ -278,3 +278,16 @@ This is the current human-readable navigation record for the edition. Machine li
 - Authoritative Sol corrective decision: `execution/reviews/sol-w40-plan-a-28-item-forward-continuation-20261011.md`.
 - Muse bounded execution: `execution/instructions/2026-10-11_muse-w40-r18-core-bypass-selection-to-architecture-review.md` — existing W40 only, 28 SELECTED, 4 HOLD, 3 REJECT; standard stage validators/checkpoints; stop at fresh Human Architecture Review, no Human decision.
 - Core #562 remains separate; AstaBrief/AutoSynthData supplemental editorial research remains NON_CANONICAL; not an ordinary Release asset or W40 chapter.
+
+
+## Muse W40 r18 — 28-item Selection → Architecture Review (2026-10-11)
+
+- Instruction: `execution/instructions/2026-10-11_muse-w40-r18-core-bypass-selection-to-architecture-review.md`; Sol Plan-A authority `execution/reviews/sol-w40-plan-a-28-item-forward-continuation-20261011.md`.
+- Start: remote HEAD `710e83017…`/tree `098ba099…`/main `afdb3df3…` verified read-only (all match); local was 2 Sol commits behind, fast-forwarded FF-only. Guards PASS (EVIDENCE_REVIEWED, stage:selection, Gates pending/null, exception inactive, 4 source SHAs byte-matched, Discovery37/Screening37/Evidence35/Views35 unchanged).
+- Preflight: `validate_selection` on preview-r13 PASS (0 errors, 35 = 28/20P/8S + 4 HOLD + 3 REJECT); Core-derived Matrix byte-identical to r10 staging (`f07b1166…`).
+- Canonicals via frozen interactive runner: `candidate-matrix-v2.json` (= staging bytes), `candidate-selection-v2.json` (`interactive-v2-1`, `b7d20be2…`), `architecture-v2.json` (PROPOSED, `d732aeda…`, 9 packages P1–P8 P6a/P6b split, 28/28 placed, 113/113 boundaries, per-package counts match r16), `architecture-review-summary-v2.json` (READY, `dc5f29de…`), `architecture-review-attention-v2.json` (VALID, `70ac43bd…`); input archive + audit. Selection/architecture validators 0 errors.
+- Stage Selection: stage validation PASS (`selection-stage-validation-r1.json`) + reviews → checkpoint `EVIDENCE_REVIEWED.json` → `SELECTION_COMPLETE / stage:architecture`.
+- Stage Architecture: stage validation PASS (`architecture-stage-validation-r1.json`) + reviews → checkpoint `SELECTION_COMPLETE.json` → `ARCHITECTURE_ESTABLISHED`, next `ARCHITECTURE_REVIEW`, terminal `HUMAN_GATE_REACHED`, architecture passed, Gates pending/null.
+- HOLDs (AstaBrief/AutoSynthData) excluded from all packages; Core #562 untouched and separate; no Core/schema/config/workflow/main/other-edition changes; no new branch/force/reset; no Human decision/Draft/Freeze/Release.
+- Session: `execution/sessions/muse-w40-r18-20261011.md`; handoff: `execution/SOL_W40_R18_ARCHITECTURE_REVIEW_HANDOFF.md`.
+- Terminal: `FRESH_HUMAN_ARCHITECTURE_REVIEW_PENDING` candidate.
