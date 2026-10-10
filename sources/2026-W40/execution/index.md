@@ -159,6 +159,14 @@ This is the current human-readable navigation record for the edition. Machine li
 - Sol review: `sources/2026-W40/execution/reviews/sol-w40-evidence-authority-consumption-r4-20261010.md`; bounded Muse r8 contract: `sources/2026-W40/execution/instructions/2026-10-10_muse-w40-evidence-acceptance-materiality-preparation-r8.md`.
 - Muse r8 may accept Evidence and Edition Views ONLY after mandatory cleanup + authentic frozen Core validations; draft Materiality/Completeness and return for Sol independent review. No stage advance `CANDIDATES_NORMALIZED` → `EVIDENCE_REVIEWED`, no Selection/Architecture/Human Gate.
 
+## Sol Materiality/Completeness Review r1 (2026-10-10; Muse r8)
+
+- Accepted factual Evidence 35 (29 VERIFIED/6 PARTIAL) + Edition Views 35, authentic Core Acceptance records and cross-SHA 35/35 pass, **not yet active Stage checkpoint**. Muse r8 did not illegally advance State.
+- Sol decision `SOL_MATERIALITY_SEMANTIC_CONDITIONAL_PASS / MC01_MC02_REQUIRED` at `sources/2026-W40/execution/reviews/sol-w40-materiality-completeness-r1-20261010.md`. Two bounded editorial defects:
+  - MC01: Grok/X provenance ledger is not a new technology event, despite accepted View MATERIAL/MAIN_EVENT. Revise one View to CONTEXT/OTHER and regenerate new immutable accepted 35-View pair; expected actual material leads **29**.
+  - MC02: Materiality Ledger rationales are tautologies; three Completeness obligations all bind 37 records, including a carry-over obligation that should cover only two W39 HOLD leads. Generate source-specific rationales and semantically scoped obligations.
+- Muse r9 execution `sources/2026-W40/execution/instructions/2026-10-10_muse-w40-materiality-semantics-through-selection-proposal-r9.md` authorizes authentic combined `CANDIDATES_NORMALIZED → EVIDENCE_REVIEWED` Core checkpoint **only** if exact corrections + validators PASS, then bounded PROPOSED Selection until fresh Sol Selection semantic review; no Selection Acceptance or Architecture/Human Gate.
+
 ## Final disposition
 
 `IN_PROGRESS`
