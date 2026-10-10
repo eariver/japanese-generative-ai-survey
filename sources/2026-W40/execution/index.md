@@ -291,3 +291,10 @@ This is the current human-readable navigation record for the edition. Machine li
 - HOLDs (AstaBrief/AutoSynthData) excluded from all packages; Core #562 untouched and separate; no Core/schema/config/workflow/main/other-edition changes; no new branch/force/reset; no Human decision/Draft/Freeze/Release.
 - Session: `execution/sessions/muse-w40-r18-20261011.md`; handoff: `execution/SOL_W40_R18_ARCHITECTURE_REVIEW_HANDOFF.md`.
 - Terminal: `FRESH_HUMAN_ARCHITECTURE_REVIEW_PENDING` candidate.
+
+
+## Sol W40 r18 preliminary Human Architecture Review checks (2026-10-11)
+
+- Actual Muse r18 reached `ARCHITECTURE_ESTABLISHED / HUMAN_GATE_REACHED` with standard Stage machine checkpoints passed and Human Gates pending. Sol structural check: 28 SELECTED, 113 literal boundaries, 9 packages, zero missing.
+- **Human decision NOT recorded**: newly flagged truthful-review-surface and P6 cross-topic attribution issues; `execution/reviews/sol-w40-r18-architecture-preliminary-disposition-20261011.md`.
+- Separate read-only independent audit request: `execution/instructions/2026-10-11_sol-high-w40-r18-independent-architecture-audit-readonly.md`. All canonical Architecture and State checkpoint bytes remain untouched by this Sol note.
