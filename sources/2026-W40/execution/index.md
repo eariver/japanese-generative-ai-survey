@@ -298,3 +298,10 @@ This is the current human-readable navigation record for the edition. Machine li
 - Actual Muse r18 reached `ARCHITECTURE_ESTABLISHED / HUMAN_GATE_REACHED` with standard Stage machine checkpoints passed and Human Gates pending. Sol structural check: 28 SELECTED, 113 literal boundaries, 9 packages, zero missing.
 - **Human decision NOT recorded**: newly flagged truthful-review-surface and P6 cross-topic attribution issues; `execution/reviews/sol-w40-r18-architecture-preliminary-disposition-20261011.md`.
 - Separate read-only independent audit request: `execution/instructions/2026-10-11_sol-high-w40-r18-independent-architecture-audit-readonly.md`. All canonical Architecture and State checkpoint bytes remain untouched by this Sol note.
+
+
+## Sol adopts independent r18 Architecture audit — r19 bounded remedy (2026-10-11)
+
+- Independent audit verdict `BOUNDED_REVISION_REQUIRED` accepted: structural Gate PASS (agent-first), 28 selected/113 Boundaries intact, seven F01–F07 documentation/attribution/depth findings. Current r18 Human Gate remains pending; **NO Human decision recorded**.
+- Sol disposition: `execution/reviews/sol-w40-r18-independent-architecture-audit-disposition-20261011.md`.
+- r19 prepared execution: `execution/instructions/2026-10-11_muse-w40-r19-bounded-architecture-gate-invalidation-and-regeneration.md`. This docs-only Sol commit DOES NOT invalidate any Gate or change official State. On later separately triggered Muse run, use official **operator** pending-Gate invalidation to `SELECTION_COMPLETE`, regenerate Architecture-only, independently review before any Human approval. Core #562 stays separate.
