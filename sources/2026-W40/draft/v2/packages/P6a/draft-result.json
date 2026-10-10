@@ -1,0 +1,538 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W40",
+  "research_profile": "WEEKLY",
+  "publication_profile": "WEEKLY_MAGAZINE",
+  "package_id": "P6a",
+  "draft_version": "r21-draft-1",
+  "status": "ESTABLISHED",
+  "basis": {
+    "draft_package_sha256": "23da4e7f489a6a1968edafad38292efd288de872aa3a0c30f9e2628cb1688436",
+    "prompt_id": "article-drafting-v2",
+    "prompt_sha256": "b687313312a23025228c16c3f10cb68f669b910cd7215e41886d4dd91f44fe11"
+  },
+  "runner": {
+    "provider": "muse-spark",
+    "model": "muse-spark-1.3-contributor",
+    "invocation": "run_drafting_synthesis_v2_interactive for 9 approved W40 packages (28 placed, P6a/P6b depth)",
+    "generated_at": "2026-10-10T19:29:04Z",
+    "run_reference": null
+  },
+  "headline": "鍛えの手筋――ContextLMの式とOlmo-core 3の仕組み",
+  "deck": "編集できる綴じと群れの技を、式と分母と土台つきで読む。今号いちばんの読みどころである。",
+  "deck_attribution_mode": "MIXED",
+  "deck_evidence_refs": [
+    {
+      "evidence_task_id": "evidence:2026-W40:8d261dee1d3bdf14",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1",
+      "subject_id": "arxiv-2609-37725",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:2026-W40:8d261dee1d3bdf14",
+      "kind": "CLAIM",
+      "evidence_id": "claim-2",
+      "subject_id": "arxiv-2609-37725",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:2026-W40:8d261dee1d3bdf14",
+      "kind": "CLAIM",
+      "evidence_id": "claim-3",
+      "subject_id": "arxiv-2609-37725",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:2026-W40:8d261dee1d3bdf14",
+      "kind": "CLAIM",
+      "evidence_id": "claim-4",
+      "subject_id": "arxiv-2609-37725",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:2026-W40:8d261dee1d3bdf14",
+      "kind": "CLAIM",
+      "evidence_id": "claim-5",
+      "subject_id": "arxiv-2609-37725",
+      "subject_role": "PRIMARY_SUBJECT"
+    }
+  ],
+  "blocks": [
+    {
+      "block_id": "p6a-clm-file",
+      "block_type": "PARAGRAPH",
+      "text": "ContextLMは、文脈を綴じとして編む。Bashで擦り合わせた綴じの品で、使い回す文頭の再利用をフロップスという物差しで量る。式3の置き場は「最初の食い違いより後の文の詰め直しと、新しく生む字句の解きの勘定」であり、壁時計でも当たり率でもない。一致した文頭は勘定に入らないという約束が要である。ここを外すと後の割り引きの話が全部ずれる。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W40:8d261dee1d3bdf14",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "arxiv-2609-37725",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:8d261dee1d3bdf14",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "arxiv-2609-37725",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:8d261dee1d3bdf14",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "arxiv-2609-37725",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:8d261dee1d3bdf14",
+          "kind": "CLAIM",
+          "evidence_id": "claim-4",
+          "subject_id": "arxiv-2609-37725",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:8d261dee1d3bdf14",
+          "kind": "CLAIM",
+          "evidence_id": "claim-5",
+          "subject_id": "arxiv-2609-37725",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:8d261dee1d3bdf14",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "arxiv-2609-37725",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:8d261dee1d3bdf14",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "arxiv-2609-37725",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:8d261dee1d3bdf14",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-3",
+          "subject_id": "arxiv-2609-37725",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p6a-clm-eq56",
+      "block_type": "PARAGRAPH",
+      "text": "式5は技の進め方の記述である。重みは固めたまま、綴じの文書 s を鍛え、鍛えと試しと取って置きの三分けで運び、取って置きでは一度だけ量る。持ち越しの伸びは最大で35.9点と置かれる。式の本体 s* = argmax_s E[R(τ)] は、文脈の中に技を置く流儀の最適化であり、重みを学ぶ流儀ではない。式6は別物で、うまくいった軌跡が二本に満たない群では効率の項は黙り、成否の項だけが残る。成功者の中を安い順に並べ替える仕掛けであり、正誤の裁きは別が担う。式4は確かめたとおりで動かない。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W40:8d261dee1d3bdf14",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "arxiv-2609-37725",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:8d261dee1d3bdf14",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "arxiv-2609-37725",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:8d261dee1d3bdf14",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "arxiv-2609-37725",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:8d261dee1d3bdf14",
+          "kind": "CLAIM",
+          "evidence_id": "claim-4",
+          "subject_id": "arxiv-2609-37725",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:8d261dee1d3bdf14",
+          "kind": "CLAIM",
+          "evidence_id": "claim-5",
+          "subject_id": "arxiv-2609-37725",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:8d261dee1d3bdf14",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "arxiv-2609-37725",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:8d261dee1d3bdf14",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "arxiv-2609-37725",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:8d261dee1d3bdf14",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-3",
+          "subject_id": "arxiv-2609-37725",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p6a-clm-nums",
+      "block_type": "PARAGRAPH",
+      "text": "数の置き場は混ぜない。BCPは59.4%で相対11.4%の伸び、向かうはCodex流の要約という最強の土台である。使い回しの割り引きは同土台に21.5%、MEM1に28.9%で、両者は統合しない。TB2.1は同等の当たりで7割の勘定、TBLiteは73.7対67.0で9割1分の勘定で、土台は同じCodex流である。EdgeBenchの12時間10題は5%の伸びに59%の割り引き、群れは65%の伸び、オンラインの強化学習はQwen3.5-9Bで28.8から42.5へと13.7差、同じ手順のCodex harnessには0.4点と38.8%の割り引きで並ぶ。いずれも紙の言い分であり、許諾は紙がBY-4.0、置き場がBY-NC-4.0である。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W40:8d261dee1d3bdf14",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "arxiv-2609-37725",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:8d261dee1d3bdf14",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "arxiv-2609-37725",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:8d261dee1d3bdf14",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "arxiv-2609-37725",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:8d261dee1d3bdf14",
+          "kind": "CLAIM",
+          "evidence_id": "claim-4",
+          "subject_id": "arxiv-2609-37725",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:8d261dee1d3bdf14",
+          "kind": "CLAIM",
+          "evidence_id": "claim-5",
+          "subject_id": "arxiv-2609-37725",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:8d261dee1d3bdf14",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "arxiv-2609-37725",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:8d261dee1d3bdf14",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "arxiv-2609-37725",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:8d261dee1d3bdf14",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-3",
+          "subject_id": "arxiv-2609-37725",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p6a-olmo",
+      "block_type": "PARAGRAPH",
+      "text": "Olmo-core 3は、群れをどう捌くかの仕組みである。DDPに技持ちを住まわせ、GPUの上で回し先を決めて並べ替えの余分を抑え、束ねGEMMとMXFP8で固める。MXFP8の効きはB300四枚の均一負荷という構えでの話で、通りが21%伸び、103GiBが95GiBに痩せると置かれる。他の構えへの広げはしない。技持ちを8から128に増やし、一手に4つ動かして3.2Bほど働かせても、通りは5%も落ちない。8枚B300の予備走りでは旧実装の2.7倍ほどと置かれる。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W40:3d0bd53e29394b6b",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ai2-olmocore3",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:3d0bd53e29394b6b",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ai2-olmocore3",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:3d0bd53e29394b6b",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "ai2-olmocore3",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:3d0bd53e29394b6b",
+          "kind": "CLAIM",
+          "evidence_id": "claim-4",
+          "subject_id": "ai2-olmocore3",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:3d0bd53e29394b6b",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ai2-olmocore3",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:3d0bd53e29394b6b",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "ai2-olmocore3",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:3d0bd53e29394b6b",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-3",
+          "subject_id": "ai2-olmocore3",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p6a-olmo-scale",
+      "block_type": "PARAGRAPH",
+      "text": "物差しの置き場は三つに分ける。47Bは測った値、1.2Tは回し（能動58.36B・512枚・最大858TFLOP/s/GPU、でたらめ回しの条件の仕組みの値であり、品の良し悪しではない）、2.38Tは短い容量試しである。三つを一つの大きさに束ねてはならない。うまくいかなかった話も載せる。回しの釣り合いの点は失敗に終わり、量り方への戒めとして残る。報告書の本体は手が届かず、紙の付録や絵の言及のない中身は言わない。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W40:3d0bd53e29394b6b",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ai2-olmocore3",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:3d0bd53e29394b6b",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ai2-olmocore3",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:3d0bd53e29394b6b",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "ai2-olmocore3",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:3d0bd53e29394b6b",
+          "kind": "CLAIM",
+          "evidence_id": "claim-4",
+          "subject_id": "ai2-olmocore3",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:3d0bd53e29394b6b",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ai2-olmocore3",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:3d0bd53e29394b6b",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "ai2-olmocore3",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:3d0bd53e29394b6b",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-3",
+          "subject_id": "ai2-olmocore3",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "P6a-boundaries",
+      "block_type": "CLAIM_BOUNDARY",
+      "text": "この節の読解上の境界: ar5iv rendering (not PDF bytes); equations/figures partially garbled; Appendices B–F unread (output truncated); code repo not opened; no reproduction. / Paper-claimed figures; independent verification pending. / Verification target arxiv-2609-37725-pdf was FALSE in r1 (abstract-only) — corrected here. / arxiv-2609-37725-pdf: PDF BYTES NOT consumed (direct fetch returned binary; metadata only). Full paper TEXT consumed via ar5iv HTML rendering of same v1 (§§1–6 + refs + App.A; bounded excerpts archived); r1 FALSE pdf-VERIFIED withdrawn. / code: Code repo linked in paper; not opened; no reproduction. / Report body UNREAD (2 failed fetches, logged); quantitative provenance stays reporter-level. / Report dated 2026-10-01 corroborated by search excerpt only. / Repo internals (code/docs) not consumed; Sol/Selection-depth clone is the retry avenue. / tech-report: Report page >5MB on markdown AND text fetches; failure logged with fallback consumption (blog+repo); claim level bounded to reporter. / github-repo: Repo page existence/license/scripts confirmed; code internals not consumed.",
+      "attribution_mode": "INFERENCE",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W40:8d261dee1d3bdf14",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "arxiv-2609-37725",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:8d261dee1d3bdf14",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "arxiv-2609-37725",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:8d261dee1d3bdf14",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-3",
+          "subject_id": "arxiv-2609-37725",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:3d0bd53e29394b6b",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ai2-olmocore3",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:3d0bd53e29394b6b",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "ai2-olmocore3",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:3d0bd53e29394b6b",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-3",
+          "subject_id": "ai2-olmocore3",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    }
+  ],
+  "must_cover_coverage": [
+    {
+      "requirement": "ContextLM: Bash-synced editable file; Eq.3 prefix-reuse FLOPs (FLOPs_prefill(unmatched context suffix) + FLOPs_decode(generated tokens) — a compute metric, not wall time or hit-rate); SCR/BCP relative gains with mutually distinct baselines (BCP 59.4% +11.4% relative vs Codex-style summarization §5; -21.5% vs same, -28.9% vs MEM1 kept separate; TB2.1 equivalent accuracy at 70% FLOPs and TBLite 73.7 vs 67.0 at 91% FLOPs both vs Codex-style §5); EdgeBench 12h 10-task +5%/-59% FLOPs; swarm +65%; online RL Qwen3.5-9B 28.8->42.5 BrowseComp-Plus (+13.7pp, Table 2 baseline) and +0.4 points/-38.8% FLOPs vs same-recipe Codex-summary harness; Eq.6 exact symbols + RL meaning (efficiency signal only re-ranks successful trajectories by inference cost); Eq.1-4/Eq.3/SCR roles; licenses paper-BY-4.0/repo-BY-NC-4.0; measurement separation per technical-prep-r15/p6a-deep-draft.md.",
+      "block_ids": [
+        "p6a-clm-file",
+        "p6a-clm-eq56",
+        "p6a-clm-nums",
+        "p6a-olmo",
+        "p6a-olmo-scale",
+        "P6a-boundaries"
+      ]
+    },
+    {
+      "requirement": "ContextLM Eq.5 vs Eq.6: skill-evolution Eq.5 loop (fixed model weights; train/dev/held-out split with single held-out evaluation; up-to-35.9-point held-out gain; in-context vs in-weights split) vs Eq.6 RL parameter updates (fewer than 2 successful trajectories in a group => efficiency advantage A_i^{eff}=0 for all trajectories, outcome term A_i^{out} remains); Eq.4 verified/unchanged; Eq.5 exact optimization objective, variable definitions and fixed-weight training/development/held-out skill-evolution procedure VERIFIED against arXiv:2609.37725v1 §4.2 and execution/technical-prep-r16/contextlm-eq5-primary-note.md (in-context skill optimization, not Eq.6 parameter-learning RL); PDF bytes, figures, appendices B–F, code, unpinned repo revision and unquoted details remain UNVERIFIED.",
+      "block_ids": [
+        "p6a-clm-file",
+        "p6a-clm-eq56",
+        "p6a-clm-nums",
+        "p6a-olmo",
+        "p6a-olmo-scale",
+        "P6a-boundaries"
+      ]
+    },
+    {
+      "requirement": "Olmo-core 3: DDP resident experts with GPU-resident expert routing/dispatch as the Olmo MoE technical mechanism (reorder minimization) + data/tensor/pipeline parallelism + distributed optimizer + grouped-GEMM + MXFP8 controlled B300x4 config (+21% end-to-end throughput, 103->95 GiB, uniform expert load, vendor settings — no cross-config generalization); measurement separation — 47B measured (8xB300 pilot, ~2.7x, 8->128 experts 4/token ~3.2B active with <5% throughput drop) vs 1.2T routing (58.36B active/512 GPU, up to 858 TFLOP/s/GPU under random routing: system measurement, not model quality) vs 2.38T short-capacity test; documented negatives (routing balance score failure as methodology warning); report-body gap stated; unretrieved paper appendices/reports not claimed per technical-prep-r15/p6a-deep-draft.md.",
+      "block_ids": [
+        "p6a-clm-file",
+        "p6a-clm-eq56",
+        "p6a-clm-nums",
+        "p6a-olmo",
+        "p6a-olmo-scale",
+        "P6a-boundaries"
+      ]
+    }
+  ],
+  "boundary_dispositions": [
+    {
+      "boundary": "ar5iv rendering (not PDF bytes); equations/figures partially garbled; Appendices B–F unread (output truncated); code repo not opened; no reproduction.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P6a-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Paper-claimed figures; independent verification pending.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P6a-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Verification target arxiv-2609-37725-pdf was FALSE in r1 (abstract-only) — corrected here.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P6a-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "arxiv-2609-37725-pdf: PDF BYTES NOT consumed (direct fetch returned binary; metadata only). Full paper TEXT consumed via ar5iv HTML rendering of same v1 (§§1–6 + refs + App.A; bounded excerpts archived); r1 FALSE pdf-VERIFIED withdrawn.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P6a-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "code: Code repo linked in paper; not opened; no reproduction.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P6a-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Report body UNREAD (2 failed fetches, logged); quantitative provenance stays reporter-level.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P6a-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Report dated 2026-10-01 corroborated by search excerpt only.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P6a-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Repo internals (code/docs) not consumed; Sol/Selection-depth clone is the retry avenue.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P6a-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "tech-report: Report page >5MB on markdown AND text fetches; failure logged with fallback consumption (blog+repo); claim level bounded to reporter.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P6a-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "github-repo: Repo page existence/license/scripts confirmed; code internals not consumed.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P6a-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    }
+  ],
+  "profile_extensions": {},
+  "publication_extensions": {}
+}
