@@ -341,3 +341,9 @@ This is the current human-readable navigation record for the edition. Machine li
 - New canonicals: Architecture `a9b5c118…`, Summary `32f39de0…` (READY, derived equivalence), Attention `70ac43bd…` (unchanged); validators 0 errors. Successor r20 erratum (binds NEW Summary + unchanged Completeness; r19 erratum historical). Stage validation r3 PASS + reviews r3 → rebuilt checkpoint → `ARCHITECTURE_ESTABLISHED`, Gates pending/null, State `19bd1a97…` (64-char index updated; Sol typo fix preserved). Legacy `validate-state` exit 1 (pre-existing semantics, recorded; governing agent-first PASS).
 - Session: `execution/sessions/muse-w40-r20-20261011.md`; handoff: `execution/SOL_W40_R20_ARCHITECTURE_REVIEW_HANDOFF.md`.
 - Terminal: `FRESH_HUMAN_ARCHITECTURE_REVIEW_PENDING / R20_INDEPENDENT_FOCUSED_REVIEW_REQUIRED` candidate.
+
+
+## W40 r20 focused Sol Architecture review — PASS (2026-10-11)
+
+- Final bounded technical review: `execution/reviews/sol-w40-r20-focused-architecture-review-pass-20261011.md` — `PASS_FOR_HUMAN_ARCHITECTURE_REVIEW`; NOT a Human Gate decision or release authorization. R19-F01 Eq.5 verified-status ambiguity and R19-F02 66-digit State SHA documentation error both CLOSED.
+- Reviewed canonical Muse HEAD `3711d777f8c447d25c6e0bfb3212450974afe8ab`, Tree `9d339509775a74128581aeddeb755adee51ff3f5`; normal official operator invalidation seq 0002 then one-field Architecture regeneration; 28 selected/113 source boundaries/105 unique strings preserved. Current r20 first-read erratum remains mandatory. Owner Human decision still pending.
