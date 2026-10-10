@@ -181,6 +181,14 @@ This is the current human-readable navigation record for the edition. Machine li
 - Preserve Core `EVIDENCE_REVIEWED`, machine Stage and all accepted upstream authorities; Selection and Architecture/Human Gates pending. Proven new eligible material event or changed critical claim must STOP for Sol canonical scope decision; no implicit upstream rewrites.
 - Stage checkpoint free-text old 30 MATERIAL is recorded as historical erratum; current canonical view/ledger 29. Completeness traceability 37 vs actual task scope 31/29/2 remains permitted by frozen Core.
 
+## Sol r10 independent hosted-publication review (2026-10-10)
+
+- Reviewed Muse r10 4dd18ffb11bf5ce402f4c0770572a73d52f81d0a, Tree 4ef46ebe692e3e265224a63684ea2c4664c2bbff: 16 W40-local file changes, fast-forward. Core State EVIDENCE_REVIEWED unchanged.
+- S01 counts 28 SELECTED = 20 PRIMARY/8 SUPPORTING and S02 Candidate Matrix reviewer-only preview: PASS. P6a/P6b depth redesign: provisional PASS.
+- Sol verdict SOL_SELECTION_SCOPE_CHANGE_REVIEW_REQUIRED: original issuer-authored HF organizational posts for AstaBrief and AutoSynthData have host datePublished 2026-10-02T15:19:50Z and 04:01:31Z, both before W40 cutoff. Muse's rejection of original first-party hosting metadata merely because not an issuer standalone-domain clock is insufficient. These support time-stamped ARTICLES, not necessarily exact weight/code release. Re-evaluate the two accepted HOLD classifications before canonical Selection approval.
+- Core pending Human Gate invalidation requires passed Architecture checkpoint, absent at EVIDENCE_REVIEWED; no direct backwards State transition. Current canonical State/acceptances protected until safe Core re-entry path is approved.
+- Audit: sources/2026-W40/execution/reviews/sol-w40-selection-r10-scope-adjudication-20261010.md; bounded Muse r11: sources/2026-W40/execution/instructions/2026-10-10_muse-w40-hf-publication-timing-and-core-reentry-r11.md. No Selection, Architecture or Human Gate approval.
+
 ## Final disposition
 
 `IN_PROGRESS`
