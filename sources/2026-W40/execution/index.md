@@ -246,3 +246,13 @@ This is the current human-readable navigation record for the edition. Machine li
 - A04: NEW `technical-prep-r16/contextlm-eq5-primary-note.md` (ar5iv v1 §4.2 S4.E5 exact symbols + train/dev/held-out loop + in-context vs in-weights; Eq.4 verified/unchanged; Eq.6/metrics untouched).
 - Handoff: `execution/SOL_W40_R16_BOUNDED_DOCUMENTATION_REVIEW_HANDOFF.md`; session: `execution/sessions/muse-w40-r16-20261010.md`.
 - Terminal: `SOL_W40_R16_BOUNDED_DOCUMENTATION_REVIEW_REQUIRED`. No Acceptance / transition / Architecture / Gate / Freeze / release / supplement / Core fix.
+
+## Muse W40 r17 — two minor documentation closure (2026-10-10, Sol-bounded)
+
+- Instruction: `execution/instructions/2026-10-10_muse-w40-r17-two-minor-documentation-closure.md`; Sol adopts independent r16 `BOUNDED_REVISION_REQUIRED` (R16-F01/F02), authorizes documentation-only r17.
+- Start: remote HEAD `1d6824759…`/tree `c739b10c…`/main `afdb3df3…` read-only verified with three-assertion wording (work HEAD vs main HEAD vs symbolic HEAD distinguished); local FF-only. Guards PASS (EVIDENCE_REVIEWED, stage:selection, Gates pending/null, exception inactive, 4 source SHAs byte-matched).
+- Scope F01/F02 ONLY; r15/r16 sources, drafts, authority bytes untouched.
+- F01: NEW `architecture-boundaries-roundtrip-digests-r17.json` (fixed canonical serializer, Python 3.14.4, two genuine passes; real 64-hex pass1/pass2/stored SHAs per package; 9/9 pass-equal; stored-order false/set-equal true; missing/extra 0; totals 28/20/8/113/105/8; PASS).
+- F02: NEW `SOL_W40_R16_HANDOFF_GIT_IDENTITY_CORRECTION_R17.md` (withdraws `HEAD == main` SHA reading; exact r16 identities; three-assertion rule; history preserved).
+- Handoff: `execution/SOL_W40_R17_TWO_MINOR_DOCUMENTATION_HANDOFF.md`; session: `execution/sessions/muse-w40-r17-20261010.md`.
+- Terminal: `SOL_W40_R17_TWO_MINOR_DOCUMENTATION_REVIEW_REQUIRED`. No Acceptance / transition / Architecture / Gate / Freeze / release / supplement / Core fix.
