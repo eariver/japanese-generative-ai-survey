@@ -1,0 +1,599 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W40",
+  "batch_id": "batch-001",
+  "basis": {
+    "package_sha256": "39f02cb2422189bc5934c15c674af2a58e2965c3c75df0a129982d71e81a4a98",
+    "batch_sha256": "7faf618f815bb9ebf4677aef2c8f94613b206b380fd1134429fac44c85b7b73e",
+    "profile_sha256": "c921bd14f441e97db4214d85fc590df6523f2b77949e1470ce4439c49fc93ead",
+    "state_sha256": "bad036de228fe6a3f35f583395988205798bb12a3a35d81acaa9058627d9ed98",
+    "prompt_sha256": "3e45900ead73688eab8734036e6e476c1ec4f1a7ce38da42d5ca52a68ef0a862",
+    "result_contract_sha256": "a05b65b41efbcaf654df5c3c5944254a76d93d8a28cab961f2c06f6d580da5a2"
+  },
+  "decisions": [
+    {
+      "discovery_id": "w40-grok-x-ledger-20261009",
+      "decision": "KEEP",
+      "reason": "Required X-bound community-signal seed: 4 individually auditable ordinary URLs (09-29/30, 10-01) across official + independent accounts; >25 self-report NOT accepted. Retained as observation authority binding all X provenance; technical claims still need primary verification.",
+      "scope_tags": [
+        "community-signal",
+        "x-provenance"
+      ],
+      "verification_targets": [
+        "primary-verification-all"
+      ],
+      "duplicate_group": null,
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "w40-primary-sonnet55-20260928",
+      "decision": "KEEP",
+      "reason": "First-party Anthropic release Sep 28 (day-only): same nominal price as Sonnet 5 with up to 30% lower per-task cost, 30%+ faster; Terminal-Bench 70.6%, GDPval 1844 vendor-reported; 1M ctx/128K out; Opus-5.5-class cyber safeguards. Central ordinary frontier-model candidate; benchmarks stay attributed.",
+      "scope_tags": [
+        "frontier-model",
+        "coding",
+        "cost-efficiency"
+      ],
+      "verification_targets": [
+        "anthropic-sonnet55-page",
+        "system-card",
+        "bedrock-spec"
+      ],
+      "duplicate_group": null,
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "w40-primary-nvidia-agentsafety-20260928",
+      "decision": "KEEP",
+      "reason": "First-party NVIDIA platform Sep 28: OpenShell OSS runtime (broadly available) + Sentry BlueField-4 reference design (ms quarantine, DOCA telemetry); Vera-optimized, Arm/Intel-extendable. Reference architecture, not empirical assurance; central agent-safety candidate.",
+      "scope_tags": [
+        "agents",
+        "safety",
+        "runtime"
+      ],
+      "verification_targets": [
+        "nvidia-newsroom",
+        "tech-blog",
+        "openshell-repo"
+      ],
+      "duplicate_group": null,
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "w40-primary-amd-worldlabs-20260928",
+      "decision": "KEEP",
+      "reason": "First-party AMD definitive agreement Sep 28 (all-stock ~$8.2B vendor-stated, close end-2026 pending approvals; Li as EVP/chief scientist). Agreement, NOT completed acquisition; spatial-model/hardware-roads rationale. Ordinary corporate event.",
+      "scope_tags": [
+        "hardware",
+        "corporate",
+        "spatial-models"
+      ],
+      "verification_targets": [
+        "amd-newsroom",
+        "closing-conditions"
+      ],
+      "duplicate_group": null,
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "w40-primary-openai-safetycases-20260928",
+      "decision": "KEEP",
+      "reason": "First-party OpenAI guidance Sep 28: proposed evidence-based safety-case guidelines for frontier RL training (alignment/containment/monitoring + ops + incident). Aspirational north star, NOT deployed-guarantee claim; guidance document, not empirical demonstration.",
+      "scope_tags": [
+        "safety",
+        "training-governance"
+      ],
+      "verification_targets": [
+        "openai-safetycases-page"
+      ],
+      "duplicate_group": null,
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "w40-primary-gpt61-sol-20260929",
+      "decision": "KEEP",
+      "reason": "First-party OpenAI model Sep 29: near-Astra at 1/5 Astra prices ($2/$10/$0.10 cached); Work/Codex not Chat; API gpt-6.1-sol; vendor-reported DeepSWE/GDP.pdf/AutomationBench/OSWorld/Science gains; Ultrafast-soon separate. Central ordinary frontier-model candidate.",
+      "scope_tags": [
+        "frontier-model",
+        "coding",
+        "cost-efficiency"
+      ],
+      "verification_targets": [
+        "openai-gpt61-page",
+        "pricing-availability"
+      ],
+      "duplicate_group": null,
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "w40-primary-openai-dots-20260929",
+      "decision": "KEEP",
+      "reason": "First-party OpenAI product Sep 29: Astra-powered always-on agents, own cloud computer/browser, 4000+ plugins, read-only proactive research, auto-review; Pro/Biz-Premium + Enterprise/Edu beta. Product description, not reliability proof; distinct from Agents API.",
+      "scope_tags": [
+        "agents",
+        "assistant-product"
+      ],
+      "verification_targets": [
+        "openai-dots-page",
+        "availability-terms"
+      ],
+      "duplicate_group": null,
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "w40-primary-openai-devday-20260929",
+      "decision": "KEEP",
+      "reason": "First-party DevDay bundle hub Sep 29 (20+ announcements): Ultrafast tier, Decisions API preview, Agents computer use, Codex family, plugins/Space/Pro500/Marketplace. Kept as bundle record; per-artifact split deferred to Evidence ( Ultrafast/Decisions/computer-use each get own verification).",
+      "scope_tags": [
+        "bundle",
+        "agents",
+        "platform"
+      ],
+      "verification_targets": [
+        "devday-recap",
+        "per-artifact-split"
+      ],
+      "duplicate_group": null,
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "w40-primary-agentsapi-computeruse-20260929",
+      "decision": "KEEP",
+      "reason": "W40 developer-API surface Sep 29 (locator-grade, exact changelog diff pending): hosted-browser computer use; app permission/sign-in; API + Codex/Work Pro500/Enterprise; distinct from dots. Recap-corroborated; needs diff capture at Evidence.",
+      "scope_tags": [
+        "agents",
+        "api",
+        "computer-use"
+      ],
+      "verification_targets": [
+        "agents-changelog-diff"
+      ],
+      "duplicate_group": null,
+      "confidence": "medium"
+    },
+    {
+      "discovery_id": "w40-primary-ollama-jev-20260929",
+      "decision": "KEEP",
+      "reason": "W40 serving interface Sep 29 (locator-grade, full spec pending): /v1/systemone Jev-API endpoint; Nimble + Tev1 at launch. Interface, NOT model release; precedes Oct 1 decision weights; must not merge with Clef/Decider benchmarks.",
+      "scope_tags": [
+        "serving",
+        "decision-models",
+        "local"
+      ],
+      "verification_targets": [
+        "ollama-blog",
+        "endpoint-spec",
+        "registry-entries"
+      ],
+      "duplicate_group": null,
+      "confidence": "medium"
+    },
+    {
+      "discovery_id": "w40-primary-aa-agentperf-20260929",
+      "decision": "KEEP",
+      "reason": "Evaluator-publisher release Sep 29: open-source local serving benchmark (8 trajectories/168 turns/~56K ctx; Spark/5090/Halo/M5Pro; 14 speculative configs). Tests inference serving, NOT agent correctness; methodology + publisher-measured results need attribution.",
+      "scope_tags": [
+        "evaluation",
+        "serving",
+        "local"
+      ],
+      "verification_targets": [
+        "aa-article",
+        "github-repo",
+        "configs"
+      ],
+      "duplicate_group": null,
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "w40-primary-vss33-20260929",
+      "decision": "KEEP",
+      "reason": "W40 vendor reference architecture Sep 29 (locator-grade, full body pending): Build Vision Agent skill + Adaptive EVS pruning; VLM+RAG+MCP video workflows; vendor 80%/46% demo figures. Reference arch ONLY, not a foundation model.",
+      "scope_tags": [
+        "video",
+        "agents",
+        "serving"
+      ],
+      "verification_targets": [
+        "vss-tech-blog",
+        "workload-config"
+      ],
+      "duplicate_group": null,
+      "confidence": "medium"
+    },
+    {
+      "discovery_id": "w40-primary-gemini-argon-20260930",
+      "decision": "KEEP",
+      "reason": "First-party Google frontier model Sep 30: long-horizon coding/enterprise/cyber; 1M token limit (exact input/output/trajectory wording must follow model docs, never assert 1M output from blog alone); Fairwind trusted defenders; intro $2/$10/95%-off; vendor SOTA claims need attribution. Tester-only posture kept.",
+      "scope_tags": [
+        "frontier-model",
+        "coding",
+        "cyber"
+      ],
+      "verification_targets": [
+        "google-argon-page",
+        "model-docs-limits",
+        "fairwind-terms"
+      ],
+      "duplicate_group": null,
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "w40-primary-synthid-bio-20260930",
+      "decision": "KEEP",
+      "reason": "First-party DeepMind introduction Sep 30 (X Oct 1 = momentum): protein sequence/structure watermarking preserving lab-tested function on 3 targets; Nature paper Sep 30; code/data/weights released; biosecurity/database layer, tamper-robustness future work. Lab-bounded neutrality kept.",
+      "scope_tags": [
+        "safety",
+        "bio",
+        "provenance"
+      ],
+      "verification_targets": [
+        "deepmind-blog",
+        "nature-paper",
+        "released-weights"
+      ],
+      "duplicate_group": null,
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "w40-primary-nemorelay-20260930",
+      "decision": "KEEP",
+      "reason": "W40 vendor instrumentation Sep 30 (locator-grade, full body pending): ATOF streams + ATIF trajectories + OTel/OpenInference spans + Hermes. Tracing instrumentation, NOT end-to-end reliability/security proof.",
+      "scope_tags": [
+        "agents",
+        "observability"
+      ],
+      "verification_targets": [
+        "nemo-relay-blog"
+      ],
+      "duplicate_group": null,
+      "confidence": "medium"
+    },
+    {
+      "discovery_id": "w40-primary-nemotron-asr-20260930",
+      "decision": "KEEP",
+      "reason": "W40 practitioner tutorial Sep 30 (locator-grade, method pending): Najdi/Hijazi fine-tune via NeMo 133.7h; publisher WER 55.05%->29.96% on selected split. Tutorial scope, not universal performance; disproves audio-quiet at discovery level.",
+      "scope_tags": [
+        "audio",
+        "speech"
+      ],
+      "verification_targets": [
+        "nemotron-blog",
+        "dataset-splits"
+      ],
+      "duplicate_group": null,
+      "confidence": "medium"
+    },
+    {
+      "discovery_id": "w40-primary-amd-ross-20260930",
+      "decision": "KEEP",
+      "reason": "W40 vendor product coverage Sep 30 (locator-grade): embedded design guidance across Vivado/Vitis/ROCm; acceleration claims promotional. Architecture/access/metrics pending at Evidence.",
+      "scope_tags": [
+        "agents",
+        "hardware",
+        "embedded"
+      ],
+      "verification_targets": [
+        "amd-ross-page"
+      ],
+      "duplicate_group": null,
+      "confidence": "medium"
+    },
+    {
+      "discovery_id": "w40-primary-contextlms-20260929",
+      "decision": "KEEP",
+      "reason": "W40 research submission Sep 29 14:50:08Z exact: CLMs manage own context as editable file; paper-claimed BrowseComp/EdgeBench/swarm gains + steering/RL/cache-reuse. Abstract consumed; full PDF pending at Evidence.",
+      "scope_tags": [
+        "research",
+        "agents",
+        "memory"
+      ],
+      "verification_targets": [
+        "arxiv-2609-37725-pdf",
+        "code"
+      ],
+      "duplicate_group": null,
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "w40-primary-cloudflare-clef-20261001",
+      "decision": "KEEP",
+      "reason": "First-party Cloudflare release Oct 1 15:34:02Z exact: Apache-2.0 open weights on Workers AI, Jev-API compatible, 64K ctx + vision; $0.24/$0.09 per 1M in; vendor Jev-Index lead + 209.3/38.8ms vs 524.1ms vendor-measured; RL fine-tune service. Distinct from Strands/Ollama; benchmark host caveat kept.",
+      "scope_tags": [
+        "open-weight",
+        "decision-models",
+        "serving"
+      ],
+      "verification_targets": [
+        "cloudflare-blog",
+        "hf-weights",
+        "jev-index-method"
+      ],
+      "duplicate_group": null,
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "w40-primary-strands-decider-20261001",
+      "decision": "KEEP",
+      "reason": "First-party Strands/AWS release Oct 1 (day-only, v19 pin not retroactive v21): Qwen3.5-2B torso + pointer head + r16 LoRA; single-pass typed decisions + reliability scores; vendor ~115ms RTX3090 + JevBench placement; code/data/scripts open. License SPDX + v19 commit pin needed at Evidence.",
+      "scope_tags": [
+        "open-weight",
+        "decision-models",
+        "agents"
+      ],
+      "verification_targets": [
+        "strands-blog",
+        "github-commit-v19",
+        "license-spdx"
+      ],
+      "duplicate_group": null,
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "w40-primary-cloudflare-aisearch-20261001",
+      "decision": "KEEP",
+      "reason": "W40 service GA Oct 1 (locator-grade, exact bytes pending): hybrid retrieval default for new indexes, multimodal + image + scanned-PDF OCR; usage billing Nov 1. Service terms, NOT model capability benchmark.",
+      "scope_tags": [
+        "retrieval",
+        "enterprise"
+      ],
+      "verification_targets": [
+        "cloudflare-changelog-bytes"
+      ],
+      "duplicate_group": null,
+      "confidence": "medium"
+    },
+    {
+      "discovery_id": "w40-primary-cloudflare-mcpauth-20261001",
+      "decision": "KEEP",
+      "reason": "W40 spec surface Oct 1 (locator-grade): split auth/resource server, MCP 2026-07-28 auth, step-up insufficientScope. Spec adherence != caller-scope correctness or threat resistance.",
+      "scope_tags": [
+        "agents",
+        "safety",
+        "protocols"
+      ],
+      "verification_targets": [
+        "cloudflare-changelog-bytes"
+      ],
+      "duplicate_group": null,
+      "confidence": "medium"
+    },
+    {
+      "discovery_id": "w40-primary-flux3-image-20261001",
+      "decision": "KEEP",
+      "reason": "W40 image SKU Oct 1 (X @bfl_ai lead + model page live; non-X detail pin partial): bbox layout control + per-box multi-step edits + docs; Jul 23 multimodal foundation is a DIFFERENT event. Pricing/weights/bench pins needed at Evidence; never assert weights/license until pinned.",
+      "scope_tags": [
+        "image",
+        "multimodal"
+      ],
+      "verification_targets": [
+        "bfl-model-page",
+        "pricing-page",
+        "model-card"
+      ],
+      "duplicate_group": null,
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "w40-prewindow-lift-20260925",
+      "decision": "KEEP",
+      "reason": "Pre-window research context (arXiv v1 Sep 25 11:31:02Z exact, before 22:00Z cutoff): LIFT base-LLM->VLM vector transfer, frozen backbone, NeurIPS 2026. CONTEXT only; X recirculation must not be described as a new W40 paper.",
+      "scope_tags": [
+        "research",
+        "multimodal",
+        "context"
+      ],
+      "verification_targets": [
+        "arxiv-2609-31140"
+      ],
+      "duplicate_group": null,
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "w40-hold-dgxspark64-20261002",
+      "decision": "INSPECT",
+      "reason": "Oct 2 calendar-date hardware announcement WITHOUT exact publication time vs 22:00Z end-exclusive: 64GB SKU + Sync Cluster Assistant; Oct 23 third-party availability is future, NOT W40 shipping. HOLD timestamp; resolve page metadata/first-index proof before ordinary/late bucketing.",
+      "scope_tags": [
+        "hardware",
+        "hold",
+        "time-unresolved"
+      ],
+      "verification_targets": [
+        "dgx-blog-timestamp",
+        "first-index-proof"
+      ],
+      "duplicate_group": null,
+      "confidence": "medium"
+    },
+    {
+      "discovery_id": "w40-weak-elyza-20261002",
+      "decision": "MAYBE",
+      "reason": "Grok-claimed open-weight lead WITHOUT dated Oct 2 release proof after independent search (undated HF artifacts only; anticipations forward-looking; Kolibri Oct 3 post-window). Needs dated commit/tag + license SPDX or confirm LOW drop at Selection.",
+      "scope_tags": [
+        "open-weight",
+        "unverified"
+      ],
+      "verification_targets": [
+        "elyza-dated-pin",
+        "license-file"
+      ],
+      "duplicate_group": null,
+      "confidence": "low"
+    },
+    {
+      "discovery_id": "w40-carryover-pixelcanary-20261009",
+      "decision": "KEEP",
+      "reason": "W39 HOLD preserved into W40 (external parent w39-lateonly-pixelcanary-codex-20260925): no dated vendor card or outage proof; Codex credit/visibility friction is usage signal only. HOLD; never promote on X chatter.",
+      "scope_tags": [
+        "carry-over",
+        "hold"
+      ],
+      "verification_targets": [
+        "vendor-card",
+        "status-history"
+      ],
+      "duplicate_group": null,
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "w40-carryover-tbc-video-20261009",
+      "decision": "KEEP",
+      "reason": "W39 HOLD preserved (external parent w39-primary-tbc-aws-20260922): single Oct 2 explanatory post only; 5x/80%/<0.1% remain unverified vendor/marketing figures; partnership fact != measured optimization. HOLD.",
+      "scope_tags": [
+        "carry-over",
+        "hold",
+        "video"
+      ],
+      "verification_targets": [
+        "measured-bench",
+        "tech-report"
+      ],
+      "duplicate_group": null,
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "w40-sweep-negativespace-20261009",
+      "decision": "DROP",
+      "reason": "R1 methodology log (queries, lane matrix, honest stops), NOT a technical event. Provenance preserved in collectors; excluded from Evidence candidacy to avoid inflating article volume.",
+      "scope_tags": [
+        "methodology",
+        "non-article"
+      ],
+      "verification_targets": [],
+      "duplicate_group": null,
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "w40-primary-holo4-20260928",
+      "decision": "KEEP",
+      "reason": "First-party H Company release Sep 28 (day-only): 27B dense + 35B-A3B MoE computer-use/GUI/code/MCP/API agents; licenses materially different (27B research-noncommercial vs 35B-A3B Apache-2.0); 256K ctx; API + HF BF16/FP8/NVFP4/GGUF; OSWorld 85.2%/80.8%, OSWorld2 61.7%/30.9% publisher-reported with harness/footnote boundaries; trajectories open. Major omitted-event backfill; benchmarks stay attributed.",
+      "scope_tags": [
+        "open-weight",
+        "agents",
+        "computer-use"
+      ],
+      "verification_targets": [
+        "holo4-newsroom",
+        "hf-weights-license",
+        "trajectories"
+      ],
+      "duplicate_group": null,
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "w40-primary-olmocore3-20261001",
+      "decision": "KEEP",
+      "reason": "First-party Ai2 release Oct 1 (day-only): OPEN MoE TRAINING STACK (DDP resident experts, expert/pipeline parallelism, dist optimizer, grouped-GEMM, MXFP8); 8->128 experts <5% drop; 47B 52k vs 19.4k (~2.7x, 8xB300); 1.2T/58.36B-active/512GPU tests; report+code+demo. Infrastructure, NOT a trillion-parameter released checkpoint and NOT foundation weights.",
+      "scope_tags": [
+        "training",
+        "infrastructure",
+        "open"
+      ],
+      "verification_targets": [
+        "ai2-blog",
+        "tech-report",
+        "github-repo"
+      ],
+      "duplicate_group": null,
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "w40-primary-opentts-20260930",
+      "decision": "KEEP",
+      "reason": "First-party HF platform release Sep 30 (day-only): objective multilingual + voice-cloning TTS evaluation (WER/CER via Qwen3-ASR, RTFx/TTFA on H200, SIM via WavLM; Seed-TTS + CV3-Eval; Spaces + Listen; scripts repo). Platform, NOT a new speech model; no human naturalness/preference proof.",
+      "scope_tags": [
+        "audio",
+        "evaluation",
+        "open"
+      ],
+      "verification_targets": [
+        "hf-blog",
+        "leaderboard-space",
+        "eval-scripts"
+      ],
+      "duplicate_group": null,
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "w40-primary-provenanceguard-20260929",
+      "decision": "KEEP",
+      "reason": "First-party MultiverseComputing team-blog exposition Sep 29 (day-only); original paper arXiv 2606.18037 Aug 27 PRE-WINDOW (blog is the W40 event, NOT the paper; blog is not an independent result). Source-aware MCP verification (routing+NLI+attribution+allow/block+RARR); 281 traces/361 claims paper-reported; NVFlow/poster vendor-stated. Paper/protocol checks still needed at Evidence.",
+      "scope_tags": [
+        "agents",
+        "retrieval",
+        "provenance"
+      ],
+      "verification_targets": [
+        "hf-blog",
+        "arxiv-2606-18037",
+        "eval-protocol"
+      ],
+      "duplicate_group": null,
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "w40-hold-astabrief-20261002",
+      "decision": "INSPECT",
+      "reason": "Ai2 cited-report open model day-level Oct 2 WITHOUT exact time vs 22:00Z: Qwen3-8B, SFT47K/DPO6K, one-pass 51.1s vs 178.5s, Apache-2.0 card header (SPDX pin pending), 2025-era baselines. Material lead/HOLD; resolve timestamp before ordinary classification; never auto-classify ordinary.",
+      "scope_tags": [
+        "open-weight",
+        "research",
+        "hold",
+        "time-unresolved"
+      ],
+      "verification_targets": [
+        "astabrief-timestamp",
+        "license-spdx"
+      ],
+      "duplicate_group": null,
+      "confidence": "medium"
+    },
+    {
+      "discovery_id": "w40-hold-autosynthdata-20261002",
+      "decision": "INSPECT",
+      "reason": "ServiceNow methodology day-level Oct 2 WITHOUT exact time: failure-driven synthetic task curriculum (target/multiply, sample/batch gates); Hybrid +7.2pp/35%, ITSM 18.77%->27.18% publisher-reported; dataset released; Gym paper Mar 2026 is background. Material lead/HOLD; timestamp-gated.",
+      "scope_tags": [
+        "agents",
+        "training-data",
+        "hold",
+        "time-unresolved"
+      ],
+      "verification_targets": [
+        "autosynthdata-timestamp",
+        "dataset-license"
+      ],
+      "duplicate_group": null,
+      "confidence": "medium"
+    },
+    {
+      "discovery_id": "w40-sweep-negativespace-r2-20261010",
+      "decision": "DROP",
+      "reason": "R2 methodology log (10 r2 families, revised lanes, honest stops), NOT a technical event. Provenance preserved; excluded from Evidence candidacy.",
+      "scope_tags": [
+        "methodology",
+        "non-article"
+      ],
+      "verification_targets": [],
+      "duplicate_group": null,
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "w40-primary-hf-rl-environments-20260928",
+      "decision": "KEEP",
+      "reason": "First-party HF Hub feature Sep 28 (day-only): rl-environment filter + harbor/verifiers/openenv/nemo-gym tags with per-framework snippets; taskset data separated from runtime/reward; tag declares compatibility, starts no job; seeded Harbor/Verifiers/NeMo tasksets; per-config snippets forward-looking. Distribution/interoperability event, NOT 2025 OpenEnv invention, NOT model training.",
+      "scope_tags": [
+        "agents",
+        "training",
+        "hub",
+        "evaluation"
+      ],
+      "verification_targets": [
+        "hf-blog",
+        "filter-page",
+        "tagged-datasets"
+      ],
+      "duplicate_group": null,
+      "confidence": "high"
+    }
+  ]
+}
