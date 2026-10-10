@@ -14,9 +14,9 @@ This is the current human-readable navigation record for the edition. Machine li
 - Production Profile: `sources/2026-W40/production-profile.json`
 - Production State: `sources/2026-W40/production-state.json`
 - Current State SHA-256: `9b79f8fcbb0b626148fac2d4cf840b8f9756a10db9dfdafafed1270f21e64026`
-- Current lifecycle: `ISSUE_INITIALIZED`
+- Current lifecycle: `CANDIDATES_NORMALIZED` (canonical authority = production-state.json; historical initialization below)
 - Current terminal reason: `none`
-- Current next action: `stage:discovery`
+- Current next action: `stage:evidence-materiality-completeness`
 
 ## Human Gates
 
@@ -59,7 +59,7 @@ This is the current human-readable navigation record for the edition. Machine li
 - Muse r4 (2026-10-10Z): canonical `discovery/discovery-accepted-v2.json` (37, graph `27e9efde…`); Core advance to `CANDIDATES_NORMALIZED` (discovery+screening checkpoints passed); Screening 37 (31 KEEP / 3 INSPECT / 1 MAYBE / 2 DROP) accepted; Evidence package 35 tasks; r4 gap-fill run (8 full-body upgrades + delegated pins); 35 Evidence records (28 VERIFIED / 7 PARTIAL) + completeness + 35 views draft; shared-Core map defect logged without patch; handoff `execution/SOL_EVIDENCE_AUTHORITY_REVIEW_HANDOFF.md`. Stop at Sol Evidence review.
 - Sol Evidence Authority-Consumption Review r1 (2026-10-10): `execution/reviews/sol-w40-evidence-authority-consumption-r1-20261010.md`, decision REVISION_REQUIRED (SC-E01 source taxonomy CV2-DM-016 recurrence + E02 ELYZA + E03 pdf-target + E04/E05 corrections; SC-E06 nonblocking).
 - Muse r5 (2026-10-10Z, this run): compat projection 35 tasks (3 projected + 32 passthrough, frozen PASS, PROPOSED) `execution/compat/evidence-source-class-projection-r5/`; r5 collector run (2 ELYZA card excerpts + CLM/Guard paper excerpts + Olmo failure log); r5 evidence revision 35 (29 VERIFIED / 6 PARTIAL; ELYZA provisional MATERIAL) + diff ledger + 5 PROPOSED card candidates; 5 views updated; handoff-r5 `execution/SOL_EVIDENCE_AUTHORITY_REVIEW_HANDOFF-r5.md`. State CANDIDATES_NORMALIZED; stop at Sol review.
-- Conventional full collector Raw, exact source admission and final independent Discovery-completeness review remain pending.
+- Discovery 37 / Screening 37 accepted (Sol completeness PASS); Evidence remains preacceptance pending exact primary-source binding and 35-card Core validation.
 - This is a retrospective compilation of a completed W40 window; do not mix later W41 announcements into ordinary-window scope.
 
 ## Deviations
@@ -124,6 +124,16 @@ This is the current human-readable navigation record for the edition. Machine li
 - CV2-DM-016 reproduced: frozen Evidence `SOURCE_CLASS_MAP` cannot process `PRIMARY_RESEARCH_ABSTRACT` (two) or `EVALUATOR_PUBLISHER` (one); edition-local deterministic task projection requires explicit preacceptance review.
 - Substantive gap-fill: original ELYZA model cards include available benchmark results not consumed (Japanese reasoning release), Context Language Models paper verification mislabel, Gemini announced 1M OUTPUT tokens, source-rich Olmo-core/ProvenanceGuard reports need bounded deeper paper consumption.
 - Muse next bounded request: `sources/2026-W40/execution/instructions/2026-10-10_muse-w40-evidence-semantic-gapfill-r5.md`; stop at next Sol Evidence Review, State remains `CANDIDATES_NORMALIZED` and Human Gates pending.
+
+## Sol Evidence Authority-Consumption Review r2 (2026-10-10)
+
+- **Decision**: `SOL_EVIDENCE_SUBSTANCE_PARTIAL_PASS / FORMAL_AUTHORITY_BINDING_REVISION_REQUIRED`.
+- Sol approves only the exact r5 deterministic 3/35 Evidence Task source-class projection semantics under **CV2-DM-016**; Core remains frozen.
+- r5 ELYZA original model-card benchmark consumption and 29/35 provisional VERIFIED content improved; ELYZA merits `MATERIAL` editorial candidacy, publisher-measured results clearly attributed.
+- **Card provenance blockers**: ELYZA Card currently binds first-party benchmark facts to legacy `SECONDARY/UNVERIFIED` source, ProvenanceGuard original-paper results to team-blog-only source, CLM full paper claims to abstract-only identity without fulltext anchor. Require proper Core Evidence Authority Supplement + full 35 Card candidates.
+- arXiv 2606.18037 chronology corrected to v1 June 16 / v2 July 26, before Sep 29 W40 team blog; remove Aug 27 invented date.
+- Audit: `sources/2026-W40/execution/reviews/sol-w40-evidence-authority-consumption-r2-20261010.md`; bounded Muse r6 instruction: `sources/2026-W40/execution/instructions/2026-10-10_muse-w40-evidence-supplement-card-binding-r6.md`.
+- Production State `CANDIDATES_NORMALIZED`, checkpoints Evidence/Materiality/Completeness pending, Gates pending. No canonical Evidence acceptance or Selection authorized.
 
 ## Final disposition
 
