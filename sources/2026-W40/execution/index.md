@@ -270,3 +270,11 @@ This is the current human-readable navigation record for the edition. Machine li
 
 - `execution/core-562-readonly-resumption-assessment-20261011.md`: Core reentry gap and existing Evidence Supplement/INSPECT semantics checked read-only; W40 remains EVIDENCE_REVIEWED and staging CLOSED.
 - `execution/instructions/2026-10-11_core-562-separated-maintenance-execution-contract.md`: prepared standalone Core implementation/test contract; NOT write-authorized until the Owner explicitly approves a separate dedicated Core branch identity/creation. No Stage/Gate/accepted-upstream changes.
+
+
+## Sol W40 28-item forward route clarified (2026-10-11)
+
+- The earlier unqualified `AWAIT_CORE_562_AND_LAWFUL_AUTHORITY_SUPERSESSION` stop applies ONLY to promotion of two canonical HOLD entries. It does not block the separately Owner-requested 28-item scoped W40 normal Selection→Architecture flow.
+- Authoritative Sol corrective decision: `execution/reviews/sol-w40-plan-a-28-item-forward-continuation-20261011.md`.
+- Muse bounded execution: `execution/instructions/2026-10-11_muse-w40-r18-core-bypass-selection-to-architecture-review.md` — existing W40 only, 28 SELECTED, 4 HOLD, 3 REJECT; standard stage validators/checkpoints; stop at fresh Human Architecture Review, no Human decision.
+- Core #562 remains separate; AstaBrief/AutoSynthData supplemental editorial research remains NON_CANONICAL; not an ordinary Release asset or W40 chapter.
