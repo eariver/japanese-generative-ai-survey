@@ -222,3 +222,15 @@ This is the current human-readable navigation record for the edition. Machine li
 - §5: `execution/technical-prep-r14/p6a-deep-draft.md` + `p6b-deep-draft.md` (ContextLM/Olmo-core/AgentPerf/OpenTTS/RL-Env mechanisms + conditions + metric denominators + baselines + versions; Source→Claim tables; Japanese self-review; UNVERIFIED markers; COND sectionless).
 - Untouched `validate_selection` DIRECTLY EXECUTED on preview-r13 → PASS (0 errors). Handoff: `execution/SOL_W40_R14_BOUNDED_REPAIR_HANDOFF.md`; session: `execution/sessions/muse-w40-r14-20261010.md`.
 - Terminal: `SOL_W40_R14_BOUNDED_REPAIR_REVIEW_REQUIRED`. No Selection Acceptance / Stage transition / canonical Architecture / Core patch / Human Gate / publication release.
+
+## Muse W40 r15 — boundary preservation + technical depth repair (2026-10-10, Sol-bounded)
+
+- Instruction: `execution/instructions/2026-10-10_muse-w40-r15-boundary-preservation-and-technical-depth-repair.md`; Sol accepts independent r14 `REVISION_REQUIRED` (F01–F08), authorizes bounded r15.
+- Start: remote HEAD `1b9f3f1dc…`/tree `e86bddad…`/main `afdb3df3…` read-only verified (all match); local FF-only. Guards PASS (EVIDENCE_REVIEWED, stage:selection, Gates pending/null, exception inactive, 37/37/35/35/37, checkpoints, preview `dc024778…` + matrix `f07b1166…` byte-matched).
+- F01: 113 raw relationships recomputed → `architecture-boundaries-r15.json` (SHA `1736737e…`; 28 verbatim entries + 9 aggregates, raw 113 → unique 105) + validation JSON (second-pass, missing 0/113, PASS) + ephemeral in-memory PROPOSED `validate_architecture` on unmodified Core → 0 errors (placeholders disclosed; never written; NOT formal PASS) + `architecture-staged-outline-r15.md` (SHA-bound references).
+- F02–F04: `technical-prep-r15/p6a-deep-draft.md` (Eq.6 exact symbols + RL meaning; Eq.1–4/Eq.3/SCR; separated metrics; per-artifact licenses paper-BY-4.0/repo-BY-NC-4.0; MXFP8 controlled B300×4 config; dispatch; 4 negatives; measurement separation; report-body gap stated).
+- F05–F07: `technical-prep-r15/p6b-deep-draft.md` (roofline correction; 14 all-speculative; local-vs-production; TTFA protocol clause-verified; deps; scripts temporal split with commit history = dated negative; RL pins + NOT_REPRODUCIBLY_PINNED).
+- F08: `editorial-supplement/r15/evidence-source-provenance-correction.md` + `retrieval-manifest-r15.json` (allowlisted bounded artifact; mtimes NOT_INDEPENDENTLY_REPRODUCED; full HTML excluded by policy).
+- New primary retrievals (uncommitted /tmp): ar5iv CLM, Ai2 blog, report landing (body inaccessible), AA article, OpenTTS blog, GH repo facts, CLM LICENSE. NOT-retrieved list preserved.
+- Untouched `validate_selection` DIRECTLY re-executed on preview-r13 (see handoff §9 / outer report). Handoff: `execution/SOL_W40_R15_BOUNDARY_AND_TECHNICAL_REVIEW_HANDOFF.md`; session: `execution/sessions/muse-w40-r15-20261010.md`.
+- Terminal: `SOL_W40_R15_BOUNDARY_AND_TECHNICAL_REVIEW_REQUIRED`. No Acceptance / transition / Architecture / Gate / Freeze / release / supplement / Core fix.
