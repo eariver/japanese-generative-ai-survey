@@ -13,10 +13,10 @@ This is the current human-readable navigation record for the edition. Machine li
 - Requested stop: `ARCHITECTURE_REVIEW`
 - Production Profile: `sources/2026-W40/production-profile.json`
 - Production State: `sources/2026-W40/production-state.json`
-- Current State SHA-256: `9b79f8fcbb0b626148fac2d4cf840b8f9756a10db9dfdafafed1270f21e64026`
-- Current lifecycle: `CANDIDATES_NORMALIZED` (canonical authority = production-state.json; historical initialization below)
+- Current State SHA-256: `c58337e5bd6a03f619c38720583cc6a741f2e1165fadf99cbb3266c0408770c0`
+- Current lifecycle: `EVIDENCE_REVIEWED` (canonical authority = production-state.json; historical initialization below)
 - Current terminal reason: `none`
-- Current next action: `stage:evidence-materiality-completeness`
+- Current next action: `stage:selection`
 
 ## Human Gates
 
@@ -61,6 +61,8 @@ This is the current human-readable navigation record for the edition. Machine li
 - Muse r5 (2026-10-10Z, this run): compat projection 35 tasks (3 projected + 32 passthrough, frozen PASS, PROPOSED) `execution/compat/evidence-source-class-projection-r5/`; r5 collector run (2 ELYZA card excerpts + CLM/Guard paper excerpts + Olmo failure log); r5 evidence revision 35 (29 VERIFIED / 6 PARTIAL; ELYZA provisional MATERIAL) + diff ledger + 5 PROPOSED card candidates; 5 views updated; handoff-r5 `execution/SOL_EVIDENCE_AUTHORITY_REVIEW_HANDOFF-r5.md`. State CANDIDATES_NORMALIZED; stop at Sol review.
 - Sol Evidence Authority-Consumption Review r2 (2026-10-10): `execution/reviews/sol-w40-evidence-authority-consumption-r2-20261010.md`, decision SUBSTANCE_PARTIAL_PASS / BINDING_REVISION_REQUIRED (SC-E07 card-binding gap + SC-E08 Guard version error; projection semantics approved).
 - Muse r6 (2026-10-10Z, this run): supplement `external/evidence-supplement/evidence-authority-supplement-r6.json` (SHA `8872acfd…`, 4 entries, frozen-built); r6 derived package 35 tasks (3 projected + 3 supplement-bound, double-build identical, PROPOSED); r6 records 35 (Guard dates corrected, 3 bindings, DGX MATERIAL) + 30-record audit; 35 Card candidates validate PASS (PROPOSED); handoff-r6 `execution/SOL_EVIDENCE_AUTHORITY_REVIEW_HANDOFF-r6.md`. State CANDIDATES_NORMALIZED; NO acceptance/transition; stop at Sol review.
+- Sol Materiality/Completeness Review r1 (2026-10-10): `execution/reviews/sol-w40-materiality-completeness-r1-20261010.md`, decision CONDITIONAL_PASS (SC-M01 X-CONTEXT + SC-M02 item-specific ledger/scoped obligations).
+- Muse r9 (2026-10-10Z, this run): one-View fix (34 identical) → Views ACCEPTED `views/accepted/1effd744…` (29/4/2); canonical `materiality-ledger-v2.json` (37 item-specific; 29/4/2+2) + `profile-completeness-v2.json` (scoped task bindings, carry-over exactly 2; LIMITED); Core checkpoint → `EVIDENCE_REVIEWED / stage:selection`; Selection PROPOSAL (28+1+4+2, P1–P8) + dossier; handoff-r9 `execution/SOL_SELECTION_SEMANTIC_REVIEW_HANDOFF-r9.md`. Stop at Sol Selection review.
 - Sol Evidence Authority-Consumption Review r4 (2026-10-10): `execution/reviews/sol-w40-evidence-authority-consumption-r4-20261010.md`, decision CONDITIONAL_PASS / SC-E10 cleanup (v3-positive removal; legacy title exception; accept+views authorized).
 - Muse r8 (2026-10-10Z, this run): SC-E10 v3-cleanup (0 v3-positive hits new fields; exception `provenance-exceptions/LEGACY_UNVERIFIED_DO_NOT_CITE-guard-title.md`); r8 package byte-identical to r7 (`30b63b11…`); Evidence ACCEPTED `evidence/v2/accepted/0a62346f…` (35: 29 VERIFIED / 6 PARTIAL); Views ACCEPTED `views/accepted/60b622f6…` (35); materiality DRAFT (30/4/2/1) + completeness DRAFT (LIMITED, validated); handoff-r8 `execution/SOL_MATERIALITY_COMPLETENESS_REVIEW_HANDOFF-r8.md`. State CANDIDATES_NORMALIZED (NO EVIDENCE_REVIEWED); stop at Sol materiality review.
 - Sol Evidence Authority-Consumption Review r3 (2026-10-10): `execution/reviews/sol-w40-evidence-authority-consumption-r3-20261010.md`, decision BINDING_STRUCTURAL_PASS / SC-E09 version-pin BLOCKER (r5 excerpt = four-author v2, not v3-assumed).
@@ -95,6 +97,7 @@ This is the current human-readable navigation record for the edition. Machine li
 - `sessions/muse-w40-r6-20261010.md` (Muse bounded supplement + card binding SC-E07/E08; stops at third Sol Evidence review)
 - `sessions/muse-w40-r7-20261010.md` (Muse bounded Guard version pin SC-E09; stops at fourth Sol Evidence review)
 - `sessions/muse-w40-r8-20261010.md` (Muse bounded SC-E10 cleanup + acceptance + views + drafts; stops at Sol materiality review)
+- `sessions/muse-w40-r9-20261010.md` (Muse bounded materiality/completeness repair + conditional EVIDENCE_REVIEWED + Selection proposal; stops at Sol Selection review)
 
 ## Sol Discovery completeness decision (r3 PASS → r4 Evidence review pending)
 
