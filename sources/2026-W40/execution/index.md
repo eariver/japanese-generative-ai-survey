@@ -114,6 +114,14 @@ This is the current human-readable navigation record for the edition. Machine li
 - Bounded Muse r4 contract: `sources/2026-W40/execution/instructions/2026-10-10_muse-w40-accept-discovery-through-evidence-review-r4.md`.
 - Machine state remains `ISSUE_INITIALIZED` until Core validation/checkpoint/state advance is executed legitimately.
 
+## Sol Evidence Authority-Consumption Review r1 (2026-10-10)
+
+- **Decision: `SOL_EVIDENCE_AUTHORITY_REVISION_REQUIRED / CORE_ACCEPTANCE_BLOCKED`.** No Evidence acceptance or Selection authorization.
+- Audit authority: `sources/2026-W40/execution/reviews/sol-w40-evidence-authority-consumption-r1-20261010.md` at Muse r4 `e81ab6e461ff0e58bd62c590a532a78ca80a7057`.
+- CV2-DM-016 reproduced: frozen Evidence `SOURCE_CLASS_MAP` cannot process `PRIMARY_RESEARCH_ABSTRACT` (two) or `EVALUATOR_PUBLISHER` (one); edition-local deterministic task projection requires explicit preacceptance review.
+- Substantive gap-fill: original ELYZA model cards include available benchmark results not consumed (Japanese reasoning release), Context Language Models paper verification mislabel, Gemini announced 1M OUTPUT tokens, source-rich Olmo-core/ProvenanceGuard reports need bounded deeper paper consumption.
+- Muse next bounded request: `sources/2026-W40/execution/instructions/2026-10-10_muse-w40-evidence-semantic-gapfill-r5.md`; stop at next Sol Evidence Review, State remains `CANDIDATES_NORMALIZED` and Human Gates pending.
+
 ## Final disposition
 
 `IN_PROGRESS`
