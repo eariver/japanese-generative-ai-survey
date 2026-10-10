@@ -76,6 +76,14 @@ This is the current human-readable navigation record for the edition. Machine li
 - `sessions/sol-w40-initial-20261010.md`
 - `sessions/muse-w40-source-intake-20261009.md` (Muse bounded Source Intake through Sol Discovery Review prep; stops at completeness review)
 
+## Sol Discovery completeness decision (2026-10-10 r1)
+
+- **Decision:** `SOL_DISCOVERY_COMPLETENESS_REVISION_REQUIRED`; Muse's proposed 29-record Discovery is not accepted as complete.
+- Audit: `sources/2026-W40/execution/reviews/sol-w40-discovery-completeness-r1-20261010.md`.
+- Bound gap-fill r2 contract: `sources/2026-W40/execution/instructions/2026-10-10_muse-w40-discovery-gapfill-r2.md`.
+- Findings: material missing first-party models/training/audio/provenance papers; 21 ungrounded `12:00Z` publication-time assertions; original-source capture/derived-note classification. DGX time HOLD and X manifest index staleness are bounded secondary issues.
+- Human Gates pending, Core State still `ISSUE_INITIALIZED`; no Screening authority.
+
 ## Final disposition
 
 `IN_PROGRESS`
