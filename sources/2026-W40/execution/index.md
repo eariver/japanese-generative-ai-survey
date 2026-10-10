@@ -138,6 +138,14 @@ This is the current human-readable navigation record for the edition. Machine li
 - Audit: `sources/2026-W40/execution/reviews/sol-w40-evidence-authority-consumption-r2-20261010.md`; bounded Muse r6 instruction: `sources/2026-W40/execution/instructions/2026-10-10_muse-w40-evidence-supplement-card-binding-r6.md`.
 - Production State `CANDIDATES_NORMALIZED`, checkpoints Evidence/Materiality/Completeness pending, Gates pending. No canonical Evidence acceptance or Selection authorized.
 
+## Sol Evidence Authority-Consumption Review r3 (2026-10-10)
+
+- r6 structural/source-binding checks: **PASS**, 35 proposed Cards, four supplemental first-party authorities, r5 approved deterministic source-class projection retained. Official Acceptance not yet performed.
+- **SC-E09 VERSION PIN ISSUE:** ProvenanceGuard r5 consumed ar5iv paper excerpt has 4-author v2 characteristics; r6 Supplement assumed 'v3 current' Aug 27 with unversioned locator. This is a source-consumption/provenance revision issue, not proof v3 does not exist. Version pin the actual read paper against arXiv original HTML v2 (or independently prove v3 with exact content) and deterministically regenerate supplement/package/proposed Cards.
+- Sol r3 verdict: `SOL_EVIDENCE_AUTHORITY_VERSION_PIN_CORRECTION_REQUIRED`.
+- Review: `sources/2026-W40/execution/reviews/sol-w40-evidence-authority-consumption-r3-20261010.md`. Bounded Muse r7: `sources/2026-W40/execution/instructions/2026-10-10_muse-w40-provenanceguard-version-pin-r7.md`.
+- State remains `CANDIDATES_NORMALIZED`, Evidence/Materiality/Completeness pending; Human Gates pending.
+
 ## Final disposition
 
 `IN_PROGRESS`
