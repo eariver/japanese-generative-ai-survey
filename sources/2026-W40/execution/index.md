@@ -189,6 +189,13 @@ This is the current human-readable navigation record for the edition. Machine li
 - Core pending Human Gate invalidation requires passed Architecture checkpoint, absent at EVIDENCE_REVIEWED; no direct backwards State transition. Current canonical State/acceptances protected until safe Core re-entry path is approved.
 - Audit: sources/2026-W40/execution/reviews/sol-w40-selection-r10-scope-adjudication-20261010.md; bounded Muse r11: sources/2026-W40/execution/instructions/2026-10-10_muse-w40-hf-publication-timing-and-core-reentry-r11.md. No Selection, Architecture or Human Gate approval.
 
+## Sol W40 Selection scope adjudication r11 (2026-10-10)
+
+- Muse r11 verified terminal HEAD `5b63d0c9f49610996658afbe072f5c996a92ddb5`, Tree `0c6c67c9a4ef4feeddc23c06e06205c75b43587f` (2 normal FF commits, 5 W40-local files only), State still `EVIDENCE_REVIEWED`; official Stage/Human Gates protected.
+- **Sol editorial decision: Plan B provisional MATERIAL inclusion approved** for original issuer-authored HF platform announcements AstaBrief `2026-10-02T15:19:50.340Z` and AutoSynthData `2026-10-02T04:01:31.290Z`; publisher ARTICLE event ≠ original weight/code/model creation. Selection roles still proposed, not accepted.
+- **Blocking Core issue #562**: safe pre-Architecture same-State upstream authority supersession absent at `EVIDENCE_REVIEWED`. No pending-Gate invalidation/backward transition; immutable 37/37/35/35 acceptances unchanged. Scope review: `sources/2026-W40/execution/reviews/sol-w40-selection-r11-scope-decision-20261010.md`.
+- Separate Core maintenance specification: `sources/2026-W40/execution/instructions/2026-10-10_core-v2-post-evidence-supersession-implementation-request.md`; current stale refactor branch 1,244 commits behind reviewed main, no safe current Core implement branch authorized by W40 contract. Need separately guarded reviewed Core work before continuing W40 Selection; no Stage/Human/Selection write permitted now.
+
 ## Final disposition
 
 `IN_PROGRESS`
