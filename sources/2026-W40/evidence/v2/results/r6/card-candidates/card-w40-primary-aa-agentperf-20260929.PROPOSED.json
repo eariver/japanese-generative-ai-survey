@@ -1,0 +1,166 @@
+{
+ "schema_version": "2.0-rc1",
+ "issue_id": "2026-W40",
+ "evidence_task_id": "evidence:2026-W40:6b710e391126f2cd",
+ "basis": {
+  "task_sha256": "c8299fc8124e74bc8d35f4220916f2dee260f08be1accaf09375296847a327ea",
+  "screening_acceptance_sha256": "4bae12edc6a17d8f43188dedd6ced9716b4ae1559ff996cc6e7d15a23d5b564f",
+  "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+  "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+ },
+ "status": "VERIFIED",
+ "entities": [
+  {
+   "canonical_name": "AA-AgentPerf-Local",
+   "canonical_url": "https://artificialanalysis.ai/articles/aa-agentperf-local",
+   "entity_id": "aa-agentperf-local",
+   "entity_type": "BENCHMARK",
+   "organization": "Artificial Analysis"
+  }
+ ],
+ "artifact": {
+  "primary_subject_id": "aa-agentperf-local",
+  "artifact_type": "BENCHMARK",
+  "canonical_name": "AA-AgentPerf-Local",
+  "canonical_url": "https://artificialanalysis.ai/articles/aa-agentperf-local"
+ },
+ "temporal": {
+  "observed_at": "2026-10-10T06:40:00Z",
+  "events": []
+ },
+ "sources": [
+  {
+   "source_id": "src-1",
+   "url": "primary:artificialanalysis.ai/articles/aa-agentperf-local",
+   "source_class": "PRIMARY_OFFICIAL",
+   "title": "Artificial Analysis: AA-AgentPerf-Local (Sep 29)",
+   "published_at": null,
+   "accessed_at": "2026-10-10T06:40:00Z",
+   "role": "Discovery-bounded source used for factual verification"
+  }
+ ],
+ "claims": [
+  {
+   "statement_id": "claim-1",
+   "text": "AA launched AA-AgentPerf-Local Sep 29 (day-only): open-source local inference tool replaying real agent trajectories (8 tasks, 168 turns, ~56K growing context, identical token work; tool execution skipped by default); code on GitHub.",
+   "subject_id": "aa-agentperf-local",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "PRIMARY_FACT",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Artificial Analysis article Sep 29, full body read."
+  },
+  {
+   "statement_id": "claim-2",
+   "text": "Hardware Spark 128GB / RTX 5090 32GB / Ryzen Halo 128GB / M5 Pro 64GB; models Qwen3.5-9B, Qwen3.8-27B, Qwen3.6-35B-A3B, Ling 3.0 Flash 124B/5B-active at 4-bit; 14 speculative configs (MTP/DFlash/DSpark).",
+   "subject_id": "aa-agentperf-local",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "PRIMARY_FACT",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Publisher methodology description."
+  },
+  {
+   "statement_id": "claim-3",
+   "text": "Active-params trend with exceptions; RTX 5090 fastest where fits (>3.5x); Spark 1.4-1.7x Halo on 3/4 despite 7% bandwidth gap (compute/CUDA maturity); MacBook within 2-9% Halo on 2 models; prefill 22-41% despite 73-93% KV hits; speculative +30-120% decode.",
+   "subject_id": "aa-agentperf-local",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "PROJECT_CLAIM",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Publisher-measured, attribution required."
+  },
+  {
+   "statement_id": "claim-4",
+   "text": "Tests inference serving, NOT autonomous task correctness or model intelligence.",
+   "subject_id": "aa-agentperf-local",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "INFERENCE",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Editorial + publisher scope."
+  }
+ ],
+ "metrics": [],
+ "limitations": [
+  {
+   "statement_id": "limitation-1",
+   "text": "Publisher benchmark, not independent reproduction.",
+   "subject_id": "aa-agentperf-local",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "INFERENCE",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Evidence boundary retained for downstream editorial use."
+  },
+  {
+   "statement_id": "limitation-2",
+   "text": "Single-agent full-system focus; multi-agent/shared-load pending.",
+   "subject_id": "aa-agentperf-local",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "INFERENCE",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Evidence boundary retained for downstream editorial use."
+  },
+  {
+   "statement_id": "limitation-3",
+   "text": "Living leaderboard; W40 authority needs commit pin at Selection.",
+   "subject_id": "aa-agentperf-local",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "INFERENCE",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Evidence boundary retained for downstream editorial use."
+  }
+ ],
+ "verification": {
+  "targets": [
+   {
+    "target": "aa-article",
+    "status": "VERIFIED",
+    "finding": "Article fully read; release/methodology/results/scope extracted.",
+    "subject_ids": [
+     "aa-agentperf-local"
+    ],
+    "source_ids": [
+     "src-1"
+    ]
+   },
+   {
+    "target": "github-repo",
+    "status": "UNRESOLVED",
+    "finding": "Repo + 14 configs linked but not pinned; living leaderboard.",
+    "subject_ids": [
+     "aa-agentperf-local"
+    ],
+    "source_ids": [
+     "src-1"
+    ]
+   },
+   {
+    "target": "configs",
+    "status": "UNRESOLVED",
+    "finding": "Config-level details (MTP/DFlash/DSpark per pair) not individually consumed.",
+    "subject_ids": [
+     "aa-agentperf-local"
+    ],
+    "source_ids": [
+     "src-1"
+    ]
+   }
+  ],
+  "unresolved_questions": [
+   "github-repo: Repo + 14 configs linked but not pinned; living leaderboard.",
+   "configs: Config-level details (MTP/DFlash/DSpark per pair) not individually consumed."
+  ],
+  "contradictions": []
+ }
+}

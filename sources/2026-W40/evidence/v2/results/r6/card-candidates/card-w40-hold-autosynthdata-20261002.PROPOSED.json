@@ -1,0 +1,155 @@
+{
+ "schema_version": "2.0-rc1",
+ "issue_id": "2026-W40",
+ "evidence_task_id": "evidence:2026-W40:ba72657afb68a868",
+ "basis": {
+  "task_sha256": "779fd49facc8500c26a4f7d3f1cf6bb3a57ac8a7646207a4e3f16e1af70f682d",
+  "screening_acceptance_sha256": "4bae12edc6a17d8f43188dedd6ced9716b4ae1559ff996cc6e7d15a23d5b564f",
+  "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+  "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+ },
+ "status": "PARTIAL",
+ "entities": [
+  {
+   "canonical_name": "AutoSynthData",
+   "canonical_url": "https://huggingface.co/blog/ServiceNow-AI/autosynthdata",
+   "entity_id": "servicenow-autosynthdata",
+   "entity_type": "OTHER",
+   "organization": "ServiceNow"
+  }
+ ],
+ "artifact": {
+  "primary_subject_id": "servicenow-autosynthdata",
+  "artifact_type": "OTHER",
+  "canonical_name": "AutoSynthData",
+  "canonical_url": "https://huggingface.co/blog/ServiceNow-AI/autosynthdata"
+ },
+ "temporal": {
+  "observed_at": "2026-10-10T06:40:00Z",
+  "events": []
+ },
+ "sources": [
+  {
+   "source_id": "src-1",
+   "url": "primary:huggingface.co/blog/ServiceNow-AI/autosynthdata",
+   "source_class": "PRIMARY_OFFICIAL",
+   "title": "ServiceNow: AutoSynthData (Oct 2, TIME_UNRESOLVED)",
+   "published_at": null,
+   "accessed_at": "2026-10-10T06:40:00Z",
+   "role": "Discovery-bounded source used for factual verification"
+  }
+ ],
+ "claims": [
+  {
+   "statement_id": "claim-1",
+   "text": "ServiceNow CoreAI published AutoSynthData blog Oct 2 (DAY-ONLY, no clock time): failure-driven synthetic task curriculum (capability cards -> target/multiply generation -> sample/batch verification -> moving frontier); env-grounded feasibility/realism/difficulty + verifier consistency/soundness/completeness.",
+   "subject_id": "servicenow-autosynthdata",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "PRIMARY_FACT",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "HF blog Oct 2, full body read (r2); dataset page re-read via delegated retrieval."
+  },
+  {
+   "statement_id": "claim-2",
+   "text": "EnterpriseOps-Gym Hybrid (Gemma-4-26B-A4B-it target, Qwen3.8-27B teacher, 2000 samples/18h, Pass@1 +7.2pp/35% rel, 63.01%->68.55%, 59% gap closed, epoch 5); ITSM (DeepSeek-V4.1-Flash teacher, 1994/66h, 18.77%->27.18%); generator blinded via sanitized cards.",
+   "subject_id": "servicenow-autosynthdata",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "PROJECT_CLAIM",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Publisher-measured in stated envs."
+  },
+  {
+   "statement_id": "claim-3",
+   "text": "EnterpriseOps-Gym dataset Apache-2.0 CONFIRMED (page + README frontmatter, Apr 30 change; public load_dataset, no gating); AutoSynthData STANDALONE code/dataset release NOT_FOUND (blog only; site searches negative); Gym paper Mar 2026 is background.",
+   "subject_id": "servicenow-autosynthdata",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "PRIMARY_FACT",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Release scope (delegated dataset reads)."
+  },
+  {
+   "statement_id": "claim-4",
+   "text": "NO exact time evidenced -> TIME_UNRESOLVED HOLD; never auto-classify ordinary.",
+   "subject_id": "servicenow-autosynthdata",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "INFERENCE",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Temporal gate."
+  }
+ ],
+ "metrics": [],
+ "limitations": [
+  {
+   "statement_id": "limitation-1",
+   "text": "Exact Oct 2 time unproven.",
+   "subject_id": "servicenow-autosynthdata",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "INFERENCE",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Evidence boundary retained for downstream editorial use."
+  },
+  {
+   "statement_id": "limitation-2",
+   "text": "No standalone AutoSynthData code/dataset/license to verify.",
+   "subject_id": "servicenow-autosynthdata",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "INFERENCE",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Evidence boundary retained for downstream editorial use."
+  },
+  {
+   "statement_id": "limitation-3",
+   "text": "Figures publisher-measured in stated envs.",
+   "subject_id": "servicenow-autosynthdata",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "INFERENCE",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Evidence boundary retained for downstream editorial use."
+  }
+ ],
+ "verification": {
+  "targets": [
+   {
+    "target": "autosynthdata-timestamp",
+    "status": "UNRESOLVED",
+    "finding": "Methodology + experiments verified in blog; timestamp still day-only.",
+    "subject_ids": [
+     "servicenow-autosynthdata"
+    ],
+    "source_ids": [
+     "src-1"
+    ]
+   },
+   {
+    "target": "dataset-license",
+    "status": "UNRESOLVED",
+    "finding": "Gym dataset Apache-2.0 confirmed; AutoSynthData standalone release absent.",
+    "subject_ids": [
+     "servicenow-autosynthdata"
+    ],
+    "source_ids": [
+     "src-1"
+    ]
+   }
+  ],
+  "unresolved_questions": [
+   "autosynthdata-timestamp: Methodology + experiments verified in blog; timestamp still day-only.",
+   "dataset-license: Gym dataset Apache-2.0 confirmed; AutoSynthData standalone release absent."
+  ],
+  "contradictions": []
+ }
+}

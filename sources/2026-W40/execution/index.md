@@ -59,6 +59,8 @@ This is the current human-readable navigation record for the edition. Machine li
 - Muse r4 (2026-10-10Z): canonical `discovery/discovery-accepted-v2.json` (37, graph `27e9efde…`); Core advance to `CANDIDATES_NORMALIZED` (discovery+screening checkpoints passed); Screening 37 (31 KEEP / 3 INSPECT / 1 MAYBE / 2 DROP) accepted; Evidence package 35 tasks; r4 gap-fill run (8 full-body upgrades + delegated pins); 35 Evidence records (28 VERIFIED / 7 PARTIAL) + completeness + 35 views draft; shared-Core map defect logged without patch; handoff `execution/SOL_EVIDENCE_AUTHORITY_REVIEW_HANDOFF.md`. Stop at Sol Evidence review.
 - Sol Evidence Authority-Consumption Review r1 (2026-10-10): `execution/reviews/sol-w40-evidence-authority-consumption-r1-20261010.md`, decision REVISION_REQUIRED (SC-E01 source taxonomy CV2-DM-016 recurrence + E02 ELYZA + E03 pdf-target + E04/E05 corrections; SC-E06 nonblocking).
 - Muse r5 (2026-10-10Z, this run): compat projection 35 tasks (3 projected + 32 passthrough, frozen PASS, PROPOSED) `execution/compat/evidence-source-class-projection-r5/`; r5 collector run (2 ELYZA card excerpts + CLM/Guard paper excerpts + Olmo failure log); r5 evidence revision 35 (29 VERIFIED / 6 PARTIAL; ELYZA provisional MATERIAL) + diff ledger + 5 PROPOSED card candidates; 5 views updated; handoff-r5 `execution/SOL_EVIDENCE_AUTHORITY_REVIEW_HANDOFF-r5.md`. State CANDIDATES_NORMALIZED; stop at Sol review.
+- Sol Evidence Authority-Consumption Review r2 (2026-10-10): `execution/reviews/sol-w40-evidence-authority-consumption-r2-20261010.md`, decision SUBSTANCE_PARTIAL_PASS / BINDING_REVISION_REQUIRED (SC-E07 card-binding gap + SC-E08 Guard version error; projection semantics approved).
+- Muse r6 (2026-10-10Z, this run): supplement `external/evidence-supplement/evidence-authority-supplement-r6.json` (SHA `8872acfd…`, 4 entries, frozen-built); r6 derived package 35 tasks (3 projected + 3 supplement-bound, double-build identical, PROPOSED); r6 records 35 (Guard dates corrected, 3 bindings, DGX MATERIAL) + 30-record audit; 35 Card candidates validate PASS (PROPOSED); handoff-r6 `execution/SOL_EVIDENCE_AUTHORITY_REVIEW_HANDOFF-r6.md`. State CANDIDATES_NORMALIZED; NO acceptance/transition; stop at Sol review.
 - Discovery 37 / Screening 37 accepted (Sol completeness PASS); Evidence remains preacceptance pending exact primary-source binding and 35-card Core validation.
 - This is a retrospective compilation of a completed W40 window; do not mix later W41 announcements into ordinary-window scope.
 
@@ -86,6 +88,7 @@ This is the current human-readable navigation record for the edition. Machine li
 - `sessions/muse-w40-rl-environments-r3-20261010.md` (Muse bounded SC-D07 single-event backfill; stops at third Sol review)
 - `sessions/muse-w40-r4-20261010.md` (Muse bounded accept → screening → evidence prep; stops at Sol Evidence review)
 - `sessions/muse-w40-r5-20261010.md` (Muse bounded Evidence semantic gap-fill SC-E01..E05; stops at second Sol Evidence review)
+- `sessions/muse-w40-r6-20261010.md` (Muse bounded supplement + card binding SC-E07/E08; stops at third Sol Evidence review)
 
 ## Sol Discovery completeness decision (r3 PASS → r4 Evidence review pending)
 

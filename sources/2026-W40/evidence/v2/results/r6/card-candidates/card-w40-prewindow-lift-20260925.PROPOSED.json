@@ -1,0 +1,119 @@
+{
+ "schema_version": "2.0-rc1",
+ "issue_id": "2026-W40",
+ "evidence_task_id": "evidence:2026-W40:f9e39d3c5b209f14",
+ "basis": {
+  "task_sha256": "0e15757456622dcd07723603c0d1694f8e39e3a7f94bcdf341dc8b938075f7cd",
+  "screening_acceptance_sha256": "4bae12edc6a17d8f43188dedd6ced9716b4ae1559ff996cc6e7d15a23d5b564f",
+  "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+  "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+ },
+ "status": "VERIFIED",
+ "entities": [
+  {
+   "canonical_name": "LIFT reasoning vectors",
+   "canonical_url": "https://arxiv.org/abs/2609.31140",
+   "entity_id": "arxiv-2609-31140",
+   "entity_type": "PAPER",
+   "organization": null
+  }
+ ],
+ "artifact": {
+  "primary_subject_id": "arxiv-2609-31140",
+  "artifact_type": "PAPER",
+  "canonical_name": "LIFT reasoning vectors",
+  "canonical_url": "https://arxiv.org/abs/2609.31140"
+ },
+ "temporal": {
+  "observed_at": "2026-10-10T06:40:00Z",
+  "events": [
+   {
+    "event_id": "event-1",
+    "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+    "event_date": "2026-09-25T11:31:02Z",
+    "subject_id": "arxiv-2609-31140",
+    "subject_role": "PRIMARY_SUBJECT",
+    "source_ids": [
+     "src-1"
+    ]
+   }
+  ]
+ },
+ "sources": [
+  {
+   "source_id": "src-1",
+   "url": "primary:arxiv.org/abs/2609.31140",
+   "source_class": "PRIMARY_PAPER",
+   "title": "arXiv: LIFT reasoning vectors (Sep 25 11:31Z, PRE-WINDOW)",
+   "published_at": "2026-09-25T11:31:02Z",
+   "accessed_at": "2026-10-10T06:40:00Z",
+   "role": "Discovery-bounded source used for factual verification"
+  }
+ ],
+ "claims": [
+  {
+   "statement_id": "claim-1",
+   "text": "LIFT submission Sep 25 11:31:02Z is PRE-WINDOW; X recirculation cannot make it a new W40 paper.",
+   "subject_id": "arxiv-2609-31140",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "PRIMARY_FACT",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "arXiv abs page; v1 Fri 25 Sep 2026 11:31:02 UTC — ~10.5h BEFORE 22:00Z cutoff; NeurIPS 2026 accepted."
+  },
+  {
+   "statement_id": "claim-2",
+   "text": "LIFT vector-intervention transfers base-LLM reasoning to VLM without backbone retraining; LLM-derived vectors beat VLM-derived under matched protocols (paper-claimed).",
+   "subject_id": "arxiv-2609-31140",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "AUTHOR_CLAIM",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Abstract sketch (method + paper-claimed results)."
+  }
+ ],
+ "metrics": [],
+ "limitations": [
+  {
+   "statement_id": "limitation-1",
+   "text": "Abstract only; code promised soon, not consumed.",
+   "subject_id": "arxiv-2609-31140",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "INFERENCE",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Evidence boundary retained for downstream editorial use."
+  },
+  {
+   "statement_id": "limitation-2",
+   "text": "CONTEXT only; no W40 newness claim.",
+   "subject_id": "arxiv-2609-31140",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "INFERENCE",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Evidence boundary retained for downstream editorial use."
+  }
+ ],
+ "verification": {
+  "targets": [
+   {
+    "target": "arxiv-2609-31140",
+    "status": "VERIFIED",
+    "finding": "arXiv page re-verified (timestamp + NeurIPS note verbatim); pre-window math confirmed.",
+    "subject_ids": [
+     "arxiv-2609-31140"
+    ],
+    "source_ids": [
+     "src-1"
+    ]
+   }
+  ],
+  "unresolved_questions": [],
+  "contradictions": []
+ }
+}
