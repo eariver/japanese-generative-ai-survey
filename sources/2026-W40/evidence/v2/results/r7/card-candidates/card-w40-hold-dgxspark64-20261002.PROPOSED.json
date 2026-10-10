@@ -1,0 +1,130 @@
+{
+ "schema_version": "2.0-rc1",
+ "issue_id": "2026-W40",
+ "evidence_task_id": "evidence:2026-W40:4eddb6eea3df05f9",
+ "basis": {
+  "task_sha256": "ff5a632af37b63818c96ed513f2c870b67c417bf7078e62b29441ad0bc1614b5",
+  "screening_acceptance_sha256": "4bae12edc6a17d8f43188dedd6ced9716b4ae1559ff996cc6e7d15a23d5b564f",
+  "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+  "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+ },
+ "status": "PARTIAL",
+ "entities": [
+  {
+   "canonical_name": "NVIDIA DGX Spark 64GB",
+   "canonical_url": "https://blogs.nvidia.com/blog/local-ai-dgx-spark-64gb-sync/",
+   "entity_id": "nvidia-dgx-spark-64gb",
+   "entity_type": "PRODUCT",
+   "organization": "NVIDIA"
+  }
+ ],
+ "artifact": {
+  "primary_subject_id": "nvidia-dgx-spark-64gb",
+  "artifact_type": "PRODUCT",
+  "canonical_name": "NVIDIA DGX Spark 64GB",
+  "canonical_url": "https://blogs.nvidia.com/blog/local-ai-dgx-spark-64gb-sync/"
+ },
+ "temporal": {
+  "observed_at": "2026-10-10T06:30:00Z",
+  "events": []
+ },
+ "sources": [
+  {
+   "source_id": "src-1",
+   "url": "primary:blogs.nvidia.com/blog/local-ai-dgx-spark-64gb-sync/",
+   "source_class": "PRIMARY_OFFICIAL",
+   "title": "NVIDIA: DGX Spark 64GB (Oct 2, time unresolved)",
+   "published_at": null,
+   "accessed_at": "2026-10-10T06:30:00Z",
+   "role": "Discovery-bounded source used for factual verification"
+  }
+ ],
+ "claims": [
+  {
+   "statement_id": "claim-1",
+   "text": "DGX Spark 64GB announcement carries exact publication instant 2026-10-02T13:00:39+00:00 — ~8h59m BEFORE the 22:00Z end-exclusive cutoff: ORDINARY-ELIGIBLE (Discovery hash-pinned TIME_UNRESOLVED is superseded here for Selection disposition; acceptance bytes untouched).",
+   "subject_id": "nvidia-dgx-spark-64gb",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "PRIMARY_FACT",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "NVIDIA blog HTML head + JSON-LD via delegated retrieval (verbatim meta quotes in r4 log)."
+  },
+  {
+   "statement_id": "claim-2",
+   "text": "64GB unified-memory SKU + Sync Cluster Assistant (2-unit clustering, no extra setup); Oct 23 third-party availability (Acer/ASUS/Dell/Gigabyte/HP/MSI, from $4,999) = FUTURE availability, NOT W40 shipping; byline Allen Bourgoyne.",
+   "subject_id": "nvidia-dgx-spark-64gb",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "PRIMARY_FACT",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Same-page substance (delegated verbatim quotes)."
+  }
+ ],
+ "metrics": [],
+ "limitations": [
+  {
+   "statement_id": "limitation-1",
+   "text": "Timestamp via delegated page-metadata read (verbatim quotes logged); Sol can re-verify URL directly.",
+   "subject_id": "nvidia-dgx-spark-64gb",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "INFERENCE",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Evidence boundary retained for downstream editorial use."
+  },
+  {
+   "statement_id": "limitation-2",
+   "text": "Full body prose not read by Muse directly.",
+   "subject_id": "nvidia-dgx-spark-64gb",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "INFERENCE",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Evidence boundary retained for downstream editorial use."
+  },
+  {
+   "statement_id": "limitation-3",
+   "text": "Oct 23 availability is future; not a shipping event.",
+   "subject_id": "nvidia-dgx-spark-64gb",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "INFERENCE",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Evidence boundary retained for downstream editorial use."
+  }
+ ],
+ "verification": {
+  "targets": [
+   {
+    "target": "dgx-blog-timestamp",
+    "status": "VERIFIED",
+    "finding": "Exact instant 13:00:39Z from meta + JSON-LD beats cutoff; visible byline calendar-only corroborates day.",
+    "subject_ids": [
+     "nvidia-dgx-spark-64gb"
+    ],
+    "source_ids": [
+     "src-1"
+    ]
+   },
+   {
+    "target": "first-index-proof",
+    "status": "NOT_APPLICABLE",
+    "finding": "Sitemap/first-index corroboration not attempted (metadata sufficient).",
+    "subject_ids": [
+     "nvidia-dgx-spark-64gb"
+    ],
+    "source_ids": [
+     "src-1"
+    ]
+   }
+  ],
+  "unresolved_questions": [],
+  "contradictions": []
+ }
+}

@@ -1,0 +1,188 @@
+{
+ "schema_version": "2.0-rc1",
+ "issue_id": "2026-W40",
+ "evidence_task_id": "evidence:2026-W40:0d019479344f08a7",
+ "basis": {
+  "task_sha256": "adef8ef95feacead9236eafbfd8e7cac068a35dfe60419b5405c42252c6e5ddf",
+  "screening_acceptance_sha256": "4bae12edc6a17d8f43188dedd6ced9716b4ae1559ff996cc6e7d15a23d5b564f",
+  "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+  "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+ },
+ "status": "VERIFIED",
+ "entities": [
+  {
+   "canonical_name": "Cloudflare Clef decision models",
+   "canonical_url": "https://blog.cloudflare.com/clef-decision-models/",
+   "entity_id": "cloudflare-clef",
+   "entity_type": "MODEL",
+   "organization": "Cloudflare"
+  }
+ ],
+ "artifact": {
+  "primary_subject_id": "cloudflare-clef",
+  "artifact_type": "OPEN_WEIGHT",
+  "canonical_name": "Cloudflare Clef decision models",
+  "canonical_url": "https://blog.cloudflare.com/clef-decision-models/"
+ },
+ "temporal": {
+  "observed_at": "2026-10-10T06:30:00Z",
+  "events": [
+   {
+    "event_id": "event-1",
+    "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+    "event_date": "2026-10-01T15:34:02Z",
+    "subject_id": "cloudflare-clef",
+    "subject_role": "PRIMARY_SUBJECT",
+    "source_ids": [
+     "src-1"
+    ]
+   }
+  ]
+ },
+ "sources": [
+  {
+   "source_id": "src-1",
+   "url": "primary:blog.cloudflare.com/clef-decision-models/",
+   "source_class": "PRIMARY_OFFICIAL",
+   "title": "Cloudflare: Clef + Clef-flash decision models (Oct 1)",
+   "published_at": "2026-10-01T15:34:02Z",
+   "accessed_at": "2026-10-10T06:30:00Z",
+   "role": "Discovery-bounded source used for factual verification"
+  }
+ ],
+ "claims": [
+  {
+   "statement_id": "claim-1",
+   "text": "Cloudflare released Clef + Clef-flash Oct 1 (exact 15:34:02Z): first Cloudflare-trained open-source decision models on Workers AI; Apache-2.0 weights on HF; Jev-API compatible; RL fine-tuning platform (FDE now, self-serve later).",
+   "subject_id": "cloudflare-clef",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "PRIMARY_FACT",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Cloudflare launch blog Oct 1 + changelog mirror, full bodies read; JSON-LD datePublished 2026-10-01T15:34:02Z exact."
+  },
+  {
+   "statement_id": "claim-2",
+   "text": "Qwen torso (27B Clef / 9B flash), prefill-only pass, parallel schema-choice scoring (non-autoregressive); 64K context (vs Jev 32K); vision encoder (images) unlike text-only Jev; typed noul/choice/score + reliability scores.",
+   "subject_id": "cloudflare-clef",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "PRIMARY_FACT",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Vendor architecture description; base IDs cross-checked with Workers AI docs."
+  },
+  {
+   "statement_id": "claim-3",
+   "text": "Workers AI binding/REST/Gateway; $0.24 (Clef) / $0.09 (flash) per 1M input tokens, no output price; 10K neurons/day free.",
+   "subject_id": "cloudflare-clef",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "PRIMARY_FACT",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Vendor API/pricing description."
+  },
+  {
+   "statement_id": "claim-4",
+   "text": "Jev Decision Index lead claimed (live demo); BFCL 98.47/98.76, BANKING77 94.20, CLINC150+OOS 97.43/66.77, When2Call Jev wins 80.97; Typesafe WorkflowEvals 3/4; latency 209.3/38.8ms vs Jev 524.1ms (edge GPUs).",
+   "subject_id": "cloudflare-clef",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "VENDOR_CLAIM",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Vendor-run, attribution required; index is vendor-hosted."
+  },
+  {
+   "statement_id": "claim-5",
+   "text": "Oct 9 Clef-omni (30B MoE audio/video) + flash price/context changes are POST-WINDOW and must not leak into W40 figures.",
+   "subject_id": "cloudflare-clef",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "INFERENCE",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Post-window drift guard (living changelog)."
+  }
+ ],
+ "metrics": [],
+ "limitations": [
+  {
+   "statement_id": "limitation-1",
+   "text": "Jev Decision Index is vendor-hosted, not independent reproduction.",
+   "subject_id": "cloudflare-clef",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "INFERENCE",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Evidence boundary retained for downstream editorial use."
+  },
+  {
+   "statement_id": "limitation-2",
+   "text": "Distinct from Strands Decider 2B and Ollama interface; do not merge.",
+   "subject_id": "cloudflare-clef",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "INFERENCE",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Evidence boundary retained for downstream editorial use."
+  },
+  {
+   "statement_id": "limitation-3",
+   "text": "RL platform is service announcement.",
+   "subject_id": "cloudflare-clef",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "INFERENCE",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Evidence boundary retained for downstream editorial use."
+  }
+ ],
+ "verification": {
+  "targets": [
+   {
+    "target": "cloudflare-blog",
+    "status": "VERIFIED",
+    "finding": "Launch blog + changelog + docs mirrors read; release/arch/pricing/benchmarks extracted.",
+    "subject_ids": [
+     "cloudflare-clef"
+    ],
+    "source_ids": [
+     "src-1"
+    ]
+   },
+   {
+    "target": "hf-weights",
+    "status": "UNRESOLVED",
+    "finding": "HF weights pages (clef/clef-flash) existence noted; weight files not downloaded.",
+    "subject_ids": [
+     "cloudflare-clef"
+    ],
+    "source_ids": [
+     "src-1"
+    ]
+   },
+   {
+    "target": "jev-index-method",
+    "status": "UNRESOLVED",
+    "finding": "Jev Index methodology is vendor-hosted demo; independent protocol not reviewed.",
+    "subject_ids": [
+     "cloudflare-clef"
+    ],
+    "source_ids": [
+     "src-1"
+    ]
+   }
+  ],
+  "unresolved_questions": [
+   "hf-weights: HF weights pages (clef/clef-flash) existence noted; weight files not downloaded.",
+   "jev-index-method: Jev Index methodology is vendor-hosted demo; independent protocol not reviewed."
+  ],
+  "contradictions": []
+ }
+}

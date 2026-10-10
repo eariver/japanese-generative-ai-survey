@@ -1,0 +1,165 @@
+{
+ "schema_version": "2.0-rc1",
+ "issue_id": "2026-W40",
+ "evidence_task_id": "evidence:2026-W40:3dd6b99c23ef4a97",
+ "basis": {
+  "task_sha256": "6c721bec47ec1d160e144b0c8215e4d377219ac19f793a888e3e82161f53387d",
+  "screening_acceptance_sha256": "4bae12edc6a17d8f43188dedd6ced9716b4ae1559ff996cc6e7d15a23d5b564f",
+  "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+  "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+ },
+ "status": "VERIFIED",
+ "entities": [
+  {
+   "canonical_name": "FLUX 3 Image",
+   "canonical_url": "https://bfl.ai/models/flux-3-image",
+   "entity_id": "bfl-flux3-image",
+   "entity_type": "PRODUCT",
+   "organization": "Black Forest Labs"
+  }
+ ],
+ "artifact": {
+  "primary_subject_id": "bfl-flux3-image",
+  "artifact_type": "PRODUCT",
+  "canonical_name": "FLUX 3 Image",
+  "canonical_url": "https://bfl.ai/models/flux-3-image"
+ },
+ "temporal": {
+  "observed_at": "2026-10-10T06:30:00Z",
+  "events": []
+ },
+ "sources": [
+  {
+   "source_id": "src-1",
+   "url": "primary:bfl.ai/models/flux-3-image",
+   "source_class": "PRIMARY_OFFICIAL",
+   "title": "BFL: FLUX 3 Image SKU (Oct 1 X-lead; model page live)",
+   "published_at": null,
+   "accessed_at": "2026-10-10T06:30:00Z",
+   "role": "Discovery-bounded source used for factual verification"
+  }
+ ],
+ "claims": [
+  {
+   "statement_id": "claim-1",
+   "text": "BFL FLUX 3 Image = image SKU of FLUX 3 family: bbox layout control (0-1000 grid), global caption + per-box prompts, per-box multi-step edits; docs live.",
+   "subject_id": "bfl-flux3-image",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "PRIMARY_FACT",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "BFL model page read (r1) + docs/pricing findings via delegated retrieval (verbatim tables/URLs in r4 log)."
+  },
+  {
+   "statement_id": "claim-2",
+   "text": "Jul 23 2026 multimodal foundation announcement (early access, video-first, Image deferred to following weeks) is a DIFFERENT event from Oct 1 Image SKU.",
+   "subject_id": "bfl-flux3-image",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "PRIMARY_FACT",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Chronology boundary (Sol register + r1 raw)."
+  },
+  {
+   "statement_id": "claim-3",
+   "text": "Docs release-notes Oct 1 2026 entry: per-resolution prices 768sq $0.041 / 1k $0.048 / 2k $0.100 / 4k $0.607; calculator default $0.048/image (=1k); launch offer 50% off Oct 1 15:00 UTC -> Oct 8 (banner via index, direct-fetch caveat; corroborated homepage/the-decoder/Runware).",
+   "subject_id": "bfl-flux3-image",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "PRIMARY_FACT",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Delegated docs/pricing reads."
+  },
+  {
+   "statement_id": "claim-4",
+   "text": "X @bfl_ai Oct 1 19:00:27Z is lead/momentum, NOT sole authority; non-X docs pin now PARTIAL->substantive.",
+   "subject_id": "bfl-flux3-image",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "PRIMARY_FACT",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "X lead vs sole authority."
+  }
+ ],
+ "metrics": [],
+ "limitations": [
+  {
+   "statement_id": "limitation-1",
+   "text": "Banner text via search index (JS-gated direct fetch); method disclosed.",
+   "subject_id": "bfl-flux3-image",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "INFERENCE",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Evidence boundary retained for downstream editorial use."
+  },
+  {
+   "statement_id": "limitation-2",
+   "text": "Weights/license/bench methodology pins pending at Selection.",
+   "subject_id": "bfl-flux3-image",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "INFERENCE",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Evidence boundary retained for downstream editorial use."
+  },
+  {
+   "statement_id": "limitation-3",
+   "text": "/pricing carries no publication timestamp.",
+   "subject_id": "bfl-flux3-image",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "INFERENCE",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Evidence boundary retained for downstream editorial use."
+  }
+ ],
+ "verification": {
+  "targets": [
+   {
+    "target": "bfl-model-page",
+    "status": "VERIFIED",
+    "finding": "Model page read (r1) + docs pricing tables + banner + Jul-23 split via delegated reads (r4 log).",
+    "subject_ids": [
+     "bfl-flux3-image"
+    ],
+    "source_ids": [
+     "src-1"
+    ]
+   },
+   {
+    "target": "pricing-page",
+    "status": "VERIFIED",
+    "finding": "Per-resolution prices + Oct 1 SKU date + 15:00 UTC offer confirmed (caveat noted).",
+    "subject_ids": [
+     "bfl-flux3-image"
+    ],
+    "source_ids": [
+     "src-1"
+    ]
+   },
+   {
+    "target": "model-card",
+    "status": "UNRESOLVED",
+    "finding": "Weights/license/bench pins still pending.",
+    "subject_ids": [
+     "bfl-flux3-image"
+    ],
+    "source_ids": [
+     "src-1"
+    ]
+   }
+  ],
+  "unresolved_questions": [
+   "model-card: Weights/license/bench pins still pending."
+  ],
+  "contradictions": []
+ }
+}
