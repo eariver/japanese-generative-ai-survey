@@ -91,7 +91,10 @@ R11 outputs (all staged W40-local, NO canonical mutation):
   (this handoff + ledger + counterfactual + feasibility + session log); NO
   production-state/discovery/screening/evidence/views/ledger/completeness/config/
   scripts/main/other-edition changes.
-- Final HEAD/Tree + remote nonforce readback: recorded in session log at push time.
+- Content commit: b806316402e7fac53381a16910464fcfba0a4bc0
+  (Tree e6433962d0e13d039a7e5c0eca25292e3b223705; parent e45a845…).
+  Push is nonforce `git push origin weekly/2026-W40-v2-work`; remote readback
+  confirmed at b806316… before close-out fill (final HEAD after fill-commit: see report).
 - Terminal proposed: SOL_SELECTION_SCOPE_CHANGE_REVIEW_REQUIRED. (SEMANTIC_READY
   criteria NOT met: both items are eligible + material; BLOCKED criteria NOT met:
   original clocks were readable.)
