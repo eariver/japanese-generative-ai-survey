@@ -199,3 +199,14 @@ This is the current human-readable navigation record for the edition. Machine li
 ## Final disposition
 
 `IN_PROGRESS`
+
+## Muse W40 r13 — editorial repair + supplement feasibility (2026-10-10, Sol-bounded)
+
+- Instruction: `execution/instructions/2026-10-10_muse-w40-r13-editorial-repair-and-supplement-feasibility.md`; Sol r12 disposition accepts independent `REVISION_REQUIRED`, authorizes bounded r13, holds Selection Acceptance.
+- Start: remote HEAD `46f03905…`/tree `df53c378…`/main `afdb3df3…` verified read-only (all match); local aligned FF-only. Guards PASS (EVIDENCE_REVIEWED, stage:selection, Gates pending/null, 37/37/35/35/37, checkpoint SHAs).
+- r13 notes/ledger/manifest (`editorial-supplement/r13/`, 4 files): F03 triad + examples, F04 bounded release wording, F05 card-verified lineage (47K→density≥0.25→39.5K; ~6K vs 6,622; judges; hedged 95%; symmetric Hybrid/ITSM; licenses + 3rd-party-terms boundary), F06 direct re-capture (byte counts reproduce r11, SHA drift, JSON-LD verbatim both articles).
+- DGX (F02): `selection-preview-r13.json` (SHA `dc024778…`) INSPECT→REJECT only; 28 SELECTED (20P/8S) + 4 HOLD + 3 REJECT; Core `validate_selection` PASS; `selection-validation-r13.md` + `count-audit-r13.json`.
+- Supplement feasibility (F01): `execution/supplement-publication-feasibility-r13.md` — Path A companion-only-if-authorized; Path B blocked (B1–B6); TS-003 non-transferrable; bundled goal UNPROVEN/BLOCKED_FOR_FORMAL_PUBLICATION.
+- Architecture staging (F08): `execution/architecture-staged-outline-r13.md` (28 + 2 conditional modules, matrices, decision table, reader-today split; no canonical artifacts).
+- Handoff: `execution/SOL_W40_R13_EDITORIAL_AND_SUPPLEMENT_FEASIBILITY_HANDOFF.md`; session: `execution/sessions/muse-w40-r13-20261010.md`.
+- Terminal: `SOL_W40_R13_EDITORIAL_AND_PUBLICATION_FEASIBILITY_REVIEW_REQUIRED`. No Selection Acceptance / stage transition / checkpoint / Human Gate / Freeze / Release. No shared-Core writes.
