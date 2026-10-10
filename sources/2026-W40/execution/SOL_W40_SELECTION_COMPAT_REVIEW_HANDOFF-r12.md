@@ -72,7 +72,12 @@ other-edition edits. Untracked `scripts/__pycache__/` untouched, unstaged.
 
 ## 6. Commit / push / readback (filled at close)
 
-- Parent: `9fd87e78…`; normal commit(s), non-force push; remote readback + Final
-  HEAD/Tree recorded in session log.
+- Content commit `78a86854189d69fc1697d1930e85de3a7510c00c`
+  (Tree `25ebd934ef85514ec1e7be157bb90daca248fd7f`; parent `9fd87e78…`); concurrent
+  remote `9406931e5` (CV2-DM-022 docs) integrated via normal merge
+  `3a6eff3353268ec65f627a345d5bc02e6e7d4d46`
+  (Tree `677331e5dc17e828cf2d4ac59b59f11961f553e1`); non-force push
+  `9406931e5..3a6eff335`, remote readback confirmed
+  (final HEAD after fill-commit: see session log / report).
 - Terminal proposed: `SOL_SELECTION_COMPAT_REVIEW_REQUIRED`. No advance to
   `SELECTION_COMPLETE`; no Architecture acceptance; no Human Gate action.
