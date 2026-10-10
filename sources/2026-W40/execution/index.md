@@ -13,10 +13,11 @@ This is the current human-readable navigation record for the edition. Machine li
 - Requested stop: `ARCHITECTURE_REVIEW`
 - Production Profile: `sources/2026-W40/production-profile.json`
 - Production State: `sources/2026-W40/production-state.json`
-- Current State SHA-256: `c58337e5bd6a03f619c38720583cc6a741f2e1165fadf99cbb3266c0408770c0`
-- Current lifecycle: `EVIDENCE_REVIEWED` (canonical authority = production-state.json; historical initialization below)
-- Current terminal reason: `none`
-- Current next action: `stage:selection`
+- Current State SHA-256: `c5cd881153c60f1e6a50743995fc0a68f22ebda901723a3eae38dc293d1d6ce6ce`
+- Current lifecycle: `ARCHITECTURE_ESTABLISHED` (canonical authority = production-state.json; r19 regenerated Architecture with R18-F02–F06 corrections)
+- Current terminal reason: `HUMAN_GATE_REACHED`
+- Current next action: `ARCHITECTURE_REVIEW`
+- Historical (r19 F07 correction): prior revisions of this block labeled `EVIDENCE_REVIEWED / stage:selection / none` with State SHA `c58337e5bd6a03f619c38720583cc6a741f2e1165fadf99cbb3266c0408770c0` (initialization-era) and later `EVIDENCE_REVIEWED`-era text; superseded by r18 (`SELECTION_COMPLETE`, `ARCHITECTURE_ESTABLISHED` state `4292270c…`) and r19 (operator invalidation seq 1 + regenerated Architecture, state `c5cd8811…`). Old SHAs preserved in Git history, never modified.
 
 ## Human Gates
 
@@ -292,7 +293,6 @@ This is the current human-readable navigation record for the edition. Machine li
 - Session: `execution/sessions/muse-w40-r18-20261011.md`; handoff: `execution/SOL_W40_R18_ARCHITECTURE_REVIEW_HANDOFF.md`.
 - Terminal: `FRESH_HUMAN_ARCHITECTURE_REVIEW_PENDING` candidate.
 
-
 ## Sol W40 r18 preliminary Human Architecture Review checks (2026-10-11)
 
 - Actual Muse r18 reached `ARCHITECTURE_ESTABLISHED / HUMAN_GATE_REACHED` with standard Stage machine checkpoints passed and Human Gates pending. Sol structural check: 28 SELECTED, 113 literal boundaries, 9 packages, zero missing.
@@ -305,3 +305,15 @@ This is the current human-readable navigation record for the edition. Machine li
 - Independent audit verdict `BOUNDED_REVISION_REQUIRED` accepted: structural Gate PASS (agent-first), 28 selected/113 Boundaries intact, seven F01–F07 documentation/attribution/depth findings. Current r18 Human Gate remains pending; **NO Human decision recorded**.
 - Sol disposition: `execution/reviews/sol-w40-r18-independent-architecture-audit-disposition-20261011.md`.
 - r19 prepared execution: `execution/instructions/2026-10-11_muse-w40-r19-bounded-architecture-gate-invalidation-and-regeneration.md`. This docs-only Sol commit DOES NOT invalidate any Gate or change official State. On later separately triggered Muse run, use official **operator** pending-Gate invalidation to `SELECTION_COMPLETE`, regenerate Architecture-only, independently review before any Human approval. Core #562 stays separate.
+
+
+## Muse W40 r19 — bounded Architecture Gate invalidation + regeneration (2026-10-11)
+
+- Start: remote HEAD `d7ae8ecd…`/tree `090cf6cf…`/main `afdb3df3…` + remote State (`ARCHITECTURE_ESTABLISHED / ARCHITECTURE_REVIEW / HUMAN_GATE_REACHED`, Gates pending/null) verified read-only (all match); local FF-only to exact Start. Preflight bytes match r18 (Matrix `f07b1166…`, Selection `b7d20be2…`, Arch `d732aeda…`, Summary `dc5f29de…`, Attention `70ac43bd…`, State `4292270c…`, checkpoint `81707585…`); `gates/` absent; invalidation sequence empty.
+- Official operator invalidation (`survey_human_gate_v2.invalidate-pending-gate`, `ARCHITECTURE_REVIEW → SELECTION_COMPLETE`, Sol disposition SHA-pinned, `human_decision:false`): record `operator-invalidations/architecture-invalidation-0001.json` (seq 1); Core-removed Arch/Summary/Attention + `SELECTION_COMPLETE.json`; Selection `b7d20be2…` + checkpoint `81707585…` pinned intact. Committed, pushed, remote readback with no concurrent move — before regeneration.
+- Standalone regeneration (interactive runner NOT reused): r18 canonical as historical model; ONLY P6a must-cover ×3, P6b purpose, P6b must-cover ×3 changed (F02 TTFA→OpenTTS-only; F03 Olmo purge + OpenTTS Sep30/Oct07/cutoff chronology; F04 dispatch→Olmo-only; F05 app-vs-scripts separation; F06 six-line scope/denominator/source binding, no new facts); 113/105 boundaries, 28/20/8, 9 packages, thesis/goals/basis untouched.
+- New canonicals: Architecture `305a42d6…`, Summary `37ce43b2…` (READY, derived equivalence), Attention `70ac43bd…` (unchanged); validators 0 errors.
+- F01 erratum `execution/reviews/w40-r19-architecture-review-surface-erratum.md` (mandatory first-read; Completeness/Summary NOT hand-edited); F07 index Current Authority corrected to `c5cd8811… / ARCHITECTURE_ESTABLISHED / ARCHITECTURE_REVIEW / HUMAN_GATE_REACHED`.
+- Stage validation r2 PASS + reviews r2 → rebuilt checkpoint `SELECTION_COMPLETE.json` → `ARCHITECTURE_ESTABLISHED`, Gates pending/null. Legacy `validate-state` diagnostic exit 1 (pre-existing agent-first/legacy semantics, recorded; governing agent-first PASS; no Core change).
+- Session: `execution/sessions/muse-w40-r19-20261011.md`; handoff: `execution/SOL_W40_R19_ARCHITECTURE_REVIEW_HANDOFF.md`.
+- Terminal: `FRESH_HUMAN_ARCHITECTURE_REVIEW_PENDING / R19_SOL_INDEPENDENT_REVIEW_REQUIRED` candidate.
