@@ -170,6 +170,14 @@ This is the current human-readable navigation record for the edition. Machine li
   - MC02: Materiality Ledger rationales are tautologies; three Completeness obligations all bind 37 records, including a carry-over obligation that should cover only two W39 HOLD leads. Generate source-specific rationales and semantically scoped obligations.
 - Muse r9 execution `sources/2026-W40/execution/instructions/2026-10-10_muse-w40-materiality-semantics-through-selection-proposal-r9.md` authorizes authentic combined `CANDIDATES_NORMALIZED → EVIDENCE_REVIEWED` Core checkpoint **only** if exact corrections + validators PASS, then bounded PROPOSED Selection until fresh Sol Selection semantic review; no Selection Acceptance or Architecture/Human Gate.
 
+## W40 independent Selection audit (2026-10-10)
+
+- External read-only review against r9 `e2940790ede6f29796f3b9885e7262fd3c086622`: **`SELECTION_REVISION_REQUIRED`**. Full original report text archive: `sources/2026-W40/execution/reviews/independent-selection-audit-w40-r9-20261010.md` (uploaded TXT original SHA-256 `31384bf92e6825efa29d1d5add6b28122ca8f6e19a951ac45d4d52e1a1c67278`).
+- Sol judgment: **`SOL_SELECTION_REVISION_REQUIRED / BOUNDED_MUSE_R10`**, file `sources/2026-W40/execution/reviews/sol-w40-selection-adjudication-r1-20261010.md`.
+- R10 contract: `sources/2026-W40/execution/instructions/2026-10-10_muse-w40-selection-audit-bounded-revision-r10.md` (35 assignments 28=20 PRIMARY/8 SUPPORTING; Core matrix/selection preview, four Oct2 first-publication checks, five focused primary-authority readings, P6 depth and broader package organization).
+- Preserve Core `EVIDENCE_REVIEWED`, machine Stage and all accepted upstream authorities; Selection and Architecture/Human Gates pending. Proven new eligible material event or changed critical claim must STOP for Sol canonical scope decision; no implicit upstream rewrites.
+- Stage checkpoint free-text old 30 MATERIAL is recorded as historical erratum; current canonical view/ledger 29. Completeness traceability 37 vs actual task scope 31/29/2 remains permitted by frozen Core.
+
 ## Final disposition
 
 `IN_PROGRESS`
