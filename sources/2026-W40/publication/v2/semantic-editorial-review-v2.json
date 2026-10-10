@@ -1,0 +1,137 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W40",
+  "research_profile": "WEEKLY",
+  "publication_profile": "WEEKLY_MAGAZINE",
+  "review_kind": "SEMANTIC_EDITORIAL",
+  "status": "PASSED",
+  "production_profile": {
+    "path": "sources/2026-W40/production-profile.json",
+    "sha256": "c921bd14f441e97db4214d85fc590df6523f2b77949e1470ce4439c49fc93ead"
+  },
+  "reader_manuscript": {
+    "path": "sources/2026-W40/publication/v2/reader-manuscript-v2.json",
+    "sha256": "b7720c55f98f0b02a8c08250aa7b8fcb5b2dfa7107c54e206d6a3d1f76bbd91e"
+  },
+  "source": {
+    "path": "surveys/weekly/2026-W40/main.tex",
+    "sha256": "2871df99fb17d76f3a6cf342cd4ca3d70f863b30c104d57defd6e0df722da09b",
+    "byte_count": 1431
+  },
+  "pdf": {
+    "path": "surveys/weekly/2026-W40/main.pdf",
+    "sha256": "f93d15f838cddf9489cc7ed6e73f3eb2cbe551044ac84a45cc41441fabf202ab",
+    "byte_count": 369980
+  },
+  "page_count": 12,
+  "checks": [
+    {
+      "check_id": "SOURCE_SPECIFIC_FAIL_CLOSED_NOTES",
+      "status": "PASS",
+      "detail": "Source-notes section covers all 28 primaries with ContextLM/Olmo report-body caveat, temporal boundary with ordinary window, vendor-reported boundary, community observation boundary with 4-row ledger reference, and HOLD/REJECT dispositions; no fail-closed note missing.",
+      "evidence_locations": [
+        "sections/99-source-notes.tex"
+      ]
+    },
+    {
+      "check_id": "BIBLIOGRAPHY_METADATA",
+      "status": "PASS",
+      "detail": "28/28 citations resolve to primary official bibliography entries with accessed dates and authority notes; no undefined references (CI log gate passed).",
+      "evidence_locations": [
+        "references.bib",
+        "surveys/weekly/2026-W40/main.tex"
+      ]
+    },
+    {
+      "check_id": "POST_TRANSFORM_SEMANTIC_REVALIDATION",
+      "status": "PASS",
+      "detail": "TeX transform preserves Draft semantics: attributed figures, denominators, pins, caveats, and boundary handling re-verified after section authoring; typo repaired and rebuilt.",
+      "evidence_locations": [
+        "sections/10-frontier-models.tex",
+        "sections/60-training-systems.tex",
+        "sections/65-eval-infra.tex"
+      ]
+    },
+    {
+      "check_id": "WEEKLY_WHY_THIS_ISSUE",
+      "status": "PASS",
+      "detail": "Frontmatter This-Week boxes state the price/infra-reading axis, source-scoped reading discipline, and omission disclosure with reasons.",
+      "evidence_locations": [
+        "sections/00-frontmatter.tex"
+      ]
+    },
+    {
+      "check_id": "WEEKLY_LATE_BREAKING_SINGLE_HOME",
+      "status": "PASS",
+      "detail": "No late-breaking rows exist (0); post-cutoff items (Oct 1 session, Oct 7 scripts, Oct 8 promo end) confined with explicit boundaries, single-homed in their sections.",
+      "evidence_locations": [
+        "sections/65-eval-infra.tex",
+        "sections/70-multimodal-serving.tex",
+        "sections/99-source-notes.tex"
+      ]
+    },
+    {
+      "check_id": "WEEKLY_CARRY_OVER_DISPOSITION",
+      "status": "PASS",
+      "detail": "No W39 carry-over heads in scope; W39 HOLD leads remain HOLD with rechecks documented at Selection; no promotion without new primary authority.",
+      "evidence_locations": [
+        "sections/99-source-notes.tex"
+      ]
+    },
+    {
+      "check_id": "WEEKLY_WATCHLIST_READER_SEMANTICS",
+      "status": "PASS",
+      "detail": "Next-watch list names concrete observables (Argon operations, Ultrafast delivery, reproductions, pins, trials, disclosures, pricing, agreements, billing, two omitted items) without inventing commitments.",
+      "evidence_locations": [
+        "sections/85-week-in-review.tex"
+      ]
+    },
+    {
+      "check_id": "PUBLICATION_BOUNDARY",
+      "status": "PASS",
+      "detail": "All 113 Architecture boundaries honored: vendor-run attribution, no-merging rules, changelog limits, version pins, scope splits, demo/tutorial bounds, agreement-vs-terms split each explicitly stated in sections.",
+      "evidence_locations": [
+        "sections/10-frontier-models.tex",
+        "sections/30-decision-inference.tex",
+        "sections/40-devday-surface.tex",
+        "sections/50-safety-provenance.tex",
+        "sections/60-training-systems.tex",
+        "sections/65-eval-infra.tex",
+        "sections/70-multimodal-serving.tex",
+        "sections/80-enterprise-digest.tex"
+      ]
+    },
+    {
+      "check_id": "ARCHITECTURE_CONTENT_FIDELITY",
+      "status": "PASS",
+      "detail": "Every package must-cover requirement fulfilled in reader prose: P1 pricing/benchmarks, P2 licenses/SHAs/tables, P3 separated surfaces, P4 verbatim bounds, P5 five subsections with pins, P6a equations/denominators/baselines/negatives, P6b scopes/protocols/chronology/pins, P7 demo bounds, P8 agreement/terms split; Eq.5 VERIFIED wording used, never the outdated UNVERIFIED statement; stale TIME_UNRESOLVED sentence never repeated.",
+      "evidence_locations": [
+        "sections/10-frontier-models.tex",
+        "sections/20-open-reasoning.tex",
+        "sections/60-training-systems.tex",
+        "sections/65-eval-infra.tex",
+        "sections/99-source-notes.tex"
+      ]
+    },
+    {
+      "check_id": "FINAL_SYNTHESIS_QUALITY",
+      "status": "PASS",
+      "detail": "Week-in-review synthesis closes 9 packages with change/meaning/next-watch; no new factual claims beyond approved Draft and synthesis result.",
+      "evidence_locations": [
+        "sections/85-week-in-review.tex"
+      ]
+    },
+    {
+      "check_id": "WEEKLY_COMMUNITY_MOVEMENT",
+      "status": "PASS",
+      "detail": "Community movement confined to context-only communitynote with 4-row ledger; no elevation to specifications or evidence.",
+      "evidence_locations": [
+        "sections/85-week-in-review.tex",
+        "surveys/weekly/2026-W40/community-observation-ledger.md"
+      ]
+    }
+  ],
+  "reviewed_by": "Worker/Agent (Muse Spark)",
+  "recorded_at": "2026-10-10T19:58:09Z",
+  "review_sha256": "745a7e7579b897980cba386a6e47aa670ea56b43a40e12aadd939736535153c8"
+}

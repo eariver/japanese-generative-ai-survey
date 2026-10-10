@@ -1,0 +1,79 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W40",
+  "publication_profile": "WEEKLY_MAGAZINE",
+  "review_kind": "SEMANTIC_EDITORIAL",
+  "reviewed_surface": {
+    "path": "sources/2026-W40/publication/v2/reader-surface-input-v2.json",
+    "sha256": "f7d16ae398c38238899f10fffcdf5889f44bcbcdc6d33711cf08c1f282f1cac4"
+  },
+  "checks": [
+    {
+      "check_id": "READER_PIPELINE_INDEPENDENCE",
+      "status": "PASS",
+      "detail": "Structured surface carries approved Draft prose into TeX layout; 4-row public X ledger referenced by filename only; no internal repository sources/ paths, blob URLs, /tmp paths, candidate IDs, dispositions, or checkpoint SHAs in reader prose, URLs, or bib keys.",
+      "evidence_locations": [
+        "reader-surface-input-v2.json: packages",
+        "surveys/weekly/2026-W40/sections/*.tex",
+        "references.bib: 28/28 cited-used keys"
+      ]
+    },
+    {
+      "check_id": "EVIDENCE_BOUND_FIDELITY",
+      "status": "PASS",
+      "detail": "Section claims trace to accepted Evidence with bounds: price cards as published paper facts; benchmarks/efficiency/savings as vendor claims; Holo4 license split and ELYZA pinned SHAs with denominators; Ollama/Clef/Strands separated surfaces; changelog-verbatim computer use with no safety inference; five independent safety subsections with v2-only pin; ContextLM Eq.5 VERIFIED vs Eq.6 with baselines; Olmo 47B/1.2T/2.38T separation with negatives; AgentPerf roofline and single-vs-production split; OpenTTS protocol plus Sep30/Oct07 chronology; RL tag-vs-taskset split; FLUX/VSS/ASR/Relay/Ross vendor-demo bounds; agreement-vs-terms digest.",
+      "evidence_locations": [
+        "sections/10-frontier-models.tex",
+        "sections/20-open-reasoning.tex",
+        "sections/30-decision-inference.tex",
+        "sections/40-devday-surface.tex",
+        "sections/50-safety-provenance.tex",
+        "sections/60-training-systems.tex",
+        "sections/65-eval-infra.tex",
+        "sections/70-multimodal-serving.tex",
+        "sections/80-enterprise-digest.tex",
+        "sections/99-source-notes.tex"
+      ]
+    },
+    {
+      "check_id": "WEEKLY_COMMUNITY_SEMANTICS",
+      "status": "PASS",
+      "detail": "X observation used as community-signal context only in week-in-review communitynote with 4-row ledger; no elevation to specifications, benchmarks, dates, terms, or architecture; late rows absent (none); ledger filename reference without internal path leak.",
+      "evidence_locations": [
+        "sections/85-week-in-review.tex: communitynote",
+        "community-observation-ledger.md"
+      ]
+    },
+    {
+      "check_id": "SYNTHESIS_CLOSURE",
+      "status": "PASS",
+      "detail": "Week-in-review synthesis closes all 9 packages with change/meaning/next-watch and no new factual claims; carry-over summary (two HOLDOMISSIONS acknowledged with reason, DGX background-only, ledgers methodology-only, pre-window paper contextual) matches approved Architecture and r20 erratum.",
+      "evidence_locations": [
+        "sections/85-week-in-review.tex",
+        "draft/v2/profile-synthesis-result.json"
+      ]
+    },
+    {
+      "check_id": "TRANSACTION_STATUS_FIDELITY",
+      "status": "PASS",
+      "detail": "No availability, billing, capability, or release-status claim exceeds Evidence: gradual Chat rollout caveat, plan-tier splits, Ultrafast-soon exclusion, beta bounds, Broadly-available-vs-reference scoping, no-GA posture, tester-only posture, and post-cutoff confinement (Oct 1 session, Oct 7 scripts, Oct 8 promo end) all preserved in reader prose.",
+      "evidence_locations": [
+        "sections/10-frontier-models.tex",
+        "sections/40-devday-surface.tex",
+        "sections/50-safety-provenance.tex",
+        "sections/65-eval-infra.tex",
+        "sections/70-multimodal-serving.tex",
+        "sections/80-enterprise-digest.tex",
+        "sections/99-source-notes.tex"
+      ]
+    }
+  ],
+  "decision": "PASS",
+  "reviewed_by": "Worker/Agent (Muse Spark)",
+  "reviewed_at": "2026-10-10T19:57:37Z",
+  "recorded_at": "2026-10-10T19:57:37Z",
+  "status": "PASSED",
+  "findings": [],
+  "summary": "W40 reader surface: 9 packages with attributed depth, 28/28 citations bound, community context-only, synthesis closure complete, transaction bounds preserved. PASS.",
+  "review_sha256": "a52f2856840d3e3649eb758db0cab03f46837729aee83ae450bdb3606ba244d1"
+}

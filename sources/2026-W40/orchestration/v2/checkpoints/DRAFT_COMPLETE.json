@@ -1,0 +1,75 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W40",
+  "from_state": "DRAFT_COMPLETE",
+  "to_state": "VALIDATED_DRAFT",
+  "checkpoints": [
+    "validation"
+  ],
+  "recorded_at": "2026-10-10T19:58:37Z",
+  "implementation": {
+    "repository_commit_sha": "291d526f38f24ad2c22b8d0aa12f72d9fe57140a",
+    "orchestrator_version": "survey-production-core-v2/0.15-postintegration-transport-thematic"
+  },
+  "contract": {
+    "pipeline_contract_version": "2.0-rc1",
+    "pipeline_contract_sha256": "ee89796245c22072cec98f34931180214a4928c24f399280793cd6420a4c8e71",
+    "quality_contract_version": "2.0-rc1",
+    "quality_contract_sha256": "b5b955d524fb438c0f1b2c9490bea1da2083e79028d67a55ca424bbfc20f2958",
+    "research_profile_version": "2.0-rc1",
+    "research_profile_sha256": "666f8a064b190ffd35216e26d6fdf2dd0fa932cac7b1b0d6448e262ded77b9a8",
+    "publication_profile_version": "2.0-rc1",
+    "publication_profile_sha256": "99adff93ff443e02bdcce639ce5fc4d4c959ee45a804da70efc4277db57fdddb"
+  },
+  "artifacts": [
+    {
+      "name": "publication-pdf",
+      "path": "surveys/weekly/2026-W40/main.pdf",
+      "sha256": "f93d15f838cddf9489cc7ed6e73f3eb2cbe551044ac84a45cc41441fabf202ab"
+    },
+    {
+      "name": "quality-regression-bundle",
+      "path": "sources/2026-W40/publication/v2/quality-regression-bundle-v2.json",
+      "sha256": "081e170ce9442d482b051f430e64bdea06610ff1f80e79c73a3a9c5b578d2c8d"
+    },
+    {
+      "name": "reader-manuscript",
+      "path": "sources/2026-W40/publication/v2/reader-manuscript-v2.json",
+      "sha256": "b7720c55f98f0b02a8c08250aa7b8fcb5b2dfa7107c54e206d6a3d1f76bbd91e"
+    },
+    {
+      "name": "reader-surface-gate",
+      "path": "sources/2026-W40/publication/v2/reader-surface-gate-v2.json",
+      "sha256": "291fff039d99fdcdef7f7f3b29b3dfe3b70a16e02fcb88988d88af57b4dbed2e"
+    },
+    {
+      "name": "semantic-review",
+      "path": "sources/2026-W40/publication/v2/semantic-editorial-review-v2.json",
+      "sha256": "d1f6f7770922ea498c01f39484981c7c5622c1b974abd9f3f6229f3cef7e51b2"
+    },
+    {
+      "name": "validated-source",
+      "path": "surveys/weekly/2026-W40/main.tex",
+      "sha256": "2871df99fb17d76f3a6cf342cd4ca3d70f863b30c104d57defd6e0df722da09b"
+    },
+    {
+      "name": "visual-review",
+      "path": "sources/2026-W40/publication/v2/visual-review-v2.json",
+      "sha256": "c714d770885a5c5981504712c84c0347116ae6e9fee0d6fc122e88c47b5c63d9"
+    }
+  ],
+  "reviews": [
+    {
+      "check_id": "CORE_STAGE_CONTRACT",
+      "kind": "DETERMINISTIC",
+      "status": "PASS",
+      "executor": "Survey Production Core v2 survey_stage_validation_v2.py",
+      "evidence": "W40 r21 reader publication validation: exact TeX source + CI-built 12-page PDF (f93d15f8) + quality bundle (3 deterministic QA) + semantic 11/11 + visual 2/2 (12/12 pages inspected) + reader-surface gate; all Core schema/binding checks PASS.",
+      "result": {
+        "path": "sources/2026-W40/execution/validation/reader-publication-validation-r1.json",
+        "sha256": "ea2d6a23903e79509418fad0bd08a806fb13213434f4815f698b8440580f132f"
+      }
+    }
+  ],
+  "summary": "W40 r21 validated draft: exact 12-page PDF with full QA chain."
+}
