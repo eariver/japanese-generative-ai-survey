@@ -347,3 +347,10 @@ This is the current human-readable navigation record for the edition. Machine li
 
 - Final bounded technical review: `execution/reviews/sol-w40-r20-focused-architecture-review-pass-20261011.md` — `PASS_FOR_HUMAN_ARCHITECTURE_REVIEW`; NOT a Human Gate decision or release authorization. R19-F01 Eq.5 verified-status ambiguity and R19-F02 66-digit State SHA documentation error both CLOSED.
 - Reviewed canonical Muse HEAD `3711d777f8c447d25c6e0bfb3212450974afe8ab`, Tree `9d339509775a74128581aeddeb755adee51ff3f5`; normal official operator invalidation seq 0002 then one-field Architecture regeneration; 28 selected/113 source boundaries/105 unique strings preserved. Current r20 first-read erratum remains mandatory. Owner Human decision still pending.
+
+
+## W40 r20 Human Owner approval and Muse r21 drafting authority (2026-10-11)
+
+- Human Owner in chat explicitly said: OK、承認します。毎回このようにArchitecture Reviewを進めていきましょう。では、Museに続行させましょう。 This refers to the detailed 37-Discovery/35-Evidence/39-source-reference/28-selected/9-package Architecture dossier. Durable decision provenance (NOT canonical Human Gate): execution/human-authorization/2026-10-11_owner-w40-r20-architecture-approved.md.
+- Muse execution contract: execution/instructions/2026-10-11_muse-w40-r21-owner-approved-through-publication-preview.md. First officially record Architecture APPROVED against reviewed r20 SHA using unchanged Core (r1, reviewed_by Human Owner, real UTC formal-record instant). Then draft/validate/render all 28 to canonical fresh PUBLICATION_PREVIEW pending. No Preview approval/Freeze/Release. Core #562 separate; HOLDs excluded.
+- Future owner-requested Human Architecture Review standard: present source counts with independent-source caveat, validated claim/evidence quality, per-Package technical architecture and depth, relative page sizing, omissions and recommendation before seeking approval.
