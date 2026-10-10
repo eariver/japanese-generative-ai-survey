@@ -149,6 +149,13 @@ This is the current human-readable navigation record for the edition. Machine li
 - Review: `sources/2026-W40/execution/reviews/sol-w40-evidence-authority-consumption-r3-20261010.md`. Bounded Muse r7: `sources/2026-W40/execution/instructions/2026-10-10_muse-w40-provenanceguard-version-pin-r7.md`.
 - State remains `CANDIDATES_NORMALIZED`, Evidence/Materiality/Completeness pending; Human Gates pending.
 
+## Sol Evidence Authority-Consumption Review r4 — Muse r7 (2026-10-10)
+
+- **Decision: `SOL_EVIDENCE_AUTHORITY_CONDITIONAL_PASS`**: r7 ProvenanceGuard v2 primary-body version pin verified against exact official arXiv v2; 35/35 Card structure/source binding PASS, 4-source Supplement. No canonical Evidence Acceptance yet.
+- **Mandatory acceptance hygiene SC-E10:** r7 Card still contains unsupported `v3 Aug 27 current` chronology and inherited legacy Discovery title; current official arXiv history only shows v1/v2. New Card/View editorial text must be corrected or fail-closed before Evidence acceptance; accepted Discovery/Screening remain immutable.
+- Sol review: `sources/2026-W40/execution/reviews/sol-w40-evidence-authority-consumption-r4-20261010.md`; bounded Muse r8 contract: `sources/2026-W40/execution/instructions/2026-10-10_muse-w40-evidence-acceptance-materiality-preparation-r8.md`.
+- Muse r8 may accept Evidence and Edition Views ONLY after mandatory cleanup + authentic frozen Core validations; draft Materiality/Completeness and return for Sol independent review. No stage advance `CANDIDATES_NORMALIZED` → `EVIDENCE_REVIEWED`, no Selection/Architecture/Human Gate.
+
 ## Final disposition
 
 `IN_PROGRESS`
