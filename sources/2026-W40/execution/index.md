@@ -13,7 +13,7 @@ This is the current human-readable navigation record for the edition. Machine li
 - Requested stop: `ARCHITECTURE_REVIEW`
 - Production Profile: `sources/2026-W40/production-profile.json`
 - Production State: `sources/2026-W40/production-state.json`
-- Current State SHA-256: `c5cd881153c60f1e6a50743995fc0a68f22ebda901723a3eae38dc293d1d6ce6ce`
+- Current State SHA-256: `c5cd881153c60f1e6a50743995fc0a68f22ebda901723a3eae38dc293d1d6ce6`
 - Current lifecycle: `ARCHITECTURE_ESTABLISHED` (canonical authority = production-state.json; r19 regenerated Architecture with R18-F02–F06 corrections)
 - Current terminal reason: `HUMAN_GATE_REACHED`
 - Current next action: `ARCHITECTURE_REVIEW`
@@ -324,3 +324,10 @@ This is the current human-readable navigation record for the edition. Machine li
 - Canonical Muse r19 HEAD `c26c983bff02245fffa5543fea8aa86291f80807`, Tree `10af9fbd5051572266e3030596e278ba03a6abba`; r19 Gate invalidation + Architecture-only regeneration structurally verified (28 selected, 113 Boundary memberships, 9 packages; no Human decision).
 - Sol preliminary findings: `execution/reviews/sol-w40-r19-preliminary-architecture-review-20261011.md`. R18-F02–F05 technical errors appear corrected, F01 disclosure and F07 index updated, F06 deepened; new potential ContextLM Eq.5 verification-status ambiguity `R19-P01` under independent review.
 - Read-only independent audit request: `execution/instructions/2026-10-11_sol-high-w40-r19-independent-architecture-readonly-audit.md`. Human Architecture approval on HOLD until content review; Core #562 separate.
+
+
+## Sol W40 r19 independent audit acceptance — r20 Eq.5 limited repair (2026-10-11)
+
+- R19 independent final: `BOUNDED_REVISION_REQUIRED` due Eq.5 verified-status mislabel and 66-digit Current State SHA. Sol adoption and no Human Gate decision: `execution/reviews/sol-w40-r19-independent-audit-adoption-and-r20-scope-20261011.md`.
+- **R19-F02 documentation corrected HERE**: index Current State SHA changed from malformed 66-character `c5cd881153c60f1e6a50743995fc0a68f22ebda901723a3eae38dc293d1d6ce6ce` to exact `c5cd881153c60f1e6a50743995fc0a68f22ebda901723a3eae38dc293d1d6ce6`, 64 hex, matching unchanged r19 State. No State/Architecture/Gate changes in this Sol-only commit.
+- R19-F01 bounded execution contract: `execution/instructions/2026-10-11_muse-w40-r20-eq5-single-field-architecture-regeneration.md`. Next official unpresented Gate operator invalidation must target `SELECTION_COMPLETE` with new sequence 0002; one Architecture scalar change only, fresh Summary/Attention/checkpoint/State and new SHA-bound FIRST-READ erratum; re-update Current State SHA after Stage advancement. Core Issue #562 remains separate, 28 SELECTED/113 Boundary literal memberships immutable.
