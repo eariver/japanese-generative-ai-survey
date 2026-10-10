@@ -87,6 +87,15 @@ This is the current human-readable navigation record for the edition. Machine li
 - Findings: material missing first-party models/training/audio/provenance papers; 21 ungrounded `12:00Z` publication-time assertions; original-source capture/derived-note classification. DGX time HOLD and X manifest index staleness are bounded secondary issues.
 - Human Gates pending, Core State still `ISSUE_INITIALIZED`; no Screening authority.
 
+## Sol Discovery Completeness Review r2 (2026-10-10)
+
+- SC-D01, SC-D02, SC-D03: **PASS** against Muse gap-fill r2 artifacts. 36-record proposed graph remains not accepted.
+- Remaining material omission **SC-D07**: Hugging Face `Welcome RL Environments to the hub` published 2026-09-28; cross-framework RL taskset discovery/integration must be captured as W40 event before Completeness PASS.
+- Sol r2 verdict: `SOL_DISCOVERY_COMPLETENESS_BOUNDED_GAPFILL_REQUIRED`.
+- Independent review: `sources/2026-W40/execution/reviews/sol-w40-discovery-completeness-r2-20261010.md`.
+- Muse single-source additive r3 contract: `sources/2026-W40/execution/instructions/2026-10-10_muse-w40-discovery-rl-environments-r3.md`.
+- State and Human Gates unchanged. Formal Discovery Acceptance and Screening remain unauthorized.
+
 ## Final disposition
 
 `IN_PROGRESS`
