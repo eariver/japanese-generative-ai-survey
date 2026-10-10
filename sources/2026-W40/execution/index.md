@@ -13,11 +13,11 @@ This is the current human-readable navigation record for the edition. Machine li
 - Requested stop: `ARCHITECTURE_REVIEW`
 - Production Profile: `sources/2026-W40/production-profile.json`
 - Production State: `sources/2026-W40/production-state.json`
-- Current State SHA-256: `c5cd881153c60f1e6a50743995fc0a68f22ebda901723a3eae38dc293d1d6ce6`
-- Current lifecycle: `ARCHITECTURE_ESTABLISHED` (canonical authority = production-state.json; r19 regenerated Architecture with R18-F02–F06 corrections)
+- Current State SHA-256: `19bd1a9749108cf61ff29159dac216922b7316e5a91ee41c2f82f2f20e4bcb89`
+- Current lifecycle: `ARCHITECTURE_ESTABLISHED` (canonical authority = production-state.json; r20 Eq.5 single-field regenerated Architecture)
 - Current terminal reason: `HUMAN_GATE_REACHED`
 - Current next action: `ARCHITECTURE_REVIEW`
-- Historical (r19 F07 correction): prior revisions of this block labeled `EVIDENCE_REVIEWED / stage:selection / none` with State SHA `c58337e5bd6a03f619c38720583cc6a741f2e1165fadf99cbb3266c0408770c0` (initialization-era) and later `EVIDENCE_REVIEWED`-era text; superseded by r18 (`SELECTION_COMPLETE`, `ARCHITECTURE_ESTABLISHED` state `4292270c…`) and r19 (operator invalidation seq 1 + regenerated Architecture, state `c5cd8811…`). Old SHAs preserved in Git history, never modified.
+- Historical (r20): prior r19 State SHA `c5cd881153c60f1e6a50743995fc0a68f22ebda901723a3eae38dc293d1d6ce6` (64 hex, Sol R19-F02 fix intact), r19 invalidation-base `4292270c31638b39f4631e5aec5b249b7055e360b311969762c3ad31d9538fb4`, and initialization-era `c58337e5bd6a03f619c38720583cc6a741f2e1165fadf99cbb3266c0408770c0` (`EVIDENCE_REVIEWED`-era text); superseded by r20 operator invalidation seq 0002 + Eq.5 regeneration, state `19bd1a97…`. Old SHAs preserved in Git history, never modified.
 
 ## Human Gates
 
@@ -331,3 +331,13 @@ This is the current human-readable navigation record for the edition. Machine li
 - R19 independent final: `BOUNDED_REVISION_REQUIRED` due Eq.5 verified-status mislabel and 66-digit Current State SHA. Sol adoption and no Human Gate decision: `execution/reviews/sol-w40-r19-independent-audit-adoption-and-r20-scope-20261011.md`.
 - **R19-F02 documentation corrected HERE**: index Current State SHA changed from malformed 66-character `c5cd881153c60f1e6a50743995fc0a68f22ebda901723a3eae38dc293d1d6ce6ce` to exact `c5cd881153c60f1e6a50743995fc0a68f22ebda901723a3eae38dc293d1d6ce6`, 64 hex, matching unchanged r19 State. No State/Architecture/Gate changes in this Sol-only commit.
 - R19-F01 bounded execution contract: `execution/instructions/2026-10-11_muse-w40-r20-eq5-single-field-architecture-regeneration.md`. Next official unpresented Gate operator invalidation must target `SELECTION_COMPLETE` with new sequence 0002; one Architecture scalar change only, fresh Summary/Attention/checkpoint/State and new SHA-bound FIRST-READ erratum; re-update Current State SHA after Stage advancement. Core Issue #562 remains separate, 28 SELECTED/113 Boundary literal memberships immutable.
+
+
+## Muse W40 r20 — Eq.5 single-field invalidation + regeneration (2026-10-11)
+
+- Start: remote HEAD `db87d64e…`/tree `29a7c4eb…`/main `afdb3df3…` + remote State (`ARCHITECTURE_ESTABLISHED / ARCHITECTURE_REVIEW / HUMAN_GATE_REACHED`, Gates pending/null) + Selection `b7d20be2…`/Matrix `f07b1166…` verified read-only (all match); local FF-only to exact Start. 9 preflight SHAs match (State `c5cd8811…`, Arch `305a42d6…`, Summary `37ce43b2…`, Attention `70ac43bd…`, ckpts `81707585…`/`71388dbc…`); index SHA correct 64-char (Sol R19-F02 fix intact); `gates/` absent; seq `0001` valid, `0002` absent.
+- Official operator invalidation seq 0002 (`ARCHITECTURE_REVIEW → SELECTION_COMPLETE`, Sol disposition SHA-pinned, `human_decision:false`): Core-removed Arch/Summary/Attention + `SELECTION_COMPLETE.json`; Selection + checkpoint `81707585…` pinned intact. Committed, pushed, remote readback with no concurrent move — before regeneration.
+- Single-field regen (interactive runner NOT reused): r19 canonical as model; ONLY `/packages/5/must_cover_requirements/1` changed (Eq.5 VERIFIED with arXiv v1 §4.2 + r16 note binding, equation `s* = argmax_s E[R(τ)]`, unrelated materials bounded UNVERIFIED); 28/20/8, 113/105, 9 packages, thesis/goals/basis untouched.
+- New canonicals: Architecture `a9b5c118…`, Summary `32f39de0…` (READY, derived equivalence), Attention `70ac43bd…` (unchanged); validators 0 errors. Successor r20 erratum (binds NEW Summary + unchanged Completeness; r19 erratum historical). Stage validation r3 PASS + reviews r3 → rebuilt checkpoint → `ARCHITECTURE_ESTABLISHED`, Gates pending/null, State `19bd1a97…` (64-char index updated; Sol typo fix preserved). Legacy `validate-state` exit 1 (pre-existing semantics, recorded; governing agent-first PASS).
+- Session: `execution/sessions/muse-w40-r20-20261011.md`; handoff: `execution/SOL_W40_R20_ARCHITECTURE_REVIEW_HANDOFF.md`.
+- Terminal: `FRESH_HUMAN_ARCHITECTURE_REVIEW_PENDING / R20_INDEPENDENT_FOCUSED_REVIEW_REQUIRED` candidate.
