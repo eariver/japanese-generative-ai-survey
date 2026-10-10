@@ -264,3 +264,9 @@ This is the current human-readable navigation record for the edition. Machine li
 - Actual Muse r17 HEAD `8ca75821198c371e208aadf415162f653848c2a6`, tree `fd9f42d23954706a79ac560d2c24eeb198c6a88a` (1 FF commit, W40-only); reviewed main `afdb3df3faa20af3bb5798be429bba8dbd2100b1`. Sol independently recalculated nine canonical+stored SHA-256 digests from Selection/Matrix/Coverage/r15 boundary bytes, matching r17 digest report 9/9; F01 CLOSED.
 - R16-F02 Git identity addendum accepted: work HEAD, reviewed main HEAD and symbolic HEAD separate; F02 CLOSED. Accepted technical staging: 28 selected (20P/8S), 113 raw Boundary relations→105 unique strings, zero missing/extra. Historical r13–r17 files preserved.
 - **No production stage transition**: State `EVIDENCE_REVIEWED`, `next_action=stage:selection`; Gates pending/null; AstaBrief/AutoSynthData canonical HOLD; Issue #562 separate Core blocker OPEN. Wait for reviewed Core supersession; no official Selection/Architecture/Freeze/Release approval.
+
+
+## W40 / Core #562 resumption checkpoint (2026-10-11)
+
+- `execution/core-562-readonly-resumption-assessment-20261011.md`: Core reentry gap and existing Evidence Supplement/INSPECT semantics checked read-only; W40 remains EVIDENCE_REVIEWED and staging CLOSED.
+- `execution/instructions/2026-10-11_core-562-separated-maintenance-execution-contract.md`: prepared standalone Core implementation/test contract; NOT write-authorized until the Owner explicitly approves a separate dedicated Core branch identity/creation. No Stage/Gate/accepted-upstream changes.
