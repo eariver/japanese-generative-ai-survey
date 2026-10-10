@@ -36,11 +36,11 @@ This is the current human-readable navigation record for the edition. Machine li
 - Latest Drive task-file path/reference: `Grok_X_SourseIntake/Weekly/2026-W40/weekly-x-2026-W40/grok-task.md`
 - Drive browser link: https://docs.google.com/document/d/1bdv10xJgmqgqmT9fTvBEa7hqT9rINz93vBcoRnjiSvo/edit?usp=drivesdk
 - Repository task: `sources/2026-W40/external/x/weekly-x-2026-W40/grok-task.md` (SHA-256 `89c58553b4c337f297a92d4ba9e929922f0fec1d5ac64b79b4a5cb647e881917`)
-- X intake manifest: `sources/2026-W40/external/x/x-source-intake-v2.json` (`AWAITING_GROK`)
+- X intake manifest: `sources/2026-W40/external/x/x-source-intake-v2.json` (`COMPLETE / PARTIAL / DISCOVERY_RECORDED [w40-grok-x-ledger-20261009]`; Raw preserved unaltered, 4 auditable URLs vs >25 self-report NOT accepted)
 - Drive task representation: native Google Doc named `grok-task.md`; readback paragraph content/index positions match the GitHub Markdown source text. Native binary identity is not asserted.
 - Latest result disposition: `RAW_RECEIVED_UNALTERED / COMPLETENESS_NOT_ACCEPTED`; source file `external/x/weekly-x-2026-W40/raw/grok-x-result.md` (20,477 bytes; SHA-256 `10b3d7735befa1ec435462aa5254cb45b76b3d59d6f4fca0e15fc54db0dca79f`).
 - Receipt: `execution/source-intake/w40-grok-dailyx-reconciliation-r0.json`; editorial audit: `execution/source-intake/w40-grok-dailyx-review-r0.md`. 4 verifiable X direct post URLs versus claimed >25; full X lane coverage not independently accepted.
-- X manifest currently `AWAITING_GROK` (result=null) deliberately, pending accepted W40 Discovery mapping/completeness disposition. This does not imply no Grok Raw was imported.
+- X manifest `COMPLETE / PARTIAL` with explicit 4-vs->25 limitation and separate Daily X 64-URL cohort (see manifest rationale + reconciliation r0 + ledger r1). COMPLETE means disposition recorded, NOT coverage PASS. Sol completeness review pending (r1 REVISION_REQUIRED; r2 gap-fill in progress).
 
 ## Source Intake progress
 
@@ -51,7 +51,9 @@ This is the current human-readable navigation record for the edition. Machine li
 - Gap-fill priorities: FLUX 3 Image (Oct 1), Clef/Strands decision models (Oct 1), NVIDIA Open Agent Safety Platform (Sep 28), Sonnet 5.5 (Sep 28); independent primary URLs recorded in the reconciliation JSON.
 - Sol claim-level primary-source register r1: `execution/source-intake/w40-sol-source-intake-register-r1.json`, 21 leads (17 ordinary / 1 pre-window / 1 X-only unconfirmed / 2 W39 carryover HOLD); not exact source-page Raw or accepted Discovery.
 - Targeted negative-space gap-fill r2: `execution/source-intake/w40-targeted-lane-expansion-r2.json` (audio, video, agent observability, embedded tooling, Oct 2 hardware boundary).
-- Muse r3 (2026-10-09Z): 24 primary Raw files + collector-run/raw-index (schema PASS) under `collectors/primary/runs/20261009T171300Z-muse-r1/`; `discovery/discovery-v2.jsonl` 29 records (schema 29/29 PASS); X manifest COMPLETE/PARTIAL binding `w40-grok-x-ledger-20261009`; acceptance structural proposal only (`execution/validation/proposed-not-accepted/`, PROPOSED_NOT_ACCEPTED, validated); preflight log `execution/validation/muse-r3-deterministic-preflight-20261009.log`; handoff `execution/SOL_DISCOVERY_COMPLETENESS_REVIEW_HANDOFF.md`. State remains `ISSUE_INITIALIZED`; no Screening/Evidence/Selection/Architecture.
+- Muse r3 (2026-10-09Z): 24 primary Raw files + collector-run/raw-index (schema PASS) under `collectors/primary/runs/20261009T171300Z-muse-r1/`; `discovery/discovery-v2.jsonl` 29 records (schema 29/29 PASS); X manifest COMPLETE/PARTIAL binding `w40-grok-x-ledger-20261009`; acceptance structural proposal only (`execution/validation/proposed-not-accepted/`, PROPOSED_NOT_ACCEPTED, validated); preflight `execution/validation/muse-r3-deterministic-preflight-20261009.md`; handoff `execution/SOL_DISCOVERY_COMPLETENESS_REVIEW_HANDOFF.md`. State remains `ISSUE_INITIALIZED`; no Screening/Evidence/Selection/Architecture.
+- Sol Discovery Completeness Review r1 (2026-10-10): `execution/reviews/sol-w40-discovery-completeness-r1-20261010.md`, decision REVISION_REQUIRED (SC-D01/02/03 blockers; SC-D04/05/06 nonblocking).
+- Muse gap-fill r2 (2026-10-10Z, this run): 6 Sol-cited sources read (Holo4/Olmo-core/OpenTTS/ProvenanceGuard/AstaBrief-HOLD/AutoSynthData-HOLD) + r2 sweep; run `collectors/primary/runs/20261010T030600Z-muse-r2/` (8 bounded excerpts + 6 notes + sweep + ledger; schema PASS); Discovery regenerated 29->36 (33 NULL + 3 exact, 0 noon); proposal rebuilt 36 (graph `e1ce0ec8…`, validated); index stale X text fixed; handoff-r2 `execution/SOL_DISCOVERY_COMPLETENESS_REVIEW_HANDOFF-r2.md`. State still `ISSUE_INITIALIZED`; stop at Sol review.
 - Conventional full collector Raw, exact source admission and final independent Discovery-completeness review remain pending.
 - This is a retrospective compilation of a completed W40 window; do not mix later W41 announcements into ordinary-window scope.
 
@@ -75,6 +77,7 @@ This is the current human-readable navigation record for the edition. Machine li
 
 - `sessions/sol-w40-initial-20261010.md`
 - `sessions/muse-w40-source-intake-20261009.md` (Muse bounded Source Intake through Sol Discovery Review prep; stops at completeness review)
+- `sessions/muse-w40-gapfill-r2-20261010.md` (Muse bounded SC-D01/02/03 gap-fill; stops at second Sol review)
 
 ## Sol Discovery completeness decision (2026-10-10 r1)
 
