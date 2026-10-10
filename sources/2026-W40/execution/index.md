@@ -317,3 +317,10 @@ This is the current human-readable navigation record for the edition. Machine li
 - Stage validation r2 PASS + reviews r2 → rebuilt checkpoint `SELECTION_COMPLETE.json` → `ARCHITECTURE_ESTABLISHED`, Gates pending/null. Legacy `validate-state` diagnostic exit 1 (pre-existing agent-first/legacy semantics, recorded; governing agent-first PASS; no Core change).
 - Session: `execution/sessions/muse-w40-r19-20261011.md`; handoff: `execution/SOL_W40_R19_ARCHITECTURE_REVIEW_HANDOFF.md`.
 - Terminal: `FRESH_HUMAN_ARCHITECTURE_REVIEW_PENDING / R19_SOL_INDEPENDENT_REVIEW_REQUIRED` candidate.
+
+
+## W40 r19 Sol preliminary verification and independent audit request (2026-10-11)
+
+- Canonical Muse r19 HEAD `c26c983bff02245fffa5543fea8aa86291f80807`, Tree `10af9fbd5051572266e3030596e278ba03a6abba`; r19 Gate invalidation + Architecture-only regeneration structurally verified (28 selected, 113 Boundary memberships, 9 packages; no Human decision).
+- Sol preliminary findings: `execution/reviews/sol-w40-r19-preliminary-architecture-review-20261011.md`. R18-F02–F05 technical errors appear corrected, F01 disclosure and F07 index updated, F06 deepened; new potential ContextLM Eq.5 verification-status ambiguity `R19-P01` under independent review.
+- Read-only independent audit request: `execution/instructions/2026-10-11_sol-high-w40-r19-independent-architecture-readonly-audit.md`. Human Architecture approval on HOLD until content review; Core #562 separate.
