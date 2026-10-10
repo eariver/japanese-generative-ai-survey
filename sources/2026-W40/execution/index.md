@@ -210,3 +210,15 @@ This is the current human-readable navigation record for the edition. Machine li
 - Architecture staging (F08): `execution/architecture-staged-outline-r13.md` (28 + 2 conditional modules, matrices, decision table, reader-today split; no canonical artifacts).
 - Handoff: `execution/SOL_W40_R13_EDITORIAL_AND_SUPPLEMENT_FEASIBILITY_HANDOFF.md`; session: `execution/sessions/muse-w40-r13-20261010.md`.
 - Terminal: `SOL_W40_R13_EDITORIAL_AND_PUBLICATION_FEASIBILITY_REVIEW_REQUIRED`. No Selection Acceptance / stage transition / checkpoint / Human Gate / Freeze / Release. No shared-Core writes.
+
+## Muse W40 r14 — bounded editorial/contract repair (2026-10-10, Sol-bounded)
+
+- Instruction: `execution/instructions/2026-10-10_muse-w40-r14-bounded-editorial-contract-repair.md`; Sol accepts independent r13 `REVISION_REQUIRED` (F01–F08), authorizes bounded r14, holds Selection Acceptance.
+- Start: remote HEAD `d1cc1e1d…`/tree `58335d4d…`/main `afdb3df3…` verified read-only (all match); local aligned FF-only. Guards PASS (EVIDENCE_REVIEWED, stage:selection, Gates pending/null, exception inactive, 37/37/35/35/37, checkpoint SHAs).
+- §1: `architecture-coverage-r14.json` (28 entries machine-generated from preview-r13 bytes; SHA `3de8bd56…`) + `architecture-coverage-validation-r14.json` (10 checks PASS: 28/28, 20P/8S, role/usage match, PRIMARY-single/SUPPORTING-≥1, no HOLD/REJECT/invented IDs, SHA binds) + `architecture-staged-outline-r14.md` (P5 SynthID-Bio PRIMARY, P7 VSS/Nemotron PRIMARY + Ross P7-supporting destination, P6a/P6b namespace note, COND-A/B out, 28-placed audit).
+- §2: `editorial-supplement/r14/autosynthdata-note-r14.md` (F06: positive→witness-consistency, negative→soundness-not-completeness, finite-test limit, 5 fixture examples; r13 untouched; AstaBrief deliberately unrepaired).
+- §3: `editorial-supplement/r14/evidence-source-provenance-correction.md` (retrieval clock 10:57Z via +0900 mtimes; "dynamic framing PROVEN" retracted to hypothesis; Muse-vs-auditor boundary; negative attestations) + `manifest-r14.md` (bindings + claim/limit audit).
+- §4: `execution/supplement-publication-feasibility-r14.md` (R1–R7 line-cited static rules; TECHNICALLY_POSSIBLE / NORMAL_CORE_AUTHORIZED / EXPLICIT_HUMAN_OWNER_AUTHORITY_REQUIRED; outcome NO NORMAL SUPPLEMENT_PATH_ESTABLISHED).
+- §5: `execution/technical-prep-r14/p6a-deep-draft.md` + `p6b-deep-draft.md` (ContextLM/Olmo-core/AgentPerf/OpenTTS/RL-Env mechanisms + conditions + metric denominators + baselines + versions; Source→Claim tables; Japanese self-review; UNVERIFIED markers; COND sectionless).
+- Untouched `validate_selection` DIRECTLY EXECUTED on preview-r13 → PASS (0 errors). Handoff: `execution/SOL_W40_R14_BOUNDED_REPAIR_HANDOFF.md`; session: `execution/sessions/muse-w40-r14-20261010.md`.
+- Terminal: `SOL_W40_R14_BOUNDED_REPAIR_REVIEW_REQUIRED`. No Selection Acceptance / Stage transition / canonical Architecture / Core patch / Human Gate / publication release.
