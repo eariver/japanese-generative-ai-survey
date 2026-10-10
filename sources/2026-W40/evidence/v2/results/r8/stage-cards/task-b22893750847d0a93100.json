@@ -1,0 +1,176 @@
+{
+ "schema_version": "2.0-rc1",
+ "issue_id": "2026-W40",
+ "evidence_task_id": "evidence:2026-W40:c857f1e0e0655f20",
+ "basis": {
+  "task_sha256": "b58f9890f14260baee27e21b45dda73ee32ff32d5d6410d5faa8948a3ebc7b0d",
+  "screening_acceptance_sha256": "4bae12edc6a17d8f43188dedd6ced9716b4ae1559ff996cc6e7d15a23d5b564f",
+  "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+  "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+ },
+ "status": "VERIFIED",
+ "entities": [
+  {
+   "canonical_name": "Claude Sonnet 5.5",
+   "canonical_url": "https://www.anthropic.com/claude-sonnet-5-5",
+   "entity_id": "anthropic-sonnet55",
+   "entity_type": "MODEL",
+   "organization": "Anthropic"
+  }
+ ],
+ "artifact": {
+  "primary_subject_id": "anthropic-sonnet55",
+  "artifact_type": "MODEL",
+  "canonical_name": "Claude Sonnet 5.5",
+  "canonical_url": "https://www.anthropic.com/claude-sonnet-5-5"
+ },
+ "temporal": {
+  "observed_at": "2026-10-10T07:00:00Z",
+  "events": []
+ },
+ "sources": [
+  {
+   "source_id": "src-1",
+   "url": "primary:anthropic.com/claude-sonnet-5-5",
+   "source_class": "PRIMARY_OFFICIAL",
+   "title": "Anthropic: Claude Sonnet 5.5 release (Sep 28)",
+   "published_at": null,
+   "accessed_at": "2026-10-10T07:00:00Z",
+   "role": "Discovery-bounded source used for factual verification"
+  }
+ ],
+ "claims": [
+  {
+   "statement_id": "claim-1",
+   "text": "Anthropic released Claude Sonnet 5.5 on Sep 28, 2026 (day-only; no clock time), second model in Claude 5.5 family, complement to pre-window Opus 5.5 (Sep 22).",
+   "subject_id": "anthropic-sonnet55",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "PRIMARY_FACT",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Anthropic announcement page header + AWS Bedrock model card (launch Sep 28 2026) + full page body read."
+  },
+  {
+   "statement_id": "claim-2",
+   "text": "Nominal price equals Sonnet 5 ($2 input / $10 output / $0.20 cache-read per 1M); vendor states up to 30% less per task via fewer tokens and 30%+ faster output.",
+   "subject_id": "anthropic-sonnet55",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "PRIMARY_FACT",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Vendor price card on announcement page; per-task saving is vendor-measured."
+  },
+  {
+   "statement_id": "claim-3",
+   "text": "Benchmarks: Terminal-Bench 4.0 70.6% (vs Sonnet 5 10.3%), FrontierCode 1.1 Main 46.2% Max, CursorBench 4.0 55.5%, GDPval-AA 1844 (~Opus 5.5 1846), OSWorld 2.1 partial 80.1%, Chartography 61.6%.",
+   "subject_id": "anthropic-sonnet55",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "VENDOR_CLAIM",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Vendor-run evals with effort/cost curves; Artificial Analysis ran GDPval/Briefcase on pre-release build with structured-output bug caveat (footnote 3); competitor figures vendor-reported with stale-score footnotes."
+  },
+  {
+   "statement_id": "claim-4",
+   "text": "Context 1M tokens, max output 128K; API claude-sonnet-5-5; AWS Bedrock/Google Cloud/Azure; zero data retention.",
+   "subject_id": "anthropic-sonnet55",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "PRIMARY_FACT",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Bedrock model card + distributor pages."
+  },
+  {
+   "statement_id": "claim-5",
+   "text": "Safety: Opus-5.5-class cyber safeguards/fallbacks; biology safeguards same as Sonnet 5; reasoning-extraction classifiers + preserved thinking.",
+   "subject_id": "anthropic-sonnet55",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "VENDOR_CLAIM",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Vendor safeguard description; first Sonnet with Opus-class cyber fallbacks."
+  }
+ ],
+ "metrics": [],
+ "limitations": [
+  {
+   "statement_id": "limitation-1",
+   "text": "All benchmark deltas vendor-run; independent reproduction pending.",
+   "subject_id": "anthropic-sonnet55",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "INFERENCE",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Evidence boundary retained for downstream editorial use."
+  },
+  {
+   "statement_id": "limitation-2",
+   "text": "Exact UTC publication instant unknown (day-only).",
+   "subject_id": "anthropic-sonnet55",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "INFERENCE",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Evidence boundary retained for downstream editorial use."
+  },
+  {
+   "statement_id": "limitation-3",
+   "text": "System card MLPerf-style details not consumed beyond page footnotes.",
+   "subject_id": "anthropic-sonnet55",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "INFERENCE",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Evidence boundary retained for downstream editorial use."
+  }
+ ],
+ "verification": {
+  "targets": [
+   {
+    "target": "anthropic-sonnet55-page",
+    "status": "VERIFIED",
+    "finding": "Announcement page + Bedrock launch record read; release identity/date-day/price/context/safeguards extracted.",
+    "subject_ids": [
+     "anthropic-sonnet55"
+    ],
+    "source_ids": [
+     "src-1"
+    ]
+   },
+   {
+    "target": "system-card",
+    "status": "UNRESOLVED",
+    "finding": "System card exists (Sep 28) but full evaluation tables not consumed; page footnotes cover caveats.",
+    "subject_ids": [
+     "anthropic-sonnet55"
+    ],
+    "source_ids": [
+     "src-1"
+    ]
+   },
+   {
+    "target": "bedrock-spec",
+    "status": "VERIFIED",
+    "finding": "Bedrock model card confirms launch date, 1M/128K, API id; distributor specs consistent.",
+    "subject_ids": [
+     "anthropic-sonnet55"
+    ],
+    "source_ids": [
+     "src-1"
+    ]
+   }
+  ],
+  "unresolved_questions": [
+   "system-card: System card exists (Sep 28) but full evaluation tables not consumed; page footnotes cover caveats."
+  ],
+  "contradictions": []
+ }
+}

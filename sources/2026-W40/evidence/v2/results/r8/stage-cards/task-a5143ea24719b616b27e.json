@@ -1,0 +1,166 @@
+{
+ "schema_version": "2.0-rc1",
+ "issue_id": "2026-W40",
+ "evidence_task_id": "evidence:2026-W40:3d0bd53e29394b6b",
+ "basis": {
+  "task_sha256": "89c752549375c04c2491bb763af48524ae1710b3e78cc7ab2d425c2c9cc6fbe8",
+  "screening_acceptance_sha256": "4bae12edc6a17d8f43188dedd6ced9716b4ae1559ff996cc6e7d15a23d5b564f",
+  "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+  "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+ },
+ "status": "VERIFIED",
+ "entities": [
+  {
+   "canonical_name": "Olmo-core 3",
+   "canonical_url": "https://allenai.org/blog/olmocore3",
+   "entity_id": "ai2-olmocore3",
+   "entity_type": "FRAMEWORK",
+   "organization": "Ai2"
+  }
+ ],
+ "artifact": {
+  "primary_subject_id": "ai2-olmocore3",
+  "artifact_type": "FRAMEWORK",
+  "canonical_name": "Olmo-core 3",
+  "canonical_url": "https://allenai.org/blog/olmocore3"
+ },
+ "temporal": {
+  "observed_at": "2026-10-10T07:00:00Z",
+  "events": []
+ },
+ "sources": [
+  {
+   "source_id": "src-1",
+   "url": "primary:allenai.org/blog/olmocore3",
+   "source_class": "PRIMARY_OFFICIAL",
+   "title": "Ai2: Olmo-core 3 MoE training stack (Oct 1, day-only)",
+   "published_at": null,
+   "accessed_at": "2026-10-10T07:00:00Z",
+   "role": "Discovery-bounded source used for factual verification"
+  }
+ ],
+ "claims": [
+  {
+   "statement_id": "claim-1",
+   "text": "Ai2 released Olmo-core 3 Oct 1 (day-only): OPEN MoE TRAINING STACK (DDP resident experts, expert/pipeline parallelism, distributed optimizer, rowwise/grouped-GEMM, MXFP8); report + code + interactive demo.",
+   "subject_id": "ai2-olmocore3",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "PRIMARY_FACT",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Ai2 blog Oct 1, full body read (r2) — unchanged."
+  },
+  {
+   "statement_id": "claim-2",
+   "text": "8→128 experts (4/token, ~3.2B active) 4.6B→47B capacity <5% drop; 47B 52k vs 19.4k (~2.7x, 8×B300); 1.2T/58.36B-active/512GPU 858 TFLOP/s/GPU (random routing); 2.38T short-capacity test; MXFP8 +21%; token-gerrymandering/expert-LR/overlap negative results.",
+   "subject_id": "ai2-olmocore3",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "VENDOR_CLAIM",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Blog-reported controlled benchmarks (r2) — reporter level retained (report body unread, see failure note)."
+  },
+  {
+   "statement_id": "claim-3",
+   "text": "GitHub allenai/olmo-core EXISTS (1.7k stars/344 forks, Apache-2.0, PyPI ai2-olmo-core, docs, src/scripts/official OLMo2/OLMo3, inference paths) — confirms open code, not report content.",
+   "subject_id": "ai2-olmocore3",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "PRIMARY_FACT",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "R5 repo confirmation (read 2026-10-10): existence/license/scripts, NOT report prose."
+  },
+  {
+   "statement_id": "claim-4",
+   "text": "Tech report page exceeds fetch limits in markdown AND text (>5MB); no PDF URL guessed. Report-body claims REMAIN reporter-level; training-infra-vs-weights boundary retained.",
+   "subject_id": "ai2-olmocore3",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "INFERENCE",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Documented r5 retrieval failure (2 meaningful retries)."
+  }
+ ],
+ "metrics": [],
+ "limitations": [
+  {
+   "statement_id": "limitation-1",
+   "text": "Report body UNREAD (2 failed fetches, logged); quantitative provenance stays reporter-level.",
+   "subject_id": "ai2-olmocore3",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "INFERENCE",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Evidence boundary retained for downstream editorial use."
+  },
+  {
+   "statement_id": "limitation-2",
+   "text": "Report dated 2026-10-01 corroborated by search excerpt only.",
+   "subject_id": "ai2-olmocore3",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "INFERENCE",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Evidence boundary retained for downstream editorial use."
+  },
+  {
+   "statement_id": "limitation-3",
+   "text": "Repo internals (code/docs) not consumed; Sol/Selection-depth clone is the retry avenue.",
+   "subject_id": "ai2-olmocore3",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "INFERENCE",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Evidence boundary retained for downstream editorial use."
+  }
+ ],
+ "verification": {
+  "targets": [
+   {
+    "target": "ai2-blog",
+    "status": "VERIFIED",
+    "finding": "Ai2 blog fully read (r2); DDP/parallelism/figures/negative-results extracted.",
+    "subject_ids": [
+     "ai2-olmocore3"
+    ],
+    "source_ids": [
+     "src-1"
+    ]
+   },
+   {
+    "target": "tech-report",
+    "status": "UNRESOLVED",
+    "finding": "Report page >5MB on markdown AND text fetches; failure logged with fallback consumption (blog+repo); claim level bounded to reporter.",
+    "subject_ids": [
+     "ai2-olmocore3"
+    ],
+    "source_ids": [
+     "src-1"
+    ]
+   },
+   {
+    "target": "github-repo",
+    "status": "UNRESOLVED",
+    "finding": "Repo page existence/license/scripts confirmed; code internals not consumed.",
+    "subject_ids": [
+     "ai2-olmocore3"
+    ],
+    "source_ids": [
+     "src-1"
+    ]
+   }
+  ],
+  "unresolved_questions": [
+   "tech-report: Report page >5MB on markdown AND text fetches; failure logged with fallback consumption (blog+repo); claim level bounded to reporter.",
+   "github-repo: Repo page existence/license/scripts confirmed; code internals not consumed."
+  ],
+  "contradictions": []
+ }
+}

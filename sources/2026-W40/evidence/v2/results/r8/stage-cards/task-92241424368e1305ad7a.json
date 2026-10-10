@@ -1,0 +1,206 @@
+{
+ "schema_version": "2.0-rc1",
+ "issue_id": "2026-W40",
+ "evidence_task_id": "evidence:2026-W40:8d261dee1d3bdf14",
+ "basis": {
+  "task_sha256": "04a54295e55bca100babc96578a99ed843c8f7338916c16008308713eda443f0",
+  "screening_acceptance_sha256": "4bae12edc6a17d8f43188dedd6ced9716b4ae1559ff996cc6e7d15a23d5b564f",
+  "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+  "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+ },
+ "status": "VERIFIED",
+ "entities": [
+  {
+   "canonical_name": "Context Language Models",
+   "canonical_url": "https://arxiv.org/abs/2609.37725",
+   "entity_id": "arxiv-2609-37725",
+   "entity_type": "PAPER",
+   "organization": null
+  }
+ ],
+ "artifact": {
+  "primary_subject_id": "arxiv-2609-37725",
+  "artifact_type": "PAPER",
+  "canonical_name": "Context Language Models",
+  "canonical_url": "https://arxiv.org/abs/2609.37725"
+ },
+ "temporal": {
+  "observed_at": "2026-10-10T07:00:00Z",
+  "events": [
+   {
+    "event_id": "event-1",
+    "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+    "event_date": "2026-09-29T14:50:08Z",
+    "subject_id": "arxiv-2609-37725",
+    "subject_role": "PRIMARY_SUBJECT",
+    "source_ids": [
+     "src-1"
+    ]
+   },
+   {
+    "event_id": "event-2",
+    "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+    "event_date": "2026-09-29T14:50:08Z",
+    "subject_id": "arxiv-2609-37725",
+    "subject_role": "PRIMARY_SUBJECT",
+    "source_ids": [
+     "supplement-src-ed880012d11eae67"
+    ]
+   }
+  ]
+ },
+ "sources": [
+  {
+   "source_id": "src-1",
+   "url": "primary:arxiv.org/abs/2609.37725",
+   "source_class": "PRIMARY_PAPER",
+   "title": "arXiv: Context Language Models (Sep 29, in-window)",
+   "published_at": "2026-09-29T14:50:08Z",
+   "accessed_at": "2026-10-10T07:00:00Z",
+   "role": "Discovery-bounded source used for factual verification"
+  },
+  {
+   "source_id": "supplement-src-ed880012d11eae67",
+   "url": "https://arxiv.org/abs/2609.37725v1",
+   "source_class": "PRIMARY_PAPER",
+   "title": "Context Language Models v1 full text (arXiv 2609.37725v1; consumed as ar5iv HTML rendering)",
+   "published_at": "2026-09-29T14:50:08Z",
+   "accessed_at": "2026-10-10T05:27:24Z",
+   "role": "Post-Screening exact authority supplement: Original-paper authority for equations, tables, experimental conditions; sole version v1; PDF bytes NOT consumed (binary fetch); figures garbled; Appendices B-F and code unread."
+  }
+ ],
+ "claims": [
+  {
+   "statement_id": "claim-1",
+   "text": "Context Language Models (Shao et al., 13 authors, UW/Meta/MIT/Trillium) submitted Sep 29 2026 14:50:08Z (in-window): models natively manage own context as editable file (Bash-synced), extending to multi-agent context files.",
+   "subject_id": "arxiv-2609-37725",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "PRIMARY_FACT",
+   "source_ids": [
+    "src-1",
+    "supplement-src-ed880012d11eae67"
+   ],
+   "context": "arXiv abs + v1 timestamp confirmed (r4); full text §§1–6 + refs + App.A read via ar5iv r5."
+  },
+  {
+   "statement_id": "claim-2",
+   "text": "Method: model-controlled transition ct+1=fCLM(ct) (Eq.2) vs append-only (Eq.1); prefix-reuse FLOPs metric (Eq.3); skill evolution (Eq.4–5); success-gated efficiency GRPO (Eq.6, <2 successes → 0); Suffix Cache Reuse (Fig.4); ContextBench 4 diagnostic tasks (Needle/Sudoku/KV/Log).",
+   "subject_id": "arxiv-2609-37725",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "AUTHOR_CLAIM",
+   "source_ids": [
+    "src-1",
+    "supplement-src-ed880012d11eae67"
+   ],
+   "context": "Full-text methods consumed (Eq.1–6, ContextBench, SCR, GRPO formulation)."
+  },
+  {
+   "statement_id": "claim-3",
+   "text": "BCP 59.4%, +11.4% over Codex summarization at −21.5%/−28.9% FLOPs; TB2.1 matched at 70% FLOPs; TBLite 73.7% vs 67.0%; math Table 1 sweeps OpenEvolve; EdgeBench-10 44.6/179 PFLOPs vs 42.3/437 (Qwen3.6-27B), 51.0/50.4 vs 42.3 (Claude 4.6); swarm +65% same spend; skill evolution +35.9 ContextBench; RL Qwen3.5-9B 28.8→42.5 (Table 2) at 1.34 vs 2.19 PFLOPs; SCR 65% of SGLang (−35% server compute).",
+   "subject_id": "arxiv-2609-37725",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "AUTHOR_CLAIM",
+   "source_ids": [
+    "src-1",
+    "supplement-src-ed880012d11eae67"
+   ],
+   "context": "Full-text results §§5.1–5.3 consumed (out-of-box, no training; Qwen3.6-27B 32K/100-turn cap unless noted)."
+  },
+  {
+   "statement_id": "claim-4",
+   "text": "Safety: editable context as prompt-injection persistence channel (cites OpenAI 2026b compaction-summary injections); code github.com/facebookresearch/context-language-models; Singapore NRF/AIVP + Schmidt AI2050 funding.",
+   "subject_id": "arxiv-2609-37725",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "AUTHOR_CLAIM",
+   "source_ids": [
+    "src-1",
+    "supplement-src-ed880012d11eae67"
+   ],
+   "context": "Full-text §6 + code link consumed."
+  },
+  {
+   "statement_id": "claim-5",
+   "text": "Direct PDF fetch returned BINARY bytes (metadata only: title/authors/CC-BY-4.0/v1) → PDF-byte consumption FAILED; full TEXT consumed via ar5iv HTML rendering of same v1. Verification target renamed accordingly; PDF bytes explicitly NOT consumed.",
+   "subject_id": "arxiv-2609-37725",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "INFERENCE",
+   "source_ids": [
+    "src-1",
+    "supplement-src-ed880012d11eae67"
+   ],
+   "context": "Retrieval method honesty (r5)."
+  }
+ ],
+ "metrics": [],
+ "limitations": [
+  {
+   "statement_id": "limitation-1",
+   "text": "ar5iv rendering (not PDF bytes); equations/figures partially garbled; Appendices B–F unread (output truncated); code repo not opened; no reproduction.",
+   "subject_id": "arxiv-2609-37725",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "INFERENCE",
+   "source_ids": [
+    "src-1",
+    "supplement-src-ed880012d11eae67"
+   ],
+   "context": "Evidence boundary retained for downstream editorial use."
+  },
+  {
+   "statement_id": "limitation-2",
+   "text": "Paper-claimed figures; independent verification pending.",
+   "subject_id": "arxiv-2609-37725",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "INFERENCE",
+   "source_ids": [
+    "src-1",
+    "supplement-src-ed880012d11eae67"
+   ],
+   "context": "Evidence boundary retained for downstream editorial use."
+  },
+  {
+   "statement_id": "limitation-3",
+   "text": "Verification target arxiv-2609-37725-pdf was FALSE in r1 (abstract-only) — corrected here.",
+   "subject_id": "arxiv-2609-37725",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "INFERENCE",
+   "source_ids": [
+    "src-1",
+    "supplement-src-ed880012d11eae67"
+   ],
+   "context": "Evidence boundary retained for downstream editorial use."
+  }
+ ],
+ "verification": {
+  "targets": [
+   {
+    "target": "arxiv-2609-37725-pdf",
+    "status": "UNRESOLVED",
+    "finding": "PDF BYTES NOT consumed (direct fetch returned binary; metadata only). Full paper TEXT consumed via ar5iv HTML rendering of same v1 (§§1–6 + refs + App.A; bounded excerpts archived); r1 FALSE pdf-VERIFIED withdrawn.",
+    "subject_ids": [
+     "arxiv-2609-37725"
+    ],
+    "source_ids": [
+     "src-1",
+     "supplement-src-ed880012d11eae67"
+    ]
+   },
+   {
+    "target": "code",
+    "status": "UNRESOLVED",
+    "finding": "Code repo linked in paper; not opened; no reproduction.",
+    "subject_ids": [
+     "arxiv-2609-37725"
+    ],
+    "source_ids": [
+     "src-1",
+     "supplement-src-ed880012d11eae67"
+    ]
+   }
+  ],
+  "unresolved_questions": [
+   "arxiv-2609-37725-pdf: PDF BYTES NOT consumed (direct fetch returned binary; metadata only). Full paper TEXT consumed via ar5iv HTML rendering of same v1 (§§1–6 + refs + App.A; bounded excerpts archived); r1 FALSE pdf-VERIFIED withdrawn.",
+   "code: Code repo linked in paper; not opened; no reproduction."
+  ],
+  "contradictions": []
+ }
+}
