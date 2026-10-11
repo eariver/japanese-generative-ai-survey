@@ -11,24 +11,24 @@
   },
   "reader_manuscript": {
     "path": "sources/2026-W40/publication/v2/reader-manuscript-v2.json",
-    "sha256": "b7720c55f98f0b02a8c08250aa7b8fcb5b2dfa7107c54e206d6a3d1f76bbd91e"
+    "sha256": "082477344fec83421706bc3a2b751bdf82bfaa1bbb6972fa8c241a2a965a8b80"
   },
   "source": {
     "path": "surveys/weekly/2026-W40/main.tex",
-    "sha256": "2871df99fb17d76f3a6cf342cd4ca3d70f863b30c104d57defd6e0df722da09b",
-    "byte_count": 1431
+    "sha256": "900a32507a09d9db760e7ac3a71f04cbc76a9eabfd7bbe8d4f390b0a781cca3b",
+    "byte_count": 1493
   },
   "pdf": {
     "path": "surveys/weekly/2026-W40/main.pdf",
-    "sha256": "f93d15f838cddf9489cc7ed6e73f3eb2cbe551044ac84a45cc41441fabf202ab",
-    "byte_count": 369980
+    "sha256": "c0b2fe1e4517bec8b3f85a4a518ed258be0de93b45f3e99c22ad75f93aae9704",
+    "byte_count": 451313
   },
-  "page_count": 12,
+  "page_count": 14,
   "checks": [
     {
       "check_id": "SOURCE_SPECIFIC_FAIL_CLOSED_NOTES",
       "status": "PASS",
-      "detail": "Source-notes section covers all 28 primaries with ContextLM/Olmo report-body caveat, temporal boundary with ordinary window, vendor-reported boundary, community observation boundary with 4-row ledger reference, and HOLD/REJECT dispositions; no fail-closed note missing.",
+      "detail": "Source-notes covers 28 primaries with report-body caveat, temporal boundary (incl. VSS in-window correction), vendor-reported boundary, community boundary with 4-row ledger, HOLD/REJECT dispositions; stale sentence never repeated.",
       "evidence_locations": [
         "sections/99-source-notes.tex"
       ]
@@ -36,7 +36,7 @@
     {
       "check_id": "BIBLIOGRAPHY_METADATA",
       "status": "PASS",
-      "detail": "28/28 citations resolve to primary official bibliography entries with accessed dates and authority notes; no undefined references (CI log gate passed).",
+      "detail": "28/28 citations resolve to primary official entries with dates/notes (VSS note corrected); CI log gate passed with zero undefined references.",
       "evidence_locations": [
         "references.bib",
         "surveys/weekly/2026-W40/main.tex"
@@ -45,17 +45,19 @@
     {
       "check_id": "POST_TRANSFORM_SEMANTIC_REVALIDATION",
       "status": "PASS",
-      "detail": "TeX transform preserves Draft semantics: attributed figures, denominators, pins, caveats, and boundary handling re-verified after section authoring; typo repaired and rebuilt.",
+      "detail": "TeX transform of rewritten Draft re-verified: full price cards, SHAs, chronology, pins, equations, tables all present; r21 thinness eliminated (40 blocks, 4 tables, 3 equations).",
       "evidence_locations": [
         "sections/10-frontier-models.tex",
+        "sections/20-open-reasoning.tex",
         "sections/60-training-systems.tex",
-        "sections/65-eval-infra.tex"
+        "sections/65-eval-infra.tex",
+        "sections/70-multimodal-serving.tex"
       ]
     },
     {
       "check_id": "WEEKLY_WHY_THIS_ISSUE",
       "status": "PASS",
-      "detail": "Frontmatter This-Week boxes state the price/infra-reading axis, source-scoped reading discipline, and omission disclosure with reasons.",
+      "detail": "Frontmatter boxes state price/infra axis, source-scoped discipline, omission disclosure with reasons; conventional language.",
       "evidence_locations": [
         "sections/00-frontmatter.tex"
       ]
@@ -63,7 +65,7 @@
     {
       "check_id": "WEEKLY_LATE_BREAKING_SINGLE_HOME",
       "status": "PASS",
-      "detail": "No late-breaking rows exist (0); post-cutoff items (Oct 1 session, Oct 7 scripts, Oct 8 promo end) confined with explicit boundaries, single-homed in their sections.",
+      "detail": "No late-breaking rows (0); post-cutoff items confined with boundaries (Oct 1 session corrected to in-window scheduling); single-homed.",
       "evidence_locations": [
         "sections/65-eval-infra.tex",
         "sections/70-multimodal-serving.tex",
@@ -73,7 +75,7 @@
     {
       "check_id": "WEEKLY_CARRY_OVER_DISPOSITION",
       "status": "PASS",
-      "detail": "No W39 carry-over heads in scope; W39 HOLD leads remain HOLD with rechecks documented at Selection; no promotion without new primary authority.",
+      "detail": "W39 HOLD leads remain HOLD; no promotion without new primary authority.",
       "evidence_locations": [
         "sections/99-source-notes.tex"
       ]
@@ -81,7 +83,7 @@
     {
       "check_id": "WEEKLY_WATCHLIST_READER_SEMANTICS",
       "status": "PASS",
-      "detail": "Next-watch list names concrete observables (Argon operations, Ultrafast delivery, reproductions, pins, trials, disclosures, pricing, agreements, billing, two omitted items) without inventing commitments.",
+      "detail": "Next-watch names concrete observables (operations, delivery, reproductions, pins, trials, disclosures, pricing, agreements, billing, two omitted items); no invented commitments.",
       "evidence_locations": [
         "sections/85-week-in-review.tex"
       ]
@@ -89,7 +91,7 @@
     {
       "check_id": "PUBLICATION_BOUNDARY",
       "status": "PASS",
-      "detail": "All 113 Architecture boundaries honored: vendor-run attribution, no-merging rules, changelog limits, version pins, scope splits, demo/tutorial bounds, agreement-vs-terms split each explicitly stated in sections.",
+      "detail": "All 113 boundaries honored in rewritten prose: vendor attribution, no-merging, changelog limits, version pins, scope splits, demo/tutorial bounds, agreement-vs-terms split.",
       "evidence_locations": [
         "sections/10-frontier-models.tex",
         "sections/30-decision-inference.tex",
@@ -104,19 +106,20 @@
     {
       "check_id": "ARCHITECTURE_CONTENT_FIDELITY",
       "status": "PASS",
-      "detail": "Every package must-cover requirement fulfilled in reader prose: P1 pricing/benchmarks, P2 licenses/SHAs/tables, P3 separated surfaces, P4 verbatim bounds, P5 five subsections with pins, P6a equations/denominators/baselines/negatives, P6b scopes/protocols/chronology/pins, P7 demo bounds, P8 agreement/terms split; Eq.5 VERIFIED wording used, never the outdated UNVERIFIED statement; stale TIME_UNRESOLVED sentence never repeated.",
+      "detail": "Spot-checked passages: P1 price table (Sonnet 2/10/0.20, Sol 2/10/0.10, Argon intro 2/10); P2 comparison table with both SHAs; P6a three display equations with VERIFIED Eq.5; P7 FLUX resolution table + VSS correction; Eq.5 VERIFIED wording, never outdated UNVERIFIED; stale TIME_UNRESOLVED never repeated. Differences from r21: substantive re-authoring throughout, not paraphrase.",
       "evidence_locations": [
         "sections/10-frontier-models.tex",
         "sections/20-open-reasoning.tex",
         "sections/60-training-systems.tex",
         "sections/65-eval-infra.tex",
+        "sections/70-multimodal-serving.tex",
         "sections/99-source-notes.tex"
       ]
     },
     {
       "check_id": "FINAL_SYNTHESIS_QUALITY",
       "status": "PASS",
-      "detail": "Week-in-review synthesis closes 9 packages with change/meaning/next-watch; no new factual claims beyond approved Draft and synthesis result.",
+      "detail": "Rebuilt week-in-review closes 9 packages with change/meaning/next-watch; no new factual claims; conventional language.",
       "evidence_locations": [
         "sections/85-week-in-review.tex"
       ]
@@ -124,7 +127,7 @@
     {
       "check_id": "WEEKLY_COMMUNITY_MOVEMENT",
       "status": "PASS",
-      "detail": "Community movement confined to context-only communitynote with 4-row ledger; no elevation to specifications or evidence.",
+      "detail": "Community movement context-only communitynote with 4-row ledger; no elevation.",
       "evidence_locations": [
         "sections/85-week-in-review.tex",
         "surveys/weekly/2026-W40/community-observation-ledger.md"
@@ -132,6 +135,6 @@
     }
   ],
   "reviewed_by": "Worker/Agent (Muse Spark)",
-  "recorded_at": "2026-10-10T19:58:09Z",
-  "review_sha256": "745a7e7579b897980cba386a6e47aa670ea56b43a40e12aadd939736535153c8"
+  "recorded_at": "2026-10-11T08:28:23Z",
+  "review_sha256": "7d3732bc007f553836baffbd3c7e744d452f8ae32102cbc1c3c46d8aa2224c01"
 }
