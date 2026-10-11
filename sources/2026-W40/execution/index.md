@@ -13,7 +13,7 @@ This is the current human-readable navigation record for the edition. Machine li
 - Requested stop: `ARCHITECTURE_REVIEW`
 - Production Profile: `sources/2026-W40/production-profile.json`
 - Production State: `sources/2026-W40/production-state.json`
-- Current State SHA-256: `19bd1a9749108cf61ff29159dac216922b7316e5a91ee41c2f82f2f20e4bcb89`
+- Current State SHA-256: `7be5cbbcb4fdf7d89cff1ffb055d4289f6bd5ebbdf1a151ca7c58d559e76515a`
 - Current lifecycle: `ARCHITECTURE_ESTABLISHED` (canonical authority = production-state.json; r20 Eq.5 single-field regenerated Architecture)
 - Current terminal reason: `HUMAN_GATE_REACHED`
 - Current next action: `ARCHITECTURE_REVIEW`
@@ -404,3 +404,15 @@ This is the current human-readable navigation record for the edition. Machine li
 - Muse r22 reached new valid `RELEASE_CANDIDATE / PUBLICATION_PREVIEW pending`, official r21 Preview REQUEST_CHANGES r1 recorded, Architecture approved retained, Core/main unchanged; PDF `c0b2fe1e4517bec8b3f85a4a518ed258be0de93b45f3e99c22ad75f93aae9704` independently raw-byte rehashed to 451313 bytes (candidate reports 14 pages). Muse visual review 60dpi 14/14; Sol independent high-resolution visual not completed.
 - Focused content comparison r21->r22 5681->8553 `PARAGRAPH.text` chars (+50.6%), 29->36 prose blocks, 4 real tables/3 display equations; meaningful improvement but `BOUNDED_REVISION_REQUIRED / HUMAN_PREVIEW_HOLD`. Concrete outstanding: P6a Eq3/Eq6 qualified formulas & MoE technical depth; P5 five technical domains; P6b metrics/experimental mechanics; P7 newly leaked internal editorial correction into reader-facing prose; Gemini Argon 95%-discount ambiguity. Audit `execution/reviews/sol-w40-r22-focused-publication-editorial-audit-20261011.md`.
 - NO r22 Preview Human decision recorded or inferred. Future revision only after explicit Human Owner REQUEST_CHANGES, preserving unchanged Core v2; no Freeze/Release.
+
+## Muse W40 r23 — bounded final editorial revision → fresh Preview (2026-10-11)
+
+- Start: remote HEAD `ee56893d…`/tree `1f55be28…`/main `afdb3df3…` + State/Index/Approval/Candidate verified read-only (all match); local FF-only to exact Start. Owner rev-2 authorization saved (bounding quote verbatim, no invented timestamp).
+- Official Human Preview REQUEST_CHANGES r2 (boundary ARCHITECTURE_ESTABLISHED, Human Owner, real UTC, SHA-pinned refs, reviewed `ae22a5837`): approval preserved. Committed, pushed, readback — before content work.
+- Bounded single round (no new research cycle): P0 all fixed (Gemini separation, AgentPerf speculative-decoding, ELYZA reconstruction, Eq args/definitions/integrated advantage, leakage removal); P1 source-bounded only (P5 subsections + meanings, SCR/roles, metric definitions, harbor example, OCR limits); architecture/Selection/upstream untouched.
+- 31-row ledger re-audited (31/31 FULFILLED with quotes); Sol R22-F01..F07 dispositioned; extra independent items 対応不要 per Owner ceiling.
+- TeX mirrors; CI 3 runs (2 Overfull fixes: SHA shortening, Eq.3 (u)/(g)) → success `38133771409`. Exact PDF 14 pages, 466,496 bytes, `82f7af37…` (artifact `11700810058`); 14/14 pages at 150dpi inspected.
+- QA rebuilt (surface from CURRENT results): manuscript, surface semantic PASS, deterministic 3/3, bundle, publication semantic 11/11, visual 2/2, surface gate; three stage validations + checkpoints.
+- Candidate `4be71507…` (READY); State `7be5cbbc…`, Preview pending/null. No Preview decision/Freeze/Release/merge/PR. No new branch/force; no Core/Selection/upstream/HOLD changes. No r24 opened.
+- Session: `execution/sessions/muse-w40-r23-20261011.md`; handoff: `execution/SOL_W40_R23_PUBLICATION_PREVIEW_HANDOFF.md`; ledger: `execution/reviews/w40-r23-must-cover-31-ledger.md`; supersession: `execution/w40-r23-supersession-and-cleanup-report.md`.
+- Terminal: `FRESH_HUMAN_PUBLICATION_PREVIEW_PENDING` candidate.
