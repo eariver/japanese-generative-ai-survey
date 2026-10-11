@@ -10,9 +10,9 @@ Repo: `eariver/japanese-generative-ai-survey`
 Invoker must supply exact remote Starting HEAD and Tree (the commit containing this instruction) from Sol handoff. Before writing, read-only check:
 - remote `weekly/2026-W41-v2-work` HEAD == Invoker Exact Starting SHA;
 - branch tree == Invoker Expected Tree;
-- instruction commit parent == `e12d23c0df4df00f20a62b05f83fd0b0ca1ff374` (Sol reconnaissance);
+- current instruction file is reachable from the Sol reconnaissance commit `e12d23c0df4df00f20a62b05f83fd0b0ca1ff374` by edition-local documentation commits only; confirm the exact parent chain read-only;
 - remote `main` HEAD == `83f581ebc0dd8945ca7116f65bf6b853ca1fe6c8`, tree == `31c0adc5b57761e5073d100554279a8adc5a18f4`;
-- `production/survey-core-v2` HEAD == `774dd39a951c9ac3818e83dff4c7666efb0a20` (verify actual, do not infer tree);
+- `production/survey-core-v2` HEAD == `774dd39a951c9ac3818e83dfffd4c7666efb0a20` (verify actual, do not infer tree);
 - W41 canonical State `ISSUE_INITIALIZED`, next `stage:discovery`, both Human Gates pending;
 - W41 Profile `WEEKLY/WEEKLY_MAGAZINE`, exact temporal bounds below, issue root and branch correct;
 - no unowned local edits, unreviewed main/Core/config drift, or conflicting canonical W41 work.
