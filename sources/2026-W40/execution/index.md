@@ -416,3 +416,15 @@ This is the current human-readable navigation record for the edition. Machine li
 - Candidate `4be71507…` (READY); State `7be5cbbc…`, Preview pending/null. No Preview decision/Freeze/Release/merge/PR. No new branch/force; no Core/Selection/upstream/HOLD changes. No r24 opened.
 - Session: `execution/sessions/muse-w40-r23-20261011.md`; handoff: `execution/SOL_W40_R23_PUBLICATION_PREVIEW_HANDOFF.md`; ledger: `execution/reviews/w40-r23-must-cover-31-ledger.md`; supersession: `execution/w40-r23-supersession-and-cleanup-report.md`.
 - Terminal: `FRESH_HUMAN_PUBLICATION_PREVIEW_PENDING` candidate.
+
+## Muse W40 layout repair — Owner-authorized r3 layout-only → fresh Preview (2026-10-11)
+
+- Start: remote HEAD `fd679a3e…`/tree `2e065554…`/main `afdb3df3…` + State/Index/Candidate/PDF/Approval verified read-only (all match); pre-existing ledger diff left untouched (out of scope).
+- Owner authorization saved (explicit approval to Sol rev-3 question, no invented timestamp); boundary DRAFT_COMPLETE confirmed allowed; needspace available in style.
+- Official Human Preview REQUEST_CHANGES r3 (Human Owner, real UTC, SHA-pinned refs, reviewed `fd679a3e`): approval + r1/r2 preserved; State DRAFT_COMPLETE with draft passed. Committed, pushed, readback — before layout work.
+- Layout-only TeX: 3 Needspace controls + comments (2 files, +6/-0); Draft/Synthesis/Evidence/Selection/Architecture/Core untouched.
+- CI `38137417169` success. Exact PDF 14 pages, 466,202 bytes, `52b752bd…` (artifact `11701871676`); 14/14 pages at 150dpi: all three defects fixed, no regressions; surface SHA identical to r23 (prose-identical proof).
+- QA rebuilt (fresh visual, no inheritance): manuscript, surface semantic PASS, deterministic 3/3, bundle, publication semantic 11/11, visual 2/2, surface gate; validations r4 + checkpoints.
+- Candidate `fd5ee590…` (READY); State `47dfe274…`, Preview pending/null. No Preview decision/Freeze/Release/merge/PR. No new branch/force; no further cycle.
+- Session: `execution/sessions/muse-w40-layout-repair-20261011.md`; handoff: `execution/SOL_W40_LAYOUT_REPAIR_PREVIEW_HANDOFF.md`.
+- Terminal: `FRESH_HUMAN_PUBLICATION_PREVIEW_PENDING` candidate.
