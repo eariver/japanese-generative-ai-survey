@@ -1,0 +1,119 @@
+{
+ "schema_version": "2.0-rc1",
+ "issue_id": "2026-W40",
+ "evidence_task_id": "evidence:2026-W40:935a8e487fd40c65",
+ "basis": {
+  "task_sha256": "e2af0909c3159a228c2390097341c0fb76c00c2d820332d569aed67c0d5686a4",
+  "screening_acceptance_sha256": "4bae12edc6a17d8f43188dedd6ced9716b4ae1559ff996cc6e7d15a23d5b564f",
+  "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+  "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+ },
+ "status": "VERIFIED",
+ "entities": [
+  {
+   "canonical_name": "Cloudflare Workers OAuth Provider v1",
+   "canonical_url": "https://developers.cloudflare.com/changelog/product-group/developer-platform/",
+   "entity_id": "cloudflare-mcp-auth",
+   "entity_type": "PRODUCT",
+   "organization": "Cloudflare"
+  }
+ ],
+ "artifact": {
+  "primary_subject_id": "cloudflare-mcp-auth",
+  "artifact_type": "PRODUCT",
+  "canonical_name": "Cloudflare Workers OAuth Provider v1",
+  "canonical_url": "https://developers.cloudflare.com/changelog/product-group/developer-platform/"
+ },
+ "temporal": {
+  "observed_at": "2026-10-10T07:00:00Z",
+  "events": []
+ },
+ "sources": [
+  {
+   "source_id": "src-1",
+   "url": "primary:developers.cloudflare.com/changelog/product-group/developer-platform/",
+   "source_class": "PRIMARY_OFFICIAL",
+   "title": "Cloudflare: Workers OAuth Provider v1 / MCP auth (Oct 1)",
+   "published_at": null,
+   "accessed_at": "2026-10-10T07:00:00Z",
+   "role": "Discovery-bounded source used for factual verification"
+  }
+ ],
+ "claims": [
+  {
+   "statement_id": "claim-1",
+   "text": "Workers OAuth Provider v1 Oct 1 (day-only): split authorization/resource servers over Service Binding; MCP 2026-07-28 auth (Client ID Metadata, issuer id); step-up insufficientScope; migration skill in npm package.",
+   "subject_id": "cloudflare-mcp-auth",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "PRIMARY_FACT",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Cloudflare changelog index Oct 1 entry, entry text read in r4 (was locator-grade)."
+  },
+  {
+   "statement_id": "claim-2",
+   "text": "Spec adherence does NOT itself guarantee correct caller scopes or threat resistance.",
+   "subject_id": "cloudflare-mcp-auth",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "INFERENCE",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Spec adherence boundary."
+  }
+ ],
+ "metrics": [],
+ "limitations": [
+  {
+   "statement_id": "limitation-1",
+   "text": "Full entry body + repo docs at Selection depth.",
+   "subject_id": "cloudflare-mcp-auth",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "INFERENCE",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Evidence boundary retained for downstream editorial use."
+  },
+  {
+   "statement_id": "limitation-2",
+   "text": "Living index carries post-window entries (guard).",
+   "subject_id": "cloudflare-mcp-auth",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "INFERENCE",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Evidence boundary retained for downstream editorial use."
+  },
+  {
+   "statement_id": "limitation-3",
+   "text": "Day-only date.",
+   "subject_id": "cloudflare-mcp-auth",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "INFERENCE",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Evidence boundary retained for downstream editorial use."
+  }
+ ],
+ "verification": {
+  "targets": [
+   {
+    "target": "cloudflare-changelog-bytes",
+    "status": "VERIFIED",
+    "finding": "Index entry text read (split API/MCP-2026-07-28/step-up/skill); full body + repo pending.",
+    "subject_ids": [
+     "cloudflare-mcp-auth"
+    ],
+    "source_ids": [
+     "src-1"
+    ]
+   }
+  ],
+  "unresolved_questions": [],
+  "contradictions": []
+ }
+}

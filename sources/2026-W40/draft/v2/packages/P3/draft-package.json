@@ -1,0 +1,2249 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W40",
+  "research_profile": "WEEKLY",
+  "publication_profile": "WEEKLY_MAGAZINE",
+  "package_id": "P3",
+  "basis": {
+    "production_profile_sha256": "c921bd14f441e97db4214d85fc590df6523f2b77949e1470ce4439c49fc93ead",
+    "architecture_sha256": "a9b5c1182671bb913fbf56972907e19731e5ba4a928deaca9903a0d3a1461a44",
+    "architecture_review_summary_sha256": "32f39de0b7cb3e469acf74668c420c246fb67f273ecd0c37bda91557eaa98d30",
+    "architecture_approval_sha256": "953f682a98d6a97687475cef84d3f094131fbcd4f18b21a4aac3b515011f5eb8",
+    "candidate_matrix_sha256": "f07b1166eef02598a1d57ebd7d0068119678fcfc17f1d118ef2b582594a736f6",
+    "candidate_selection_sha256": "b7d20be2fb273ba3c4a0ab66bb8818452591000805be90f9bcd75ce565bee225",
+    "evidence_acceptance_sha256": "ca5e21a7e841ce6d79e07bf4f66cf09a92ec9d7527956b89fc0cf490888aa042"
+  },
+  "package": {
+    "title": "Decision inference: Ollama interface, Clef weights, Strands decider",
+    "purpose": "Present decision-inference as three separated axes that must not be merged: Ollama v0.35 interface (blog fully read), Cloudflare Clef Apache-2.0 weights + Jev API (Oct 1 service release), Strands Decider 2B pointer-head model (Hub-pin discipline). Benchmarks, latencies, and licenses stay per-axis and vendor-bound.",
+    "drafting_order": 3,
+    "primary_candidate_ids": [
+      "candidate:2026-W40:e7c620cc779a6e34",
+      "candidate:2026-W40:4cc1306230500269",
+      "candidate:2026-W40:4dd078cf92f1c9c9"
+    ],
+    "supporting_candidate_ids": [],
+    "must_cover_requirements": [
+      "Ollama v0.35 Sep 29: /v1/systemone interface + Nimble 9B + Tev1 4B/0.8B; 91ms single-example illustrative, not universal.",
+      "Clef Oct 1 15:34:02Z: Apache-2.0 weights + 64K ctx + vision + $0.24/$0.09; Jev-Index vendor-hosted lead + latencies vendor-measured.",
+      "Strands Decider 2B Oct 1: Qwen3.5-2B + pointer head + r16 LoRA; JevBench/latency attributed; Apache-2.0 triple-confirmed; Hub v19 pin with head-shows-v1-era discipline."
+    ],
+    "boundaries": [
+      "91ms is single-example illustrative, not universal performance.",
+      "Registry/API docs diffs at Selection depth.",
+      "Day-only date.",
+      "endpoint-spec: Endpoint schema + registry entries corroborated via release-note mirrors; docs diff pending.",
+      "registry-entries: Nimble/Tev1 pullability stated on blog; registry entries not individually opened.",
+      "Jev Decision Index is vendor-hosted, not independent reproduction.",
+      "Distinct from Strands Decider 2B and Ollama interface; do not merge.",
+      "RL platform is service announcement.",
+      "hf-weights: HF weights pages (clef/clef-flash) existence noted; weight files not downloaded.",
+      "jev-index-method: Jev Index methodology is vendor-hosted demo; independent protocol not reviewed.",
+      "v19 pin needs Hub-revision discipline (head shows v1-era models).",
+      "Distinct from Clef/Ollama; do not merge benchmarks/latencies/licenses.",
+      "Hybrid-agent positioning is vendor guidance."
+    ]
+  },
+  "candidate_matrix": {
+    "schema_version": "2.0-rc1",
+    "issue_id": "2026-W40",
+    "research_profile": "WEEKLY",
+    "basis": {
+      "production_profile_sha256": "c921bd14f441e97db4214d85fc590df6523f2b77949e1470ce4439c49fc93ead",
+      "profile_completeness_sha256": "f83b2d94d8ac4b89634e890ee6026dbc302c70741e38b822373ebc4bfb4632a1",
+      "materiality_ledger_sha256": "ce63f3a950a0267b03dd39a4f94016f2e3f39038783d48314e0f1e8a770bdf05",
+      "evidence_acceptance_sha256": "ca5e21a7e841ce6d79e07bf4f66cf09a92ec9d7527956b89fc0cf490888aa042",
+      "edition_views_acceptance_sha256": "51887616989c371cdd7c3ef0f046e3790d1db8a9c1f991fa9252125100a03e82"
+    },
+    "rows": [
+      {
+        "candidate_id": "candidate:2026-W40:e7c620cc779a6e34",
+        "evidence_task_id": "evidence:2026-W40:001e26a678b9c4fe",
+        "discovery_ids": [
+          "w40-primary-ollama-jev-20260929"
+        ],
+        "evidence_sha256": "a75469aa438a4e34f95bd27d636e7b4d9ec3961a8e00fa0d3f6c230b71198709",
+        "edition_view_sha256": "529686f3bbcced0ea2799b98b838a2f7d5822eaeb107a0ba0aacec7eb1e12ba3",
+        "title": "Ollama v0.35 decision-model support",
+        "artifact_type": "PRODUCT",
+        "evidence_status": "VERIFIED",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 4,
+          "metric_count": 0,
+          "limitation_count": 3,
+          "unresolved_question_count": 2,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "91ms is single-example illustrative, not universal performance.",
+          "Registry/API docs diffs at Selection depth.",
+          "Day-only date.",
+          "endpoint-spec: Endpoint schema + registry entries corroborated via release-note mirrors; docs diff pending.",
+          "registry-entries: Nimble/Tev1 pullability stated on blog; registry entries not individually opened."
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Ordinary-window local decision-model interface; serving significance.",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W40:4cc1306230500269",
+        "evidence_task_id": "evidence:2026-W40:0d019479344f08a7",
+        "discovery_ids": [
+          "w40-primary-cloudflare-clef-20261001"
+        ],
+        "evidence_sha256": "249d1f236ca4a445a7d789f24e23ddf234a568e7b6ea03428e5fa3a45707844f",
+        "edition_view_sha256": "e0df13fa2c6bafbdefd406d21d192fe65240cdebbdd4dd0e2bb283ea91898389",
+        "title": "Cloudflare Clef decision models",
+        "artifact_type": "OPEN_WEIGHT",
+        "evidence_status": "VERIFIED",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 5,
+          "metric_count": 0,
+          "limitation_count": 3,
+          "unresolved_question_count": 2,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Jev Decision Index is vendor-hosted, not independent reproduction.",
+          "Distinct from Strands Decider 2B and Ollama interface; do not merge.",
+          "RL platform is service announcement.",
+          "hf-weights: HF weights pages (clef/clef-flash) existence noted; weight files not downloaded.",
+          "jev-index-method: Jev Index methodology is vendor-hosted demo; independent protocol not reviewed."
+        ],
+        "profile_extensions": {
+          "why_this_issue": "In-window open decision-model weights; open/agent significance.",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W40:ad91dec415837190",
+        "evidence_task_id": "evidence:2026-W40:21954ab4f27c6ba5",
+        "discovery_ids": [
+          "w40-primary-nvidia-agentsafety-20260928"
+        ],
+        "evidence_sha256": "07df7dd672305bbcdd97d6baef1aec072635ad66edc649e1f2df95efa5ba7984",
+        "edition_view_sha256": "4fbc387e175f4105e22ce45d99eb2b3046bf331ed27be6c2128e6deff0e13cb3",
+        "title": "NVIDIA Open Agent Safety Platform",
+        "artifact_type": "PRODUCT",
+        "evidence_status": "VERIFIED",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 4,
+          "metric_count": 0,
+          "limitation_count": 3,
+          "unresolved_question_count": 1,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Reference architecture != empirically attack-proof containment; no independent red-team reproduction.",
+          "Sentry enforcement depends on BlueField-4 deployment; OpenShell alone excludes it.",
+          "Exact UTC instant unknown (day-only).",
+          "openshell-repo: OpenShell GitHub repo listing not opened; availability via developer page only."
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Ordinary-window agent-safety platform with open runtime; central safety-governance candidate.",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W40:c4c210a74c6428e8",
+        "evidence_task_id": "evidence:2026-W40:230bf6cba1ec1813",
+        "discovery_ids": [
+          "w40-primary-openai-devday-20260929"
+        ],
+        "evidence_sha256": "f79af3f29044c36e6d602c5fbd52f1791e922bd4f2c9dfcee5df0ff95896abff",
+        "edition_view_sha256": "a75b81fc53fb7ec7cce681a9fec56373d79cdfb69ab137bfa68793e8b7331fd1",
+        "title": "OpenAI DevDay 2026 announcements",
+        "artifact_type": "OTHER",
+        "evidence_status": "VERIFIED",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 3,
+          "metric_count": 0,
+          "limitation_count": 3,
+          "unresolved_question_count": 0,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Hub page alone insufficient for per-artifact pricing/access/security; split required at Evidence (done across sibling records).",
+          "Speed multiples vendor-claimed.",
+          "Day-only date."
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Ordinary-window bundle hub binding 20+ releases; kept as bundle record with mandatory per-artifact split.",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W40:381b69a17cf963b7",
+        "evidence_task_id": "evidence:2026-W40:29dac8f036319411",
+        "discovery_ids": [
+          "w40-grok-x-ledger-20261009"
+        ],
+        "evidence_sha256": "6219394c1a94db2f614ec2a57b640d512d8978d3a1fee53de61a6ebed1132ec0",
+        "edition_view_sha256": "915b9a9e636045a323c128c6326a67d5e22ea223177d7ee6d5cc94e29436c248",
+        "title": "W40 Grok/X weekly ledger",
+        "artifact_type": "OTHER",
+        "evidence_status": "PARTIAL",
+        "materiality": "CONTEXT",
+        "scope_dimensions": [
+          "current relevance"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 3,
+          "metric_count": 0,
+          "limitation_count": 2,
+          "unresolved_question_count": 0,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "X search is volume-limited and recency-biased; unlisted >25 posts unauditable.",
+          "Account organizational independence unverified (55-handle DailyX cohort is not org proof)."
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Grok/X + Daily X provenance and coverage methodology: 4 auditable Grok URLs vs >25 self-report (unproven) + 64 separate Daily X IDs; source-process contextual role for intake checks, NOT a technical event on the candidate plane. Scope dimensions here measure research coverage, not technical merit.",
+          "window_relation": "OTHER",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W40:0180c8edb63bd8b3",
+        "evidence_task_id": "evidence:2026-W40:3213a9ac3e7ed228",
+        "discovery_ids": [
+          "w40-primary-amd-ross-20260930"
+        ],
+        "evidence_sha256": "b69a6482c51bee9537d00c32bf2044f18c7dce29b47a49c5c8cafdd5991af288",
+        "edition_view_sha256": "736cdd372220f899818c948ee35b97c5d3d351306c0a1adf221e4cce7258283a",
+        "title": "AMD Ross",
+        "artifact_type": "PRODUCT",
+        "evidence_status": "VERIFIED",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 3,
+          "metric_count": 0,
+          "limitation_count": 3,
+          "unresolved_question_count": 0,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Product coverage, NOT validated engineering outcome.",
+          "Architecture/access/metrics beyond page not consumed.",
+          "Day-only date."
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Ordinary-window embedded agent product; hardware/agent significance (tutorial-grade materiality).",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W40:fc912402fc5e5025",
+        "evidence_task_id": "evidence:2026-W40:338e56bfab8f03a7",
+        "discovery_ids": [
+          "w40-primary-gemini-argon-20260930"
+        ],
+        "evidence_sha256": "d312bb5476f432714a39bd5b743d90cefda1d17c08256689fb781596e3232581",
+        "edition_view_sha256": "df3a005ad4baf139c41c2103771fd816e3a8bd12ce3ec571b8566a0f7642be8d",
+        "title": "Gemini 4 Argon",
+        "artifact_type": "MODEL",
+        "evidence_status": "VERIFIED",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 3,
+          "metric_count": 0,
+          "limitation_count": 5,
+          "unresolved_question_count": 2,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Tester-only at announcement; no public GA date.",
+          "Cross-vendor charts vendor-selected.",
+          "Model-docs input/output/trajectory split still pending.",
+          "Day-only date.",
+          "R1 over-conservative broad-limit wording WITHDRAWN and replaced by this correction.",
+          "model-docs-limits: Model docs for input/output split not opened.",
+          "fairwind-terms: Fairwind terms beyond announcement paragraph not consumed."
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Ordinary-window frontier model; corrected output-limit claim is now source-precise.",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W40:113e97bcb642e557",
+        "evidence_task_id": "evidence:2026-W40:35982cdbdced5526",
+        "discovery_ids": [
+          "w40-primary-opentts-20260930"
+        ],
+        "evidence_sha256": "f5cc4790f0e991b0d2123f4a4b27eccf589ed7bf7f8131a0fa8bdeb40f9104bd",
+        "edition_view_sha256": "792680bfa858752e0c3a127171eabd82a6711c62fe95ea984ac895052883363b",
+        "title": "Open TTS Leaderboard",
+        "artifact_type": "BENCHMARK",
+        "evidence_status": "VERIFIED",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 3,
+          "metric_count": 0,
+          "limitation_count": 3,
+          "unresolved_question_count": 2,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Leaderboard snapshots shift; no human-preference proof.",
+          "Eval scripts repo + Space app not executed.",
+          "Day-only date.",
+          "leaderboard-space: Space app not opened.",
+          "eval-scripts: Eval scripts repo public per author comment; not fetched."
+        ],
+        "profile_extensions": {
+          "why_this_issue": "In-window audio evaluation platform filling F lane; evaluation significance.",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W40:11b49826dd7c91d3",
+        "evidence_task_id": "evidence:2026-W40:36b791f0787e8ea4",
+        "discovery_ids": [
+          "w40-primary-nemotron-asr-20260930"
+        ],
+        "evidence_sha256": "72a392e2a249056fb7d75ea20265bee08cad6b1abd63d706136739a9599ed7e9",
+        "edition_view_sha256": "4146ba0c6385f75c0126423fd0a9b96c511997f9e133b6c71f000cdc5ff784f7",
+        "title": "Nemotron Saudi Arabic ASR adaptation",
+        "artifact_type": "OTHER",
+        "evidence_status": "VERIFIED",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 4,
+          "metric_count": 0,
+          "limitation_count": 4,
+          "unresolved_question_count": 1,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Publisher tutorial; no external reproduction.",
+          "SADA/FLEURS split-specific; not every dialect/deployment.",
+          "Notebook/skill/diarization blog linked but not consumed.",
+          "Day-only date.",
+          "dataset-splits: SADA/FLEURS dataset cards + notebook + skill + diarization blog not opened."
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Ordinary-window speech adaptation with full methodology; audio significance.",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W40:a5143ea24719b616",
+        "evidence_task_id": "evidence:2026-W40:3d0bd53e29394b6b",
+        "discovery_ids": [
+          "w40-primary-olmocore3-20261001"
+        ],
+        "evidence_sha256": "0bc32224908ef3daee2fbb27a226f1858b8242b32737bb01bd0076219188512c",
+        "edition_view_sha256": "99de913a18469485a43eb9cf1dc6e7d7f83ca16e73343aad77ac3a4d45f314c2",
+        "title": "Olmo-core 3",
+        "artifact_type": "FRAMEWORK",
+        "evidence_status": "VERIFIED",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 4,
+          "metric_count": 0,
+          "limitation_count": 3,
+          "unresolved_question_count": 2,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Report body UNREAD (2 failed fetches, logged); quantitative provenance stays reporter-level.",
+          "Report dated 2026-10-01 corroborated by search excerpt only.",
+          "Repo internals (code/docs) not consumed; Sol/Selection-depth clone is the retry avenue.",
+          "tech-report: Report page >5MB on markdown AND text fetches; failure logged with fallback consumption (blog+repo); claim level bounded to reporter.",
+          "github-repo: Repo page existence/license/scripts confirmed; code internals not consumed."
+        ],
+        "profile_extensions": {
+          "why_this_issue": "In-window open MoE training infrastructure (blog-verified); report-depth caveat explicit.",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W40:f3395a322bb2c7fa",
+        "evidence_task_id": "evidence:2026-W40:3dd6b99c23ef4a97",
+        "discovery_ids": [
+          "w40-primary-flux3-image-20261001"
+        ],
+        "evidence_sha256": "568fc70f1967634f9bb235da486c4633a66fd3c4c95aaf353db26c72df469507",
+        "edition_view_sha256": "ea4b4dfbb8a05cab2077a129333ed82a5a2fa5d736afc8d15f4180d11aea17fb",
+        "title": "FLUX 3 Image",
+        "artifact_type": "PRODUCT",
+        "evidence_status": "VERIFIED",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 4,
+          "metric_count": 0,
+          "limitation_count": 3,
+          "unresolved_question_count": 1,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Banner text via search index (JS-gated direct fetch); method disclosed.",
+          "Weights/license/bench methodology pins pending at Selection.",
+          "/pricing carries no publication timestamp.",
+          "model-card: Weights/license/bench pins still pending."
+        ],
+        "profile_extensions": {
+          "why_this_issue": "In-window image-model SKU with pricing/availability; multimodal significance.",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W40:2a2e5255e276e2fc",
+        "evidence_task_id": "evidence:2026-W40:428445019d4e2fe4",
+        "discovery_ids": [
+          "w40-primary-agentsapi-computeruse-20260929"
+        ],
+        "evidence_sha256": "9df7a3fcfd8dc00b57ddb7fded74dabed16d9387b00a40829d47bbff4386faa0",
+        "edition_view_sha256": "d11b33c5e1c207acc9484ceb3ca8b11bc84fd1194abc7dc7f14602adf5cda706",
+        "title": "OpenAI Agents API computer use",
+        "artifact_type": "API",
+        "evidence_status": "VERIFIED",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 3,
+          "metric_count": 0,
+          "limitation_count": 3,
+          "unresolved_question_count": 0,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Changelog states WHAT shipped, not browser security reliability; no safety inference.",
+          "Computer-use guide docs not opened.",
+          "Day-only date."
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Ordinary-window developer API capability; agent-harness significance.",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W40:071ac2e6d62319fd",
+        "evidence_task_id": "evidence:2026-W40:4eddb6eea3df05f9",
+        "discovery_ids": [
+          "w40-hold-dgxspark64-20261002"
+        ],
+        "evidence_sha256": "598e4ec66005222d98d8411618b1046c2014bace49cccbbd5a83cf7c8679eb79",
+        "edition_view_sha256": "314b0387fea185c09082b5afca3fe3ed28710078ef1537c08ad419011c06ff4a",
+        "title": "NVIDIA DGX Spark 64GB",
+        "artifact_type": "PRODUCT",
+        "evidence_status": "PARTIAL",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 2,
+          "metric_count": 0,
+          "limitation_count": 3,
+          "unresolved_question_count": 0,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Timestamp via delegated page-metadata read (verbatim quotes logged); Sol can re-verify URL directly.",
+          "Full body prose not read by Muse directly.",
+          "Oct 23 availability is future; not a shipping event."
+        ],
+        "profile_extensions": {
+          "why_this_issue": "R6: timestamp BLOCKER resolved (13:00:39Z < 22:00Z cutoff → ordinary-eligible); 64GB SKU + Sync Cluster Assistant + Oct 23 future third-party availability confirmed on page. Provisional MATERIAL as ordinary hardware news; Selection decides inclusion on merit (future-shipping caveat).",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W40:5400e29ebe4568ec",
+        "evidence_task_id": "evidence:2026-W40:517f3c71e715bebc",
+        "discovery_ids": [
+          "w40-primary-openai-dots-20260929"
+        ],
+        "evidence_sha256": "45e8fd4118fc26b0d5aa6c28e769581b3efd570841cb0a2d1641ec6eaa64462a",
+        "edition_view_sha256": "9e60a077d5ed354e427aeca77e712552cf6068f67a24beae5ff48159b3b15ec6",
+        "title": "OpenAI dots",
+        "artifact_type": "PRODUCT",
+        "evidence_status": "VERIFIED",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 4,
+          "metric_count": 0,
+          "limitation_count": 3,
+          "unresolved_question_count": 1,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "24/7, proactivity, reliability, audit effectiveness are vendor claims without independent reproduction.",
+          "Distinct from Agents API computer use; permission models must not merge.",
+          "Day-only date.",
+          "availability-terms: Availability tiers/markets extracted; eligibility details behind help-center links not opened."
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Ordinary-window always-on agent product; agentic-platform significance.",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W40:bed589208da5f196",
+        "evidence_task_id": "evidence:2026-W40:5d98661975a7fd04",
+        "discovery_ids": [
+          "w40-primary-hf-rl-environments-20260928"
+        ],
+        "evidence_sha256": "62c4c6663fb1f2b1022fb9dedb0c7623bc52b920c2002dd7be3ee077c8104978",
+        "edition_view_sha256": "4d041290af9d7232cf59f397d2d8b76956bb3a0f39f2e3a592245398aea7d082",
+        "title": "Hugging Face RL Environments Hub",
+        "artifact_type": "PRODUCT",
+        "evidence_status": "VERIFIED",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 5,
+          "metric_count": 0,
+          "limitation_count": 3,
+          "unresolved_question_count": 2,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Day-only date; no clock time.",
+          "Example versions are Sep 28 snapshots; repos evolve.",
+          "Filter/tagged-dataset pages not individually opened.",
+          "filter-page: Filter page not opened.",
+          "tagged-datasets: Tagged dataset repos not individually opened."
+        ],
+        "profile_extensions": {
+          "why_this_issue": "In-window Hub distribution/interoperability for agent RL eval/training; platform significance.",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W40:a08a45630e4d9ba0",
+        "evidence_task_id": "evidence:2026-W40:5ed61d365ba08f32",
+        "discovery_ids": [
+          "w40-primary-openai-safetycases-20260928"
+        ],
+        "evidence_sha256": "abaa9969318ac751876f45abeac463e1d05b570834de82144a8c5e618b91f0ad",
+        "edition_view_sha256": "c802c126cf7be3d1dff9d1573d00b78789ce8c863d2b69b76c51a0645e221472",
+        "title": "OpenAI frontier training safety cases",
+        "artifact_type": "OTHER",
+        "evidence_status": "VERIFIED",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 3,
+          "metric_count": 0,
+          "limitation_count": 3,
+          "unresolved_question_count": 0,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Guidance document, not empirical safety demonstration.",
+          "Applies to frontier RL training; deployment needs broader properties.",
+          "Day-only date."
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Ordinary-window frontier-lab safety-governance publication; policy significance.",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W40:055bb2f3f5be21c2",
+        "evidence_task_id": "evidence:2026-W40:62e6328a3c70a007",
+        "discovery_ids": [
+          "w40-primary-vss33-20260929"
+        ],
+        "evidence_sha256": "d07b394328b3fe8bb2bcc2407db249136ba8b967f2d5ff84e3d268cd52bfbd89",
+        "edition_view_sha256": "11f6b678ae32937bbd85e368a3828b9e33d90297763b5d64c977d3151952cf3f",
+        "title": "NVIDIA VSS Blueprint 3.3",
+        "artifact_type": "FRAMEWORK",
+        "evidence_status": "VERIFIED",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 3,
+          "metric_count": 0,
+          "limitation_count": 3,
+          "unresolved_question_count": 1,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Vendor-demo figures; do NOT generalize efficiency.",
+          "Skills spec/repo branch not consumed.",
+          "Day-only date.",
+          "workload-config: Workload/GPU/model matrix + skills spec need repo capture at Selection depth."
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Ordinary-window visual-agent serving reference; video/serving significance.",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W40:d8b07b761859ff02",
+        "evidence_task_id": "evidence:2026-W40:66aacc54064b63d6",
+        "discovery_ids": [
+          "w40-weak-elyza-20261002"
+        ],
+        "evidence_sha256": "c47a51495221105f3693a1c80105a716d2caed6df2a3e0eabdb6ea3117ba27e0",
+        "edition_view_sha256": "cd2ccf6c39e0e8f7631965dec1b7ceb60b1fd5b9665e16857351d3dda288f365",
+        "title": "ELYZA Thinking LLM-jp-4 models",
+        "artifact_type": "OPEN_WEIGHT",
+        "evidence_status": "VERIFIED",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 3,
+          "claim_count": 6,
+          "metric_count": 0,
+          "limitation_count": 4,
+          "unresolved_question_count": 0,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Publisher-measured tables; no independent reproduction or eval-script execution.",
+          "Average-performance chart images NOT machine-readable (tables only).",
+          "Quickstart blocks read, not executed.",
+          "Screening MAYBE immutable (historical); this provisional MATERIAL is reviewer input only."
+        ],
+        "profile_extensions": {
+          "why_this_issue": "PROVISIONAL positive (reviewer input): in-window Japanese-vendor open-weight reasoning release with full JA-localized method + complete benchmark tables; Japanese QA/instruction/tool deltas vs base are directly material to a Japanese Generative AI Survey. Counterfactual HOLD case: if Selection weighs global-frontier rank only, both trail Qwen3.5/Gemma4 and could HOLD as non-frontier; the Japanese-survey lens (domestic foundation, JA data/method, Apache-2.0) supports MATERIAL. Sol decides.",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W40:9de6ffd245268468",
+        "evidence_task_id": "evidence:2026-W40:6b710e391126f2cd",
+        "discovery_ids": [
+          "w40-primary-aa-agentperf-20260929"
+        ],
+        "evidence_sha256": "8e239a60ceb6f5dc8c03f4c43ba7a477b70af0aa1e30a5f7c7e22533ac7d082f",
+        "edition_view_sha256": "a41e54bdc775bd5e04dfdeb7bb7abfc80eb862ec7de56fdade80617f59b7feb1",
+        "title": "AA-AgentPerf-Local",
+        "artifact_type": "BENCHMARK",
+        "evidence_status": "VERIFIED",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 4,
+          "metric_count": 0,
+          "limitation_count": 3,
+          "unresolved_question_count": 2,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Publisher benchmark, not independent reproduction.",
+          "Single-agent full-system focus; multi-agent/shared-load pending.",
+          "Living leaderboard; W40 authority needs commit pin at Selection.",
+          "github-repo: Repo + 14 configs linked but not pinned; living leaderboard.",
+          "configs: Config-level details (MTP/DFlash/DSpark per pair) not individually consumed."
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Ordinary-window local-agent serving benchmark + methodology; evaluation significance.",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W40:00ac1151955c20ff",
+        "evidence_task_id": "evidence:2026-W40:7609eae99dabda8b",
+        "discovery_ids": [
+          "w40-hold-astabrief-20261002"
+        ],
+        "evidence_sha256": "cecb2537e579d6e77b79e4507832ecb73d53accd2058b48b2fdec2e23f60e680",
+        "edition_view_sha256": "f7314f3b828efdd9a2cf8933f0196805e92337def976422db9bd562e492ce735",
+        "title": "AstaBrief 8B",
+        "artifact_type": "OPEN_WEIGHT",
+        "evidence_status": "PARTIAL",
+        "materiality": "HOLD",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 4,
+          "metric_count": 0,
+          "limitation_count": 3,
+          "unresolved_question_count": 2,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Exact Oct 2 publication time unproven vs 22:00Z cutoff.",
+          "Repo SPDX file not directly opened (card text only).",
+          "2025-era baselines; scope-drift caveats.",
+          "astabrief-timestamp: Substance (model/data/eval/license-card) verified; timestamp still day-only across all sources.",
+          "license-spdx: Apache-2.0 card text + eval tables confirmed; repo LICENSE file pin pending."
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Material open cited-report model held on timestamp proof; Selection dispositions after time resolution.",
+          "window_relation": "OTHER",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W40:baa2a35dcad0b509",
+        "evidence_task_id": "evidence:2026-W40:80686014421684fc",
+        "discovery_ids": [
+          "w40-primary-cloudflare-aisearch-20261001"
+        ],
+        "evidence_sha256": "5c2b3d9e5c5d92d7d53f8a90b6fa7701b7f830b9fc468bdd324538805a3f6cc5",
+        "edition_view_sha256": "fbd780f942e76028d91edff6cc0a14fdabd8f86a20b53c7df1204913f3c4fad0",
+        "title": "Cloudflare AI Search",
+        "artifact_type": "PRODUCT",
+        "evidence_status": "VERIFIED",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 2,
+          "metric_count": 0,
+          "limitation_count": 3,
+          "unresolved_question_count": 0,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Rates page not re-fetched.",
+          "Service GA, not model capability.",
+          "Day-only date."
+        ],
+        "profile_extensions": {
+          "why_this_issue": "In-window retrieval service GA with OCR/multimodal; enterprise significance.",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W40:4f523016fa837285",
+        "evidence_task_id": "evidence:2026-W40:86a1124feba9733b",
+        "discovery_ids": [
+          "w40-primary-holo4-20260928"
+        ],
+        "evidence_sha256": "80de1bb17bddc07ed88189d000b0552b30a29314fd0efe823949908a18872394",
+        "edition_view_sha256": "7b0014f5b5f016b37aa38023e73b889751641bd2068817590e49f9370cf5c4eb",
+        "title": "Holo4 agent models",
+        "artifact_type": "OPEN_WEIGHT",
+        "evidence_status": "VERIFIED",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 4,
+          "metric_count": 0,
+          "limitation_count": 3,
+          "unresolved_question_count": 1,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Publisher-run benchmarks; private-set eval pending; no independent reproduction.",
+          "Holotron4 Nano is a sub-model, not separate W40 event.",
+          "Day-only date.",
+          "trajectories: Trajectory viewer + HF dataset links noted; replay not executed."
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Major in-window agent/open-weight release with license split; core Selection candidate.",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W40:00ad8b21e165c26e",
+        "evidence_task_id": "evidence:2026-W40:8c75a77f0becb78b",
+        "discovery_ids": [
+          "w40-primary-provenanceguard-20260929"
+        ],
+        "evidence_sha256": "68aef733ef9383a5615085e351d9692f5a5cdc8cfa27abe80aa972570fd47e08",
+        "edition_view_sha256": "d371bd7452615baa128521f3f534e85cb813115f2c7f20aab5dca1188566cd03",
+        "title": "ProvenanceGuard",
+        "artifact_type": "PRODUCT",
+        "evidence_status": "VERIFIED",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 2,
+          "claim_count": 5,
+          "metric_count": 0,
+          "limitation_count": 3,
+          "unresolved_question_count": 0,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Version-pinned v2 rendering (not PDF bytes); figures as text placeholders; §§V.4+/VI–IX/appendices beyond truncation unread; revisions beyond v2 uncompared; code/poster/NVFlow PR not opened.",
+          "Local-config evaluation; hosted adaptation needs own testing.",
+          "Day-only blog date."
+        ],
+        "profile_extensions": {
+          "why_this_issue": "In-window MCP attribution verification with original-paper method/results consumed; agent-retrieval significance.",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W40:92241424368e1305",
+        "evidence_task_id": "evidence:2026-W40:8d261dee1d3bdf14",
+        "discovery_ids": [
+          "w40-primary-contextlms-20260929"
+        ],
+        "evidence_sha256": "537871bcdea567f323482766b248f2c59000f20ddc03b6b49e4e8972e1291d53",
+        "edition_view_sha256": "4f37736d46ae77a6b04b98271c551c504ea9e917ed06339234438ed6c1277250",
+        "title": "Context Language Models",
+        "artifact_type": "PAPER",
+        "evidence_status": "VERIFIED",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 2,
+          "claim_count": 5,
+          "metric_count": 0,
+          "limitation_count": 3,
+          "unresolved_question_count": 2,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "ar5iv rendering (not PDF bytes); equations/figures partially garbled; Appendices B–F unread (output truncated); code repo not opened; no reproduction.",
+          "Paper-claimed figures; independent verification pending.",
+          "Verification target arxiv-2609-37725-pdf was FALSE in r1 (abstract-only) — corrected here.",
+          "arxiv-2609-37725-pdf: PDF BYTES NOT consumed (direct fetch returned binary; metadata only). Full paper TEXT consumed via ar5iv HTML rendering of same v1 (§§1–6 + refs + App.A; bounded excerpts archived); r1 FALSE pdf-VERIFIED withdrawn.",
+          "code: Code repo linked in paper; not opened; no reproduction."
+        ],
+        "profile_extensions": {
+          "why_this_issue": "In-window research with full-text method/results consumed; agent-context significance.",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W40:2dc212b126b70c7f",
+        "evidence_task_id": "evidence:2026-W40:8d69810add1c0b33",
+        "discovery_ids": [
+          "w40-carryover-tbc-video-20261009"
+        ],
+        "evidence_sha256": "00922ef1ab9c217f0e448b07a4d4033d61806ae6885ca472a0173fa486c7665f",
+        "edition_view_sha256": "c96feeb1d20c48a3707800c5f68dcfa58e717b4026d31ee627d7b357e6b95820",
+        "title": "TBC/AWS video optimization figures",
+        "artifact_type": "OTHER",
+        "evidence_status": "PARTIAL",
+        "materiality": "HOLD",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance",
+          "carry-over obligations"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 2,
+          "metric_count": 0,
+          "limitation_count": 2,
+          "unresolved_question_count": 2,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "No measured optimization evidence.",
+          "W39 commercial-partnership record is the only authority.",
+          "measured-bench: No independent bench located.",
+          "tech-report: No technical report or paper located."
+        ],
+        "profile_extensions": {
+          "why_this_issue": "W39 HOLD preserved; no W40 ordinary authority.",
+          "window_relation": "CARRY_OVER",
+          "carry_over": true
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W40:297161b79687e931",
+        "evidence_task_id": "evidence:2026-W40:8fc7a0570317c9d0",
+        "discovery_ids": [
+          "w40-primary-nemorelay-20260930"
+        ],
+        "evidence_sha256": "0b12d5ece2e07d3d314e3acfc51a0f0e8b03aae8b1e945301dbc9b0cebc9e0ed",
+        "edition_view_sha256": "a4ead92b5398f3c6ed695aa5cbb6b463e7439308dd5b1793550314e27a8ec5ef",
+        "title": "NVIDIA NeMo Relay",
+        "artifact_type": "FRAMEWORK",
+        "evidence_status": "VERIFIED",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 4,
+          "metric_count": 0,
+          "limitation_count": 3,
+          "unresolved_question_count": 0,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Tutorial scope; companion repo + format docs not consumed.",
+          "Live-web-search runs exploratory, not rankings.",
+          "Day-only date."
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Ordinary-window agent observability instrumentation; evaluation significance.",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W40:12a489608eec7602",
+        "evidence_task_id": "evidence:2026-W40:9080e3d393932351",
+        "discovery_ids": [
+          "w40-carryover-pixelcanary-20261009"
+        ],
+        "evidence_sha256": "9ba73292afec54e3c71922126d8b2d08fb3ed3facc57d0e114e66a6a938036ed",
+        "edition_view_sha256": "5c8ff2b383ff1e7c7aa6d62e71f9e4874140af765bb7dd325933b2d7252b0c67",
+        "title": "Pixel Canary / Codex status",
+        "artifact_type": "OTHER",
+        "evidence_status": "PARTIAL",
+        "materiality": "HOLD",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance",
+          "carry-over obligations"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 2,
+          "metric_count": 0,
+          "limitation_count": 2,
+          "unresolved_question_count": 2,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "No primary authority found after recheck.",
+          "Third-party Vercel-changelog figures (90.3%/96.8%) unverified.",
+          "vendor-card: No dated vendor card located in r1 sweep + Grok/DailyX review.",
+          "status-history: No official status-page incident history located."
+        ],
+        "profile_extensions": {
+          "why_this_issue": "W39 HOLD preserved; no W40 ordinary authority.",
+          "window_relation": "CARRY_OVER",
+          "carry_over": true
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W40:fba60168479c9784",
+        "evidence_task_id": "evidence:2026-W40:935a8e487fd40c65",
+        "discovery_ids": [
+          "w40-primary-cloudflare-mcpauth-20261001"
+        ],
+        "evidence_sha256": "b88269e767dd12ca6d271ffc22aee1a6810ef883deca736a1fe9073db16b5644",
+        "edition_view_sha256": "9d616f7708db65082b26275fc6f4d965706db0a8669711191b7c74e2b204471b",
+        "title": "Cloudflare Workers OAuth Provider v1",
+        "artifact_type": "PRODUCT",
+        "evidence_status": "VERIFIED",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 2,
+          "metric_count": 0,
+          "limitation_count": 3,
+          "unresolved_question_count": 0,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Full entry body + repo docs at Selection depth.",
+          "Living index carries post-window entries (guard).",
+          "Day-only date."
+        ],
+        "profile_extensions": {
+          "why_this_issue": "In-window MCP auth spec surface; agent-security significance.",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W40:f375b6c488969327",
+        "evidence_task_id": "evidence:2026-W40:a624197faacfec60",
+        "discovery_ids": [
+          "w40-primary-synthid-bio-20260930"
+        ],
+        "evidence_sha256": "1ddfe5a4739ffafcb682fb073352a0917cc9c7f2c00af810c10593b0c00f0600",
+        "edition_view_sha256": "41bdb048255ab83d075e0712635a2ceefc932262d925a8c25be967536b25284d",
+        "title": "SynthID Bio",
+        "artifact_type": "PRODUCT",
+        "evidence_status": "VERIFIED",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 4,
+          "metric_count": 0,
+          "limitation_count": 3,
+          "unresolved_question_count": 2,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Function preservation bounded to tested binders/targets; do not generalize.",
+          "Third-party wet-lab reproduction absent.",
+          "Grok Oct 1 dating corrected to Sep 30.",
+          "nature-paper: Nature paper body not consumed beyond blog relay; protocol details pending.",
+          "released-weights: Code/data/weights release links noted but not fetched."
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Ordinary-window novel bio-watermarking modality; safety/science significance.",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W40:ba7d989d5b799f66",
+        "evidence_task_id": "evidence:2026-W40:ba72657afb68a868",
+        "discovery_ids": [
+          "w40-hold-autosynthdata-20261002"
+        ],
+        "evidence_sha256": "455731c8e8fc60e4d838c34a1df2e20a81f120ae2d23379532e8fc7419e050ea",
+        "edition_view_sha256": "f3f4fb800f3d6ee60d86af95643be01ad8c32982d152741a110b19b9cc349806",
+        "title": "AutoSynthData",
+        "artifact_type": "OTHER",
+        "evidence_status": "PARTIAL",
+        "materiality": "HOLD",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 4,
+          "metric_count": 0,
+          "limitation_count": 3,
+          "unresolved_question_count": 2,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Exact Oct 2 time unproven.",
+          "No standalone AutoSynthData code/dataset/license to verify.",
+          "Figures publisher-measured in stated envs.",
+          "autosynthdata-timestamp: Methodology + experiments verified in blog; timestamp still day-only.",
+          "dataset-license: Gym dataset Apache-2.0 confirmed; AutoSynthData standalone release absent."
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Material enterprise training-data methodology held on timestamp proof; Selection dispositions after resolution.",
+          "window_relation": "OTHER",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W40:b22893750847d0a9",
+        "evidence_task_id": "evidence:2026-W40:c857f1e0e0655f20",
+        "discovery_ids": [
+          "w40-primary-sonnet55-20260928"
+        ],
+        "evidence_sha256": "24762e838a53962674b0ed81e6092175114335aa484a337a5c2d161bc34697b9",
+        "edition_view_sha256": "ac984ac1c4b8eea91e571c0fdc4b146808298e9e109c318eb6c33d7245aed5a5",
+        "title": "Claude Sonnet 5.5",
+        "artifact_type": "MODEL",
+        "evidence_status": "VERIFIED",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 5,
+          "metric_count": 0,
+          "limitation_count": 3,
+          "unresolved_question_count": 1,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "All benchmark deltas vendor-run; independent reproduction pending.",
+          "Exact UTC publication instant unknown (day-only).",
+          "System card MLPerf-style details not consumed beyond page footnotes.",
+          "system-card: System card exists (Sep 28) but full evaluation tables not consumed; page footnotes cover caveats."
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Ordinary-window frontier model release with price/speed/safety posture; core Selection candidate.",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W40:8cec00c34e0532a2",
+        "evidence_task_id": "evidence:2026-W40:cfe89a2833c13d94",
+        "discovery_ids": [
+          "w40-primary-gpt61-sol-20260929"
+        ],
+        "evidence_sha256": "221b461a0708ad58fdd6227b6a3816829944f0031ad9c422759527d281ed57d9",
+        "edition_view_sha256": "0278abb1ad55d5e4eb56a074cb2e7c54288a1d29d03067498ac3d7b95a6cdad9",
+        "title": "GPT-6.1 Sol",
+        "artifact_type": "MODEL",
+        "evidence_status": "VERIFIED",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 4,
+          "metric_count": 0,
+          "limitation_count": 3,
+          "unresolved_question_count": 0,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "All benchmark deltas vendor-run; independent reproduction pending.",
+          "Near-Astra is vendor framing across selected evals; Astra highest on hardest science (68.1%).",
+          "Day-only date."
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Ordinary-window frontier model upgrade with price card; core Selection candidate.",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W40:4dd078cf92f1c9c9",
+        "evidence_task_id": "evidence:2026-W40:deb42dbdfe9ccbc0",
+        "discovery_ids": [
+          "w40-primary-strands-decider-20261001"
+        ],
+        "evidence_sha256": "ae5432bc90493f906d969240020917c61c3109f3bbaad716b3ee319f4d3e8b75",
+        "edition_view_sha256": "4d419bafdb6812125926b3b97e1b85a221d4bc6766c64037493076c717eb1315",
+        "title": "Strands Decider 2B",
+        "artifact_type": "OPEN_WEIGHT",
+        "evidence_status": "VERIFIED",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 5,
+          "metric_count": 0,
+          "limitation_count": 3,
+          "unresolved_question_count": 0,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "v19 pin needs Hub-revision discipline (head shows v1-era models).",
+          "Distinct from Clef/Ollama; do not merge benchmarks/latencies/licenses.",
+          "Hybrid-agent positioning is vendor guidance."
+        ],
+        "profile_extensions": {
+          "why_this_issue": "In-window open decision model with pinned revision; open/agent significance.",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W40:83a557645d769ec1",
+        "evidence_task_id": "evidence:2026-W40:f099ee5308bad7a6",
+        "discovery_ids": [
+          "w40-primary-amd-worldlabs-20260928"
+        ],
+        "evidence_sha256": "3367160d9792b6eb7fc425e220903f7b49f29c890295ffbfc7667ed134df3271",
+        "edition_view_sha256": "2e638cdd5709994e0725b997552042ad54354661a61db92ba7f516c27a0d772a",
+        "title": "AMD acquisition agreement for World Labs",
+        "artifact_type": "OTHER",
+        "evidence_status": "VERIFIED",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 3,
+          "metric_count": 0,
+          "limitation_count": 3,
+          "unresolved_question_count": 0,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Day-only date; no clock time.",
+          "Valuation/close-certainty commentary not independently validated.",
+          "Not a model release (lanes E/H/L corporate event)."
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Ordinary-window $8.2B AI lab acquisition agreement; corporate/hardware significance.",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W40:436f2f84e00f50a3",
+        "evidence_task_id": "evidence:2026-W40:f9e39d3c5b209f14",
+        "discovery_ids": [
+          "w40-prewindow-lift-20260925"
+        ],
+        "evidence_sha256": "101de2c85d9664011dca954574410aa37e216d391dd955c948b66c0ae769f104",
+        "edition_view_sha256": "9f137ed6ea2559a152f1faca1f0589bc5cab2c022726dd509a16bc38ea1c7352",
+        "title": "LIFT reasoning vectors",
+        "artifact_type": "PAPER",
+        "evidence_status": "VERIFIED",
+        "materiality": "CONTEXT",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 2,
+          "metric_count": 0,
+          "limitation_count": 2,
+          "unresolved_question_count": 0,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Abstract only; code promised soon, not consumed.",
+          "CONTEXT only; no W40 newness claim."
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Pre-window research context for multimodal reasoning; background only.",
+          "window_relation": "PRE_WINDOW_RELEVANCE",
+          "carry_over": false
+        }
+      }
+    ],
+    "summary": {
+      "candidate_count": 35,
+      "materiality_counts": {
+        "CONTEXT": 2,
+        "HOLD": 4,
+        "MATERIAL": 29
+      },
+      "evidence_status_counts": {
+        "PARTIAL": 6,
+        "VERIFIED": 29
+      }
+    }
+  },
+  "evidence_acceptance": {
+    "schema_version": "2.0-rc1",
+    "issue_id": "2026-W40",
+    "research_profile": "WEEKLY",
+    "result_set_sha256": "0a62346f0729e768d1b67305dd96e0e99224326c862831abe79e43ced4875e07",
+    "package_sha256": "30b63b119a63f3fbec9c771aa415b7d7880db8d40a1715930bc063306606818e",
+    "screening_acceptance_sha256": "4bae12edc6a17d8f43188dedd6ced9716b4ae1559ff996cc6e7d15a23d5b564f",
+    "result_count": 35,
+    "results": [
+      {
+        "evidence_task_id": "evidence:2026-W40:001e26a678b9c4fe",
+        "discovery_ids": [
+          "w40-primary-ollama-jev-20260929"
+        ],
+        "sha256": "a75469aa438a4e34f95bd27d636e7b4d9ec3961a8e00fa0d3f6c230b71198709",
+        "status": "VERIFIED",
+        "filename": "task-e7c620cc779a6e34089a.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W40:0d019479344f08a7",
+        "discovery_ids": [
+          "w40-primary-cloudflare-clef-20261001"
+        ],
+        "sha256": "249d1f236ca4a445a7d789f24e23ddf234a568e7b6ea03428e5fa3a45707844f",
+        "status": "VERIFIED",
+        "filename": "task-4cc13062305002694b8f.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W40:21954ab4f27c6ba5",
+        "discovery_ids": [
+          "w40-primary-nvidia-agentsafety-20260928"
+        ],
+        "sha256": "07df7dd672305bbcdd97d6baef1aec072635ad66edc649e1f2df95efa5ba7984",
+        "status": "VERIFIED",
+        "filename": "task-ad91dec415837190f57d.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W40:230bf6cba1ec1813",
+        "discovery_ids": [
+          "w40-primary-openai-devday-20260929"
+        ],
+        "sha256": "f79af3f29044c36e6d602c5fbd52f1791e922bd4f2c9dfcee5df0ff95896abff",
+        "status": "VERIFIED",
+        "filename": "task-c4c210a74c6428e8dbbc.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W40:29dac8f036319411",
+        "discovery_ids": [
+          "w40-grok-x-ledger-20261009"
+        ],
+        "sha256": "6219394c1a94db2f614ec2a57b640d512d8978d3a1fee53de61a6ebed1132ec0",
+        "status": "PARTIAL",
+        "filename": "task-381b69a17cf963b7d2e3.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W40:3213a9ac3e7ed228",
+        "discovery_ids": [
+          "w40-primary-amd-ross-20260930"
+        ],
+        "sha256": "b69a6482c51bee9537d00c32bf2044f18c7dce29b47a49c5c8cafdd5991af288",
+        "status": "VERIFIED",
+        "filename": "task-0180c8edb63bd8b3a941.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W40:338e56bfab8f03a7",
+        "discovery_ids": [
+          "w40-primary-gemini-argon-20260930"
+        ],
+        "sha256": "d312bb5476f432714a39bd5b743d90cefda1d17c08256689fb781596e3232581",
+        "status": "VERIFIED",
+        "filename": "task-fc912402fc5e50257ea8.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W40:35982cdbdced5526",
+        "discovery_ids": [
+          "w40-primary-opentts-20260930"
+        ],
+        "sha256": "f5cc4790f0e991b0d2123f4a4b27eccf589ed7bf7f8131a0fa8bdeb40f9104bd",
+        "status": "VERIFIED",
+        "filename": "task-113e97bcb642e557213a.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W40:36b791f0787e8ea4",
+        "discovery_ids": [
+          "w40-primary-nemotron-asr-20260930"
+        ],
+        "sha256": "72a392e2a249056fb7d75ea20265bee08cad6b1abd63d706136739a9599ed7e9",
+        "status": "VERIFIED",
+        "filename": "task-11b49826dd7c91d3c243.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W40:3d0bd53e29394b6b",
+        "discovery_ids": [
+          "w40-primary-olmocore3-20261001"
+        ],
+        "sha256": "0bc32224908ef3daee2fbb27a226f1858b8242b32737bb01bd0076219188512c",
+        "status": "VERIFIED",
+        "filename": "task-a5143ea24719b616b27e.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W40:3dd6b99c23ef4a97",
+        "discovery_ids": [
+          "w40-primary-flux3-image-20261001"
+        ],
+        "sha256": "568fc70f1967634f9bb235da486c4633a66fd3c4c95aaf353db26c72df469507",
+        "status": "VERIFIED",
+        "filename": "task-f3395a322bb2c7fa150d.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W40:428445019d4e2fe4",
+        "discovery_ids": [
+          "w40-primary-agentsapi-computeruse-20260929"
+        ],
+        "sha256": "9df7a3fcfd8dc00b57ddb7fded74dabed16d9387b00a40829d47bbff4386faa0",
+        "status": "VERIFIED",
+        "filename": "task-2a2e5255e276e2fc0520.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W40:4eddb6eea3df05f9",
+        "discovery_ids": [
+          "w40-hold-dgxspark64-20261002"
+        ],
+        "sha256": "598e4ec66005222d98d8411618b1046c2014bace49cccbbd5a83cf7c8679eb79",
+        "status": "PARTIAL",
+        "filename": "task-071ac2e6d62319fdfc3a.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W40:517f3c71e715bebc",
+        "discovery_ids": [
+          "w40-primary-openai-dots-20260929"
+        ],
+        "sha256": "45e8fd4118fc26b0d5aa6c28e769581b3efd570841cb0a2d1641ec6eaa64462a",
+        "status": "VERIFIED",
+        "filename": "task-5400e29ebe4568ec0376.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W40:5d98661975a7fd04",
+        "discovery_ids": [
+          "w40-primary-hf-rl-environments-20260928"
+        ],
+        "sha256": "62c4c6663fb1f2b1022fb9dedb0c7623bc52b920c2002dd7be3ee077c8104978",
+        "status": "VERIFIED",
+        "filename": "task-bed589208da5f196b73a.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W40:5ed61d365ba08f32",
+        "discovery_ids": [
+          "w40-primary-openai-safetycases-20260928"
+        ],
+        "sha256": "abaa9969318ac751876f45abeac463e1d05b570834de82144a8c5e618b91f0ad",
+        "status": "VERIFIED",
+        "filename": "task-a08a45630e4d9ba04714.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W40:62e6328a3c70a007",
+        "discovery_ids": [
+          "w40-primary-vss33-20260929"
+        ],
+        "sha256": "d07b394328b3fe8bb2bcc2407db249136ba8b967f2d5ff84e3d268cd52bfbd89",
+        "status": "VERIFIED",
+        "filename": "task-055bb2f3f5be21c2662f.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W40:66aacc54064b63d6",
+        "discovery_ids": [
+          "w40-weak-elyza-20261002"
+        ],
+        "sha256": "c47a51495221105f3693a1c80105a716d2caed6df2a3e0eabdb6ea3117ba27e0",
+        "status": "VERIFIED",
+        "filename": "task-d8b07b761859ff02e37b.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W40:6b710e391126f2cd",
+        "discovery_ids": [
+          "w40-primary-aa-agentperf-20260929"
+        ],
+        "sha256": "8e239a60ceb6f5dc8c03f4c43ba7a477b70af0aa1e30a5f7c7e22533ac7d082f",
+        "status": "VERIFIED",
+        "filename": "task-9de6ffd2452684687c15.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W40:7609eae99dabda8b",
+        "discovery_ids": [
+          "w40-hold-astabrief-20261002"
+        ],
+        "sha256": "cecb2537e579d6e77b79e4507832ecb73d53accd2058b48b2fdec2e23f60e680",
+        "status": "PARTIAL",
+        "filename": "task-00ac1151955c20ff6eeb.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W40:80686014421684fc",
+        "discovery_ids": [
+          "w40-primary-cloudflare-aisearch-20261001"
+        ],
+        "sha256": "5c2b3d9e5c5d92d7d53f8a90b6fa7701b7f830b9fc468bdd324538805a3f6cc5",
+        "status": "VERIFIED",
+        "filename": "task-baa2a35dcad0b5093dd8.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W40:86a1124feba9733b",
+        "discovery_ids": [
+          "w40-primary-holo4-20260928"
+        ],
+        "sha256": "80de1bb17bddc07ed88189d000b0552b30a29314fd0efe823949908a18872394",
+        "status": "VERIFIED",
+        "filename": "task-4f523016fa8372858660.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W40:8c75a77f0becb78b",
+        "discovery_ids": [
+          "w40-primary-provenanceguard-20260929"
+        ],
+        "sha256": "68aef733ef9383a5615085e351d9692f5a5cdc8cfa27abe80aa972570fd47e08",
+        "status": "VERIFIED",
+        "filename": "task-00ad8b21e165c26e5441.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W40:8d261dee1d3bdf14",
+        "discovery_ids": [
+          "w40-primary-contextlms-20260929"
+        ],
+        "sha256": "537871bcdea567f323482766b248f2c59000f20ddc03b6b49e4e8972e1291d53",
+        "status": "VERIFIED",
+        "filename": "task-92241424368e1305ad7a.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W40:8d69810add1c0b33",
+        "discovery_ids": [
+          "w40-carryover-tbc-video-20261009"
+        ],
+        "sha256": "00922ef1ab9c217f0e448b07a4d4033d61806ae6885ca472a0173fa486c7665f",
+        "status": "PARTIAL",
+        "filename": "task-2dc212b126b70c7f6fcd.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W40:8fc7a0570317c9d0",
+        "discovery_ids": [
+          "w40-primary-nemorelay-20260930"
+        ],
+        "sha256": "0b12d5ece2e07d3d314e3acfc51a0f0e8b03aae8b1e945301dbc9b0cebc9e0ed",
+        "status": "VERIFIED",
+        "filename": "task-297161b79687e931dbe7.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W40:9080e3d393932351",
+        "discovery_ids": [
+          "w40-carryover-pixelcanary-20261009"
+        ],
+        "sha256": "9ba73292afec54e3c71922126d8b2d08fb3ed3facc57d0e114e66a6a938036ed",
+        "status": "PARTIAL",
+        "filename": "task-12a489608eec7602d133.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W40:935a8e487fd40c65",
+        "discovery_ids": [
+          "w40-primary-cloudflare-mcpauth-20261001"
+        ],
+        "sha256": "b88269e767dd12ca6d271ffc22aee1a6810ef883deca736a1fe9073db16b5644",
+        "status": "VERIFIED",
+        "filename": "task-fba60168479c97846444.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W40:a624197faacfec60",
+        "discovery_ids": [
+          "w40-primary-synthid-bio-20260930"
+        ],
+        "sha256": "1ddfe5a4739ffafcb682fb073352a0917cc9c7f2c00af810c10593b0c00f0600",
+        "status": "VERIFIED",
+        "filename": "task-f375b6c488969327ae06.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W40:ba72657afb68a868",
+        "discovery_ids": [
+          "w40-hold-autosynthdata-20261002"
+        ],
+        "sha256": "455731c8e8fc60e4d838c34a1df2e20a81f120ae2d23379532e8fc7419e050ea",
+        "status": "PARTIAL",
+        "filename": "task-ba7d989d5b799f66e42a.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W40:c857f1e0e0655f20",
+        "discovery_ids": [
+          "w40-primary-sonnet55-20260928"
+        ],
+        "sha256": "24762e838a53962674b0ed81e6092175114335aa484a337a5c2d161bc34697b9",
+        "status": "VERIFIED",
+        "filename": "task-b22893750847d0a93100.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W40:cfe89a2833c13d94",
+        "discovery_ids": [
+          "w40-primary-gpt61-sol-20260929"
+        ],
+        "sha256": "221b461a0708ad58fdd6227b6a3816829944f0031ad9c422759527d281ed57d9",
+        "status": "VERIFIED",
+        "filename": "task-8cec00c34e0532a28b05.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W40:deb42dbdfe9ccbc0",
+        "discovery_ids": [
+          "w40-primary-strands-decider-20261001"
+        ],
+        "sha256": "ae5432bc90493f906d969240020917c61c3109f3bbaad716b3ee319f4d3e8b75",
+        "status": "VERIFIED",
+        "filename": "task-4dd078cf92f1c9c99231.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W40:f099ee5308bad7a6",
+        "discovery_ids": [
+          "w40-primary-amd-worldlabs-20260928"
+        ],
+        "sha256": "3367160d9792b6eb7fc425e220903f7b49f29c890295ffbfc7667ed134df3271",
+        "status": "VERIFIED",
+        "filename": "task-83a557645d769ec170ed.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W40:f9e39d3c5b209f14",
+        "discovery_ids": [
+          "w40-prewindow-lift-20260925"
+        ],
+        "sha256": "101de2c85d9664011dca954574410aa37e216d391dd955c948b66c0ae769f104",
+        "status": "VERIFIED",
+        "filename": "task-436f2f84e00f50a35825.json"
+      }
+    ]
+  },
+  "evidence_inputs": [
+    {
+      "candidate_id": "candidate:2026-W40:e7c620cc779a6e34",
+      "architecture_usage": "PRIMARY",
+      "evidence_task_id": "evidence:2026-W40:001e26a678b9c4fe",
+      "evidence_sha256": "a75469aa438a4e34f95bd27d636e7b4d9ec3961a8e00fa0d3f6c230b71198709",
+      "evidence_card": {
+        "schema_version": "2.0-rc1",
+        "issue_id": "2026-W40",
+        "evidence_task_id": "evidence:2026-W40:001e26a678b9c4fe",
+        "basis": {
+          "task_sha256": "035ed18b5a4a81723855ae62f0688a248788e461fbbd5097b86e1129823a8173",
+          "screening_acceptance_sha256": "4bae12edc6a17d8f43188dedd6ced9716b4ae1559ff996cc6e7d15a23d5b564f",
+          "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+          "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+        },
+        "status": "VERIFIED",
+        "entities": [
+          {
+            "canonical_name": "Ollama v0.35 decision-model support",
+            "canonical_url": "https://ollama.com/blog/ollama-now-supports-jev-style-decision-models",
+            "entity_id": "ollama-systemone",
+            "entity_type": "PRODUCT",
+            "organization": "Ollama"
+          }
+        ],
+        "artifact": {
+          "primary_subject_id": "ollama-systemone",
+          "artifact_type": "PRODUCT",
+          "canonical_name": "Ollama v0.35 decision-model support",
+          "canonical_url": "https://ollama.com/blog/ollama-now-supports-jev-style-decision-models"
+        },
+        "temporal": {
+          "observed_at": "2026-10-10T07:00:00Z",
+          "events": []
+        },
+        "sources": [
+          {
+            "source_id": "src-1",
+            "url": "primary:ollama.com/blog/ollama-now-supports-jev-style-decision-models",
+            "source_class": "PRIMARY_OFFICIAL",
+            "title": "Ollama v0.35 Jev-style decision endpoint (Sep 29)",
+            "published_at": null,
+            "accessed_at": "2026-10-10T07:00:00Z",
+            "role": "Discovery-bounded source used for factual verification"
+          }
+        ],
+        "claims": [
+          {
+            "statement_id": "claim-1",
+            "text": "Ollama added Jev-style decision-model support via /v1/systemone in v0.35 (Sep 28-29): typed choices/probabilities/scores instead of text; ticket triage, model routing, classification.",
+            "subject_id": "ollama-systemone",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "PRIMARY_FACT",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": "Ollama blog Sep 29, full body read in r4."
+          },
+          {
+            "statement_id": "claim-2",
+            "text": "Nimble (Bespoke Labs, open-source 9B) + Tev1 (Together AI, experimental 4B + 0.8B) pullable at launch; curl + TypeSafe SDK examples documented.",
+            "subject_id": "ollama-systemone",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "PRIMARY_FACT",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": "Vendor availability statement; release-note mirrors corroborate."
+          },
+          {
+            "statement_id": "claim-3",
+            "text": "Nimble 9B averaged 91ms per decision in Pac-Man example on M5 Max (illustrative, NOT universal); 13 public datasets / 3,880 decisions vs Jev 1.13 (Bespoke run).",
+            "subject_id": "ollama-systemone",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "VENDOR_CLAIM",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": "Vendor-measured illustrative figure."
+          },
+          {
+            "statement_id": "claim-4",
+            "text": "Serving interface, NOT a model release; precedes Oct 1 Clef/Decider weights; must not merge benchmarks.",
+            "subject_id": "ollama-systemone",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": "Editorial boundary."
+          }
+        ],
+        "metrics": [],
+        "limitations": [
+          {
+            "statement_id": "limitation-1",
+            "text": "91ms is single-example illustrative, not universal performance.",
+            "subject_id": "ollama-systemone",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": "Evidence boundary retained for downstream editorial use."
+          },
+          {
+            "statement_id": "limitation-2",
+            "text": "Registry/API docs diffs at Selection depth.",
+            "subject_id": "ollama-systemone",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": "Evidence boundary retained for downstream editorial use."
+          },
+          {
+            "statement_id": "limitation-3",
+            "text": "Day-only date.",
+            "subject_id": "ollama-systemone",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": "Evidence boundary retained for downstream editorial use."
+          }
+        ],
+        "verification": {
+          "targets": [
+            {
+              "target": "ollama-blog",
+              "status": "VERIFIED",
+              "finding": "Blog fully read; version/endpoint/models/latency/benchmark/examples extracted.",
+              "subject_ids": [
+                "ollama-systemone"
+              ],
+              "source_ids": [
+                "src-1"
+              ]
+            },
+            {
+              "target": "endpoint-spec",
+              "status": "UNRESOLVED",
+              "finding": "Endpoint schema + registry entries corroborated via release-note mirrors; docs diff pending.",
+              "subject_ids": [
+                "ollama-systemone"
+              ],
+              "source_ids": [
+                "src-1"
+              ]
+            },
+            {
+              "target": "registry-entries",
+              "status": "UNRESOLVED",
+              "finding": "Nimble/Tev1 pullability stated on blog; registry entries not individually opened.",
+              "subject_ids": [
+                "ollama-systemone"
+              ],
+              "source_ids": [
+                "src-1"
+              ]
+            }
+          ],
+          "unresolved_questions": [
+            "endpoint-spec: Endpoint schema + registry entries corroborated via release-note mirrors; docs diff pending.",
+            "registry-entries: Nimble/Tev1 pullability stated on blog; registry entries not individually opened."
+          ],
+          "contradictions": []
+        }
+      }
+    },
+    {
+      "candidate_id": "candidate:2026-W40:4cc1306230500269",
+      "architecture_usage": "PRIMARY",
+      "evidence_task_id": "evidence:2026-W40:0d019479344f08a7",
+      "evidence_sha256": "249d1f236ca4a445a7d789f24e23ddf234a568e7b6ea03428e5fa3a45707844f",
+      "evidence_card": {
+        "schema_version": "2.0-rc1",
+        "issue_id": "2026-W40",
+        "evidence_task_id": "evidence:2026-W40:0d019479344f08a7",
+        "basis": {
+          "task_sha256": "adef8ef95feacead9236eafbfd8e7cac068a35dfe60419b5405c42252c6e5ddf",
+          "screening_acceptance_sha256": "4bae12edc6a17d8f43188dedd6ced9716b4ae1559ff996cc6e7d15a23d5b564f",
+          "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+          "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+        },
+        "status": "VERIFIED",
+        "entities": [
+          {
+            "canonical_name": "Cloudflare Clef decision models",
+            "canonical_url": "https://blog.cloudflare.com/clef-decision-models/",
+            "entity_id": "cloudflare-clef",
+            "entity_type": "MODEL",
+            "organization": "Cloudflare"
+          }
+        ],
+        "artifact": {
+          "primary_subject_id": "cloudflare-clef",
+          "artifact_type": "OPEN_WEIGHT",
+          "canonical_name": "Cloudflare Clef decision models",
+          "canonical_url": "https://blog.cloudflare.com/clef-decision-models/"
+        },
+        "temporal": {
+          "observed_at": "2026-10-10T07:00:00Z",
+          "events": [
+            {
+              "event_id": "event-1",
+              "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+              "event_date": "2026-10-01T15:34:02Z",
+              "subject_id": "cloudflare-clef",
+              "subject_role": "PRIMARY_SUBJECT",
+              "source_ids": [
+                "src-1"
+              ]
+            }
+          ]
+        },
+        "sources": [
+          {
+            "source_id": "src-1",
+            "url": "primary:blog.cloudflare.com/clef-decision-models/",
+            "source_class": "PRIMARY_OFFICIAL",
+            "title": "Cloudflare: Clef + Clef-flash decision models (Oct 1)",
+            "published_at": "2026-10-01T15:34:02Z",
+            "accessed_at": "2026-10-10T07:00:00Z",
+            "role": "Discovery-bounded source used for factual verification"
+          }
+        ],
+        "claims": [
+          {
+            "statement_id": "claim-1",
+            "text": "Cloudflare released Clef + Clef-flash Oct 1 (exact 15:34:02Z): first Cloudflare-trained open-source decision models on Workers AI; Apache-2.0 weights on HF; Jev-API compatible; RL fine-tuning platform (FDE now, self-serve later).",
+            "subject_id": "cloudflare-clef",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "PRIMARY_FACT",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": "Cloudflare launch blog Oct 1 + changelog mirror, full bodies read; JSON-LD datePublished 2026-10-01T15:34:02Z exact."
+          },
+          {
+            "statement_id": "claim-2",
+            "text": "Qwen torso (27B Clef / 9B flash), prefill-only pass, parallel schema-choice scoring (non-autoregressive); 64K context (vs Jev 32K); vision encoder (images) unlike text-only Jev; typed noul/choice/score + reliability scores.",
+            "subject_id": "cloudflare-clef",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "PRIMARY_FACT",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": "Vendor architecture description; base IDs cross-checked with Workers AI docs."
+          },
+          {
+            "statement_id": "claim-3",
+            "text": "Workers AI binding/REST/Gateway; $0.24 (Clef) / $0.09 (flash) per 1M input tokens, no output price; 10K neurons/day free.",
+            "subject_id": "cloudflare-clef",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "PRIMARY_FACT",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": "Vendor API/pricing description."
+          },
+          {
+            "statement_id": "claim-4",
+            "text": "Jev Decision Index lead claimed (live demo); BFCL 98.47/98.76, BANKING77 94.20, CLINC150+OOS 97.43/66.77, When2Call Jev wins 80.97; Typesafe WorkflowEvals 3/4; latency 209.3/38.8ms vs Jev 524.1ms (edge GPUs).",
+            "subject_id": "cloudflare-clef",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "VENDOR_CLAIM",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": "Vendor-run, attribution required; index is vendor-hosted."
+          },
+          {
+            "statement_id": "claim-5",
+            "text": "Oct 9 Clef-omni (30B MoE audio/video) + flash price/context changes are POST-WINDOW and must not leak into W40 figures.",
+            "subject_id": "cloudflare-clef",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": "Post-window drift guard (living changelog)."
+          }
+        ],
+        "metrics": [],
+        "limitations": [
+          {
+            "statement_id": "limitation-1",
+            "text": "Jev Decision Index is vendor-hosted, not independent reproduction.",
+            "subject_id": "cloudflare-clef",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": "Evidence boundary retained for downstream editorial use."
+          },
+          {
+            "statement_id": "limitation-2",
+            "text": "Distinct from Strands Decider 2B and Ollama interface; do not merge.",
+            "subject_id": "cloudflare-clef",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": "Evidence boundary retained for downstream editorial use."
+          },
+          {
+            "statement_id": "limitation-3",
+            "text": "RL platform is service announcement.",
+            "subject_id": "cloudflare-clef",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": "Evidence boundary retained for downstream editorial use."
+          }
+        ],
+        "verification": {
+          "targets": [
+            {
+              "target": "cloudflare-blog",
+              "status": "VERIFIED",
+              "finding": "Launch blog + changelog + docs mirrors read; release/arch/pricing/benchmarks extracted.",
+              "subject_ids": [
+                "cloudflare-clef"
+              ],
+              "source_ids": [
+                "src-1"
+              ]
+            },
+            {
+              "target": "hf-weights",
+              "status": "UNRESOLVED",
+              "finding": "HF weights pages (clef/clef-flash) existence noted; weight files not downloaded.",
+              "subject_ids": [
+                "cloudflare-clef"
+              ],
+              "source_ids": [
+                "src-1"
+              ]
+            },
+            {
+              "target": "jev-index-method",
+              "status": "UNRESOLVED",
+              "finding": "Jev Index methodology is vendor-hosted demo; independent protocol not reviewed.",
+              "subject_ids": [
+                "cloudflare-clef"
+              ],
+              "source_ids": [
+                "src-1"
+              ]
+            }
+          ],
+          "unresolved_questions": [
+            "hf-weights: HF weights pages (clef/clef-flash) existence noted; weight files not downloaded.",
+            "jev-index-method: Jev Index methodology is vendor-hosted demo; independent protocol not reviewed."
+          ],
+          "contradictions": []
+        }
+      }
+    },
+    {
+      "candidate_id": "candidate:2026-W40:4dd078cf92f1c9c9",
+      "architecture_usage": "PRIMARY",
+      "evidence_task_id": "evidence:2026-W40:deb42dbdfe9ccbc0",
+      "evidence_sha256": "ae5432bc90493f906d969240020917c61c3109f3bbaad716b3ee319f4d3e8b75",
+      "evidence_card": {
+        "schema_version": "2.0-rc1",
+        "issue_id": "2026-W40",
+        "evidence_task_id": "evidence:2026-W40:deb42dbdfe9ccbc0",
+        "basis": {
+          "task_sha256": "6fac3336224156d104d3573d3ae4f3513bc208ff5923f88d704e8c26b53f6d3e",
+          "screening_acceptance_sha256": "4bae12edc6a17d8f43188dedd6ced9716b4ae1559ff996cc6e7d15a23d5b564f",
+          "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+          "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+        },
+        "status": "VERIFIED",
+        "entities": [
+          {
+            "canonical_name": "Strands Decider 2B",
+            "canonical_url": "https://strandsagents.com/blog/introducing-strands-decider/",
+            "entity_id": "strands-decider-2b",
+            "entity_type": "MODEL",
+            "organization": "Strands (AWS)"
+          }
+        ],
+        "artifact": {
+          "primary_subject_id": "strands-decider-2b",
+          "artifact_type": "OPEN_WEIGHT",
+          "canonical_name": "Strands Decider 2B",
+          "canonical_url": "https://strandsagents.com/blog/introducing-strands-decider/"
+        },
+        "temporal": {
+          "observed_at": "2026-10-10T07:00:00Z",
+          "events": []
+        },
+        "sources": [
+          {
+            "source_id": "src-1",
+            "url": "primary:strandsagents.com/blog/introducing-strands-decider/",
+            "source_class": "PRIMARY_OFFICIAL",
+            "title": "Strands: Decider 2B v19 (Oct 1)",
+            "published_at": null,
+            "accessed_at": "2026-10-10T07:00:00Z",
+            "role": "Discovery-bounded source used for factual verification"
+          }
+        ],
+        "claims": [
+          {
+            "statement_id": "claim-1",
+            "text": "Strands Labs (AWS) released Decider 2B Oct 1 (day-only): small open-source decision model; W40 pins v19 (NOT retroactive v21/head).",
+            "subject_id": "strands-decider-2b",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "PRIMARY_FACT",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": "Strands blog Oct 1, full body read; repo/API findings via delegated retrieval with verbatim quotes + URLs."
+          },
+          {
+            "statement_id": "claim-2",
+            "text": "Qwen3.5-2B torso, LM head removed, pointer head (~1M) + r16 LoRA; single parallel pass, no text generation; typed choice/score + reliability scores.",
+            "subject_id": "strands-decider-2b",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "PRIMARY_FACT",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": "Vendor architecture description."
+          },
+          {
+            "statement_id": "claim-3",
+            "text": "JevBench public-set accuracy/calibration (3rd-of-33 2B class); ~115ms RTX3090 (~153ms M3); 100% easy tasks; trajectory/Brier charts on page.",
+            "subject_id": "strands-decider-2b",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "VENDOR_CLAIM",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": "Vendor-run, attribution required."
+          },
+          {
+            "statement_id": "claim-4",
+            "text": "License Apache-2.0 CONFIRMED (LICENSE + pyproject + Hub cardData); v19 Hub created 2026-09-30 SHA bb282d7 vs v21 2026-10-05 SHA 2b52a62; no git tags (tags API []); head main @0ac22a9 post-v21.",
+            "subject_id": "strands-decider-2b",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "PRIMARY_FACT",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": "Delegated retrieval (verbatim pyproject/LICENSE/Hub API quotes in r4 log)."
+          },
+          {
+            "statement_id": "claim-5",
+            "text": "Code github.com/strands-labs/strands-decider; weights HF StrandsAgents; training data + scripts released; CLI + Strands intervention example.",
+            "subject_id": "strands-decider-2b",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "PRIMARY_FACT",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": "Distribution statement with recheck note."
+          }
+        ],
+        "metrics": [],
+        "limitations": [
+          {
+            "statement_id": "limitation-1",
+            "text": "v19 pin needs Hub-revision discipline (head shows v1-era models).",
+            "subject_id": "strands-decider-2b",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": "Evidence boundary retained for downstream editorial use."
+          },
+          {
+            "statement_id": "limitation-2",
+            "text": "Distinct from Clef/Ollama; do not merge benchmarks/latencies/licenses.",
+            "subject_id": "strands-decider-2b",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": "Evidence boundary retained for downstream editorial use."
+          },
+          {
+            "statement_id": "limitation-3",
+            "text": "Hybrid-agent positioning is vendor guidance.",
+            "subject_id": "strands-decider-2b",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": "Evidence boundary retained for downstream editorial use."
+          }
+        ],
+        "verification": {
+          "targets": [
+            {
+              "target": "strands-blog",
+              "status": "VERIFIED",
+              "finding": "Blog fully read; release/arch/perf/distribution extracted.",
+              "subject_ids": [
+                "strands-decider-2b"
+              ],
+              "source_ids": [
+                "src-1"
+              ]
+            },
+            {
+              "target": "github-commit-v19",
+              "status": "VERIFIED",
+              "finding": "v19 Hub revision + date + SHA + no-tag finding via delegated Hub/GitHub API reads (r4 log).",
+              "subject_ids": [
+                "strands-decider-2b"
+              ],
+              "source_ids": [
+                "src-1"
+              ]
+            },
+            {
+              "target": "license-spdx",
+              "status": "VERIFIED",
+              "finding": "Apache-2.0 SPDX triple-corroborated (LICENSE + pyproject + Hub).",
+              "subject_ids": [
+                "strands-decider-2b"
+              ],
+              "source_ids": [
+                "src-1"
+              ]
+            }
+          ],
+          "unresolved_questions": [],
+          "contradictions": []
+        }
+      }
+    }
+  ],
+  "drafting_constraints": {
+    "language": "ja",
+    "raw_sources_forbidden": true,
+    "unknowns_remain_unknown": true,
+    "citation_granularity": "EVENT_CLAIM_METRIC_LIMITATION"
+  },
+  "profile_extensions": {},
+  "publication_extensions": {}
+}

@@ -1,0 +1,155 @@
+{
+ "schema_version": "2.0-rc1",
+ "issue_id": "2026-W40",
+ "evidence_task_id": "evidence:2026-W40:7609eae99dabda8b",
+ "basis": {
+  "task_sha256": "b118956f6a818c08f551150d638bd16653de1f87e4ccdd52bf63d86916742a82",
+  "screening_acceptance_sha256": "4bae12edc6a17d8f43188dedd6ced9716b4ae1559ff996cc6e7d15a23d5b564f",
+  "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+  "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+ },
+ "status": "PARTIAL",
+ "entities": [
+  {
+   "canonical_name": "AstaBrief 8B",
+   "canonical_url": "https://allenai.org/blog/astabrief",
+   "entity_id": "ai2-astabrief-8b",
+   "entity_type": "MODEL",
+   "organization": "Ai2"
+  }
+ ],
+ "artifact": {
+  "primary_subject_id": "ai2-astabrief-8b",
+  "artifact_type": "OPEN_WEIGHT",
+  "canonical_name": "AstaBrief 8B",
+  "canonical_url": "https://allenai.org/blog/astabrief"
+ },
+ "temporal": {
+  "observed_at": "2026-10-10T06:30:00Z",
+  "events": []
+ },
+ "sources": [
+  {
+   "source_id": "src-1",
+   "url": "primary:allenai.org/blog/astabrief",
+   "source_class": "PRIMARY_OFFICIAL",
+   "title": "Ai2: AstaBrief 8B (Oct 2, TIME_UNRESOLVED)",
+   "published_at": null,
+   "accessed_at": "2026-10-10T06:30:00Z",
+   "role": "Discovery-bounded source used for factual verification"
+  }
+ ],
+ "claims": [
+  {
+   "statement_id": "claim-1",
+   "text": "Ai2 open-sourced AstaBrief 8B Oct 2 (DAY-ONLY, no clock time): Qwen3-8B-based cited-report model (SFT 47K + DPO 6K, citation-density filtering, one-pass generation); Fast mode in Asta (51.1s vs 178.5s Thinking, ~3.5x); weights + training data + ScholarQA-lite workflow open.",
+   "subject_id": "ai2-astabrief-8b",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "PRIMARY_FACT",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Ai2 + HF blogs Oct 2, full bodies read (r2); HF card re-read via delegated retrieval."
+  },
+  {
+   "statement_id": "claim-2",
+   "text": "License Apache-2.0 CONFIRMED (card header + body text); eval ScholarQA-CS2 test: AstaBrief-8B 87/90.2/89/90.5/78.2 vs SFT 83.7 vs Qwen3-8B 77.3; second table SQA-Dev/Test + DeepScholarBench + win-rates.",
+   "subject_id": "ai2-astabrief-8b",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "PRIMARY_FACT",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Card-verified (delegated verbatim quotes)."
+  },
+  {
+   "statement_id": "claim-3",
+   "text": "2025-era comparison baselines (NOT vs-today-frontier); 374-user Fast-mode usage (29.1% 2+ days, 84.2% positive); citation-density filter lesson.",
+   "subject_id": "ai2-astabrief-8b",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "VENDOR_CLAIM",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Page-stated scope (2025-era baselines; scope-preservation caveats)."
+  },
+  {
+   "statement_id": "claim-4",
+   "text": "NO exact time evidenced (both pages + third-party reports day-only) -> TIME_UNRESOLVED HOLD; never auto-classify ordinary.",
+   "subject_id": "ai2-astabrief-8b",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "INFERENCE",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Temporal gate."
+  }
+ ],
+ "metrics": [],
+ "limitations": [
+  {
+   "statement_id": "limitation-1",
+   "text": "Exact Oct 2 publication time unproven vs 22:00Z cutoff.",
+   "subject_id": "ai2-astabrief-8b",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "INFERENCE",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Evidence boundary retained for downstream editorial use."
+  },
+  {
+   "statement_id": "limitation-2",
+   "text": "Repo SPDX file not directly opened (card text only).",
+   "subject_id": "ai2-astabrief-8b",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "INFERENCE",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Evidence boundary retained for downstream editorial use."
+  },
+  {
+   "statement_id": "limitation-3",
+   "text": "2025-era baselines; scope-drift caveats.",
+   "subject_id": "ai2-astabrief-8b",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "INFERENCE",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Evidence boundary retained for downstream editorial use."
+  }
+ ],
+ "verification": {
+  "targets": [
+   {
+    "target": "astabrief-timestamp",
+    "status": "UNRESOLVED",
+    "finding": "Substance (model/data/eval/license-card) verified; timestamp still day-only across all sources.",
+    "subject_ids": [
+     "ai2-astabrief-8b"
+    ],
+    "source_ids": [
+     "src-1"
+    ]
+   },
+   {
+    "target": "license-spdx",
+    "status": "UNRESOLVED",
+    "finding": "Apache-2.0 card text + eval tables confirmed; repo LICENSE file pin pending.",
+    "subject_ids": [
+     "ai2-astabrief-8b"
+    ],
+    "source_ids": [
+     "src-1"
+    ]
+   }
+  ],
+  "unresolved_questions": [
+   "astabrief-timestamp: Substance (model/data/eval/license-card) verified; timestamp still day-only across all sources.",
+   "license-spdx: Apache-2.0 card text + eval tables confirmed; repo LICENSE file pin pending."
+  ],
+  "contradictions": []
+ }
+}

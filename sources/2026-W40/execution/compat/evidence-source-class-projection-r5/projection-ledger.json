@@ -1,0 +1,429 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W40",
+  "status": "PROPOSED_NOT_ACCEPTED",
+  "projection_map": {
+    "PRIMARY_RESEARCH_ABSTRACT": "PRIMARY_PAPER",
+    "EVALUATOR_PUBLISHER": "PRIMARY_OFFICIAL"
+  },
+  "role_notes": {
+    "PRIMARY_RESEARCH_ABSTRACT": "arXiv-submission role; abstract-only depth until full paper consumed",
+    "EVALUATOR_PUBLISHER": "first-party evaluator/publisher of its own benchmark report; not model vendor; not independent reproduction"
+  },
+  "rule_id_prefix": "W40MAP",
+  "reproduced_failures": [
+    {
+      "discovery_id": "w40-prewindow-lift-20260925",
+      "evidence_task_id": "evidence:2026-W40:f9e39d3c5b209f14",
+      "error": "unsupported source_type for Evidence authority: 'PRIMARY_RESEARCH_ABSTRACT'"
+    },
+    {
+      "discovery_id": "w40-primary-aa-agentperf-20260929",
+      "evidence_task_id": "evidence:2026-W40:6b710e391126f2cd",
+      "error": "unsupported source_type for Evidence authority: 'EVALUATOR_PUBLISHER'"
+    },
+    {
+      "discovery_id": "w40-primary-contextlms-20260929",
+      "evidence_task_id": "evidence:2026-W40:8d261dee1d3bdf14",
+      "error": "unsupported source_type for Evidence authority: 'PRIMARY_RESEARCH_ABSTRACT'"
+    }
+  ],
+  "negative_test": {
+    "injected_type": "BOGUS_UNREVIEWED_TYPE",
+    "result": "FAIL_CLOSED_PASS",
+    "error": "unsupported source_type for Evidence authority: 'BOGUS_UNREVIEWED_TYPE'"
+  },
+  "reproducibility": "DOUBLE_BUILD_IDENTICAL_PASS",
+  "compat_package_path": "sources/2026-W40/execution/compat/evidence-source-class-projection-r5/compat-package/package.json",
+  "compat_package_sha256": "0be7e105fa7d57cf4345969881dbde3f8762f5b72dfb6714be22af2379557c76",
+  "task_count": 35,
+  "projected_count": 3,
+  "passthrough_count": 32,
+  "rows": [
+    {
+      "discovery_id": "w40-carryover-pixelcanary-20261009",
+      "evidence_task_id": "evidence:2026-W40:9080e3d393932351",
+      "original_source_type": "SECONDARY",
+      "projected_source_type": "SECONDARY",
+      "original_task_sha256": "94d92453609f81f7f5de722468a4cc3b8ee8391175c3f8ab2b292da014f6a94a",
+      "projected_task_sha256": "94d92453609f81f7f5de722468a4cc3b8ee8391175c3f8ab2b292da014f6a94a",
+      "locator": "carryover:2026-W39-candidate-selection-hold",
+      "projection_rule": "W40MAP:passthrough",
+      "role_note": "natively supported frozen Core class"
+    },
+    {
+      "discovery_id": "w40-carryover-tbc-video-20261009",
+      "evidence_task_id": "evidence:2026-W40:8d69810add1c0b33",
+      "original_source_type": "SECONDARY",
+      "projected_source_type": "SECONDARY",
+      "original_task_sha256": "530a58fb8a7875d94339ffbbdab6fae72a42e7247baec886ba4f95c5cb4ee7b2",
+      "projected_task_sha256": "530a58fb8a7875d94339ffbbdab6fae72a42e7247baec886ba4f95c5cb4ee7b2",
+      "locator": "carryover:2026-W39-candidate-selection-hold",
+      "projection_rule": "W40MAP:passthrough",
+      "role_note": "natively supported frozen Core class"
+    },
+    {
+      "discovery_id": "w40-grok-x-ledger-20261009",
+      "evidence_task_id": "evidence:2026-W40:29dac8f036319411",
+      "original_source_type": "x-community-signal",
+      "projected_source_type": "x-community-signal",
+      "original_task_sha256": "beab521d350cd3e9e146422c8b92505b7e059201a366f08315a9a9092866ea35",
+      "projected_task_sha256": "beab521d350cd3e9e146422c8b92505b7e059201a366f08315a9a9092866ea35",
+      "locator": "grok-task:weekly-x-2026-W40",
+      "projection_rule": "W40MAP:passthrough",
+      "role_note": "natively supported frozen Core class"
+    },
+    {
+      "discovery_id": "w40-hold-astabrief-20261002",
+      "evidence_task_id": "evidence:2026-W40:7609eae99dabda8b",
+      "original_source_type": "PRIMARY_OFFICIAL",
+      "projected_source_type": "PRIMARY_OFFICIAL",
+      "original_task_sha256": "b118956f6a818c08f551150d638bd16653de1f87e4ccdd52bf63d86916742a82",
+      "projected_task_sha256": "b118956f6a818c08f551150d638bd16653de1f87e4ccdd52bf63d86916742a82",
+      "locator": "primary:allenai.org/blog/astabrief",
+      "projection_rule": "W40MAP:passthrough",
+      "role_note": "natively supported frozen Core class"
+    },
+    {
+      "discovery_id": "w40-hold-autosynthdata-20261002",
+      "evidence_task_id": "evidence:2026-W40:ba72657afb68a868",
+      "original_source_type": "PRIMARY_OFFICIAL",
+      "projected_source_type": "PRIMARY_OFFICIAL",
+      "original_task_sha256": "779fd49facc8500c26a4f7d3f1cf6bb3a57ac8a7646207a4e3f16e1af70f682d",
+      "projected_task_sha256": "779fd49facc8500c26a4f7d3f1cf6bb3a57ac8a7646207a4e3f16e1af70f682d",
+      "locator": "primary:huggingface.co/blog/ServiceNow-AI/autosynthdata",
+      "projection_rule": "W40MAP:passthrough",
+      "role_note": "natively supported frozen Core class"
+    },
+    {
+      "discovery_id": "w40-hold-dgxspark64-20261002",
+      "evidence_task_id": "evidence:2026-W40:4eddb6eea3df05f9",
+      "original_source_type": "PRIMARY_OFFICIAL",
+      "projected_source_type": "PRIMARY_OFFICIAL",
+      "original_task_sha256": "ff5a632af37b63818c96ed513f2c870b67c417bf7078e62b29441ad0bc1614b5",
+      "projected_task_sha256": "ff5a632af37b63818c96ed513f2c870b67c417bf7078e62b29441ad0bc1614b5",
+      "locator": "primary:blogs.nvidia.com/blog/local-ai-dgx-spark-64gb-sync/",
+      "projection_rule": "W40MAP:passthrough",
+      "role_note": "natively supported frozen Core class"
+    },
+    {
+      "discovery_id": "w40-prewindow-lift-20260925",
+      "evidence_task_id": "evidence:2026-W40:f9e39d3c5b209f14",
+      "original_source_type": "PRIMARY_RESEARCH_ABSTRACT",
+      "projected_source_type": "PRIMARY_PAPER",
+      "original_task_sha256": "9276f5a3490bf9fadbcaf021d0ad3564f203a617b8298dc58030629fe4c1b028",
+      "projected_task_sha256": "0e15757456622dcd07723603c0d1694f8e39e3a7f94bcdf341dc8b938075f7cd",
+      "locator": "primary:arxiv.org/abs/2609.31140",
+      "projection_rule": "W40MAP:PRIMARY_RESEARCH_ABSTRACT->PRIMARY_PAPER",
+      "role_note": "arXiv-submission role; abstract-only depth until full paper consumed"
+    },
+    {
+      "discovery_id": "w40-primary-aa-agentperf-20260929",
+      "evidence_task_id": "evidence:2026-W40:6b710e391126f2cd",
+      "original_source_type": "EVALUATOR_PUBLISHER",
+      "projected_source_type": "PRIMARY_OFFICIAL",
+      "original_task_sha256": "52585ecd934d8782b70ab208f46adc60ccfe87c7198b69b9e730de3cf9478d72",
+      "projected_task_sha256": "c8299fc8124e74bc8d35f4220916f2dee260f08be1accaf09375296847a327ea",
+      "locator": "primary:artificialanalysis.ai/articles/aa-agentperf-local",
+      "projection_rule": "W40MAP:EVALUATOR_PUBLISHER->PRIMARY_OFFICIAL",
+      "role_note": "first-party evaluator/publisher of its own benchmark report; not model vendor; not independent reproduction"
+    },
+    {
+      "discovery_id": "w40-primary-agentsapi-computeruse-20260929",
+      "evidence_task_id": "evidence:2026-W40:428445019d4e2fe4",
+      "original_source_type": "PRIMARY_OFFICIAL",
+      "projected_source_type": "PRIMARY_OFFICIAL",
+      "original_task_sha256": "21e2a1457086d82c3f4f780be3db99eb62098f14b568be7a93d74103b0548c7a",
+      "projected_task_sha256": "21e2a1457086d82c3f4f780be3db99eb62098f14b568be7a93d74103b0548c7a",
+      "locator": "primary:developers.openai.com/api/docs/changelog",
+      "projection_rule": "W40MAP:passthrough",
+      "role_note": "natively supported frozen Core class"
+    },
+    {
+      "discovery_id": "w40-primary-amd-ross-20260930",
+      "evidence_task_id": "evidence:2026-W40:3213a9ac3e7ed228",
+      "original_source_type": "PRIMARY_OFFICIAL",
+      "projected_source_type": "PRIMARY_OFFICIAL",
+      "original_task_sha256": "29bb51fc36639bd02d549a47efa4860b34cca9f135bab44be40ff58f8ffb4dce",
+      "projected_task_sha256": "29bb51fc36639bd02d549a47efa4860b34cca9f135bab44be40ff58f8ffb4dce",
+      "locator": "primary:newsroom.amd.com/news/amd-ross-agentic-ai-embedded-design-development/",
+      "projection_rule": "W40MAP:passthrough",
+      "role_note": "natively supported frozen Core class"
+    },
+    {
+      "discovery_id": "w40-primary-amd-worldlabs-20260928",
+      "evidence_task_id": "evidence:2026-W40:f099ee5308bad7a6",
+      "original_source_type": "PRIMARY_OFFICIAL",
+      "projected_source_type": "PRIMARY_OFFICIAL",
+      "original_task_sha256": "970c6f794cce06b42965ab4c47b0f21c6b6c4fbc5086013a226c43af95eddce5",
+      "projected_task_sha256": "970c6f794cce06b42965ab4c47b0f21c6b6c4fbc5086013a226c43af95eddce5",
+      "locator": "primary:newsroom.amd.com/news/amd-acquire-world-labs/",
+      "projection_rule": "W40MAP:passthrough",
+      "role_note": "natively supported frozen Core class"
+    },
+    {
+      "discovery_id": "w40-primary-cloudflare-aisearch-20261001",
+      "evidence_task_id": "evidence:2026-W40:80686014421684fc",
+      "original_source_type": "PRIMARY_OFFICIAL",
+      "projected_source_type": "PRIMARY_OFFICIAL",
+      "original_task_sha256": "06268ff3523cd3295f2c6dcd48a4f67607e687807dfc8676b6684642f6880fbf",
+      "projected_task_sha256": "06268ff3523cd3295f2c6dcd48a4f67607e687807dfc8676b6684642f6880fbf",
+      "locator": "primary:developers.cloudflare.com/changelog/post/2026-10-01-ai-search-generally-available/",
+      "projection_rule": "W40MAP:passthrough",
+      "role_note": "natively supported frozen Core class"
+    },
+    {
+      "discovery_id": "w40-primary-cloudflare-clef-20261001",
+      "evidence_task_id": "evidence:2026-W40:0d019479344f08a7",
+      "original_source_type": "PRIMARY_OFFICIAL",
+      "projected_source_type": "PRIMARY_OFFICIAL",
+      "original_task_sha256": "adef8ef95feacead9236eafbfd8e7cac068a35dfe60419b5405c42252c6e5ddf",
+      "projected_task_sha256": "adef8ef95feacead9236eafbfd8e7cac068a35dfe60419b5405c42252c6e5ddf",
+      "locator": "primary:blog.cloudflare.com/clef-decision-models/",
+      "projection_rule": "W40MAP:passthrough",
+      "role_note": "natively supported frozen Core class"
+    },
+    {
+      "discovery_id": "w40-primary-cloudflare-mcpauth-20261001",
+      "evidence_task_id": "evidence:2026-W40:935a8e487fd40c65",
+      "original_source_type": "PRIMARY_OFFICIAL",
+      "projected_source_type": "PRIMARY_OFFICIAL",
+      "original_task_sha256": "e2af0909c3159a228c2390097341c0fb76c00c2d820332d569aed67c0d5686a4",
+      "projected_task_sha256": "e2af0909c3159a228c2390097341c0fb76c00c2d820332d569aed67c0d5686a4",
+      "locator": "primary:developers.cloudflare.com/changelog/product-group/developer-platform/",
+      "projection_rule": "W40MAP:passthrough",
+      "role_note": "natively supported frozen Core class"
+    },
+    {
+      "discovery_id": "w40-primary-contextlms-20260929",
+      "evidence_task_id": "evidence:2026-W40:8d261dee1d3bdf14",
+      "original_source_type": "PRIMARY_RESEARCH_ABSTRACT",
+      "projected_source_type": "PRIMARY_PAPER",
+      "original_task_sha256": "c1d1027c27baba3672d6dba9495f0758acd9769d8a4bebfb1b91d138635466fd",
+      "projected_task_sha256": "07091638d9d66a94449cf6edcf00dff4cf9e14a5b769bf71438dfd695ce66332",
+      "locator": "primary:arxiv.org/abs/2609.37725",
+      "projection_rule": "W40MAP:PRIMARY_RESEARCH_ABSTRACT->PRIMARY_PAPER",
+      "role_note": "arXiv-submission role; abstract-only depth until full paper consumed"
+    },
+    {
+      "discovery_id": "w40-primary-flux3-image-20261001",
+      "evidence_task_id": "evidence:2026-W40:3dd6b99c23ef4a97",
+      "original_source_type": "PRIMARY_OFFICIAL",
+      "projected_source_type": "PRIMARY_OFFICIAL",
+      "original_task_sha256": "6c721bec47ec1d160e144b0c8215e4d377219ac19f793a888e3e82161f53387d",
+      "projected_task_sha256": "6c721bec47ec1d160e144b0c8215e4d377219ac19f793a888e3e82161f53387d",
+      "locator": "primary:bfl.ai/models/flux-3-image",
+      "projection_rule": "W40MAP:passthrough",
+      "role_note": "natively supported frozen Core class"
+    },
+    {
+      "discovery_id": "w40-primary-gemini-argon-20260930",
+      "evidence_task_id": "evidence:2026-W40:338e56bfab8f03a7",
+      "original_source_type": "PRIMARY_OFFICIAL",
+      "projected_source_type": "PRIMARY_OFFICIAL",
+      "original_task_sha256": "3845f198869da3e94a92df90302c957aada74af32063ab26c46a5149ef7e7fc2",
+      "projected_task_sha256": "3845f198869da3e94a92df90302c957aada74af32063ab26c46a5149ef7e7fc2",
+      "locator": "primary:blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-4-argon/",
+      "projection_rule": "W40MAP:passthrough",
+      "role_note": "natively supported frozen Core class"
+    },
+    {
+      "discovery_id": "w40-primary-gpt61-sol-20260929",
+      "evidence_task_id": "evidence:2026-W40:cfe89a2833c13d94",
+      "original_source_type": "PRIMARY_OFFICIAL",
+      "projected_source_type": "PRIMARY_OFFICIAL",
+      "original_task_sha256": "9b5cd7eb5b392eb969b66a68d5f641f48f98a3adf3cbc3fbf075fc067671dde3",
+      "projected_task_sha256": "9b5cd7eb5b392eb969b66a68d5f641f48f98a3adf3cbc3fbf075fc067671dde3",
+      "locator": "primary:openai.com/index/introducing-gpt-6-1-sol/",
+      "projection_rule": "W40MAP:passthrough",
+      "role_note": "natively supported frozen Core class"
+    },
+    {
+      "discovery_id": "w40-primary-hf-rl-environments-20260928",
+      "evidence_task_id": "evidence:2026-W40:5d98661975a7fd04",
+      "original_source_type": "PRIMARY_OFFICIAL",
+      "projected_source_type": "PRIMARY_OFFICIAL",
+      "original_task_sha256": "fdc9b14f496d6305c0e4f6d2fa89b39da6ef63aeffb93afdff0088a6b7f13742",
+      "projected_task_sha256": "fdc9b14f496d6305c0e4f6d2fa89b39da6ef63aeffb93afdff0088a6b7f13742",
+      "locator": "primary:huggingface.co/blog/rl-environments",
+      "projection_rule": "W40MAP:passthrough",
+      "role_note": "natively supported frozen Core class"
+    },
+    {
+      "discovery_id": "w40-primary-holo4-20260928",
+      "evidence_task_id": "evidence:2026-W40:86a1124feba9733b",
+      "original_source_type": "PRIMARY_OFFICIAL",
+      "projected_source_type": "PRIMARY_OFFICIAL",
+      "original_task_sha256": "7b917012f4a6f31309d15b4a34338a76cdcabaabf7b94be1c7547a9a3701ed2b",
+      "projected_task_sha256": "7b917012f4a6f31309d15b4a34338a76cdcabaabf7b94be1c7547a9a3701ed2b",
+      "locator": "primary:hcompany.ai/newsroom/holo4",
+      "projection_rule": "W40MAP:passthrough",
+      "role_note": "natively supported frozen Core class"
+    },
+    {
+      "discovery_id": "w40-primary-nemorelay-20260930",
+      "evidence_task_id": "evidence:2026-W40:8fc7a0570317c9d0",
+      "original_source_type": "PRIMARY_OFFICIAL",
+      "projected_source_type": "PRIMARY_OFFICIAL",
+      "original_task_sha256": "c0d42119744529b451eb85b42b03ac346b76e3c84815b8cc1172b1b8ea2c903d",
+      "projected_task_sha256": "c0d42119744529b451eb85b42b03ac346b76e3c84815b8cc1172b1b8ea2c903d",
+      "locator": "primary:developer.nvidia.com/blog/tracing-agent-harness-behavior-with-nvidia-nemo-relay/",
+      "projection_rule": "W40MAP:passthrough",
+      "role_note": "natively supported frozen Core class"
+    },
+    {
+      "discovery_id": "w40-primary-nemotron-asr-20260930",
+      "evidence_task_id": "evidence:2026-W40:36b791f0787e8ea4",
+      "original_source_type": "PRIMARY_OFFICIAL",
+      "projected_source_type": "PRIMARY_OFFICIAL",
+      "original_task_sha256": "1c66b106ddb8bfa50f662a960f0162795effa04ec024219f079dd08c68f30a5d",
+      "projected_task_sha256": "1c66b106ddb8bfa50f662a960f0162795effa04ec024219f079dd08c68f30a5d",
+      "locator": "primary:developer.nvidia.com/blog/?p=122986",
+      "projection_rule": "W40MAP:passthrough",
+      "role_note": "natively supported frozen Core class"
+    },
+    {
+      "discovery_id": "w40-primary-nvidia-agentsafety-20260928",
+      "evidence_task_id": "evidence:2026-W40:21954ab4f27c6ba5",
+      "original_source_type": "PRIMARY_OFFICIAL",
+      "projected_source_type": "PRIMARY_OFFICIAL",
+      "original_task_sha256": "bdbb06fe3dc8fcf6275616f089cb43f7ad98f9ba76f640df9a14c991a5179fea",
+      "projected_task_sha256": "bdbb06fe3dc8fcf6275616f089cb43f7ad98f9ba76f640df9a14c991a5179fea",
+      "locator": "primary:nvidianews.nvidia.com/news/open-agent-safety-platform",
+      "projection_rule": "W40MAP:passthrough",
+      "role_note": "natively supported frozen Core class"
+    },
+    {
+      "discovery_id": "w40-primary-ollama-jev-20260929",
+      "evidence_task_id": "evidence:2026-W40:001e26a678b9c4fe",
+      "original_source_type": "PRIMARY_OFFICIAL",
+      "projected_source_type": "PRIMARY_OFFICIAL",
+      "original_task_sha256": "035ed18b5a4a81723855ae62f0688a248788e461fbbd5097b86e1129823a8173",
+      "projected_task_sha256": "035ed18b5a4a81723855ae62f0688a248788e461fbbd5097b86e1129823a8173",
+      "locator": "primary:ollama.com/blog/ollama-now-supports-jev-style-decision-models",
+      "projection_rule": "W40MAP:passthrough",
+      "role_note": "natively supported frozen Core class"
+    },
+    {
+      "discovery_id": "w40-primary-olmocore3-20261001",
+      "evidence_task_id": "evidence:2026-W40:3d0bd53e29394b6b",
+      "original_source_type": "PRIMARY_OFFICIAL",
+      "projected_source_type": "PRIMARY_OFFICIAL",
+      "original_task_sha256": "89c752549375c04c2491bb763af48524ae1710b3e78cc7ab2d425c2c9cc6fbe8",
+      "projected_task_sha256": "89c752549375c04c2491bb763af48524ae1710b3e78cc7ab2d425c2c9cc6fbe8",
+      "locator": "primary:allenai.org/blog/olmocore3",
+      "projection_rule": "W40MAP:passthrough",
+      "role_note": "natively supported frozen Core class"
+    },
+    {
+      "discovery_id": "w40-primary-openai-devday-20260929",
+      "evidence_task_id": "evidence:2026-W40:230bf6cba1ec1813",
+      "original_source_type": "PRIMARY_OFFICIAL",
+      "projected_source_type": "PRIMARY_OFFICIAL",
+      "original_task_sha256": "131bdac6349583f25936d754a32fc1d5a53ee18553ba01d897e4c57497d51ed5",
+      "projected_task_sha256": "131bdac6349583f25936d754a32fc1d5a53ee18553ba01d897e4c57497d51ed5",
+      "locator": "primary:openai.com/index/devday-2026-recap/",
+      "projection_rule": "W40MAP:passthrough",
+      "role_note": "natively supported frozen Core class"
+    },
+    {
+      "discovery_id": "w40-primary-openai-dots-20260929",
+      "evidence_task_id": "evidence:2026-W40:517f3c71e715bebc",
+      "original_source_type": "PRIMARY_OFFICIAL",
+      "projected_source_type": "PRIMARY_OFFICIAL",
+      "original_task_sha256": "25ecfe8c46af2926a6d6c7320e431b84bc1a70026fa345fe66316d2960b849fd",
+      "projected_task_sha256": "25ecfe8c46af2926a6d6c7320e431b84bc1a70026fa345fe66316d2960b849fd",
+      "locator": "primary:openai.com/index/introducing-dots/",
+      "projection_rule": "W40MAP:passthrough",
+      "role_note": "natively supported frozen Core class"
+    },
+    {
+      "discovery_id": "w40-primary-openai-safetycases-20260928",
+      "evidence_task_id": "evidence:2026-W40:5ed61d365ba08f32",
+      "original_source_type": "PRIMARY_OFFICIAL",
+      "projected_source_type": "PRIMARY_OFFICIAL",
+      "original_task_sha256": "639355638c0acd9fb066dc490b6e83bc79b15a3f492f5ea09face3d05c2397ae",
+      "projected_task_sha256": "639355638c0acd9fb066dc490b6e83bc79b15a3f492f5ea09face3d05c2397ae",
+      "locator": "primary:openai.com/index/towards-safety-cases-for-frontier-ai-training/",
+      "projection_rule": "W40MAP:passthrough",
+      "role_note": "natively supported frozen Core class"
+    },
+    {
+      "discovery_id": "w40-primary-opentts-20260930",
+      "evidence_task_id": "evidence:2026-W40:35982cdbdced5526",
+      "original_source_type": "PRIMARY_OFFICIAL",
+      "projected_source_type": "PRIMARY_OFFICIAL",
+      "original_task_sha256": "e6fa080b739e2e7d2882ad1880a5eb0fba42f2a0bc82633314cdaa16617557da",
+      "projected_task_sha256": "e6fa080b739e2e7d2882ad1880a5eb0fba42f2a0bc82633314cdaa16617557da",
+      "locator": "primary:huggingface.co/blog/open-tts-leaderboard",
+      "projection_rule": "W40MAP:passthrough",
+      "role_note": "natively supported frozen Core class"
+    },
+    {
+      "discovery_id": "w40-primary-provenanceguard-20260929",
+      "evidence_task_id": "evidence:2026-W40:8c75a77f0becb78b",
+      "original_source_type": "PRIMARY_OFFICIAL",
+      "projected_source_type": "PRIMARY_OFFICIAL",
+      "original_task_sha256": "fa18ee70efdb7ed3b282a5db02de28d4dee2500d54f3863011bfac31ced0ab6b",
+      "projected_task_sha256": "fa18ee70efdb7ed3b282a5db02de28d4dee2500d54f3863011bfac31ced0ab6b",
+      "locator": "primary:huggingface.co/blog/MultiverseComputingCAI/getting-the-source-right-not-just-the-fact-source",
+      "projection_rule": "W40MAP:passthrough",
+      "role_note": "natively supported frozen Core class"
+    },
+    {
+      "discovery_id": "w40-primary-sonnet55-20260928",
+      "evidence_task_id": "evidence:2026-W40:c857f1e0e0655f20",
+      "original_source_type": "PRIMARY_OFFICIAL",
+      "projected_source_type": "PRIMARY_OFFICIAL",
+      "original_task_sha256": "b58f9890f14260baee27e21b45dda73ee32ff32d5d6410d5faa8948a3ebc7b0d",
+      "projected_task_sha256": "b58f9890f14260baee27e21b45dda73ee32ff32d5d6410d5faa8948a3ebc7b0d",
+      "locator": "primary:anthropic.com/claude-sonnet-5-5",
+      "projection_rule": "W40MAP:passthrough",
+      "role_note": "natively supported frozen Core class"
+    },
+    {
+      "discovery_id": "w40-primary-strands-decider-20261001",
+      "evidence_task_id": "evidence:2026-W40:deb42dbdfe9ccbc0",
+      "original_source_type": "PRIMARY_OFFICIAL",
+      "projected_source_type": "PRIMARY_OFFICIAL",
+      "original_task_sha256": "6fac3336224156d104d3573d3ae4f3513bc208ff5923f88d704e8c26b53f6d3e",
+      "projected_task_sha256": "6fac3336224156d104d3573d3ae4f3513bc208ff5923f88d704e8c26b53f6d3e",
+      "locator": "primary:strandsagents.com/blog/introducing-strands-decider/",
+      "projection_rule": "W40MAP:passthrough",
+      "role_note": "natively supported frozen Core class"
+    },
+    {
+      "discovery_id": "w40-primary-synthid-bio-20260930",
+      "evidence_task_id": "evidence:2026-W40:a624197faacfec60",
+      "original_source_type": "PRIMARY_OFFICIAL",
+      "projected_source_type": "PRIMARY_OFFICIAL",
+      "original_task_sha256": "e009be5d2bc6122bd58a0a173c30f039a0b0ef3bd00520b8adce4a34c3e39853",
+      "projected_task_sha256": "e009be5d2bc6122bd58a0a173c30f039a0b0ef3bd00520b8adce4a34c3e39853",
+      "locator": "primary:deepmind.google/blog/introducing-synthid-bio/",
+      "projection_rule": "W40MAP:passthrough",
+      "role_note": "natively supported frozen Core class"
+    },
+    {
+      "discovery_id": "w40-primary-vss33-20260929",
+      "evidence_task_id": "evidence:2026-W40:62e6328a3c70a007",
+      "original_source_type": "PRIMARY_OFFICIAL",
+      "projected_source_type": "PRIMARY_OFFICIAL",
+      "original_task_sha256": "c35917c2ad2b8086aeead53658f88dedc1cb59f019a7de33781c62cb53dd4bc4",
+      "projected_task_sha256": "c35917c2ad2b8086aeead53658f88dedc1cb59f019a7de33781c62cb53dd4bc4",
+      "locator": "primary:developer.nvidia.com/blog/lower-the-cost-of-building-and-running-visual-ai-agents-with-nvidia-vss-blueprint-3-3/",
+      "projection_rule": "W40MAP:passthrough",
+      "role_note": "natively supported frozen Core class"
+    },
+    {
+      "discovery_id": "w40-weak-elyza-20261002",
+      "evidence_task_id": "evidence:2026-W40:66aacc54064b63d6",
+      "original_source_type": "SECONDARY",
+      "projected_source_type": "SECONDARY",
+      "original_task_sha256": "d255b1e76c80b55196794655822de5db5128fc4830f43fbcc87da668404ced17",
+      "projected_task_sha256": "d255b1e76c80b55196794655822de5db5128fc4830f43fbcc87da668404ced17",
+      "locator": "secondary:huggingface.co/elyza/ELYZA-Thinking-1.0-llm-jp-4-32b-a3b",
+      "projection_rule": "W40MAP:passthrough",
+      "role_note": "natively supported frozen Core class"
+    }
+  ]
+}

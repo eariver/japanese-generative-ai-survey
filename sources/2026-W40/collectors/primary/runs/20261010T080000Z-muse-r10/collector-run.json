@@ -1,0 +1,57 @@
+{
+  "schema_version": "1.0",
+  "issue_id": "2026-W40",
+  "run_id": "w40-primary-20261010-muse-r10",
+  "stage": "official-source-discovery",
+  "collector": {
+    "id": "primary-webfetch",
+    "provider": "muse-webfetch+curl",
+    "model": null,
+    "prompt_id": null,
+    "prompt_version": null,
+    "prompt_hash": null
+  },
+  "time": {
+    "started_at": "2026-10-10T08:54:32Z",
+    "completed_at": "2026-10-10T09:10:00Z",
+    "observed_at": "2026-10-10T08:54:32Z",
+    "collection_window_start": "2026-09-25T22:00:00Z",
+    "collection_window_end": "2026-10-02T22:00:00Z",
+    "editorial_cutoff": "2026-10-02T22:00:00Z"
+  },
+  "inputs": [
+    "sources/2026-W40/execution/instructions/2026-10-10_muse-w40-selection-audit-bounded-revision-r10.md"
+  ],
+  "outputs": [
+    {
+      "path": "sources/2026-W40/collectors/primary/runs/20261010T080000Z-muse-r10/e01-consumption-r10.md",
+      "sha256": "0407f8a85cea35612020e925331fca3c97e309d30a5ef4f19c2858d7890b9eca",
+      "bytes": 5480
+    },
+    {
+      "path": "sources/2026-W40/collectors/primary/runs/20261010T080000Z-muse-r10/mcpauth-readme.source-excerpt.md",
+      "sha256": "0b42790d4758e9fbcc0d585b99acd901b33b6c431f56502d4d1c6141ac81ca70",
+      "bytes": 2007
+    },
+    {
+      "path": "sources/2026-W40/collectors/primary/runs/20261010T080000Z-muse-r10/olmocore3-report-body.source-excerpt.md",
+      "sha256": "6f03a17a1dac23827066185b42c6c40e4f4238601de5655ea57c75591c71afef",
+      "bytes": 2720
+    },
+    {
+      "path": "sources/2026-W40/collectors/primary/runs/20261010T080000Z-muse-r10/time-investigation-r10.md",
+      "sha256": "a0efdbcbf056eeac872374596bfd761e9928b7e0adfb5665ee11e942c39c08d1",
+      "bytes": 4056
+    }
+  ],
+  "tool_access": [
+    "webfetch",
+    "websearch",
+    "curl"
+  ],
+  "status": "partial",
+  "notes": [
+    "T01/N01: 4 Oct-2 time investigations (first-party RSS/Atom + page JSON-LD; Clef RSS-vs-actual control); all HOLD/unadmitted preserved, no scope change.",
+    "E01: Olmo report PDF text extracted (570KB) + CLM/Guard ar5iv tails + CLM repo README + MCP Auth README + FLUX weights negative check; bounded excerpts, no reintake."
+  ]
+}

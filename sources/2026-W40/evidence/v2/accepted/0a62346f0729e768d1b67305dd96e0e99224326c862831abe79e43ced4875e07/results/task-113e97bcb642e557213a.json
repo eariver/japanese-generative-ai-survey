@@ -1,0 +1,155 @@
+{
+ "schema_version": "2.0-rc1",
+ "issue_id": "2026-W40",
+ "evidence_task_id": "evidence:2026-W40:35982cdbdced5526",
+ "basis": {
+  "task_sha256": "e6fa080b739e2e7d2882ad1880a5eb0fba42f2a0bc82633314cdaa16617557da",
+  "screening_acceptance_sha256": "4bae12edc6a17d8f43188dedd6ced9716b4ae1559ff996cc6e7d15a23d5b564f",
+  "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+  "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+ },
+ "status": "VERIFIED",
+ "entities": [
+  {
+   "canonical_name": "Open TTS Leaderboard",
+   "canonical_url": "https://huggingface.co/blog/open-tts-leaderboard",
+   "entity_id": "hf-open-tts-leaderboard",
+   "entity_type": "BENCHMARK",
+   "organization": "Hugging Face"
+  }
+ ],
+ "artifact": {
+  "primary_subject_id": "hf-open-tts-leaderboard",
+  "artifact_type": "BENCHMARK",
+  "canonical_name": "Open TTS Leaderboard",
+  "canonical_url": "https://huggingface.co/blog/open-tts-leaderboard"
+ },
+ "temporal": {
+  "observed_at": "2026-10-10T07:00:00Z",
+  "events": []
+ },
+ "sources": [
+  {
+   "source_id": "src-1",
+   "url": "primary:huggingface.co/blog/open-tts-leaderboard",
+   "source_class": "PRIMARY_OFFICIAL",
+   "title": "Hugging Face: Open TTS Leaderboard (Sep 30, day-only)",
+   "published_at": null,
+   "accessed_at": "2026-10-10T07:00:00Z",
+   "role": "Discovery-bounded source used for factual verification"
+  }
+ ],
+ "claims": [
+  {
+   "statement_id": "claim-1",
+   "text": "Hugging Face released Open TTS Leaderboard Sep 30 (day-only): objective multilingual + voice-cloning TTS evaluation (WER/CER via Qwen3-ASR-1.7B, RTFx/TTFA on H200 GPU/CPU, SIM via WavLM; Seed-TTS-Eval + CV3-Eval zero-shot; Spaces app + Listen tab; eval scripts repo public).",
+   "subject_id": "hf-open-tts-leaderboard",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "PRIMARY_FACT",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "HF blog Sep 30, full body read (r2)."
+  },
+  {
+   "statement_id": "claim-2",
+   "text": "English WER leaders Kokoro-82M/supertonic-3/s2-pro; multilingual OmniVoice/s2-pro/Fun-CosyVoice3; voice-clone SIM table; streaming pocket-tts; only 16/92 AA models open-weights (arena skew context).",
+   "subject_id": "hf-open-tts-leaderboard",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "PROJECT_CLAIM",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Publisher snapshots (leaders as of Sep 30)."
+  },
+  {
+   "statement_id": "claim-3",
+   "text": "Platform, NOT a new speech model; objective metrics complement but do NOT replace human MOS/MUSHRA/arena preference; WER/SIM are proxies, not naturalness.",
+   "subject_id": "hf-open-tts-leaderboard",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "PRIMARY_FACT",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Explicit disclaimer + editorial boundary."
+  }
+ ],
+ "metrics": [],
+ "limitations": [
+  {
+   "statement_id": "limitation-1",
+   "text": "Leaderboard snapshots shift; no human-preference proof.",
+   "subject_id": "hf-open-tts-leaderboard",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "INFERENCE",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Evidence boundary retained for downstream editorial use."
+  },
+  {
+   "statement_id": "limitation-2",
+   "text": "Eval scripts repo + Space app not executed.",
+   "subject_id": "hf-open-tts-leaderboard",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "INFERENCE",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Evidence boundary retained for downstream editorial use."
+  },
+  {
+   "statement_id": "limitation-3",
+   "text": "Day-only date.",
+   "subject_id": "hf-open-tts-leaderboard",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "INFERENCE",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Evidence boundary retained for downstream editorial use."
+  }
+ ],
+ "verification": {
+  "targets": [
+   {
+    "target": "hf-blog",
+    "status": "VERIFIED",
+    "finding": "HF blog fully read; metrics/datasets/leaders/disclaimer extracted.",
+    "subject_ids": [
+     "hf-open-tts-leaderboard"
+    ],
+    "source_ids": [
+     "src-1"
+    ]
+   },
+   {
+    "target": "leaderboard-space",
+    "status": "UNRESOLVED",
+    "finding": "Space app not opened.",
+    "subject_ids": [
+     "hf-open-tts-leaderboard"
+    ],
+    "source_ids": [
+     "src-1"
+    ]
+   },
+   {
+    "target": "eval-scripts",
+    "status": "UNRESOLVED",
+    "finding": "Eval scripts repo public per author comment; not fetched.",
+    "subject_ids": [
+     "hf-open-tts-leaderboard"
+    ],
+    "source_ids": [
+     "src-1"
+    ]
+   }
+  ],
+  "unresolved_questions": [
+   "leaderboard-space: Space app not opened.",
+   "eval-scripts: Eval scripts repo public per author comment; not fetched."
+  ],
+  "contradictions": []
+ }
+}

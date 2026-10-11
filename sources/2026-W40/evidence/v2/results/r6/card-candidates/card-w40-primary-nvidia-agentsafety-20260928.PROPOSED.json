@@ -1,0 +1,165 @@
+{
+ "schema_version": "2.0-rc1",
+ "issue_id": "2026-W40",
+ "evidence_task_id": "evidence:2026-W40:21954ab4f27c6ba5",
+ "basis": {
+  "task_sha256": "bdbb06fe3dc8fcf6275616f089cb43f7ad98f9ba76f640df9a14c991a5179fea",
+  "screening_acceptance_sha256": "4bae12edc6a17d8f43188dedd6ced9716b4ae1559ff996cc6e7d15a23d5b564f",
+  "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+  "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+ },
+ "status": "VERIFIED",
+ "entities": [
+  {
+   "canonical_name": "NVIDIA Open Agent Safety Platform",
+   "canonical_url": "https://nvidianews.nvidia.com/news/open-agent-safety-platform",
+   "entity_id": "nvidia-agent-safety",
+   "entity_type": "PRODUCT",
+   "organization": "NVIDIA"
+  }
+ ],
+ "artifact": {
+  "primary_subject_id": "nvidia-agent-safety",
+  "artifact_type": "PRODUCT",
+  "canonical_name": "NVIDIA Open Agent Safety Platform",
+  "canonical_url": "https://nvidianews.nvidia.com/news/open-agent-safety-platform"
+ },
+ "temporal": {
+  "observed_at": "2026-10-10T06:40:00Z",
+  "events": []
+ },
+ "sources": [
+  {
+   "source_id": "src-1",
+   "url": "primary:nvidianews.nvidia.com/news/open-agent-safety-platform",
+   "source_class": "PRIMARY_OFFICIAL",
+   "title": "NVIDIA: Open Agent Safety Platform (Sep 28)",
+   "published_at": null,
+   "accessed_at": "2026-10-10T06:40:00Z",
+   "role": "Discovery-bounded source used for factual verification"
+  }
+ ],
+ "claims": [
+  {
+   "statement_id": "claim-1",
+   "text": "NVIDIA announced Open Agent Safety Platform Sep 28, 2026 (day-only): open software platform + reference system design for agent testing-to-deployment governance.",
+   "subject_id": "nvidia-agent-safety",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "PRIMARY_FACT",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "NVIDIA newsroom Sep 28 + investor release + technical blog (Myers/Watson/Golshan/Arkin) read."
+  },
+  {
+   "statement_id": "claim-2",
+   "text": "Components: OpenShell open-source secure runtime (sandboxed execution, policy enforcement, verifiable tracing), now broadly available; Sentry reference design = out-of-band watchdog on BlueField-4 DPUs (DOCA), ms-scale quarantine, attested telemetry; Vera-optimized, Arm/Intel-extendable.",
+   "subject_id": "nvidia-agent-safety",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "PRIMARY_FACT",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Vendor architecture description; effectiveness is vendor claim."
+  },
+  {
+   "statement_id": "claim-3",
+   "text": "Ecosystem (vendor-stated): 100+ orgs incl. Anthropic Claude Managed Agents, SpaceXAI Cursor/Grok, Scale AI, Salesforce/Slack, SAP Joule; Open Secure AI Alliance (Linux Foundation).",
+   "subject_id": "nvidia-agent-safety",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "VENDOR_CLAIM",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Partner quotes are vendor-published; no independent deployment proof."
+  },
+  {
+   "statement_id": "claim-4",
+   "text": "OpenShell + skills via developer resources + GitHub; Sentry is a reference design with no separate price/GA date in the announcement.",
+   "subject_id": "nvidia-agent-safety",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "PRIMARY_FACT",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Availability statement with noted limits; TechRepublic corroborates Sentry reference-design status."
+  }
+ ],
+ "metrics": [],
+ "limitations": [
+  {
+   "statement_id": "limitation-1",
+   "text": "Reference architecture != empirically attack-proof containment; no independent red-team reproduction.",
+   "subject_id": "nvidia-agent-safety",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "INFERENCE",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Evidence boundary retained for downstream editorial use."
+  },
+  {
+   "statement_id": "limitation-2",
+   "text": "Sentry enforcement depends on BlueField-4 deployment; OpenShell alone excludes it.",
+   "subject_id": "nvidia-agent-safety",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "INFERENCE",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Evidence boundary retained for downstream editorial use."
+  },
+  {
+   "statement_id": "limitation-3",
+   "text": "Exact UTC instant unknown (day-only).",
+   "subject_id": "nvidia-agent-safety",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "INFERENCE",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Evidence boundary retained for downstream editorial use."
+  }
+ ],
+ "verification": {
+  "targets": [
+   {
+    "target": "nvidia-newsroom",
+    "status": "VERIFIED",
+    "finding": "Newsroom + investor + tech-blog bodies read; announcement/components/availability extracted.",
+    "subject_ids": [
+     "nvidia-agent-safety"
+    ],
+    "source_ids": [
+     "src-1"
+    ]
+   },
+   {
+    "target": "tech-blog",
+    "status": "VERIFIED",
+    "finding": "Five principles + Vera Rubin POD tray detail + DOCA enforcement read in tech blog.",
+    "subject_ids": [
+     "nvidia-agent-safety"
+    ],
+    "source_ids": [
+     "src-1"
+    ]
+   },
+   {
+    "target": "openshell-repo",
+    "status": "UNRESOLVED",
+    "finding": "OpenShell GitHub repo listing not opened; availability via developer page only.",
+    "subject_ids": [
+     "nvidia-agent-safety"
+    ],
+    "source_ids": [
+     "src-1"
+    ]
+   }
+  ],
+  "unresolved_questions": [
+   "openshell-repo: OpenShell GitHub repo listing not opened; availability via developer page only."
+  ],
+  "contradictions": []
+ }
+}

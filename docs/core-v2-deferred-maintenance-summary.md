@@ -2,8 +2,8 @@
 
 Status: `CORE_CHANGE_PAUSED / LIVING_DEFERRED_MAINTENANCE_INVENTORY`  
 Established: 2026-09-20 JST  
-Last reviewed edition: `SP-vision-multimodal-2026`  
-Last reviewed `main`: `7c8e4b1ee913007e4d1e0dc627e2c0a7c2f5ff4f`  
+Last reviewed edition: `2026-W40` (Selection guarded stop; not a release)  
+Last reviewed `main`: `afdb3df3faa20af3bb5798be429bba8dbd2100b1`  
 Frozen Production Line: `774dd39a951c9ac3818e83dfffd4c7666efb0a20`  
 Frozen Production Line tree: `cd46a6f7a6dcc4031e76220cea4c52c7dd1fc481`  
 Update tracker: [Issue #515](https://github.com/eariver/japanese-generative-ai-survey/issues/515)
@@ -728,6 +728,58 @@ This item is specifically about **the missing lifecycle/legal reason and authori
 
 ---
 
+### CV2-DM-022 — No lawful pre-Architecture same-State supersession of accepted Evidence / Edition Views / Materiality
+
+Status: `OPEN_CORE` (edition-local editorial compatibility planned; formal Core bypass NOT yet validated)  
+Category: Accepted upstream authority / SHA provenance / pre-Architecture lifecycle  
+Tracking: [Issue #562](https://github.com/eariver/japanese-generative-ai-survey/issues/562) and umbrella [Issue #515](https://github.com/eariver/japanese-generative-ai-survey/issues/515)  
+First reproduction: `2026-W40` at `EVIDENCE_REVIEWED` (2026-10-10 JST)  
+Latest reproduction: `2026-W40` Selection r11 independent review (2026-10-10 JST)
+
+W40 reached canonical `EVIDENCE_REVIEWED` after accepting 37 Discovery records, 37 Screening decisions, 35 Evidence Cards, 35 Edition Views, the 37-row Materiality Ledger and LIMITED Completeness. Two already-known candidates were retained as `HOLD / TIME_UNRESOLVED`, but later independent primary-source checks found original **issuer-authored, Hugging Face organization-hosted articles** within the W40 half-open window `[2026-09-25T22:00:00Z, 2026-10-02T22:00:00Z)`:
+
+- Ai2 AstaBrief 8B official organization article: host JSON-LD `datePublished = 2026-10-02T15:19:50.340Z`.
+- ServiceNow AutoSynthData official organization article: host JSON-LD `datePublished = 2026-10-02T04:01:31.290Z`.
+
+These timestamp values establish the **hosted article event**, not model-weight upload, code/dataset creation, independent reproducibility or a first-ever product-availability instant. The original HTML bytes are not archived in the r11 commit, so re-consumption/retrieval proof is necessary if accepting new official Evidence.
+
+Sol r11 approved **Plan B as a provisional editorial/materiality direction for both events**, NOT as canonical Core Selection or a Human Gate decision. However, the frozen pipeline cannot replace earlier accepted Evidence/Views/Materiality at the same lifecycle State:
+
+- `scripts/survey_production_v2.py::transition_state` permits exactly one forward step and rejects backward / same-State transitions;
+- `scripts/survey_human_gate_v2.py::invalidate_pending_gate` applies to an already-reached pending Human Gate and, for Architecture, requires a passed Architecture checkpoint. Neither condition is met at `EVIDENCE_REVIEWED`;
+- frozen Candidate Selection validation rejects `SELECTED` for a matrix row with `materiality = HOLD`;
+- existing State checkpoint provenance requires SHA-bound canonical attestation paths, and lifecycle history has a fixed transition shape: simply appending an event or overwriting accepted files is NOT authorized supersession.
+
+Therefore `CORE_REENTRY_CONTRACT_GAP` is a **generic shared-Core governance/authority limitation**, distinct from CV2-DM-016 (Evidence source-type mapping) and CV2-DM-021 (post-validated publication correction reason).
+
+Observed W40 impact:
+
+- Current authoritative views remain `29 MATERIAL / 4 HOLD / 2 CONTEXT`; r10 reviewer-only Selection is `28 SELECTED = 20 PRIMARY + 8 SUPPORTING`, plus 1 INSPECT, 4 HOLD and 2 REJECT.
+- Proposed Plan B is `31 MATERIAL / 2 HOLD / 2 CONTEXT`; a potential `30 SELECTED = 22 PRIMARY + 8 SUPPORTING` is **proposed only** and exact roles are not finally approved.
+- Core Acceptance, checkpoint bytes, `production-state.json`, Selection/Architecture State and both Human Gates remain unchanged. No formal 30-item Selection acceptance is authorized.
+
+Edition-local continuity (planned, not a Core fix): W40 Muse r12 instruction retains the **Core-valid existing 28 selected candidates**, corrects reviewer-preview HOLD rationales without claiming accepted upstream revisions, and stages two non-canonical, evidence-sourced technical supplements for Sol review. The supplements are **NOT Core SELECTED, NOT formal Architecture packages, and NOT approved publication appendices**. The user requires Core changes to be maintained **only in a separate Core task**; Weekly/Special must not patch shared Core, weaken frozen validators, spoof Gate records or silently edit accepted authority. Mark `EDITION_WORKAROUND` only after a lawful edition-local execution path is verified. The gap remains `OPEN_CORE` regardless of editorial progress.
+
+Direct evidence:
+
+- [Issue #562](https://github.com/eariver/japanese-generative-ai-survey/issues/562);
+- `sources/2026-W40/execution/host-timestamp-ledger-r11.md`;
+- `sources/2026-W40/execution/core-reentry-feasibility-r11.md`;
+- `sources/2026-W40/execution/selection/selection-counterfactual-r11.md`;
+- `sources/2026-W40/execution/reviews/sol-w40-selection-r11-scope-decision-20261010.md`;
+- `sources/2026-W40/execution/instructions/2026-10-10_muse-w40-edition-local-core-gap-bypass-r12.md`;
+- `sources/2026-W40/execution/defects/w40-pre-architecture-upstream-supersession-gap-20261010.md`.
+
+Required future Core direction (handled separately, **not during edition production**):
+
+- a reviewed, tightly gated **append-only same-State upstream authority supersession** at `EVIDENCE_REVIEWED`, before Selection and all Human Gates, bound to exact work HEAD/Tree, reviewed main/Core identity, old accepted SHA graph, affected-ID allowlist and explicit Sol decision;
+- preserve immutable old authority bytes, record old-to-new SHA lineage, deterministically revalidate Evidence/Card/View/Materiality/Completeness and force new Matrix/Selection preview generation; preserve original Discovery/Screening `INSPECT` when actually compatible with frozen validators, expanding scope only with proof;
+- explicitly reconcile canonical checkpoint path binding, history schema constraints and frozen implementation-SHA binding; no direct checkpoint overwrite, manual State rollback or forged Human `REQUEST_CHANGES`;
+- fail closed on stale HEAD, unsupported source clock/role, mismatched candidate IDs, non-idempotent replay, unapproved Human reviews or any post-Architecture edit; test Weekly and non-Weekly profiles.
+
+---
+
+
 ## 6. Items intentionally not treated as current shared-Core defects
 
 The following edition issues are closed because their edition-level acceptance criteria are satisfied:
@@ -804,7 +856,9 @@ A batch repair may close multiple `CV2-DM` items, but each item must receive its
 | `2026-W39` | Final release closure review in r0.7 | **DM-020 new**; DM-001/002/003/004/006/013/014 recurred or materially updated | Issue #551 exposed generic claim-to-source semantic-fidelity/source-role weakness (new DM-020); Issue #501 terminology defect recurred across multiple preview rounds (DM-006); DolphinBench/Claude Code temporal identity issues extend DM-013; Freeze compat repeated DM-001/002/003; release run `36581201216` repeated DM-004 and recovery PR #557; final `execution/index.md` remains stale after recovery (DM-014). Edition RELEASED/COMPLETE with exact Human-approved 12pp PDF; shared Core implementation unchanged. |
 | `SP-vision-multimodal-2026` | Exceptional release closure review in r0.8 | **DM-021 new**; DM-006/015/020 recurred | TS-003 post-`VALIDATED_DRAFT` editorial and source-fidelity repairs exposed an unsupported publication revalidation reason (`REVIEWED_CORE_CHANGE` only; #560). Human authorized one-off exception: exact approved 39pp PDF SHA `b2de8449…` Freeze-pinned and released with PR #561 and run `37955511006`; distinct exception records preserved, normal Production State remains `VALIDATED_DRAFT`. Prior reader Japanese, editorial process leak and citation semantic-fidelity failures documented in DM-006/015/020; shared Core unchanged. |
 
-Next required update: the next Weekly/Special guarded stop or closure if it occurs first.
+| `2026-W40` | Selection r11 guarded-stop update in r0.9 | **DM-022 new**; separate source-timing correction from canonical acceptance | Issue #562: no sanctioned post-`EVIDENCE_REVIEWED`, pre-Architecture same-State Evidence/View/Materiality supersession. Sol Plan B is provisionally material but not Core-accepted. W40 r12 edition-local 28-item Selection preview + two **non-canonical** supplements is instructed, not yet validated. Shared Core remains unchanged; Selection and Human Gates pending. |
+
+Next required update: the next Weekly/Special guarded stop or closure after W40 r0.9, whichever occurs first.
 
 ## 10. Revision History
 
@@ -819,6 +873,8 @@ Next required update: the next Weekly/Special guarded stop or closure if it occu
 | `r0.7` | 2026-09-30 | `2026-W39` final release closure | Added CV2-DM-020 for claim-to-source semantic fidelity / source-role binding after Issue #551 (ART novelty, Cursor claim strength, Claude Code first-party binding, Opus conditionality, source-note role consistency). Refreshed DM-001/002/003 Freeze recurrences from `w39-freeze-compat-note-20260929.md`, DM-004 release recurrence (run `36581201216`, PR #557), DM-006 Weekly terminology recurrence (#501 + W39 supplements), DM-013 temporal/version/date recurrence (#551), and DM-014 stale execution index after recovery. W39 RELEASED/COMPLETE; shared Core implementation unchanged. |
 | `r0.8` | 2026-10-10 | `SP-vision-multimodal-2026` exceptional final release | Added CV2-DM-021 for missing post-validated reader/editorial publication revalidation authority (Issue #560), documenting explicit Human-approved one-off exception Freeze + verified GitHub Release (PR #561; run `37955511006`) without changing formal Core v2 lifecycle. Refreshed DM-006 Japanese terminology, DM-015 internal editorial leakage, DM-020 claim-to-source source-fidelity recurrences. New edition-local defect note linked; existing statuses remain OPEN until consolidated Core maintenance. |
 
+| `r0.9` | 2026-10-10 | `2026-W40` Selection guarded stop | Added CV2-DM-022 for the Core post-Evidence/pre-Architecture immutable-upstream supersession gap (Issue #562), independently confirmed at W40 r11. Preserved accepted 37/37/35/35, 29 MATERIAL / 4 HOLD / 2 CONTEXT and official `EVIDENCE_REVIEWED` State; distinguished provisional Plan B from formal Selection, and recorded separately instructed edition-local r12 continuity and pending Core repair. No shared Core/Human Gate changes. |
+
 ## 11. Reference authority
 
 Primary evidence for the current inventory includes:
@@ -827,6 +883,7 @@ Primary evidence for the current inventory includes:
 - W39 closure-reviewed main: `239ef2703a93fa802f232978c7166d04d6cc3d49`;
 - TS-003 exceptional-release-closure-reviewed main: `7c8e4b1ee913007e4d1e0dc627e2c0a7c2f5ff4f`;
 - [Issue #560](https://github.com/eariver/japanese-generative-ai-survey/issues/560), exception manifest/Release record, PR #561, and workflow run `37955511006` for CV2-DM-021;
+- [Issue #562](https://github.com/eariver/japanese-generative-ai-survey/issues/562), W40 r11 source-timing ledger, Core feasibility finding and Sol scope decision for CV2-DM-022;
 - [Issue #497](https://github.com/eariver/japanese-generative-ai-survey/issues/497);
 - [Issue #501](https://github.com/eariver/japanese-generative-ai-survey/issues/501);
 - [Issue #505](https://github.com/eariver/japanese-generative-ai-survey/issues/505);

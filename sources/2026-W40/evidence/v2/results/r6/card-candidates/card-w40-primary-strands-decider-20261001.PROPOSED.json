@@ -1,0 +1,174 @@
+{
+ "schema_version": "2.0-rc1",
+ "issue_id": "2026-W40",
+ "evidence_task_id": "evidence:2026-W40:deb42dbdfe9ccbc0",
+ "basis": {
+  "task_sha256": "6fac3336224156d104d3573d3ae4f3513bc208ff5923f88d704e8c26b53f6d3e",
+  "screening_acceptance_sha256": "4bae12edc6a17d8f43188dedd6ced9716b4ae1559ff996cc6e7d15a23d5b564f",
+  "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+  "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+ },
+ "status": "VERIFIED",
+ "entities": [
+  {
+   "canonical_name": "Strands Decider 2B",
+   "canonical_url": "https://strandsagents.com/blog/introducing-strands-decider/",
+   "entity_id": "strands-decider-2b",
+   "entity_type": "MODEL",
+   "organization": "Strands (AWS)"
+  }
+ ],
+ "artifact": {
+  "primary_subject_id": "strands-decider-2b",
+  "artifact_type": "OPEN_WEIGHT",
+  "canonical_name": "Strands Decider 2B",
+  "canonical_url": "https://strandsagents.com/blog/introducing-strands-decider/"
+ },
+ "temporal": {
+  "observed_at": "2026-10-10T06:40:00Z",
+  "events": []
+ },
+ "sources": [
+  {
+   "source_id": "src-1",
+   "url": "primary:strandsagents.com/blog/introducing-strands-decider/",
+   "source_class": "PRIMARY_OFFICIAL",
+   "title": "Strands: Decider 2B v19 (Oct 1)",
+   "published_at": null,
+   "accessed_at": "2026-10-10T06:40:00Z",
+   "role": "Discovery-bounded source used for factual verification"
+  }
+ ],
+ "claims": [
+  {
+   "statement_id": "claim-1",
+   "text": "Strands Labs (AWS) released Decider 2B Oct 1 (day-only): small open-source decision model; W40 pins v19 (NOT retroactive v21/head).",
+   "subject_id": "strands-decider-2b",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "PRIMARY_FACT",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Strands blog Oct 1, full body read; repo/API findings via delegated retrieval with verbatim quotes + URLs."
+  },
+  {
+   "statement_id": "claim-2",
+   "text": "Qwen3.5-2B torso, LM head removed, pointer head (~1M) + r16 LoRA; single parallel pass, no text generation; typed choice/score + reliability scores.",
+   "subject_id": "strands-decider-2b",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "PRIMARY_FACT",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Vendor architecture description."
+  },
+  {
+   "statement_id": "claim-3",
+   "text": "JevBench public-set accuracy/calibration (3rd-of-33 2B class); ~115ms RTX3090 (~153ms M3); 100% easy tasks; trajectory/Brier charts on page.",
+   "subject_id": "strands-decider-2b",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "VENDOR_CLAIM",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Vendor-run, attribution required."
+  },
+  {
+   "statement_id": "claim-4",
+   "text": "License Apache-2.0 CONFIRMED (LICENSE + pyproject + Hub cardData); v19 Hub created 2026-09-30 SHA bb282d7 vs v21 2026-10-05 SHA 2b52a62; no git tags (tags API []); head main @0ac22a9 post-v21.",
+   "subject_id": "strands-decider-2b",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "PRIMARY_FACT",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Delegated retrieval (verbatim pyproject/LICENSE/Hub API quotes in r4 log)."
+  },
+  {
+   "statement_id": "claim-5",
+   "text": "Code github.com/strands-labs/strands-decider; weights HF StrandsAgents; training data + scripts released; CLI + Strands intervention example.",
+   "subject_id": "strands-decider-2b",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "PRIMARY_FACT",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Distribution statement with recheck note."
+  }
+ ],
+ "metrics": [],
+ "limitations": [
+  {
+   "statement_id": "limitation-1",
+   "text": "v19 pin needs Hub-revision discipline (head shows v1-era models).",
+   "subject_id": "strands-decider-2b",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "INFERENCE",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Evidence boundary retained for downstream editorial use."
+  },
+  {
+   "statement_id": "limitation-2",
+   "text": "Distinct from Clef/Ollama; do not merge benchmarks/latencies/licenses.",
+   "subject_id": "strands-decider-2b",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "INFERENCE",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Evidence boundary retained for downstream editorial use."
+  },
+  {
+   "statement_id": "limitation-3",
+   "text": "Hybrid-agent positioning is vendor guidance.",
+   "subject_id": "strands-decider-2b",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "INFERENCE",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Evidence boundary retained for downstream editorial use."
+  }
+ ],
+ "verification": {
+  "targets": [
+   {
+    "target": "strands-blog",
+    "status": "VERIFIED",
+    "finding": "Blog fully read; release/arch/perf/distribution extracted.",
+    "subject_ids": [
+     "strands-decider-2b"
+    ],
+    "source_ids": [
+     "src-1"
+    ]
+   },
+   {
+    "target": "github-commit-v19",
+    "status": "VERIFIED",
+    "finding": "v19 Hub revision + date + SHA + no-tag finding via delegated Hub/GitHub API reads (r4 log).",
+    "subject_ids": [
+     "strands-decider-2b"
+    ],
+    "source_ids": [
+     "src-1"
+    ]
+   },
+   {
+    "target": "license-spdx",
+    "status": "VERIFIED",
+    "finding": "Apache-2.0 SPDX triple-corroborated (LICENSE + pyproject + Hub).",
+    "subject_ids": [
+     "strands-decider-2b"
+    ],
+    "source_ids": [
+     "src-1"
+    ]
+   }
+  ],
+  "unresolved_questions": [],
+  "contradictions": []
+ }
+}

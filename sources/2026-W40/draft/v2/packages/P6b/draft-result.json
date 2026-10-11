@@ -1,0 +1,504 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W40",
+  "research_profile": "WEEKLY",
+  "publication_profile": "WEEKLY_MAGAZINE",
+  "package_id": "P6b",
+  "draft_version": "r22-draft-1",
+  "status": "ESTABLISHED",
+  "basis": {
+    "draft_package_sha256": "4e52676a86a5e30c806d90299de729af24702783a22702716fcb4742d1937e70",
+    "prompt_id": "article-drafting-v2",
+    "prompt_sha256": "b687313312a23025228c16c3f10cb68f669b910cd7215e41886d4dd91f44fe11"
+  },
+  "runner": {
+    "provider": "muse-spark",
+    "model": "muse-spark-1.3-contributor",
+    "invocation": "substantive r22 rewrite: 9 packages conventional Japanese with tables/equations (Human Preview r1 REQUEST_CHANGES, boundary ARCHITECTURE_ESTABLISHED)",
+    "generated_at": "2026-10-11T08:01:07Z",
+    "run_reference": null
+  },
+  "headline": "評価基盤――AgentPerfの再実行、OpenTTSの測定手順、RL環境置き場",
+  "deck": "評価台とモデルを取り違えない。測定手順・到着時期・版の留めを正確に読む。",
+  "deck_attribution_mode": "MIXED",
+  "deck_evidence_refs": [
+    {
+      "evidence_task_id": "evidence:2026-W40:6b710e391126f2cd",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1",
+      "subject_id": "aa-agentperf-local",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:2026-W40:6b710e391126f2cd",
+      "kind": "CLAIM",
+      "evidence_id": "claim-2",
+      "subject_id": "aa-agentperf-local",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:2026-W40:6b710e391126f2cd",
+      "kind": "CLAIM",
+      "evidence_id": "claim-3",
+      "subject_id": "aa-agentperf-local",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:2026-W40:6b710e391126f2cd",
+      "kind": "CLAIM",
+      "evidence_id": "claim-4",
+      "subject_id": "aa-agentperf-local",
+      "subject_role": "PRIMARY_SUBJECT"
+    }
+  ],
+  "blocks": [
+    {
+      "block_id": "p6b-agentperf",
+      "block_type": "PARAGRAPH",
+      "text": "AA-AgentPerf-Localは、手元で実行するオープンな再実行ベンチマークである。実軌跡をSparkや5090やHaloやM5Proでなぞり直す。実行構成の14通りはいずれもspeculative decoding（MTP・DFlash・DSpark）を用いる構成と明記され、発表者の計測として置く。測定条件は8タスク・168手・約5万6千の増大文脈で、字句の仕事量を同一にし、道具の実行は既定で省くとされる。サービングの話に限る品であり、エージェントの賢さの話ではない。帯域制約ルーフラインとの比較は理論上限線に対する成功群の嵩上げ（Qwen3.8-27Bで3割から120%ほど、構成による幅）であって、仕様なしの対照ではない。一人で実行する手元環境と、混雑時の本番環境（メガワットあたりのエージェント数という別の物差し、6月12日の別の記事）は方法も指標も別物であり、数値の貸し借りはしない。依存関係は明示する。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W40:6b710e391126f2cd",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "aa-agentperf-local",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:6b710e391126f2cd",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "aa-agentperf-local",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:6b710e391126f2cd",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "aa-agentperf-local",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:6b710e391126f2cd",
+          "kind": "CLAIM",
+          "evidence_id": "claim-4",
+          "subject_id": "aa-agentperf-local",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:6b710e391126f2cd",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "aa-agentperf-local",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:6b710e391126f2cd",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "aa-agentperf-local",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:6b710e391126f2cd",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-3",
+          "subject_id": "aa-agentperf-local",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p6b-opentts",
+      "block_type": "PARAGRAPH",
+      "text": "Open TTS Leaderboardは、多言語・声 cloning の客観評価基盤であり、新しい音声モデルではない。英語の巨視的平均の単語誤り率と多言語の文字誤り率はQwen3-ASR-1.7Bで測り、RTFxはバッチ化オフライン推論・TTFAは逐次バッチ1の遅延（いずれもH200）、SIMはWavLMで測り、Seed-TTS評価とCV3評価のゼロショット条件で比べる。TTFA手順は一句ごとに検証済みで、同じ英語50プロンプト、バッチサイズ1、最初の3走をウォームアップに除き、残りの中央値、H200の表示が既定で、CPUの小規模な増加集合も添う。人の好みは測っていないとブログが明記する。比較はスナップショット時点の話であり、普遍の順位にはしない。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W40:35982cdbdced5526",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "hf-open-tts-leaderboard",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:35982cdbdced5526",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "hf-open-tts-leaderboard",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:35982cdbdced5526",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "hf-open-tts-leaderboard",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:35982cdbdced5526",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "hf-open-tts-leaderboard",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:35982cdbdced5526",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "hf-open-tts-leaderboard",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:35982cdbdced5526",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-3",
+          "subject_id": "hf-open-tts-leaderboard",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p6b-opentts-time",
+      "block_type": "PARAGRAPH",
+      "text": "到着時期の切り分けは欠かさない。場と物差しの本体は今週にあるが、評価スクリプトは9月30日の記事では「まもなく公開」という未来形である。リポジトリの初の評価スクリプトの固まりは10月7日14時53分41秒（UTC）と確認した。対象期間の締め切り（10月2日22時UTC）の時点ではリポジトリにスクリプトはなく、9月15日のリポジトリ作成をもって公開と読んではならない。調べたリポジトリの範囲の話であり、どこにも公開されていないことの証拠ではない。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W40:35982cdbdced5526",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "hf-open-tts-leaderboard",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:35982cdbdced5526",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "hf-open-tts-leaderboard",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:35982cdbdced5526",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "hf-open-tts-leaderboard",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:35982cdbdced5526",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "hf-open-tts-leaderboard",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:35982cdbdced5526",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "hf-open-tts-leaderboard",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:35982cdbdced5526",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-3",
+          "subject_id": "hf-open-tts-leaderboard",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p6b-rlhub",
+      "block_type": "PARAGRAPH",
+      "text": "RL Environments Hubは、強化学習環境のタスクセット目録である。rl-environmentフィルターと4つのフレームワークタグ（harbor・verifiers・openenv・nemo-gym）、枠ごとの実行例が並ぶ。タスクセットのデータと実行時・報酬の切り分けを保ち、新しいリポジトリ型はなく、タグは互換性の宣言であって変換や起動の話ではない。フレームワークの版固定がタスクセット全体を固定するかのように読んではならない。具体例としてharbor==0.21.0の固定は実行枠の版であって、束ね資料のリビジョンではない。タスクセットのリビジョンや選択基準、実行基盤の固定は未確定として明記する。再現用の種の固定も、固定できない所はできないと書く。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W40:5d98661975a7fd04",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "hf-rl-environments",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:5d98661975a7fd04",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "hf-rl-environments",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:5d98661975a7fd04",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "hf-rl-environments",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:5d98661975a7fd04",
+          "kind": "CLAIM",
+          "evidence_id": "claim-4",
+          "subject_id": "hf-rl-environments",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:5d98661975a7fd04",
+          "kind": "CLAIM",
+          "evidence_id": "claim-5",
+          "subject_id": "hf-rl-environments",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:5d98661975a7fd04",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "hf-rl-environments",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:5d98661975a7fd04",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "hf-rl-environments",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:5d98661975a7fd04",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-3",
+          "subject_id": "hf-rl-environments",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "P6b-boundaries",
+      "block_type": "CLAIM_BOUNDARY",
+      "text": "この節の読解上の境界: Publisher benchmark, not independent reproduction. / Single-agent full-system focus; multi-agent/shared-load pending. / Living leaderboard; W40 authority needs commit pin at Selection. / github-repo: Repo + 14 configs linked but not pinned; living leaderboard. / configs: Config-level details (MTP/DFlash/DSpark per pair) not individually consumed. / Leaderboard snapshots shift; no human-preference proof. / Eval scripts repo + Space app not executed. / Day-only date. / leaderboard-space: Space app not opened. / eval-scripts: Eval scripts repo public per author comment; not fetched. / Day-only date; no clock time. / Example versions are Sep 28 snapshots; repos evolve. / Filter/tagged-dataset pages not individually opened. / filter-page: Filter page not opened. / tagged-datasets: Tagged dataset repos not individually opened.",
+      "attribution_mode": "INFERENCE",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W40:6b710e391126f2cd",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "aa-agentperf-local",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:6b710e391126f2cd",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "aa-agentperf-local",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:6b710e391126f2cd",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-3",
+          "subject_id": "aa-agentperf-local",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:35982cdbdced5526",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "hf-open-tts-leaderboard",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:35982cdbdced5526",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "hf-open-tts-leaderboard",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:35982cdbdced5526",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-3",
+          "subject_id": "hf-open-tts-leaderboard",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:5d98661975a7fd04",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "hf-rl-environments",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:5d98661975a7fd04",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "hf-rl-environments",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:5d98661975a7fd04",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-3",
+          "subject_id": "hf-rl-environments",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    }
+  ],
+  "must_cover_coverage": [
+    {
+      "requirement": "AgentPerf: Spark/5090/Halo/M5Pro single-user trajectory replays; 14 all-speculative configs; publisher-measured; serving-only scope (not agent correctness); bandwidth-constraint roofline as theoretical upper line (Qwen3.8-27B decode +30-120% above roofline, config-dependent range — NOT a no-spec baseline); local single-user vs production-concurrent (Agents-per-Megawatt SLO, separate 2026-06-12 method) distinction with no cross-citation; deps stated per technical-prep-r15/p6b-deep-draft.md.",
+      "block_ids": [
+        "p6b-agentperf",
+        "p6b-opentts",
+        "p6b-opentts-time",
+        "p6b-rlhub",
+        "P6b-boundaries"
+      ]
+    },
+    {
+      "requirement": "OpenTTS: macro-average English WER + multilingual CER + RTFx (batched offline, H200) + TTFA objective protocol (50 English prompts, batch size 1, first 3 runs warm-up excluded, median of rest, H200 default view + CPU small growing set — each clause verified) + SIM over Seed-TTS + CV3; Spaces app + benchmark available in W40 vs eval scripts future-as-of-Sep-30 article promise vs first confirmed repo eval-scripts commit 2026-10-07T14:53:41Z (NOT available within W40 Oct2 22:00Z cutoff, scoped to inspected repo); platform, not model; snapshot-shift caveat; human-preference-not-measured per technical-prep-r15/p6b-deep-draft.md.",
+      "block_ids": [
+        "p6b-agentperf",
+        "p6b-opentts",
+        "p6b-opentts-time",
+        "p6b-rlhub",
+        "P6b-boundaries"
+      ]
+    },
+    {
+      "requirement": "RL-Env Hub Sep 28: rl-environment filter + 4 framework tags (harbor/verifiers/openenv/nemo-gym) + per-framework snippets; taskset dataset vs runtime/reward separation, no new repo type, tag declares compatibility (no conversion/launch); framework version pins (e.g. harbor==0.21.0) do NOT pin taskset revisions (BeyondSWE/Terminal-Lego-15k/harbor-mix-100/Scale-SWE-Verified/Workplace Assistant revisions are missing inputs, explicitly stated); Hub-revision discipline; seed/not-reproducibly-pinned where applicable per technical-prep-r15/p6b-deep-draft.md.",
+      "block_ids": [
+        "p6b-agentperf",
+        "p6b-opentts",
+        "p6b-opentts-time",
+        "p6b-rlhub",
+        "P6b-boundaries"
+      ]
+    }
+  ],
+  "boundary_dispositions": [
+    {
+      "boundary": "Publisher benchmark, not independent reproduction.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P6b-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Single-agent full-system focus; multi-agent/shared-load pending.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P6b-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Living leaderboard; W40 authority needs commit pin at Selection.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P6b-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "github-repo: Repo + 14 configs linked but not pinned; living leaderboard.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P6b-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "configs: Config-level details (MTP/DFlash/DSpark per pair) not individually consumed.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P6b-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Leaderboard snapshots shift; no human-preference proof.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P6b-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Eval scripts repo + Space app not executed.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P6b-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Day-only date.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P6b-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "leaderboard-space: Space app not opened.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P6b-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "eval-scripts: Eval scripts repo public per author comment; not fetched.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P6b-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Day-only date; no clock time.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P6b-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Example versions are Sep 28 snapshots; repos evolve.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P6b-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Filter/tagged-dataset pages not individually opened.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P6b-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "filter-page: Filter page not opened.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P6b-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "tagged-datasets: Tagged dataset repos not individually opened.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P6b-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    }
+  ],
+  "profile_extensions": {},
+  "publication_extensions": {}
+}

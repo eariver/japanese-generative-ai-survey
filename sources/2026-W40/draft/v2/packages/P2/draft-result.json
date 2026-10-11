@@ -1,0 +1,553 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W40",
+  "research_profile": "WEEKLY",
+  "publication_profile": "WEEKLY_MAGAZINE",
+  "package_id": "P2",
+  "draft_version": "r22-draft-1",
+  "status": "ESTABLISHED",
+  "basis": {
+    "draft_package_sha256": "d166a06eab8f10d784b60e910813957629f7ac614053612bac0d8cb6d99d9933",
+    "prompt_id": "article-drafting-v2",
+    "prompt_sha256": "b687313312a23025228c16c3f10cb68f669b910cd7215e41886d4dd91f44fe11"
+  },
+  "runner": {
+    "provider": "muse-spark",
+    "model": "muse-spark-1.3-contributor",
+    "invocation": "substantive r22 rewrite: 9 packages conventional Japanese with tables/equations (Human Preview r1 REQUEST_CHANGES, boundary ARCHITECTURE_ESTABLISHED)",
+    "generated_at": "2026-10-11T08:01:07Z",
+    "run_reference": null
+  },
+  "headline": "公開ウェイトの推論モデル――Holo4の2機種とELYZA Thinkingの和文特化",
+  "deck": "汎用と日本語特化の2系統。ライセンスの切り分け、重みの特定、ベンチマークの分母をそろえて読む。",
+  "deck_attribution_mode": "MIXED",
+  "deck_evidence_refs": [
+    {
+      "evidence_task_id": "evidence:2026-W40:86a1124feba9733b",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1",
+      "subject_id": "hcompany-holo4",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:2026-W40:86a1124feba9733b",
+      "kind": "CLAIM",
+      "evidence_id": "claim-2",
+      "subject_id": "hcompany-holo4",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:2026-W40:86a1124feba9733b",
+      "kind": "CLAIM",
+      "evidence_id": "claim-3",
+      "subject_id": "hcompany-holo4",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:2026-W40:86a1124feba9733b",
+      "kind": "CLAIM",
+      "evidence_id": "claim-4",
+      "subject_id": "hcompany-holo4",
+      "subject_role": "PRIMARY_SUBJECT"
+    }
+  ],
+  "blocks": [
+    {
+      "block_id": "p2-holo",
+      "block_type": "PARAGRAPH",
+      "text": "H Companyは9月28日、エージェント向けモデルHolo4の2機種をリリースした。27Bの高密モデルと35B-A3BのMixture-of-Expertsモデルは名称が似ていても別物として扱う。高密モデルは研究・非商用ライセンス、MoEモデルはApache-2.0であり、この切り分けを取り違えると利用可否の判断が崩れる。OSWorldで85.2%と80.8%、OSWorld2で61.7%と30.9%と置かれるが、非公開評価セットの扱いは積み残しで、独立した再現はない。Holo4 Nanoは下位機種であり、別の今週の出来事にはしない。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W40:86a1124feba9733b",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "hcompany-holo4",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:86a1124feba9733b",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "hcompany-holo4",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:86a1124feba9733b",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "hcompany-holo4",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:86a1124feba9733b",
+          "kind": "CLAIM",
+          "evidence_id": "claim-4",
+          "subject_id": "hcompany-holo4",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:86a1124feba9733b",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "hcompany-holo4",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:86a1124feba9733b",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "hcompany-holo4",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:86a1124feba9733b",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-3",
+          "subject_id": "hcompany-holo4",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p2-elyza",
+      "block_type": "PARAGRAPH",
+      "text": "ELYZAは10月2日、Thinking LLM-jp-4の2機種を公開した。33Bモデルが61.69、日本語62.18、MoEモデルが58.46、日本語59.61で、日本語差分としてM-IFEval日本語版やNejumi BFCL日本語版、JHumanEval、JMMLU、LiveCodeBenchの土台比改善が示され、33Bモデルが総合61.69（日本語62.18・英語59.72、土台の思考モデル51.50から+10.19）、MoEモデルが総合58.46（日本語59.61・英語55.94、土台46.38から+12.08）と置かれる。手法は日本語寄せの中間学習とプログラム検証つきSFT、検証可能問題の強化学習という構成で、発表者の計測として言語別スコアつきで載せる。能動パラメータ数の exact な値は置き場の表に記されていない。比較表は受理済み資料の数値から再構成したものである。重みはコミットSHAで特定し（33Bは6ca556b2…、MoEは5260ecc2…）、ライセンスはApache-2.0である。軌跡表示盤と言語モデル用データセットへの言及はあるが、再生実行まではしていない。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W40:66aacc54064b63d6",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "elyza-llm-jp-4",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:66aacc54064b63d6",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "elyza-llm-jp-4",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:66aacc54064b63d6",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "elyza-llm-jp-4",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:66aacc54064b63d6",
+          "kind": "CLAIM",
+          "evidence_id": "claim-4",
+          "subject_id": "elyza-llm-jp-4",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:66aacc54064b63d6",
+          "kind": "CLAIM",
+          "evidence_id": "claim-5",
+          "subject_id": "elyza-llm-jp-4",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:66aacc54064b63d6",
+          "kind": "CLAIM",
+          "evidence_id": "claim-6",
+          "subject_id": "elyza-llm-jp-4",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:66aacc54064b63d6",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "elyza-llm-jp-4",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:66aacc54064b63d6",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "elyza-llm-jp-4",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:66aacc54064b63d6",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-3",
+          "subject_id": "elyza-llm-jp-4",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:66aacc54064b63d6",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-4",
+          "subject_id": "elyza-llm-jp-4",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p2-method",
+      "block_type": "PARAGRAPH",
+      "text": "読み分けの要点は、汎用エージェント用途のHolo4と日本語特化のELYZAという方法の違いにある。Holo4はOSWorld系の汎用操作ベンチマーク、ELYZAは日本語を含む言語別スコアで測られており、物差しが違うため単純な横並びの優劣にはしない。手法・分母・ライセンス・重みの特定可能性をそろえた比較表を添える。能動パラメータ数の exact な値は一次資料に記されておらず、表にも載せない。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W40:86a1124feba9733b",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "hcompany-holo4",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:86a1124feba9733b",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "hcompany-holo4",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:86a1124feba9733b",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "hcompany-holo4",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:86a1124feba9733b",
+          "kind": "CLAIM",
+          "evidence_id": "claim-4",
+          "subject_id": "hcompany-holo4",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:86a1124feba9733b",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "hcompany-holo4",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:86a1124feba9733b",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "hcompany-holo4",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:86a1124feba9733b",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-3",
+          "subject_id": "hcompany-holo4",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:66aacc54064b63d6",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "elyza-llm-jp-4",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:66aacc54064b63d6",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "elyza-llm-jp-4",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:66aacc54064b63d6",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "elyza-llm-jp-4",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:66aacc54064b63d6",
+          "kind": "CLAIM",
+          "evidence_id": "claim-4",
+          "subject_id": "elyza-llm-jp-4",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:66aacc54064b63d6",
+          "kind": "CLAIM",
+          "evidence_id": "claim-5",
+          "subject_id": "elyza-llm-jp-4",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:66aacc54064b63d6",
+          "kind": "CLAIM",
+          "evidence_id": "claim-6",
+          "subject_id": "elyza-llm-jp-4",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:66aacc54064b63d6",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "elyza-llm-jp-4",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:66aacc54064b63d6",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "elyza-llm-jp-4",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:66aacc54064b63d6",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-3",
+          "subject_id": "elyza-llm-jp-4",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:66aacc54064b63d6",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-4",
+          "subject_id": "elyza-llm-jp-4",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p2-table",
+      "block_type": "TABLE",
+      "text": "表: Holo4とELYZAの切り分け | Holo4: 27B高密（研究・非商用）と35B-A3B MoE（Apache-2.0）、OSWorld 85.2/80.8・OSWorld2 61.7/30.9（発表者計測、私的セット積み残し） | ELYZA: 33B総合61.69（日本語62.18・英語59.72、土台比+10.19）とMoE総合58.46（日本語59.61・英語55.94、土台比+12.08）、いずれもApache-2.0・SHA特定、日本語差分つき（発表者計測、能動数は非記載）。物差しが異なるため横断順位にはしない。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W40:86a1124feba9733b",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "hcompany-holo4",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:86a1124feba9733b",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "hcompany-holo4",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:86a1124feba9733b",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "hcompany-holo4",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:86a1124feba9733b",
+          "kind": "CLAIM",
+          "evidence_id": "claim-4",
+          "subject_id": "hcompany-holo4",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:66aacc54064b63d6",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "elyza-llm-jp-4",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:66aacc54064b63d6",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "elyza-llm-jp-4",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:66aacc54064b63d6",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "elyza-llm-jp-4",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:66aacc54064b63d6",
+          "kind": "CLAIM",
+          "evidence_id": "claim-4",
+          "subject_id": "elyza-llm-jp-4",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:66aacc54064b63d6",
+          "kind": "CLAIM",
+          "evidence_id": "claim-5",
+          "subject_id": "elyza-llm-jp-4",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:66aacc54064b63d6",
+          "kind": "CLAIM",
+          "evidence_id": "claim-6",
+          "subject_id": "elyza-llm-jp-4",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "P2-boundaries",
+      "block_type": "CLAIM_BOUNDARY",
+      "text": "この節の読解上の境界: Publisher-run benchmarks; private-set eval pending; no independent reproduction. / Holotron4 Nano is a sub-model, not separate W40 event. / Day-only date. / trajectories: Trajectory viewer + HF dataset links noted; replay not executed. / Publisher-measured tables; no independent reproduction or eval-script execution. / Average-performance chart images NOT machine-readable (tables only). / Quickstart blocks read, not executed. / Screening MAYBE immutable (historical); this provisional MATERIAL is reviewer input only.",
+      "attribution_mode": "INFERENCE",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W40:86a1124feba9733b",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "hcompany-holo4",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:86a1124feba9733b",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "hcompany-holo4",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:86a1124feba9733b",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-3",
+          "subject_id": "hcompany-holo4",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:66aacc54064b63d6",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "elyza-llm-jp-4",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:66aacc54064b63d6",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "elyza-llm-jp-4",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:66aacc54064b63d6",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-3",
+          "subject_id": "elyza-llm-jp-4",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W40:66aacc54064b63d6",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-4",
+          "subject_id": "elyza-llm-jp-4",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    }
+  ],
+  "must_cover_coverage": [
+    {
+      "requirement": "Holo4 Sep 28: 27B vs 35B-A3B split kept; OSWorld 85.2%/80.8% and OSWorld2 61.7%/30.9% publisher-run; private-set eval pending.",
+      "block_ids": [
+        "p2-holo",
+        "p2-elyza",
+        "p2-method",
+        "p2-table",
+        "P2-boundaries"
+      ]
+    },
+    {
+      "requirement": "ELYZA Oct 2 eligible: pinned SHAs + Apache-2.0 + 33B 61.69/JA62.18 and MoE 58.46/JA59.61 with JA-localized method and complete tables.",
+      "block_ids": [
+        "p2-holo",
+        "p2-elyza",
+        "p2-method",
+        "p2-table",
+        "P2-boundaries"
+      ]
+    },
+    {
+      "requirement": "Trajectory viewer + HF dataset links noted as replay-not-executed; Holo4 Nano kept as sub-model, not separate event.",
+      "block_ids": [
+        "p2-holo",
+        "p2-elyza",
+        "p2-method",
+        "p2-table",
+        "P2-boundaries"
+      ]
+    }
+  ],
+  "boundary_dispositions": [
+    {
+      "boundary": "Publisher-run benchmarks; private-set eval pending; no independent reproduction.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P2-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Holotron4 Nano is a sub-model, not separate W40 event.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P2-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Day-only date.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P2-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "trajectories: Trajectory viewer + HF dataset links noted; replay not executed.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P2-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Publisher-measured tables; no independent reproduction or eval-script execution.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P2-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Average-performance chart images NOT machine-readable (tables only).",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P2-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Quickstart blocks read, not executed.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P2-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Screening MAYBE immutable (historical); this provisional MATERIAL is reviewer input only.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P2-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    }
+  ],
+  "profile_extensions": {},
+  "publication_extensions": {}
+}

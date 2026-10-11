@@ -1,0 +1,141 @@
+{
+ "schema_version": "2.0-rc1",
+ "issue_id": "2026-W40",
+ "evidence_task_id": "evidence:2026-W40:8fc7a0570317c9d0",
+ "basis": {
+  "task_sha256": "c0d42119744529b451eb85b42b03ac346b76e3c84815b8cc1172b1b8ea2c903d",
+  "screening_acceptance_sha256": "4bae12edc6a17d8f43188dedd6ced9716b4ae1559ff996cc6e7d15a23d5b564f",
+  "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+  "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+ },
+ "status": "VERIFIED",
+ "entities": [
+  {
+   "canonical_name": "NVIDIA NeMo Relay",
+   "canonical_url": "https://developer.nvidia.com/blog/tracing-agent-harness-behavior-with-nvidia-nemo-relay/",
+   "entity_id": "nvidia-nemo-relay",
+   "entity_type": "FRAMEWORK",
+   "organization": "NVIDIA"
+  }
+ ],
+ "artifact": {
+  "primary_subject_id": "nvidia-nemo-relay",
+  "artifact_type": "FRAMEWORK",
+  "canonical_name": "NVIDIA NeMo Relay",
+  "canonical_url": "https://developer.nvidia.com/blog/tracing-agent-harness-behavior-with-nvidia-nemo-relay/"
+ },
+ "temporal": {
+  "observed_at": "2026-10-10T06:30:00Z",
+  "events": []
+ },
+ "sources": [
+  {
+   "source_id": "src-1",
+   "url": "primary:developer.nvidia.com/blog/tracing-agent-harness-behavior-with-nvidia-nemo-relay/",
+   "source_class": "PRIMARY_OFFICIAL",
+   "title": "NVIDIA: NeMo Relay agent tracing (Sep 30)",
+   "published_at": null,
+   "accessed_at": "2026-10-10T06:30:00Z",
+   "role": "Discovery-bounded source used for factual verification"
+  }
+ ],
+ "claims": [
+  {
+   "statement_id": "claim-1",
+   "text": "NVIDIA NeMo Relay tutorial published Sep 30 (day-only, Oliveira/Najafian/Chung/Teknium): common observability layer (ATOF lifecycle streams, ATIF step trajectories, OpenTelemetry/OpenInference spans, Hermes integration).",
+   "subject_id": "nvidia-nemo-relay",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "PRIMARY_FACT",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "NVIDIA tutorial blog Sep 30, full body read in r4 (was locator-grade)."
+  },
+  {
+   "statement_id": "claim-2",
+   "text": "Hermes 0.21.1 + NeMo Relay 0.8.3; VALUE=42 terminal check + COLT 2026 conference research task with official-site verification; Phoenix OTLP export.",
+   "subject_id": "nvidia-nemo-relay",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "PRIMARY_FACT",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Tutorial versions + exact verifiers."
+  },
+  {
+   "statement_id": "claim-3",
+   "text": "ToolPerf Aug 6 108-run A/B: Qwen Coder 30B fixes 19/27->22/27 at higher calls/data/latency cost; Sonnet 4.5 flat; traces distinguish recovery cost from flailing.",
+   "subject_id": "nvidia-nemo-relay",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "PROJECT_CLAIM",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Publisher case study, attribution required."
+  },
+  {
+   "statement_id": "claim-4",
+   "text": "Tracing instrumentation/tutorial, NOT end-to-end reliability or security proof.",
+   "subject_id": "nvidia-nemo-relay",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "INFERENCE",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Editorial boundary."
+  }
+ ],
+ "metrics": [],
+ "limitations": [
+  {
+   "statement_id": "limitation-1",
+   "text": "Tutorial scope; companion repo + format docs not consumed.",
+   "subject_id": "nvidia-nemo-relay",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "INFERENCE",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Evidence boundary retained for downstream editorial use."
+  },
+  {
+   "statement_id": "limitation-2",
+   "text": "Live-web-search runs exploratory, not rankings.",
+   "subject_id": "nvidia-nemo-relay",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "INFERENCE",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Evidence boundary retained for downstream editorial use."
+  },
+  {
+   "statement_id": "limitation-3",
+   "text": "Day-only date.",
+   "subject_id": "nvidia-nemo-relay",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "INFERENCE",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Evidence boundary retained for downstream editorial use."
+  }
+ ],
+ "verification": {
+  "targets": [
+   {
+    "target": "nemo-relay-blog",
+    "status": "VERIFIED",
+    "finding": "Tutorial blog fully read; formats/versions/verifiers/case-study extracted into r4 excerpt.",
+    "subject_ids": [
+     "nvidia-nemo-relay"
+    ],
+    "source_ids": [
+     "src-1"
+    ]
+   }
+  ],
+  "unresolved_questions": [],
+  "contradictions": []
+ }
+}

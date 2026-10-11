@@ -1,0 +1,166 @@
+{
+ "schema_version": "2.0-rc1",
+ "issue_id": "2026-W40",
+ "evidence_task_id": "evidence:2026-W40:001e26a678b9c4fe",
+ "basis": {
+  "task_sha256": "035ed18b5a4a81723855ae62f0688a248788e461fbbd5097b86e1129823a8173",
+  "screening_acceptance_sha256": "4bae12edc6a17d8f43188dedd6ced9716b4ae1559ff996cc6e7d15a23d5b564f",
+  "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+  "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+ },
+ "status": "VERIFIED",
+ "entities": [
+  {
+   "canonical_name": "Ollama v0.35 decision-model support",
+   "canonical_url": "https://ollama.com/blog/ollama-now-supports-jev-style-decision-models",
+   "entity_id": "ollama-systemone",
+   "entity_type": "PRODUCT",
+   "organization": "Ollama"
+  }
+ ],
+ "artifact": {
+  "primary_subject_id": "ollama-systemone",
+  "artifact_type": "PRODUCT",
+  "canonical_name": "Ollama v0.35 decision-model support",
+  "canonical_url": "https://ollama.com/blog/ollama-now-supports-jev-style-decision-models"
+ },
+ "temporal": {
+  "observed_at": "2026-10-10T06:40:00Z",
+  "events": []
+ },
+ "sources": [
+  {
+   "source_id": "src-1",
+   "url": "primary:ollama.com/blog/ollama-now-supports-jev-style-decision-models",
+   "source_class": "PRIMARY_OFFICIAL",
+   "title": "Ollama v0.35 Jev-style decision endpoint (Sep 29)",
+   "published_at": null,
+   "accessed_at": "2026-10-10T06:40:00Z",
+   "role": "Discovery-bounded source used for factual verification"
+  }
+ ],
+ "claims": [
+  {
+   "statement_id": "claim-1",
+   "text": "Ollama added Jev-style decision-model support via /v1/systemone in v0.35 (Sep 28-29): typed choices/probabilities/scores instead of text; ticket triage, model routing, classification.",
+   "subject_id": "ollama-systemone",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "PRIMARY_FACT",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Ollama blog Sep 29, full body read in r4."
+  },
+  {
+   "statement_id": "claim-2",
+   "text": "Nimble (Bespoke Labs, open-source 9B) + Tev1 (Together AI, experimental 4B + 0.8B) pullable at launch; curl + TypeSafe SDK examples documented.",
+   "subject_id": "ollama-systemone",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "PRIMARY_FACT",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Vendor availability statement; release-note mirrors corroborate."
+  },
+  {
+   "statement_id": "claim-3",
+   "text": "Nimble 9B averaged 91ms per decision in Pac-Man example on M5 Max (illustrative, NOT universal); 13 public datasets / 3,880 decisions vs Jev 1.13 (Bespoke run).",
+   "subject_id": "ollama-systemone",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "VENDOR_CLAIM",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Vendor-measured illustrative figure."
+  },
+  {
+   "statement_id": "claim-4",
+   "text": "Serving interface, NOT a model release; precedes Oct 1 Clef/Decider weights; must not merge benchmarks.",
+   "subject_id": "ollama-systemone",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "INFERENCE",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Editorial boundary."
+  }
+ ],
+ "metrics": [],
+ "limitations": [
+  {
+   "statement_id": "limitation-1",
+   "text": "91ms is single-example illustrative, not universal performance.",
+   "subject_id": "ollama-systemone",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "INFERENCE",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Evidence boundary retained for downstream editorial use."
+  },
+  {
+   "statement_id": "limitation-2",
+   "text": "Registry/API docs diffs at Selection depth.",
+   "subject_id": "ollama-systemone",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "INFERENCE",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Evidence boundary retained for downstream editorial use."
+  },
+  {
+   "statement_id": "limitation-3",
+   "text": "Day-only date.",
+   "subject_id": "ollama-systemone",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "INFERENCE",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Evidence boundary retained for downstream editorial use."
+  }
+ ],
+ "verification": {
+  "targets": [
+   {
+    "target": "ollama-blog",
+    "status": "VERIFIED",
+    "finding": "Blog fully read; version/endpoint/models/latency/benchmark/examples extracted.",
+    "subject_ids": [
+     "ollama-systemone"
+    ],
+    "source_ids": [
+     "src-1"
+    ]
+   },
+   {
+    "target": "endpoint-spec",
+    "status": "UNRESOLVED",
+    "finding": "Endpoint schema + registry entries corroborated via release-note mirrors; docs diff pending.",
+    "subject_ids": [
+     "ollama-systemone"
+    ],
+    "source_ids": [
+     "src-1"
+    ]
+   },
+   {
+    "target": "registry-entries",
+    "status": "UNRESOLVED",
+    "finding": "Nimble/Tev1 pullability stated on blog; registry entries not individually opened.",
+    "subject_ids": [
+     "ollama-systemone"
+    ],
+    "source_ids": [
+     "src-1"
+    ]
+   }
+  ],
+  "unresolved_questions": [
+   "endpoint-spec: Endpoint schema + registry entries corroborated via release-note mirrors; docs diff pending.",
+   "registry-entries: Nimble/Tev1 pullability stated on blog; registry entries not individually opened."
+  ],
+  "contradictions": []
+ }
+}

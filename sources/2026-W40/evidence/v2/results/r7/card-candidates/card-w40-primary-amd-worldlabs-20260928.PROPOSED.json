@@ -1,0 +1,141 @@
+{
+ "schema_version": "2.0-rc1",
+ "issue_id": "2026-W40",
+ "evidence_task_id": "evidence:2026-W40:f099ee5308bad7a6",
+ "basis": {
+  "task_sha256": "970c6f794cce06b42965ab4c47b0f21c6b6c4fbc5086013a226c43af95eddce5",
+  "screening_acceptance_sha256": "4bae12edc6a17d8f43188dedd6ced9716b4ae1559ff996cc6e7d15a23d5b564f",
+  "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+  "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+ },
+ "status": "VERIFIED",
+ "entities": [
+  {
+   "canonical_name": "AMD acquisition agreement for World Labs",
+   "canonical_url": "https://newsroom.amd.com/news/amd-acquire-world-labs/",
+   "entity_id": "amd-worldlabs-deal",
+   "entity_type": "OTHER",
+   "organization": "AMD"
+  }
+ ],
+ "artifact": {
+  "primary_subject_id": "amd-worldlabs-deal",
+  "artifact_type": "OTHER",
+  "canonical_name": "AMD acquisition agreement for World Labs",
+  "canonical_url": "https://newsroom.amd.com/news/amd-acquire-world-labs/"
+ },
+ "temporal": {
+  "observed_at": "2026-10-10T06:30:00Z",
+  "events": []
+ },
+ "sources": [
+  {
+   "source_id": "src-1",
+   "url": "primary:newsroom.amd.com/news/amd-acquire-world-labs/",
+   "source_class": "PRIMARY_OFFICIAL",
+   "title": "AMD: definitive agreement to acquire World Labs (Sep 28)",
+   "published_at": null,
+   "accessed_at": "2026-10-10T06:30:00Z",
+   "role": "Discovery-bounded source used for factual verification"
+  }
+ ],
+ "claims": [
+  {
+   "statement_id": "claim-1",
+   "text": "AMD entered a definitive agreement to acquire World Labs (Fei-Fei Li) on Sep 28, 2026 (day-only): all-stock ~$8.2B vendor-stated value, expected close end-2026 pending regulatory/customary conditions; Li to join as EVP/chief scientist.",
+   "subject_id": "amd-worldlabs-deal",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "PRIMARY_FACT",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "AMD newsroom Sep 28 Santa Clara dateline, full body read."
+  },
+  {
+   "statement_id": "claim-2",
+   "text": "Rationale (vendor framing): spatial-intelligence model expertise informing hardware/software/systems roadmaps; open-ecosystem strategy.",
+   "subject_id": "amd-worldlabs-deal",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "VENDOR_CLAIM",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Spatial-intelligence models (generate/reconstruct/simulate 3D) + robotic learning rationale per release."
+  },
+  {
+   "statement_id": "claim-3",
+   "text": "Status is signed agreement, NOT completed acquisition; $8.2B has no independent financial validation in this evidence.",
+   "subject_id": "amd-worldlabs-deal",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "INFERENCE",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Editorial boundary; safe-harbor forward-looking statements."
+  }
+ ],
+ "metrics": [],
+ "limitations": [
+  {
+   "statement_id": "limitation-1",
+   "text": "Day-only date; no clock time.",
+   "subject_id": "amd-worldlabs-deal",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "INFERENCE",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Evidence boundary retained for downstream editorial use."
+  },
+  {
+   "statement_id": "limitation-2",
+   "text": "Valuation/close-certainty commentary not independently validated.",
+   "subject_id": "amd-worldlabs-deal",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "INFERENCE",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Evidence boundary retained for downstream editorial use."
+  },
+  {
+   "statement_id": "limitation-3",
+   "text": "Not a model release (lanes E/H/L corporate event).",
+   "subject_id": "amd-worldlabs-deal",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "INFERENCE",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Evidence boundary retained for downstream editorial use."
+  }
+ ],
+ "verification": {
+  "targets": [
+   {
+    "target": "amd-newsroom",
+    "status": "VERIFIED",
+    "finding": "Newsroom body read; agreement/terms/date-day extracted with safe-harbor caveat.",
+    "subject_ids": [
+     "amd-worldlabs-deal"
+    ],
+    "source_ids": [
+     "src-1"
+    ]
+   },
+   {
+    "target": "closing-conditions",
+    "status": "NOT_APPLICABLE",
+    "finding": "Regulatory filings / close confirmations out of scope for Discovery window; none sought.",
+    "subject_ids": [
+     "amd-worldlabs-deal"
+    ],
+    "source_ids": [
+     "src-1"
+    ]
+   }
+  ],
+  "unresolved_questions": [],
+  "contradictions": []
+ }
+}

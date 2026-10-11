@@ -1,0 +1,82 @@
+{
+  "schema": "W40_SOL_TARGETED_LANE_EXPANSION_R2",
+  "issue_id": "2026-W40",
+  "rechecked_jst": "2026-10-10",
+  "status": "SOURCE_GAP_FILL_EVIDENCE_REGISTERED__DISCOVERY_PENDING",
+  "new_leads": [
+    {
+      "candidate_id": "w40-sol-r2-audio-asr",
+      "date": "2026-09-30",
+      "class": "ORDINARY",
+      "lane": [
+        "F",
+        "B"
+      ],
+      "url": "https://developer.nvidia.com/blog/?p=122986",
+      "name": "NVIDIA Nemotron ASR Saudi dialect fine-tuning",
+      "finding": "First-party technical Sep30 account of Najdi/Hijazi speech adaptation using NeMo with 133.7 hours. Publisher reports WER 55.05% to 29.96% on its selected test split, not external reproduction.",
+      "scope": "Technical practitioner tutorial, may be less material than model launches; validate model/dataset and full test methodology before Selection."
+    },
+    {
+      "candidate_id": "w40-sol-r2-vss33",
+      "date": "2026-09-29",
+      "class": "ORDINARY",
+      "lane": [
+        "D",
+        "E",
+        "G"
+      ],
+      "url": "https://developer.nvidia.com/blog/lower-the-cost-of-building-and-running-visual-ai-agents-with-nvidia-vss-blueprint-3-3/",
+      "name": "NVIDIA VSS Blueprint 3.3 visual agent serving",
+      "finding": "First-party Sep29 technical release adds Build Vision Agent skill and Adaptive Efficient Video Sampling to compose VLM+RAG+MCP video workflows; vendor states 80% fewer visual input tokens and 46% more concurrent streams in its demonstrated conditions.",
+      "scope": "Vendor-specific demo; do not generalize efficiency without matching video workload and GPU/model configuration."
+    },
+    {
+      "candidate_id": "w40-sol-r2-nemo-relay",
+      "date": "2026-09-30",
+      "class": "ORDINARY",
+      "lane": [
+        "C",
+        "I",
+        "K"
+      ],
+      "url": "https://developer.nvidia.com/blog/tracing-agent-harness-behavior-with-nvidia-nemo-relay/",
+      "name": "NVIDIA NeMo Relay agent trace/observability",
+      "finding": "First-party Sep30 technical post introduces ATOF lifecycle streams, ATIF step trajectories and OpenTelemetry/OpenInference spans with Hermes integration.",
+      "scope": "Tracing instrumentation examples do not independently establish end-to-end reliability or security."
+    },
+    {
+      "candidate_id": "w40-sol-r2-amd-ross",
+      "date": "2026-09-30",
+      "class": "ORDINARY",
+      "lane": [
+        "C",
+        "H"
+      ],
+      "url": "https://newsroom.amd.com/news/amd-ross-agentic-ai-embedded-design-development/",
+      "name": "AMD Ross embedded-system design agent",
+      "finding": "First-party Sep30 AMD introduction covers documentation/commands/debug/workflow guidance across Vivado, Vitis, Vitis HLS, Vitis AI and ROCm AI.",
+      "scope": "Product coverage and claimed design cycle acceleration are promotional; architecture, access and validated metrics require further examination."
+    },
+    {
+      "candidate_id": "w40-sol-r2-dgx-spark64",
+      "date": "2026-10-02",
+      "class": "POST_TIME_UNRESOLVED",
+      "lane": [
+        "G",
+        "H"
+      ],
+      "url": "https://blogs.nvidia.com/blog/local-ai-dgx-spark-64gb-sync/",
+      "name": "NVIDIA DGX Spark 64GB announcement",
+      "finding": "Vendor article date Oct2 announces 64GB unified-memory SKU and Nvidia Sync Cluster Assistant; planned third-party availability Oct23, not already shipping during W40.",
+      "scope": "The article lacks confirmed publication time relative to W40 22:00 UTC cutoff. HOLD timestamp until precise publication evidence."
+    }
+  ],
+  "checks": [
+    "Audio (F) had a Sep30 technical item. Prior GROK 'quiet' claim disproven at discovery level.",
+    "Video/visual AI (D/E) had Sep29 NVIDIA VSS 3.3; not a new generative video foundation model.",
+    "Independent reproducibility and generalizability of vendor benchmarks not established.",
+    "Search for hardware announcements on Oct2 requires full cutoff time, not just calendar date.",
+    "Broader open-weight, research benchmark, security and audio/video completeness checks still required."
+  ]
+}

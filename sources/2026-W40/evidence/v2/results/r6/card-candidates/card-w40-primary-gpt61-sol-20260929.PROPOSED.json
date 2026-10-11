@@ -1,0 +1,152 @@
+{
+ "schema_version": "2.0-rc1",
+ "issue_id": "2026-W40",
+ "evidence_task_id": "evidence:2026-W40:cfe89a2833c13d94",
+ "basis": {
+  "task_sha256": "9b5cd7eb5b392eb969b66a68d5f641f48f98a3adf3cbc3fbf075fc067671dde3",
+  "screening_acceptance_sha256": "4bae12edc6a17d8f43188dedd6ced9716b4ae1559ff996cc6e7d15a23d5b564f",
+  "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+  "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+ },
+ "status": "VERIFIED",
+ "entities": [
+  {
+   "canonical_name": "GPT-6.1 Sol",
+   "canonical_url": "https://openai.com/index/introducing-gpt-6-1-sol/",
+   "entity_id": "openai-gpt61-sol",
+   "entity_type": "MODEL",
+   "organization": "OpenAI"
+  }
+ ],
+ "artifact": {
+  "primary_subject_id": "openai-gpt61-sol",
+  "artifact_type": "MODEL",
+  "canonical_name": "GPT-6.1 Sol",
+  "canonical_url": "https://openai.com/index/introducing-gpt-6-1-sol/"
+ },
+ "temporal": {
+  "observed_at": "2026-10-10T06:40:00Z",
+  "events": []
+ },
+ "sources": [
+  {
+   "source_id": "src-1",
+   "url": "primary:openai.com/index/introducing-gpt-6-1-sol/",
+   "source_class": "PRIMARY_OFFICIAL",
+   "title": "OpenAI: GPT-6.1 Sol (Sep 29)",
+   "published_at": null,
+   "accessed_at": "2026-10-10T06:40:00Z",
+   "role": "Discovery-bounded source used for factual verification"
+  }
+ ],
+ "claims": [
+  {
+   "statement_id": "claim-1",
+   "text": "OpenAI launched GPT-6.1 Sol on Sep 29, 2026 (day-only) as upgrade to GPT-6 Sol: near-Astra intelligence at one-fifth Astra standard prices.",
+   "subject_id": "openai-gpt61-sol",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "PRIMARY_FACT",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "OpenAI announcement page Sep 29 + API changelog Sep 29 entries, full bodies read."
+  },
+  {
+   "statement_id": "claim-2",
+   "text": "Standard $2 input / $10 output / $0.10 cached input per 1M (cached 95% below standard, 50% below GPT-6 Sol cached); Astra $10/$50/$1.00; Luna $0.10/$0.50/$0.01.",
+   "subject_id": "openai-gpt61-sol",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "PRIMARY_FACT",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Vendor price card (announcement + changelog converge: $2/$10/$0.10 cached; changelog adds $2.50 cache-write, 272K threshold)."
+  },
+  {
+   "statement_id": "claim-3",
+   "text": "DeepSWE v1.1 matches Astra at ~1/5 cost (+6.4pp over GPT-6 Sol); GDP.pdf above Opus 5.5 with fallbacks at <1/2 cost; AutomationBench +2.2pp over Opus 5.5; OSWorld 2.0 offline +7pp over Sol; Terminal-Bench Science >2x Sol at <1/2 cost; factuality error 11.4%->7.7% low effort.",
+   "subject_id": "openai-gpt61-sol",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "VENDOR_CLAIM",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Vendor-run evals in research/API environment; competitor scores from public reports."
+  },
+  {
+   "statement_id": "claim-4",
+   "text": "ChatGPT Work + Codex for Plus/Pro/Business/Enterprise/Edu from Sep 29; NOT in Chat; API gpt-6.1-sol; multi-agent beta.",
+   "subject_id": "openai-gpt61-sol",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "PRIMARY_FACT",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Vendor availability statement; Ultrafast for 6.1 Sol coming soon (Oct 8 post-window, not W40)."
+  }
+ ],
+ "metrics": [],
+ "limitations": [
+  {
+   "statement_id": "limitation-1",
+   "text": "All benchmark deltas vendor-run; independent reproduction pending.",
+   "subject_id": "openai-gpt61-sol",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "INFERENCE",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Evidence boundary retained for downstream editorial use."
+  },
+  {
+   "statement_id": "limitation-2",
+   "text": "Near-Astra is vendor framing across selected evals; Astra highest on hardest science (68.1%).",
+   "subject_id": "openai-gpt61-sol",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "INFERENCE",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Evidence boundary retained for downstream editorial use."
+  },
+  {
+   "statement_id": "limitation-3",
+   "text": "Day-only date.",
+   "subject_id": "openai-gpt61-sol",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "INFERENCE",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Evidence boundary retained for downstream editorial use."
+  }
+ ],
+ "verification": {
+  "targets": [
+   {
+    "target": "openai-gpt61-page",
+    "status": "VERIFIED",
+    "finding": "Announcement + changelog Sep 29 entries read; release/pricing/benchmarks/availability extracted.",
+    "subject_ids": [
+     "openai-gpt61-sol"
+    ],
+    "source_ids": [
+     "src-1"
+    ]
+   },
+   {
+    "target": "pricing-availability",
+    "status": "VERIFIED",
+    "finding": "Price card cross-checked announcement vs changelog ($2.50 cache-write + 272K threshold only in changelog).",
+    "subject_ids": [
+     "openai-gpt61-sol"
+    ],
+    "source_ids": [
+     "src-1"
+    ]
+   }
+  ],
+  "unresolved_questions": [],
+  "contradictions": []
+ }
+}

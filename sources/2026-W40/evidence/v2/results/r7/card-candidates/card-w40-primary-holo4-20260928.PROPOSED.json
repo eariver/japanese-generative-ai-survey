@@ -1,0 +1,165 @@
+{
+ "schema_version": "2.0-rc1",
+ "issue_id": "2026-W40",
+ "evidence_task_id": "evidence:2026-W40:86a1124feba9733b",
+ "basis": {
+  "task_sha256": "7b917012f4a6f31309d15b4a34338a76cdcabaabf7b94be1c7547a9a3701ed2b",
+  "screening_acceptance_sha256": "4bae12edc6a17d8f43188dedd6ced9716b4ae1559ff996cc6e7d15a23d5b564f",
+  "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+  "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+ },
+ "status": "VERIFIED",
+ "entities": [
+  {
+   "canonical_name": "Holo4 agent models",
+   "canonical_url": "https://hcompany.ai/newsroom/holo4",
+   "entity_id": "hcompany-holo4",
+   "entity_type": "MODEL_FAMILY",
+   "organization": "H Company"
+  }
+ ],
+ "artifact": {
+  "primary_subject_id": "hcompany-holo4",
+  "artifact_type": "OPEN_WEIGHT",
+  "canonical_name": "Holo4 agent models",
+  "canonical_url": "https://hcompany.ai/newsroom/holo4"
+ },
+ "temporal": {
+  "observed_at": "2026-10-10T06:30:00Z",
+  "events": []
+ },
+ "sources": [
+  {
+   "source_id": "src-1",
+   "url": "primary:hcompany.ai/newsroom/holo4",
+   "source_class": "PRIMARY_OFFICIAL",
+   "title": "H Company: Holo4 27B + 35B-A3B (Sep 28, day-only)",
+   "published_at": null,
+   "accessed_at": "2026-10-10T06:30:00Z",
+   "role": "Discovery-bounded source used for factual verification"
+  }
+ ],
+ "claims": [
+  {
+   "statement_id": "claim-1",
+   "text": "H Company released Holo4 series Sep 28, 2026 (day-only): 27B dense + 35B-A3B MoE computer-use/GUI/code/MCP/API agent models + Holotron4 Nano; API + HF weights same day.",
+   "subject_id": "hcompany-holo4",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "PRIMARY_FACT",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "H Company newsroom + HF blog + models license page, full bodies read (r2)."
+  },
+  {
+   "statement_id": "claim-2",
+   "text": "Licenses materially different: 27B = research-only noncommercial; 35B-A3B = Apache-2.0 fully open; 256K context both; API paid tier; weights BF16/FP8/NVFP4/GGUF.",
+   "subject_id": "hcompany-holo4",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "PRIMARY_FACT",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Models license page (authoritative split)."
+  },
+  {
+   "statement_id": "claim-3",
+   "text": "OSWorld 85.2%/$0.08 (27B) vs 80.8%/$0.05 (35B); OSWorld2 61.7%/41.5%/$1.22 vs 30.9%/12.3%/$0.61; AutomationBench 45.4%/$0.05 vs 34.5%/$0.02 (480/600 overlap training split; held-out 49.3%/31.7%); AndroidWorld 85.1%/77.6%; Task Factory 10k tasks.",
+   "subject_id": "hcompany-holo4",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "VENDOR_CLAIM",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Publisher-run in H harness with footnoted mixes; costs at H API vs Alibaba list."
+  },
+  {
+   "statement_id": "claim-4",
+   "text": "Trajectories open (viewer + HF dataset); SFT 127B tokens + 2 RL LoRA experts + merge; harness memory/shell rebuild with OSWorld trajectory chart.",
+   "subject_id": "hcompany-holo4",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "VENDOR_CLAIM",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Reproducibility posture."
+  }
+ ],
+ "metrics": [],
+ "limitations": [
+  {
+   "statement_id": "limitation-1",
+   "text": "Publisher-run benchmarks; private-set eval pending; no independent reproduction.",
+   "subject_id": "hcompany-holo4",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "INFERENCE",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Evidence boundary retained for downstream editorial use."
+  },
+  {
+   "statement_id": "limitation-2",
+   "text": "Holotron4 Nano is a sub-model, not separate W40 event.",
+   "subject_id": "hcompany-holo4",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "INFERENCE",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Evidence boundary retained for downstream editorial use."
+  },
+  {
+   "statement_id": "limitation-3",
+   "text": "Day-only date.",
+   "subject_id": "hcompany-holo4",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "INFERENCE",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Evidence boundary retained for downstream editorial use."
+  }
+ ],
+ "verification": {
+  "targets": [
+   {
+    "target": "holo4-newsroom",
+    "status": "VERIFIED",
+    "finding": "Newsroom + HF blog + license page read; release/licenses/benchmarks/trajectories extracted.",
+    "subject_ids": [
+     "hcompany-holo4"
+    ],
+    "source_ids": [
+     "src-1"
+    ]
+   },
+   {
+    "target": "hf-weights-license",
+    "status": "VERIFIED",
+    "finding": "27B vs 35B license/API/weights distinguished on models page.",
+    "subject_ids": [
+     "hcompany-holo4"
+    ],
+    "source_ids": [
+     "src-1"
+    ]
+   },
+   {
+    "target": "trajectories",
+    "status": "UNRESOLVED",
+    "finding": "Trajectory viewer + HF dataset links noted; replay not executed.",
+    "subject_ids": [
+     "hcompany-holo4"
+    ],
+    "source_ids": [
+     "src-1"
+    ]
+   }
+  ],
+  "unresolved_questions": [
+   "trajectories: Trajectory viewer + HF dataset links noted; replay not executed."
+  ],
+  "contradictions": []
+ }
+}

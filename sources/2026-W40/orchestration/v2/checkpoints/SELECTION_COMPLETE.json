@@ -1,0 +1,55 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W40",
+  "from_state": "SELECTION_COMPLETE",
+  "to_state": "ARCHITECTURE_ESTABLISHED",
+  "checkpoints": [
+    "architecture"
+  ],
+  "recorded_at": "2026-10-10T19:01:03Z",
+  "implementation": {
+    "repository_commit_sha": "512937f54c32f0deaff6734b27bb11a997cee6f1",
+    "orchestrator_version": "survey-production-core-v2/0.15-postintegration-transport-thematic"
+  },
+  "contract": {
+    "pipeline_contract_version": "2.0-rc1",
+    "pipeline_contract_sha256": "ee89796245c22072cec98f34931180214a4928c24f399280793cd6420a4c8e71",
+    "quality_contract_version": "2.0-rc1",
+    "quality_contract_sha256": "b5b955d524fb438c0f1b2c9490bea1da2083e79028d67a55ca424bbfc20f2958",
+    "research_profile_version": "2.0-rc1",
+    "research_profile_sha256": "666f8a064b190ffd35216e26d6fdf2dd0fa932cac7b1b0d6448e262ded77b9a8",
+    "publication_profile_version": "2.0-rc1",
+    "publication_profile_sha256": "99adff93ff443e02bdcce639ce5fc4d4c959ee45a804da70efc4277db57fdddb"
+  },
+  "artifacts": [
+    {
+      "name": "architecture-review-attention",
+      "path": "sources/2026-W40/architecture-review-attention-v2.json",
+      "sha256": "70ac43bdd0da014009f99abaf3aff00db8bdfbd9e44940ba087abf4cb5949319"
+    },
+    {
+      "name": "architecture-review-summary",
+      "path": "sources/2026-W40/architecture-review-summary-v2.json",
+      "sha256": "32f39de0b7cb3e469acf74668c420c246fb67f273ecd0c37bda91557eaa98d30"
+    },
+    {
+      "name": "issue-architecture",
+      "path": "sources/2026-W40/architecture-v2.json",
+      "sha256": "a9b5c1182671bb913fbf56972907e19731e5ba4a928deaca9903a0d3a1461a44"
+    }
+  ],
+  "reviews": [
+    {
+      "check_id": "CORE_STAGE_CONTRACT",
+      "kind": "DETERMINISTIC",
+      "status": "PASS",
+      "executor": "Survey Production Core v2 survey_stage_validation_v2.py",
+      "evidence": "W40 r20 Eq.5 single-field regeneration: 9 packages P1-P8 placing all 28 SELECTED (20 PRIMARY once each + 8 SUPPORTING); 113/113 literal Evidence boundaries preserved; old/new Architecture diff exactly /packages/5/must_cover_requirements/1 (Eq.5 VERIFIED status with arXiv v1 S4.2 + r16 note binding, unrelated materials bounded UNVERIFIED); review summary READY_FOR_ARCHITECTURE_REVIEW derived exactly; attention VALID; HOLDs excluded; operator invalidation seq 0002 (human_decision false) precedes; Human Gate pending.",
+      "result": {
+        "path": "sources/2026-W40/execution/validation/architecture-stage-validation-r3.json",
+        "sha256": "a5d7abcea00abc25e545faf422eec5b83151ad9748da63eaddfbedaff913ba73"
+      }
+    }
+  ],
+  "summary": "W40 r20 Eq.5 single-field regenerated Architecture placing 28 SELECTED with 113/113 boundaries; review READY; r20 erratum in packet; Human Architecture Review pending."
+}

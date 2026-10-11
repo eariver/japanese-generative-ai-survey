@@ -1,0 +1,165 @@
+{
+ "schema_version": "2.0-rc1",
+ "issue_id": "2026-W40",
+ "evidence_task_id": "evidence:2026-W40:36b791f0787e8ea4",
+ "basis": {
+  "task_sha256": "1c66b106ddb8bfa50f662a960f0162795effa04ec024219f079dd08c68f30a5d",
+  "screening_acceptance_sha256": "4bae12edc6a17d8f43188dedd6ced9716b4ae1559ff996cc6e7d15a23d5b564f",
+  "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+  "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+ },
+ "status": "VERIFIED",
+ "entities": [
+  {
+   "canonical_name": "Nemotron Saudi Arabic ASR adaptation",
+   "canonical_url": "https://developer.nvidia.com/blog/?p=122986",
+   "entity_id": "nvidia-nemotron-asr",
+   "entity_type": "OTHER",
+   "organization": "NVIDIA"
+  }
+ ],
+ "artifact": {
+  "primary_subject_id": "nvidia-nemotron-asr",
+  "artifact_type": "OTHER",
+  "canonical_name": "Nemotron Saudi Arabic ASR adaptation",
+  "canonical_url": "https://developer.nvidia.com/blog/?p=122986"
+ },
+ "temporal": {
+  "observed_at": "2026-10-10T06:30:00Z",
+  "events": []
+ },
+ "sources": [
+  {
+   "source_id": "src-1",
+   "url": "primary:developer.nvidia.com/blog/?p=122986",
+   "source_class": "PRIMARY_OFFICIAL",
+   "title": "NVIDIA: Nemotron ASR Saudi-dialect adaptation (Sep 30)",
+   "published_at": null,
+   "accessed_at": "2026-10-10T06:30:00Z",
+   "role": "Discovery-bounded source used for factual verification"
+  }
+ ],
+ "claims": [
+  {
+   "statement_id": "claim-1",
+   "text": "Nemotron Saudi-dialect adaptation tutorial Sep 30 (day-only, Khaouja et al.): NeMo fine-tune of Nemotron 3.5 ASR (40 locales streaming) on SADA 2022 + FLEURS; 133.7h retained (103,559/125,490, 82.5%).",
+   "subject_id": "nvidia-nemotron-asr",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "PRIMARY_FACT",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "NVIDIA tutorial blog Sep 30, full body incl. tables/code read in r4 (was locator-grade)."
+  },
+  {
+   "statement_id": "claim-2",
+   "text": "Target WER 55.05%->29.96% (CER 31.63%->12.18%); full SADA 58.84%->35.61%; English 11.04%->10.42% (no forgetting); 24 layers all-best (29.96%) vs top-8 32.32%; 230.4M trainable; 2x RTX PRO 6000 ~4.5h/12k steps; beam-8 + [56,13] 27.25% (-2.71, +800ms).",
+   "subject_id": "nvidia-nemotron-asr",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "PROJECT_CLAIM",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Publisher-measured on stated splits/configs."
+  },
+  {
+   "statement_id": "claim-3",
+   "text": "NeMo defaults mostly untuned; replay protects only represented data; findings tied to this data volume; Diarization open model (8 speakers) extends to speaker-attributed transcripts.",
+   "subject_id": "nvidia-nemotron-asr",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "PRIMARY_FACT",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Tutorial scope with explicit non-generalization caveats."
+  },
+  {
+   "statement_id": "claim-4",
+   "text": "Disproves audio-quiet at discovery level; practitioner tutorial, NOT universal performance or external reproduction.",
+   "subject_id": "nvidia-nemotron-asr",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "INFERENCE",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Discovery-level significance."
+  }
+ ],
+ "metrics": [],
+ "limitations": [
+  {
+   "statement_id": "limitation-1",
+   "text": "Publisher tutorial; no external reproduction.",
+   "subject_id": "nvidia-nemotron-asr",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "INFERENCE",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Evidence boundary retained for downstream editorial use."
+  },
+  {
+   "statement_id": "limitation-2",
+   "text": "SADA/FLEURS split-specific; not every dialect/deployment.",
+   "subject_id": "nvidia-nemotron-asr",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "INFERENCE",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Evidence boundary retained for downstream editorial use."
+  },
+  {
+   "statement_id": "limitation-3",
+   "text": "Notebook/skill/diarization blog linked but not consumed.",
+   "subject_id": "nvidia-nemotron-asr",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "INFERENCE",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Evidence boundary retained for downstream editorial use."
+  },
+  {
+   "statement_id": "limitation-4",
+   "text": "Day-only date.",
+   "subject_id": "nvidia-nemotron-asr",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "INFERENCE",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Evidence boundary retained for downstream editorial use."
+  }
+ ],
+ "verification": {
+  "targets": [
+   {
+    "target": "nemotron-blog",
+    "status": "VERIFIED",
+    "finding": "Tutorial fully read incl. tables/code; corpus/method/results/caveats extracted.",
+    "subject_ids": [
+     "nvidia-nemotron-asr"
+    ],
+    "source_ids": [
+     "src-1"
+    ]
+   },
+   {
+    "target": "dataset-splits",
+    "status": "UNRESOLVED",
+    "finding": "SADA/FLEURS dataset cards + notebook + skill + diarization blog not opened.",
+    "subject_ids": [
+     "nvidia-nemotron-asr"
+    ],
+    "source_ids": [
+     "src-1"
+    ]
+   }
+  ],
+  "unresolved_questions": [
+   "dataset-splits: SADA/FLEURS dataset cards + notebook + skill + diarization blog not opened."
+  ],
+  "contradictions": []
+ }
+}

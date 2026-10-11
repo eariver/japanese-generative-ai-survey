@@ -1,0 +1,143 @@
+{
+ "schema_version": "2.0-rc1",
+ "issue_id": "2026-W40",
+ "evidence_task_id": "evidence:2026-W40:62e6328a3c70a007",
+ "basis": {
+  "task_sha256": "c35917c2ad2b8086aeead53658f88dedc1cb59f019a7de33781c62cb53dd4bc4",
+  "screening_acceptance_sha256": "4bae12edc6a17d8f43188dedd6ced9716b4ae1559ff996cc6e7d15a23d5b564f",
+  "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+  "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+ },
+ "status": "VERIFIED",
+ "entities": [
+  {
+   "canonical_name": "NVIDIA VSS Blueprint 3.3",
+   "canonical_url": "https://developer.nvidia.com/blog/lower-the-cost-of-building-and-running-visual-ai-agents-with-nvidia-vss-blueprint-3-3/",
+   "entity_id": "nvidia-vss33",
+   "entity_type": "FRAMEWORK",
+   "organization": "NVIDIA"
+  }
+ ],
+ "artifact": {
+  "primary_subject_id": "nvidia-vss33",
+  "artifact_type": "FRAMEWORK",
+  "canonical_name": "NVIDIA VSS Blueprint 3.3",
+  "canonical_url": "https://developer.nvidia.com/blog/lower-the-cost-of-building-and-running-visual-ai-agents-with-nvidia-vss-blueprint-3-3/"
+ },
+ "temporal": {
+  "observed_at": "2026-10-10T06:30:00Z",
+  "events": []
+ },
+ "sources": [
+  {
+   "source_id": "src-1",
+   "url": "primary:developer.nvidia.com/blog/lower-the-cost-of-building-and-running-visual-ai-agents-with-nvidia-vss-blueprint-3-3/",
+   "source_class": "PRIMARY_OFFICIAL",
+   "title": "NVIDIA: VSS Blueprint 3.3 visual agents (Sep 29)",
+   "published_at": null,
+   "accessed_at": "2026-10-10T06:30:00Z",
+   "role": "Discovery-bounded source used for factual verification"
+  }
+ ],
+ "claims": [
+  {
+   "statement_id": "claim-1",
+   "text": "NVIDIA VSS Blueprint 3.3 released Sep 29 (day-only, Moustafa/Sinha/Agarwal): Build Vision Agent skill (vss-build-vision-ai) + Adaptive Efficient Video Sampling (cosine patch prune + event batching); VLM+RAG+MCP video workflows on Cosmos + Nemotron.",
+   "subject_id": "nvidia-vss33",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "PRIMARY_FACT",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "NVIDIA tech blog Sep 29, full body read in r4 (was locator-grade)."
+  },
+  {
+   "statement_id": "claim-2",
+   "text": "Bottling-line demo: live previewable deployment <30min on 2x RTX PRO 6000 Blackwell; alert latency -17% (1021->844ms); +46% concurrent streams (13->19); 60-min summary ~half time, -80% VLM tokens (Cosmos 3 Super FP8); results vary by scene/threshold.",
+   "subject_id": "nvidia-vss33",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "VENDOR_CLAIM",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Vendor-demonstrated on stated hardware/config with variance caveat."
+  },
+  {
+   "statement_id": "claim-3",
+   "text": "Reference architecture ONLY, not a generative video foundation model; Oct 1 9am PT live session is post-window, not W40 event.",
+   "subject_id": "nvidia-vss33",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "INFERENCE",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Editorial boundary + post-window session excluded."
+  }
+ ],
+ "metrics": [],
+ "limitations": [
+  {
+   "statement_id": "limitation-1",
+   "text": "Vendor-demo figures; do NOT generalize efficiency.",
+   "subject_id": "nvidia-vss33",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "INFERENCE",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Evidence boundary retained for downstream editorial use."
+  },
+  {
+   "statement_id": "limitation-2",
+   "text": "Skills spec/repo branch not consumed.",
+   "subject_id": "nvidia-vss33",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "INFERENCE",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Evidence boundary retained for downstream editorial use."
+  },
+  {
+   "statement_id": "limitation-3",
+   "text": "Day-only date.",
+   "subject_id": "nvidia-vss33",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "INFERENCE",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Evidence boundary retained for downstream editorial use."
+  }
+ ],
+ "verification": {
+  "targets": [
+   {
+    "target": "vss-tech-blog",
+    "status": "VERIFIED",
+    "finding": "Tech blog fully read; skill/EVS/figures/configs/session-date extracted verbatim into r4 excerpt.",
+    "subject_ids": [
+     "nvidia-vss33"
+    ],
+    "source_ids": [
+     "src-1"
+    ]
+   },
+   {
+    "target": "workload-config",
+    "status": "UNRESOLVED",
+    "finding": "Workload/GPU/model matrix + skills spec need repo capture at Selection depth.",
+    "subject_ids": [
+     "nvidia-vss33"
+    ],
+    "source_ids": [
+     "src-1"
+    ]
+   }
+  ],
+  "unresolved_questions": [
+   "workload-config: Workload/GPU/model matrix + skills spec need repo capture at Selection depth."
+  ],
+  "contradictions": []
+ }
+}

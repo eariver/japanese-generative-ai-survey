@@ -1,0 +1,34 @@
+% LAYOUT-01: keep section head, title and opening together in one column.
+\Needspace{12\baselineskip}
+\section{Open Reasoning}
+\sectionkicker{JAPANESE OPEN WEIGHTS}
+\begin{wideflow}
+{\Large\bfseries 公開ウェイトの推論モデル――Holo4の2機種とELYZA Thinkingの日本語特化}\par
+\smallskip
+{\color{SurveyMuted}汎用と日本語特化の2系統。ライセンスの切り分け、重みの特定、ベンチマークの分母をそろえて読む。}\par
+\end{wideflow}
+
+H Companyは9月28日、エージェント向けモデルHolo4の2機種をリリースした\cite{holo4}。27Bの高密モデルと35B-A3BのMixture-of-Expertsモデルは名称が似ていても別物として扱う。高密モデルは研究・非商用ライセンス、MoEモデルはApache-2.0であり、この切り分けを取り違えると利用可否の判断が崩れる。OSWorldで85.2\%と80.8\%、OSWorld2で61.7\%と30.9\%と置かれるが、非公開評価セットの扱いは積み残しで、独立した再現はない。Holo4 Nanoは下位機種であり、別の今週の出来事にはしない。
+
+ELYZAは10月2日、Thinking LLM-jp-4の2機種を公開した\cite{elyza}。33Bモデルが総合61.69（日本語62.18・英語59.72、土台の思考モデル51.50から+10.19）、MoEモデルが総合58.46（日本語59.61・英語55.94、土台46.38から+12.08）と置かれる。日本語差分としてM-IFEval日本語版やNejumi BFCL日本語版、JHumanEval、JMMLU、LiveCodeBenchの土台比改善が示される。手法は日本語寄せの中間学習とプログラム検証つきSFT、検証可能問題の強化学習という構成で、発表者の計測として言語別スコアつきで載せる。能動パラメータ数の exact な値は置き場の表に記されていない。比較表は一次資料の公表数値から再構成したものである。重みはコミットSHAで特定し（33Bは6ca556b2…、MoEは5260ecc2…）、ライセンスはApache-2.0である。軌跡表示盤と言語モデル用データセットへの言及はあるが、再生実行まではしていない。
+
+読み分けの要点は、汎用エージェント用途のHolo4と日本語特化のELYZAという方法の違いにある。Holo4はOSWorld系の汎用操作ベンチマーク、ELYZAは日本語を含む言語別スコアで測られており、物差しが違うため単純な横並びの優劣にはしない。手法・分母・ライセンス・重みの特定可能性をそろえた比較表を添える。能動パラメータ数の exact な値は一次資料に記されておらず、表にも載せない。
+
+\begin{table}[h]
+\centering\footnotesize
+\begin{tabularx}{0.98\linewidth}{@{}lXX@{}}
+\toprule
+ & Holo4（汎用） & ELYZA Thinking（日本語特化） \\
+\midrule
+機種とライセンス & 27B高密（研究・非商用）と35B-A3B MoE（Apache-2.0） & 33BとMoE（いずれもApache-2.0、SHA特定） \\
+ベンチマーク & OSWorld 85.2/80.8・OSWorld2 61.7/30.9（発表者、私的セット積み残し） & 33B総合61.69（日本語62.18・英語59.72、土台比+10.19）・MoE総合58.46（日本語59.61・英語55.94、土台比+12.08）（発表者、能動数は非記載） \\
+\bottomrule
+\end{tabularx}
+\caption{Holo4とELYZAの切り分け。物差しが異なるため横断順位にはしない。}
+\end{table}
+
+% LAYOUT-02: keep this boundary box unbroken in one column; table/content unchanged.
+\Needspace{8\baselineskip}
+\begin{claimboundary}[資料と評価の境界]
+2機種ずつの区別と許諾の違いは利用の前提であり、取り違えない。公開の物差しは発表側の計測であり、私的な評価集合の話は積み残し、独立の再現はない。再生の軌跡を見る盤面の言及は再走の証拠ではない。
+\end{claimboundary}

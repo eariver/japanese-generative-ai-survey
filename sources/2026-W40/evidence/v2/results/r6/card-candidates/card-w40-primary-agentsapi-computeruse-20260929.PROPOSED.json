@@ -1,0 +1,130 @@
+{
+ "schema_version": "2.0-rc1",
+ "issue_id": "2026-W40",
+ "evidence_task_id": "evidence:2026-W40:428445019d4e2fe4",
+ "basis": {
+  "task_sha256": "21e2a1457086d82c3f4f780be3db99eb62098f14b568be7a93d74103b0548c7a",
+  "screening_acceptance_sha256": "4bae12edc6a17d8f43188dedd6ced9716b4ae1559ff996cc6e7d15a23d5b564f",
+  "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+  "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+ },
+ "status": "VERIFIED",
+ "entities": [
+  {
+   "canonical_name": "OpenAI Agents API computer use",
+   "canonical_url": "https://developers.openai.com/api/docs/changelog",
+   "entity_id": "openai-agentsapi-cu",
+   "entity_type": "API",
+   "organization": "OpenAI"
+  }
+ ],
+ "artifact": {
+  "primary_subject_id": "openai-agentsapi-cu",
+  "artifact_type": "API",
+  "canonical_name": "OpenAI Agents API computer use",
+  "canonical_url": "https://developers.openai.com/api/docs/changelog"
+ },
+ "temporal": {
+  "observed_at": "2026-10-10T06:40:00Z",
+  "events": []
+ },
+ "sources": [
+  {
+   "source_id": "src-1",
+   "url": "primary:developers.openai.com/api/docs/changelog",
+   "source_class": "PRIMARY_OFFICIAL",
+   "title": "OpenAI: Agents API computer use (Sep 29 changelog)",
+   "published_at": null,
+   "accessed_at": "2026-10-10T06:40:00Z",
+   "role": "Discovery-bounded source used for factual verification"
+  }
+ ],
+ "claims": [
+  {
+   "statement_id": "claim-1",
+   "text": "Agents API added hosted-browser computer use Sep 29: agents complete tasks in OpenAI-hosted browser, website access approvals and sign-in handled by the application.",
+   "subject_id": "openai-agentsapi-cu",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "PRIMARY_FACT",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "OpenAI API changelog Sep 29 section, full text read in r4."
+  },
+  {
+   "statement_id": "claim-2",
+   "text": "Available via API + Codex/Work Pro500/Enterprise per recap; permission model is application-handled.",
+   "subject_id": "openai-agentsapi-cu",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "PRIMARY_FACT",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Recap + changelog converge; distinct API from dots/Work."
+  },
+  {
+   "statement_id": "claim-3",
+   "text": "Oct 6 Decisions beta + Oct 8 6.1-Ultrafast are post-window; Sep 25 image-encoding fix is in-window background explaining stale-score footnote.",
+   "subject_id": "openai-agentsapi-cu",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "INFERENCE",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Adjacent post-window entries identified and excluded."
+  }
+ ],
+ "metrics": [],
+ "limitations": [
+  {
+   "statement_id": "limitation-1",
+   "text": "Changelog states WHAT shipped, not browser security reliability; no safety inference.",
+   "subject_id": "openai-agentsapi-cu",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "INFERENCE",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Evidence boundary retained for downstream editorial use."
+  },
+  {
+   "statement_id": "limitation-2",
+   "text": "Computer-use guide docs not opened.",
+   "subject_id": "openai-agentsapi-cu",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "INFERENCE",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Evidence boundary retained for downstream editorial use."
+  },
+  {
+   "statement_id": "limitation-3",
+   "text": "Day-only date.",
+   "subject_id": "openai-agentsapi-cu",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "INFERENCE",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Evidence boundary retained for downstream editorial use."
+  }
+ ],
+ "verification": {
+  "targets": [
+   {
+    "target": "agents-changelog-diff",
+    "status": "VERIFIED",
+    "finding": "Changelog Sep 29 entries read verbatim (computer-use + GPT-6.1 + Astra Ultrafast + Sep 25 fix); exact text archived in r4 excerpt.",
+    "subject_ids": [
+     "openai-agentsapi-cu"
+    ],
+    "source_ids": [
+     "src-1"
+    ]
+   }
+  ],
+  "unresolved_questions": [],
+  "contradictions": []
+ }
+}

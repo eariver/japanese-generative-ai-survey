@@ -1,0 +1,166 @@
+{
+ "schema_version": "2.0-rc1",
+ "issue_id": "2026-W40",
+ "evidence_task_id": "evidence:2026-W40:a624197faacfec60",
+ "basis": {
+  "task_sha256": "e009be5d2bc6122bd58a0a173c30f039a0b0ef3bd00520b8adce4a34c3e39853",
+  "screening_acceptance_sha256": "4bae12edc6a17d8f43188dedd6ced9716b4ae1559ff996cc6e7d15a23d5b564f",
+  "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+  "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+ },
+ "status": "VERIFIED",
+ "entities": [
+  {
+   "canonical_name": "SynthID Bio",
+   "canonical_url": "https://deepmind.google/blog/introducing-synthid-bio/",
+   "entity_id": "deepmind-synthid-bio",
+   "entity_type": "PRODUCT",
+   "organization": "Google DeepMind"
+  }
+ ],
+ "artifact": {
+  "primary_subject_id": "deepmind-synthid-bio",
+  "artifact_type": "PRODUCT",
+  "canonical_name": "SynthID Bio",
+  "canonical_url": "https://deepmind.google/blog/introducing-synthid-bio/"
+ },
+ "temporal": {
+  "observed_at": "2026-10-10T06:40:00Z",
+  "events": []
+ },
+ "sources": [
+  {
+   "source_id": "src-1",
+   "url": "primary:deepmind.google/blog/introducing-synthid-bio/",
+   "source_class": "PRIMARY_OFFICIAL",
+   "title": "DeepMind: SynthID Bio (Sep 30; X Oct 1 momentum)",
+   "published_at": null,
+   "accessed_at": "2026-10-10T06:40:00Z",
+   "role": "Discovery-bounded source used for factual verification"
+  }
+ ],
+ "claims": [
+  {
+   "statement_id": "claim-1",
+   "text": "DeepMind introduced SynthID Bio Sep 30, 2026 (day-only; NOT Oct 1): family of watermarking methods for synthetic biology (protein sequences + predicted 3D structures), extending SynthID to bio.",
+   "subject_id": "deepmind-synthid-bio",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "PRIMARY_FACT",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "DeepMind blog Sep 30, full body read; Nature paper same date; X Oct 1 11:43Z is circulation."
+  },
+  {
+   "statement_id": "claim-2",
+   "text": "Sequence = amino-acid choice guidance (ProteinMPNN + SynthID-text tournament sampling + AF3/wm filtering); structure = fine-tuned AlphaFold 3 diffusion part, watermark in weights; verifiable on synthesized physical protein.",
+   "subject_id": "deepmind-synthid-bio",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "PRIMARY_FACT",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Vendor method description; full protocol in Nature paper."
+  },
+  {
+   "statement_id": "claim-3",
+   "text": "Watermarked binders (AlphaProteo + SynthID-ProteinMPNN) matched hit rate, KD affinity, natural diversity of unwatermarked across VEGF-A/SC2-RBD/PD-L1; first watermarked functional binders claimed; structure preserves AF3 accuracy with near-perfect detectability.",
+   "subject_id": "deepmind-synthid-bio",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "VENDOR_CLAIM",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Vendor-reported lab tests, NOT general biological neutrality."
+  },
+  {
+   "statement_id": "claim-4",
+   "text": "Nature paper Sep 30 open access; Evo 2 phage genome work with Hie lab/Arc ongoing; code + in vitro data + weights released; biosecurity/database layer, tamper-robustness future work.",
+   "subject_id": "deepmind-synthid-bio",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "PRIMARY_FACT",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Publication record + vendor framing."
+  }
+ ],
+ "metrics": [],
+ "limitations": [
+  {
+   "statement_id": "limitation-1",
+   "text": "Function preservation bounded to tested binders/targets; do not generalize.",
+   "subject_id": "deepmind-synthid-bio",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "INFERENCE",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Evidence boundary retained for downstream editorial use."
+  },
+  {
+   "statement_id": "limitation-2",
+   "text": "Third-party wet-lab reproduction absent.",
+   "subject_id": "deepmind-synthid-bio",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "INFERENCE",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Evidence boundary retained for downstream editorial use."
+  },
+  {
+   "statement_id": "limitation-3",
+   "text": "Grok Oct 1 dating corrected to Sep 30.",
+   "subject_id": "deepmind-synthid-bio",
+   "subject_role": "PRIMARY_SUBJECT",
+   "evidence_class": "INFERENCE",
+   "source_ids": [
+    "src-1"
+   ],
+   "context": "Evidence boundary retained for downstream editorial use."
+  }
+ ],
+ "verification": {
+  "targets": [
+   {
+    "target": "deepmind-blog",
+    "status": "VERIFIED",
+    "finding": "DeepMind blog fully read; method/results/paper/purpose extracted with lab-bounded caveat.",
+    "subject_ids": [
+     "deepmind-synthid-bio"
+    ],
+    "source_ids": [
+     "src-1"
+    ]
+   },
+   {
+    "target": "nature-paper",
+    "status": "UNRESOLVED",
+    "finding": "Nature paper body not consumed beyond blog relay; protocol details pending.",
+    "subject_ids": [
+     "deepmind-synthid-bio"
+    ],
+    "source_ids": [
+     "src-1"
+    ]
+   },
+   {
+    "target": "released-weights",
+    "status": "UNRESOLVED",
+    "finding": "Code/data/weights release links noted but not fetched.",
+    "subject_ids": [
+     "deepmind-synthid-bio"
+    ],
+    "source_ids": [
+     "src-1"
+    ]
+   }
+  ],
+  "unresolved_questions": [
+   "nature-paper: Nature paper body not consumed beyond blog relay; protocol details pending.",
+   "released-weights: Code/data/weights release links noted but not fetched."
+  ],
+  "contradictions": []
+ }
+}
