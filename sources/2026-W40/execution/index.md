@@ -365,3 +365,9 @@ This is the current human-readable navigation record for the edition. Machine li
 - Candidate `157c4644…` (`READY_FOR_PUBLICATION_PREVIEW`) → `RELEASE_CANDIDATE / PUBLICATION_PREVIEW / HUMAN_GATE_REACHED`, Preview pending/null. No Preview decision/Freeze/Release/merge/PR. No new branch/force; no Core/Selection/upstream/HOLD-promotion changes.
 - Session: `execution/sessions/muse-w40-r21-20261011.md`; handoff: `execution/SOL_W40_R21_PUBLICATION_PREVIEW_HANDOFF.md`.
 - Terminal: `FRESH_HUMAN_PUBLICATION_PREVIEW_PENDING / W40_R21_READY_FOR_SOL_AND_OWNER_PDF_REVIEW` candidate.
+
+
+## Sol r21 Publication Preview editorial findings (2026-10-11)
+
+- Muse r21 candidate reached RELEASE_CANDIDATE/PUBLICATION_PREVIEW pending with official Architecture r1 APPROVED and real PDF. Sol independently read all 9 Draft results + all 9 TeX content sections; substantive depth and natural Japanese **NOT ADEQUATE** despite self-reported semantic/visual PASS. Full review: `execution/reviews/sol-w40-r21-publication-preview-editorial-audit-20261011.md`.
+- Proposed r22 correction only: `execution/instructions/2026-10-11_muse-w40-r22-proposed-post-human-preview-revision.md` (NOT EXECUTABLE until explicit Owner Human REQUEST_CHANGES). Approved Architecture pinned, no Preview Human decision recorded. Do not use operator pending-Gate invalidation: PUBLICATION_PREVIEW config disallows it.
