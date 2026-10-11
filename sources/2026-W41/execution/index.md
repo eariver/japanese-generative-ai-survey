@@ -62,3 +62,14 @@ This is the current human-readable navigation record for the edition. Machine li
 - State still `ISSUE_INITIALIZED`; no acceptance, no Screening/Evidence/Selection/Architecture, no Human Gate.
 - Session: `execution/sessions/muse-w41-r1-20261011.md`; handoff: `execution/SOL_DISCOVERY_COMPLETENESS_REVIEW_HANDOFF-r1.md`.
 - Terminal: `SOL_DISCOVERY_COMPLETENESS_REVIEW_READY` candidate.
+
+## Muse W41 r2 — bounded Discovery gap-fill (2026-10-12)
+
+- Start: remote HEAD `dd7c12e9…`/tree `31b10797…`/main `83f581eb…` verified read-only (all match); instruction parent chain verified; local FF to exact Start.
+- SC-D01: 6 leads + Decisions upgrade + cutoff leads retrieved (Liquid/Kolibri/Clef-omni/Ironclad/Gemini full pages; AWS/Perplexity/Decisions first-party renders; MS day-only; Tencent HF excerpts).
+- Cutoff verdicts: Clef-omni IN-WINDOW (18:27:34Z); MS-Decision-1 TIME_UNRESOLVED; Tencent HOLD/CONTEXT.
+- Lanes corrected (audio/embedding/open-weights nonquiet); unpins resolved except llama v0.6.0 (unobserved) and pending weights.
+- SC-D02: AWAITING_GROK maintained (Drive task acknowledged, no result). SC-D03: proposal r2 (28 rows) + crosswalk + deltas.
+- State still `ISSUE_INITIALIZED`; no acceptance or downstream stages.
+- Session: `execution/sessions/muse-w41-r2-20261012.md`; handoff: `execution/SOL_DISCOVERY_COMPLETENESS_REVIEW_HANDOFF-r2.md`.
+- Terminal: `SOL_DISCOVERY_COMPLETENESS_REVIEW_READY` candidate r2.
