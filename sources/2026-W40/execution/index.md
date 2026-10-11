@@ -371,3 +371,10 @@ This is the current human-readable navigation record for the edition. Machine li
 
 - Muse r21 candidate reached RELEASE_CANDIDATE/PUBLICATION_PREVIEW pending with official Architecture r1 APPROVED and real PDF. Sol independently read all 9 Draft results + all 9 TeX content sections; substantive depth and natural Japanese **NOT ADEQUATE** despite self-reported semantic/visual PASS. Full review: `execution/reviews/sol-w40-r21-publication-preview-editorial-audit-20261011.md`.
 - Proposed r22 correction only: `execution/instructions/2026-10-11_muse-w40-r22-proposed-post-human-preview-revision.md` (NOT EXECUTABLE until explicit Owner Human REQUEST_CHANGES). Approved Architecture pinned, no Preview Human decision recorded. Do not use operator pending-Gate invalidation: PUBLICATION_PREVIEW config disallows it.
+
+
+## W40 r21 independent Publication Preview audit adopted (2026-10-11)
+
+- Separate blind-first read-only Chat Sol High audit supplied by Human Owner: `SUBSTANTIVE_REWRITE_REQUIRED`, agreeing with Sol on serious Draft underdevelopment, unnatural Japanese, all 31 must-cover semantics, QA false-positive editorial PASS; independent PDF SHA matches but independent visual pages not reviewed. Sol adoption `execution/reviews/w40-r21-independent-publication-editorial-audit-adoption-20261011.md`.
+- Cardinalities independently pinned: 113 original Candidate-boundary relations, 105 package-level entries (not globally unique), 97 globally distinct literal strings. P7 Oct1 post-cutoff statement may be an inherited Architecture inconsistency and requires source-level chronology check before any authorized revision.
+- r22 conditional Draft rewrite contract updated accordingly: `execution/instructions/2026-10-11_muse-w40-r22-proposed-post-human-preview-revision.md`. **No Human Preview decision** was recorded; Production State and candidate remain RELEASE_CANDIDATE / Publication Preview pending until explicit Owner REQUEST_CHANGES.

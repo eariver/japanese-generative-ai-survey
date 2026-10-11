@@ -12,7 +12,7 @@ Reviewed main: `afdb3df3faa20af3bb5798be429bba8dbd2100b1`.
 
 ## Repair target
 
-Human-preserved Architecture r20, 28 SELECTED (20 PRIMARY/8 SUPPORTING), 9 packages, all 113 original Candidate-boundary relations/105 unique strings, full r15/r16 technical prep and r20 timing erratum. Keep all accepted upstream/Selection/Architecture/Architecture approval and Core #562 unchanged.
+Human-preserved Architecture r20, 28 SELECTED (20 PRIMARY/8 SUPPORTING), 9 packages, all 113 original Candidate-to-boundary relations, 105 package-level entries and 97 globally distinct strings, full r15/r16 technical prep and r20 timing erratum. Keep all accepted upstream/Selection/Architecture/Architecture approval and Core #562 unchanged.
 
 Redo Draft article prose **substantively**, not by padding or word swapping:
 - P1 all 3 price cards and availability/benchmark provenance, with a grounded per-vendor table.
@@ -36,3 +36,15 @@ Redo Draft article prose **substantively**, not by padding or word swapping:
 5. No Core/schema/config/main/other editions changes, no HOLD promotion (AstaBrief, AutoSynthData, Pixel Canary, TBC/AWS), no Preview approval, Freeze, Release.
 
 If anything cannot be lawfully reauthored without modifying frozen Core: STOP with exact blocker and concrete legal options. Do not fabricate or overstate user permission.
+
+
+## Independent Sol High audit addendum — BEFORE Human authorization (2026-10-11)
+
+This document remains `CONDITIONAL_NOT_YET_AUTHORIZED`. The blind-first, read-only independent reviewer concluded `SUBSTANTIVE_REWRITE_REQUIRED`; Sol adopted the independent findings in `execution/reviews/w40-r21-independent-publication-editorial-audit-adoption-20261011.md`. Do NOT treat the independent verdict as the Human Owner's `REQUEST_CHANGES` decision.
+
+1. **Boundary unit correction:** 113 per-candidate original literal relations, 105 architecture entries summed across packages, 97 globally distinct strings. Earlier phrasing '105 unique strings' meant unique only within each package. Preserve identical content.
+2. **All 31 must-cover:** Require direct on-page paragraph/table/equation evidence for each individual requirement. File-level `FULFILLED` annotations are insufficient. Explicitly verify model/variant licenses, pricing tables, benchmark denominator/method/baseline, Eq3/Eq5/Eq6, five safety subsystems, evaluation metric definitions and the source-bound operation of major technologies.
+3. **Synthesis repair:** Rebuild profile-level synthesis and frontmatter/week-in-review, not merely nine individual package bodies, because unnatural vocabulary propagated beyond Draft packages.
+4. **P7 time escalation:** Original approved Architecture's P7 requirement itself says `Oct 1 session post-window` but W40 cutoff is Oct 2 22:00 UTC. Verify the specific issuer source/event and timezone before any textual chronology change; do not silently alter frozen approved Authority. If Architecture factually contradicts the source, STOP and request separate lawful cross-gate human revision with an appropriately earlier boundary; `ARCHITECTURE_ESTABLISHED` would not authorize changing approved Architecture.
+5. **PDF metadata:** Correct stale worker narrative 370,741 bytes vs canonical 369,980; after regenerated PDF recompute and bind NEW exact raw-byte length/hash; independent visual review of all pages remains to be done.
+6. **Published Japanese:** Prefer natural technically precise terms to coined synonyms. Qualitative editorial review must independently examine actual prose, not merely evidence refs, schema validity or a static lexical dictionary PASS. Supporting-only P8 stays concise.
