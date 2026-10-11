@@ -58,10 +58,16 @@ These are **post-cutoff X posts**, not eligible ordinary W41 X events. The posts
 This is **raw receipt**, not overall X-lane completeness PASS or canonical Discovery acceptance.
 
 On the existing W41 branch only, Muse r2 should:
-1. reference the imported immutable raw path and SHA in a canonical-schema-compliant `external/x/x-source-intake-v2.json` update; set `RAW_RECEIVED` rather than stale `AWAITING_GROK`, while honestly disclosing 12 ordinary / 2 post-cutoff and independently unverified claim text;
+1. fix the existing r1 `external/x/x-source-intake-v2.json` **schema-invalid structure** under `schemas/x-source-intake-v2.schema.json`: top-level `status` must be a valid enum (`COMPLETE` once a real run/result disposition has been recorded, not `AWAITING_GROK__X_LANE_NOT_PASSED`); the run needs `expected_result_filename`, SHA-bound `task`, and an actual structured `result` object (`status: PARTIAL` until the content/coverage limitations are resolved, `discovery_disposition: DISCOVERY_RECORDED` only if a real proposal ledger ID is bound, `discovery_ids`, `raw: {path,sha256,byte_count}`, actual `observed_at` and `imported_at`, and a candid rationale). Remove schema-invalid `repository_task_path`, `result_disposition`, and string-valued `result`. For temporal details, record 14 linked URLs, **12 in-window X posts and 2 post-cutoff**, with content authenticity unverified in the result's rationale and a separate ledger. `COMPLETE` denotes receipt/disposition recorded, **not** X coverage PASS or Discovery Acceptance;
 2. integrate X results with r2 first-party source checks without duplicate event inflation; resolve Nano Banana 2.1 and 49B/52B conflict at provenance level;
 3. complete Sol SC-D01 to SC-D03 bounded gap-fill and resubmit the Discovery proposal + completeness report to Sol, preserving `ISSUE_INITIALIZED / stage:discovery`.
 
 **Forbidden**: modifying Grok raw; writing FALSE X PASS or ALL_14_IN_WINDOW; ignoring two post-window links; editing shared Core; modifying W40; accepting Discovery or inventing Human Approval; new branch / force push.
 
 Grok output can now be consumed as a 14-URL raw dataset, but Sol Discovery Completeness r2 remains a separate decision.
+
+## 5. Schema check / exact timestamp basis
+
+The r1 W41 X manifest does **not** conform to `schemas/x-source-intake-v2.schema.json`: top-level `status` is an invalid enum, run has noncanonical extra keys, omits required `expected_result_filename`/`task` fields, and uses a string `result` where only `null` or a typed object is admitted. These are edition-local schema defects; **no shared Core changes are authorized**. Correct them using the actual frozen Schema before claiming any X Manifest validation PASS.
+
+Drive original creation/observed time: `2026-10-11T15:56:40.057Z` (Google Drive file metadata). Raw import GitHub commit author/committer time: `2026-10-11T16:00:23Z`. These are provenance timestamps, **not** W41 event times. GitHub raw SHA-256 is as recorded above. A new result description must not claim that user-uploaded Drive text is an immutable original X HTML capture.
