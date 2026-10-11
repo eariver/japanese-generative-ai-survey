@@ -1,0 +1,480 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W40",
+  "draft_version": "r22-draft-1",
+  "runner": {
+    "provider": "muse-spark",
+    "model": "muse-spark-1.3-contributor",
+    "invocation": "substantive r22 rewrite: 9 packages conventional Japanese with tables/equations (Human Preview r1 REQUEST_CHANGES, boundary ARCHITECTURE_ESTABLISHED)",
+    "generated_at": "2026-10-11T08:01:07Z",
+    "run_reference": null
+  },
+  "packages": [
+    {
+      "package_id": "P1",
+      "headline": "最前線の値札と提供条件――Sonnet 5.5、GPT-6.1 Sol、Gemini 4 Argon",
+      "deck": "9月28日から30日に3モデルが並んだ。料金表・提供形態・ベンダー計測のベンチマークを切り分けて読む。",
+      "deck_discovery_ids": [
+        "w40-primary-sonnet55-20260928"
+      ],
+      "blocks": [
+        {
+          "block_id": "p1-sonnet-card",
+          "block_type": "PARAGRAPH",
+          "discovery_ids": [
+            "w40-primary-sonnet55-20260928"
+          ],
+          "ref_mode": "CLAIMS_AND_LIMITATIONS",
+          "text": "Anthropicは9月28日、Claude Sonnet 5.5をリリースした。Claude 5.5ファミリーの2番目のモデルで、窓より前のOpus 5.5（9月22日）を補う位置づけであり、最上位の交代ではない。料金はSonnet 5と同額の公称価格で、入力100万トークンあたり2ドル、出力10ドル、キャッシュ読み取り0.20ドルとされる。ベンダーによれば、トークン削減によってタスクあたり最大3割安く、出力速度も3割以上速いとされる。提供面ではコンテキスト100万トークン、最大出力128K、API名claude-sonnet-5-5、AWS Bedrock・Google Cloud・Azure対応、ゼロデータ保持が示される。いずれも発表時点の公式ページの内容であり、請求額の実測ではない。"
+        },
+        {
+          "block_id": "p1-sonnet-bench",
+          "block_type": "PARAGRAPH",
+          "discovery_ids": [
+            "w40-primary-sonnet55-20260928"
+          ],
+          "ref_mode": "CLAIMS_AND_LIMITATIONS",
+          "text": "ベンチマークはすべてベンダー計測であり、条件も努力量も異なるため、横断的な優劣表にはしない。Terminal-Bench 4.0で70.6%（Sonnet 5の10.3%から大幅に伸びたとされる）、FrontierCode 1.1 Mainで46.2% Max、CursorBench 4.0で55.5%、GDPval-AAで1844（Opus 5.5の1846に並ぶとされる）、OSWorld 2.1 partialで80.1%、Chartographyで61.6%と置かれる。安全側の構えはOpus 5.5級のサイバー系セーフガードとフォールバック、生物系はSonnet 5と同等、推論抽出分類器と思考過程の保持が添えられるとされる。独立した再現はなく、相手モデルの数値は公開報告からの引用として読む。"
+        },
+        {
+          "block_id": "p1-sol",
+          "block_type": "PARAGRAPH",
+          "discovery_ids": [
+            "w40-primary-gpt61-sol-20260929"
+          ],
+          "ref_mode": "CLAIMS_AND_LIMITATIONS",
+          "text": "OpenAIは9月29日、GPT-6.1 Solをリリースした。料金表は変更履歴との突き合わせ済みで、入力100万トークンあたり2ドル、出力10ドル、キャッシュ読み取り0.10ドルとされる。ベンダー側の性能差分は発表者の計測として帰属させる。高速化を示唆するUltrafastのsoon表示は今号の対象に含めない。日付は日の単位までしか確定しない。"
+        },
+        {
+          "block_id": "p1-argon",
+          "block_type": "PARAGRAPH",
+          "discovery_ids": [
+            "w40-primary-gemini-argon-20260930"
+          ],
+          "ref_mode": "CLAIMS_AND_LIMITATIONS",
+          "text": "Googleは9月30日、Gemini 4 Argonを発表した。100万という枠は出力トークンの上限であり（64Kからの拡大とされる）、入力コンテキストの大きさやAPI提供の広がり、展開範囲の広さをこの文言から推し量ってはならない。モデル文書による確認は積み残しである。導入価格は入力2ドル・出力10ドルで95%割引、導入後は入力4ドル・出力20ドルとされる。ベンダー側の到達点としてDeepSWE 77.9%、AutomationBench 51.3%、LVBench 91.7%、CWE 68%タイが置かれ、テスター限定の構えとされる。三者を比べると、今週の最前線は世代交代ではなく料金と提供形態の競争だったことがわかる。"
+        },
+        {
+          "block_id": "p1-table",
+          "block_type": "TABLE",
+          "discovery_ids": [
+            "w40-primary-sonnet55-20260928",
+            "w40-primary-gpt61-sol-20260929",
+            "w40-primary-gemini-argon-20260930"
+          ],
+          "ref_mode": "CLAIMS",
+          "text": "表: 3モデルの料金・提供・計測の切り分け | Sonnet 5.5: 料金2/10/0.20ドル、提供1M context・128K出力・3クラウド、計測TB 70.6%・GDPval-AA 1844（ベンダー） | GPT-6.1 Sol: 料金2/10/0.10ドル、提供API・変更履歴突き合わせ済み、計測ベンダー差分（帰属） | Gemini 4 Argon: 料金導入2/10（95%割引）・以後4/20ドル、提供出力100万上限のみ確定、計測DeepSWE 77.9%等（ベンダー、テスター限定）。いずれも発表時点の公式ページで、請求実測・独立再現はない。"
+        }
+      ]
+    },
+    {
+      "package_id": "P2",
+      "headline": "公開ウェイトの推論モデル――Holo4の2機種とELYZA Thinkingの和文特化",
+      "deck": "汎用と日本語特化の2系統。ライセンスの切り分け、重みの特定、ベンチマークの分母をそろえて読む。",
+      "deck_discovery_ids": [
+        "w40-primary-holo4-20260928"
+      ],
+      "blocks": [
+        {
+          "block_id": "p2-holo",
+          "block_type": "PARAGRAPH",
+          "discovery_ids": [
+            "w40-primary-holo4-20260928"
+          ],
+          "ref_mode": "CLAIMS_AND_LIMITATIONS",
+          "text": "H Companyは9月28日、エージェント向けモデルHolo4の2機種をリリースした。27Bの高密モデルと35B-A3BのMixture-of-Expertsモデルは名称が似ていても別物として扱う。高密モデルは研究・非商用ライセンス、MoEモデルはApache-2.0であり、この切り分けを取り違えると利用可否の判断が崩れる。OSWorldで85.2%と80.8%、OSWorld2で61.7%と30.9%と置かれるが、非公開評価セットの扱いは積み残しで、独立した再現はない。Holo4 Nanoは下位機種であり、別の今週の出来事にはしない。"
+        },
+        {
+          "block_id": "p2-elyza",
+          "block_type": "PARAGRAPH",
+          "discovery_ids": [
+            "w40-weak-elyza-20261002"
+          ],
+          "ref_mode": "CLAIMS_AND_LIMITATIONS",
+          "text": "ELYZAは10月2日、Thinking LLM-jp-4の2機種を公開した。33Bモデルが61.69、日本語62.18、MoEモデルが58.46、日本語59.61で、日本語に寄せた手法と完全な表をそろえ、発表者の計測として分母つきで載せる。重みはコミットSHAで特定し（33Bは6ca556b2…、MoEは5260ecc2…）、ライセンスはApache-2.0である。軌跡表示盤と言語モデル用データセットへの言及はあるが、再生実行まではしていない。"
+        },
+        {
+          "block_id": "p2-method",
+          "block_type": "PARAGRAPH",
+          "discovery_ids": [
+            "w40-primary-holo4-20260928",
+            "w40-weak-elyza-20261002"
+          ],
+          "ref_mode": "CLAIMS_AND_LIMITATIONS",
+          "text": "読み分けの要点は、汎用エージェント用途のHolo4と日本語特化のELYZAという方法の違いにある。Holo4はOSWorld系の汎用操作ベンチマーク、ELYZAは日本語を含む言語別スコアで測られており、物差しが違うため単純な横並びの優劣にはしない。手法・分母・ライセンス・重みの特定可能性をそろえた比較表を添える。"
+        },
+        {
+          "block_id": "p2-table",
+          "block_type": "TABLE",
+          "discovery_ids": [
+            "w40-primary-holo4-20260928",
+            "w40-weak-elyza-20261002"
+          ],
+          "ref_mode": "CLAIMS",
+          "text": "表: Holo4とELYZAの切り分け | Holo4: 27B高密（研究・非商用）と35B-A3B MoE（Apache-2.0）、OSWorld 85.2/80.8・OSWorld2 61.7/30.9（発表者計測、私的セット積み残し） | ELYZA: 33B（61.69/日本語62.18、SHA特定）とMoE（58.46/日本語59.61、SHA特定）、Apache-2.0、日本語寄せ手法と完全な表（発表者計測）。物差しが異なるため横断順位にはしない。"
+        }
+      ]
+    },
+    {
+      "package_id": "P3",
+      "headline": "判断支援の3つの界面――OllamaのAPI、Clefの重みとAPI、Strands Deciderのpointer head",
+      "deck": "9月29日のインターフェースと10月1日の重み・モデルを混ぜない。入力と出力、測定条件、ライセンスを面ごとに読む。",
+      "deck_discovery_ids": [
+        "w40-primary-ollama-jev-20260929"
+      ],
+      "blocks": [
+        {
+          "block_id": "p3-ollama",
+          "block_type": "PARAGRAPH",
+          "discovery_ids": [
+            "w40-primary-ollama-jev-20260929"
+          ],
+          "ref_mode": "CLAIMS_AND_LIMITATIONS",
+          "text": "Ollamaは9月29日、v0.35で判断支援モデル向けのインターフェースを開けた。/v1/systemoneというAPIに、Nimble 9BとTev1の4B・0.8Bモデルが並ぶ。ブログ本文は通読済みの範囲の話である。91ミリ秒という数値は単一事例の例示であって、普遍的な性能ではない。ここは新しいモデルの登場ではなくインターフェースの話として読む。レジストリやAPI文書の差分は積み残しである。"
+        },
+        {
+          "block_id": "p3-clef",
+          "block_type": "PARAGRAPH",
+          "discovery_ids": [
+            "w40-primary-cloudflare-clef-20261001"
+          ],
+          "ref_mode": "CLAIMS_AND_LIMITATIONS",
+          "text": "Cloudflareは10月1日15時34分02秒（UTC）にClefをリリースした。重みはApache-2.0ライセンスで公開され、Jev API、6万4千トークンのコンテキストと画像入力、入力0.24ドル・出力0.09ドルの料金が並ぶ。入力は意思決定タスクの記述と画像、出力は判断結果と根拠という構成である。Jev Indexの先行結果やレイテンシはベンダーが主催するデモ環境での計測であり、独立した再現ではない。重み配布ページの存在は確認したが、重みファイルの取得まではしていない。OllamaのインターフェースやStrandsのモデルと数値・レイテンシ・ライセンスを混ぜない。"
+        },
+        {
+          "block_id": "p3-strands",
+          "block_type": "PARAGRAPH",
+          "discovery_ids": [
+            "w40-primary-strands-decider-20261001"
+          ],
+          "ref_mode": "CLAIMS_AND_LIMITATIONS",
+          "text": "Strandsは10月1日、Decider 2Bをリリースした。Qwen3.5-2Bベースにpointer headとr16 LoRAを添えた構成で、ベンダー帰属つきのJevBench結果とレイテンシ、Apache-2.0ライセンスの三重確認が示される。重み配布ページの版はv19で固定する。先頭表示が古い版の様相を見せる配布ページの癖があるため、版の管理は欠かさない。ハイブリッドエージェント向けという位置づけはベンダーの助言として読む。"
+        },
+        {
+          "block_id": "p3-chrono",
+          "block_type": "PARAGRAPH",
+          "discovery_ids": [
+            "w40-primary-ollama-jev-20260929",
+            "w40-primary-cloudflare-clef-20261001",
+            "w40-primary-strands-decider-20261001"
+          ],
+          "ref_mode": "CLAIMS_AND_LIMITATIONS",
+          "text": "時系列の整理として、9月29日はOllamaのインターフェース公開、10月1日はClefの重み・API公開とStrands Decider 2Bのモデル公開であり、「3つの10月1日」ではない。入力・出力・測定条件・ライセンスの4点を面ごとに切り分けると、3者は判断支援という同じ層にいながら技術面が重ならないことがわかる。"
+        }
+      ]
+    },
+    {
+      "package_id": "P4",
+      "headline": "DevDayの製品面――コンピューター操作API、常駐エージェントdots、発表の束ね",
+      "deck": "変更履歴の文言の範囲で読む。何が出荷されたかの記録であり、信頼性の証拠ではない。",
+      "deck_discovery_ids": [
+        "w40-primary-agentsapi-computeruse-20260929"
+      ],
+      "blocks": [
+        {
+          "block_id": "p4-agents",
+          "block_type": "PARAGRAPH",
+          "discovery_ids": [
+            "w40-primary-agentsapi-computeruse-20260929"
+          ],
+          "ref_mode": "CLAIMS_AND_LIMITATIONS",
+          "text": "OpenAIのAgents APIに、ホスト型ブラウザーでのコンピューター操作機能が加わった。アプリケーション側で承認処理とサインインを扱いながら操作するもので、APIとCodex、WorkのPro500やEnterpriseプランとの組み合わせで提供される。変更履歴の逐語が根拠であり、利用方法は読み取れるが、ここからブラウザーの安全性や信頼性を引き出してはならない。操作手順の解説文書は未読である。"
+        },
+        {
+          "block_id": "p4-dots",
+          "block_type": "PARAGRAPH",
+          "discovery_ids": [
+            "w40-primary-openai-dots-20260929"
+          ],
+          "ref_mode": "CLAIMS_AND_LIMITATIONS",
+          "text": "dotsは、Astraの技術を土台とする常駐型エージェントという位置づけである。クラウド上のコンピューターとブラウザー、4000超のプラグイン、読み取り専用の先回り動作、自動レビューが並ぶ。ProやBiz-PremiumとEnterprise・Eduのベータ提供の組み合わせも示される。製品説明の範囲として読み、測定された成果とは切り分ける。"
+        },
+        {
+          "block_id": "p4-hub",
+          "block_type": "PARAGRAPH",
+          "discovery_ids": [
+            "w40-primary-openai-devday-20260929"
+          ],
+          "ref_mode": "CLAIMS_AND_LIMITATIONS",
+          "text": "DevDayの発表の束ねは、30番目の見出しにはしない。Ultrafastプラン、Decisionsプレビュー、エージェントのコンピューター操作、Codexファミリー、プラグインやSpaceやPro500やマーケットプレイスが一束になった目録であり、支えとして小さく載せる。見出しに立てれば製品カタログの羅列になるだけである。"
+        }
+      ]
+    },
+    {
+      "package_id": "P5",
+      "headline": "安全性と来歴の5領域――来歴評価、公開ガードレール、透かし、指針、認可仕様",
+      "deck": "5つの独立した領域を別々に読む。単一の安全性スコアには束ねない。",
+      "deck_discovery_ids": [
+        "w40-primary-provenanceguard-20260929"
+      ],
+      "blocks": [
+        {
+          "block_id": "p5-guard",
+          "block_type": "PARAGRAPH",
+          "discovery_ids": [
+            "w40-primary-provenanceguard-20260929"
+          ],
+          "ref_mode": "CLAIMS_AND_LIMITATIONS",
+          "text": "ProvenanceGuardは、今週のチームブログ記事に載った出来事と、対象期間より前の4著者の論文（v1と7月26日のv2）だけで読む。v3の有無については何も言わない。ルーティングと自然言語推論、帰属づけと許可・遮断、RARRという構成で、281件の追跡のうち138件と139件を検出し、F1スコアで0.802と0.858、複数情報源の組み合わせで0.846、0.503、0.229と置かれる。ベースラインとの比較は支えに回し、修復やフォールバック、半々のプローブも添える。これは帰属関係を評価する層の話であり、実行規制や電子透かしの話と混ぜない。"
+        },
+        {
+          "block_id": "p5-guard-limits",
+          "block_type": "PARAGRAPH",
+          "discovery_ids": [
+            "w40-primary-provenanceguard-20260929"
+          ],
+          "ref_mode": "CLAIMS_AND_LIMITATIONS",
+          "text": "測定値の読み方に注意が要る。281件という母数、F1の2条件、複数情報源の3条件は、それぞれ別の実験設定の数値であり、一つの優劣に畳んではならない。図表はテキストの仮置きとして読み、5.4節以降や付録の範囲を超えた部分は未読である。コードやポスター、リポジトリの変更提案は開いていない。来歴評価という機能に限った読みとする。"
+        },
+        {
+          "block_id": "p5-opsafety",
+          "block_type": "PARAGRAPH",
+          "discovery_ids": [
+            "w40-primary-nvidia-agentsafety-20260928"
+          ],
+          "ref_mode": "CLAIMS_AND_LIMITATIONS",
+          "text": "NVIDIAのOpen Agent Safety Platformは、公開されたエージェント見守りのリファレンスアーキテクチャである。OpenShellのOSSランタイムは広く提供され、SentryのBlueField-4リファレンス構成はミリ秒単位の隔離とDOCAによる計測を添える。Vera向けに最適化し、ArmやIntelにも拡張可能とされる。参照構成の文書として読み、どの環境でも動作する証拠にはしない。"
+        },
+        {
+          "block_id": "p5-bio",
+          "block_type": "PARAGRAPH",
+          "discovery_ids": [
+            "w40-primary-synthid-bio-20260930"
+          ],
+          "ref_mode": "CLAIMS_AND_LIMITATIONS",
+          "text": "SynthID Bioは、タンパク質に電子透かしを埋め込み、実験室試験で機能を保ったという報告である。3つの標的で確かめ、9月30日のNature論文が根拠で、10月1日のX投稿は関心の広がりを示すにすぎない。コードもデータも重みも公開された。バイオセキュリティ層の話題として読む。"
+        },
+        {
+          "block_id": "p5-cases-oauth",
+          "block_type": "PARAGRAPH",
+          "discovery_ids": [
+            "w40-primary-openai-safetycases-20260928",
+            "w40-primary-cloudflare-mcpauth-20261001"
+          ],
+          "ref_mode": "CLAIMS_AND_LIMITATIONS",
+          "text": "残る2件は小さく添える。最前線モデルの学習向け安全事例集は、アライメントと封じ込めと監視に運用と事後対応を添えた指針文書であり、実証の報告ではない。Workers OAuth Provider v1は、分割されたAPIと2026年7月28日のMCP認証、段階的スコープ引き上げの仕様の話題で、仕様への準拠と脅威への耐性は別の事柄である。索引の入り口まで読んだ範囲の話とする。"
+        }
+      ]
+    },
+    {
+      "package_id": "P6a",
+      "headline": "学習の仕組み――ContextLMの方程式とOlmo-core 3の分散学習",
+      "deck": "編集可能なコンテキストファイルと専門家混合モデルの仕組みを、式と分母と実験条件つきで読む。今号の技術的な読みどころである。",
+      "deck_discovery_ids": [
+        "w40-primary-contextlms-20260929"
+      ],
+      "blocks": [
+        {
+          "block_id": "p6a-clm-file",
+          "block_type": "PARAGRAPH",
+          "discovery_ids": [
+            "w40-primary-contextlms-20260929"
+          ],
+          "ref_mode": "CLAIMS_AND_LIMITATIONS",
+          "text": "ContextLMは、コンテキストをBashと同期する編集可能なファイルとして扱う。接頭辞再利用の計算量をFLOPsという物差しで測る。式3の定義は、最初の不一致以降のトークンの再プリフィル計算量と新規生成トークンのデコード計算量の合計であり、壁時間でもキャッシュヒット率でもない。一致した接頭辞部分は課金されないという約束が要点である。ここを外すと後の削減率の話がすべてずれる。"
+        },
+        {
+          "block_id": "p6a-clm-eq56",
+          "block_type": "PARAGRAPH",
+          "discovery_ids": [
+            "w40-primary-contextlms-20260929"
+          ],
+          "ref_mode": "CLAIMS_AND_LIMITATIONS",
+          "text": "式5はスキル進化ループの記述である。モデルの重みは固定したまま、スキル文書 s を最適化し、学習用・開発用・ホールドアウトの3分割で運用し、ホールドアウトでは一度だけ評価する。持ち越し精度の改善は最大で35.9ポイントと置かれる。式の本体は次の最適化目的であり、コンテキスト内に技を置く流儀である。式6は別の強化学習であり、成功軌跡が2本に満たない群では効率項は沈黙し、成否項だけが残る。成功者の中を推論コスト順に並べ替える仕掛けであり、正誤の判定そのものは成否項が担う。式4は検証済みのとおりで動かない。式5の全文引用の範囲を超える細目は扱わない。"
+        },
+        {
+          "block_id": "p6a-clm-eqs",
+          "block_type": "PARAGRAPH",
+          "discovery_ids": [
+            "w40-primary-contextlms-20260929"
+          ],
+          "ref_mode": "CLAIMS_AND_LIMITATIONS",
+          "text": "式の置き場をここに固める。接頭辞再利用の定義は \\(\\mathrm{FLOPs}_{\\mathrm{prefix-reuse}} = \\mathrm{FLOPs}_{\\mathrm{prefill}} + \\mathrm{FLOPs}_{\\mathrm{decode}}\\) であり、課金対象の明示である。スキル最適化の目的は \\(s^* = \\arg\\max_s E_{x\\sim D}[R(\\tau(x;s))]\\) であり、重み固定・文書最適化の宣言である。効率項は \\(A_i^{\\mathrm{eff}} = \\mathrm{clip}((\\bar{c}_g - c_i)/\\bar{c}_g, -1, 1)\\) で、成功群が2本未満なら全軌跡でゼロになる。いずれも一次注記で検証済みの範囲であり、未取得の付録や図の細目は言わない。"
+        },
+        {
+          "block_id": "p6a-clm-nums",
+          "block_type": "PARAGRAPH",
+          "discovery_ids": [
+            "w40-primary-contextlms-20260929"
+          ],
+          "ref_mode": "CLAIMS_AND_LIMITATIONS",
+          "text": "数値の土台は混ぜない。BCPは59.4%で相対11.4%の改善、向かう先はCodex流要約という最強のベースラインである。接頭辞再利用の削減は同ベースラインに21.5%、MEM1に28.9%で、両者は統合しない。TB2.1は同等精度で7割の計算量、TBLiteは73.7対67.0で9割1分の計算量で、土台は同じCodex流である。EdgeBenchの12時間10タスクは正答率5%向上・計算量59%削減、スウォームは65%向上、オンライン強化学習はQwen3.5-9Bで28.8から42.5へと13.7ポイント改善、同一手順のCodex要約ハーネス比で0.4ポイント・38.8%削減と置かれる。いずれも論文の主張であり、許諾は論文がBY-4.0、リポジトリがBY-NC-4.0である。"
+        },
+        {
+          "block_id": "p6a-clm-table",
+          "block_type": "TABLE",
+          "discovery_ids": [
+            "w40-primary-contextlms-20260929"
+          ],
+          "ref_mode": "CLAIMS",
+          "text": "表: ContextLMの主要数値と土台の切り分け | BCP 59.4%（相対+11.4%）対Codex流要約 | FLOPs削減21.5%対同左・28.9%対MEM1（統合しない） | TB2.1同等精度・計算量70%対Codex流 | TBLite 73.7/67.0・計算量91%対Codex流 | EdgeBench +5%/計算量59%削減対Codex流 | RL 28.8→42.5（表2土台）・同一手順比+0.4/計算量38.8%削減。すべて論文の主張で、独立再現ではない。"
+        },
+        {
+          "block_id": "p6a-olmo",
+          "block_type": "PARAGRAPH",
+          "discovery_ids": [
+            "w40-primary-olmocore3-20261001"
+          ],
+          "ref_mode": "CLAIMS_AND_LIMITATIONS",
+          "text": "Olmo-core 3は、専門家混合モデルの分散学習基盤である。DDPに専門家を常駐させ、GPU上でexpert routingを決めて並べ替えの余分を抑え、grouped-GEMMとMXFP8で固める。MXFP8の効果はB300 4枚の均一負荷という統制された構成での話で、エンドツーエンドの学習スループットが21%伸び、103GiBが95GiBに減ると置かれる。他の構成への一般化はしない。専門家を8から128に増やし、トークンあたり4専門家（能動約3.2B）で動かしても、スループットは5%も落ちない。8枚B300の予備試験では旧実装の約2.7倍と置かれる。"
+        },
+        {
+          "block_id": "p6a-olmo-scale",
+          "block_type": "PARAGRAPH",
+          "discovery_ids": [
+            "w40-primary-olmocore3-20261001"
+          ],
+          "ref_mode": "CLAIMS_AND_LIMITATIONS",
+          "text": "測定の置き場は3つに分ける。47Bは実測値、1.2Tはルーティング条件（能動58.36B・512 GPU・最大858TFLOP/s/GPU、ランダムルーティング下のシステム測定であり、モデル品質の主張ではない）、2.38Tは短時間の容量試験である。3つを一つの規模に束ねてはならない。うまくいかなかった実験も載せる。ルーティング均一化スコアは失敗に終わり、測定方法論への戒めとして残る。報告書本体は未取得であり、論文付録や図の言及のない中身は扱わない。"
+        }
+      ]
+    },
+    {
+      "package_id": "P6b",
+      "headline": "評価基盤――AgentPerfの再実行、OpenTTSの測定手順、RL環境置き場",
+      "deck": "評価台とモデルを取り違えない。測定手順・到着時期・版の留めを正確に読む。",
+      "deck_discovery_ids": [
+        "w40-primary-aa-agentperf-20260929"
+      ],
+      "blocks": [
+        {
+          "block_id": "p6b-agentperf",
+          "block_type": "PARAGRAPH",
+          "discovery_ids": [
+            "w40-primary-aa-agentperf-20260929"
+          ],
+          "ref_mode": "CLAIMS_AND_LIMITATIONS",
+          "text": "AA-AgentPerf-Localは、手元で実行するオープンな再実行ベンチマークである。実軌跡をSparkや5090やHaloやM5Proでなぞり直す。実行構成は14通りすべてが仮説的と明記され、発表者の計測として置く。サービングの話に限る品であり、エージェントの賢さの話ではない。帯域制約ルーフラインとの比較は理論上限線に対する成功群の嵩上げ（Qwen3.8-27Bで3割から120%ほど、構成による幅）であって、仕様なしの対照ではない。一人で実行する手元環境と、混雑時の本番環境（メガワットあたりのエージェント数という別の物差し、6月12日の別の記事）は方法も指標も別物であり、数値の貸し借りはしない。依存関係は明示する。"
+        },
+        {
+          "block_id": "p6b-opentts",
+          "block_type": "PARAGRAPH",
+          "discovery_ids": [
+            "w40-primary-opentts-20260930"
+          ],
+          "ref_mode": "CLAIMS_AND_LIMITATIONS",
+          "text": "Open TTS Leaderboardは、多言語・声 cloning の客観評価基盤であり、新しい音声モデルではない。英語の巨視的平均の単語誤り率、多言語の文字誤り率、RTFx（バッチ化オフライン推論、H200）とTTFAとSIMを、Seed-TTSとCV3の上で測る。TTFA手順は一句ごとに検証済みで、同じ英語50プロンプト、バッチサイズ1、最初の3走をウォームアップに除き、残りの中央値、H200の表示が既定で、CPUの小規模な増加集合も添う。人の好みは測っていないとブログが明記する。比較はスナップショット時点の話であり、普遍の順位にはしない。"
+        },
+        {
+          "block_id": "p6b-opentts-time",
+          "block_type": "PARAGRAPH",
+          "discovery_ids": [
+            "w40-primary-opentts-20260930"
+          ],
+          "ref_mode": "CLAIMS_AND_LIMITATIONS",
+          "text": "到着時期の切り分けは欠かさない。場と物差しの本体は今週にあるが、評価スクリプトは9月30日の記事では「まもなく公開」という未来形である。リポジトリの初の評価スクリプトの固まりは10月7日14時53分41秒（UTC）と確認した。対象期間の締め切り（10月2日22時UTC）の時点ではリポジトリにスクリプトはなく、9月15日のリポジトリ作成をもって公開と読んではならない。調べたリポジトリの範囲の話であり、どこにも公開されていないことの証拠ではない。"
+        },
+        {
+          "block_id": "p6b-rlhub",
+          "block_type": "PARAGRAPH",
+          "discovery_ids": [
+            "w40-primary-hf-rl-environments-20260928"
+          ],
+          "ref_mode": "CLAIMS_AND_LIMITATIONS",
+          "text": "RL Environments Hubは、強化学習環境のタスクセット目録である。rl-environmentフィルターと4つのフレームワークタグ（harbor・verifiers・openenv・nemo-gym）、枠ごとの実行例が並ぶ。タスクセットのデータと実行時・報酬の切り分けを保ち、新しいリポジトリ型はなく、タグは互換性の宣言であって変換や起動の話ではない。フレームワークの版固定（harbor==0.21.0など）がタスクセット全体を固定するかのように読んではならない。タスクセットのリビジョンや選択基準、実行基盤の固定は未確定として明記する。再現用の種の固定も、固定できない所はできないと書く。"
+        }
+      ]
+    },
+    {
+      "package_id": "P7",
+      "headline": "マルチモーダルの提供現場――画像・映像・音声・可観測性",
+      "deck": "デモ測定はデモのままに読む。料金と解像度、測定項目と実行条件、時系列の正しさを添える。",
+      "deck_discovery_ids": [
+        "w40-primary-flux3-image-20261001"
+      ],
+      "blocks": [
+        {
+          "block_id": "p7-flux",
+          "block_type": "PARAGRAPH",
+          "discovery_ids": [
+            "w40-primary-flux3-image-20261001"
+          ],
+          "ref_mode": "CLAIMS_AND_LIMITATIONS",
+          "text": "Black Forest Labsは10月1日、FLUX 3の画像SKUを出した。絵の勘所は0から1000のグリッドで置くバウンディングボックスで、全体の説明文と箱ごとの指示例、箱単位の多段階編集という運びである。7月23日のマルチモーダル基盤発表（早期アクセス、映像優先、画像は後数週）は別の出来事であり、混ぜない。Xの10月1日の投稿は関心の広がりを示すにすぎず、単独の典拠にはしない。"
+        },
+        {
+          "block_id": "p7-flux-table",
+          "block_type": "TABLE",
+          "discovery_ids": [
+            "w40-primary-flux3-image-20261001"
+          ],
+          "ref_mode": "CLAIMS",
+          "text": "表: FLUX 3の解像度別料金（10月1日リリースノート、計算機の既定は1k） | 768正方形 0.041ドル | 1k 0.048ドル | 2k 0.100ドル | 4k 0.607ドル。開始特価は10月1日15時UTCから8日まで半額（見出し帯から確認、開示済み）。料金は発表時点の文書の内容である。"
+        },
+        {
+          "block_id": "p7-vss",
+          "block_type": "PARAGRAPH",
+          "discovery_ids": [
+            "w40-primary-vss33-20260929"
+          ],
+          "ref_mode": "CLAIMS_AND_LIMITATIONS",
+          "text": "NVIDIAのVSS Blueprint 3.3は9月29日のリファレンスアーキテクチャである。Build Vision Agentスキル（vss-build-vision-ai）とAdaptive EVS（コサイン類似度のパッチ枝刈りとイベントバッチ処理）を添え、VLMとRAGとMCPの映像ワークフローを扱う。ボトリングラインのデモでは、RTX PRO 6000 2枚で30分に満たない導入、警告レイテンシ17%減（1021から844ミリ秒）、同時配信46%増（13から19本）、60分要約の約半分の時間とVLMトークン80%減（Cosmos 3 Super FP8）と置かれる。結果は構成により変わると明記される。生成映像の基盤モデルではなく参照構成の文書として読む。"
+        },
+        {
+          "block_id": "p7-vss-time",
+          "block_type": "PARAGRAPH",
+          "discovery_ids": [
+            "w40-primary-vss33-20260929"
+          ],
+          "ref_mode": "CLAIMS_AND_LIMITATIONS",
+          "text": "時系列の正しさが要る。NVIDIAは10月1日9時00分PDT（UTCで同日16時）のライブ配信を9月29日に事前告知しており、この日時は対象期間の締め切り（10月2日22時UTC）より前、すなわち期間内である。告知するのは配信予定であって、配信の実施内容や追加成果を独立検証したものではない。従来の下流分類にあった対象期間後の扱いは誤りであり、本稿では期間内の事前告知として読む（訂正注記の典拠つき）。承認済みアーキテクチャと受理済み証拠の文言自体は改変しない。"
+        },
+        {
+          "block_id": "p7-asr",
+          "block_type": "PARAGRAPH",
+          "discovery_ids": [
+            "w40-primary-nemotron-asr-20260930"
+          ],
+          "ref_mode": "CLAIMS_AND_LIMITATIONS",
+          "text": "Nemotronのサウジアラビア方言適応は、チュートリアル範囲の報告である。NeMoの手でNajdiとHijaziを133.7時間、単語誤り率は55.05%から29.96%へ、英語は維持し、24層の深さの検討やビーム8・800ミリ秒の追加、8話者までの話者分離の拡張も添う。評価はSADAとFLEURSの分割ごとの話であり、どの方言にもどの運用にも通じる話ではない。発表者の計測として読む。関連するノートブックやスキル、話者分離のブログへの言及はあるが、内容の取得まではしていない。"
+        },
+        {
+          "block_id": "p7-relay-ross",
+          "block_type": "PARAGRAPH",
+          "discovery_ids": [
+            "w40-primary-nemorelay-20260930",
+            "w40-primary-amd-ross-20260930"
+          ],
+          "ref_mode": "CLAIMS_AND_LIMITATIONS",
+          "text": "脇の2件は小さく添える。NeMo Relayは、ATOFとATIFとOTel-Phoenixによる計装にHermesチュートリアル（VALUE=42、COLT 2026）とToolPerfの108走の事例を添えたもので、道具立ての話であり、信頼性の証拠ではない。実網での実行は試しであって順位ではない。Rossは、MCPと知識ベースとスキルと作例、VivadoとVitisとROCm、相手を選ばない構成で、提供開始済みと月次の歩みとされる。高速化の売り文句は未測定の触れ込みであり、チュートリアル程度の重要性として埋め込みの注記に留める。"
+        }
+      ]
+    },
+    {
+      "package_id": "P8",
+      "headline": "企業・業界動向――確定契約と提供条件",
+      "deck": "製品の話題ではない。契約の確定と提供条件だけを短く載せる。",
+      "deck_discovery_ids": [
+        "w40-primary-amd-worldlabs-20260928"
+      ],
+      "blocks": [
+        {
+          "block_id": "p8-deals",
+          "block_type": "PARAGRAPH",
+          "discovery_ids": [
+            "w40-primary-amd-worldlabs-20260928"
+          ],
+          "ref_mode": "CLAIMS_AND_LIMITATIONS",
+          "text": "AMDとWorld Labsは、買収の確定契約を結んだという発表である。完了の報告ではなく、空間モデルという筋書きが添えられる。評価額の話は検証していない。モデルの新登場として読んではならない。企業・業界の出来事として短く載せる。"
+        },
+        {
+          "block_id": "p8-terms",
+          "block_type": "PARAGRAPH",
+          "discovery_ids": [
+            "w40-primary-cloudflare-aisearch-20261001"
+          ],
+          "ref_mode": "CLAIMS_AND_LIMITATIONS",
+          "text": "CloudflareのAI Searchは、提供条件の文書である。ハイブリッド検索が既定で、Workers AIが含まれ、マルチモーダルと画像検索、走査PDFのOCR（10MiBと4MiB）、11月1日の課金が並ぶ。ベンチマークの話題ではなく、提供の約束として読む。"
+        }
+      ]
+    }
+  ],
+  "synthesis": {
+    "profile_payload": {
+      "signals": "料金表の並んだ最前線（Sonnet 5.5・GPT-6.1 Sol・Gemini 4 Argon）と公開ウェイトの推論モデル（Holo4・ELYZA）、判断支援の3界面（Ollama・Clef・Strands Decider）、DevDayの製品面、5領域の安全性と来歴、学習の仕組み（ContextLM・Olmo-core 3）、評価基盤（AgentPerf・OpenTTS・RL環境置き場）、マルチモーダルの提供現場、企業・業界動向が1号に束ねられた。",
+      "current_interpretation": "今週を読む軸は、料金と提供形態、公開ウェイトとライセンスの切り分け、ベンダー計測の帰属、記事の日付とスクリプト到着の切り分けである。値札と提供の広がり、重みの特定可能性、測定条件と報告主体を切り離さない読みが条件になる。数式・比較表・分母・ベースライン・版の固定・制約を本文で具体化した。",
+      "carry_over_summary": "AstaBriefとAutoSynthDataの2件のホスト記事は対象期間内で素材的に重いが、正準HOLDのまま送り、今号の章には入れない。W39からの持ち越し2件も引き上げない。DGX Sparkは背景記録のみ、収集台帳は方法論の覚えに残し、物語には入れない。対象期間より前の論文1件は文脈としてのみ扱う。"
+    },
+    "publication_payload": {}
+  }
+}
