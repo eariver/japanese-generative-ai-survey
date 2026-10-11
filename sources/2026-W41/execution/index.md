@@ -78,3 +78,13 @@ This is the current human-readable navigation record for the edition. Machine li
 
 - Merged Sol Grok-archive commits; raw hash MATCH; manifest schema-valid (PARTIAL/RECEIVED); proposal 29 rows; handoff addendum added.
 - State still `ISSUE_INITIALIZED`; terminal `SOL_DISCOVERY_COMPLETENESS_REVIEW_READY` candidate r2 (updated).
+
+## Muse W41 r2c — DailyX reconciliation (2026-10-12)
+
+- Start: remote HEAD `0c16d7e1…`/tree `86ce8244…`/main `83f581eb…` verified read-only (all match); local FF to exact Start.
+- Read 7 DailyX originals untouched (92 topics); built 92-topic crosswalk (16/49/3/14/2/8); corrected Oct-10 cutoff mapping.
+- Issuer verification of flagged lines; unverified items explicitly labeled, never omitted.
+- Proposal r2c: 37 rows (29 + 8 new), schema-validated; completeness r2c; handoff r2c.
+- State still `ISSUE_INITIALIZED`; no acceptance or downstream stages.
+- Session: `execution/sessions/muse-w41-r2c-20261012.md`; handoff: `execution/SOL_DISCOVERY_COMPLETENESS_REVIEW_HANDOFF-r2c.md`.
+- Terminal: `SOL_DISCOVERY_COMPLETENESS_REVIEW_READY` candidate r2c.
