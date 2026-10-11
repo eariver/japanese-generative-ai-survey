@@ -11,7 +11,8 @@ ContextLMは、コンテキストをBashと同期する編集可能なファイ�
 式5はスキル進化ループの記述である。モデルの重みは固定したまま、スキル文書 \(s\)（自然言語の技の記述）を最適化する。入力 \(x\) は分布 \(D\) から引き、軌跡 \(\tau(x;s)\) の報酬 \(R\) で測る。学習用・開発用・ホールドアウトの3分割で運用し、ホールドアウトでは一度だけ評価する。持ち越し精度の改善は最大で35.9ポイントと置かれる。式の本体は次の最適化目的であり、コンテキスト内に技を置く流儀である。
 \[ s^* = \arg\max_s E_{x\sim D}[R(\tau(x;s))] \]
 式6は別の強化学習であり、成功軌跡が2本に満たない群では効率項だけが沈黙し、成否項は残る。成功者の中を推論コスト順に並べ替える仕掛けであり、正誤の判定そのものは成否項が担う。式4は検証済みのとおりで動かない。接頭辞再利用の定義式と効率項の式をここに固める。
-\[ \mathrm{FLOPs}_{\mathrm{prefix-reuse}} = \mathrm{FLOPs}_{\mathrm{prefill}}(\mathrm{unmatched\ suffix}) + \mathrm{FLOPs}_{\mathrm{decode}}(\mathrm{generated\ tokens}) \]
+\[ \mathrm{FLOPs}_{\mathrm{prefix-reuse}} = \mathrm{FLOPs}_{\mathrm{prefill}}(u) + \mathrm{FLOPs}_{\mathrm{decode}}(g) \]
+ここで \(u\) は不一致接尾辞、\(g\) は新規生成字句である。
 \[ A_i^{\mathrm{eff}} = \mathrm{clip}((\bar{c}_g - c_i)/\bar{c}_g, -1, 1) \]
 成功軌跡が2本に満たない群では効率項だけが沈黙し、統合利得 \(A_i = A_i^{\mathrm{out}} + w_{\mathrm{eff}} A_i^{\mathrm{eff}}\) の成否項は残る。式5の全文引用の範囲を超える細目は扱わない。接尾辞キャッシュ再利用（図4）は一致接頭辞の先の再利用を保つ仕掛けである。
 
