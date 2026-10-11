@@ -397,3 +397,10 @@ This is the current human-readable navigation record for the edition. Machine li
 - Candidate `2cb17796…` (READY); State `2128a9a4…`, Preview pending/null. 370,741 narrative corrected (r21 PDF was 369,980). No Preview decision/Freeze/Release/merge/PR. No new branch/force; no Core/Selection/upstream/HOLD changes.
 - Session: `execution/sessions/muse-w40-r22-20261011.md`; handoff: `execution/SOL_W40_R22_PUBLICATION_PREVIEW_HANDOFF.md`; ledger: `execution/reviews/w40-r22-must-cover-31-ledger.md`.
 - Terminal: `FRESH_HUMAN_PUBLICATION_PREVIEW_PENDING` candidate.
+
+
+## W40 r22 Sol focused editorial review (2026-10-11)
+
+- Muse r22 reached new valid `RELEASE_CANDIDATE / PUBLICATION_PREVIEW pending`, official r21 Preview REQUEST_CHANGES r1 recorded, Architecture approved retained, Core/main unchanged; PDF `c0b2fe1e4517bec8b3f85a4a518ed258be0de93b45f3e99c22ad75f93aae9704` independently raw-byte rehashed to 451313 bytes (candidate reports 14 pages). Muse visual review 60dpi 14/14; Sol independent high-resolution visual not completed.
+- Focused content comparison r21->r22 5681->8553 `PARAGRAPH.text` chars (+50.6%), 29->36 prose blocks, 4 real tables/3 display equations; meaningful improvement but `BOUNDED_REVISION_REQUIRED / HUMAN_PREVIEW_HOLD`. Concrete outstanding: P6a Eq3/Eq6 qualified formulas & MoE technical depth; P5 five technical domains; P6b metrics/experimental mechanics; P7 newly leaked internal editorial correction into reader-facing prose; Gemini Argon 95%-discount ambiguity. Audit `execution/reviews/sol-w40-r22-focused-publication-editorial-audit-20261011.md`.
+- NO r22 Preview Human decision recorded or inferred. Future revision only after explicit Human Owner REQUEST_CHANGES, preserving unchanged Core v2; no Freeze/Release.
