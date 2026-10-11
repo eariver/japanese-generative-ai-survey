@@ -51,3 +51,14 @@ This is the current human-readable navigation record for the edition. Machine li
 ## Final disposition
 
 `IN_PROGRESS`
+
+## Muse W41 r1 — Source Intake through Sol Discovery Review prep (2026-10-11)
+
+- Start: remote HEAD `96161d19…`/tree `433b6dc9…`/main `83f581eb…` verified read-only (all match); local FF to exact Start (already there). No re-init.
+- Primary intake: 6 bounded excerpt files + ledger (`collectors/primary/runs/20261011T120000Z-muse-r1/`); 10 first-party pages at claim level.
+- W40 HOLDs: all 4 rechecked → HOLD retained. Lanes swept with dated negatives; pre-window exclusions listed.
+- X/Grok: task issued, `AWAITING_GROK` (no Drive access); lane NOT passed.
+- Proposal: `discovery-v2-proposal-r1.jsonl` (20 records, schema-validated, PROPOSED_NOT_ACCEPTED) + timing/carryover/completeness/unresolved/citations.
+- State still `ISSUE_INITIALIZED`; no acceptance, no Screening/Evidence/Selection/Architecture, no Human Gate.
+- Session: `execution/sessions/muse-w41-r1-20261011.md`; handoff: `execution/SOL_DISCOVERY_COMPLETENESS_REVIEW_HANDOFF-r1.md`.
+- Terminal: `SOL_DISCOVERY_COMPLETENESS_REVIEW_READY` candidate.
