@@ -73,3 +73,8 @@ This is the current human-readable navigation record for the edition. Machine li
 - State still `ISSUE_INITIALIZED`; no acceptance or downstream stages.
 - Session: `execution/sessions/muse-w41-r2-20261012.md`; handoff: `execution/SOL_DISCOVERY_COMPLETENESS_REVIEW_HANDOFF-r2.md`.
 - Terminal: `SOL_DISCOVERY_COMPLETENESS_REVIEW_READY` candidate r2.
+
+## Muse W41 r2b — Grok ingestion (2026-10-12)
+
+- Merged Sol Grok-archive commits; raw hash MATCH; manifest schema-valid (PARTIAL/RECEIVED); proposal 29 rows; handoff addendum added.
+- State still `ISSUE_INITIALIZED`; terminal `SOL_DISCOVERY_COMPLETENESS_REVIEW_READY` candidate r2 (updated).

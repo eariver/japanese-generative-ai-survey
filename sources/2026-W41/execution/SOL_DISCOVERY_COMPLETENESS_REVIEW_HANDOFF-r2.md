@@ -27,3 +27,12 @@ State: `ISSUE_INITIALIZED / stage:discovery` (unchanged; NO acceptance performed
 - Oct 9 day-only items (MS-Decision-1) and Tencent need Sol disposition (HOLD/CONTEXT proposed).
 - X lane still blocks completeness PASS pending Grok return or Sol deferral.
 - No Discovery acceptance requested; Sol decision required before any State advance.
+
+## r2b addendum — Grok ingestion (2026-10-12)
+
+- Sol archived unaltered Grok raw (commits d87e42dd3 + 79fd27a66) while r2 was in progress; merged without rewrite.
+- Raw hash independently recomputed: MATCH (72245d4f…, 5,332B).
+- Manifest rewritten schema-valid: result PARTIAL/RECEIVED with discovery ledger row; manifest status COMPLETE = raw mechanics complete, NOT lane completeness PASS.
+- Reconciliation adopted from Sol audit: 14 links / 12 in-window / 2 post-cutoff; X post existence/authorship still unverified.
+- New X-derived lead Nano Banana 2.1 added as first-party-follow-up-required row; Mistral 49B/52B kept version-specific.
+- Proposal now 29 rows, schema-validated, PROPOSED_NOT_ACCEPTED. No acceptance requested.

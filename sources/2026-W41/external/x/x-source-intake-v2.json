@@ -9,7 +9,7 @@
  "policy": "REQUIRED_BY_PROFILE",
  "series_context": null,
  "decision": "REQUIRED",
- "rationale": "Weekly profile mandates fresh X-native Grok Source Intake before Discovery acceptance. W41 window Oct 2 18:00 EDT to Oct 9 18:00 EDT. No W40 result reused.",
+ "rationale": "Weekly profile mandates fresh X-native Grok Source Intake before Discovery acceptance. W41 window Oct 2 18:00 EDT to Oct 9 18:00 EDT. Grok raw received 2026-10-12 via Drive (Sol-archived unaltered); reconciled 14 links / 12 in-window / 2 post-cutoff per Sol audit.",
  "drive_handoff": {
   "provider": "GOOGLE_DRIVE",
   "root_folder_name": "Grok_X_SourseIntake",
@@ -43,11 +43,29 @@
    "time_scope": "ordinary [2026-10-02T18:00:00-04:00, 2026-10-09T18:00:00-04:00) EDT; UTC [2026-10-02T22:00:00Z, 2026-10-09T22:00:00Z)",
    "run_folder": "Grok_X_SourseIntake/Weekly/2026-W41/weekly-x-2026-W41",
    "task_file_name": "grok-task.md",
-   "drive_task_path": "Grok_X_SourseIntake/Weekly/2026-W41/weekly-x-2026-W41/grok-task.md (operator-placed; Drive file creation NOT observed by this agent)",
-   "repository_task_path": "sources/2026-W41/external/x/weekly-x-2026-W41/grok-task.md",
-   "result": "AWAITING_GROK",
-   "result_disposition": "RAW_NOT_RECEIVED__X_LANE_NOT_PASSED"
+   "drive_task_path": "Grok_X_SourseIntake/Weekly/2026-W41/weekly-x-2026-W41/grok-task.md (Sol-placed native Doc, read back; formatting/content equivalent, not byte-identical)",
+   "expected_result_filename": "weekly-x-2026-W41-grok-result.md",
+   "task": {
+    "path": "sources/2026-W41/external/x/weekly-x-2026-W41/grok-task.md",
+    "sha256": "b54d4988a03affc801298e60818861d5ad5fc82968495f2eafccd67e251af41a"
+   },
+   "result": {
+    "status": "PARTIAL",
+    "drive_file_name": "weekly-x-2026-W41-grok-result.md",
+    "observed_at": "2026-10-12T00:00:00Z",
+    "imported_at": "2026-10-12T01:00:23+09:00",
+    "raw": {
+     "path": "sources/2026-W41/external/x/weekly-x-2026-W41/raw/weekly-x-2026-W41-grok-result.md",
+     "sha256": "72245d4fef102fb1cdfcaade1f0707df1e1b73b28f4386f719245b247b0ecab6",
+     "byte_count": 5332
+    },
+    "discovery_disposition": "DISCOVERY_RECORDED",
+    "discovery_ids": [
+     "w41-grok-x-ledger-20261012"
+    ],
+    "rationale": "Raw received unaltered (hash matches Sol independent computation); 14 links reconciled to 12 in-window + 2 post-cutoff (#6 unintended-actions +4m59s, #10 Clef-omni +1h11m); new X-derived lead Nano Banana 2.1 needs first-party follow-up; X post existence/authorship unverified (no independent X retrieval)."
+   }
   }
  ],
- "status": "AWAITING_GROK__X_LANE_NOT_PASSED"
+ "status": "COMPLETE"
 }

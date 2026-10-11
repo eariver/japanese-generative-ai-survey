@@ -16,3 +16,10 @@ Added rows:
 - w41-primary-perplexity-embed-20261007: Perplexity: pplx-embed-v2-late pair (Oct 7)
 - w41-primary-ms-decision1-20261009: Microsoft: Decision-1 (Oct 9, TIME_UNRESOLVED)
 - w41-hold-tencent-20261011: Tencent Youtu-Parsing-Omni (HOLD/CONTEXT)
+
+## r2b Grok ingestion (2026-10-12, after Sol raw archive)
+
+- w41-grok-x-ledger-20261011: AWAITING → RECEIVED (5,332B, hash-verified; 14/12-in/2-post reconciliation).
+- ADDED w41-x-nanobanana21-20261006 (X-derived, needs first-party follow-up).
+- w41-primary-mistral-large4-20261006: 49B/52B kept as version-specific statements per Sol audit.
+- Total: 29 rows.
