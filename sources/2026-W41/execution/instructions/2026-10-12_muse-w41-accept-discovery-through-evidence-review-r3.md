@@ -31,7 +31,7 @@ Read, in order:
 Sol's `SOL_DISCOVERY_COMPLETENESS_PASS` approves the *research-inventory completeness*, NOT Core acceptance and NOT factual authority for each claim.
 
 A. Materialize `sources/2026-W41/discovery/discovery-v2.jsonl` as the exact validated r2d 37-record source set. Verify original proposal bytes/hash, schema and all unique IDs; do not silently modify candidate content in the name of acceptance. If a Core contract conflict is discovered, STOP and report.
-B. Use frozen Core `survey_discovery_acceptance_v2.build_acceptance` and `validate_acceptance` (verify actual CLI/module signature) to create exact `sources/2026-W41/discovery/discovery-accepted-v2.json`. Verify 37 accepted records, actual immutable file SHA/byte_count, raw path binding, X manifest's `discovery_ids` and acceptance graph.
+B. Use frozen Core `scripts/survey_discovery_v2.py` functions `build_acceptance` and `validate_acceptance` (verify actual CLI/module signature) to create exact `sources/2026-W41/discovery/discovery-accepted-v2.json`. Verify 37 accepted records, actual immutable file SHA/byte_count, raw path binding, X manifest's `discovery_ids` and acceptance graph.
 C. Use canonical Core Stage Validation/Checkpoint/State transition. Advance `ISSUE_INITIALIZED -> DISCOVERY_COLLECTED` only after all checks PASS. Core-generated State; no manual JSON State editing. Use direct local frozen CLI or trusted `ADVANCE_STAGE` Operator Bridge (request-only commit through Issue #448) if local canonical runtime is unavailable. Never invent Core outputs or skip stage validation.
 
 ## 3. Screening and Candidate Normalization
