@@ -49,6 +49,7 @@ Ending HEAD/Tree: working tree at write time (recorded after push; origin == HEA
 
 Sol: please run the independent read-only Architecture audit before any Human presentation.
 
-Ending (post-push record): HEAD `INSERT_HEAD` / Tree `INSERT_TREE`.
+Ending (post-push record): HEAD `c571fc1cb2252cfed7da5a8611572d2a6eec1791` / Tree
+`be1dae99c9142f3796de05f65da5ec227f5daf17` (r7 commit, pushed). Record commit follows.
 
 (End of file)
