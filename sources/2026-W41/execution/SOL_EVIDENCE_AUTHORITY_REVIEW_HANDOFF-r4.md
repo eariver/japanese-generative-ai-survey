@@ -6,7 +6,7 @@ Branch: `weekly/2026-W41-v2-work` (existing only; no new branch, no force, no re
 Starting HEAD `62c0efc825eeca30d690daf3ada62a430822a9fa` / Tree `6d9ffb83d816fb7f71062c450035defd522484a0` (verified read-only; instruction parent a43a497c; r3 fa7f7a5b in ancestry)
 Reviewed main `83f581ebc0dd8945ca7116f65bf6b853ca1fe6c8` / Tree `31c0adc5b57761e5073d100554279a8adc5a18f4`; Core `774dd39a951c9ac3818e83dfffd4c7666efb0a20` (shared roots untouched)
 Sol authority: `execution/reviews/sol-w41-evidence-authority-consumption-r1-20261012.md` (PARTIAL_PASS, SC-E41-01..04)
-Ending HEAD/Tree: recorded in session r4 + commit (this file written pre-commit).
+Ending HEAD `399a37c9d114176d0e5dbcaac9402f20f613e11e` / Tree `5c941e2efb41baa82bf2f81d4c5b47620cf3a841` (r4 commit, pushed; `origin/weekly/2026-W41-v2-work` == HEAD).
 
 ## 1. Compatibility projection (SC-E41-01) — PROVEN under unmodified Core
 
