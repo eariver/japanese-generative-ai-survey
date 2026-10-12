@@ -11,7 +11,7 @@ Branch: `weekly/2026-W41-v2-work` (existing only; no new branch, no force, no re
 - Frozen Core `774dd39a951c9ac3818e83dfffd4c7666efb0a20` — exists; shared roots (scripts/schemas/config/workflows/docs/AGENTS) untouched on work branch.
 - Sol authority: `execution/reviews/sol-w41-discovery-completeness-r2d-PASS-20261012.md` (research-completeness PASS only).
 - Contract: `execution/instructions/2026-10-12_muse-w41-accept-discovery-through-evidence-review-r3.md`.
-- Ending HEAD/Tree: recorded in session + commit (this file written pre-commit; see session for final values).
+- Ending HEAD `6aa82a98417d54dd6ce06cbc6c684bc9df79d371` / Tree `f5fc3d61197eb97e5b9b657f996a97cc65d595f7` (r3 commit, pushed; verified `origin/weekly/2026-W41-v2-work` == HEAD).
 
 ## 2. Canonical Discovery Acceptance (37 rows)
 
