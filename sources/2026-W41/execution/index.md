@@ -88,3 +88,14 @@ This is the current human-readable navigation record for the edition. Machine li
 - State still `ISSUE_INITIALIZED`; no acceptance or downstream stages.
 - Session: `execution/sessions/muse-w41-r2c-20261012.md`; handoff: `execution/SOL_DISCOVERY_COMPLETENESS_REVIEW_HANDOFF-r2c.md`.
 - Terminal: `SOL_DISCOVERY_COMPLETENESS_REVIEW_READY` candidate r2c.
+
+## Muse W41 r2d — Discovery record-repair (2026-10-12)
+
+- Resume after context break (Start Guard omitted per instruction; HEAD b19ef68e/Tree 4d0218da + origin/main 83f581eb + Core 774dd39a verified; W40 worktree diff restored).
+- Fix 1: manifest discovery_ids → existing w41-grok-x-ledger-20261011 (schema + referential PASS).
+- Fix 2: crosswalk r2d 92/92 traceable (file/§/heading/URL/ID/Importance/Confidence/event-clock/Discovery-ID/Disposition; counts 16/49/3/14/2/8 preserved).
+- Fix 3: 5 stale rows repaired (Grok/Decisions/Clef/Mistral/NegativeSpace).
+- Fix 4: new-8 honesty (SynthID → x-community-signal; observed_at → DailyX report instants).
+- Proposal r2d: 37 rows (13 touched, 24 identical, IDs/order preserved; schema PASS).
+- Docs: completeness r2d, diff r2d, handoff r2d, session r2d. State still ISSUE_INITIALIZED; no acceptance or downstream stages.
+- Terminal: SOL_DISCOVERY_COMPLETENESS_REVIEW_READY candidate r2d.
