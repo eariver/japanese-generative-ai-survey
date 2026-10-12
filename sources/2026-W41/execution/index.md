@@ -113,3 +113,11 @@ This is the current human-readable navigation record for the edition. Machine li
 - Supplement: 7 excerpts + manifest (8 entries, validated).
 - r2 package (36, double-build + basis + authority PASS unmodified); cards 36/36 (3/21/12); views 36/36 provisional; NO acceptance.
 - State CANDIDATES_NORMALIZED; terminal SOL_EVIDENCE_BINDING_REVIEW_READY.
+## Muse W41 r5 — Evidence acceptance + Materiality prep (2026-10-12)
+
+- Start: remote HEAD 7741e7d2/Tree 55c49f41 + main + Core verified; FF from r4 241a1cd5.
+- SC-E41-05: guarded builder, byte-identical regen, double-build + 3 negatives PASS; Core validators 36/36 unmodified.
+- SC-E41-06: nanobanana/provenance/excerpt/method hygiene; 8/36 records revised.
+- Acceptance: evidence 717ea04a (36; 3/21/12) + views e0a6c921 (36), both Core-accepted+validated.
+- Proposals: materiality 21/13/2/1 + completeness LIMITED (full validator PASS under override).
+- NO transition/checkpoint-PASS/Selection/Architecture. State CANDIDATES_NORMALIZED; terminal SOL_MATERIALITY_COMPLETENESS_REVIEW_READY.

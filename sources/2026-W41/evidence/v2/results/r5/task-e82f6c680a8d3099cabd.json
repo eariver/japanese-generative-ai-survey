@@ -1,0 +1,108 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W41",
+  "evidence_task_id": "evidence:2026-W41:5ca8cd2c65ec98d8",
+  "basis": {
+    "task_sha256": "af0c796c04fc57265d47d09e555deec3b34d7d7a1a4c925e3199ab7b814b097d",
+    "screening_acceptance_sha256": "bd3f5f6f9ee302855d10036443f8528c99016e93365d4d8cc4df1ee299bbd4db",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "g6-ui",
+      "canonical_name": "GPT-6 + Intelligent UI rollout",
+      "entity_type": "PRODUCT",
+      "organization": "OpenAI",
+      "canonical_url": "primary:openai.com/index/gpt-6-for-everyone"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "g6-ui",
+    "artifact_type": "PRODUCT",
+    "canonical_name": "GPT-6 + Intelligent UI rollout",
+    "canonical_url": "primary:openai.com/index/gpt-6-for-everyone"
+  },
+  "temporal": {
+    "observed_at": "2026-10-12T12:40:09Z",
+    "events": []
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "primary:openai.com/index/gpt-6-for-everyone",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "OpenAI: GPT-6 + Intelligent UI rollout (Oct 7)",
+      "published_at": null,
+      "accessed_at": "2026-10-12T12:40:09Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "GPT-6 with Intelligent UI rolled out globally Oct 7 to Plus/Pro/Business/Enterprise (Chat tab), Oct 8 to Free/Go; Sol for paid tiers, Luna for Free/Go.",
+      "subject_id": "g6-ui",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Delegated page read (openai.com/index/gpt-6-for-everyone, Oct 7 2026)"
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "44% sooner answering (GPT-6 Instant vs 5.6 Instant, web-search questions) is time-to-start via interleaved thinking/answering, not wall-time to final answer.",
+      "subject_id": "g6-ui",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Delegated page read; distinction preserved per Sol"
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "ChatGPT page body delegated (verbatim), not Muse first-hand; system-card numbers not enumerated; pricing absent on page.",
+      "subject_id": "g6-ui",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "rollout-dates-tier-split",
+        "status": "VERIFIED",
+        "finding": "Oct 7 paid tiers / Oct 8 Free-Go, Chat tab only, Sol/Luna mapping vendor-stated.",
+        "subject_ids": [
+          "g6-ui"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "vendor-latency-claim-basis",
+        "status": "VERIFIED",
+        "finding": "44% time-to-start wording confirmed; no wall-time reduction number on page.",
+        "subject_ids": [
+          "g6-ui"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

@@ -1,0 +1,99 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W41",
+  "evidence_task_id": "evidence:2026-W41:d3b121be6163f0ef",
+  "basis": {
+    "task_sha256": "4bcab6add464b8e80f6f554c9a684e00127a5e04ea819c6b644331d8ffb28839",
+    "screening_acceptance_sha256": "bd3f5f6f9ee302855d10036443f8528c99016e93365d4d8cc4df1ee299bbd4db",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "x-ledger-w41",
+      "canonical_name": "W41 Grok/X weekly ledger",
+      "entity_type": "OTHER",
+      "organization": null,
+      "canonical_url": "grok-task:weekly-x-2026-W41"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "x-ledger-w41",
+    "artifact_type": "OTHER",
+    "canonical_name": "W41 Grok/X weekly ledger",
+    "canonical_url": "grok-task:weekly-x-2026-W41"
+  },
+  "temporal": {
+    "observed_at": "2026-10-12T12:40:09Z",
+    "events": []
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "grok-task:weekly-x-2026-W41",
+      "source_class": "SOCIAL",
+      "title": "W41 Grok/X weekly ledger (RAW_RECEIVED_UNALTERED)",
+      "published_at": null,
+      "accessed_at": "2026-10-12T12:40:09Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Grok Raw received unaltered (5,332B, SHA 72245d4f, hash matches Sol); 14 links = 12 in-window + 2 post-cutoff (#6 +4m59s, #10 +1h11m).",
+      "subject_id": "x-ledger-w41",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "r2c/Sol-audited bytes + snowflake decode"
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "X post existence/authorship NOT independently verified; Nano Banana lead needed first-party follow-up (now card-found).",
+      "subject_id": "x-ledger-w41",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "SOCIAL_OBSERVATION",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Sol audit boundary"
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Post existence/authorship unverified; DRIVE text is not X HTML capture.",
+      "subject_id": "x-ledger-w41",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "primary-verification-all",
+        "status": "UNRESOLVED",
+        "finding": "Post-level verification outstanding by design.",
+        "subject_ids": [
+          "x-ledger-w41"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      "primary-verification-all: Post-level verification outstanding by design."
+    ],
+    "contradictions": []
+  }
+}
