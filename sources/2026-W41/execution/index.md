@@ -139,3 +139,12 @@ This is the current human-readable navigation record for the edition. Machine li
 - Stage: validation PASS → checkpoint `SELECTION_COMPLETE.json` → ARCHITECTURE_ESTABLISHED (gates pending).
 - Session: `execution/sessions/muse-w41-r7-20261012.md`; handoff: `execution/SOL_ARCHITECTURE_REVIEW_HANDOFF-r7.md`; logs: `execution/validation/selection-architecture-r7-log.md`.
 - Terminal: `ARCHITECTURE_ESTABLISHED / ARCHITECTURE_REVIEW_PENDING` (Sol audit required; no Human decision/Draft/PDF).
+## Muse W41 r8 — Architecture audit remediation (2026-10-12)
+
+- Start: remote HEAD `1b66dd9a9`/Tree `5bfa3a11` (derived read-only from fixed commit, remote match) + main `83f581eb` + Core `774dd39a` verified; local already at Start, clean tree.
+- R7-01: resource plan `architecture-resource-plan-r8.md` (6 pkgs, 57–80 paras, shares 20/18/25/7/18/12, 3 tables + 5–7 boxes, uncapped, no HOLD promotion).
+- R7-02: summary residual[9] investigated → Core-derivation byte-equality proven (`f3058466`), hand-edit fails stage validation, upstream blocked by checkpoint refusal + forward-only State → lawful correction unavailable; finding `architecture-legacy-exclusion-finding-r8.md` preserves State, reports reacceptance need.
+- R7-03: traceability `claim-evidence-trace-r8.md` (20 SELECTED rows, IDs verified, placements match, 0 independently reproduced stated).
+- Revalidation read-only PASS; no canonical/State/checkpoint mutation. State ARCHITECTURE_ESTABLISHED.
+- Session: `execution/sessions/muse-w41-r8-20261012.md`.
+- Terminal: `ARCHITECTURE_ESTABLISHED / ARCHITECTURE_REVIEW_PENDING` (Sol re-audit awaited).
