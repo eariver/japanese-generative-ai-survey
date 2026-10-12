@@ -13,6 +13,9 @@ Sol authority: `execution/reviews/sol-w41-materiality-completeness-r5-20261012.m
 Ending HEAD/Tree: working tree at write time (to be recorded after push;
 `origin/weekly/2026-W41-v2-work` == HEAD after non-force push).
 
+Ending (post-push record): HEAD `996fe26ef31fe31f9534eb4911c10457da11fcf6` /
+Tree `96ee37f8a1bbf014f86d267c6bc25b97b1778c0d` (r6 commit, pushed).
+
 ## 1. SC-M41-01 attestation (one View correction, reaccepted)
 
 - r6 input `evidence/v2/views/r6/` (36): 35 byte-identical to accepted
