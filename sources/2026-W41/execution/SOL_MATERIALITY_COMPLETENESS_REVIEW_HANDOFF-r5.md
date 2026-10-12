@@ -6,7 +6,7 @@ Branch: `weekly/2026-W41-v2-work` (existing only; no new branch, no force, no re
 Starting HEAD `7741e7d20e8e7948c0a619e4f048c5601da4085c` / Tree `55c49f41acc077e42d80cab821cfdfe6a55d0b81` (verified read-only; instruction parent cbcfbd4c; r4 241a1cd5 in ancestry)
 Reviewed main `83f581ebc0dd8945ca7116f65bf6b853ca1fe6c8`; Core `774dd39a951c9ac3818e83dfffd4c7666efb0a20` (shared roots untouched)
 Sol authority: `execution/reviews/sol-w41-evidence-authority-binding-r2-20261012.md` (TECHNICAL_PASS, ACCEPTANCE_CONDITIONAL on SC-E41-05/06)
-Ending HEAD/Tree: recorded in session r5 + commit (this file written pre-commit).
+Ending HEAD `a0e97be437fddf435b062f101f7aca780bd62e88` / Tree `dc984d7fc75fa9a9c650bf6fcd3c464d100c3d70` (r5 commit, pushed; `origin/weekly/2026-W41-v2-work` == HEAD).
 
 ## 1. SC-E41-05 attestation (exact-nine, fail-closed)
 
