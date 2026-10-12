@@ -3,7 +3,7 @@
   "issue_id": "2026-W41",
   "research_profile": "WEEKLY",
   "publication_profile": "WEEKLY_MAGAZINE",
-  "lifecycle_state": "EVIDENCE_REVIEWED",
+  "lifecycle_state": "ARCHITECTURE_ESTABLISHED",
   "profile": {
     "path": "sources/2026-W41/production-profile.json",
     "sha256": "f22a129120e3e066dd4703c45bcb70b28d4163e20bc27d309c418a57200e5621"
@@ -31,8 +31,8 @@
     "publication_preview": null
   },
   "target_gate": "ARCHITECTURE_REVIEW",
-  "next_action": "stage:selection",
-  "terminal_reason": null,
+  "next_action": "ARCHITECTURE_REVIEW",
+  "terminal_reason": "HUMAN_GATE_REACHED",
   "exception_gate": {
     "status": "inactive",
     "reason": null
@@ -43,8 +43,8 @@
     "evidence": "passed",
     "materiality": "passed",
     "completeness": "passed",
-    "selection": "pending",
-    "architecture": "pending",
+    "selection": "passed",
+    "architecture": "passed",
     "draft": "pending",
     "validation": "pending",
     "publication_preview": "pending",
@@ -72,8 +72,14 @@
       "path": "sources/2026-W41/orchestration/v2/checkpoints/CANDIDATES_NORMALIZED.json",
       "sha256": "a0c30419420d136cb9e0aa9db8a1c478355f5e43b74cf921ae8a4810bd9d87be"
     },
-    "selection": null,
-    "architecture": null,
+    "selection": {
+      "path": "sources/2026-W41/orchestration/v2/checkpoints/EVIDENCE_REVIEWED.json",
+      "sha256": "1eab89b57d616911b742fcf4f31434e31bf241d2393074be58494dc7182852e0"
+    },
+    "architecture": {
+      "path": "sources/2026-W41/orchestration/v2/checkpoints/SELECTION_COMPLETE.json",
+      "sha256": "c5e366d38657f5dc6ff05a1cd36d51f18616ea5eb8cec9d5494b51b5d559df23"
+    },
     "draft": null,
     "validation": null,
     "publication_preview": null,
@@ -110,6 +116,18 @@
       "to": "EVIDENCE_REVIEWED",
       "recorded_at": "2026-10-12T13:51:41Z",
       "repository_commit_sha": "a8fe41a19ac18a981fe2f4d27272ae7a5cf89311"
+    },
+    {
+      "from": "EVIDENCE_REVIEWED",
+      "to": "SELECTION_COMPLETE",
+      "recorded_at": "2026-10-12T14:31:21Z",
+      "repository_commit_sha": "f47e597429940e3bd2b237ce7c869ead774fd869"
+    },
+    {
+      "from": "SELECTION_COMPLETE",
+      "to": "ARCHITECTURE_ESTABLISHED",
+      "recorded_at": "2026-10-12T14:35:41Z",
+      "repository_commit_sha": "f47e597429940e3bd2b237ce7c869ead774fd869"
     }
   ]
 }

@@ -1,0 +1,50 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W41",
+  "from_state": "EVIDENCE_REVIEWED",
+  "to_state": "SELECTION_COMPLETE",
+  "checkpoints": [
+    "selection"
+  ],
+  "recorded_at": "2026-10-12T14:31:21Z",
+  "implementation": {
+    "repository_commit_sha": "f47e597429940e3bd2b237ce7c869ead774fd869",
+    "orchestrator_version": "survey-production-core-v2/0.15-postintegration-transport-thematic"
+  },
+  "contract": {
+    "pipeline_contract_version": "2.0-rc1",
+    "pipeline_contract_sha256": "ee89796245c22072cec98f34931180214a4928c24f399280793cd6420a4c8e71",
+    "quality_contract_version": "2.0-rc1",
+    "quality_contract_sha256": "b5b955d524fb438c0f1b2c9490bea1da2083e79028d67a55ca424bbfc20f2958",
+    "research_profile_version": "2.0-rc1",
+    "research_profile_sha256": "666f8a064b190ffd35216e26d6fdf2dd0fa932cac7b1b0d6448e262ded77b9a8",
+    "publication_profile_version": "2.0-rc1",
+    "publication_profile_sha256": "99adff93ff443e02bdcce639ce5fc4d4c959ee45a804da70efc4277db57fdddb"
+  },
+  "artifacts": [
+    {
+      "name": "candidate-matrix",
+      "path": "sources/2026-W41/candidate-matrix-v2.json",
+      "sha256": "0d56de2b8b1b0417ce7f0cac34283a4549e6e91ca5279016aa826416e9f98d25"
+    },
+    {
+      "name": "candidate-selection",
+      "path": "sources/2026-W41/candidate-selection-v2.json",
+      "sha256": "3bedcb4acbb80647539ef3a318fd6ce654e31a540d9a6e76e55d2361ab729033"
+    }
+  ],
+  "reviews": [
+    {
+      "check_id": "CORE_STAGE_CONTRACT",
+      "kind": "DETERMINISTIC",
+      "status": "PASS",
+      "executor": "Survey Production Core v2 survey_stage_validation_v2.py",
+      "evidence": "W41 canonical Selection 36 (20 SELECTED = 5 PRIMARY + 15 SUPPORTING / 13 HOLD / 2 INSPECT / 1 REJECT) from Sol-reviewed r6 preview, byte-identical matrix 0d56de2b + selection 3bedcb4a, Core-validated. Grok ledger REJECT (methods-only), 13 HOLD unpromoted, 2 INSPECT sidebar-eligible only if Architecture legality allows. Machine validation only; Sol Selection r6 PASS recorded separately.",
+      "result": {
+        "path": "sources/2026-W41/execution/validation/selection-stage-validation-r7.json",
+        "sha256": "29f529570347accbf6dd09a050061494ffc42416aa77b8eae20e2a14f92cb642"
+      }
+    }
+  ],
+  "summary": "W41 canonical Selection 36 (20 SELECTED 5P/15S; 13 HOLD; 2 INSPECT; 1 REJECT from Grok ledger); Sol r6 PASS; Matrix 0d56de2b + Selection 3bedcb4a Core-validated."
+}

@@ -131,3 +131,11 @@ This is the current human-readable navigation record for the edition. Machine li
 - Selection preview only: matrix `0d56de2b` (36) + selection `3bedcb4a` (20/13/2/1, both Core-validated) + narrative (lead, grouping, citations, alternatives, honest depth, no TeX). No canonical matrix/selection, no SELECTION_COMPLETE, no Architecture/Draft/PDF/Human Gate.
 - Session: `execution/sessions/muse-w41-r6-20261012.md`; handoff: `execution/SOL_SELECTION_MATERIALITY_PREVIEW_HANDOFF-r6.md`; log: `execution/validation/evidence-r6-selection-preview-log.md`.
 - Terminal: `SOL_SELECTION_MATERIALITY_PREVIEW_REVIEW_READY` (Sol independent Selection review required).
+## Muse W41 r7 — Selection acceptance → Architecture (2026-10-12)
+
+- Start: remote HEAD `f47e59742`/Tree `3d3a52e0` + main `83f581eb` + Core `774dd39a` verified (parent `12c192d4b`, r6 `0e80f00e` ancestry); FF from `0e80f00e`.
+- Selection: matrix re-derived byte-identical `0d56de2b` (36); canonical `candidate-matrix-v2.json` + `candidate-selection-v2.json` (`3bedcb4a`, 20=5P/15S+13H+2I+1R) exact preview bytes, Core-validated; stage PASS → checkpoint `EVIDENCE_REVIEWED.json` → SELECTION_COMPLETE.
+- Architecture: 6 packages (P1 frontier 2P; P2 agent 1P+4S; P3 weights+speech 1P+6S; P4 Nano brief; P5 provenance 1P+1S; P6 safety/science 3S) → `architecture-v2.json` (`3554041e`, PROPOSED) Core PASS (5P once, 15S ≥once, boundaries exact, uncapped); P4 legacy trace exception; summary `f3058466` READY; attention 39 PASS; tech prep per package.
+- Stage: validation PASS → checkpoint `SELECTION_COMPLETE.json` → ARCHITECTURE_ESTABLISHED (gates pending).
+- Session: `execution/sessions/muse-w41-r7-20261012.md`; handoff: `execution/SOL_ARCHITECTURE_REVIEW_HANDOFF-r7.md`; logs: `execution/validation/selection-architecture-r7-log.md`.
+- Terminal: `ARCHITECTURE_ESTABLISHED / ARCHITECTURE_REVIEW_PENDING` (Sol audit required; no Human decision/Draft/PDF).
