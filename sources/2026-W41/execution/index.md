@@ -148,3 +148,13 @@ This is the current human-readable navigation record for the edition. Machine li
 - Revalidation read-only PASS; no canonical/State/checkpoint mutation. State ARCHITECTURE_ESTABLISHED.
 - Session: `execution/sessions/muse-w41-r8-20261012.md`.
 - Terminal: `ARCHITECTURE_ESTABLISHED / ARCHITECTURE_REVIEW_PENDING` (Sol re-audit awaited).
+## Muse W41 r9 — Operator invalidation & regeneration (2026-10-13)
+
+- Start: remote HEAD `1ce09e5ef`/Tree `963ed8bb` + main `83f581eb` + Core `774dd39a` verified; local == remote, clean.
+- Preflight 10/10 PASS (code + read-only, no CLI): ARCHITECTURE_REVIEW pending-Gate invalidation to CANDIDATES_NORMALIZED authorized.
+- Invalidation: official CLI seq 1 (`69bf505d`, human_decision=false) → State CANDIDATES_NORMALIZED; Evidence `717ea04a` + Views `cd661097` intact; intermediate `6e3c3651` pushed.
+- Repair: Completeness residual[9] → JP bounded note (`5340aa87`, LIMITED kept, spans absent); Cards/manifest untouched.
+- Regen: Materiality `51890f06` identical → EVIDENCE_REVIEWED; Matrix `edab1ea8` + Selection `47910f2a` (36/20/13/2/1 preserved) → SELECTION_COMPLETE; Arch `9a79e8d3` (6 pkgs, placements/boundaries preserved) + Summary `b7274c38` READY (spans absent) + Attention `d2fe8ffa` → ARCHITECTURE_ESTABLISHED.
+- Inherit: r8 plan/trace preserved + SHA crosswalk (`architecture-editorial-inheritance-r9.md`); r8 finding corrected non-destructively (`architecture-legacy-exclusion-correction-r9.md`).
+- Session: `execution/sessions/muse-w41-r9-20261013.md`.
+- Terminal: `ARCHITECTURE_ESTABLISHED / ARCHITECTURE_REVIEW_PENDING` (Sol re-audit awaited).

@@ -1,0 +1,50 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W41",
+  "from_state": "EVIDENCE_REVIEWED",
+  "to_state": "SELECTION_COMPLETE",
+  "checkpoints": [
+    "selection"
+  ],
+  "recorded_at": "2026-10-12T15:48:05Z",
+  "implementation": {
+    "repository_commit_sha": "6e3c3651feba831d1e3210c5f13526c8b64d9c85",
+    "orchestrator_version": "survey-production-core-v2/0.15-postintegration-transport-thematic"
+  },
+  "contract": {
+    "pipeline_contract_version": "2.0-rc1",
+    "pipeline_contract_sha256": "ee89796245c22072cec98f34931180214a4928c24f399280793cd6420a4c8e71",
+    "quality_contract_version": "2.0-rc1",
+    "quality_contract_sha256": "b5b955d524fb438c0f1b2c9490bea1da2083e79028d67a55ca424bbfc20f2958",
+    "research_profile_version": "2.0-rc1",
+    "research_profile_sha256": "666f8a064b190ffd35216e26d6fdf2dd0fa932cac7b1b0d6448e262ded77b9a8",
+    "publication_profile_version": "2.0-rc1",
+    "publication_profile_sha256": "99adff93ff443e02bdcce639ce5fc4d4c959ee45a804da70efc4277db57fdddb"
+  },
+  "artifacts": [
+    {
+      "name": "candidate-matrix",
+      "path": "sources/2026-W41/candidate-matrix-v2.json",
+      "sha256": "edab1ea819124ecad4560a5ae3c44304a23d2fa1941414a754687f6b84d3755d"
+    },
+    {
+      "name": "candidate-selection",
+      "path": "sources/2026-W41/candidate-selection-v2.json",
+      "sha256": "47910f2a3487bcceb8549bd43725285b961ce05a29bad2d0e01601e1d6e330d4"
+    }
+  ],
+  "reviews": [
+    {
+      "check_id": "CORE_STAGE_CONTRACT",
+      "kind": "DETERMINISTIC",
+      "status": "PASS",
+      "executor": "Survey Production Core v2 survey_stage_validation_v2.py",
+      "evidence": "W41 canonical Selection r9 (20 SELECTED 5P/15S, 13 HOLD, 2 INSPECT, 1 REJECT; assignments identical to Sol-reviewed r6 preview, basis rebound to r9 matrix edab1ea8 + completeness 5340aa87). Machine validation only; operator invalidation seq 1 basis.",
+      "result": {
+        "path": "sources/2026-W41/execution/validation/selection-stage-validation-r9.json",
+        "sha256": "e0f178814316542b54d730cc72452e4f263a1fe2d8bba5c370f783bd81d8ae2f"
+      }
+    }
+  ],
+  "summary": "W41 canonical Selection r9 (20/13/2/1, assignments preserved, basis rebound); operator seq 1."
+}
