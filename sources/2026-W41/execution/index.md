@@ -121,3 +121,13 @@ This is the current human-readable navigation record for the edition. Machine li
 - Acceptance: evidence 717ea04a (36; 3/21/12) + views e0a6c921 (36), both Core-accepted+validated.
 - Proposals: materiality 21/13/2/1 + completeness LIMITED (full validator PASS under override).
 - NO transition/checkpoint-PASS/Selection/Architecture. State CANDIDATES_NORMALIZED; terminal SOL_MATERIALITY_COMPLETENESS_REVIEW_READY.
+## Muse W41 r6 — Materiality correction → Stage → Selection Preview (2026-10-12)
+
+- Start: remote HEAD `a8fe41a1`/Tree `374976aa` + origin/main `83f581eb` + Core `774dd39a` verified read-only (all match; instruction parent `9f3484e8`, r5 `3adbcf32` in ancestry); local FF from `3adbcf32` to exact Start.
+- SC-M41-01: r6 views (36, 35 byte-identical, Grok `d3b121be` MATERIAL→CONTEXT/MAIN_EVENT→OTHER); 36/36 Core-validated; reaccepted `cd661097` (20/13/3).
+- SC-M41-02: NanoBanana exclusion overlay (`LEGACY_UNVERIFIED_NEGATIVE_DO_NOT_CITE`); Selection rationales admissible-only; Matrix internal boundary hit documented (reader surfaces clean).
+- SC-M41-03/04: ledger r6 `51890f06` (37: 20/13/3/1, Core-built+validated) + completeness r6 `f3d5a122` (LIMITED, override PASS) promoted to canonical `materiality-ledger-v2.json` / `profile-completeness-v2.json`; dossier (20-candidate, 6-theme, counterfactuals, intake truthfulness).
+- Stage: validation PASS → checkpoint `CANDIDATES_NORMALIZED.json` → advance CANDIDATES_NORMALIZED→EVIDENCE_REVIEWED (evidence/materiality/completeness passed; gates pending).
+- Selection preview only: matrix `0d56de2b` (36) + selection `3bedcb4a` (20/13/2/1, both Core-validated) + narrative (lead, grouping, citations, alternatives, honest depth, no TeX). No canonical matrix/selection, no SELECTION_COMPLETE, no Architecture/Draft/PDF/Human Gate.
+- Session: `execution/sessions/muse-w41-r6-20261012.md`; handoff: `execution/SOL_SELECTION_MATERIALITY_PREVIEW_HANDOFF-r6.md`; log: `execution/validation/evidence-r6-selection-preview-log.md`.
+- Terminal: `SOL_SELECTION_MATERIALITY_PREVIEW_REVIEW_READY` (Sol independent Selection review required).
