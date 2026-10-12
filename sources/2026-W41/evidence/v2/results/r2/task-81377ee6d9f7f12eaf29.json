@@ -1,0 +1,108 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W41",
+  "evidence_task_id": "evidence:2026-W41:feec9ec0eabe1d59",
+  "basis": {
+    "task_sha256": "d420523cb08a560a9e25a33835fd569d7a96b901de20a780151b111d1e8c3d4d",
+    "screening_acceptance_sha256": "bd3f5f6f9ee302855d10036443f8528c99016e93365d4d8cc4df1ee299bbd4db",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "omath",
+      "canonical_name": "OpenAI mathematics results release",
+      "entity_type": "PAPER",
+      "organization": "OpenAI",
+      "canonical_url": "primary:openai.com/index/sharing-ai-progress-in-mathematics"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "omath",
+    "artifact_type": "PAPER",
+    "canonical_name": "OpenAI mathematics results release",
+    "canonical_url": "primary:openai.com/index/sharing-ai-progress-in-mathematics"
+  },
+  "temporal": {
+    "observed_at": "2026-10-12T12:22:37Z",
+    "events": []
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "primary:openai.com/index/sharing-ai-progress-in-mathematics",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "OpenAI: mathematics results release (Oct 6)",
+      "published_at": null,
+      "accessed_at": "2026-10-12T12:22:37Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Oct 6 release: broad new mathematical results from internal frontier model (unnamed); GitHub openai/math repo + Lean partial formalizations + 10 reasoning summaries + Pro-usage compute stats (~3h avg).",
+      "subject_id": "omath",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Delegated page read"
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Model itself not released; responsible-release work ongoing without date.",
+      "subject_id": "omath",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Delegated page read"
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Repo contents/paper counts/Lean files not enumerated; licenses not on page.",
+      "subject_id": "omath",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "repo-contents-formalization-extent",
+        "status": "VERIFIED",
+        "finding": "Repo + Lean-partial + summaries vendor-stated; counts unenumerated.",
+        "subject_ids": [
+          "omath"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "model-nonrelease-boundary",
+        "status": "VERIFIED",
+        "finding": "Model nonrelease explicit.",
+        "subject_ids": [
+          "omath"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

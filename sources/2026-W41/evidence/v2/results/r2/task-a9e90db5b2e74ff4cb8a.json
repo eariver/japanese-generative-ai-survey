@@ -1,0 +1,99 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W41",
+  "evidence_task_id": "evidence:2026-W41:8f39a74fa18c10b2",
+  "basis": {
+    "task_sha256": "434300ddb87415642525b2e10b3ad0521d085c50268755df2bdc7c3e2cd8cd18",
+    "screening_acceptance_sha256": "bd3f5f6f9ee302855d10036443f8528c99016e93365d4d8cc4df1ee299bbd4db",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "NEEDS_MORE",
+  "entities": [
+    {
+      "entity_id": "youtu",
+      "canonical_name": "Tencent Youtu-Parsing-Omni",
+      "entity_type": "MODEL",
+      "organization": "Tencent",
+      "canonical_url": "secondary:huggingface.co/tencent/Youtu-Parsing-Omni"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "youtu",
+    "artifact_type": "MODEL",
+    "canonical_name": "Tencent Youtu-Parsing-Omni",
+    "canonical_url": "secondary:huggingface.co/tencent/Youtu-Parsing-Omni"
+  },
+  "temporal": {
+    "observed_at": "2026-10-12T12:22:37Z",
+    "events": []
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "secondary:huggingface.co/tencent/Youtu-Parsing-Omni",
+      "source_class": "SECONDARY",
+      "title": "Tencent Youtu-Parsing-Omni (HOLD/CONTEXT)",
+      "published_at": null,
+      "accessed_at": "2026-10-12T12:22:37Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "HF card retrieved (delegated): 5B omni-modal, license youtu-parsing, vendor OmniDocBench 96.96; News bullets [2026-10] month-only; no day-granular upload date in fetch.",
+      "subject_id": "youtu",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Delegated card read"
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Upload recency != dated issuer event; papers pre-window.",
+      "subject_id": "youtu",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "issuer-event-date",
+        "status": "UNRESOLVED",
+        "finding": "Month-only; no October issuer event pin.",
+        "subject_ids": [
+          "youtu"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "license-terms",
+        "status": "VERIFIED",
+        "finding": "youtu-parsing (non-Apache) card-stated.",
+        "subject_ids": [
+          "youtu"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      "issuer-event-date: Month-only; no October issuer event pin."
+    ],
+    "contradictions": []
+  }
+}

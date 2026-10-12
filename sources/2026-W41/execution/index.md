@@ -106,3 +106,10 @@ This is the current human-readable navigation record for the edition. Machine li
 - Screening: 19 KEEP / 15 INSPECT / 2 MAYBE / 1 DROP; accepted bd777675 (37/37); advance → CANDIDATES_NORMALIZED.
 - Evidence: 36 tasks; collectors/evidence/runs/20261012T003000Z-muse-r3; cards 36/36 (3 VERIFIED/21 PARTIAL/12 NEEDS_MORE); map-gap defect filed (9 tasks); provisional views 36/36; NO acceptance.
 - State CANDIDATES_NORMALIZED; gates pending; terminal SOL_EVIDENCE_AUTHORITY_REVIEW_READY.
+## Muse W41 r4 — Evidence authority binding (2026-10-12)
+
+- Start: remote HEAD 62c0efc8/Tree 6d9ffb83 + main + Core verified; FF from r3 fa7f7a5b.
+- Compat: 9 failures reproduced; ledger (9 projected + 27 passthrough, double-build PASS, BOGUS fail-closed); authority 36/36 unmodified Core.
+- Supplement: 7 excerpts + manifest (8 entries, validated).
+- r2 package (36, double-build + basis + authority PASS unmodified); cards 36/36 (3/21/12); views 36/36 provisional; NO acceptance.
+- State CANDIDATES_NORMALIZED; terminal SOL_EVIDENCE_BINDING_REVIEW_READY.
