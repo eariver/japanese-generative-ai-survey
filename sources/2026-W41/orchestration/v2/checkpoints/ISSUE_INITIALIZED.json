@@ -1,0 +1,45 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W41",
+  "from_state": "ISSUE_INITIALIZED",
+  "to_state": "DISCOVERY_COLLECTED",
+  "checkpoints": [
+    "discovery"
+  ],
+  "recorded_at": "2026-10-12T00:32:52Z",
+  "implementation": {
+    "repository_commit_sha": "1f497fb5f2425b58d524bf9738e1f76cb2075e3e",
+    "orchestrator_version": "survey-production-core-v2/0.15-postintegration-transport-thematic"
+  },
+  "contract": {
+    "pipeline_contract_version": "2.0-rc1",
+    "pipeline_contract_sha256": "ee89796245c22072cec98f34931180214a4928c24f399280793cd6420a4c8e71",
+    "quality_contract_version": "2.0-rc1",
+    "quality_contract_sha256": "b5b955d524fb438c0f1b2c9490bea1da2083e79028d67a55ca424bbfc20f2958",
+    "research_profile_version": "2.0-rc1",
+    "research_profile_sha256": "666f8a064b190ffd35216e26d6fdf2dd0fa932cac7b1b0d6448e262ded77b9a8",
+    "publication_profile_version": "2.0-rc1",
+    "publication_profile_sha256": "99adff93ff443e02bdcce639ce5fc4d4c959ee45a804da70efc4277db57fdddb"
+  },
+  "artifacts": [
+    {
+      "name": "discovery-acceptance",
+      "path": "sources/2026-W41/discovery/discovery-accepted-v2.json",
+      "sha256": "8db4a19f2bc2bdefb371b34078ac6a24fbed29f75f95461d7b510506013fbada"
+    }
+  ],
+  "reviews": [
+    {
+      "check_id": "CORE_STAGE_CONTRACT",
+      "kind": "DETERMINISTIC",
+      "status": "PASS",
+      "executor": "Survey Production Core v2 survey_stage_validation_v2.py",
+      "evidence": "W41 Discovery 37 records canonical acceptance (graph ce99f523): 29 carried issuer/HOLD/context rows (incl. Liquid d1, Nova Sonic, Kolibri, EmbeddingGemma 2, Perplexity pair, Decisions first-party upgrade, Clef-omni IN-WINDOW 18:27:34Z, MS-Decision-1 TIME_UNRESOLVED, Tencent HOLD, 4 W40 carry HOLDs, ELYZA pre-window context, Grok ledger, negativespace) + 8 DailyX rows (textGrain blog-exists, Agr/Nemotron distribution, SynthID X-only, StepFun provider+issuer, Nace Drex/NDI + ElevenLabs vendor-X); canonical observed_at 07:04 JST fix for SynthID row per raw Run metadata (r3 §4); Grok Raw 5332B intact; X COMPLETE/PARTIAL. Machine validation only; Sol Discovery Completeness r2d PASS recorded separately at sources/2026-W41/execution/reviews/sol-w41-discovery-completeness-r2d-PASS-20261012.md.",
+      "result": {
+        "path": "sources/2026-W41/execution/validation/discovery-stage-validation-r1.json",
+        "sha256": "fe57c8cbcbb677f5e8c9a71b72cb35b74292f7fae27755c3be11b8722790abff"
+      }
+    }
+  ],
+  "summary": "W41 Discovery accepted: 37 records (29 carried + 8 DailyX); Grok COMPLETE/PARTIAL; Sol r2d PASS recorded separately."
+}

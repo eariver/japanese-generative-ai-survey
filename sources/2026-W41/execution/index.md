@@ -99,3 +99,10 @@ This is the current human-readable navigation record for the edition. Machine li
 - Proposal r2d: 37 rows (13 touched, 24 identical, IDs/order preserved; schema PASS).
 - Docs: completeness r2d, diff r2d, handoff r2d, session r2d. State still ISSUE_INITIALIZED; no acceptance or downstream stages.
 - Terminal: SOL_DISCOVERY_COMPLETENESS_REVIEW_READY candidate r2d.
+## Muse W41 r3 — accept → screening → evidence prep (2026-10-12)
+
+- Start: remote HEAD 1f497fb5/Tree 6644a2d0 + origin/main 83f581eb + Core 774dd39a verified; FF from r2d d02ea4402.
+- Discovery: canonical discovery-v2.jsonl (2b265086, 37) + accepted-v2.json (graph ce99f523, X e49a67cd); 07:04 + manifest-path repairs documented; advance → DISCOVERY_COLLECTED.
+- Screening: 19 KEEP / 15 INSPECT / 2 MAYBE / 1 DROP; accepted bd777675 (37/37); advance → CANDIDATES_NORMALIZED.
+- Evidence: 36 tasks; collectors/evidence/runs/20261012T003000Z-muse-r3; cards 36/36 (3 VERIFIED/21 PARTIAL/12 NEEDS_MORE); map-gap defect filed (9 tasks); provisional views 36/36; NO acceptance.
+- State CANDIDATES_NORMALIZED; gates pending; terminal SOL_EVIDENCE_AUTHORITY_REVIEW_READY.

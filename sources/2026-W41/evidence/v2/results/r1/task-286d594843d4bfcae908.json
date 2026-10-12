@@ -1,0 +1,97 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W41",
+  "evidence_task_id": "evidence:2026-W41:fcf91ae9d6eea868",
+  "basis": {
+    "task_sha256": "38857987ccf31fad03ec5b09efde43fa444d7baa695090e971049ec143e8aa3c",
+    "screening_acceptance_sha256": "bd3f5f6f9ee302855d10036443f8528c99016e93365d4d8cc4df1ee299bbd4db",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "aup",
+      "canonical_name": "Anthropic 2026 Usage Policy update",
+      "entity_type": "PRODUCT",
+      "organization": "Anthropic",
+      "canonical_url": "primary:anthropic.com/news/2026-usage-policy-update"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "aup",
+    "artifact_type": "OTHER",
+    "canonical_name": "Anthropic 2026 Usage Policy update",
+    "canonical_url": "primary:anthropic.com/news/2026-usage-policy-update"
+  },
+  "temporal": {
+    "observed_at": "2026-10-12T00:39:53Z",
+    "events": []
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "primary:anthropic.com/news/2026-usage-policy-update",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "Anthropic: 2026 Usage Policy update (Oct 8, governance)",
+      "published_at": null,
+      "accessed_at": "2026-10-12T00:39:53Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Policy refresh posted Oct 8, effective November 12; deception/elections/weapons/surveillance/hardware/abuse-toward-models changes.",
+      "subject_id": "aup",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Delegated page read; governance document"
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Full legal redline not fetched; editorial role intentionally narrow.",
+      "subject_id": "aup",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "effective-date-scope",
+        "status": "VERIFIED",
+        "finding": "Nov 12 effect; change scope vendor-summarized.",
+        "subject_ids": [
+          "aup"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "editorial-role-boundary",
+        "status": "VERIFIED",
+        "finding": "Governance, not a model release; CONTEXT-leaning.",
+        "subject_ids": [
+          "aup"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}
