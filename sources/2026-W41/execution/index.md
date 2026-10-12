@@ -166,3 +166,11 @@ This is the current human-readable navigation record for the edition. Machine li
 - Stage: validation PASS (14 artifacts) → checkpoint `ARCHITECTURE_ESTABLISHED.json` → DRAFT_COMPLETE. No TeX/PDF/Preview/Freeze/Release.
 - Session: `execution/sessions/muse-w41-r10-20261013.md`; log: `execution/validation/draft-r10-log.md`.
 - Terminal: `DRAFT_COMPLETE` (Sol draft audit required; TeX/PDF blocked until audit + Human editorial confirmation).
+## Muse W41 r11 — Editorial revision proposals (2026-10-13)
+
+- Start: remote HEAD `3315e7628`/Tree `2d96733e` + main `83f581eb` + Core `774dd39a` verified; local == remote, clean.
+- Proposals (v11.0 REVISED) under `execution/editorial-revision-r11/`: 6 results (66p, 4 tables), synthesis in/out, preview (fidelity 6/6). BLOCKERs fixed (P4 units+Elo, P5 bounded-text+scale+quant), depth added (P1/P2/P3/P6), Priority-C self-reference removed.
+- Official draft-check 6/6 + synthesis-check PASS. Canonicals untouched (all SHAs verified unchanged); State DRAFT_COMPLETE.
+- Feasibility (read-only): manuscript-editing adoption feasible in principle; checkpoint substitution BLOCKED_BY_CORE_CONTRACT; proof deferred.
+- Session: `execution/sessions/muse-w41-r11-20261013.md`.
+- Terminal: `R11_PROPOSED_EDITORIAL_REVISION_READY_FOR_INDEPENDENT_AUDIT` (re-audit required).
