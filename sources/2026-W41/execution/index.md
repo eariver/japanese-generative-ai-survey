@@ -158,3 +158,11 @@ This is the current human-readable navigation record for the edition. Machine li
 - Inherit: r8 plan/trace preserved + SHA crosswalk (`architecture-editorial-inheritance-r9.md`); r8 finding corrected non-destructively (`architecture-legacy-exclusion-correction-r9.md`).
 - Session: `execution/sessions/muse-w41-r9-20261013.md`.
 - Terminal: `ARCHITECTURE_ESTABLISHED / ARCHITECTURE_REVIEW_PENDING` (Sol re-audit awaited).
+## Muse W41 r10 — Human approval + Japanese Draft JSON (2026-10-13)
+
+- Start: remote HEAD `5a8cf7c16`/Tree `bc0a6483` + main `83f581eb` + Core `774dd39a` verified; local == remote, clean.
+- Approval: basis `human-architecture-approval-basis-r1.md` (verbatim Human text); official CLI r1 APPROVED (Human Owner, fixed r9 commit); gates + index; intermediate `764dc6dd4` pushed.
+- Draft: packages P1–P6 Core-derived + validated; results v10.1 Japanese (66 paras, 3 tables, legacy reader-clean, P4 trace labeled); synthesis in/out validated; preview `draft-reader-preview-r10.json` (body equality 6/6).
+- Stage: validation PASS (14 artifacts) → checkpoint `ARCHITECTURE_ESTABLISHED.json` → DRAFT_COMPLETE. No TeX/PDF/Preview/Freeze/Release.
+- Session: `execution/sessions/muse-w41-r10-20261013.md`; log: `execution/validation/draft-r10-log.md`.
+- Terminal: `DRAFT_COMPLETE` (Sol draft audit required; TeX/PDF blocked until audit + Human editorial confirmation).

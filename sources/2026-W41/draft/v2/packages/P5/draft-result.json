@@ -1,0 +1,430 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W41",
+  "research_profile": "WEEKLY",
+  "publication_profile": "WEEKLY_MAGAZINE",
+  "package_id": "P5",
+  "draft_version": "v10.1",
+  "status": "DRAFT",
+  "basis": {
+    "draft_package_sha256": "664ab9c2454224b285d6cd25cfe5422ed8ca2f7a9963805ffc16e600755ff74f",
+    "prompt_id": "article-drafting-v2",
+    "prompt_sha256": "b687313312a23025228c16c3f10cb68f669b910cd7215e41886d4dd91f44fe11"
+  },
+  "runner": {
+    "provider": "muse-spark",
+    "model": "muse-spark",
+    "invocation": "r10 direct authoring (Muse session, local CLI)",
+    "generated_at": "2026-10-12T17:13:42.680622+00:00",
+    "run_reference": null
+  },
+  "headline": "測られた透かしと示された射程――来歴保証の二枚看板",
+  "deck": "textGrainの検出率動作点とSynthIDポータルの検証範囲を、等価化せずに対置する。",
+  "deck_attribution_mode": "MIXED",
+  "deck_evidence_refs": [
+    {
+      "evidence_task_id": "evidence:2026-W41:6601f7ffad5b2624",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1",
+      "subject_id": "tgrain",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:2026-W41:ef2ef9a25ec009ba",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1",
+      "subject_id": "synportal",
+      "subject_role": "PRIMARY_SUBJECT"
+    }
+  ],
+  "blocks": [
+    {
+      "block_id": "h1",
+      "block_type": "HEADING",
+      "text": "測られた透かし、示された範囲――来歴保証週の二枚看板",
+      "attribution_mode": "NONE",
+      "evidence_refs": []
+    },
+    {
+      "block_id": "p1",
+      "block_type": "PARAGRAPH",
+      "text": "OpenAIは10月5日のブログで、EU向けテキスト来歴技術textGrainを公開した。方式は統計的ウォーターマークで、APIは即時オプトイン、EUのChatGPTとCodexへは数週間以内の展開、検出器は研究者限定の提供とされる。本稿はこのブログ本文を直接読み込んでおり、今号で唯一、一次本文を手ずから読んだ定量的主題だ。公開範囲と検出条件の確定が今回の到達点である。",
+      "attribution_mode": "FACTUAL",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W41:6601f7ffad5b2624",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "tgrain",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p2",
+      "block_type": "PARAGRAPH",
+      "text": "測定値の中核は、誤検出率1%の条件で200 token時に約80%、400 token時に約95%という検出率の動作点だ。token長が伸びるほど検出が安定する関係が、具体的な数値で示されている。編集操作による検出性能の低下幅の数値や、Astraの品質表も添えられている。いずれもブログに掲載された発行元の測定であり、独立した再現を経ていない。ベンダー実施の一次読みという位置づけで受け止めるのが正確だ。",
+      "attribution_mode": "FACTUAL",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W41:6601f7ffad5b2624",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "tgrain",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p3",
+      "block_type": "PARAGRAPH",
+      "text": "token長と編集耐性は別の軸であることも押さえておく。前者は入力の長さに対する検出の立ち上がり、後者は改変を加えられた後の検出の持ちこたえだ。ブログは両者を別々の数値で示しており、混ぜて「頑健性80%」などと読むのは誤りだ。運用で使う際は、自タスクの文章長と想定される改変の種類に応じて、どちらの数値を参照すべきかを切り分ける必要がある。",
+      "attribution_mode": "FACTUAL",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W41:6601f7ffad5b2624",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "tgrain",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p4",
+      "block_type": "PARAGRAPH",
+      "text": "検出器の研究者限定という提供形態も技術的に意味がある。誰でも試せる公開物ではなく、利用申請を通った研究者に限られる。検証の再現はこのゲートの内側でしか進まないため、日本の研究者が追試するには申請手続きが前提になる。API側のオプトインが即時であるのと対照的に、検出側の検証は閉じた回路で回る設計だ。",
+      "attribution_mode": "FACTUAL",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W41:6601f7ffad5b2624",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "tgrain",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p5",
+      "block_type": "PARAGRAPH",
+      "text": "方法論の層には明確な天井がある。技術報告のPDFはリンクされているがバイナリ未読で、著者や手法の詳細は二手情報の範囲にとどまる。論文内部の主張に踏み込んだ解説は、ブログに書かれた事実だけを根拠にしなければならない。対象モデル一覧、価格、ライセンス条文も未確認だ。本記事の深さはブログの地平線までであり、その先はPDF取得後の課題として残る。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W41:6601f7ffad5b2624",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "tgrain",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W41:6601f7ffad5b2624",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "tgrain",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W41:6601f7ffad5b2624",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-4",
+          "subject_id": "tgrain",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "h2",
+      "block_type": "HEADING",
+      "text": "検証ポータルの射程――SynthIDの範囲表",
+      "attribution_mode": "NONE",
+      "evidence_refs": []
+    },
+    {
+      "block_id": "p6",
+      "block_type": "PARAGRAPH",
+      "text": "Googleは10月7日のブログで、SynthIDの公開検証ポータルの拡張を示した。英語でグローバルに、10月7日から利用できる。対象はGoogleまたはパートナー由来の画像・映像・音声で、パートナーにはOpenAI、NVIDIA、Kakaoが名を連ね、Appleも近日とされる。規模の計数も添えられているが、いずれもブログの申告だ。テキストは対象に含まれていない。",
+      "attribution_mode": "ATTRIBUTED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W41:ef2ef9a25ec009ba",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "synportal",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p7",
+      "block_type": "PARAGRAPH",
+      "text": "ポータル本体の検証可能性には留保がある。synthid.comはJSシェルのみで、対応形式や料金、ライセンス条項は取得できない。検出精度のベンチマークも存在しない。つまりポータルの「射程」はブログの記述としては確定するが、「効き目」は未測定のままということだ。パートナーの適用範囲もベンダー言明であり、取得による裏付けはない。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W41:ef2ef9a25ec009ba",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "synportal",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W41:ef2ef9a25ec009ba",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "synportal",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p8",
+      "block_type": "PARAGRAPH",
+      "text": "ここで混同してはならないのは、textGrainの数値とSynthIDの範囲が別の様式の事実だということだ。前者はテキスト透かしの検出率という測定値、後者は画像・映像・音声の検証射程という範囲の宣言である。テキストの頑健性が他モダリティの検証性能に転用できるわけでも、その逆でもない。両者を一つの「来歴保証性能」として語るのは、根拠のない等価化になる。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W41:6601f7ffad5b2624",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "tgrain",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W41:ef2ef9a25ec009ba",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "synportal",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "t1",
+      "block_type": "TABLE",
+      "text": "【比較表：来歴保証二件の射程と確認状態】\ntextGrain｜対象：テキスト｜利用制限：API即時オプトイン、EU展開は数週間以内、検出器は研究者限定｜仕組み・確認範囲：統計透かし、FPR・token・編集耐性の数値はブログ一次読み（ベンダー実施）、技術報告PDF未読\nSynthIDポータル｜対象：画像・映像・音声（テキスト除外）｜利用制限：英語グローバル、パートナー由来に限定｜仕組み・確認範囲：検証ポータルの射程はブログ確定、精度ベンチなし、ポータル本体はJS未取得",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W41:6601f7ffad5b2624",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "tgrain",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W41:ef2ef9a25ec009ba",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "synportal",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W41:6601f7ffad5b2624",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-4",
+          "subject_id": "tgrain",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W41:ef2ef9a25ec009ba",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "synportal",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p9",
+      "block_type": "PARAGRAPH",
+      "text": "取得形態の留保も記す。textGrainとSynthIDの抜粋はいずれもバンドル取得枠の推定時刻で、ページ単位の精密時刻ではない。抜粋は逐語引用と来歴ヘッダーからなる範囲であり、HTML全文ではない。表のセルはこの粒度の読み取りであり、粒度以上の断定には使えない。",
+      "attribution_mode": "INFERENCE",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W41:6601f7ffad5b2624",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "tgrain",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W41:6601f7ffad5b2624",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-3",
+          "subject_id": "tgrain",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W41:ef2ef9a25ec009ba",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "synportal",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W41:ef2ef9a25ec009ba",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-3",
+          "subject_id": "synportal",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p10",
+      "block_type": "PARAGRAPH",
+      "text": "政策的な読みどころも述べておく。EU先行の透かし運用と研究者限定の検出器という組み合わせは、日本の政策・研究の読者にとって直接の参照点になる。Kakaoの名がパートナーにあることは、アジア域での適用の手がかりだ。ただし、いずれも制度の存在の確定であり、効果の実証ではない。この区別を守って参照したい。",
+      "attribution_mode": "ATTRIBUTED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W41:6601f7ffad5b2624",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "tgrain",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W41:ef2ef9a25ec009ba",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "synportal",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p11",
+      "block_type": "PARAGRAPH",
+      "text": "パートナー適用の未検証も明示する。OpenAIやNVIDIA由来の検証が実際にどの範囲で動くかは、取得による裏付けがない。ブログの射程表をそのまま運用計画に写すのではなく、自前の検証で確かめる段階が残る。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W41:ef2ef9a25ec009ba",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "synportal",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W41:ef2ef9a25ec009ba",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "synportal",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p12",
+      "block_type": "PARAGRAPH",
+      "text": "来歴保証週の到達点をまとめると、テキスト側は測られた数値、画像・映像・音声側は示された範囲ということになる。測られたものと示されたものを別々に扱い、それぞれの未確認部分を残す。この姿勢が、来歴という主題に対する今週の誠実さだ。",
+      "attribution_mode": "NONE",
+      "evidence_refs": []
+    },
+    {
+      "block_id": "n1",
+      "block_type": "NOTE",
+      "text": "textGrainの数値はベンダー実施の一次読み、SynthIDの範囲はブログ申告。いずれも独立再現なし。技術報告PDFは未読。",
+      "attribution_mode": "NONE",
+      "evidence_refs": []
+    }
+  ],
+  "must_cover_coverage": [
+    {
+      "requirement": "textGrain figures as read (1% false-positive rate with token-length operating points, edit-weakening numbers, quality table) labeled vendor-run with independent reproduction pending.",
+      "block_ids": [
+        "p2",
+        "p3"
+      ]
+    },
+    {
+      "requirement": "textGrain rollout and gating (API opt-in now, EU ChatGPT/Codex coming weeks, researcher-gated detector) plus PDF-unread and select-model/pricing/license-absent boundaries.",
+      "block_ids": [
+        "p1",
+        "p4",
+        "p5"
+      ]
+    },
+    {
+      "requirement": "SynthID scope table (English-global date, image/video/audio modalities, named partners plus soon-Apple, vendor scale counts, text excluded) with portal-JS-shell-unfetchable and accuracy-absent boundaries.",
+      "block_ids": [
+        "p6",
+        "p7"
+      ]
+    },
+    {
+      "requirement": "Explicit non-equivalence note: text-watermark robustness numbers do not transfer to portal verification efficacy and vice versa.",
+      "block_ids": [
+        "p8"
+      ]
+    },
+    {
+      "requirement": "Provenance comparison table with columns for artifact, modality scope, gating/availability and verification-status limits.",
+      "block_ids": [
+        "t1"
+      ]
+    }
+  ],
+  "boundary_dispositions": [
+    {
+      "boundary": "Method-level paper assertions restricted to blog-documented facts; technical-report internals unverified (PDF binary-unparsed).",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p5"
+      ],
+      "rationale": "方法の天井を読者向けに明示する。"
+    },
+    {
+      "boundary": "PDF body unread; select-model list, pricing, license text absent.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p5"
+      ],
+      "rationale": "未読・未確認範囲を明示する。"
+    },
+    {
+      "boundary": "Portal body unrendered; detection-accuracy benchmarks absent; text-type scope gap.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p7"
+      ],
+      "rationale": "ポータルの未測定性を明示する。"
+    },
+    {
+      "boundary": "Supplement raw is a BOUNDED_EXCERPT (bounded verbatim quotes + reviewer PROVENANCE header/NOTEs), not full-byte HTML/PDF.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p9"
+      ],
+      "rationale": "抜粋の範囲性を明示する。"
+    },
+    {
+      "boundary": "Supplement supplement-src-bd822c4689ba127c accessed_at is BUNDLE_WINDOW_ESTIMATE (r3 bundle retrieval window; per-page minute unproven); see execution/source-intake/w41-supplement-access-provenance-r5.md.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p9"
+      ],
+      "rationale": "取得時刻の推定性を明示する。"
+    },
+    {
+      "boundary": "Supplement supplement-src-d6dd5c50f1794c7d accessed_at is BUNDLE_WINDOW_ESTIMATE (r3 bundle retrieval window; per-page minute unproven); see execution/source-intake/w41-supplement-access-provenance-r5.md.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p9"
+      ],
+      "rationale": "取得時刻の推定性を明示する。"
+    },
+    {
+      "boundary": "partner-artifact-claims: Partner coverage vendor-stated; portal unverifiable via fetch.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p11"
+      ],
+      "rationale": "パートナー適用の未検証を明示する。"
+    }
+  ],
+  "profile_extensions": {},
+  "publication_extensions": {}
+}
