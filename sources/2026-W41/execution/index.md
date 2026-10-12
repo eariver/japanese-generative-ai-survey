@@ -174,3 +174,10 @@ This is the current human-readable navigation record for the edition. Machine li
 - Feasibility (read-only): manuscript-editing adoption feasible in principle; checkpoint substitution BLOCKED_BY_CORE_CONTRACT; proof deferred.
 - Session: `execution/sessions/muse-w41-r11-20261013.md`.
 - Terminal: `R11_PROPOSED_EDITORIAL_REVISION_READY_FOR_INDEPENDENT_AUDIT` (re-audit required).
+## Muse W41 r12 — Bounded editorial repair proposals (2026-10-13)
+
+- Start: remote HEAD `d627cd5f2`/Tree `be2e9439` + main `83f581eb` + Core `774dd39a` verified; local == remote, clean.
+- r11 audit 9 items repaired in `execution/editorial-revision-r12/` (v12.0 REVISED): BLOCKER P3-EGemma multimodal, M01 total/active, M02 49B attribution, M03 t2 conditions, M04 billing, M05 reconciliation (bounded, RECONCILED), m01/m02/m03.
+- Official draft-check 6/6 + synthesis-check PASS; preview r12 (66p, fidelity 6/6). Canonicals untouched; State DRAFT_COMPLETE.
+- Session: `execution/sessions/muse-w41-r12-20261013.md`.
+- Terminal: `R12_PROPOSED_EDITORIAL_REVISION_READY_FOR_INDEPENDENT_AUDIT` (re-audit required).
