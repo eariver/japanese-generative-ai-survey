@@ -8,7 +8,7 @@
 
 \subsection*{今週何が変わったか}
 \begin{enumerate}[leftmargin=1.6em]
-\item \textbf{最前線の提供条件が具体化した。} 10月7日のGPT-6とIntelligent UIは有料4プランとFree・Goの提供階層、SolとLunaの割当、回答開始時間としての44\%の定義が確定した\cite{gpt6ui}。10月7日のHaiku 5.5は10万token境界の二段階料金とcache-read区分、発行元計測のベンチ表が確定した\cite{haiku55}。いずれも料金体系の全体やsystem-card全文は未確認であり、提供条件の確定と費用・評価の確定は別の層である。
+\item \textbf{最前線の提供条件が具体化した。} 10月7日のGPT-6とIntelligent UIは有料4プランとFree・Goの提供階層、SolとLunaの割当、回答開始時間としての44\%の定義が確定した\cite{gpt6ui}。10月7日のHaiku 5.5は10万token境界の二段階料金表（100万token当たりの4区分）、発行元計測のベンチ表が確定した\cite{haiku55}。GPT-6の料金体系やsystem-card全文は未確認であり、提供条件の確定と費用・評価の確定は別の層である。
 \item \textbf{エージェント基盤は三層に分かれた。} 10月6日のDecisions API betaと10月8日のUltrafast tierはchangelogで確認された接点である\cite{decisions}\cite{ultrafast}。10月6日から7日のPerplexity二件はフォーラム観測の段階であり、仕様や配布場所は未確認である\cite{pplxdecider}\cite{pplxembed}。10月8日のGemini仕事エージェントは告知の存在だけが確定した段階であり、提供時期や料金、地域は未確認である\cite{geminiagent}。
 \item \textbf{重みは公開言明と取得実態で仕分けられた。} 10月3日のKolibri（78B／3B）、10月7日のd1-3Bとd1-omni-600M、10月6日のEmbeddingGemma 2は取得可能との言明がある\cite{kolibri}\cite{liquidd1}\cite{embedgemma2}。10月5日のBeamは10月後半の公開予定、10月6日のMistral Large 4は10月末の重み公開とされ、発表時点では取得できない\cite{beam}\cite{mistral4}。10月9日のClef-omniは公開時刻が確定し、重み言明はあるが実取得は未検証である\cite{clefomni}。10月5日のNova Sonicは音声対音声の本提供であり、重みの話題ではない\cite{novasonic}。
 \item \textbf{画像モデルは仕様で読める段階になった。} 10月6日付のNano Banana 2.1カードは入出力token上限と7提供先、2026年3月の知識期限、1050$\pm$14（Thinking条件）の発行元横並び値を示す\cite{nanobanana}。画像の4Kは出力token数であり解像度ではない。価格やライセンス条項、技術資料は未確認であり、仕様の骨格と運用条件は別の層である。
@@ -17,7 +17,7 @@
 \end{enumerate}
 
 \subsection*{なぜそれらが一緒に重要なのか}
-発表された提供条件と検証済みの性能を区別することが、今週の実務判断に直結する点にある。GPT-6の44\%は回答開始の速さであって全体の短縮ではなく、Haikuの二段階料金はcache-read区分の確定であって利用費の確定ではない\cite{gpt6ui}\cite{haiku55}。DecisionsとUltrafastは接点の存在が確定し、速度と料金の実測は未確定である\cite{decisions}\cite{ultrafast}。MoEの規模では、Kolibriの約78.1B／約3.46B、Beamの501B／23B、Mistral Large 4の1.05T／52Bという総量と有効量の区別が、保持メモリの目安と推論演算の目安の区別になる\cite{kolibri}\cite{beam}\cite{mistral4}。有効量だけで処理速度は確定せず、量子化や実装、配線方式、機材で変わるため、規模表とベンチ表を混ぜて順位は作らない。公開ウェイトでは、Kolibriとd1の取得可能言明と、BeamとMistralの公開予定の区別が、試用と商用組み込み判断の分かれ目になる\cite{kolibri}\cite{liquidd1}\cite{beam}\cite{mistral4}。発行元の公開表明、配布先の提示、実在確認、重み取得の四段階を踏むことが、許諾判断の順序になる。来歴保証では、textGrainの検出動作点と編集耐性、品質影響の三軸と、SynthIDの検証射程と申告規模の区別が、誤用防止の近道になる\cite{textgrain}\cite{synthid}。評価条件では、HaikuやKolibri、Beamのベンチ表も、Nano Bananaの横並び値も、Ironcladの模擬相対値も、いずれも発行元条件での測定であって独立再現ではない\cite{haiku55}\cite{kolibri}\cite{beam}\cite{nanobanana}\cite{ironclad}。
+発表された提供条件と検証済みの性能を区別することが、今週の実務判断に直結する点にある。GPT-6の44\%は回答開始の速さであって全体の短縮ではなく、Haikuの二段階料金表は料金区分の確定であって実請求額の確定ではない\cite{gpt6ui}\cite{haiku55}。DecisionsとUltrafastは接点の存在が確定し、速度と料金の実測は未確定である\cite{decisions}\cite{ultrafast}。MoEの規模では、Kolibriの約78.1B／約3.46B、Beamの501B／23B、Mistral Large 4の1.05T／52Bという総量と有効量の区別が、保持メモリの目安と推論演算の目安の区別になる\cite{kolibri}\cite{beam}\cite{mistral4}。有効量だけで処理速度は確定せず、量子化や実装、配線方式、機材で変わるため、規模表とベンチ表を混ぜて順位は作らない。公開ウェイトでは、Kolibriとd1の取得可能言明と、BeamとMistralの公開予定の区別が、試用と商用組み込み判断の分かれ目になる\cite{kolibri}\cite{liquidd1}\cite{beam}\cite{mistral4}。発行元の公開表明、配布先の提示、実在確認、重み取得の四段階を踏むことが、許諾判断の順序になる。来歴保証では、textGrainの検出動作点と編集耐性、品質影響の三軸と、SynthIDの検証射程と申告規模の区別が、誤用防止の近道になる\cite{textgrain}\cite{synthid}。評価条件では、HaikuやKolibri、Beamのベンチ表も、Nano Bananaの横並び値も、Ironcladの模擬相対値も、いずれも発行元条件での測定であって独立再現ではない\cite{haiku55}\cite{kolibri}\cite{beam}\cite{nanobanana}\cite{ironclad}。
 
 この連鎖は製品間の直接的な互換性を意味しない。各公開、報道、一次記録は固有の主体・環境・測定条件を持つ。動作条件の小ささを共通効率へ、利用条件の表示を共通許諾へ、速度や得点を横断的な順位へ自動的に変換してはいけない。
 

@@ -206,3 +206,11 @@ This is the current human-readable navigation record for the edition. Machine li
 - LuaLaTeX editorial-proof PDF built: 17 pages, `UNAPPROVED_EDITORIAL_PROOF` (layout fixes in-run, manifest rebuilt, full QA in `publication/v2/`).
 - Session: `execution/sessions/muse-w41-r15-20261014.md`.
 - Terminal: `W41_R15_TEX_PDF_EDITORIAL_PROOF_READY_FOR_INDEPENDENT_REVIEW` (editorial stop; not a Core state).
+## Muse W41 r16 — Reader publication repair + PDF proof regen (2026-10-14)
+
+- Start: HEAD `77076b4b`/Tree `4e645456` + main `83f581eb`/`31c0adc5` + Core `774dd39a`/`cd46a6f7` verified; local == remote, clean.
+- r16 proposals (v16.0) in `execution/editorial-revision-r16/`: P1 pricing completion (6 blocks, S1 supplement SOURCE_VERIFIED/NOT_CANONICAL) + P5 M06 cleanup (3 blocks); P2/P3/P4/P6 carried. draft-check 6/6 + synthesis-check PASS; preview r16 (67p, 6/6).
+- R15-M01 (synthid bounded bib; Arch untouched), M04 (Haiku 4-row table re-fetched + reconciled, table-vs-bill distinct), M05 (20 bib audited: official titles, URL classes, date/urldate, keys kept), M02 (Sec7 negative-space rewrite; ledger 14 OFFICIAL stands), M03 (TeX order kept; FINAL→8/MOVEMENT→7 fixed), M06 (reader residuals removed).
+- Manifest regenerated in place (`10ac0752…`→`09dd6633…`) + revalidated (27/27, lint 0 BLOCKING); PDF rebuilt (17 pp., `cc6d5a9…`→`d1d1ed5…`, UNAPPROVED_EDITORIAL_PROOF); full QA in `publication/v2/`.
+- Session: `execution/sessions/muse-w41-r16-20261014.md`.
+- Terminal: `W41_R16_READER_PDF_PROOF_READY_FOR_INDEPENDENT_SEMANTIC_VISUAL_AUDIT` (editorial stop; not a Core state).
