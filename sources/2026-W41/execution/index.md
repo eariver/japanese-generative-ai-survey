@@ -189,3 +189,11 @@ This is the current human-readable navigation record for the edition. Machine li
 - Official draft-check 6/6 + synthesis-check PASS; preview r13 (67p, fidelity 6/6). Canonicals untouched; State DRAFT_COMPLETE.
 - Session: `execution/sessions/muse-w41-r13-20261013.md`.
 - Terminal: `R13_PROPOSED_EDITORIAL_REVISION_READY_FOR_INDEPENDENT_AUDIT` (re-audit required).
+## Muse W41 r14 — Bounded editorial closure repair (2026-10-13)
+
+- Start: remote HEAD `14106eff9`/Tree `1e4bb360` + main `83f581eb` + Core `774dd39a` verified; local == remote, clean.
+- SHAs recomputed from bytes (audit table 4/4 match); r12/r13 input↔result bindings intact (paperwork-only errors).
+- r14 proposals (v14.0 REVISED) in `execution/editorial-revision-r14/`: A01 (t1 Google-inclusive), A02 (supersession, old docs preserved), A03 (p9/p12 strip), a04–a08; M01/M02/M03/m01/m04/m05 verified already-satisfied (carried honestly).
+- Official draft-check 6/6 + synthesis-check PASS; preview r14 (67p, fidelity 6/6). Canonicals untouched; State DRAFT_COMPLETE.
+- Session: `execution/sessions/muse-w41-r14-20261013.md`.
+- Terminal: `R14_PROPOSED_EDITORIAL_REVISION_READY_FOR_INDEPENDENT_AUDIT` (re-audit required).
