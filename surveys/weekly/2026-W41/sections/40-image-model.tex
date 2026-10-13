@@ -1,0 +1,23 @@
+\section{Image Model Card}
+\sectionkicker{IMAGE}
+\begin{wideflow}
+{\Large\bfseries 仕様で語る画像モデル――Nano Banana 2.1カード読み\par}
+\smallskip
+{\color{SurveyMuted}DeepMindのモデルカードが示す入出力token上限と提供形態を、Elo値の留保付きで整理する。\par}
+\end{wideflow}
+
+\subsection*{画像生成の仕様書を読む――Nano Banana 2.1のモデルカード}
+
+Google DeepMindは10月6日付のモデルカードで、Nano Banana 2.1の仕様を公開した。系列はGemini 3系統で、基盤は3.6 Flashとされる。入出力の上限はtoken数で示されている。入力は最大100万tokenのコンテキスト窓、出力は画像が4K token、テキストが64K tokenで、提供先はGemini App、Google AI Studio、Gemini API、Google検索のAI Mode、Google広告、Google Flow、Google Stitchの7チャネルだ。ここで注意したいのは、画像の「4K token」が出力token数の上限であり、画素解像度や画像寸法の上限ではないことだ。token数と解像度は別の概念であり、画素数や寸法の上限は取得したカードの範囲からは確認できない。いずれもモデルカードの記載をそのまま受け取った発行元情報である。\cite{nanobanana}
+
+評価面では、T2I Overall Preferenceのベンダー横並び（side-by-side）評価として1050±14（Thinking条件）という値が示されている。これは発行元が自社条件で測った相対評価であり、公開アリーナでの独立評価ではない。DailyX経由の二次記録にあるアリーナ得点の根拠は未解決のままであり、カードの値と同一視できない。ランキングの確定と読むのは誤りで、発行元測定の相対値として扱うべきだ。\cite{nanobanana}
+
+Nano Banana 2.1の技術仕様は、DeepMindのモデルカードに記された範囲で確認できる。公式ブログ記事の有無は、公開資料からは確認できていない。ただし、公式ブログがウェブ上に存在しないとは断定できない。技術仕様はモデルカードを根拠に扱い、ブログ記事の内容は未確認として区別する。\cite{nanobanana}
+
+不足情報も明示する。価格とライセンス条項は確認できておらず、技術資料ページも未取得である。知識カットオフは基盤のGemini 3.6 Flashについて2026年3月とされる。カード記載の範囲を超える運用条件の判断には、まだ材料が足りない。\cite{nanobanana}
+
+クリエイター向けの実務判断としては、入出力token数の上限と7つの提供先を制作パイプラインの制約条件として使える段階にある。一方で、品質の序列づけや商用条件の見積もりには、まだ材料が足りない。仕様の骨格はカードで読み取れる一方、運用条件の判断には追加資料の取得が要る。\cite{nanobanana}
+
+\begin{technicalnote}[Note]
+仕様値とElo値（1050±14、Thinking条件）はモデルカードの発行元記載。画像の4Kは出力token数であり解像度ではない。価格・ライセンス・技術資料は未確認。
+\end{technicalnote}

@@ -1,0 +1,30 @@
+\section{Week in Review}
+\sectionkicker{WEEKLY SYNTHESIS}
+\begin{wideflow}
+{\Large\bfseries 今週は、測られた提供条件が並んだ}\par
+\smallskip
+{\color{SurveyMuted}提供階層と料金区分、検証済み接点と観測・告知、公開言明と取得実態、仕様カード、透かし数値と検証射程、制度・公開・模擬が同時に確定した。}\par
+\end{wideflow}
+
+\subsection*{今週何が変わったか}
+\begin{enumerate}[leftmargin=1.6em]
+\item \textbf{最前線の提供条件が具体化した。} 10月7日のGPT-6とIntelligent UIは有料4プランとFree・Goの提供階層、SolとLunaの割当、回答開始時間としての44\%の定義が確定した\cite{gpt6ui}。10月7日のHaiku 5.5は10万token境界の二段階料金とcache-read区分、発行元計測のベンチ表が確定した\cite{haiku55}。いずれも料金体系の全体やsystem-card全文は未確認であり、提供条件の確定と費用・評価の確定は別の層である。
+\item \textbf{エージェント基盤は三層に分かれた。} 10月6日のDecisions API betaと10月8日のUltrafast tierはchangelogで確認された接点である\cite{decisions}\cite{ultrafast}。10月6日から7日のPerplexity二件はフォーラム観測の段階であり、仕様や配布場所は未確認である\cite{pplxdecider}\cite{pplxembed}。10月8日のGemini仕事エージェントは告知の存在だけが確定した段階であり、提供時期や料金、地域は未確認である\cite{geminiagent}。
+\item \textbf{重みは公開言明と取得実態で仕分けられた。} 10月3日のKolibri（78B／3B）、10月7日のd1-3Bとd1-omni-600M、10月6日のEmbeddingGemma 2は取得可能との言明がある\cite{kolibri}\cite{liquidd1}\cite{embedgemma2}。10月5日のBeamは10月後半の公開予定、10月6日のMistral Large 4は10月末の重み公開とされ、発表時点では取得できない\cite{beam}\cite{mistral4}。10月9日のClef-omniは公開時刻が確定し、重み言明はあるが実取得は未検証である\cite{clefomni}。10月5日のNova Sonicは音声対音声の本提供であり、重みの話題ではない\cite{novasonic}。
+\item \textbf{画像モデルは仕様で読める段階になった。} 10月6日付のNano Banana 2.1カードは入出力token上限と7提供先、2026年3月の知識期限、1050$\pm$14（Thinking条件）の発行元横並び値を示す\cite{nanobanana}。画像の4Kは出力token数であり解像度ではない。価格やライセンス条項、技術資料は未確認であり、仕様の骨格と運用条件は別の層である。
+\item \textbf{来歴保証は数値と範囲の対置になった。} 10月5日のtextGrainはFPR 1\%での200 token約80\%・400 token約95\%、類義語置換の三点、Astra条件の品質8ベンチという発行元測定である\cite{textgrain}。10月7日のSynthID拡張は画像・映像・音声の検証射程と申告規模の確定であり、精度の評価数値は示されていない\cite{synthid}。透かしの頑健性と検証の効き目は相互に転用できない。
+\item \textbf{守りと探究は境界線の確認になった。} 10月8日のCyber Missionは11社の創設提携と無償検査器の制度発足であり、90\%超は見込みであって実測ではない\cite{cybermission}。10月6日の数学公開は成果物の公開であり、モデル本体は未公開である\cite{mathrelease}。10月6日のIronclad評価は11件の模擬契約での相対比較であり、実環境の導入効果ではない\cite{ironclad}。
+\end{enumerate}
+
+\subsection*{なぜそれらが一緒に重要なのか}
+発表された提供条件と検証済みの性能を区別することが、今週の実務判断に直結する点にある。GPT-6の44\%は回答開始の速さであって全体の短縮ではなく、Haikuの二段階料金はcache-read区分の確定であって利用費の確定ではない\cite{gpt6ui}\cite{haiku55}。DecisionsとUltrafastは接点の存在が確定し、速度と料金の実測は未確定である\cite{decisions}\cite{ultrafast}。MoEの規模では、Kolibriの約78.1B／約3.46B、Beamの501B／23B、Mistral Large 4の1.05T／52Bという総量と有効量の区別が、保持メモリの目安と推論演算の目安の区別になる\cite{kolibri}\cite{beam}\cite{mistral4}。有効量だけで処理速度は確定せず、量子化や実装、配線方式、機材で変わるため、規模表とベンチ表を混ぜて順位は作らない。公開ウェイトでは、Kolibriとd1の取得可能言明と、BeamとMistralの公開予定の区別が、試用と商用組み込み判断の分かれ目になる\cite{kolibri}\cite{liquidd1}\cite{beam}\cite{mistral4}。発行元の公開表明、配布先の提示、実在確認、重み取得の四段階を踏むことが、許諾判断の順序になる。来歴保証では、textGrainの検出動作点と編集耐性、品質影響の三軸と、SynthIDの検証射程と申告規模の区別が、誤用防止の近道になる\cite{textgrain}\cite{synthid}。評価条件では、HaikuやKolibri、Beamのベンチ表も、Nano Bananaの横並び値も、Ironcladの模擬相対値も、いずれも発行元条件での測定であって独立再現ではない\cite{haiku55}\cite{kolibri}\cite{beam}\cite{nanobanana}\cite{ironclad}。
+
+この連鎖は製品間の直接的な互換性を意味しない。各公開、報道、一次記録は固有の主体・環境・測定条件を持つ。動作条件の小ささを共通効率へ、利用条件の表示を共通許諾へ、速度や得点を横断的な順位へ自動的に変換してはいけない。
+
+\Needspace{10\baselineskip}
+\subsection*{次に何を見るべきか}
+次週以降は、この連鎖のどこがさらに具体化するかを追う。GPT-6の料金とsystem-card、Haikuのsystem-card全文と測定条件、Decisionsの手引きと料金、Ultrafastの実測、Perplexity二件の仕様と配布場所、GeminiのCloud側続報、Kolibri表残部とd1の運営方法、EmbeddingGemma 2のカード本体、BeamとMistral Large 4の重み実体、Clef-omniの実取得と許諾条項、Nova Sonicの料金数値、Nano Bananaの運用条件、textGrainの技術報告PDF、SynthIDの精度評価、Scanner詳細と申込内部、数学リポジトリの数え上げと利用条件、Ironcladの採点内訳はまだ詳細化されていない。さらに、載せなかった持ち越し4件の新しい日付のある証拠の行き先も、次の観測点として残る。ベンダーや研究機関の数値が、それぞれの条件から外へ一般化できるかを確認する必要がある。
+
+\begin{claimboundary}[この総括の読み方]
+各項目の公開条件、報告主体、測定環境は同じではない。ベンダーが示す速度、報道が伝える仕様、研究機関が報告する評価、話題で見られた関心は、それぞれ異なる種類の情報であり、単純な性能順位へまとめられない。未確定の点は、次の公開更新や再現可能な評価で確かめるべき観測点として残る。
+\end{claimboundary}

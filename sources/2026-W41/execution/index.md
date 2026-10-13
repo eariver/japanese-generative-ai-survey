@@ -197,3 +197,12 @@ This is the current human-readable navigation record for the edition. Machine li
 - Official draft-check 6/6 + synthesis-check PASS; preview r14 (67p, fidelity 6/6). Canonicals untouched; State DRAFT_COMPLETE.
 - Session: `execution/sessions/muse-w41-r14-20261013.md`.
 - Terminal: `R14_PROPOSED_EDITORIAL_REVISION_READY_FOR_INDEPENDENT_AUDIT` (re-audit required).
+## Muse W41 r15 — Editorial closure through TeX/PDF proof (2026-10-14)
+
+- Start: HEAD `5a649fd7`/Tree `043b0f9b` + origin/main `83f581eb` + Core `774dd39a` verified; local == remote, clean.
+- r15 proposals (v15.0) in `execution/editorial-revision-r15/`: A-01 (P5/p2 dedup), A-02 (P5/p3 restore, byte-equal r13), A-04 (P3/p9 strip, P4/p3 rewrite, P5/p13 strip, P5/t1 naturalize); P1/P2/P6 NO_BODY_CHANGE; r14 file preserved + corrigendum.
+- Official draft-check 6/6 + synthesis-check PASS; preview r15 (67p, fidelity 6/6). Canonicals untouched; State DRAFT_COMPLETE.
+- Reader manuscript `surveys/weekly/2026-W41/` (Generic path, 6 articles + synthesis + movement + frontmatter/notes + 20-entry bib + 14-row ledger); manifest `publication/v2/reader-manuscript-v2.json` validated (27/27, lint 0 BLOCKING).
+- LuaLaTeX editorial-proof PDF built: 17 pages, `UNAPPROVED_EDITORIAL_PROOF` (layout fixes in-run, manifest rebuilt, full QA in `publication/v2/`).
+- Session: `execution/sessions/muse-w41-r15-20261014.md`.
+- Terminal: `W41_R15_TEX_PDF_EDITORIAL_PROOF_READY_FOR_INDEPENDENT_REVIEW` (editorial stop; not a Core state).

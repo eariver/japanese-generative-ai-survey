@@ -1,0 +1,43 @@
+\section{Agent Infrastructure}
+\sectionkicker{AGENTS}
+\begin{wideflow}
+{\Large\bfseries 確かめられたAPIと、まだ観測の段階――エージェント基盤の三層\par}
+\smallskip
+{\color{SurveyMuted}Decisions APIのbeta公開を軸に、フォーラム観測と告知stubを層別して整理する。\par}
+\end{wideflow}
+
+\subsection*{APIが先に、発表はあとから――エージェント基盤週の読み分け}
+
+OpenAIは10月6日のchangelogで、Decisions APIの公開betaを記した。エンドポイントはv1/decisionsで、結び付けられるモデルはgpt-6-lunaである。このAPIの機能は、テキストや画像を型付き回答（typed answers）に変換することだ。自由文の応答ではなく、型の定まった回答形式で返すための接点であり、エージェントの判断処理を組み込む用途に位置づけられる。2026年10月6日の公開beta開始により、開発者がこのAPIを試用できるようになった。ガイドや料金ページは未取得であり、APIの存在とbeta状態の確定が本記事の対象である。\cite{decisions}
+
+同じエントリには、Responses APIと比べて10倍高速という記述がある。ここは慎重に扱う。測定方法はページ上に存在せず、何をもって10倍としたかが分からない。入力のみ\$0.10/Mという料金情報もchangelog本体にはなく、二次的なコミュニティ投稿由来の未確認情報にとどまる。APIの存在と機能は確定事実、速度と料金は未確定という二層で受け止めるのが正確だ。\cite{decisions}
+
+\subsection*{フォーラム発の決定モデル――Perplexityの二件}
+
+Perplexityは10月6日21時11分（UTC）の発行元フォーラムで、pplx-decider-v1.1-27bを発表した。うたわれるのはオープンウェイトのマルチモーダル決定モデルで、HFのDecision Indexで0.3世代の首位、入力\$0.02/M（v1の半額）という条件が添えられている。さらに10月9日付のDecision Benchでは94.5\%／1071件、\$0.017/1000決定というベンダー数値が出ている。いずれもフォーラムとベンチ発表の言明であり、HFのREADMEや表本体は未取得だ。\cite{pplxdecider}
+
+決定モデルの系譜で見ると、27bという題名以上の総パラメータや有効パラメータ、ライセンスのSPDX、HFリポジトリのURLはスレッド本文にない。Decision IndexやBenchの数値は母集団の一部（1071件）は分かるものの、運営方法や再現条件は不明だ。changelogで確認されたDecisions APIと、フォーラムで観測されたdeciderを混同してはならない。前者は検証済みの接点、後者は観測段階の brief である。\cite{pplxdecider}
+
+翌10月7日には同じフォーラムでpplx-embed-v2-lateペアが発表された。late-interaction方式の埋め込みモデル2種で、最前線級かつHF公開とされる。ただし仕様もリポジトリの所在もスレッド本文になく、HF公開の言明もリポジトリ一覧での裏付けがない。単独記事にできる厚みはなく、本号ではPerplexity二件の一行比較対象として扱う。具体的内容の確認は次号以降の課題だ。\cite{pplxembed}
+
+\subsection*{遅延と基盤――Ultrafast tierの位置づけ}
+
+10月8日のchangelogには、gpt-6.1-sol向けのservice\_tier「ultrafast」がResponses API上に記された。適用はレート制限付きの全利用者で、提供範囲はグローバルに加えて米国・欧州のレジデンシー対応が含まれる。目的は出力token間の遅延短縮であり、P1で扱った回答開始時間とも、最終回答の壁時計時間とも別の量だ。tier・対象モデル・API・提供範囲の四点は確定情報として表にできる。\cite{ultrafast}
+
+一方で、どれだけ速くなるかを示す遅延の実測値はページ上にない。料金も本文にインライン表示はなく、リンク先の参照にとどまる。つまりUltrafastは「速くなる仕組みの提供開始」という制度的事実であり、「何ミリ秒縮んだ」という性能事実ではない。この区別を守れば、誤った調達判断を防げる。\cite{ultrafast}
+
+\subsection*{比較欄――Geminiの企業向けエージェント発表}
+
+Googleは10月8日のGemini at Work 2026で、汎用仕事エージェントを発表した。プロンプト欄、スキルやツール、コスト管理、企業ガバナンスという要素が箇条書きで示されている。ただし公開されたのはstub段階の告知であり、GA時期、SKU、料金、地域、WorkspaceとCloudの区分はいずれもstubページにない。展開の詳細はCloud blogに委ねられ、未取得である。\cite{geminiagent}
+
+顧客事例の数字も発行元の言明のままで再検証されていない。Decisions APIのchangelogと対比すると差は鮮明だ。片方はエンドポイントとモデル割当まで確定した検証済み接点、もう片方は告知の存在だけが確定したstubである。本号では後者を比較欄に限定し、ローンチ記事にはしない。Cloud blogの取得が次の条件になる。\cite{geminiagent}
+
+エージェント基盤週の構図をまとめると、検証済み・観測・告知の三層になる。検証済みはDecisionsとUltrafastのchangelog二件、観測はPerplexityのフォーラム二件、告知はGeminiのstub一件だ。層を混ぜて「エージェント新時代」といった総括をしないことが、今週の正確さの核心である。\cite{decisions}\cite{ultrafast}
+
+beta表示の意味も確認しておく。Decisions APIのbetaは、仕様の変更がありうる段階という宣言であり、安定版の保証ではない。試用はできるが、本番組み込みの判断には変更可能性の織り込みが要る。ガイドや料金ページは未取得であり、速度の測定方法も不明なため、性能と費用の見積もりは確定しない。\cite{decisions}
+
+日本の開発者への要点は、2026年10月6日と8日のchangelogで公開されたDecisions betaとUltrafast tierの二接点が試せる段階にあり、Perplexity二件は仕様確認待ち、Geminiは続報待ちということだ。試せるものから試し、待つべきものは待つ。この順序づけが今週の実利になる。\cite{decisions}\cite{ultrafast}
+
+\begin{technicalnote}[Note]
+changelog二件は逐語確認済み。速度・料金・ベンチ数値は発行元言明または未確認であり、独立再現なし。
+\end{technicalnote}
