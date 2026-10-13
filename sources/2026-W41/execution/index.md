@@ -181,3 +181,11 @@ This is the current human-readable navigation record for the edition. Machine li
 - Official draft-check 6/6 + synthesis-check PASS; preview r12 (66p, fidelity 6/6). Canonicals untouched; State DRAFT_COMPLETE.
 - Session: `execution/sessions/muse-w41-r12-20261013.md`.
 - Terminal: `R12_PROPOSED_EDITORIAL_REVISION_READY_FOR_INDEPENDENT_AUDIT` (re-audit required).
+## Muse W41 r13 — Bounded editorial closure proposals (2026-10-13)
+
+- Start: remote HEAD `f4ded3b0a`/Tree `a5d0bee5` + main `83f581eb` + Core `774dd39a` verified; local == remote, clean.
+- r12 audit 11 items repaired in `execution/editorial-revision-r13/` (v13.0 REVISED): BLOCKER EGemma multimodal, M01–M05 (audit table, 49B attribution, t2 conditions, billing, reconciliation RECONCILED), m01–m06.
+- Quality-table headers confirmed against live official original (read-only, not adopted); full t3 + p13 added (no insufficiency flag).
+- Official draft-check 6/6 + synthesis-check PASS; preview r13 (67p, fidelity 6/6). Canonicals untouched; State DRAFT_COMPLETE.
+- Session: `execution/sessions/muse-w41-r13-20261013.md`.
+- Terminal: `R13_PROPOSED_EDITORIAL_REVISION_READY_FOR_INDEPENDENT_AUDIT` (re-audit required).
