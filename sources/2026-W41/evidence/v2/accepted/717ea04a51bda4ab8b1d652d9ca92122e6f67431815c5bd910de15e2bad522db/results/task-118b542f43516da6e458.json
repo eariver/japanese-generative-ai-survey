@@ -1,0 +1,100 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W41",
+  "evidence_task_id": "evidence:2026-W41:b55c9b63cbcf70fa",
+  "basis": {
+    "task_sha256": "e49c23b470be06c312d16d8542c6b6c14d717523e8cfbc8977d99bfebe4e2557",
+    "screening_acceptance_sha256": "bd3f5f6f9ee302855d10036443f8528c99016e93365d4d8cc4df1ee299bbd4db",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "NEEDS_MORE",
+  "entities": [
+    {
+      "entity_id": "ndi",
+      "canonical_name": "Nace NDI 1.0",
+      "entity_type": "PRODUCT",
+      "organization": "Nace AI",
+      "canonical_url": "secondary:x.com/NaceAI/status/2108420944146629080"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "ndi",
+    "artifact_type": "PRODUCT",
+    "canonical_name": "Nace NDI 1.0",
+    "canonical_url": "secondary:x.com/NaceAI/status/2108420944146629080"
+  },
+  "temporal": {
+    "observed_at": "2026-10-12T12:40:09Z",
+    "events": []
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "secondary:x.com/NaceAI/status/2108420944146629080",
+      "source_class": "SECONDARY",
+      "title": "Nace NDI 1.0 intro (Oct 9 04:55Z X post)",
+      "published_at": null,
+      "accessed_at": "2026-10-12T12:40:09Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "In-window vendor X Oct 9 04:55Z intro; docs.ndi.nace.ai describes platform API (Parse/Classify/Extract...); NO 1.0 version label/date/pricing/benchmarks/license found.",
+      "subject_id": "ndi",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "SOCIAL_OBSERVATION",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Delegated docs read + negative search"
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Version existence/date unproven beyond X post.",
+      "subject_id": "ndi",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "product-page",
+        "status": "UNRESOLVED",
+        "finding": "nace.ai/developers unfetched; version label absent.",
+        "subject_ids": [
+          "ndi"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "spec-basis",
+        "status": "UNRESOLVED",
+        "finding": "Specs vendor-claimed; 50-lang claim unevaluated.",
+        "subject_ids": [
+          "ndi"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      "product-page: nace.ai/developers unfetched; version label absent.",
+      "spec-basis: Specs vendor-claimed; 50-lang claim unevaluated."
+    ],
+    "contradictions": []
+  }
+}

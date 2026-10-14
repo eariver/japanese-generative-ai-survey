@@ -1,0 +1,1663 @@
+{
+ "schema_version": "2.0-rc1",
+ "issue_id": "2026-W41",
+ "runner": {
+  "provider": "Muse",
+  "model": "muse-spark",
+  "invocation": "muse-w41-r3-20261012",
+  "generated_at": "2026-10-12T00:39:53Z"
+ },
+ "records": [
+  {
+   "discovery_id": "w41-primary-gpt6-intelligent-ui-20261007",
+   "status": "PARTIAL",
+   "entity": {
+    "entity_id": "g6-ui",
+    "canonical_name": "GPT-6 + Intelligent UI rollout",
+    "entity_type": "PRODUCT",
+    "organization": "OpenAI",
+    "canonical_url": null
+   },
+   "artifact_type": "PRODUCT",
+   "claims": [
+    {
+     "text": "GPT-6 with Intelligent UI rolled out globally Oct 7 to Plus/Pro/Business/Enterprise (Chat tab), Oct 8 to Free/Go; Sol for paid tiers, Luna for Free/Go.",
+     "evidence_class": "VENDOR_CLAIM",
+     "context": "Delegated page read (openai.com/index/gpt-6-for-everyone, Oct 7 2026)"
+    },
+    {
+     "text": "44% sooner answering (GPT-6 Instant vs 5.6 Instant, web-search questions) is time-to-start via interleaved thinking/answering, not wall-time to final answer.",
+     "evidence_class": "VENDOR_CLAIM",
+     "context": "Delegated page read; distinction preserved per Sol"
+    }
+   ],
+   "limitations": [
+    "ChatGPT page body delegated (verbatim), not Muse first-hand; system-card numbers not enumerated; pricing absent on page."
+   ],
+   "verification": [
+    {
+     "target": "rollout-dates-tier-split",
+     "status": "VERIFIED",
+     "finding": "Oct 7 paid tiers / Oct 8 Free-Go, Chat tab only, Sol/Luna mapping vendor-stated."
+    },
+    {
+     "target": "vendor-latency-claim-basis",
+     "status": "VERIFIED",
+     "finding": "44% time-to-start wording confirmed; no wall-time reduction number on page."
+    }
+   ],
+   "materiality": "MATERIAL",
+   "materiality_rationale": "Frontier ChatGPT rollout in-window; latency-claim boundary material to coverage.",
+   "scope_dimensions": [
+    "current relevance",
+    "technical significance",
+    "carry-over obligations"
+   ],
+   "window_relation": "MAIN_EVENT",
+   "carry_over": false
+  },
+  {
+   "discovery_id": "w41-primary-haiku55-20261007",
+   "status": "PARTIAL",
+   "entity": {
+    "entity_id": "haiku55",
+    "canonical_name": "Claude Haiku 5.5",
+    "entity_type": "MODEL",
+    "organization": "Anthropic",
+    "canonical_url": null
+   },
+   "artifact_type": "MODEL",
+   "claims": [
+    {
+     "text": "Haiku 5.5 released Oct 7 with split ≤/>100k pricing (cache-read $0.01/$0.05) and Sonnet 5.5 cache-read halved $0.20->$0.10.",
+     "evidence_class": "VENDOR_CLAIM",
+     "context": "Delegated page read (anthropic.com/claude-haiku-5-5)"
+    },
+    {
+     "text": "Vendor benchmark table (GDPval 1620, OSWorld2.1 72.4%, HLE 45.9/57.4, TB4 39.2%) is publisher-measured; independent reproduction pending.",
+     "evidence_class": "VENDOR_CLAIM",
+     "context": "Delegated page read; attribution required"
+    }
+   ],
+   "limitations": [
+    "Delegated read; system-card full evals and per-platform IDs not fetched."
+   ],
+   "verification": [
+    {
+     "target": "price-card-split-rates",
+     "status": "VERIFIED",
+     "finding": "Split rates + Sonnet halving vendor-stated on page."
+    },
+    {
+     "target": "vendor-benchmark-attribution",
+     "status": "VERIFIED",
+     "finding": "Table values vendor-stated; independent reproduction explicitly pending."
+    }
+   ],
+   "materiality": "MATERIAL",
+   "materiality_rationale": "Frontier small-model release + price card in-window.",
+   "scope_dimensions": [
+    "current relevance",
+    "technical significance",
+    "carry-over obligations"
+   ],
+   "window_relation": "MAIN_EVENT",
+   "carry_over": false
+  },
+  {
+   "discovery_id": "w41-primary-mistral-large4-20261006",
+   "status": "PARTIAL",
+   "entity": {
+    "entity_id": "ml4",
+    "canonical_name": "Mistral Large 4",
+    "entity_type": "MODEL",
+    "organization": "Mistral AI",
+    "canonical_url": null
+   },
+   "artifact_type": "OPEN_WEIGHT",
+   "claims": [
+    {
+     "text": "Blog (Oct 6) + docs state 52B active / 1-1.05T total, 1M context, preview API today, weights end of month, sale pricing $0.68/$2.09.",
+     "evidence_class": "VENDOR_CLAIM",
+     "context": "Delegated blog+docs reads"
+    },
+    {
+     "text": "Grok X Oct 6 announcement states 49B active; 49B absent from official blog/docs bodies; disagreement preserved, not reconciled.",
+     "evidence_class": "SOCIAL_OBSERVATION",
+     "context": "Sol audit boundary; third-party 49B snippets only"
+    }
+   ],
+   "limitations": [
+    "Weights not downloadable; WEIGHTS tab/license text not retrieved; 49B original-X body not independently fetched."
+   ],
+   "verification": [
+    {
+     "target": "49B-vs-52B-version-pins",
+     "status": "VERIFIED",
+     "finding": "52B pinned blog+docs (incl. 1.6B vision encoder, Openv26.10); 49B preserved as X-stated only."
+    },
+    {
+     "target": "weight-availability-date",
+     "status": "VERIFIED",
+     "finding": "End-of-month per blog; not downloadable now."
+    }
+   ],
+   "materiality": "MATERIAL",
+   "materiality_rationale": "Open-weight-intent frontier release; parameter accounting material.",
+   "scope_dimensions": [
+    "current relevance",
+    "technical significance",
+    "carry-over obligations"
+   ],
+   "window_relation": "MAIN_EVENT",
+   "carry_over": false
+  },
+  {
+   "discovery_id": "w41-primary-reflection-beam-20261005",
+   "status": "PARTIAL",
+   "entity": {
+    "entity_id": "beam",
+    "canonical_name": "Reflection Beam",
+    "entity_type": "MODEL",
+    "organization": "Reflection AI",
+    "canonical_url": null
+   },
+   "artifact_type": "OPEN_WEIGHT",
+   "claims": [
+    {
+     "text": "Beam: 501B/23B MoE (Oct 5, updated Oct 8); weights/report/card later this month, Apache-2.0 intent; early access signup only.",
+     "evidence_class": "VENDOR_CLAIM",
+     "context": "Delegated blog read"
+    },
+    {
+     "text": "Vendor benches DeepSWE 44.4, TB2.1 80.1, AIME 97.8; 23.8T tokens, GB300 RL scale (vendor).",
+     "evidence_class": "VENDOR_CLAIM",
+     "context": "Delegated blog read"
+    }
+   ],
+   "limitations": [
+    "Weights/license/report not downloadable; pricing absent."
+   ],
+   "verification": [
+    {
+     "target": "weight-release-date-license",
+     "status": "VERIFIED",
+     "finding": "Later-this-month + Apache-2.0 intent, not downloadable."
+    },
+    {
+     "target": "vendor-benchmark-attribution",
+     "status": "VERIFIED",
+     "finding": "Table values vendor-stated."
+    }
+   ],
+   "materiality": "MATERIAL",
+   "materiality_rationale": "Open-weight-intent agentic model with method depth.",
+   "scope_dimensions": [
+    "current relevance",
+    "technical significance",
+    "carry-over obligations"
+   ],
+   "window_relation": "MAIN_EVENT",
+   "carry_over": false
+  },
+  {
+   "discovery_id": "w41-primary-ultrafast-sol-20261008",
+   "status": "VERIFIED",
+   "entity": {
+    "entity_id": "ultra",
+    "canonical_name": "Ultrafast for GPT-6.1 Sol",
+    "entity_type": "API",
+    "organization": "OpenAI",
+    "canonical_url": null
+   },
+   "artifact_type": "API",
+   "claims": [
+    {
+     "text": "Changelog Oct 8: service_tier ultrafast for gpt-6.1-sol (Responses API); all users w/ rate limits; global + US/EU residency.",
+     "evidence_class": "PRIMARY_FACT",
+     "context": "Muse DIRECT_READ of changelog Oct section"
+    },
+    {
+     "text": "Purpose is reducing time between output tokens; latency-vs-wall-time distinction preserved.",
+     "evidence_class": "PRIMARY_FACT",
+     "context": "Muse DIRECT_READ"
+    }
+   ],
+   "limitations": [
+    "Pricing values linked, not inline; no latency numbers on page."
+   ],
+   "verification": [
+    {
+     "target": "changelog-entry-terms",
+     "status": "VERIFIED",
+     "finding": "Exact entry text confirmed first-hand."
+    },
+    {
+     "target": "residency-scope",
+     "status": "VERIFIED",
+     "finding": "Global + US/EU; Astra-entry EU exclusion disambiguated."
+    }
+   ],
+   "materiality": "MATERIAL",
+   "materiality_rationale": "In-window API service-tier event with exact bounds.",
+   "scope_dimensions": [
+    "current relevance",
+    "technical significance",
+    "carry-over obligations"
+   ],
+   "window_relation": "MAIN_EVENT",
+   "carry_over": false
+  },
+  {
+   "discovery_id": "w41-primary-openai-math-20261006",
+   "status": "PARTIAL",
+   "entity": {
+    "entity_id": "omath",
+    "canonical_name": "OpenAI mathematics results release",
+    "entity_type": "PAPER",
+    "organization": "OpenAI",
+    "canonical_url": null
+   },
+   "artifact_type": "PAPER",
+   "claims": [
+    {
+     "text": "Oct 6 release: broad new mathematical results from internal frontier model (unnamed); GitHub openai/math repo + Lean partial formalizations + 10 reasoning summaries + Pro-usage compute stats (~3h avg).",
+     "evidence_class": "VENDOR_CLAIM",
+     "context": "Delegated page read"
+    },
+    {
+     "text": "Model itself not released; responsible-release work ongoing without date.",
+     "evidence_class": "VENDOR_CLAIM",
+     "context": "Delegated page read"
+    }
+   ],
+   "limitations": [
+    "Repo contents/paper counts/Lean files not enumerated; licenses not on page."
+   ],
+   "verification": [
+    {
+     "target": "repo-contents-formalization-extent",
+     "status": "VERIFIED",
+     "finding": "Repo + Lean-partial + summaries vendor-stated; counts unenumerated."
+    },
+    {
+     "target": "model-nonrelease-boundary",
+     "status": "VERIFIED",
+     "finding": "Model nonrelease explicit."
+    }
+   ],
+   "materiality": "MATERIAL",
+   "materiality_rationale": "Research release with transparency artifacts.",
+   "scope_dimensions": [
+    "current relevance",
+    "technical significance",
+    "carry-over obligations"
+   ],
+   "window_relation": "MAIN_EVENT",
+   "carry_over": false
+  },
+  {
+   "discovery_id": "w41-primary-cyber-mission-20261008",
+   "status": "PARTIAL",
+   "entity": {
+    "entity_id": "cyber",
+    "canonical_name": "Anthropic Cyber Mission",
+    "entity_type": "PRODUCT",
+    "organization": "Anthropic",
+    "canonical_url": null
+   },
+   "artifact_type": "SECURITY_EVENT",
+   "claims": [
+    {
+     "text": "Launched Oct 8: CIDP (11 named founding partners) + OSS Scanner (opt-in, free, model-generated PoC reports, no human review, >90% TP expected).",
+     "evidence_class": "VENDOR_CLAIM",
+     "context": "Delegated page read"
+    }
+   ],
+   "limitations": [
+    "Full OSS Scanner post and CIDP form internals not fetched; no measured outcomes."
+   ],
+   "verification": [
+    {
+     "target": "program-scope-partners",
+     "status": "VERIFIED",
+     "finding": "11 partners named on page."
+    },
+    {
+     "target": "scanner-availability-terms",
+     "status": "VERIFIED",
+     "finding": "Opt-in/free/no-review/>90% expected vendor-stated."
+    }
+   ],
+   "materiality": "MATERIAL",
+   "materiality_rationale": "Security program launch in-window.",
+   "scope_dimensions": [
+    "current relevance",
+    "technical significance",
+    "carry-over obligations"
+   ],
+   "window_relation": "MAIN_EVENT",
+   "carry_over": false
+  },
+  {
+   "discovery_id": "w41-primary-usage-policy-20261008",
+   "status": "VERIFIED",
+   "entity": {
+    "entity_id": "aup",
+    "canonical_name": "Anthropic 2026 Usage Policy update",
+    "entity_type": "PRODUCT",
+    "organization": "Anthropic",
+    "canonical_url": null
+   },
+   "artifact_type": "OTHER",
+   "claims": [
+    {
+     "text": "Policy refresh posted Oct 8, effective November 12; deception/elections/weapons/surveillance/hardware/abuse-toward-models changes.",
+     "evidence_class": "PRIMARY_FACT",
+     "context": "Delegated page read; governance document"
+    }
+   ],
+   "limitations": [
+    "Full legal redline not fetched; editorial role intentionally narrow."
+   ],
+   "verification": [
+    {
+     "target": "effective-date-scope",
+     "status": "VERIFIED",
+     "finding": "Nov 12 effect; change scope vendor-summarized."
+    },
+    {
+     "target": "editorial-role-boundary",
+     "status": "VERIFIED",
+     "finding": "Governance, not a model release; CONTEXT-leaning."
+    }
+   ],
+   "materiality": "CONTEXT",
+   "materiality_rationale": "Governance document; no model-release materiality.",
+   "scope_dimensions": [
+    "current relevance",
+    "technical significance",
+    "carry-over obligations"
+   ],
+   "window_relation": "MAIN_EVENT",
+   "carry_over": false
+  },
+  {
+   "discovery_id": "w41-primary-decisions-beta-20261006",
+   "status": "VERIFIED",
+   "entity": {
+    "entity_id": "decapi",
+    "canonical_name": "Decisions API public beta",
+    "entity_type": "API",
+    "organization": "OpenAI",
+    "canonical_url": null
+   },
+   "artifact_type": "API",
+   "claims": [
+    {
+     "text": "Changelog Oct 6: Decisions API beta with gpt-6-luna (v1/decisions), 10x faster than Responses API (vendor claim).",
+     "evidence_class": "PRIMARY_FACT",
+     "context": "Muse DIRECT_READ of changelog"
+    }
+   ],
+   "limitations": [
+    "10x methodology absent on page; guides/pricing pages not fetched."
+   ],
+   "verification": [
+    {
+     "target": "changelog-entry-text",
+     "status": "VERIFIED",
+     "finding": "Exact entry confirmed first-hand."
+    },
+    {
+     "target": "pricing-terms",
+     "status": "UNRESOLVED",
+     "finding": "$0.10/M input-only per r2 community post; not on changelog page."
+    }
+   ],
+   "materiality": "MATERIAL",
+   "materiality_rationale": "First-party-corroborated API beta in-window.",
+   "scope_dimensions": [
+    "current relevance",
+    "technical significance",
+    "carry-over obligations"
+   ],
+   "window_relation": "MAIN_EVENT",
+   "carry_over": false
+  },
+  {
+   "discovery_id": "w41-primary-clef-omni-20261009",
+   "status": "PARTIAL",
+   "entity": {
+    "entity_id": "clef",
+    "canonical_name": "Cloudflare Clef-omni",
+    "entity_type": "MODEL",
+    "organization": "Cloudflare",
+    "canonical_url": null
+   },
+   "artifact_type": "OPEN_WEIGHT",
+   "claims": [
+    {
+     "text": "Blog JSON-LD datePublished 2026-10-09T18:27:34.129Z (< 22:00Z cutoff): IN-WINDOW pinned.",
+     "evidence_class": "PRIMARY_FACT",
+     "context": "Delegated fetch incl. JSON-LD"
+    },
+    {
+     "text": "Qwen3-Omni-30B-A3B MoE; omni $0.15/M (flash cut $0.09->$0.038); HF open weights; vendor benches.",
+     "evidence_class": "VENDOR_CLAIM",
+     "context": "Delegated blog read"
+    }
+   ],
+   "limitations": [
+    "License SPDX absent in body; weekly-Grok X post (23:11Z) is post-cutoff, not the event clock."
+   ],
+   "verification": [
+    {
+     "target": "event-timestamp-pin",
+     "status": "VERIFIED",
+     "finding": "18:27:34Z JSON-LD < cutoff."
+    },
+    {
+     "target": "weight-repo-status",
+     "status": "VERIFIED",
+     "finding": "HF open-weights link vendor-stated; download not verified."
+    }
+   ],
+   "materiality": "MATERIAL",
+   "materiality_rationale": "In-window multimodal decision model + pricing.",
+   "scope_dimensions": [
+    "current relevance",
+    "technical significance",
+    "carry-over obligations"
+   ],
+   "window_relation": "MAIN_EVENT",
+   "carry_over": false
+  },
+  {
+   "discovery_id": "w41-primary-ironclad-20261006",
+   "status": "PARTIAL",
+   "entity": {
+    "entity_id": "iron",
+    "canonical_name": "OpenAI-Ironclad computer-use research",
+    "entity_type": "PAPER",
+    "organization": "OpenAI",
+    "canonical_url": null
+   },
+   "artifact_type": "PAPER",
+   "claims": [
+    {
+     "text": "Oct 6 research: 11 contracting tasks, EDGAR-simulated (no customer/internal/nonpublic data); Astra Max 55.0% vs Sol High 41.6% (+32%), 37.0->19.2 min (-48%), all simulated vendor-stated.",
+     "evidence_class": "VENDOR_CLAIM",
+     "context": "Delegated page read"
+    },
+    {
+     "text": "Ironclad product launches are separate vendor events, not on this page.",
+     "evidence_class": "PRIMARY_FACT",
+     "context": "Delegated page read (scope/absences)"
+    }
+   ],
+   "limitations": [
+    "Rubric details/per-task scores/RL details not on page; provisional research only."
+   ],
+   "verification": [
+    {
+     "target": "simulation-vs-deployment-boundary",
+     "status": "VERIFIED",
+     "finding": "Simulated estimates + 11-task scope explicit."
+    },
+    {
+     "target": "vendor-separation-ironclad-product",
+     "status": "VERIFIED",
+     "finding": "No product launch/pricing/GA on page."
+    }
+   ],
+   "materiality": "MATERIAL",
+   "materiality_rationale": "Computer-use research with simulation caveats.",
+   "scope_dimensions": [
+    "current relevance",
+    "technical significance",
+    "carry-over obligations"
+   ],
+   "window_relation": "MAIN_EVENT",
+   "carry_over": false
+  },
+  {
+   "discovery_id": "w41-primary-gemini-agent-20261008",
+   "status": "PARTIAL",
+   "entity": {
+    "entity_id": "gagent",
+    "canonical_name": "Gemini agent at Work 2026",
+    "entity_type": "AGENT",
+    "organization": "Google",
+    "canonical_url": null
+   },
+   "artifact_type": "AGENT",
+   "claims": [
+    {
+     "text": "Announced Oct 08 2026 at Gemini at Work 2026: universal work agent (prompt box, skills/tools, cost controls, enterprise governance).",
+     "evidence_class": "VENDOR_CLAIM",
+     "context": "Delegated stub read"
+    },
+    {
+     "text": "Rollout specifics deferred to Cloud blog (not fetched).",
+     "evidence_class": "PRIMARY_FACT",
+     "context": "Delegated stub read"
+    }
+   ],
+   "limitations": [
+    "GA date/SKU/pricing/regions/Workspace-vs-Cloud split not on stub page."
+   ],
+   "verification": [
+    {
+     "target": "rollout-specifics",
+     "status": "UNRESOLVED",
+     "finding": "Stub only; Cloud blog unfetched."
+    },
+    {
+     "target": "customer-figure-attribution",
+     "status": "UNRESOLVED",
+     "finding": "Customer figures vendor-stated per r2; not re-verified."
+    }
+   ],
+   "materiality": "MATERIAL",
+   "materiality_rationale": "Announcement-level; availability bounds pending.",
+   "scope_dimensions": [
+    "current relevance",
+    "technical significance",
+    "carry-over obligations"
+   ],
+   "window_relation": "MAIN_EVENT",
+   "carry_over": false
+  },
+  {
+   "discovery_id": "w41-primary-liquid-d1-20261007",
+   "status": "PARTIAL",
+   "entity": {
+    "entity_id": "d1",
+    "canonical_name": "Liquid AI d1 decision models",
+    "entity_type": "MODEL",
+    "organization": "Liquid AI",
+    "canonical_url": null
+   },
+   "artifact_type": "OPEN_WEIGHT",
+   "claims": [
+    {
+     "text": "d1-3B + d1-omni-600M open weights available today on HF (LiquidAI/d1-3b, d1-omni-600M); Decision Index 48.57/15.95; 8ms RTX4090 (vendor).",
+     "evidence_class": "VENDOR_CLAIM",
+     "context": "Delegated blog read (OCT 7 2026)"
+    }
+   ],
+   "limitations": [
+    "Pricing and license SPDX absent in retrieved body."
+   ],
+   "verification": [
+    {
+     "target": "hf-downloadability",
+     "status": "VERIFIED",
+     "finding": "Available-today + repo paths vendor-stated."
+    },
+    {
+     "target": "vendor-benchmark-attribution",
+     "status": "VERIFIED",
+     "finding": "Index/latency figures vendor-stated."
+    }
+   ],
+   "materiality": "MATERIAL",
+   "materiality_rationale": "Downloadable open-weight decision models.",
+   "scope_dimensions": [
+    "current relevance",
+    "technical significance",
+    "carry-over obligations"
+   ],
+   "window_relation": "MAIN_EVENT",
+   "carry_over": false
+  },
+  {
+   "discovery_id": "w41-primary-nova-sonic-20261005",
+   "status": "PARTIAL",
+   "entity": {
+    "entity_id": "nova",
+    "canonical_name": "Amazon Nova 2.5 Sonic",
+    "entity_type": "MODEL",
+    "organization": "AWS",
+    "canonical_url": null
+   },
+   "artifact_type": "MODEL",
+   "claims": [
+    {
+     "text": "GA Oct 5 2026 speech-to-speech; Bedrock us-east-1/us-west-2/eu-north-1/ap-northeast-1; same-as-Nova-2-Sonic pricing (no numerics); 256K context.",
+     "evidence_class": "VENDOR_CLAIM",
+     "context": "Delegated whats-new read"
+    }
+   ],
+   "limitations": [
+    "Numeric pricing/benchmarks/license absent in body."
+   ],
+   "verification": [
+    {
+     "target": "ga-date-regions",
+     "status": "VERIFIED",
+     "finding": "Posted Oct 5 + 4 regions vendor-stated."
+    },
+    {
+     "target": "pricing-terms",
+     "status": "UNRESOLVED",
+     "finding": "Same-as-predecessor only; no numerics."
+    }
+   ],
+   "materiality": "MATERIAL",
+   "materiality_rationale": "Audio-lane GA event (NOT QUIET).",
+   "scope_dimensions": [
+    "current relevance",
+    "technical significance",
+    "carry-over obligations"
+   ],
+   "window_relation": "MAIN_EVENT",
+   "carry_over": false
+  },
+  {
+   "discovery_id": "w41-primary-kolibri-20261003",
+   "status": "PARTIAL",
+   "entity": {
+    "entity_id": "kolibri",
+    "canonical_name": "Aleph Alpha Kolibri",
+    "entity_type": "MODEL",
+    "organization": "Aleph Alpha",
+    "canonical_url": null
+   },
+   "artifact_type": "OPEN_WEIGHT",
+   "claims": [
+    {
+     "text": "Released 3 Oct 2026: 78B/3B MoE (table 78.1B/3.46B), 1M context, Apache-2.0, HF Aleph-Alpha/Kolibri-1 downloadable; 20T tokens, 768 B200.",
+     "evidence_class": "VENDOR_CLAIM",
+     "context": "Delegated blog read"
+    },
+    {
+     "text": "Vendor benches (AIME 2026 96.0, GPQA 84.3...) publisher-measured.",
+     "evidence_class": "VENDOR_CLAIM",
+     "context": "Delegated blog read"
+    }
+   ],
+   "limitations": [
+    "Pricing absent; fetch truncated past tables (remainder unverified)."
+   ],
+   "verification": [
+    {
+     "target": "hf-downloadability-license",
+     "status": "VERIFIED",
+     "finding": "HF path + Apache-2.0 vendor-stated."
+    },
+    {
+     "target": "vendor-benchmark-attribution",
+     "status": "VERIFIED",
+     "finding": "Table values vendor-stated."
+    }
+   ],
+   "materiality": "MATERIAL",
+   "materiality_rationale": "Downloadable sovereign open weights.",
+   "scope_dimensions": [
+    "current relevance",
+    "technical significance",
+    "carry-over obligations"
+   ],
+   "window_relation": "MAIN_EVENT",
+   "carry_over": false
+  },
+  {
+   "discovery_id": "w41-primary-embeddinggemma2-20261006",
+   "status": "PARTIAL",
+   "entity": {
+    "entity_id": "egemma",
+    "canonical_name": "EmbeddingGemma 2",
+    "entity_type": "MODEL",
+    "organization": "Google",
+    "canonical_url": null
+   },
+   "artifact_type": "OPEN_WEIGHT",
+   "claims": [
+    {
+     "text": "Oct 06 2026 blog: 740M (270M+170M+300M), 768-d MRL, 8K context, Apache-2.0, HF google/embeddinggemma-2 + Kaggle downloads.",
+     "evidence_class": "VENDOR_CLAIM",
+     "context": "Delegated companion-blog read; card fetch timed out"
+    },
+    {
+     "text": "Vendor MTEB-Code figures (+9.92 code); full metrics deferred to card.",
+     "evidence_class": "VENDOR_CLAIM",
+     "context": "Delegated blog read"
+    }
+   ],
+   "limitations": [
+    "Model-card bytes not directly fetched (timeout); architecture table snippet-only."
+   ],
+   "verification": [
+    {
+     "target": "hf-kaggle-availability",
+     "status": "VERIFIED",
+     "finding": "Download locations vendor-stated on blog."
+    },
+    {
+     "target": "context-ram-figures",
+     "status": "VERIFIED",
+     "finding": "8K context vendor-stated; RAM figures secondary."
+    }
+   ],
+   "materiality": "MATERIAL",
+   "materiality_rationale": "Open multimodal embeddings; retrieval lane NOT QUIET.",
+   "scope_dimensions": [
+    "current relevance",
+    "technical significance",
+    "carry-over obligations"
+   ],
+   "window_relation": "MAIN_EVENT",
+   "carry_over": false
+  },
+  {
+   "discovery_id": "w41-primary-perplexity-decider-20261006",
+   "status": "PARTIAL",
+   "entity": {
+    "entity_id": "decider",
+    "canonical_name": "pplx-decider-v1.1-27b",
+    "entity_type": "MODEL",
+    "organization": "Perplexity",
+    "canonical_url": null
+   },
+   "artifact_type": "OPEN_WEIGHT",
+   "claims": [
+    {
+     "text": "Issuer forum Oct 6 21:11Z: updated open-weights multimodal decision model; HF Decision Index 0.3 top; $0.02/M input (half v1).",
+     "evidence_class": "VENDOR_CLAIM",
+     "context": "Delegated thread read"
+    },
+    {
+     "text": "Decision Bench Oct 9: 94.5% / 1071 cases @ $0.017/1k decisions (vendor).",
+     "evidence_class": "VENDOR_CLAIM",
+     "context": "Delegated thread read"
+    }
+   ],
+   "limitations": [
+    "Total/active params beyond 27b title, license SPDX, HF URLs not in thread bodies."
+   ],
+   "verification": [
+    {
+     "target": "forum-announcement-date",
+     "status": "VERIFIED",
+     "finding": "Oct 6 21:11Z thread vendor-hosted."
+    },
+    {
+     "target": "hf-readme-benchmarks",
+     "status": "UNRESOLVED",
+     "finding": "HF README figures per r2; thread bodies lack tables."
+    }
+   ],
+   "materiality": "MATERIAL",
+   "materiality_rationale": "Issuer-hosted decision-model depth.",
+   "scope_dimensions": [
+    "current relevance",
+    "technical significance",
+    "carry-over obligations"
+   ],
+   "window_relation": "MAIN_EVENT",
+   "carry_over": false
+  },
+  {
+   "discovery_id": "w41-primary-perplexity-embed-20261007",
+   "status": "PARTIAL",
+   "entity": {
+    "entity_id": "pemb",
+    "canonical_name": "pplx-embed-v2-late pair",
+    "entity_type": "MODEL",
+    "organization": "Perplexity",
+    "canonical_url": null
+   },
+   "artifact_type": "MODEL",
+   "claims": [
+    {
+     "text": "Issuer forum Oct 7 16:30Z: two late-interaction embedding models, frontier, HF-public.",
+     "evidence_class": "VENDOR_CLAIM",
+     "context": "Delegated thread read"
+    }
+   ],
+   "limitations": [
+    "HF repo paths/specs/license not in thread body; issuer X corroboration per r2."
+   ],
+   "verification": [
+    {
+     "target": "issuer-x-timestamp",
+     "status": "VERIFIED",
+     "finding": "Oct 7 16:30Z thread; X 4:09PM UTC per r2."
+    },
+    {
+     "target": "hf-availability",
+     "status": "UNRESOLVED",
+     "finding": "HF-public vendor-stated; repo listing unverified."
+    }
+   ],
+   "materiality": "MATERIAL",
+   "materiality_rationale": "Retrieval-lane depth.",
+   "scope_dimensions": [
+    "current relevance",
+    "technical significance",
+    "carry-over obligations"
+   ],
+   "window_relation": "MAIN_EVENT",
+   "carry_over": false
+  },
+  {
+   "discovery_id": "w41-x-nanobanana21-20261006",
+   "status": "PARTIAL",
+   "entity": {
+    "entity_id": "nb21",
+    "canonical_name": "Nano Banana 2.1",
+    "entity_type": "MODEL",
+    "organization": "Google",
+    "canonical_url": null
+   },
+   "artifact_type": "MODEL",
+   "claims": [
+    {
+     "text": "DeepMind model card (Published 6 Oct 2026): Gemini 3 series / 3.6 Flash-based; 1M input, 4K image + 64K text out; 7-channel distribution; vendor SxS Elo.",
+     "evidence_class": "VENDOR_CLAIM",
+     "context": "Delegated card read (first-party find, no blog post exists)"
+    },
+    {
+     "text": "No blog.google 2.1 rollout post found; docs page fetch failed; pricing/license absent on card.",
+     "evidence_class": "PRIMARY_FACT",
+     "context": "Delegated negative search + fetch failures"
+    }
+   ],
+   "limitations": [
+    "Pricing/license absent; docs page unfetched; rollout post nonexistent."
+   ],
+   "verification": [
+    {
+     "target": "first-party-product-page",
+     "status": "VERIFIED",
+     "finding": "Model card found Oct 6 (was: X-only lead); no blog post exists."
+    },
+    {
+     "target": "arena-score-basis",
+     "status": "UNRESOLVED",
+     "finding": "Arena scores per DailyX secondary; card Elo is vendor SxS."
+    }
+   ],
+   "materiality": "MATERIAL",
+   "materiality_rationale": "First-party model card upgrades X-derived lead.",
+   "scope_dimensions": [
+    "current relevance",
+    "technical significance",
+    "carry-over obligations"
+   ],
+   "window_relation": "MAIN_EVENT",
+   "carry_over": false
+  },
+  {
+   "discovery_id": "w41-dailyx-textgrain-20261006",
+   "status": "PARTIAL",
+   "entity": {
+    "entity_id": "tgrain",
+    "canonical_name": "OpenAI textGrain",
+    "entity_type": "PRODUCT",
+    "organization": "OpenAI",
+    "canonical_url": null
+   },
+   "artifact_type": "PRODUCT",
+   "claims": [
+    {
+     "text": "Blog Oct 5 (Muse DIRECT_READ): statistical watermark; API opt-in now; EU ChatGPT/Codex coming weeks; detector researcher-gated; 1% FPR ~80%@200tok/~95%@400tok; edit-weakening numbers; Astra quality table; open-source intent.",
+     "evidence_class": "PRIMARY_FACT",
+     "context": "Muse DIRECT_READ full body"
+    },
+    {
+     "text": "Tech-report PDF linked but binary-unparsed; authors/method second-hand only.",
+     "evidence_class": "PRIMARY_FACT",
+     "context": "Delegated fetch failure + search"
+    }
+   ],
+   "limitations": [
+    "PDF body unread; select-model list, pricing, license text absent."
+   ],
+   "verification": [
+    {
+     "target": "blog-body-tech-report-pdf",
+     "status": "VERIFIED",
+     "finding": "Blog consumed first-hand; PDF captured-but-unconsumed."
+    },
+    {
+     "target": "metric-methodology-limits",
+     "status": "VERIFIED",
+     "finding": "FPR/token/edit figures + 5 non-claims confirmed."
+    }
+   ],
+   "materiality": "MATERIAL",
+   "materiality_rationale": "EU provenance watermark with disclosed limits.",
+   "scope_dimensions": [
+    "current relevance",
+    "technical significance",
+    "carry-over obligations"
+   ],
+   "window_relation": "MAIN_EVENT",
+   "carry_over": false
+  },
+  {
+   "discovery_id": "w41-grok-x-ledger-20261011",
+   "status": "PARTIAL",
+   "entity": {
+    "entity_id": "x-ledger-w41",
+    "canonical_name": "W41 Grok/X weekly ledger",
+    "entity_type": "OTHER",
+    "organization": null,
+    "canonical_url": null
+   },
+   "artifact_type": "OTHER",
+   "claims": [
+    {
+     "text": "Grok Raw received unaltered (5,332B, SHA 72245d4f, hash matches Sol); 14 links = 12 in-window + 2 post-cutoff (#6 +4m59s, #10 +1h11m).",
+     "evidence_class": "PRIMARY_FACT",
+     "context": "r2c/Sol-audited bytes + snowflake decode"
+    },
+    {
+     "text": "X post existence/authorship NOT independently verified; Nano Banana lead needed first-party follow-up (now card-found).",
+     "evidence_class": "SOCIAL_OBSERVATION",
+     "context": "Sol audit boundary"
+    }
+   ],
+   "limitations": [
+    "Post existence/authorship unverified; DRIVE text is not X HTML capture."
+   ],
+   "verification": [
+    {
+     "target": "primary-verification-all",
+     "status": "UNRESOLVED",
+     "finding": "Post-level verification outstanding by design."
+    }
+   ],
+   "materiality": "MATERIAL",
+   "materiality_rationale": "Binds all X provenance; not a coverage PASS.",
+   "scope_dimensions": [
+    "current relevance",
+    "technical significance",
+    "carry-over obligations"
+   ],
+   "window_relation": "MAIN_EVENT",
+   "carry_over": false
+  },
+  {
+   "discovery_id": "w41-dailyx-stepfun-20261009",
+   "status": "NEEDS_MORE",
+   "entity": {
+    "entity_id": "step5",
+    "canonical_name": "StepFun Step 5 Preview",
+    "entity_type": "MODEL",
+    "organization": "StepFun",
+    "canonical_url": null
+   },
+   "artifact_type": "MODEL",
+   "claims": [
+    {
+     "text": "Issuer X Oct 8 13:08Z + OpenRouter listing Oct 8 (600B/27B, $1/$2.70, 1M ctx, free week Oct 8-15) — listing values snippet-only, not direct-fetched.",
+     "evidence_class": "SOCIAL_OBSERVATION",
+     "context": "Delegated: X post + snippet listing"
+    },
+    {
+     "text": "StepFun official page JS-only; specs/pricing/license/benchmarks NOT directly retrievable.",
+     "evidence_class": "PRIMARY_FACT",
+     "context": "Delegated fetch failure"
+    }
+   ],
+   "limitations": [
+    "Official model page unread; provider pricing snippet-only; preview-vs-open-weights distinction pending."
+   ],
+   "verification": [
+    {
+     "target": "issuer-model-page",
+     "status": "UNRESOLVED",
+     "finding": "Official page JS-gated; Sep 20 launch per snippets only."
+    },
+    {
+     "target": "license-benchmark-terms",
+     "status": "UNRESOLVED",
+     "finding": "Proprietary/API-only per snippets; benchmarks vendor-claimed only."
+    }
+   ],
+   "materiality": "HOLD",
+   "materiality_rationale": "Provider+issuer corroborated but official body missing.",
+   "scope_dimensions": [
+    "current relevance",
+    "technical significance",
+    "carry-over obligations"
+   ],
+   "window_relation": "MAIN_EVENT",
+   "carry_over": false
+  },
+  {
+   "discovery_id": "w41-dailyx-synthid-portal-20261008",
+   "status": "PARTIAL",
+   "entity": {
+    "entity_id": "synportal",
+    "canonical_name": "SynthID public verification portal",
+    "entity_type": "PRODUCT",
+    "organization": "Google",
+    "canonical_url": null
+   },
+   "artifact_type": "PRODUCT",
+   "claims": [
+    {
+     "text": "Blog Oct 7 (delegated): portal global in English from Oct 7; checks image/video/audio from Google or partners (OpenAI, NVIDIA, Kakao, soon Apple); scale counts vendor-stated; text NOT listed.",
+     "evidence_class": "VENDOR_CLAIM",
+     "context": "Delegated blog read"
+    },
+    {
+     "text": "synthid.com portal JS-shell only; formats/pricing/license not fetchable.",
+     "evidence_class": "PRIMARY_FACT",
+     "context": "Delegated fetch failure"
+    }
+   ],
+   "limitations": [
+    "Portal body unrendered; detection-accuracy benchmarks absent; text-type scope gap."
+   ],
+   "verification": [
+    {
+     "target": "blog-body-scope-limits",
+     "status": "VERIFIED",
+     "finding": "Blog scope/partners/scale confirmed; text excluded on post."
+    },
+    {
+     "target": "partner-artifact-claims",
+     "status": "UNRESOLVED",
+     "finding": "Partner coverage vendor-stated; portal unverifiable via fetch."
+    }
+   ],
+   "materiality": "MATERIAL",
+   "materiality_rationale": "Public verification portal launch in-window.",
+   "scope_dimensions": [
+    "current relevance",
+    "technical significance",
+    "carry-over obligations"
+   ],
+   "window_relation": "MAIN_EVENT",
+   "carry_over": false
+  },
+  {
+   "discovery_id": "w41-primary-unintended-actions-20261009",
+   "status": "NEEDS_MORE",
+   "entity": {
+    "entity_id": "unintended",
+    "canonical_name": "Anthropic unintended-actions report",
+    "entity_type": "PAPER",
+    "organization": "Anthropic",
+    "canonical_url": null
+   },
+   "artifact_type": "SAFETY_EVENT",
+   "claims": [
+    {
+     "text": "Day-only Oct 9 report; four behavior categories, minimal claimed impact; Oct 8 PD disclosure shared with White House (per r1 note).",
+     "evidence_class": "VENDOR_CLAIM",
+     "context": "r1 claim note; body not re-consumed in r3"
+    }
+   ],
+   "limitations": [
+    "Publication instant unproven vs 22:00Z cutoff; body not consumed in r3."
+   ],
+   "verification": [
+    {
+     "target": "publication-instant-pin",
+     "status": "UNRESOLVED",
+     "finding": "Day-only; clock unknown."
+    },
+    {
+     "target": "impact-figure-basis",
+     "status": "UNRESOLVED",
+     "finding": "Impact figures vendor-stated, unevaluated."
+    }
+   ],
+   "materiality": "HOLD",
+   "materiality_rationale": "TIME_UNRESOLVED; not ordinary positive.",
+   "scope_dimensions": [
+    "current relevance",
+    "technical significance",
+    "carry-over obligations"
+   ],
+   "window_relation": "OTHER",
+   "carry_over": false
+  },
+  {
+   "discovery_id": "w41-primary-ms-decision1-20261009",
+   "status": "NEEDS_MORE",
+   "entity": {
+    "entity_id": "msd1",
+    "canonical_name": "Microsoft Decision-1",
+    "entity_type": "MODEL",
+    "organization": "Microsoft",
+    "canonical_url": null
+   },
+   "artifact_type": "MODEL",
+   "claims": [
+    {
+     "text": "Page retrieved (delegated): dated 2026.10.09 with NO clock time; Qwen3.5-9B scorer; Foundry + OpenRouter; $0.042/M in, out free; vendor 36-bench claims.",
+     "evidence_class": "VENDOR_CLAIM",
+     "context": "Delegated page read"
+    }
+   ],
+   "limitations": [
+    "Clock time absent -> cutoff unprovable; license/weights absent."
+   ],
+   "verification": [
+    {
+     "target": "publication-instant-pin",
+     "status": "UNRESOLVED",
+     "finding": "Day-only; no clock in body."
+    },
+    {
+     "target": "vendor-benchmark-basis",
+     "status": "UNRESOLVED",
+     "finding": "36-bench figures vendor-stated only."
+    }
+   ],
+   "materiality": "HOLD",
+   "materiality_rationale": "TIME_UNRESOLVED HOLD/CONTEXT.",
+   "scope_dimensions": [
+    "current relevance",
+    "technical significance",
+    "carry-over obligations"
+   ],
+   "window_relation": "OTHER",
+   "carry_over": false
+  },
+  {
+   "discovery_id": "w41-hold-tencent-20261011",
+   "status": "NEEDS_MORE",
+   "entity": {
+    "entity_id": "youtu",
+    "canonical_name": "Tencent Youtu-Parsing-Omni",
+    "entity_type": "MODEL",
+    "organization": "Tencent",
+    "canonical_url": null
+   },
+   "artifact_type": "MODEL",
+   "claims": [
+    {
+     "text": "HF card retrieved (delegated): 5B omni-modal, license youtu-parsing, vendor OmniDocBench 96.96; News bullets [2026-10] month-only; no day-granular upload date in fetch.",
+     "evidence_class": "VENDOR_CLAIM",
+     "context": "Delegated card read"
+    }
+   ],
+   "limitations": [
+    "Upload recency != dated issuer event; papers pre-window."
+   ],
+   "verification": [
+    {
+     "target": "issuer-event-date",
+     "status": "UNRESOLVED",
+     "finding": "Month-only; no October issuer event pin."
+    },
+    {
+     "target": "license-terms",
+     "status": "VERIFIED",
+     "finding": "youtu-parsing (non-Apache) card-stated."
+    }
+   ],
+   "materiality": "HOLD",
+   "materiality_rationale": "HOLD/CONTEXT; upload post-cutoff observed.",
+   "scope_dimensions": [
+    "current relevance",
+    "technical significance",
+    "carry-over obligations"
+   ],
+   "window_relation": "OTHER",
+   "carry_over": false
+  },
+  {
+   "discovery_id": "w41-dailyx-agr-20261006",
+   "status": "NEEDS_MORE",
+   "entity": {
+    "entity_id": "agr",
+    "canonical_name": "Command Code Agr",
+    "entity_type": "MODEL",
+    "organization": "Command Code",
+    "canonical_url": null
+   },
+   "artifact_type": "MODEL",
+   "claims": [
+    {
+     "text": "Vendor X Oct 5 18:42Z announces Agr decision model; HF repo/model card/evals unverified (raw: repo URL not obtained).",
+     "evidence_class": "SOCIAL_OBSERVATION",
+     "context": "DailyX raw; no r3 retrieval (vendor docs unfound)"
+    }
+   ],
+   "limitations": [
+    "Model card/weights/benchmarks unverified; no promotion on post timestamp alone."
+   ],
+   "verification": [
+    {
+     "target": "model-card-weights",
+     "status": "UNRESOLVED",
+     "finding": "No card/weights retrieved."
+    },
+    {
+     "target": "benchmark-basis",
+     "status": "UNRESOLVED",
+     "finding": "No eval basis."
+    }
+   ],
+   "materiality": "HOLD",
+   "materiality_rationale": "Vendor-X-only claim.",
+   "scope_dimensions": [
+    "current relevance",
+    "technical significance",
+    "carry-over obligations"
+   ],
+   "window_relation": "MAIN_EVENT",
+   "carry_over": false
+  },
+  {
+   "discovery_id": "w41-dailyx-nemotron-hf-20261006",
+   "status": "NEEDS_MORE",
+   "entity": {
+    "entity_id": "nemotron",
+    "canonical_name": "NVIDIA Nemotron coding HF listing",
+    "entity_type": "MODEL",
+    "organization": "NVIDIA",
+    "canonical_url": null
+   },
+   "artifact_type": "MODEL",
+   "claims": [
+    {
+     "text": "Issuer X Oct 5 20:21Z + HF page existence per DailyX raw; weights/cards unopened in this unit.",
+     "evidence_class": "SOCIAL_OBSERVATION",
+     "context": "DailyX raw; no r3 HF fetch"
+    }
+   ],
+   "limitations": [
+    "Modest distribution event; depth unverified."
+   ],
+   "verification": [
+    {
+     "target": "hf-card-weights",
+     "status": "UNRESOLVED",
+     "finding": "HF page/card unopened."
+    },
+    {
+     "target": "eval-basis",
+     "status": "UNRESOLVED",
+     "finding": "No eval basis."
+    }
+   ],
+   "materiality": "HOLD",
+   "materiality_rationale": "Distribution notice pending verification.",
+   "scope_dimensions": [
+    "current relevance",
+    "technical significance",
+    "carry-over obligations"
+   ],
+   "window_relation": "MAIN_EVENT",
+   "carry_over": false
+  },
+  {
+   "discovery_id": "w41-dailyx-nace-drex-20261010",
+   "status": "PARTIAL",
+   "entity": {
+    "entity_id": "drex",
+    "canonical_name": "Nace Drex 1.5",
+    "entity_type": "MODEL",
+    "organization": "Nace AI",
+    "canonical_url": null
+   },
+   "artifact_type": "OPEN_WEIGHT",
+   "claims": [
+    {
+     "text": "nace.ai/drex retrieved (delegated): 128K ctx, Decision Index 0.2.1 58.28 (+0.37 vs Jev), API drex-latest + GitHub open models; blog Sep 24 GA + Sep 28 update (pre-window origins).",
+     "evidence_class": "VENDOR_CLAIM",
+     "context": "Delegated docs read"
+    },
+    {
+     "text": "In-window vendor X Oct 9 21:19Z is the W41 announcement; shortlink/HF/license unverified.",
+     "evidence_class": "SOCIAL_OBSERVATION",
+     "context": "DailyX raw"
+    }
+   ],
+   "limitations": [
+    "OSS license SPDX unverified; benchmark independent reproduction pending."
+   ],
+   "verification": [
+    {
+     "target": "repo-license",
+     "status": "UNRESOLVED",
+     "finding": "GitHub path vendor-stated; license SPDX unconfirmed."
+    },
+    {
+     "target": "benchmark-basis",
+     "status": "VERIFIED",
+     "finding": "58.28 vendor-stated with kit/date (Sep 28)."
+    }
+   ],
+   "materiality": "HOLD",
+   "materiality_rationale": "In-window announcement, pre-window origins; docs partial.",
+   "scope_dimensions": [
+    "current relevance",
+    "technical significance",
+    "carry-over obligations"
+   ],
+   "window_relation": "MAIN_EVENT",
+   "carry_over": false
+  },
+  {
+   "discovery_id": "w41-dailyx-nace-ndi-20261010",
+   "status": "NEEDS_MORE",
+   "entity": {
+    "entity_id": "ndi",
+    "canonical_name": "Nace NDI 1.0",
+    "entity_type": "PRODUCT",
+    "organization": "Nace AI",
+    "canonical_url": null
+   },
+   "artifact_type": "PRODUCT",
+   "claims": [
+    {
+     "text": "In-window vendor X Oct 9 04:55Z intro; docs.ndi.nace.ai describes platform API (Parse/Classify/Extract...); NO 1.0 version label/date/pricing/benchmarks/license found.",
+     "evidence_class": "SOCIAL_OBSERVATION",
+     "context": "Delegated docs read + negative search"
+    }
+   ],
+   "limitations": [
+    "Version existence/date unproven beyond X post."
+   ],
+   "verification": [
+    {
+     "target": "product-page",
+     "status": "UNRESOLVED",
+     "finding": "nace.ai/developers unfetched; version label absent."
+    },
+    {
+     "target": "spec-basis",
+     "status": "UNRESOLVED",
+     "finding": "Specs vendor-claimed; 50-lang claim unevaluated."
+    }
+   ],
+   "materiality": "HOLD",
+   "materiality_rationale": "Vendor-X-only version claim.",
+   "scope_dimensions": [
+    "current relevance",
+    "technical significance",
+    "carry-over obligations"
+   ],
+   "window_relation": "MAIN_EVENT",
+   "carry_over": false
+  },
+  {
+   "discovery_id": "w41-dailyx-elevenlabs-20261010",
+   "status": "NEEDS_MORE",
+   "entity": {
+    "entity_id": "elabs",
+    "canonical_name": "ElevenLabs detection + protocol WG",
+    "entity_type": "PRODUCT",
+    "organization": "ElevenLabs",
+    "canonical_url": null
+   },
+   "artifact_type": "PRODUCT",
+   "claims": [
+    {
+     "text": "In-window vendor X Oct 9 21:11Z announces detection + WG; Audio Detector + SynthID docs exist; WG charter/membership/spec NOT found.",
+     "evidence_class": "SOCIAL_OBSERVATION",
+     "context": "Delegated docs read + negative search"
+    }
+   ],
+   "limitations": [
+    "Detection specs/WG roster unverified; no docs in post."
+   ],
+   "verification": [
+    {
+     "target": "detection-docs",
+     "status": "UNRESOLVED",
+     "finding": "Detector docs exist; this announcement's specs unevaluated."
+    },
+    {
+     "target": "working-group-roster",
+     "status": "UNRESOLVED",
+     "finding": "No WG docs retrieved."
+    }
+   ],
+   "materiality": "HOLD",
+   "materiality_rationale": "Vendor-X-only announcement.",
+   "scope_dimensions": [
+    "current relevance",
+    "technical significance",
+    "carry-over obligations"
+   ],
+   "window_relation": "MAIN_EVENT",
+   "carry_over": false
+  },
+  {
+   "discovery_id": "w41-hold-pixelcanary-20261011",
+   "status": "NEEDS_MORE",
+   "entity": {
+    "entity_id": "co-pixelcanary",
+    "canonical_name": "W41 recheck: Pixel Canary",
+    "entity_type": "OTHER",
+    "organization": null,
+    "canonical_url": null
+   },
+   "artifact_type": "OTHER",
+   "claims": [
+    {
+     "text": "Pixel Canary still stealth; no dated card; Oct 6 roundup color only. HOLD retained; no promotion without new dated evidence.",
+     "evidence_class": "SOCIAL_OBSERVATION",
+     "context": "r1 recheck notes; no r3 new retrieval"
+    }
+   ],
+   "limitations": [
+    "No new dated evidence in W41; original W40 HOLD grounds unchanged."
+   ],
+   "verification": [
+    {
+     "target": "dated-model-card",
+     "status": "UNRESOLVED",
+     "finding": "No new dated evidence in r3."
+    },
+    {
+     "target": "status-history",
+     "status": "UNRESOLVED",
+     "finding": "No new dated evidence in r3."
+    }
+   ],
+   "materiality": "HOLD",
+   "materiality_rationale": "W40 HOLD preserved into W41.",
+   "scope_dimensions": [
+    "current relevance",
+    "technical significance",
+    "carry-over obligations"
+   ],
+   "window_relation": "CARRY_OVER",
+   "carry_over": false
+  },
+  {
+   "discovery_id": "w41-hold-tbcvideo-20261011",
+   "status": "NEEDS_MORE",
+   "entity": {
+    "entity_id": "co-tbcvideo",
+    "canonical_name": "W41 recheck: TBC Video",
+    "entity_type": "OTHER",
+    "organization": null,
+    "canonical_url": null
+   },
+   "artifact_type": "OTHER",
+   "claims": [
+    {
+     "text": "TBC Video vendor figures unverified; no new measurement. HOLD retained; no promotion without new dated evidence.",
+     "evidence_class": "SOCIAL_OBSERVATION",
+     "context": "r1 recheck notes; no r3 new retrieval"
+    }
+   ],
+   "limitations": [
+    "No new dated evidence in W41; original W40 HOLD grounds unchanged."
+   ],
+   "verification": [
+    {
+     "target": "independent-measurement",
+     "status": "UNRESOLVED",
+     "finding": "No new dated evidence in r3."
+    },
+    {
+     "target": "figure-basis",
+     "status": "UNRESOLVED",
+     "finding": "No new dated evidence in r3."
+    }
+   ],
+   "materiality": "HOLD",
+   "materiality_rationale": "W40 HOLD preserved into W41.",
+   "scope_dimensions": [
+    "current relevance",
+    "technical significance",
+    "carry-over obligations"
+   ],
+   "window_relation": "CARRY_OVER",
+   "carry_over": false
+  },
+  {
+   "discovery_id": "w41-hold-astabrief-20261011",
+   "status": "NEEDS_MORE",
+   "entity": {
+    "entity_id": "co-astabrief",
+    "canonical_name": "W41 recheck: Ai2 AstaBrief",
+    "entity_type": "OTHER",
+    "organization": null,
+    "canonical_url": null
+   },
+   "artifact_type": "OTHER",
+   "claims": [
+    {
+     "text": "AstaBrief Oct 2 article confirmed; no W41 new event (authority gap). HOLD retained; no promotion without new dated evidence.",
+     "evidence_class": "SOCIAL_OBSERVATION",
+     "context": "r1 recheck notes; no r3 new retrieval"
+    }
+   ],
+   "limitations": [
+    "No new dated evidence in W41; original W40 HOLD grounds unchanged."
+   ],
+   "verification": [
+    {
+     "target": "new-dated-event",
+     "status": "UNRESOLVED",
+     "finding": "No new dated evidence in r3."
+    }
+   ],
+   "materiality": "HOLD",
+   "materiality_rationale": "W40 HOLD preserved into W41.",
+   "scope_dimensions": [
+    "current relevance",
+    "technical significance",
+    "carry-over obligations"
+   ],
+   "window_relation": "CARRY_OVER",
+   "carry_over": false
+  },
+  {
+   "discovery_id": "w41-hold-autosynthdata-20261011",
+   "status": "NEEDS_MORE",
+   "entity": {
+    "entity_id": "co-autosynthdata",
+    "canonical_name": "W41 recheck: ServiceNow AutoSynthData",
+    "entity_type": "OTHER",
+    "organization": null,
+    "canonical_url": null
+   },
+   "artifact_type": "OTHER",
+   "claims": [
+    {
+     "text": "AutoSynthData Oct 2 article confirmed; no W41 new event (authority gap). HOLD retained; no promotion without new dated evidence.",
+     "evidence_class": "SOCIAL_OBSERVATION",
+     "context": "r1 recheck notes; no r3 new retrieval"
+    }
+   ],
+   "limitations": [
+    "No new dated evidence in W41; original W40 HOLD grounds unchanged."
+   ],
+   "verification": [
+    {
+     "target": "new-dated-event",
+     "status": "UNRESOLVED",
+     "finding": "No new dated evidence in r3."
+    }
+   ],
+   "materiality": "HOLD",
+   "materiality_rationale": "W40 HOLD preserved into W41.",
+   "scope_dimensions": [
+    "current relevance",
+    "technical significance",
+    "carry-over obligations"
+   ],
+   "window_relation": "CARRY_OVER",
+   "carry_over": false
+  },
+  {
+   "discovery_id": "w41-weak-elyza-rsi-20261002",
+   "status": "PARTIAL",
+   "entity": {
+    "entity_id": "elyza",
+    "canonical_name": "ELYZA RSI Research org",
+    "entity_type": "ORGANIZATION",
+    "organization": "ELYZA",
+    "canonical_url": null
+   },
+   "artifact_type": "OTHER",
+   "claims": [
+    {
+     "text": "RSI org founded Oct 2 12:20 JST (03:20Z), before W41 start; Oct 6/9 interviews secondary.",
+     "evidence_class": "AUTHOR_CLAIM",
+     "context": "r1 notes; company-issued via secondary PRTimes channel (secondary basis; see map-gap defect note)"
+    }
+   ],
+   "limitations": [
+    "Pre-window; JP-lane context only."
+   ],
+   "verification": [
+    {
+     "target": "event-date-boundary",
+     "status": "VERIFIED",
+     "finding": "Oct 2 03:20Z < window start."
+    },
+    {
+     "target": "interview-secondary-basis",
+     "status": "UNRESOLVED",
+     "finding": "Interviews secondary, unevaluated."
+    }
+   ],
+   "materiality": "CONTEXT",
+   "materiality_rationale": "Pre-window boundary context, not a W41 event.",
+   "scope_dimensions": [
+    "current relevance",
+    "technical significance",
+    "carry-over obligations"
+   ],
+   "window_relation": "PRE_WINDOW_RELEVANCE",
+   "carry_over": false
+  }
+ ],
+ "completeness": {
+  "obligations": [
+   {
+    "obligation_id": "weekly:current-relevance",
+    "status": "SATISFIED",
+    "rationale": "All 37 accepted records screened (19 KEEP/15 INSPECT/2 MAYBE/1 DROP); in-window event clocks pinned where first-party bodies exist; cutoff-sensitive rows held explicitly."
+   },
+   {
+    "obligation_id": "weekly:technical-significance",
+    "status": "LIMITATION",
+    "rationale": "Vendor-reported benchmarks/metrics consumed but never independently reproduced; 5 bodies unread-or-partial (textGrain PDF, StepFun official, synthid.com portal, EmbeddingGemma card, NDI 1.0 label); pricing/license gaps remain."
+   },
+   {
+    "obligation_id": "weekly:carry-over",
+    "status": "SATISFIED",
+    "rationale": "4 W40 HOLDs rechecked with item-specific no-new-evidence findings; ELYZA pre-window bounded; no false W41 newness."
+   }
+  ],
+  "residual_limitations": [
+   "09:00 DailyX independent runs absent for all 7 dates; exhaustiveness not claimed.",
+   "X post existence/authorship unverified (Snowflake format-only); Drive text is not X HTML capture.",
+   "textGrain tech-report PDF binary-unparsed; StepFun official page JS-gated; synthid.com JS-gated; EmbeddingGemma card fetch timeout.",
+   "MS-Decision-1/TimeUnresolved day-only clocks; Tencent upload month-only; NDI 1.0 version label and ElevenLabs WG docs not found.",
+   "OpenRouter/StepFun pricing and free-week terms snippet-only; Perplexity params/license beyond titles unevaluated.",
+   "All delegated bundle reads are verbatim excerpts pending Sol direct re-verification; no byte-identical HTML captures."
+  ],
+  "closure": null
+ }
+}

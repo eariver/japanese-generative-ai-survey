@@ -1,0 +1,100 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W41",
+  "evidence_task_id": "evidence:2026-W41:f006380eed9740db",
+  "basis": {
+    "task_sha256": "b2826ffef1b58e7367bd8e846de9d0ae3a711047f2647ecfda57a1e889856fda",
+    "screening_acceptance_sha256": "bd3f5f6f9ee302855d10036443f8528c99016e93365d4d8cc4df1ee299bbd4db",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "NEEDS_MORE",
+  "entities": [
+    {
+      "entity_id": "elabs",
+      "canonical_name": "ElevenLabs detection + protocol WG",
+      "entity_type": "PRODUCT",
+      "organization": "ElevenLabs",
+      "canonical_url": "secondary:x.com/ElevenLabs/status/2108666775441461579"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "elabs",
+    "artifact_type": "PRODUCT",
+    "canonical_name": "ElevenLabs detection + protocol WG",
+    "canonical_url": "secondary:x.com/ElevenLabs/status/2108666775441461579"
+  },
+  "temporal": {
+    "observed_at": "2026-10-12T12:40:09Z",
+    "events": []
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "secondary:x.com/ElevenLabs/status/2108666775441461579",
+      "source_class": "SECONDARY",
+      "title": "ElevenLabs detection + protocol WG (Oct 9 21:11Z X post)",
+      "published_at": null,
+      "accessed_at": "2026-10-12T12:40:09Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "In-window vendor X Oct 9 21:11Z announces detection + WG; Audio Detector + SynthID docs exist; WG charter/membership/spec NOT found.",
+      "subject_id": "elabs",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "SOCIAL_OBSERVATION",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Delegated docs read + negative search"
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Detection specs/WG roster unverified; no docs in post.",
+      "subject_id": "elabs",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "detection-docs",
+        "status": "UNRESOLVED",
+        "finding": "Detector docs exist; this announcement's specs unevaluated.",
+        "subject_ids": [
+          "elabs"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "working-group-roster",
+        "status": "UNRESOLVED",
+        "finding": "No WG docs retrieved.",
+        "subject_ids": [
+          "elabs"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      "detection-docs: Detector docs exist; this announcement's specs unevaluated.",
+      "working-group-roster: No WG docs retrieved."
+    ],
+    "contradictions": []
+  }
+}

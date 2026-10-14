@@ -1,0 +1,136 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W41",
+  "evidence_task_id": "evidence:2026-W41:9719a94be83e645f",
+  "basis": {
+    "task_sha256": "c4ae567aec68462a2afe104906780ebd1764704c84173cd4d8182a62baa1f23a",
+    "screening_acceptance_sha256": "bd3f5f6f9ee302855d10036443f8528c99016e93365d4d8cc4df1ee299bbd4db",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "decapi",
+      "canonical_name": "Decisions API public beta",
+      "entity_type": "API",
+      "organization": "OpenAI",
+      "canonical_url": "primary:developers.openai.com/api/docs/changelog"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "decapi",
+    "artifact_type": "API",
+    "canonical_name": "Decisions API public beta",
+    "canonical_url": "primary:developers.openai.com/api/docs/changelog"
+  },
+  "temporal": {
+    "observed_at": "2026-10-12T12:40:09Z",
+    "events": []
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "primary:developers.openai.com/api/docs/changelog",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "OpenAI: Decisions API public beta (Oct 6, first-party changelog corroborated)",
+      "published_at": null,
+      "accessed_at": "2026-10-12T12:40:09Z",
+      "role": "Discovery-bounded source used for factual verification"
+    },
+    {
+      "source_id": "supplement-src-df537ff932f91343",
+      "url": "https://developers.openai.com/api/docs/changelog",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "API changelog Oct 6 Decisions entry (bounded excerpt)",
+      "published_at": null,
+      "accessed_at": "2026-10-12T00:38:00Z",
+      "role": "Post-Screening exact authority supplement: Issuer changelog authority (Muse direct read): Decisions beta, gpt-6-luna, v1/decisions, 10x vendor claim; methodology/pricing not on page."
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Changelog Oct 6: Decisions API beta with gpt-6-luna (v1/decisions), 10x faster than Responses API (vendor claim).",
+      "subject_id": "decapi",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1",
+        "supplement-src-df537ff932f91343"
+      ],
+      "context": "Muse DIRECT_READ of changelog Bound supplement supplement-src-df537ff932f91343 (r4)."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "10x methodology absent on page; guides/pricing pages not fetched.",
+      "subject_id": "decapi",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1",
+        "supplement-src-df537ff932f91343"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "Supplement supplement-src-df537ff932f91343 accessed_at is BUNDLE_WINDOW_ESTIMATE (r3 bundle retrieval window; per-page minute unproven); see execution/source-intake/w41-supplement-access-provenance-r5.md.",
+      "subject_id": "decapi",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1",
+        "supplement-src-df537ff932f91343"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-3",
+      "text": "Supplement raw is a BOUNDED_EXCERPT (bounded verbatim quotes + reviewer PROVENANCE header/NOTEs), not full-byte HTML/PDF.",
+      "subject_id": "decapi",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1",
+        "supplement-src-df537ff932f91343"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "changelog-entry-text",
+        "status": "VERIFIED",
+        "finding": "Exact entry confirmed first-hand.",
+        "subject_ids": [
+          "decapi"
+        ],
+        "source_ids": [
+          "src-1",
+          "supplement-src-df537ff932f91343"
+        ]
+      },
+      {
+        "target": "pricing-terms",
+        "status": "UNRESOLVED",
+        "finding": "$0.10/M input-only per r2 community post; not on changelog page.",
+        "subject_ids": [
+          "decapi"
+        ],
+        "source_ids": [
+          "src-1",
+          "supplement-src-df537ff932f91343"
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      "pricing-terms: $0.10/M input-only per r2 community post; not on changelog page."
+    ],
+    "contradictions": []
+  }
+}

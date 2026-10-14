@@ -1,0 +1,100 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W41",
+  "evidence_task_id": "evidence:2026-W41:9d1acba16c010417",
+  "basis": {
+    "task_sha256": "f4af06d013b297325bba64aaacf2bf3f9fd17f80fff9a205f1ef2f34c07175f5",
+    "screening_acceptance_sha256": "bd3f5f6f9ee302855d10036443f8528c99016e93365d4d8cc4df1ee299bbd4db",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "NEEDS_MORE",
+  "entities": [
+    {
+      "entity_id": "agr",
+      "canonical_name": "Command Code Agr",
+      "entity_type": "MODEL",
+      "organization": "Command Code",
+      "canonical_url": "secondary:command-code-agr-announcement"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "agr",
+    "artifact_type": "MODEL",
+    "canonical_name": "Command Code Agr",
+    "canonical_url": "secondary:command-code-agr-announcement"
+  },
+  "temporal": {
+    "observed_at": "2026-10-12T12:40:09Z",
+    "events": []
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "secondary:command-code-agr-announcement",
+      "source_class": "SECONDARY",
+      "title": "Command Code Agr decision model (Oct 6, vendor post)",
+      "published_at": null,
+      "accessed_at": "2026-10-12T12:40:09Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Vendor X Oct 5 18:42Z announces Agr decision model; HF repo/model card/evals unverified (raw: repo URL not obtained).",
+      "subject_id": "agr",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "SOCIAL_OBSERVATION",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "DailyX raw; no r3 retrieval (vendor docs unfound)"
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Model card/weights/benchmarks unverified; no promotion on post timestamp alone.",
+      "subject_id": "agr",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "model-card-weights",
+        "status": "UNRESOLVED",
+        "finding": "No card/weights retrieved.",
+        "subject_ids": [
+          "agr"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "benchmark-basis",
+        "status": "UNRESOLVED",
+        "finding": "No eval basis.",
+        "subject_ids": [
+          "agr"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      "model-card-weights: No card/weights retrieved.",
+      "benchmark-basis: No eval basis."
+    ],
+    "contradictions": []
+  }
+}

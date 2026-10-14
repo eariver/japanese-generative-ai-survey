@@ -1,0 +1,108 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W41",
+  "evidence_task_id": "evidence:2026-W41:95e0813c100e3798",
+  "basis": {
+    "task_sha256": "bdb9896637e365fc962797415c4c38b38277edfdd724aa2a695b73be1b004716",
+    "screening_acceptance_sha256": "bd3f5f6f9ee302855d10036443f8528c99016e93365d4d8cc4df1ee299bbd4db",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "ml4",
+      "canonical_name": "Mistral Large 4",
+      "entity_type": "MODEL",
+      "organization": "Mistral AI",
+      "canonical_url": "primary:mistral.ai/news/mistral-large-4"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "ml4",
+    "artifact_type": "OPEN_WEIGHT",
+    "canonical_name": "Mistral Large 4",
+    "canonical_url": "primary:mistral.ai/news/mistral-large-4"
+  },
+  "temporal": {
+    "observed_at": "2026-10-12T00:39:53Z",
+    "events": []
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "primary:mistral.ai/news/mistral-large-4",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "Mistral: Large 4 public preview (Oct 6)",
+      "published_at": null,
+      "accessed_at": "2026-10-12T00:39:53Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Blog (Oct 6) + docs state 52B active / 1-1.05T total, 1M context, preview API today, weights end of month, sale pricing $0.68/$2.09.",
+      "subject_id": "ml4",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Delegated blog+docs reads"
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Grok X Oct 6 announcement states 49B active; 49B absent from official blog/docs bodies; disagreement preserved, not reconciled.",
+      "subject_id": "ml4",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "SOCIAL_OBSERVATION",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Sol audit boundary; third-party 49B snippets only"
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Weights not downloadable; WEIGHTS tab/license text not retrieved; 49B original-X body not independently fetched.",
+      "subject_id": "ml4",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "49B-vs-52B-version-pins",
+        "status": "VERIFIED",
+        "finding": "52B pinned blog+docs (incl. 1.6B vision encoder, Openv26.10); 49B preserved as X-stated only.",
+        "subject_ids": [
+          "ml4"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "weight-availability-date",
+        "status": "VERIFIED",
+        "finding": "End-of-month per blog; not downloadable now.",
+        "subject_ids": [
+          "ml4"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}
