@@ -214,3 +214,11 @@ This is the current human-readable navigation record for the edition. Machine li
 - Manifest regenerated in place (`10ac0752…`→`09dd6633…`) + revalidated (27/27, lint 0 BLOCKING); PDF rebuilt (17 pp., `cc6d5a9…`→`d1d1ed5…`, UNAPPROVED_EDITORIAL_PROOF); full QA in `publication/v2/`.
 - Session: `execution/sessions/muse-w41-r16-20261014.md`.
 - Terminal: `W41_R16_READER_PDF_PROOF_READY_FOR_INDEPENDENT_SEMANTIC_VISUAL_AUDIT` (editorial stop; not a Core state).
+## Muse W41 r17 — Final reader accuracy & visual-proof repair (2026-10-14)
+
+- Start: HEAD `d5eba01d`/Tree `1b766db3` + main `83f581eb`/`31c0adc5` + Core `774dd39a`/`cd46a6f7` verified; local == remote, clean.
+- r17 proposals (v17.0) in `execution/editorial-revision-r17/`: P1 prompt-length clarification only (p5/t1/p9/p12, numbers unchanged, S17-1 spec re-verified, 5m/1h distinguished); P2–P6 carried (bib titles caused no body regen). draft-check 6/6 + synthesis-check PASS; preview r17 (67p, 6/6).
+- M-02 (6 titles re-fetched; Gemini separate-material ruling, old URL 404 → new verified Cloud URL, P2 unchanged; locator honesty incl. novasonic fetch limit), m-01 (note ledger-scoped, FULFILLED_WITH_SAMPLING_LIMIT), m-03 (main.tex r17 comment).
+- Manifest regenerated in place (`09dd6633…`→`87bf7055…`) + revalidated (27/27, lint 0); PDF rebuilt (17 pp., `d1d1ed5…`→`39beecfd…`, UNAPPROVED_EDITORIAL_PROOF); visual proof committed (17 same-SHA PNGs + index + README).
+- Session: `execution/sessions/muse-w41-r17-20261014.md`.
+- Terminal: `W41_R17_READER_PDF_AND_VISUAL_PROOF_READY_FOR_INDEPENDENT_REVIEW` (editorial stop; not a Core state).
