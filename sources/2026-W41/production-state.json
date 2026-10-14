@@ -3,7 +3,7 @@
   "issue_id": "2026-W41",
   "research_profile": "WEEKLY",
   "publication_profile": "WEEKLY_MAGAZINE",
-  "lifecycle_state": "DRAFT_COMPLETE",
+  "lifecycle_state": "RELEASE_CANDIDATE",
   "profile": {
     "path": "sources/2026-W41/production-profile.json",
     "sha256": "f22a129120e3e066dd4703c45bcb70b28d4163e20bc27d309c418a57200e5621"
@@ -24,17 +24,20 @@
   },
   "human_gates": {
     "architecture_review": "approved",
-    "publication_preview": "pending"
+    "publication_preview": "approved"
   },
   "human_gate_provenance": {
     "architecture_review": {
       "path": "sources/2026-W41/gates/architecture-approval.json",
       "sha256": "5cb5dbbe986df1faacb7eb9485198aead51fe74346f79a380bdfa4f78247036c"
     },
-    "publication_preview": null
+    "publication_preview": {
+      "path": "sources/2026-W41/gates/publication-preview-approval.json",
+      "sha256": "aa51e5df0b4165f65675f7df28f1f23a3c644a9f6f1326b0f16881f14ba6eb9c"
+    }
   },
   "target_gate": "ARCHITECTURE_REVIEW",
-  "next_action": "stage:reader-publication-validation",
+  "next_action": "stage:freeze",
   "terminal_reason": null,
   "exception_gate": {
     "status": "inactive",
@@ -49,8 +52,8 @@
     "selection": "passed",
     "architecture": "passed",
     "draft": "passed",
-    "validation": "pending",
-    "publication_preview": "pending",
+    "validation": "passed",
+    "publication_preview": "passed",
     "freeze": "pending",
     "release": "pending"
   },
@@ -87,8 +90,14 @@
       "path": "sources/2026-W41/orchestration/v2/checkpoints/ARCHITECTURE_ESTABLISHED.json",
       "sha256": "e7abfb925170b54eabecfc8ebdc5a2782d6773e8e3ce3860db58b4645a32c5aa"
     },
-    "validation": null,
-    "publication_preview": null,
+    "validation": {
+      "path": "sources/2026-W41/orchestration/v2/checkpoints/DRAFT_COMPLETE.json",
+      "sha256": "3108f9af39bbeeb6fad3debc21014fc21fa271dd2407bbd6282660bc5b0137b0"
+    },
+    "publication_preview": {
+      "path": "sources/2026-W41/gates/publication-preview-approval.json",
+      "sha256": "aa51e5df0b4165f65675f7df28f1f23a3c644a9f6f1326b0f16881f14ba6eb9c"
+    },
     "freeze": null,
     "release": null
   },
@@ -140,6 +149,18 @@
       "to": "DRAFT_COMPLETE",
       "recorded_at": "2026-10-12T17:15:53Z",
       "repository_commit_sha": "764dc6dd4e87690240d8b04ed527a572d96354d1"
+    },
+    {
+      "from": "DRAFT_COMPLETE",
+      "to": "VALIDATED_DRAFT",
+      "recorded_at": "2026-10-14T15:55:13Z",
+      "repository_commit_sha": "26ad888e8fee263b054a83c68a11f3b84b1fbe60"
+    },
+    {
+      "from": "VALIDATED_DRAFT",
+      "to": "RELEASE_CANDIDATE",
+      "recorded_at": "2026-10-14T15:55:28Z",
+      "repository_commit_sha": "26ad888e8fee263b054a83c68a11f3b84b1fbe60"
     }
   ],
   "publication_revalidation_provenance": null

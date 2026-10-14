@@ -1,0 +1,141 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W41",
+  "research_profile": "WEEKLY",
+  "publication_profile": "WEEKLY_MAGAZINE",
+  "review_kind": "SEMANTIC_EDITORIAL",
+  "status": "PASSED",
+  "production_profile": {
+    "path": "sources/2026-W41/production-profile.json",
+    "sha256": "f22a129120e3e066dd4703c45bcb70b28d4163e20bc27d309c418a57200e5621"
+  },
+  "reader_manuscript": {
+    "path": "sources/2026-W41/publication/v2/reader-manuscript-v2.json",
+    "sha256": "fdb7386bdc4b73d594f54de6d13b1a4c5857d35c5f9cdb5fef8ca3884708dbed"
+  },
+  "source": {
+    "path": "surveys/weekly/2026-W41/main.tex",
+    "sha256": "c159a8a63af46daefa57ce9f3e96ba95af4db4491226f68a5e2bd66f2b09cfc6",
+    "byte_count": 1404
+  },
+  "pdf": {
+    "path": "surveys/weekly/2026-W41/main.pdf",
+    "sha256": "4fd1958ce7dea3b2c257c5abe1de96e14c7e66cfe0d9c35e884ae596819750ce",
+    "byte_count": 446781
+  },
+  "page_count": 17,
+  "checks": [
+    {
+      "check_id": "ARCHITECTURE_CONTENT_FIDELITY",
+      "status": "PASS",
+      "detail": "27/27 must-cover rows map to Sections 1-6 with real substance (verified per-package fragment presence 6/6 + QA read of all sections); independent surface review check ARCHITECTURE_AND_READER_COVERAGE PASS.",
+      "evidence_locations": [
+        "Section 1 — Frontier Models (sections/10-frontier-models.tex)",
+        "Section 2 — Agent Infrastructure (sections/20-agent-infra.tex)",
+        "Section 3 — Open Weights and Audio (sections/30-open-weights.tex)",
+        "Section 4 — Image Model Card (sections/40-image-model.tex)",
+        "Section 5 — Provenance and Watermarks (sections/50-provenance.tex)",
+        "Section 6 — Safety and Science (sections/60-safety-science.tex)",
+        "sources/2026-W41/publication/v2/coverage-map-r17.json"
+      ]
+    },
+    {
+      "check_id": "BIBLIOGRAPHY_METADATA",
+      "status": "PASS",
+      "detail": "20/20 entries verified one by one (6 official titles re-fetched incl. geminiagent URL swap for dead link; date/urldate separated; keys kept; locator limits recorded in bibliography-audit-r17.md); Biber resolves 20/20 with no undefined citations.",
+      "evidence_locations": [
+        "surveys/weekly/2026-W41/references.bib",
+        "sources/2026-W41/publication/v2/bibliography-audit-r17.md",
+        "surveys/weekly/2026-W41/main.pdf:16-17"
+      ]
+    },
+    {
+      "check_id": "FINAL_SYNTHESIS_QUALITY",
+      "status": "PASS",
+      "detail": "Section 8 synthesis derives 6 enumerated changes + joint significance + next observations from the actual 6 articles (provision-vs-performance, MoE total/active, shipped-vs-promised, detection-vs-scope, vendor-measured conditions); Haiku column condition fits latest body; not a headline list.",
+      "evidence_locations": [
+        "Section 8 — Week in Review (sections/85-week-in-review.tex)"
+      ]
+    },
+    {
+      "check_id": "POST_TRANSFORM_SEMANTIC_REVALIDATION",
+      "status": "PASS",
+      "detail": "r17 proposal→TeX transform revalidated: fragment presence 6/6, 5 tables intact, numbers/units/dates preserved; layout-only changes (table float, Needspace) claim-neutral; P1/t1 cross-ref naturalization recorded in r15 correspondence.",
+      "evidence_locations": [
+        "sources/2026-W41/publication/v2/r15-tex-correspondence-r15.md",
+        "sources/2026-W41/publication/v2/reader-qa-r17.md"
+      ]
+    },
+    {
+      "check_id": "PUBLICATION_BOUNDARY",
+      "status": "PASS",
+      "detail": "Reader surface carries no internal pipeline metadata (lexical lint 0 BLOCKING on main.tex + 10 sections + bib + coverage/requirement details); manifest metadata lives outside TeX; no repo paths, Evidence IDs, revision numbers, or agent logs in body.",
+      "evidence_locations": [
+        "surveys/weekly/2026-W41/main.tex",
+        "sources/2026-W41/publication/v2/reader-surface-preflight-r17.md"
+      ]
+    },
+    {
+      "check_id": "SOURCE_SPECIFIC_FAIL_CLOSED_NOTES",
+      "status": "PASS",
+      "detail": "Fail-closed notes present where required: vendor-run/unreproduced labels, unfetched bounds (system-card, portal accuracy, scanner internals, file counts), weight-stage separation, table-estimate vs billed-amount, late-breaking exclusion.",
+      "evidence_locations": [
+        "Section 1 — Frontier Models (sections/10-frontier-models.tex)",
+        "Section 3 — Open Weights and Audio (sections/30-open-weights.tex)",
+        "Section 5 — Provenance and Watermarks (sections/50-provenance.tex)",
+        "Section 6 — Safety and Science (sections/60-safety-science.tex)",
+        "sections/99-source-notes.tex"
+      ]
+    },
+    {
+      "check_id": "WEEKLY_CARRY_OVER_DISPOSITION",
+      "status": "PASS",
+      "detail": "4 W40 HOLDs explicitly disposed (no new dated evidence → held, stated in frontmatter + source notes + synthesis carry-over); Drex/StepFun/Decision-1 + PDF/weights/cards/fees carry-overs named as next-issue targets.",
+      "evidence_locations": [
+        "sections/00-frontmatter.tex",
+        "sections/99-source-notes.tex",
+        "Section 8 — Week in Review (sections/85-week-in-review.tex)"
+      ]
+    },
+    {
+      "check_id": "WEEKLY_COMMUNITY_MOVEMENT",
+      "status": "PASS",
+      "detail": "Section 7 substantive negative-space analysis (14 OFFICIAL = 12 ordinary + 2 late-breaking; absence of independent verification stated as the finding with sampling limit; no count-based inference; next primary records specified); ledger classification verified; FULFILLED_WITH_SAMPLING_LIMIT.",
+      "evidence_locations": [
+        "Section 7 — Community Movement (sections/80-community-movement.tex)",
+        "surveys/weekly/2026-W41/community-observation-ledger.md",
+        "sources/2026-W41/publication/v2/community-evidence-audit-r17.md"
+      ]
+    },
+    {
+      "check_id": "WEEKLY_LATE_BREAKING_SINGLE_HOME",
+      "status": "PASS",
+      "detail": "2 post-cutoff items (Oct 9 22:04 unintended-actions, 23:11 Clef-omni) excluded from ordinary totals and homed as next-issue items; Clef-omni event clock pinned to blog JSON-LD, not X time.",
+      "evidence_locations": [
+        "Section 7 — Community Movement (sections/80-community-movement.tex)",
+        "Section 3 — Open Weights and Audio (sections/30-open-weights.tex)"
+      ]
+    },
+    {
+      "check_id": "WEEKLY_WATCHLIST_READER_SEMANTICS",
+      "status": "PASS",
+      "detail": "Watchlist reads as reader observations (synthesis 'next observations' + source-notes non-elevated items + community next-records), each tied to a concrete pending artifact, not vague futurism.",
+      "evidence_locations": [
+        "Section 8 — Week in Review (sections/85-week-in-review.tex)",
+        "sections/99-source-notes.tex"
+      ]
+    },
+    {
+      "check_id": "WEEKLY_WHY_THIS_ISSUE",
+      "status": "PASS",
+      "detail": "Why-this-issue framed in frontmatter (3 This-Week boxes + reading lens) and synthesis joint-significance section: measured provision conditions across 6 articles as the week's through-line.",
+      "evidence_locations": [
+        "sections/00-frontmatter.tex",
+        "Section 8 — Week in Review (sections/85-week-in-review.tex)"
+      ]
+    }
+  ],
+  "reviewed_by": "Muse (HUMAN_PUBLICATION_GO execution)",
+  "recorded_at": "2026-10-15T00:45:00Z",
+  "review_sha256": "bed6e182f64978a72c2114b4017d677064e4a6c3b7ab439ad6f48b2dcc4947b2"
+}
