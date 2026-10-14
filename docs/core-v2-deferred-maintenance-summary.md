@@ -2,7 +2,7 @@
 
 Status: `CORE_CHANGE_PAUSED / LIVING_DEFERRED_MAINTENANCE_INVENTORY`  
 Established: 2026-09-20 JST  
-Last reviewed edition: `2026-W41` (Release Candidate / Freeze guarded stop; not a release)  
+Last reviewed edition: `2026-W41` (RELEASED / COMPLETE; exact public release verified)  
 Last reviewed `main`: `83f581ebc0dd8945ca7116f65bf6b853ca1fe6c8`  
 Frozen Production Line: `774dd39a951c9ac3818e83dfffd4c7666efb0a20`  
 Frozen Production Line tree: `cd46a6f7a6dcc4031e76220cea4c52c7dd1fc481`  
@@ -113,6 +113,8 @@ Observed failure:
 W35-W38 used an in-memory admission correction that excludes Human Gate provenance from Stage Checkpoint admission while still validating it through the dedicated Human Gate path. TS-001 reissue recurred identically (`gates/publication-preview-approval.json` `15b88fb2...`) and used the same bounded correction. TS-002 recurred identically (`gates/publication-preview-approval.json` `5e121516...`) via the same bounded correction. W39 reproduced the same Human-gate-as-checkpoint misclassification after canonical r6 approval and used the same bounded runtime admission; no new ID.
 
 **W41 recurrence, Release Candidate guarded stop (Issue [#565](https://github.com/eariver/japanese-generative-ai-survey/issues/565)):** Exact approved 17-page PDF SHA `4fd1958ce7dea3b2c257c5abe1de96e14c7e66cfe0d9c35e884ae596819750ce` and canonical Human Preview `APPROVED` survived. Frozen Core rejected `checkpoint_provenance.publication_preview` as a Stage Checkpoint with missing `artifacts`; W41 fail-closed at commit `1001ce055aa5240bb9848026331b4152d94f7306` in `RELEASE_CANDIDATE`. The Human Owner explicitly prohibited **any** shared-Core patch and authorized the previously proven W34–W39 **edition-local, runtime-only admission compatibility** to complete this exact edition. Core implementation remains frozen. Do not mark the default validator as a clean PASS without recording the compatibility, nor declare the generated Freeze Record effective before lawful Stage advancement. After exact-byte Release, keep this generic item `OPEN_CORE / EDITION_WORKAROUND`.
+
+**W41 release closure (2026-10-15 JST):** the authorized runtime-only compat completed Freeze, exact-byte public Release `weekly/2026-W41` verified (downloaded asset SHA `4fd1958c…`, 446781 bytes), lifecycle `RELEASED` / terminal `COMPLETE`. This generic item stays `OPEN_CORE / EDITION_WORKAROUND`; no Core code was changed for W41.
 
 
 Evidence:
@@ -863,9 +865,9 @@ A batch repair may close multiple `CV2-DM` items, but each item must receive its
 
 | `2026-W40` | Selection r11 guarded-stop update in r0.9 | **DM-022 new**; separate source-timing correction from canonical acceptance | Issue #562: no sanctioned post-`EVIDENCE_REVIEWED`, pre-Architecture same-State Evidence/View/Materiality supersession. Sol Plan B is provisionally material but not Core-accepted. W40 r12 edition-local 28-item Selection preview + two **non-canonical** supplements is instructed, not yet validated. Shared Core remains unchanged; Selection and Human Gates pending. |
 
-| `2026-W41` | Release Candidate guarded stop / r1.0 | **DM-002 recurrence, no new CV2-DM ID** | Frozen Core `_prior_artifacts` treated Human Preview approval as Stage Checkpoint; canonical Reader Gate/Visual/Quality/Candidate and Human GO all passed; Freeze Record and Manifest generated but not effective. Issue #565 opened; Human forbids Core repair and directs W34–W39 bounded runtime compatibility plus exact-byte release. At inventory update W41 remains `RELEASE_CANDIDATE`, no public W41 Release. |
+| `2026-W41` | Release closure / r1.1 | **DM-002 recurrence, no new CV2-DM ID** | Edition-local runtime-only compat completed Freeze (real frozen-Core validation + formal advance to `FROZEN`); exact-byte public Release `weekly/2026-W41` verified (downloaded PDF SHA `4fd1958c…`, 446781 bytes); lifecycle `RELEASED`/`COMPLETE`. Item stays `OPEN_CORE / EDITION_WORKAROUND`; shared Core unchanged. |
 
-Next required update: W41 exact-byte Release closure or the next Weekly/Special guarded stop, whichever occurs first.
+Next required update: the next Weekly/Special guarded stop or release closure, whichever occurs first.
 
 ## 10. Revision History
 
@@ -882,6 +884,7 @@ Next required update: W41 exact-byte Release closure or the next Weekly/Special 
 
 | `r0.9` | 2026-10-10 | `2026-W40` Selection guarded stop | Added CV2-DM-022 for the Core post-Evidence/pre-Architecture immutable-upstream supersession gap (Issue #562), independently confirmed at W40 r11. Preserved accepted 37/37/35/35, 29 MATERIAL / 4 HOLD / 2 CONTEXT and official `EVIDENCE_REVIEWED` State; distinguished provisional Plan B from formal Selection, and recorded separately instructed edition-local r12 continuity and pending Core repair. No shared Core/Human Gate changes. |
 | `r1.0` | 2026-10-15 | `2026-W41` Freeze guarded stop | Refreshed existing CV2-DM-002 with W41 recurrence, [Issue #565](https://github.com/eariver/japanese-generative-ai-survey/issues/565), exact Human-approved PDF/Stage failure and user-mandated no-Core-fix runtime-compatibility recovery. No new generic defect ID. W41 still RELEASE_CANDIDATE at this checkpoint; do not claim Release until verified. |
+| `r1.1` | 2026-10-15 | `2026-W41` exact-byte Release closure | W41 RELEASED/COMPLETE via authorized edition-local runtime-only compat (no Core change): FROZEN state, public Release `weekly/2026-W41` with downloaded asset SHA `4fd1958c…` verified. CV2-DM-002 stays `OPEN_CORE / EDITION_WORKAROUND`. |
 
 ## 11. Reference authority
 
