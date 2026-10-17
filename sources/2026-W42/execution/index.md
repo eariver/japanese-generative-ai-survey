@@ -14,9 +14,9 @@ This is the current human-readable navigation record for the edition. Machine li
 - Production Profile: `sources/2026-W42/production-profile.json`
 - Production State: `sources/2026-W42/production-state.json`
 - Current State SHA-256: see authoritative `sources/2026-W42/production-state.json` (updated r5; earlier snapshot in index was stale)
-- Current lifecycle: `EVIDENCE_REVIEWED` (r8 real stage checkpoint and production State)
-- Current terminal reason: `none`
-- Current next action: `stage:selection` (Sol r8 semantic scope decided; Muse r9 execution pending)
+- Current lifecycle: `ARCHITECTURE_ESTABLISHED` (r9 lawful Selection + Architecture advances; Sol independent audit pending)
+- Current terminal reason: `HUMAN_GATE_REACHED` (machine wait state at Architecture Review; no Human decision recorded)
+- Current next action: `ARCHITECTURE_REVIEW` (Sol audit first, then Sol-owned Human dossier)
 
 ## Human Gates
 
@@ -52,6 +52,7 @@ This is the current human-readable navigation record for the edition. Machine li
 - `sessions/muse-w42-evidence-prep-20261017-r4.md` (Discovery→Screening→Evidence-prep; acceptance BLOCKED on missing X manifest, proven; EVIDENCE_AUTHORITY_REVIEW_READY candidate r4)
 - `sessions/muse-w42-grok-evidence-20261017-r5.md` (Grok intake COMPLETE → canonical Discovery+Screening acceptance → evidence executed; CANDIDATES_NORMALIZED; REVIEW_READY r5)
 - `sessions/muse-w42-evidence-deepening-20261017-r6.md` (E42 authority gap-fill: 7 licenses, 8 paper/report bodies, 12 retries; 49 cards rebuilt 68→151 claims; REVIEW_READY r6)
+- `sessions/muse-w42-selection-architecture-20261017-r9.md` (Sol r8 28/50 Selection + seven-package Architecture via frozen Core; two lawful bridge advances to ARCHITECTURE_ESTABLISHED; SOL_ARCHITECTURE_AUDIT_READY)
 
 ## Discovery review
 
@@ -109,6 +110,15 @@ This is the current human-readable navigation record for the edition. Machine li
 - Sol r8 independent audit `execution/reviews/sol-w42-r8-evidence-materiality-selection-semantic-review-20261017.md`: Core machine acceptance real; 91 source supplement files are bounded **derived excerpts, NOT 91 exact original-body archives**; many accepted card claims overbind all task source IDs and leave generic UNRESOLVED targets. Do not rewrite accepted Evidence; use edition-local audited claim→specific-URL crosswalk.
 - r8 executor six-package proposal **NOT adopted**: Maia 300 silently omitted despite MATERIAL; Scion/Glimpse roles not consistently placed; page plan risks compression. Sol has reviewed all 28 MATERIAL + 14 CONTEXT + 7 HOLD + 1 Grok binder and directed a **seven-package** technically substantial ~27–30pp design (28 SELECTED: 16 PRIMARY + 12 SUPPORTING; 5 INSPECT; 7 HOLD; 10 REJECT).
 - Next Muse execution contract `execution/instructions/2026-10-17_muse-w42-selection-through-sol-architecture-audit-r9.md`. Lawful frozen-Core Candidate Selection → seven-package Architecture candidate with exact stage validation; stop for `SOL_ARCHITECTURE_AUDIT_READY`. Human Architecture Review and Publication Preview remain pending; no Draft/TeX/PDF.
+
+## r9 Selection + Architecture execution (Sol design materialized, audit pending)
+
+- Interactive input `execution/interactive-selection-architecture-r9.json` (50 semantically specific rationales; Sol §3 roles exact; 28/5/7/10 asserted) → frozen `run_selection_architecture_v2_interactive` (agent-first override): `candidate-matrix-v2.json` (50) + `candidate-selection-v2.json` (ESTABLISHED, 28) + `architecture-v2.json` (PROPOSED, 7 packages P1–P7, target 28 / max 30) + `architecture-review-summary-v2.json` (READY_FOR_ARCHITECTURE_REVIEW, zero errors) + `architecture-review-attention-v2.json`.
+- Direct frozen validators: `selection-check` PASS; `architecture-check` PASS. Accepted Evidence/Views/Materiality bytes untouched.
+- Bridge `muse-w42-selection-advance-20261017` (event-sha = r9 start HEAD): CORE_STAGE_CONTRACT PASS → `SELECTION_COMPLETE` (checkpoint `EVIDENCE_REVIEWED.json`).
+- Edition-local `claim-to-source-crosswalk-r9.md`: 117 selected claims with best exact URLs, categories, draft caveats; 18 high-risk focus rows; 0 NON_PROMOTABLE; 91 supplements recorded as derived excerpts.
+- Bridge `muse-w42-architecture-advance-20261017`: CORE_STAGE_CONTRACT PASS → `ARCHITECTURE_ESTABLISHED` (checkpoint `SELECTION_COMPLETE.json`); Architecture PROPOSED with null human_review; gates pending/pending; machine terminal `HUMAN_GATE_REACHED` (wait state only).
+- Session: `sessions/muse-w42-selection-architecture-20261017-r9.md`. Sol audit handoff: `SOL_ARCHITECTURE_AUDIT_HANDOFF-r9.md` (terminal `SOL_ARCHITECTURE_AUDIT_READY`). No Human approval recorded/requested; no Draft/TeX/PDF. Generic Issues #568/#569 remain OPEN_CORE.
 - Generic frozen-Core issues #568/#569 remain OPEN_CORE even after r8 edition-local compatible pass.
 
 ## Grok X reconciliation continuation
@@ -117,4 +127,4 @@ This is the current human-readable navigation record for the edition. Machine li
 
 ## Final disposition
 
-`IN_PROGRESS` (r8 evidence chain accepted at EVIDENCE_REVIEWED; Sol r8 Selection scope decided; Muse r9 Selection→Architecture candidate instructed; Human Gates pending)
+`SOL_ARCHITECTURE_AUDIT_READY` (r9 Selection + Architecture lawfully established at ARCHITECTURE_ESTABLISHED; Sol independent audit pending; Human Gates pending)

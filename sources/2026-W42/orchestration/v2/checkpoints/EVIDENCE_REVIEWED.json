@@ -1,0 +1,66 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W42",
+  "from_state": "EVIDENCE_REVIEWED",
+  "to_state": "SELECTION_COMPLETE",
+  "checkpoints": [
+    "selection"
+  ],
+  "recorded_at": "2026-10-17T12:15:00Z",
+  "implementation": {
+    "repository_commit_sha": "c4c6dd98f62e1fa8265c3289b9de3c3957854381",
+    "orchestrator_version": "survey-production-core-v2/0.15-postintegration-transport-thematic"
+  },
+  "contract": {
+    "pipeline_contract_version": "2.0-rc1",
+    "pipeline_contract_sha256": "ee89796245c22072cec98f34931180214a4928c24f399280793cd6420a4c8e71",
+    "quality_contract_version": "2.0-rc1",
+    "quality_contract_sha256": "b5b955d524fb438c0f1b2c9490bea1da2083e79028d67a55ca424bbfc20f2958",
+    "research_profile_version": "2.0-rc1",
+    "research_profile_sha256": "666f8a064b190ffd35216e26d6fdf2dd0fa932cac7b1b0d6448e262ded77b9a8",
+    "publication_profile_version": "2.0-rc1",
+    "publication_profile_sha256": "99adff93ff443e02bdcce639ce5fc4d4c959ee45a804da70efc4277db57fdddb"
+  },
+  "artifacts": [
+    {
+      "name": "candidate-matrix",
+      "path": "sources/2026-W42/candidate-matrix-v2.json",
+      "sha256": "c650732d5af80c07f8b26ab5dea8d30cfd8d9160b7ee7dbbc938b3aeff92eafa"
+    },
+    {
+      "name": "candidate-selection",
+      "path": "sources/2026-W42/candidate-selection-v2.json",
+      "sha256": "4029bb93d9362888dfd25ce98ebe94ebb3bb38aaa2602b85339d7ebb5e53a8b9"
+    }
+  ],
+  "reviews": [
+    {
+      "check_id": "CORE_STAGE_CONTRACT",
+      "kind": "DETERMINISTIC",
+      "status": "PASS",
+      "executor": "survey_core_execution_bridge_v2",
+      "evidence": "Canonical Core stage contract validated for immutable request muse-w42-selection-advance-20261017.",
+      "result": {
+        "path": "sources/2026-W42/execution/bridge-runs/muse-w42-selection-advance-20261017/core-stage-contract.json",
+        "sha256": "ab509e89c1a6eb81bb1710fe16a219701c567172556639955cec08c7ad518d84"
+      }
+    },
+    {
+      "check_id": "MUSE-R9-SELECTION",
+      "kind": "AGENT_RESEARCH",
+      "status": "PASS",
+      "executor": "muse-r9",
+      "evidence": "Sol r8 authoritative mapping materialized exactly: 28 SELECTED (16 PRIMARY + 12 SUPPORTING), 5 INSPECT, 7 HOLD, 10 REJECT across all 50 Matrix candidates; per-candidate semantic rationale with package roles; Maia/Scion/Glimpse explicitly placed.",
+      "result": null
+    },
+    {
+      "check_id": "MUSE-R9-CORE-VALIDATION",
+      "kind": "AGENT_RESEARCH",
+      "status": "PASS",
+      "executor": "muse-r9",
+      "evidence": "Frozen-Core interactive runner derived Candidate Matrix via canonical derive_candidate_matrix; validate_candidate_matrix, validate_selection, and stage-contract validation all PASS with real receipts; no accepted Evidence/Views/Materiality bytes rewritten.",
+      "result": null
+    }
+  ],
+  "summary": "Advance EVIDENCE_REVIEWED to SELECTION_COMPLETE on Sol-reviewed 28/50 Candidate Selection (16 PRIMARY + 12 SUPPORTING; 5 INSPECT, 7 HOLD, 10 REJECT) with frozen-Core validation PASS."
+}
