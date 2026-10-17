@@ -1,7 +1,7 @@
-# r13 new source readings (edition-local sidecar; NOT accepted Evidence)
+# r14 new source readings (edition-local sidecar; NOT accepted Evidence)
 
 Status: `EDITORIAL_SIDECAR / NON_ACCEPTANCE / NO_CORE_CHANGE`
-Date: 2026-10-18 JST. Reader: Muse (execution). Purpose: support r13 Unit B expansion and M01/m02 fixes. These readings do NOT rewrite accepted Evidence/Views, are not archived full-byte captures, and do not select new candidates.
+Date: 2026-10-18 JST. Reader: Muse (execution). Purpose: carry over r13 S1/S2 reads and add r14 S3a/S3b verification for M01/TECH-01. These readings do NOT rewrite accepted Evidence/Views, are not archived full-byte captures, and do not select new candidates. These readings do NOT rewrite accepted Evidence/Views, are not archived full-byte captures, and do not select new candidates.
 
 ## S1 — NVIDIA Nemotron 3.5 Super VL technical blog (live read)
 - URL: https://developer.nvidia.com/blog/nvidia-nemotron-3-5-super-vl-powers-specialized-agents-with-multimodal-reasoning/
@@ -35,3 +35,24 @@ Date: 2026-10-18 JST. Reader: Muse (execution). Purpose: support r13 Unit B expa
 
 ## Usage rule
 r13 draft prose may cite S1/S2 section content with explicit "live-read sidecar" qualification where the accepted card lacks the detail; accepted Evidence remains the formal authority for Core validation. No new candidate selected on this basis.
+
+## S3a — NVIDIA Nemotron 3.5 research page (live read, r14)
+- URL: https://research.nvidia.com/labs/nemotron/Nemotron-3.5-Super-and-Lightning/
+- Title: "NVIDIA Nemotron 3.5 Super and Lightning". Published: October 14, 2026. Document type: Technical Report (landing page).
+- Accessed: 2026-10-18 JST via webfetch text (full body obtained live; NOT an archived byte capture).
+- Sections read and usable:
+  - MTP boosting improves average speculative-decoding acceptance length from 4.287 to 4.718 under greedy decoding and from 3.787 to 4.612 under probabilistic draft sampling. (M01 core fix: length, not rate; both conditions.)
+  - 100B-token MTP warm-up; 1T-token distillation; Indic/Long-context/Agentic mid-training stages; long-context recovery 33.5→81.0.
+  - Checkpoints list (Super VL 120B-A12B Base/BF16/NVFP4/LiLiCorr drafter; Lightning 30B-A3B variants).
+- Retrieval status: OK (live). Full 79pp PDF itself not retained.
+
+## S3b — Nemotron 3.5 Super Training Recipe, Stage 2 RL (live read, r14)
+- URL: https://docs.nvidia.com/nemotron/latest/nemotron/super35/rl/index.html
+- Title: "Nemotron 3.5 Super Training Recipe — Stage 2: Reinforcement Learning (RL)".
+- Accessed: 2026-10-18 JST via webfetch text (MTP Boosting + methodology sections obtained live; NOT an archived byte capture).
+- Sections read and usable (TECH-01, all verified):
+  - MTP Boosting Table 8: average acceptance length on SPEED-Bench qualitative split at draft length 7; rows SFT native 4.589/4.048; SFT+4K 5.080/4.730; Final native 4.287/3.787; Final+MTP-head 4.528/4.436; Final+25K boosting (released) 4.718/4.612 — columns greedy temp-0 / sampled temp-1.
+  - Boosting +10.1% greedy / +21.8% sampled, largest per-position gains at deeper draft positions; cross-model sampled best 4.612 (Gemma-4 31B 4.565; Qwen3.5 4.331; Qwen3.8-Flash-Next ≤4.213); greedy Gemma-4 4.837 / Qwen3.5 4.799 higher.
+  - Recipe: 5 repeated detached MTP heads, loss 0.3 per config (reference runs varied); policy MTP speculative decoding OFF except reasoning teacher; backbone frozen, hidden-state mixing, LK distillation; temp-1 ≤8K on-policy rollouts; recipe does NOT include MTP boosting (report trains separately).
+  - MOPD phases with prompt shares (35/25/20/15 + 5% self-anchor; 30/20/20/20 + 10%); agentic-teacher edge DASHED = unconfirmed lineage (must stay unconfirmed).
+- Retrieval status: OK (live). Table 8 values quoted verbatim in r14 P3.

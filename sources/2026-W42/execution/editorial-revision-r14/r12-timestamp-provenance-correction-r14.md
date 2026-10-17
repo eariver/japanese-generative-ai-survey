@@ -1,4 +1,4 @@
-# r13 timestamp provenance correction (immutable notice; no history rewrite)
+# r12 timestamp provenance correction (immutable notice carried into r14; no history rewrite)
 
 Status: `PROVENANCE_CORRECTION / NONAUTHORITATIVE / NO_REWRITE`
 Date recorded: 2026-10-18 JST (verified executor clock `date -u`: 2026-10-17T18:2xZ = 03:2x JST; git author dates use +0900 consistently).
@@ -23,3 +23,7 @@ Date recorded: 2026-10-18 JST (verified executor clock `date -u`: 2026-10-17T18:
 - Every r13 `generated_at` MUST be taken from verified executor UTC (`date -u`) at build time and cross-checked against file mtimes before commit.
 - If a required timestamp cannot be verified, mark source `unknown` in NONAUTHORITATIVE metadata and fail closed (do not invent).
 - r13 build stamps recorded in `validation-report-r13.md` with the verification commands.
+
+## r14 adoption (2026-10-18)
+- This notice stands unchanged for r12 stamps; r12/r13 files were not rewritten.
+- r14 `generated_at` values were taken from verified executor UTC (`date -u`) at build time (e.g. synthesis `2026-10-17T19:31:35Z`) and cross-checked against file mtimes before commit, per the fail-closed rule above.
