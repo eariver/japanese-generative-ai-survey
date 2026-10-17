@@ -33,8 +33,8 @@ This is the current human-readable navigation record for the edition. Machine li
 ## Grok/X
 
 - Profile applicability policy: `REQUIRED_BY_PROFILE`
-- Latest Drive task-file path/reference: none issued yet (no Drive access from Muse r1 environment; Daily X leads consumed, Grok task pending Sol)
-- Latest result disposition: none (no returned bytes imported)
+- Latest Drive task-file path/reference: https://docs.google.com/document/d/1Skp9SMKhpDpxJCTXcJA1cepZZBTL8WKJbIU4HcLy_nc/edit (Sol Drive materialized 2026-10-17; Grok result NOT returned; `execution/operator-handoffs/2026-10-17_w42-grok-x-drive-task-dispatch.md`)
+- Latest result disposition: `AWAITING_GROK_RESULT` (no returned bytes imported; Core Discovery acceptance remains blocked)
 
 ## Deviations
 
@@ -55,7 +55,7 @@ This is the current human-readable navigation record for the edition. Machine li
 
 - Sol Discovery Completeness Review r1: `REQUEST_CHANGES` (`execution/reviews/sol-w42-discovery-completeness-r1-REQUEST_CHANGES-20261017.md`); proposal r1 `discovery/discovery-v2-proposal-r1.jsonl` (39, PROPOSED_NOT_ACCEPTED, historical)
 - Sol Discovery Completeness Review r2: `REQUEST_CHANGES` temporal/provenance (`execution/reviews/sol-w42-discovery-completeness-r2-REQUEST_CHANGES-20261017.md`); proposal r2 `discovery/discovery-v2-proposal-r2.jsonl` (49, PROPOSED_NOT_ACCEPTED, historical)
-- Sol Discovery Completeness Review r3: pending (`execution/SOL_DISCOVERY_COMPLETENESS_REVIEW_HANDOFF-r3.md`); proposal r3 `discovery/discovery-v2-proposal-r3.jsonl` (49: 46 unchanged, 3 temporal repairs, PROPOSED_NOT_ACCEPTED)
+- Sol Discovery Completeness Review r3: `PASS_WITH_LIMITATIONS` (`execution/reviews/sol-w42-discovery-completeness-r3-PASS_WITH_LIMITATIONS-20261017.md`, with Grok X outstanding); proposal r3 `discovery/discovery-v2-proposal-r3.jsonl` (49: 46 unchanged, 3 temporal repairs, PROPOSED_NOT_ACCEPTED)
 
 ## Evidence prep (r4, provisional — acceptance blocked)
 
