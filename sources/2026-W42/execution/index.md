@@ -51,6 +51,7 @@ This is the current human-readable navigation record for the edition. Machine li
 - `sessions/muse-w42-temporal-repair-20261017-r3.md` (Sol r2 temporal/provenance narrow repair; proposal r3; REVIEW_READY candidate r3)
 - `sessions/muse-w42-evidence-prep-20261017-r4.md` (Discovery→Screening→Evidence-prep; acceptance BLOCKED on missing X manifest, proven; EVIDENCE_AUTHORITY_REVIEW_READY candidate r4)
 - `sessions/muse-w42-grok-evidence-20261017-r5.md` (Grok intake COMPLETE → canonical Discovery+Screening acceptance → evidence executed; CANDIDATES_NORMALIZED; REVIEW_READY r5)
+- `sessions/muse-w42-evidence-deepening-20261017-r6.md` (E42 authority gap-fill: 7 licenses, 8 paper/report bodies, 12 retries; 49 cards rebuilt 68→151 claims; REVIEW_READY r6)
 
 ## Discovery review
 
@@ -71,10 +72,16 @@ This is the current human-readable navigation record for the edition. Machine li
 - Lifecycle: CANDIDATES_NORMALIZED (discovery + screening passed); evidence executed 50 tasks, NOT accepted
 - Sol Evidence Authority Review r5: `REQUEST_CHANGES` (`execution/reviews/sol-w42-evidence-authority-review-r5-REQUEST_CHANGES-20261017.md`): accepted Discovery+Screening preserved; current Evidence claims too compressed and primary license/PDF consumption missing; Muse r6 instructed via `execution/instructions/2026-10-17_muse-w42-evidence-authority-deepening-r6.md`.
 
+## Evidence deepening (r6 — authority remediation, acceptances unchanged)
+
+- 7 license investigations (2 full texts + 3 operative-terms + 2 tag-only); 8 paper/report bodies (PAT/Earth full-text, 3 wet-lab PDFs extracted, Nemotron report, Beam safety, Sakana/Amazon/Minecraft traced)
+- 49 cards rebuilt (`execution/evidence-r6/evidence-cards-r6.PROPOSED.json`, 151 URL+kind-linked claims vs r4 68); views r6; gap matrix; depth audit; bundles r6 run `20261017T100000Z-muse-r6`
+- Sol Evidence Authority Review r6: pending (`execution/SOL_EVIDENCE_AUTHORITY_REVIEW_HANDOFF-r6.md`)
+
 ## Grok X reconciliation continuation
 
 - Sol archived exact returned Grok result, recorded 18-post to 7-candidate map, and issued `execution/instructions/2026-10-17_muse-w42-grok-through-evidence-r5.md`; r5 Muse completed and accepted Discovery+Screening.
 
 ## Final disposition
 
-`IN_PROGRESS` (r5 accepted state CANDIDATES_NORMALIZED; Sol Evidence Review REQUEST_CHANGES; r6 primary-source gap fill pending; Human gates pending)
+`IN_PROGRESS` (r6 evidence rebuilt, CANDIDATES_NORMALIZED intact; Sol Evidence re-review pending; Human gates pending)
