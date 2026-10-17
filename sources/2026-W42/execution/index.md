@@ -86,6 +86,12 @@ This is the current human-readable navigation record for the edition. Machine li
 - Sol Materiality/Selection Review r7: pending (`execution/SOL_MATERIALITY_SELECTION_REVIEW_HANDOFF-r7.md`)
 - `sessions/muse-w42-evidence-materiality-20261017-r7.md`
 
+## r7 Core blocker and Sol recovery decision
+
+- Muse r7 submitted 49 updated local Evidence cards (151 claims), 49 substantive Edition Views, provisional 28 MATERIAL/14 CONTEXT/7 HOLD/1 non-editorial and six-package sketch. **No Evidence Acceptance**; formal state remains `CANDIDATES_NORMALIZED`.
+- Sol r7 independent audit: `execution/reviews/sol-w42-r7-core-blocker-and-editorial-authority-audit-20261017.md` (`STOP_CORE_EVIDENCE_ACCEPTANCE_BLOCKED / SOL_SELECTION_REQUEST_CHANGES`). Core source confirmed old vs agent-first State validation and 17 unsupported `source_type` entries; Core also requires **50** Evidence tasks/views (49 editorial + 1 Grok binder). Materiality reasons are template-derived, non-authoritative; editorial bundle links require correction.
+- Proposed recovery: `execution/decisions/sol-w42-core-evidence-compatibility-recovery-proposal-20261017.md` — explicit Human decision pending for narrow separate Core-maintenance exception; **NOT an execution authorization**. Frozen Core unchanged, Human publication Gates untouched. Absolute freeze would leave W42 paused pending a demonstrated lawful adapter.
+
 ## Grok X reconciliation continuation
 
 - Sol archived exact returned Grok result, recorded 18-post to 7-candidate map, and issued `execution/instructions/2026-10-17_muse-w42-grok-through-evidence-r5.md`; r5 Muse completed and accepted Discovery+Screening.
