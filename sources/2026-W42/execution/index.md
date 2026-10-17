@@ -14,9 +14,9 @@ This is the current human-readable navigation record for the edition. Machine li
 - Production Profile: `sources/2026-W42/production-profile.json`
 - Production State: `sources/2026-W42/production-state.json`
 - Current State SHA-256: see authoritative `sources/2026-W42/production-state.json` (updated r5; earlier snapshot in index was stale)
-- Current lifecycle: `CANDIDATES_NORMALIZED`
+- Current lifecycle: `EVIDENCE_REVIEWED` (r8 real stage checkpoint and production State)
 - Current terminal reason: `none`
-- Current next action: `stage:evidence-materiality-completeness` (Evidence research and Sol review precede acceptance)
+- Current next action: `stage:selection` (Sol r8 semantic scope decided; Muse r9 execution pending)
 
 ## Human Gates
 
@@ -34,7 +34,7 @@ This is the current human-readable navigation record for the edition. Machine li
 
 - Profile applicability policy: `REQUIRED_BY_PROFILE`
 - Latest Drive task-file path/reference: https://docs.google.com/document/d/1Skp9SMKhpDpxJCTXcJA1cepZZBTL8WKJbIU4HcLy_nc/edit (Sol Drive materialized 2026-10-17; Grok task document; result now returned separately; `execution/operator-handoffs/2026-10-17_w42-grok-x-drive-task-dispatch.md`)
-- Latest result disposition: `RAW_RECEIVED_VERIFIED / CORE_DISCOVERY_ACCEPTED` — Google Drive result https://drive.google.com/file/d/1G505Nie7-EJDtysTQKzGLxiFNk2SFUPY/view, archived under `external/x/weekly-x-2026-W42/raw/weekly-x-2026-W42.md` (18 status URLs; 12,373 bytes; SHA-256 c48a7426e5c616e72045390938da4f4755b800b51ba08d09c0329d8034df5358). See `execution/reviews/sol-w42-grok-x-intake-r1-20261017.md`. X manifest and canonical Discovery/Screening accepted r5; Evidence acceptance pending r7.
+- Latest result disposition: `RAW_RECEIVED_VERIFIED / CORE_DISCOVERY_ACCEPTED` — Google Drive result https://drive.google.com/file/d/1G505Nie7-EJDtysTQKzGLxiFNk2SFUPY/view, archived under `external/x/weekly-x-2026-W42/raw/weekly-x-2026-W42.md` (18 status URLs; 12,373 bytes; SHA-256 c48a7426e5c616e72045390938da4f4755b800b51ba08d09c0329d8034df5358). See `execution/reviews/sol-w42-grok-x-intake-r1-20261017.md`. X manifest and canonical Discovery/Screening accepted r5; Evidence and Views formally accepted r8.
 
 ## Deviations
 
@@ -103,10 +103,18 @@ This is the current human-readable navigation record for the edition. Machine li
 - Muse r8 execution request: `execution/instructions/2026-10-17_muse-w42-frozen-core-compat-evidence-to-selection-r8.md` (native current-stage adapter, 50 Evidence Cards including 1 truthful non-editorial X binder, genuine Core validation/acceptance if possible, then candidate-specific Materiality and Selection proposals). Stop at independent Sol review or a real Core blocker.
 - Muse r8 completed: supplement r8 (91 raws, validated) + compat package (50 tasks, 17 projections + ledger) + interactive input (50 records) → 50 Core cards + 50 views ACCEPTED (`f2429e27…`, `4296ffd0…`), materiality ledger, LIMITED completeness → bridge ADVANCE → `EVIDENCE_REVIEWED`. Selection proposal r8 (`selection-proposal-r8.PROPOSED.md`, per-candidate rationale, 20–24pp plan). Dossier: `SOL_MATERIALITY_SELECTION_REVIEW_HANDOFF-r8.md`. Human Gates pending. Core `774dd39a…` and main unchanged.
 
+## Sol r8 independent Materiality/Selection review and r9 dispatch
+
+- Official State after r8 is `EVIDENCE_REVIEWED`; Evidence/Views/Materiality/Completeness checkpoints PASS (50 Core Cards: 43 PARTIAL, 7 NEEDS_MORE; 50 Views; 28 MATERIAL, 14 CONTEXT, 7 HOLD, 1 non-editorial; Completeness LIMITED).
+- Sol r8 independent audit `execution/reviews/sol-w42-r8-evidence-materiality-selection-semantic-review-20261017.md`: Core machine acceptance real; 91 source supplement files are bounded **derived excerpts, NOT 91 exact original-body archives**; many accepted card claims overbind all task source IDs and leave generic UNRESOLVED targets. Do not rewrite accepted Evidence; use edition-local audited claim→specific-URL crosswalk.
+- r8 executor six-package proposal **NOT adopted**: Maia 300 silently omitted despite MATERIAL; Scion/Glimpse roles not consistently placed; page plan risks compression. Sol has reviewed all 28 MATERIAL + 14 CONTEXT + 7 HOLD + 1 Grok binder and directed a **seven-package** technically substantial ~27–30pp design (28 SELECTED: 16 PRIMARY + 12 SUPPORTING; 5 INSPECT; 7 HOLD; 10 REJECT).
+- Next Muse execution contract `execution/instructions/2026-10-17_muse-w42-selection-through-sol-architecture-audit-r9.md`. Lawful frozen-Core Candidate Selection → seven-package Architecture candidate with exact stage validation; stop for `SOL_ARCHITECTURE_AUDIT_READY`. Human Architecture Review and Publication Preview remain pending; no Draft/TeX/PDF.
+- Generic frozen-Core issues #568/#569 remain OPEN_CORE even after r8 edition-local compatible pass.
+
 ## Grok X reconciliation continuation
 
 - Sol archived exact returned Grok result, recorded 18-post to 7-candidate map, and issued `execution/instructions/2026-10-17_muse-w42-grok-through-evidence-r5.md`; r5 Muse completed and accepted Discovery+Screening.
 
 ## Final disposition
 
-`IN_PROGRESS` (r8 compat chain green: EVIDENCE_REVIEWED with accepted Evidence/Views/Materiality/Completeness; Sol Materiality/Selection review pending; Human gates pending)
+`IN_PROGRESS` (r8 evidence chain accepted at EVIDENCE_REVIEWED; Sol r8 Selection scope decided; Muse r9 Selection→Architecture candidate instructed; Human Gates pending)
