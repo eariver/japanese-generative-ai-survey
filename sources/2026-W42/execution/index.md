@@ -48,11 +48,13 @@ This is the current human-readable navigation record for the edition. Machine li
 
 - `sessions/muse-w42-initial-20261017.md` (init + Source Intake + Discovery proposal r1; SOL_DISCOVERY_COMPLETENESS_REVIEW_READY candidate r1)
 - `sessions/muse-w42-gapfill-20261017-r2.md` (Sol r1 REQUEST_CHANGES bounded gap-fill; proposal r2; REVIEW_READY candidate r2)
+- `sessions/muse-w42-temporal-repair-20261017-r3.md` (Sol r2 temporal/provenance narrow repair; proposal r3; REVIEW_READY candidate r3)
 
 ## Discovery review
 
 - Sol Discovery Completeness Review r1: `REQUEST_CHANGES` (`execution/reviews/sol-w42-discovery-completeness-r1-REQUEST_CHANGES-20261017.md`); proposal r1 `discovery/discovery-v2-proposal-r1.jsonl` (39, PROPOSED_NOT_ACCEPTED, historical)
-- Sol Discovery Completeness Review r2: pending (`execution/SOL_DISCOVERY_COMPLETENESS_REVIEW_HANDOFF-r2.md`); proposal r2 `discovery/discovery-v2-proposal-r2.jsonl` (49, PROPOSED_NOT_ACCEPTED)
+- Sol Discovery Completeness Review r2: `REQUEST_CHANGES` temporal/provenance (`execution/reviews/sol-w42-discovery-completeness-r2-REQUEST_CHANGES-20261017.md`); proposal r2 `discovery/discovery-v2-proposal-r2.jsonl` (49, PROPOSED_NOT_ACCEPTED, historical)
+- Sol Discovery Completeness Review r3: pending (`execution/SOL_DISCOVERY_COMPLETENESS_REVIEW_HANDOFF-r3.md`); proposal r3 `discovery/discovery-v2-proposal-r3.jsonl` (49: 46 unchanged, 3 temporal repairs, PROPOSED_NOT_ACCEPTED)
 
 ## Final disposition
 
