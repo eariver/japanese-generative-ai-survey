@@ -34,7 +34,7 @@ This is the current human-readable navigation record for the edition. Machine li
 
 - Profile applicability policy: `REQUIRED_BY_PROFILE`
 - Latest Drive task-file path/reference: https://docs.google.com/document/d/1Skp9SMKhpDpxJCTXcJA1cepZZBTL8WKJbIU4HcLy_nc/edit (Sol Drive materialized 2026-10-17; Grok task document; result now returned separately; `execution/operator-handoffs/2026-10-17_w42-grok-x-drive-task-dispatch.md`)
-- Latest result disposition: `RAW_RECEIVED_VERIFIED / CORE_ACCEPTANCE_PENDING` — Google Drive result https://drive.google.com/file/d/1G505Nie7-EJDtysTQKzGLxiFNk2SFUPY/view, archived under `external/x/weekly-x-2026-W42/raw/weekly-x-2026-W42.md` (18 status URLs; 12,373 bytes; SHA-256 c48a7426e5c616e72045390938da4f4755b800b51ba08d09c0329d8034df5358). See `execution/reviews/sol-w42-grok-x-intake-r1-20261017.md`. Manifest and canonical stages NOT yet accepted.
+- Latest result disposition: `RAW_RECEIVED_VERIFIED / CORE_DISCOVERY_ACCEPTED` — Google Drive result https://drive.google.com/file/d/1G505Nie7-EJDtysTQKzGLxiFNk2SFUPY/view, archived under `external/x/weekly-x-2026-W42/raw/weekly-x-2026-W42.md` (18 status URLs; 12,373 bytes; SHA-256 c48a7426e5c616e72045390938da4f4755b800b51ba08d09c0329d8034df5358). See `execution/reviews/sol-w42-grok-x-intake-r1-20261017.md`. X manifest and canonical Discovery/Screening accepted r5; Evidence acceptance pending r7.
 
 ## Deviations
 
@@ -76,7 +76,7 @@ This is the current human-readable navigation record for the edition. Machine li
 
 - 7 license investigations (2 full texts + 3 operative-terms + 2 tag-only); 8 paper/report bodies (PAT/Earth full-text, 3 wet-lab PDFs extracted, Nemotron report, Beam safety, Sakana/Amazon/Minecraft traced)
 - 49 cards rebuilt (`execution/evidence-r6/evidence-cards-r6.PROPOSED.json`, 151 URL+kind-linked claims vs r4 68); views r6; gap matrix; depth audit; bundles r6 run `20261017T100000Z-muse-r6`
-- Sol Evidence Authority Review r6: pending (`execution/SOL_EVIDENCE_AUTHORITY_REVIEW_HANDOFF-r6.md`)
+- Sol Evidence Authority Review r6: `RESEARCH_DEPTH_PASS_WITH_REPAIRS` (`execution/reviews/sol-w42-evidence-authority-review-r6-CONDITIONAL-PASS-20261017.md`), formal Core Evidence acceptance pending 20 abbreviated source refs, stale limitations, source-granular authority taxonomy, generic views. Next r7 contract `execution/instructions/2026-10-17_muse-w42-evidence-to-materiality-selection-r7.md`: consolidate corrections, conditionally accept Evidence, prepare Materiality+Selection proposals, stop for Sol review.
 
 ## Grok X reconciliation continuation
 
