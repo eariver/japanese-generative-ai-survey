@@ -94,6 +94,7 @@ This is the current human-readable navigation record for the edition. Machine li
 
 ## r8 Human Core-freeze decision and Edition-local continuation
 
+- Human directive documentation: `execution/decisions/2026-10-17_human-no-core-change-edition-local-continuation.md` (supersedes prior Sol maintenance proposal; NOT a Human publication Gate).
 - Human Owner instruction (2026-10-17 JST): **Core v2 changes prohibited**; register new defects in GitHub Issues and the post-Freeze deferred inventory; use bounded edition-local compatibility and continue W42.
 - Issue [#568](https://github.com/eariver/japanese-generative-ai-survey/issues/568) / new `CV2-DM-023`: direct legacy Evidence prepare helper rejects valid agent-first State; official frozen `survey_agent_tool_v2.current_stage_basis_override` exists for native validated compatibility (not yet W42 accepted).
 - Issue [#569](https://github.com/eariver/japanese-generative-ai-survey/issues/569) / existing `CV2-DM-016` recurrence: 17/50 canonical Discovery source types need a strictly logged **derived Evidence Task only** classification projection. Accepted Discovery/Screening untouched.
