@@ -49,12 +49,19 @@ This is the current human-readable navigation record for the edition. Machine li
 - `sessions/muse-w42-initial-20261017.md` (init + Source Intake + Discovery proposal r1; SOL_DISCOVERY_COMPLETENESS_REVIEW_READY candidate r1)
 - `sessions/muse-w42-gapfill-20261017-r2.md` (Sol r1 REQUEST_CHANGES bounded gap-fill; proposal r2; REVIEW_READY candidate r2)
 - `sessions/muse-w42-temporal-repair-20261017-r3.md` (Sol r2 temporal/provenance narrow repair; proposal r3; REVIEW_READY candidate r3)
+- `sessions/muse-w42-evidence-prep-20261017-r4.md` (Discovery→Screening→Evidence-prep; acceptance BLOCKED on missing X manifest, proven; EVIDENCE_AUTHORITY_REVIEW_READY candidate r4)
 
 ## Discovery review
 
 - Sol Discovery Completeness Review r1: `REQUEST_CHANGES` (`execution/reviews/sol-w42-discovery-completeness-r1-REQUEST_CHANGES-20261017.md`); proposal r1 `discovery/discovery-v2-proposal-r1.jsonl` (39, PROPOSED_NOT_ACCEPTED, historical)
 - Sol Discovery Completeness Review r2: `REQUEST_CHANGES` temporal/provenance (`execution/reviews/sol-w42-discovery-completeness-r2-REQUEST_CHANGES-20261017.md`); proposal r2 `discovery/discovery-v2-proposal-r2.jsonl` (49, PROPOSED_NOT_ACCEPTED, historical)
 - Sol Discovery Completeness Review r3: pending (`execution/SOL_DISCOVERY_COMPLETENESS_REVIEW_HANDOFF-r3.md`); proposal r3 `discovery/discovery-v2-proposal-r3.jsonl` (49: 46 unchanged, 3 temporal repairs, PROPOSED_NOT_ACCEPTED)
+
+## Evidence prep (r4, provisional — acceptance blocked)
+
+- Screening PROPOSED 49 (KEEP 28/INSPECT 16/MAYBE 5); evidence cards PROPOSED 49 (STRONG 23/PARTIAL 13/THIN 13, local shape); views PROPOSED 49; bundles r4 run `20261017T080000Z-muse-r4`
+- Blocker: canonical Discovery acceptance fail-closed without X manifest (proven, 0 bytes); State stays ISSUE_INITIALIZED
+- Sol Evidence Authority Review r4: pending (`execution/SOL_EVIDENCE_AUTHORITY_REVIEW_HANDOFF-r4.md`)
 
 ## Final disposition
 
