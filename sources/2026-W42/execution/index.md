@@ -85,6 +85,7 @@ This is the current human-readable navigation record for the edition. Machine li
 - Unit C provisional (from unaccepted evidence): materiality PROPOSED (28/14/7/1), completeness note (LIMITED), selection sketch (6-package + alternative + unselected-reasons + pages)
 - Sol Materiality/Selection Review r7: pending (`execution/SOL_MATERIALITY_SELECTION_REVIEW_HANDOFF-r7.md`)
 - `sessions/muse-w42-evidence-materiality-20261017-r7.md`
+- `sessions/muse-w42-frozen-compat-selection-20261017-r8.md` (Human no-Core-change compat: supplement + projection + 50/50/50 acceptance + selection proposal; REVIEW_READY r8)
 
 ## r7 Core blocker and Sol recovery decision
 
@@ -100,7 +101,7 @@ This is the current human-readable navigation record for the edition. Machine li
 - Issue [#569](https://github.com/eariver/japanese-generative-ai-survey/issues/569) / existing `CV2-DM-016` recurrence: 17/50 canonical Discovery source types need a strictly logged **derived Evidence Task only** classification projection. Accepted Discovery/Screening untouched.
 - `docs/core-v2-deferred-maintenance-summary.md` updated to `r1.2` on W42 work branch, with both issues, OPEN_CORE statuses, guarded-stop notes and pending edition-local validation; no Core source edit.
 - Muse r8 execution request: `execution/instructions/2026-10-17_muse-w42-frozen-core-compat-evidence-to-selection-r8.md` (native current-stage adapter, 50 Evidence Cards including 1 truthful non-editorial X binder, genuine Core validation/acceptance if possible, then candidate-specific Materiality and Selection proposals). Stop at independent Sol review or a real Core blocker.
-- Current lifecycle remains `CANDIDATES_NORMALIZED`; Evidence **NOT ACCEPTED**; Human Gates pending. Core `774dd39a…` and main unchanged.
+- Muse r8 completed: supplement r8 (91 raws, validated) + compat package (50 tasks, 17 projections + ledger) + interactive input (50 records) → 50 Core cards + 50 views ACCEPTED (`f2429e27…`, `4296ffd0…`), materiality ledger, LIMITED completeness → bridge ADVANCE → `EVIDENCE_REVIEWED`. Selection proposal r8 (`selection-proposal-r8.PROPOSED.md`, per-candidate rationale, 20–24pp plan). Dossier: `SOL_MATERIALITY_SELECTION_REVIEW_HANDOFF-r8.md`. Human Gates pending. Core `774dd39a…` and main unchanged.
 
 ## Grok X reconciliation continuation
 
@@ -108,4 +109,4 @@ This is the current human-readable navigation record for the edition. Machine li
 
 ## Final disposition
 
-`IN_PROGRESS` (r7 repairs complete, Core Evidence blocked by proven guards CV2-W42-001/002, CANDIDATES_NORMALIZED intact; Sol Materiality/Selection review pending; Human gates pending)
+`IN_PROGRESS` (r8 compat chain green: EVIDENCE_REVIEWED with accepted Evidence/Views/Materiality/Completeness; Sol Materiality/Selection review pending; Human gates pending)
