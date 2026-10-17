@@ -16,7 +16,7 @@ This is the current human-readable navigation record for the edition. Machine li
 - Current State SHA-256: see authoritative `sources/2026-W42/production-state.json` (updated r5; earlier snapshot in index was stale)
 - Current lifecycle: `DRAFT_COMPLETE` (r10 Human Architecture r1 APPROVED recorded via frozen Gate; Japanese Draft JSON v10.0 validated; Sol Draft audit pending)
 - Current terminal reason: `none`
-- Current next action: `SOL_W42_JAPANESE_DRAFT_JSON_AUDIT` (independent Sol audit of substantive Japanese prose before any TeX/PDF)
+- Current next action: `SOL_W42_JAPANESE_DRAFT_REVISION_R11_AUDIT` (independent Sol re-audit of r11 PROPOSED editorial repairs before any TeX/PDF)
 
 ## Human Gates
 
@@ -152,4 +152,4 @@ This is the current human-readable navigation record for the edition. Machine li
 
 ## Final disposition
 
-`DRAFT_COMPLETE / SOL_R10_JAPANESE_DRAFT_EDITORIAL_REQUEST_CHANGES / MUSE_R11_PROPOSAL_PENDING` (authentic Architecture r1 approved; machine Draft passed; reader-facing Draft not approved; canonical SHA-bound Draft unchanged; no TeX/PDF; Publication Preview pending)
+`SOL_W42_JAPANESE_DRAFT_REVISION_R11_REVIEW_READY` (r11 editorial repair proposals complete under `execution/editorial-revision-r11/`; 7 revised Draft Results REVISED v11.0 + proposed synthesis validated; filtered reader preview + citation/diff/closure ledgers; adoption feasibility proven read-only with checkpoint substitution BLOCKED_BY_CORE_CONTRACT; canonical Draft/State/Gate/checkpoint bytes unchanged at DRAFT_COMPLETE; independent Sol re-audit pending; no TeX/PDF; Publication Preview pending)
