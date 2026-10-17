@@ -121,10 +121,18 @@ This is the current human-readable navigation record for the edition. Machine li
 - Session: `sessions/muse-w42-selection-architecture-20261017-r9.md`. Sol audit handoff: `SOL_ARCHITECTURE_AUDIT_HANDOFF-r9.md` (terminal `SOL_ARCHITECTURE_AUDIT_READY`). No Human approval recorded/requested; no Draft/TeX/PDF. Generic Issues #568/#569 remain OPEN_CORE.
 - Generic frozen-Core issues #568/#569 remain OPEN_CORE even after r8 edition-local compatible pass.
 
+## Sol r9 Architecture independent audit and full Human dossier
+
+- Independent Sol auditor reviewed immutable Muse r9 commit `4a1cb6b9df5a7b64bacdcd881af201e7bf0d28a1`, machine `ARCHITECTURE_ESTABLISHED` and original accepted Core checkpoint bytes: `execution/reviews/sol-w42-r9-independent-architecture-audit-PASS_WITH_LIMITATIONS-20261017.md`.
+- Verdict `PASS_WITH_LIMITATIONS / READY_FOR_HUMAN_ARCHITECTURE_REVIEW`: 50 Matrix + Selection (28 SELECTED/5 INSPECT/7 HOLD/10 REJECT), 28 uniquely placed as 16 PRIMARY/12 SUPPORTING in 7 packages, target 28pp (max 30); zero substantive candidate omission after Maia/Scion/Glimpse restoration. 117 selected claim entries mapped to 62 best URLs, but source excerpts are NOT original full archives; Evidence 43 PARTIAL/7 NEEDS_MORE/0 VERIFIED; Completeness LIMITED.
+- r9 editorial provenance defect: 6 vendor-source claims misclassified as independently publishable; EXO source unfetched; 3 product facts misclassified as legal text plus mixed-source claim. Sol non-Core errata: `execution/reviews/sol-w42-r9-claim-provenance-editorial-errata-20261017.md`. Errata binding on Draft, one EXO external-evaluation claim nonpromotable as independent. Historical Muse r9 crosswalk preserved, accepted Evidence unchanged.
+- Architecture Attention shows 50 of 51 notices due frozen display cap. Omitted notice is Qwen-Image Turbo REJECT, present in canonical Selection and Review Summary; fully surfaced in Human dossier.
+- Human-facing full 12-part Architecture Review: `execution/reviews/sol-w42-r9-human-architecture-review-dossier-20261017.md`. **Human Architecture Gate still pending**. No Draft/TeX/PDF. Frozen Core/main unchanged.
+
 ## Grok X reconciliation continuation
 
 - Sol archived exact returned Grok result, recorded 18-post to 7-candidate map, and issued `execution/instructions/2026-10-17_muse-w42-grok-through-evidence-r5.md`; r5 Muse completed and accepted Discovery+Screening.
 
 ## Final disposition
 
-`SOL_ARCHITECTURE_AUDIT_READY` (r9 Selection + Architecture lawfully established at ARCHITECTURE_ESTABLISHED; Sol independent audit pending; Human Gates pending)
+`HUMAN_ARCHITECTURE_REVIEW_DOSSIER_READY` (Sol r9 independent PASS_WITH_LIMITATIONS; full dossier plus source-label errata published; formal Human Gate still pending; no Draft/TeX/PDF)
