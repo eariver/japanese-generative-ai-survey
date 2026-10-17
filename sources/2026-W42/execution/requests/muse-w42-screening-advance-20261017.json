@@ -1,0 +1,35 @@
+{
+  "schema_version": "2.0-rc1",
+  "request_id": "muse-w42-screening-advance-20261017",
+  "issue_id": "2026-W42",
+  "source_root": "sources/2026-W42",
+  "work_branch": "weekly/2026-W42-v2-work",
+  "reviewed_main_sha": "c8d0ecc1c9566a2303ad3b4c42635d4b672650e4",
+  "recorded_at": "2026-10-17T09:31:00Z",
+  "operation": {
+    "kind": "ADVANCE_STAGE",
+    "expected_from_state": "DISCOVERY_COLLECTED",
+    "state_path": "sources/2026-W42/production-state.json",
+    "artifacts": [
+      {
+        "name": "screening-acceptance",
+        "path": "sources/2026-W42/screening/v2/accepted/08738e09b8d5e57a9d39ca59ecfafb0db0e1f44ad0243b077030d61103f8cdf4/screening-accepted.json"
+      }
+    ],
+    "agent_reviews": [
+      {
+        "check_id": "MUSE-R5-SCREENING-COMPLETE",
+        "kind": "AGENT_RESEARCH",
+        "executor": "muse-r5",
+        "evidence": "Canonical screening accepted 50/50 (KEEP 29/INSPECT 16/MAYBE 5, ledger KEEP as provenance binder); every discovery record decided, none silently dropped; Grok-mapped families retained with corroboration noted."
+      },
+      {
+        "check_id": "MUSE-R5-EVIDENCE-EXECUTED",
+        "kind": "AGENT_RESEARCH",
+        "executor": "muse-r5",
+        "evidence": "50 evidence tasks executed unaccepted (23 STRONG/13 PARTIAL/13 THIN + ledger); 34 bodies at claim level; licenses/PDFs/repro logged as gaps; Minecraft article follow-up open."
+      }
+    ],
+    "summary": "Advance DISCOVERY_COLLECTED to CANDIDATES_NORMALIZED on canonical 50-record screening acceptance; evidence executed but NOT accepted."
+  }
+}

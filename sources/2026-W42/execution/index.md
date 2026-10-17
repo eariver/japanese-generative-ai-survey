@@ -50,6 +50,7 @@ This is the current human-readable navigation record for the edition. Machine li
 - `sessions/muse-w42-gapfill-20261017-r2.md` (Sol r1 REQUEST_CHANGES bounded gap-fill; proposal r2; REVIEW_READY candidate r2)
 - `sessions/muse-w42-temporal-repair-20261017-r3.md` (Sol r2 temporal/provenance narrow repair; proposal r3; REVIEW_READY candidate r3)
 - `sessions/muse-w42-evidence-prep-20261017-r4.md` (Discovery→Screening→Evidence-prep; acceptance BLOCKED on missing X manifest, proven; EVIDENCE_AUTHORITY_REVIEW_READY candidate r4)
+- `sessions/muse-w42-grok-evidence-20261017-r5.md` (Grok intake COMPLETE → canonical Discovery+Screening acceptance → evidence executed; CANDIDATES_NORMALIZED; REVIEW_READY r5)
 
 ## Discovery review
 
@@ -62,6 +63,13 @@ This is the current human-readable navigation record for the edition. Machine li
 - Screening PROPOSED 49 (KEEP 28/INSPECT 16/MAYBE 5); evidence cards PROPOSED 49 (STRONG 23/PARTIAL 13/THIN 13, local shape); views PROPOSED 49; bundles r4 run `20261017T080000Z-muse-r4`
 - Blocker: canonical Discovery acceptance fail-closed without X manifest (proven, 0 bytes); State stays ISSUE_INITIALIZED
 - Sol Evidence Authority Review r4: pending (`execution/SOL_EVIDENCE_AUTHORITY_REVIEW_HANDOFF-r4.md`)
+
+## Canonical run (r5 — Grok received, acceptance chain green)
+
+- X manifest `external/x/x-source-intake-v2.json` COMPLETE (PARTIAL/DISCOVERY_RECORDED → grok ledger; raw bytes match Sol audit)
+- Canonical Discovery 50 (`discovery-v2.jsonl` + `discovery-accepted-v2.json`, graph 5818d9d2); canonical Screening 50 (`screening/v2/accepted/08738e09…`, KEEP 29/INSPECT 16/MAYBE 5)
+- Lifecycle: CANDIDATES_NORMALIZED (discovery + screening passed); evidence executed 50 tasks, NOT accepted
+- Sol Evidence Authority Review r5: pending (`execution/SOL_EVIDENCE_AUTHORITY_REVIEW_HANDOFF-r5.md`)
 
 ## Grok X reconciliation continuation
 
