@@ -16,7 +16,7 @@ This is the current human-readable navigation record for the edition. Machine li
 - Current State SHA-256: see authoritative `sources/2026-W42/production-state.json` (updated r5; earlier snapshot in index was stale)
 - Current lifecycle: `DRAFT_COMPLETE` (r10 Human Architecture r1 APPROVED recorded via frozen Gate; Japanese Draft JSON v10.0 validated; Sol Draft audit pending)
 - Current terminal reason: `none`
-- Current next action: `SOL_W42_JAPANESE_DRAFT_REVISION_R11_AUDIT` (independent Sol re-audit of r11 PROPOSED editorial repairs before any TeX/PDF)
+- Current next action: `SOL_W42_R12_READER_PDF_AUDIT` (independent Sol review of r12 repaired prose, TeX proof, and page report before any formal publication stage)
 
 ## Human Gates
 
@@ -159,4 +159,4 @@ This is the current human-readable navigation record for the edition. Machine li
 
 ## Final disposition
 
-`SOL_R11_EDITORIAL_CONDITIONAL_PASS / MUSE_R12_SOURCE_REPAIR_AND_NONCANONICAL_TEX_PROOF_PENDING` (r11 substantial improvement but F01 licensing/F02 7 wrong refs/F03 page density remain; DRAFT_COMPLETE and Architecture Human APPROVED, publication pending; no validated PDF or stage advance)
+`SOL_W42_R12_EDITORIAL_TEX_PREVIEW_REVIEW_READY` (r12 source repairs under `execution/editorial-revision-r12/`: F01/F02 resolved, F03 addressed; 7 revised Draft Results REVISED v12.0 + proposed synthesis validated, 92 paras / 21,281 chars; filtered reader preview + repaired citation/diff/closure ledgers; non-canonical TeX/PDF proof `execution/preview-r12/main.pdf` 16 pages with build manifest + full-page visual QA; canonical Draft/State/Gate/checkpoint bytes unchanged at DRAFT_COMPLETE; independent Sol reader/PDF review pending; no VALIDATED_DRAFT, Publication Preview, Freeze, or Release)
