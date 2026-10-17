@@ -2,8 +2,8 @@
 
 Status: `CORE_CHANGE_PAUSED / LIVING_DEFERRED_MAINTENANCE_INVENTORY`  
 Established: 2026-09-20 JST  
-Last reviewed edition: `2026-W41` (RELEASED / COMPLETE; exact public release verified)  
-Last reviewed `main`: `83f581ebc0dd8945ca7116f65bf6b853ca1fe6c8`  
+Last reviewed edition: `2026-W42` (r7 guarded stop; edition-local compatibility approved, pending execution)  
+Last reviewed `main`: `c8d0ecc1c9566a2303ad3b4c42635d4b672650e4`  
 Frozen Production Line: `774dd39a951c9ac3818e83dfffd4c7666efb0a20`  
 Frozen Production Line tree: `cd46a6f7a6dcc4031e76220cea4c52c7dd1fc481`  
 Update tracker: [Issue #515](https://github.com/eariver/japanese-generative-ai-survey/issues/515)
@@ -477,7 +477,7 @@ Status: `OPEN_CORE / EDITION_WORKAROUND`
 Category: Evidence / authority source classification  
 Tracking: [Issue #515](https://github.com/eariver/japanese-generative-ai-survey/issues/515)  
 First reproduction: `SP-efficient-llm-2026`  
-Latest reproduction: `SP-efficient-llm-2026`
+Latest reproduction: `2026-W42` (2026-10-17 JST; Issue #569, edition compatibility pending)
 
 The frozen Production Line accepts an open Discovery `source_type` vocabulary through canonical Discovery and Screening, but the Evidence path later fail-closes against a narrower hard-coded `SOURCE_CLASS_MAP`.
 
@@ -526,6 +526,8 @@ Required future Core direction when maintenance resumes:
 - remove the duplicate/narrow Evidence-runner source-class map or prove it cannot diverge from the canonical mapping;
 - preserve unknown-source fail-closed behavior;
 - add cross-profile regression coverage proving every source type accepted into canonical Discovery/Screening is either Evidence-classifiable or rejected before Screening.
+
+**W42 recurrence (2026-10-17 JST, [Issue #569](https://github.com/eariver/japanese-generative-ai-survey/issues/569)):** Independently enumerated **17 of 50 canonical Discovery records across 10 source_type labels** absent from the frozen Evidence SOURCE_CLASS_MAP. The accepted 50 include one non-editorial Grok/X provenance binder. Preserve canonical Discovery/Screening and project only derived Evidence Task classes with explicit per-record source-origin semantics, original/projected SHA logs and no unsupported labels; require the unmodified Core Evidence validators and true 50/50/50 task/card/view cardinality. This is a recurrence of DM-016, **not** a new generic ID. The edition-local workaround is **authorized but not yet proven successful**. Separately, the Evidence prepare helper's incompatible State-basis admission is tracked as DM-023/#568; DM-016 projection alone cannot fix that.
 
 ---
 
@@ -787,6 +789,24 @@ Required future Core direction (handled separately, **not during edition product
 ---
 
 
+### CV2-DM-023 — Legacy Evidence package preparation rejects valid agent-first State provenance
+
+Status: `OPEN_CORE / EDITION_WORKAROUND_PLANNED`  
+Category: Evidence preparation / agent-first State admission  
+Tracking: [Issue #568](https://github.com/eariver/japanese-generative-ai-survey/issues/568)  
+First reproduction: `2026-W42` r7 guarded stop, 2026-10-17 JST  
+Cross-edition corroboration: published `2026-W41` RELEASED State
+
+The frozen `scripts/survey_evidence_v2.py::prepare_evidence_package` calls `survey_production_v2.verify_state_basis`, whose strict `validate_state_semantics` enforces legacy checkpoint attestation locations and globally pinned initial implementation history. The canonical current agent-first bridge instead records `orchestration/v2/checkpoints/` and per-stage implementation SHAs. This is **not corrupted W42 State**: `survey_agent_control_v2.validate_agent_state` is the current authoritative agent-first State validator. W41 RELEASED State independently exhibits these legitimate structures.
+
+At W42 `CANDIDATES_NORMALIZED`, Core Evidence preparation fails before Evidence/Views/Materiality/Completeness can be accepted. Muse's CLI errors, source code trace and W41 read-only comparison are retained in `sources/2026-W42/execution/defects/cv2-w42-001-evidence-prepare-state-basis.md` and Sol's `sources/2026-W42/execution/reviews/sol-w42-r7-core-blocker-and-editorial-authority-audit-20261017.md`. Separate DM-016/#569 source-type incompatibility still affects 17/50 records; the Grok/X binder also requires a genuine neutral 50th Evidence Task and Edition View.
+
+**Human Owner decision (2026-10-17 JST): NO Core v2 modification.** Production may attempt a narrowly bounded, **edition-local, runtime-only compatibility** which replaces the inapplicable legacy State admission with the existing strict `verify_agent_state_basis` and retains hash/contract/checkpoint validation, runs all remaining **unmodified Core validators**, logs default-path failure and compatibility-path semantics. No no-op validation, no Core edits/fork, no forged evidence acceptance/checkpoints, no silent upstream reset/rewind and no Human Gate assumption. This is **not yet a PASS**; retain `OPEN_CORE` until a later formal Core maintenance process.
+
+Future Core direction (deferred): reconcile old helper and agent-first State basis without weakening tamper detection; test W41 release + W42 advanced State and legitimate historical implementation SHA transitions; preserve exact binding of authority bytes and refuse unsupported source classes.
+
+---
+
 ## 6. Items intentionally not treated as current shared-Core defects
 
 The following edition issues are closed because their edition-level acceptance criteria are satisfied:
@@ -867,6 +887,8 @@ A batch repair may close multiple `CV2-DM` items, but each item must receive its
 
 | `2026-W41` | Release closure / r1.1 | **DM-002 recurrence, no new CV2-DM ID** | Edition-local runtime-only compat completed Freeze (real frozen-Core validation + formal advance to `FROZEN`); exact-byte public Release `weekly/2026-W41` verified (downloaded PDF SHA `4fd1958c…`, 446781 bytes); lifecycle `RELEASED`/`COMPLETE`. Item stays `OPEN_CORE / EDITION_WORKAROUND`; shared Core unchanged. |
 
+| `2026-W42` | r7 guarded-stop inventory update r1.2 | **DM-023 new** (#568), **DM-016 recurrence** (#569) | Human forbids any Core change. Agent-first State/Evidence helper mismatch (DM-023), 17/50 unmapped Evidence source types (DM-016); non-editorial Grok binder needs a 50th task/view. Edition-local runtime compatibility authorized, not yet validated; Core Evidence pending. |
+
 Next required update: the next Weekly/Special guarded stop or release closure, whichever occurs first.
 
 ## 10. Revision History
@@ -886,6 +908,8 @@ Next required update: the next Weekly/Special guarded stop or release closure, w
 | `r1.0` | 2026-10-15 | `2026-W41` Freeze guarded stop | Refreshed existing CV2-DM-002 with W41 recurrence, [Issue #565](https://github.com/eariver/japanese-generative-ai-survey/issues/565), exact Human-approved PDF/Stage failure and user-mandated no-Core-fix runtime-compatibility recovery. No new generic defect ID. W41 still RELEASE_CANDIDATE at this checkpoint; do not claim Release until verified. |
 | `r1.1` | 2026-10-15 | `2026-W41` exact-byte Release closure | W41 RELEASED/COMPLETE via authorized edition-local runtime-only compat (no Core change): FROZEN state, public Release `weekly/2026-W41` with downloaded asset SHA `4fd1958c…` verified. CV2-DM-002 stays `OPEN_CORE / EDITION_WORKAROUND`. |
 
+| `r1.2` | 2026-10-17 | `2026-W42` r7 guarded stop | Added CV2-DM-023 (#568) for old Evidence helper vs canonical agent-first State admission; updated existing CV2-DM-016 (#569) for 17/50 unmapped source types; documented 50th provenance-binder task/view. Human mandates immutable Core; edition-local bounded compatibility planned but not yet PASS. |
+
 ## 11. Reference authority
 
 Primary evidence for the current inventory includes:
@@ -902,6 +926,8 @@ Primary evidence for the current inventory includes:
 - [Issue #507](https://github.com/eariver/japanese-generative-ai-survey/issues/507);
 - [Issue #508](https://github.com/eariver/japanese-generative-ai-survey/issues/508);
 - [Issue #515](https://github.com/eariver/japanese-generative-ai-survey/issues/515);
+- [Issue #568](https://github.com/eariver/japanese-generative-ai-survey/issues/568) for CV2-DM-023;
+- [Issue #569](https://github.com/eariver/japanese-generative-ai-survey/issues/569) for CV2-DM-016 W42 recurrence;
 - closed W39 [Issue #551](https://github.com/eariver/japanese-generative-ai-survey/issues/551) for CV2-DM-020 and DM-013 W39 evidence;
 - closed edition Issues #500, #502, #511, #512 for deferred generic hardening;
 - [Issue #434](https://github.com/eariver/japanese-generative-ai-survey/issues/434) as a pre-freeze carry-over;
