@@ -1,0 +1,108 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W42",
+  "evidence_task_id": "evidence:2026-W42:eb68c839d412764d",
+  "basis": {
+    "task_sha256": "5a1815096d090ae267f9f2eba6c4414b2cf4ea14c6a80c93fa84258643a8254f",
+    "screening_acceptance_sha256": "eccf817a07614efc2cdbbcfc42e4109198e509d011b2fed420d1257dcc929d01",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "grok-ledger",
+      "canonical_name": "Grok/X weekly intake ledger (provenance receipt)",
+      "entity_type": "OTHER",
+      "organization": "N/A (provenance)",
+      "canonical_url": "grok-task:weekly-x-2026-W42"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "grok-ledger",
+    "artifact_type": "OTHER",
+    "canonical_name": "Grok/X weekly intake ledger (provenance receipt)",
+    "canonical_url": "grok-task:weekly-x-2026-W42"
+  },
+  "temporal": {
+    "observed_at": "2026-10-17T10:45:00Z",
+    "events": []
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "grok-task:weekly-x-2026-W42",
+      "source_class": "SOCIAL",
+      "title": "W42 Grok/X weekly ledger (RAW_RECEIVED_UNALTERED)",
+      "published_at": null,
+      "accessed_at": "2026-10-17T10:45:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Grok weekly X raw received byte-identical (12,373 bytes, sha256 c48a7426, blob fd1bfbda; Sol independently verified); 18/18 posts in-window by Snowflake-derived seconds across 7 existing families with zero new releases (Sol audit). This is a provenance receipt, never a technical release claim.",
+      "subject_id": "grok-ledger",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "sources/2026-W42/external/x/weekly-x-2026-W42/raw/weekly-x-2026-W42.md"
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Post authorship/claim accuracy unvalidated (no X-HTML capture); coverage incomplete by nature (Sol audit).",
+      "subject_id": "grok-ledger",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "r7 card authority: N/A_LEDGER provenance binder (E42-05 rule: never story/sidebar/HOLD).",
+      "subject_id": "grok-ledger",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-3",
+      "text": "r7 card authority: N/A_LEDGER (see correction ledger for scoping)",
+      "subject_id": "grok-ledger",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "x-post-authorship",
+        "status": "VERIFIED",
+        "finding": "Grok raw bytes bound (c48a7426); 18 posts reconciled; authorship unvalidated per audit",
+        "subject_ids": [
+          "grok-ledger"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

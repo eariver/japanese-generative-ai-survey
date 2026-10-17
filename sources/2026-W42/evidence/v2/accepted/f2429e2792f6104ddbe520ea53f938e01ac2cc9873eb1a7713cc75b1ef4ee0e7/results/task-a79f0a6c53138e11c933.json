@@ -1,0 +1,226 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W42",
+  "evidence_task_id": "evidence:2026-W42:5b251d3e64049da7",
+  "basis": {
+    "task_sha256": "f0ee8a87102cf0d7f44f998a61527aad13481e5238d165d40be02a82e8f4edf6",
+    "screening_acceptance_sha256": "eccf817a07614efc2cdbbcfc42e4109198e509d011b2fed420d1257dcc929d01",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "lfm25",
+      "canonical_name": "Liquid AI LFM2.5-24B-A2B",
+      "entity_type": "MODEL",
+      "organization": "Liquid AI",
+      "canonical_url": "primary:liquid.ai/blog/lfm2-5-24b-a2b (via X)"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "lfm25",
+    "artifact_type": "OPEN_WEIGHT",
+    "canonical_name": "Liquid AI LFM2.5-24B-A2B",
+    "canonical_url": "primary:liquid.ai/blog/lfm2-5-24b-a2b (via X)"
+  },
+  "temporal": {
+    "observed_at": "2026-10-17T10:45:00Z",
+    "events": [
+      {
+        "event_id": "event-2",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-10-13T00:00:00Z",
+        "subject_id": "lfm25",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "supplement-src-508f3c13086f35ed"
+        ]
+      },
+      {
+        "event_id": "event-3",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-10-17T00:00:00Z",
+        "subject_id": "lfm25",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "supplement-src-70e6727f1c4b551b"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "primary:liquid.ai/blog/lfm2-5-24b-a2b (via X)",
+      "source_class": "SOCIAL",
+      "title": "Liquid AI: LFM2.5-24B-A2B open weights (Oct 13)",
+      "published_at": null,
+      "accessed_at": "2026-10-17T10:45:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    },
+    {
+      "source_id": "supplement-src-508f3c13086f35ed",
+      "url": "https://www.liquid.ai/blog/lfm2-5-24b-a2b",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "www.liquid.ai/blog/lfm2-5-24b-a2b",
+      "published_at": "2026-10-13T00:00:00Z",
+      "accessed_at": "2026-10-17T07:00:00Z",
+      "role": "Post-Screening exact authority supplement: Post-Screening exact authority for r7 card claims (capture depth in file header)"
+    },
+    {
+      "source_id": "supplement-src-70e6727f1c4b551b",
+      "url": "https://www.liquid.ai/lfm-license",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "www.liquid.ai/lfm-license",
+      "published_at": "2026-10-17T00:00:00Z",
+      "accessed_at": "2026-10-17T07:00:00Z",
+      "role": "Post-Screening exact authority supplement: Post-Screening exact authority for r7 card claims (capture depth in file header)"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "24B/2B reasoning-only (explicit CoT), 131K ctx (32K→131K), vocab 65K→128K, 33T pretrain; 5-stage post-train (SFT/teacher/MOPD×2/Agentic RL in OpenClaw/Hermes/Pi/OpenCode)",
+      "subject_id": "lfm25",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1",
+        "supplement-src-508f3c13086f35ed",
+        "supplement-src-70e6727f1c4b551b"
+      ],
+      "context": "https://www.liquid.ai/blog/lfm2-5-24b-a2b"
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Reward-hacking admission: git-history/GitHub answer-search, sandbox awareness; sealed evals claimed; tightened sandboxes",
+      "subject_id": "lfm25",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1",
+        "supplement-src-508f3c13086f35ed",
+        "supplement-src-70e6727f1c4b551b"
+      ],
+      "context": "https://www.liquid.ai/blog/lfm2-5-24b-a2b"
+    },
+    {
+      "statement_id": "claim-3",
+      "text": "16-bench table with per-bench temps: leads 5/8 agentic (AutomationBench 27.69 vs 8.72 next; LiveClaw 48.09); sweeps IF (96.75/74.69/84.38); trails GPQA/HLE/AA-Omniscience/SWE-V 51.0/SciCode",
+      "subject_id": "lfm25",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1",
+        "supplement-src-508f3c13086f35ed",
+        "supplement-src-70e6727f1c4b551b"
+      ],
+      "context": "https://www.liquid.ai/blog/lfm2-5-24b-a2b"
+    },
+    {
+      "statement_id": "claim-4",
+      "text": "184 tok/s M5 Max, 114 Ryzen AI Max+, 21K tok/s B300 (SGLang 0.5.22, BF16, 1K/256); $0.10/$1.00 (cached $0.05); open-weight + license link; day-1 llama.cpp/MLX/vLLM/SGLang/ONNX",
+      "subject_id": "lfm25",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1",
+        "supplement-src-508f3c13086f35ed",
+        "supplement-src-70e6727f1c4b551b"
+      ],
+      "context": "https://www.liquid.ai/blog/lfm2-5-24b-a2b"
+    },
+    {
+      "statement_id": "claim-5",
+      "text": "LFM Open License v1.0 FULL TERMS VERIFIED (Apache-based + $10M commercial cap §§2–5/11; research unaffected; platform redistribution allowed); family license (1.2B card lfm1.0); 24B-file confirmation gap noted",
+      "subject_id": "lfm25",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1",
+        "supplement-src-508f3c13086f35ed",
+        "supplement-src-70e6727f1c4b551b"
+      ],
+      "context": "https://www.liquid.ai/lfm-license"
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "License text, independent repro, HF file listing",
+      "subject_id": "lfm25",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1",
+        "supplement-src-508f3c13086f35ed",
+        "supplement-src-70e6727f1c4b551b"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "r7 card authority: AUTHORITY_CONSUMED (see correction ledger for scoping)",
+      "subject_id": "lfm25",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1",
+        "supplement-src-508f3c13086f35ed",
+        "supplement-src-70e6727f1c4b551b"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "primary-body",
+        "status": "UNRESOLVED",
+        "finding": "No r7 finding recorded for this screening target",
+        "subject_ids": [
+          "lfm25"
+        ],
+        "source_ids": [
+          "src-1",
+          "supplement-src-508f3c13086f35ed",
+          "supplement-src-70e6727f1c4b551b"
+        ]
+      },
+      {
+        "target": "license-weights",
+        "status": "UNRESOLVED",
+        "finding": "No r7 finding recorded for this screening target",
+        "subject_ids": [
+          "lfm25"
+        ],
+        "source_ids": [
+          "src-1",
+          "supplement-src-508f3c13086f35ed",
+          "supplement-src-70e6727f1c4b551b"
+        ]
+      },
+      {
+        "target": "benchmark-basis",
+        "status": "UNRESOLVED",
+        "finding": "No r7 finding recorded for this screening target",
+        "subject_ids": [
+          "lfm25"
+        ],
+        "source_ids": [
+          "src-1",
+          "supplement-src-508f3c13086f35ed",
+          "supplement-src-70e6727f1c4b551b"
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      "primary-body: No r7 finding recorded for this screening target",
+      "license-weights: No r7 finding recorded for this screening target",
+      "benchmark-basis: No r7 finding recorded for this screening target"
+    ],
+    "contradictions": []
+  }
+}

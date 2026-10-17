@@ -1,0 +1,210 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W42",
+  "evidence_task_id": "evidence:2026-W42:64a8cae155aa0622",
+  "basis": {
+    "task_sha256": "20aef1355b72dc260b2e4eb0fcec57f445a1b450d41b63024b19d3058485797b",
+    "screening_acceptance_sha256": "eccf817a07614efc2cdbbcfc42e4109198e509d011b2fed420d1257dcc929d01",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "granite-switch41",
+      "canonical_name": "IBM Granite Switch 4.1",
+      "entity_type": "MODEL_FAMILY",
+      "organization": "IBM",
+      "canonical_url": "primary:huggingface.co/blog/ibm-granite/granite-switch-4-1 + card ibm-granite/granite-switch-4.1-8b"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "granite-switch41",
+    "artifact_type": "OPEN_WEIGHT",
+    "canonical_name": "IBM Granite Switch 4.1",
+    "canonical_url": "primary:huggingface.co/blog/ibm-granite/granite-switch-4-1 + card ibm-granite/granite-switch-4.1-8b"
+  },
+  "temporal": {
+    "observed_at": "2026-10-17T10:45:00Z",
+    "events": []
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "primary:huggingface.co/blog/ibm-granite/granite-switch-4-1 + card ibm-granite/granite-switch-4.1-8b",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "IBM: Granite Switch 4.1 (card Oct 14, blog Oct 15)",
+      "published_at": null,
+      "accessed_at": "2026-10-17T10:45:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    },
+    {
+      "source_id": "supplement-src-17b9efae287c95a2",
+      "url": "https://huggingface.co/api/models/ibm-granite/granite-switch-4.1-8b",
+      "source_class": "PRIMARY_REPOSITORY",
+      "title": "huggingface.co/api/models/ibm-granite/granite-switch-4.1-8b",
+      "published_at": null,
+      "accessed_at": "2026-10-17T07:00:00Z",
+      "role": "Post-Screening exact authority supplement: Post-Screening exact authority for r7 card claims (capture depth in file header)"
+    },
+    {
+      "source_id": "supplement-src-8f6797b0399952b1",
+      "url": "https://huggingface.co/ibm-granite/granite-switch-4.1-8b",
+      "source_class": "PRIMARY_REPOSITORY",
+      "title": "huggingface.co/ibm-granite/granite-switch-4.1-8b",
+      "published_at": null,
+      "accessed_at": "2026-10-17T07:00:00Z",
+      "role": "Post-Screening exact authority supplement: Post-Screening exact authority for r7 card claims (capture depth in file header)"
+    },
+    {
+      "source_id": "supplement-src-cc82ce46fae0908c",
+      "url": "https://huggingface.co/blog/ibm-granite/granite-switch-4-1",
+      "source_class": "PRIMARY_REPOSITORY",
+      "title": "huggingface.co/blog/ibm-granite/granite-switch-4-1",
+      "published_at": null,
+      "accessed_at": "2026-10-17T07:00:00Z",
+      "role": "Post-Screening exact authority supplement: Post-Screening exact authority for r7 card claims (capture depth in file header)"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "8B+30B composable (Decision + Guardian aLoRAs + Speech-5.0-Turbo-CTC); one endpoint ~base VRAM; shared KV cache; vLLM/llama.cpp; /v1/systemone swap-in",
+      "subject_id": "granite-switch41",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1",
+        "supplement-src-17b9efae287c95a2",
+        "supplement-src-8f6797b0399952b1",
+        "supplement-src-cc82ce46fae0908c"
+      ],
+      "context": "https://huggingface.co/blog/ibm-granite/granite-switch-4-1"
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Decision Index v0.3 fast (1,068 rows): overall 42.9 (K29.1/L48.9/R49.8/T59.8/A18.0); local-vs-hosted ±0.6 serving-faithfulness check",
+      "subject_id": "granite-switch41",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1",
+        "supplement-src-17b9efae287c95a2",
+        "supplement-src-8f6797b0399952b1",
+        "supplement-src-cc82ce46fae0908c"
+      ],
+      "context": "https://huggingface.co/ibm-granite/granite-switch-4.1-8b"
+    },
+    {
+      "statement_id": "claim-3",
+      "text": "Guardian beats Jev-1.13/MS-Decision-1/Luna-Decisions/Clef-Flash on safety decisions (vendor avg) — comparison, NOT fresh Decision-1 evidence; W41 HOLD stands",
+      "subject_id": "granite-switch41",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1",
+        "supplement-src-17b9efae287c95a2",
+        "supplement-src-8f6797b0399952b1",
+        "supplement-src-cc82ce46fae0908c"
+      ],
+      "context": "https://huggingface.co/blog/ibm-granite/granite-switch-4-1"
+    },
+    {
+      "statement_id": "claim-4",
+      "text": "Apache 2.0 TAG-VERIFIED (HF API cardData; NO license file in repo siblings — limitation vs Beam full file); repo created Oct 14T21:38Z IN; 567 downloads; 8.77B params; 30B same-config (card unopened)",
+      "subject_id": "granite-switch41",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1",
+        "supplement-src-17b9efae287c95a2",
+        "supplement-src-8f6797b0399952b1",
+        "supplement-src-cc82ce46fae0908c"
+      ],
+      "context": "https://huggingface.co/api/models/ibm-granite/granite-switch-4.1-8b"
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "30B spot-check, preview variants, independent DI repro",
+      "subject_id": "granite-switch41",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1",
+        "supplement-src-17b9efae287c95a2",
+        "supplement-src-8f6797b0399952b1",
+        "supplement-src-cc82ce46fae0908c"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "r7 card authority: AUTHORITY_CONSUMED (see correction ledger for scoping)",
+      "subject_id": "granite-switch41",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1",
+        "supplement-src-17b9efae287c95a2",
+        "supplement-src-8f6797b0399952b1",
+        "supplement-src-cc82ce46fae0908c"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "primary-body",
+        "status": "UNRESOLVED",
+        "finding": "No r7 finding recorded for this screening target",
+        "subject_ids": [
+          "granite-switch41"
+        ],
+        "source_ids": [
+          "src-1",
+          "supplement-src-17b9efae287c95a2",
+          "supplement-src-8f6797b0399952b1",
+          "supplement-src-cc82ce46fae0908c"
+        ]
+      },
+      {
+        "target": "license-weights",
+        "status": "UNRESOLVED",
+        "finding": "No r7 finding recorded for this screening target",
+        "subject_ids": [
+          "granite-switch41"
+        ],
+        "source_ids": [
+          "src-1",
+          "supplement-src-17b9efae287c95a2",
+          "supplement-src-8f6797b0399952b1",
+          "supplement-src-cc82ce46fae0908c"
+        ]
+      },
+      {
+        "target": "benchmark-basis",
+        "status": "UNRESOLVED",
+        "finding": "No r7 finding recorded for this screening target",
+        "subject_ids": [
+          "granite-switch41"
+        ],
+        "source_ids": [
+          "src-1",
+          "supplement-src-17b9efae287c95a2",
+          "supplement-src-8f6797b0399952b1",
+          "supplement-src-cc82ce46fae0908c"
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      "primary-body: No r7 finding recorded for this screening target",
+      "license-weights: No r7 finding recorded for this screening target",
+      "benchmark-basis: No r7 finding recorded for this screening target"
+    ],
+    "contradictions": []
+  }
+}

@@ -1,0 +1,216 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W42",
+  "evidence_task_id": "evidence:2026-W42:98c89831cafb5a14",
+  "basis": {
+    "task_sha256": "d84d4a8cff755bda460e89cd6d6e0d9e7559826aa9701fb04bf94ac728c9c292",
+    "screening_acceptance_sha256": "eccf817a07614efc2cdbbcfc42e4109198e509d011b2fed420d1257dcc929d01",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "deep-review",
+      "canonical_name": "Google Deep Review",
+      "entity_type": "AGENT",
+      "organization": "Google",
+      "canonical_url": "primary:research.google/blog/analyzing-technical-documents-with-deep-review"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "deep-review",
+    "artifact_type": "AGENT",
+    "canonical_name": "Google Deep Review",
+    "canonical_url": "primary:research.google/blog/analyzing-technical-documents-with-deep-review"
+  },
+  "temporal": {
+    "observed_at": "2026-10-17T10:45:00Z",
+    "events": [
+      {
+        "event_id": "event-2",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-10-14T00:00:00Z",
+        "subject_id": "deep-review",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "supplement-src-1eedaf614e722511"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "primary:research.google/blog/analyzing-technical-documents-with-deep-review",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "Google: Deep Review public launch (Oct 14)",
+      "published_at": null,
+      "accessed_at": "2026-10-17T10:45:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    },
+    {
+      "source_id": "supplement-src-1eedaf614e722511",
+      "url": "https://research.google/blog/analyzing-technical-documents-with-deep-review/",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "research.google/blog/analyzing-technical-documents-with-deep-review/",
+      "published_at": "2026-10-14T00:00:00Z",
+      "accessed_at": "2026-10-17T07:00:00Z",
+      "role": "Post-Screening exact authority supplement: Post-Screening exact authority for r7 card claims (capture depth in file header)"
+    },
+    {
+      "source_id": "supplement-src-22253178d4834c02",
+      "url": "https://arxiv.org/html/2606.28277v1",
+      "source_class": "PRIMARY_PAPER",
+      "title": "arxiv.org/html/2606.28277v1",
+      "published_at": null,
+      "accessed_at": "2026-10-17T07:00:00Z",
+      "role": "Post-Screening exact authority supplement: Post-Screening exact authority for r7 card claims (capture depth in file header)"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "4-stage pipeline: segmenter → Light/Medium/High thinking tracks → Deep Review agents (Gemini Deep Think) → synthesis + Google-search grounding; vs single-call (context) and Pass@k (precision collapse)",
+      "subject_id": "deep-review",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1",
+        "supplement-src-1eedaf614e722511",
+        "supplement-src-22253178d4834c02"
+      ],
+      "context": "https://research.google/blog/analyzing-technical-documents-with-deep-review/"
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "SPOT case study (paper FULL TEXT): 26 papers/29 eq-proof errors; logic-aware grader + human audit; 21.1% SOTA → 55.2% zero-shot → 89.7% PAT (+34pp); Banach counterexample",
+      "subject_id": "deep-review",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1",
+        "supplement-src-1eedaf614e722511",
+        "supplement-src-22253178d4834c02"
+      ],
+      "context": "https://arxiv.org/html/2606.28277v1"
+    },
+    {
+      "statement_id": "claim-3",
+      "text": "Pilots: STOC Nov 2025 (math) + ICML Jan 2026 (generalized); 4,700 submissions; reuse 97%/92.1%; theory gaps 11.6%/35.4%; new experiments 31%; named quotes; limits: date hallucinations, PDF parsing, false-incorrect",
+      "subject_id": "deep-review",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1",
+        "supplement-src-1eedaf614e722511",
+        "supplement-src-22253178d4834c02"
+      ],
+      "context": "https://arxiv.org/html/2606.28277v1"
+    },
+    {
+      "statement_id": "claim-4",
+      "text": "Taxonomy Roles 1–4 (SAE parallel; AAAI-26 pilot; Pangram 21%; NeurIPS consistency 23% vs 35% random); Table 1 submission stats",
+      "subject_id": "deep-review",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1",
+        "supplement-src-1eedaf614e722511",
+        "supplement-src-22253178d4834c02"
+      ],
+      "context": "https://arxiv.org/html/2606.28277v1"
+    },
+    {
+      "statement_id": "claim-5",
+      "text": "Launch: 2 free/wk + API; PDF/txt now, multi-file soon; uploads NOT for training (1-yr UI); Argon-backed; Antigravity Teamwork pattern. Paper Jun 26 OUT = background; LAUNCH is the event",
+      "subject_id": "deep-review",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1",
+        "supplement-src-1eedaf614e722511",
+        "supplement-src-22253178d4834c02"
+      ],
+      "context": "https://research.google/blog/analyzing-technical-documents-with-deep-review/"
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Paper PDF, pilot independent audit, paid-tier pricing",
+      "subject_id": "deep-review",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1",
+        "supplement-src-1eedaf614e722511",
+        "supplement-src-22253178d4834c02"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "r7 card authority: AUTHORITY_CONSUMED (see correction ledger for scoping)",
+      "subject_id": "deep-review",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1",
+        "supplement-src-1eedaf614e722511",
+        "supplement-src-22253178d4834c02"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "primary-body",
+        "status": "UNRESOLVED",
+        "finding": "No r7 finding recorded for this screening target",
+        "subject_ids": [
+          "deep-review"
+        ],
+        "source_ids": [
+          "src-1",
+          "supplement-src-1eedaf614e722511",
+          "supplement-src-22253178d4834c02"
+        ]
+      },
+      {
+        "target": "license-weights",
+        "status": "UNRESOLVED",
+        "finding": "No r7 finding recorded for this screening target",
+        "subject_ids": [
+          "deep-review"
+        ],
+        "source_ids": [
+          "src-1",
+          "supplement-src-1eedaf614e722511",
+          "supplement-src-22253178d4834c02"
+        ]
+      },
+      {
+        "target": "benchmark-basis",
+        "status": "UNRESOLVED",
+        "finding": "No r7 finding recorded for this screening target",
+        "subject_ids": [
+          "deep-review"
+        ],
+        "source_ids": [
+          "src-1",
+          "supplement-src-1eedaf614e722511",
+          "supplement-src-22253178d4834c02"
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      "primary-body: No r7 finding recorded for this screening target",
+      "license-weights: No r7 finding recorded for this screening target",
+      "benchmark-basis: No r7 finding recorded for this screening target"
+    ],
+    "contradictions": []
+  }
+}

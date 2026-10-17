@@ -1,0 +1,274 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W42",
+  "evidence_task_id": "evidence:2026-W42:76a8af03b8ac08ce",
+  "basis": {
+    "task_sha256": "86732ca9545a475e8814ba9bb388052ab2aefca1ba76d0588046eb8c63fbd1e8",
+    "screening_acceptance_sha256": "eccf817a07614efc2cdbbcfc42e4109198e509d011b2fed420d1257dcc929d01",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "beam",
+      "canonical_name": "Reflection Beam 501B-A23B",
+      "entity_type": "MODEL",
+      "organization": "Reflection",
+      "canonical_url": "primary:reflection.ai/blog/beam-is-available"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "beam",
+    "artifact_type": "OPEN_WEIGHT",
+    "canonical_name": "Reflection Beam 501B-A23B",
+    "canonical_url": "primary:reflection.ai/blog/beam-is-available"
+  },
+  "temporal": {
+    "observed_at": "2026-10-17T10:45:00Z",
+    "events": [
+      {
+        "event_id": "event-2",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-10-16T00:00:00Z",
+        "subject_id": "beam",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "supplement-src-277d60db0a45047c"
+        ]
+      },
+      {
+        "event_id": "event-3",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-10-16T00:00:00Z",
+        "subject_id": "beam",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "supplement-src-304ac238c731ba51"
+        ]
+      },
+      {
+        "event_id": "event-4",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-10-16T00:00:00Z",
+        "subject_id": "beam",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "supplement-src-926525e60afc7ba8"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "primary:reflection.ai/blog/beam-is-available",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "Reflection: Beam availability + Apache 2.0 weights (Oct 16)",
+      "published_at": null,
+      "accessed_at": "2026-10-17T10:45:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    },
+    {
+      "source_id": "supplement-src-277d60db0a45047c",
+      "url": "https://reflection.ai/blog/beam-is-available",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "reflection.ai/blog/beam-is-available",
+      "published_at": "2026-10-16T00:00:00Z",
+      "accessed_at": "2026-10-17T07:00:00Z",
+      "role": "Post-Screening exact authority supplement: Post-Screening exact authority for r7 card claims (capture depth in file header)"
+    },
+    {
+      "source_id": "supplement-src-304ac238c731ba51",
+      "url": "https://reflection.ai/beam-safety-report",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "reflection.ai/beam-safety-report",
+      "published_at": "2026-10-16T00:00:00Z",
+      "accessed_at": "2026-10-17T07:00:00Z",
+      "role": "Post-Screening exact authority supplement: Post-Screening exact authority for r7 card claims (capture depth in file header)"
+    },
+    {
+      "source_id": "supplement-src-926525e60afc7ba8",
+      "url": "https://reflection.ai/beam-model-card",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "reflection.ai/beam-model-card",
+      "published_at": "2026-10-16T00:00:00Z",
+      "accessed_at": "2026-10-17T07:00:00Z",
+      "role": "Post-Screening exact authority supplement: Post-Screening exact authority for r7 card claims (capture depth in file header)"
+    },
+    {
+      "source_id": "supplement-src-9e8610f61aff18b1",
+      "url": "https://huggingface.co/reflection/Beam-1.0-501B-A23B/resolve/main/LICENSE",
+      "source_class": "PRIMARY_REPOSITORY",
+      "title": "huggingface.co/reflection/Beam-1.0-501B-A23B/resolve/main/LICENSE",
+      "published_at": null,
+      "accessed_at": "2026-10-17T07:00:00Z",
+      "role": "Post-Screening exact authority supplement: Post-Screening exact authority for r7 card claims (capture depth in file header)"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "501.3B/23.4B MoE; 52 layers (3 dense+49); Gated GQA+SWA; 1M ctx; 152k vocab; 256 experts; BF16/FP8/NVFP4; cutoff Jun 30 2026; English-dominant",
+      "subject_id": "beam",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1",
+        "supplement-src-277d60db0a45047c",
+        "supplement-src-304ac238c731ba51",
+        "supplement-src-926525e60afc7ba8",
+        "supplement-src-9e8610f61aff18b1"
+      ],
+      "context": "https://reflection.ai/beam-model-card"
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Benchmarks t0.7/p0.99 (vendor): DeepSWE 43.3 / SWE-Pro v2-Hard 78.6 / Verified 81.6 / Terminal-Bench 80.1 / AIME 97.7 / HLE 51.1 w-tools / GPQA 90.6 / MCP-Atlas 80.8 / BrowseComp 76.8",
+      "subject_id": "beam",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1",
+        "supplement-src-277d60db0a45047c",
+        "supplement-src-304ac238c731ba51",
+        "supplement-src-926525e60afc7ba8",
+        "supplement-src-9e8610f61aff18b1"
+      ],
+      "context": "https://reflection.ai/beam-model-card"
+    },
+    {
+      "statement_id": "claim-3",
+      "text": "Safety: ISE in-house (soon-OSS) refusal ~89%/compliance ~82%; OSF evals + third-party assurance; full Safety Technical Report (body substantially consumed: bio/chem/cyber batteries with limits, n=20 uplift study, harness confounds)",
+      "subject_id": "beam",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1",
+        "supplement-src-277d60db0a45047c",
+        "supplement-src-304ac238c731ba51",
+        "supplement-src-926525e60afc7ba8",
+        "supplement-src-9e8610f61aff18b1"
+      ],
+      "context": "https://reflection.ai/beam-safety-report"
+    },
+    {
+      "statement_id": "claim-4",
+      "text": "Apache 2.0 FULL TEXT VERIFIED from repo LICENSE file (no output restriction, no revenue cap, no display duty); repo created Oct 7 (pre-window), RELEASE Oct 16 IN; 188 shards; 1,148 downloads; Harmony-XML template (effort 8–512)",
+      "subject_id": "beam",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1",
+        "supplement-src-277d60db0a45047c",
+        "supplement-src-304ac238c731ba51",
+        "supplement-src-926525e60afc7ba8",
+        "supplement-src-9e8610f61aff18b1"
+      ],
+      "context": "https://huggingface.co/reflection/Beam-1.0-501B-A23B/resolve/main/LICENSE"
+    },
+    {
+      "statement_id": "claim-5",
+      "text": "Distillation explicitly ALLOWED; commercial+research use; Mirror CLI + 40 partners; Grok #10/#17 corroborate",
+      "subject_id": "beam",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1",
+        "supplement-src-277d60db0a45047c",
+        "supplement-src-304ac238c731ba51",
+        "supplement-src-926525e60afc7ba8",
+        "supplement-src-9e8610f61aff18b1"
+      ],
+      "context": "https://reflection.ai/blog/beam-is-available"
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Safety report body, independent benches, Arena methodology, LICENSE file",
+      "subject_id": "beam",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1",
+        "supplement-src-277d60db0a45047c",
+        "supplement-src-304ac238c731ba51",
+        "supplement-src-926525e60afc7ba8",
+        "supplement-src-9e8610f61aff18b1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "r7 card authority: AUTHORITY_CONSUMED (see correction ledger for scoping)",
+      "subject_id": "beam",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1",
+        "supplement-src-277d60db0a45047c",
+        "supplement-src-304ac238c731ba51",
+        "supplement-src-926525e60afc7ba8",
+        "supplement-src-9e8610f61aff18b1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "primary-body",
+        "status": "UNRESOLVED",
+        "finding": "No r7 finding recorded for this screening target",
+        "subject_ids": [
+          "beam"
+        ],
+        "source_ids": [
+          "src-1",
+          "supplement-src-277d60db0a45047c",
+          "supplement-src-304ac238c731ba51",
+          "supplement-src-926525e60afc7ba8",
+          "supplement-src-9e8610f61aff18b1"
+        ]
+      },
+      {
+        "target": "license-weights",
+        "status": "UNRESOLVED",
+        "finding": "No r7 finding recorded for this screening target",
+        "subject_ids": [
+          "beam"
+        ],
+        "source_ids": [
+          "src-1",
+          "supplement-src-277d60db0a45047c",
+          "supplement-src-304ac238c731ba51",
+          "supplement-src-926525e60afc7ba8",
+          "supplement-src-9e8610f61aff18b1"
+        ]
+      },
+      {
+        "target": "benchmark-basis",
+        "status": "UNRESOLVED",
+        "finding": "No r7 finding recorded for this screening target",
+        "subject_ids": [
+          "beam"
+        ],
+        "source_ids": [
+          "src-1",
+          "supplement-src-277d60db0a45047c",
+          "supplement-src-304ac238c731ba51",
+          "supplement-src-926525e60afc7ba8",
+          "supplement-src-9e8610f61aff18b1"
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      "primary-body: No r7 finding recorded for this screening target",
+      "license-weights: No r7 finding recorded for this screening target",
+      "benchmark-basis: No r7 finding recorded for this screening target"
+    ],
+    "contradictions": []
+  }
+}

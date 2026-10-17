@@ -1,0 +1,173 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W42",
+  "evidence_task_id": "evidence:2026-W42:94bc4850184a80eb",
+  "basis": {
+    "task_sha256": "ffd0f01f30c10624b4133e969788d31a4a4c9ae19ea1e94abcece581aac1a9f0",
+    "screening_acceptance_sha256": "eccf817a07614efc2cdbbcfc42e4109198e509d011b2fed420d1257dcc929d01",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "ecdsa-origins",
+      "canonical_name": "NIST ECDSA seed origins (Claude research)",
+      "entity_type": "PRODUCT",
+      "organization": "Anthropic",
+      "canonical_url": "primary:anthropic.com/research/ecdsa-curve-origins"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "ecdsa-origins",
+    "artifact_type": "PRODUCT",
+    "canonical_name": "NIST ECDSA seed origins (Claude research)",
+    "canonical_url": "primary:anthropic.com/research/ecdsa-curve-origins"
+  },
+  "temporal": {
+    "observed_at": "2026-10-17T10:45:00Z",
+    "events": [
+      {
+        "event_id": "event-2",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-10-16T00:00:00Z",
+        "subject_id": "ecdsa-origins",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "supplement-src-825cc9cc5278ec17"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "primary:anthropic.com/research/ecdsa-curve-origins",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "Anthropic: NIST ECDSA seed origins solved (Oct 16)",
+      "published_at": null,
+      "accessed_at": "2026-10-17T10:45:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    },
+    {
+      "source_id": "supplement-src-825cc9cc5278ec17",
+      "url": "https://www.anthropic.com/research/ecdsa-curve-origins",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "www.anthropic.com/research/ecdsa-curve-origins",
+      "published_at": "2026-10-16T00:00:00Z",
+      "accessed_at": "2026-10-17T07:00:00Z",
+      "role": "Post-Screening exact authority supplement: Post-Screening exact authority for r7 card claims (capture depth in file header)"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Internal Claude found P-192/224/256/384/521 seeds = lrand48() output seeded by Unix timestamps (not hash-of-phrase); sliding-bit scan over 34 generator/slice combos; top-bit-zero signature (p=1/5810)",
+      "subject_id": "ecdsa-origins",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1",
+        "supplement-src-825cc9cc5278ec17"
+      ],
+      "context": "https://www.anthropic.com/research/ecdsa-curve-origins"
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "State recovery: brute 2^17 hidden bits; truncated-LCG lattice (LLL) for prime curves (lrand48()>>23); timestamps May 1997–Apr 1998 (prime), Feb-1984 reading (binary); base points: 6 curves via FreeLIP/NTL zrandom (seeds 20000–20517)",
+      "subject_id": "ecdsa-origins",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1",
+        "supplement-src-825cc9cc5278ec17"
+      ],
+      "context": "https://www.anthropic.com/research/ecdsa-curve-origins"
+    },
+    {
+      "statement_id": "claim-3",
+      "text": "Security meaning: no break/weakness; backdoor less plausible; no action needed; B-163 + P-224/256/384/521 base points OPEN; $36,864 bounty to ISRG; repro code CC0 on page",
+      "subject_id": "ecdsa-origins",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1",
+        "supplement-src-825cc9cc5278ec17"
+      ],
+      "context": "https://www.anthropic.com/research/ecdsa-curve-origins"
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Independent cryptographer verification none",
+      "subject_id": "ecdsa-origins",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1",
+        "supplement-src-825cc9cc5278ec17"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "r7 card authority: AUTHORITY_CONSUMED (see correction ledger for scoping)",
+      "subject_id": "ecdsa-origins",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1",
+        "supplement-src-825cc9cc5278ec17"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "primary-body",
+        "status": "UNRESOLVED",
+        "finding": "No r7 finding recorded for this screening target",
+        "subject_ids": [
+          "ecdsa-origins"
+        ],
+        "source_ids": [
+          "src-1",
+          "supplement-src-825cc9cc5278ec17"
+        ]
+      },
+      {
+        "target": "license-weights",
+        "status": "UNRESOLVED",
+        "finding": "No r7 finding recorded for this screening target",
+        "subject_ids": [
+          "ecdsa-origins"
+        ],
+        "source_ids": [
+          "src-1",
+          "supplement-src-825cc9cc5278ec17"
+        ]
+      },
+      {
+        "target": "benchmark-basis",
+        "status": "UNRESOLVED",
+        "finding": "No r7 finding recorded for this screening target",
+        "subject_ids": [
+          "ecdsa-origins"
+        ],
+        "source_ids": [
+          "src-1",
+          "supplement-src-825cc9cc5278ec17"
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      "primary-body: No r7 finding recorded for this screening target",
+      "license-weights: No r7 finding recorded for this screening target",
+      "benchmark-basis: No r7 finding recorded for this screening target"
+    ],
+    "contradictions": []
+  }
+}
