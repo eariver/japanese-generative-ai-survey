@@ -137,10 +137,19 @@ This is the current human-readable navigation record for the edition. Machine li
 - Authorized Muse r10 `execution/instructions/2026-10-18_muse-w42-human-architecture-approval-and-japanese-draft-r10.md`: phase A authentic Human Gate r1 recording and intermediate commit/push; **only after PASS** seven-package substantial Japanese Draft JSON and Core Draft/Synthesis validation, possibly lawful `DRAFT_COMPLETE`; stop `SOL_W42_JAPANESE_DRAFT_JSON_AUDIT_READY`. **No TeX/PDF** or later Human Preview/Release.
 - Frozen Core remains unmodified; #568/#569 remain deferred OPEN_CORE; no accepted source/evidence/selection/Architecture artifact rewritten.
 
+## Sol independent Japanese Draft audit r10 — editorial REQUEST_CHANGES (2026-10-18 JST)
+
+- Official machine `DRAFT_COMPLETE` and Human Architecture Gate r1 `approved` independently reconfirmed. All seven Core Draft Results `ESTABLISHED`; 117 PARAGRAPH, 6 TABLE, 7 NOTE; 21,418 paragraph-only Japanese/technical characters. Publication Preview pending, frozen Core/main unmodified; no TeX/PDF.
+- Sol editorial verdict: `REQUEST_CHANGES / NO_TEX_PDF_AUTHORITY`. Main B01 **false blanket OSI claim** in P3 note (Apache 2.0 is OSI-approved); B02 seven machine `CLAIM_BOUNDARY` blocks leaked into reader preview with internal English trace; B03 systematic repetitive editor-instruction prose; B04 Hangul/Simplified contamination (`무制限`, `误検出`) and malformed terms; B05 editorial source-extraction status narrated as published research.
+- Major M01–M05: P5 3-vs-4 safety taxonomy, overbound block references vs precise source URLs, thin/redundant manuscript relative to 28-page plan, appended-out-of-order paragraph IDs, GLM-Legal Vals evaluator and vendor chart attribution ambiguity. Source-r9 errata remains binding.
+- Full independent review: `execution/reviews/sol-w42-r10-independent-japanese-draft-audit-REQUEST_CHANGES-20261018.md`. This is a **Draft editorial finding only**; does not revoke approved Human Architecture r1 or passed machine Draft checkpoint.
+- Next Muse bounded r11: `execution/instructions/2026-10-18_muse-w42-japanese-editorial-repair-and-adoption-proof-r11.md`. Seven corrected substantive Japanese Draft Results as **PROPOSED** edition-local sidecars, clean reader preview, claim→primary-source corrections, exact frozen validator tests and lawful **DRAFT_COMPLETE adoption-feasibility** proof. Canonical Draft/State/checkpoints **unchanged** until separate legitimate integration, if one exists. Stop for Sol independent r11 re-review; no PDF or Core changes.
+- Generic Core defects #568/#569 and frozen Core status unchanged.
+
 ## Grok X reconciliation continuation
 
 - Sol archived exact returned Grok result, recorded 18-post to 7-candidate map, and issued `execution/instructions/2026-10-17_muse-w42-grok-through-evidence-r5.md`; r5 Muse completed and accepted Discovery+Screening.
 
 ## Final disposition
 
-`SOL_W42_JAPANESE_DRAFT_JSON_AUDIT_READY` (Human Architecture r1 APPROVED recorded via frozen Gate commit be3a49eaa; Japanese Draft JSON v10.0 lawfully established at DRAFT_COMPLETE; independent Sol Draft audit pending; no TeX/PDF; Publication Preview pending)
+`DRAFT_COMPLETE / SOL_R10_JAPANESE_DRAFT_EDITORIAL_REQUEST_CHANGES / MUSE_R11_PROPOSAL_PENDING` (authentic Architecture r1 approved; machine Draft passed; reader-facing Draft not approved; canonical SHA-bound Draft unchanged; no TeX/PDF; Publication Preview pending)
