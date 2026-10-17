@@ -92,6 +92,15 @@ This is the current human-readable navigation record for the edition. Machine li
 - Sol r7 independent audit: `execution/reviews/sol-w42-r7-core-blocker-and-editorial-authority-audit-20261017.md` (`STOP_CORE_EVIDENCE_ACCEPTANCE_BLOCKED / SOL_SELECTION_REQUEST_CHANGES`). Core source confirmed old vs agent-first State validation and 17 unsupported `source_type` entries; Core also requires **50** Evidence tasks/views (49 editorial + 1 Grok binder). Materiality reasons are template-derived, non-authoritative; editorial bundle links require correction.
 - Proposed recovery: `execution/decisions/sol-w42-core-evidence-compatibility-recovery-proposal-20261017.md` — explicit Human decision pending for narrow separate Core-maintenance exception; **NOT an execution authorization**. Frozen Core unchanged, Human publication Gates untouched. Absolute freeze would leave W42 paused pending a demonstrated lawful adapter.
 
+## r8 Human Core-freeze decision and Edition-local continuation
+
+- Human Owner instruction (2026-10-17 JST): **Core v2 changes prohibited**; register new defects in GitHub Issues and the post-Freeze deferred inventory; use bounded edition-local compatibility and continue W42.
+- Issue [#568](https://github.com/eariver/japanese-generative-ai-survey/issues/568) / new `CV2-DM-023`: direct legacy Evidence prepare helper rejects valid agent-first State; official frozen `survey_agent_tool_v2.current_stage_basis_override` exists for native validated compatibility (not yet W42 accepted).
+- Issue [#569](https://github.com/eariver/japanese-generative-ai-survey/issues/569) / existing `CV2-DM-016` recurrence: 17/50 canonical Discovery source types need a strictly logged **derived Evidence Task only** classification projection. Accepted Discovery/Screening untouched.
+- `docs/core-v2-deferred-maintenance-summary.md` updated to `r1.2` on W42 work branch, with both issues, OPEN_CORE statuses, guarded-stop notes and pending edition-local validation; no Core source edit.
+- Muse r8 execution request: `execution/instructions/2026-10-17_muse-w42-frozen-core-compat-evidence-to-selection-r8.md` (native current-stage adapter, 50 Evidence Cards including 1 truthful non-editorial X binder, genuine Core validation/acceptance if possible, then candidate-specific Materiality and Selection proposals). Stop at independent Sol review or a real Core blocker.
+- Current lifecycle remains `CANDIDATES_NORMALIZED`; Evidence **NOT ACCEPTED**; Human Gates pending. Core `774dd39a…` and main unchanged.
+
 ## Grok X reconciliation continuation
 
 - Sol archived exact returned Grok result, recorded 18-post to 7-candidate map, and issued `execution/instructions/2026-10-17_muse-w42-grok-through-evidence-r5.md`; r5 Muse completed and accepted Discovery+Screening.
