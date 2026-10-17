@@ -33,8 +33,8 @@ This is the current human-readable navigation record for the edition. Machine li
 ## Grok/X
 
 - Profile applicability policy: `REQUIRED_BY_PROFILE`
-- Latest Drive task-file path/reference: https://docs.google.com/document/d/1Skp9SMKhpDpxJCTXcJA1cepZZBTL8WKJbIU4HcLy_nc/edit (Sol Drive materialized 2026-10-17; Grok result NOT returned; `execution/operator-handoffs/2026-10-17_w42-grok-x-drive-task-dispatch.md`)
-- Latest result disposition: `AWAITING_GROK_RESULT` (no returned bytes imported; Core Discovery acceptance remains blocked)
+- Latest Drive task-file path/reference: https://docs.google.com/document/d/1Skp9SMKhpDpxJCTXcJA1cepZZBTL8WKJbIU4HcLy_nc/edit (Sol Drive materialized 2026-10-17; Grok task document; result now returned separately; `execution/operator-handoffs/2026-10-17_w42-grok-x-drive-task-dispatch.md`)
+- Latest result disposition: `RAW_RECEIVED_VERIFIED / CORE_ACCEPTANCE_PENDING` — Google Drive result https://drive.google.com/file/d/1G505Nie7-EJDtysTQKzGLxiFNk2SFUPY/view, archived under `external/x/weekly-x-2026-W42/raw/weekly-x-2026-W42.md` (18 status URLs; 12,373 bytes; SHA-256 c48a7426e5c616e72045390938da4f4755b800b51ba08d09c0329d8034df5358). See `execution/reviews/sol-w42-grok-x-intake-r1-20261017.md`. Manifest and canonical stages NOT yet accepted.
 
 ## Deviations
 
@@ -62,6 +62,10 @@ This is the current human-readable navigation record for the edition. Machine li
 - Screening PROPOSED 49 (KEEP 28/INSPECT 16/MAYBE 5); evidence cards PROPOSED 49 (STRONG 23/PARTIAL 13/THIN 13, local shape); views PROPOSED 49; bundles r4 run `20261017T080000Z-muse-r4`
 - Blocker: canonical Discovery acceptance fail-closed without X manifest (proven, 0 bytes); State stays ISSUE_INITIALIZED
 - Sol Evidence Authority Review r4: pending (`execution/SOL_EVIDENCE_AUTHORITY_REVIEW_HANDOFF-r4.md`)
+
+## Grok X reconciliation continuation
+
+- Sol archived exact returned Grok result, recorded 18-post to 7-candidate map, and issued `execution/instructions/2026-10-17_muse-w42-grok-through-evidence-r5.md` (pending Muse execution).
 
 ## Final disposition
 
