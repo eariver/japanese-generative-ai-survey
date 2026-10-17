@@ -16,7 +16,7 @@ This is the current human-readable navigation record for the edition. Machine li
 - Current State SHA-256: see authoritative `sources/2026-W42/production-state.json` (updated r5; earlier snapshot in index was stale)
 - Current lifecycle: `DRAFT_COMPLETE` (r10 Human Architecture r1 APPROVED recorded via frozen Gate; Japanese Draft JSON v10.0 validated; Sol Draft audit pending)
 - Current terminal reason: `none`
-- Current next action: `SOL_W42_R12_READER_PDF_AUDIT` (independent Sol review of r12 repaired prose, TeX proof, and page report before any formal publication stage)
+- Current next action: `SOL_W42_R13_EXTERNAL_REVIEW` (handover to a different read-only ChatGPT session for independent audit of r13 prose, sources, and visual proof; Sol editorial manager does not self-certify)
 
 ## Human Gates
 
@@ -167,4 +167,4 @@ This is the current human-readable navigation record for the edition. Machine li
 
 ## Final disposition
 
-`EXTERNAL_R12_REQUEST_CHANGES / MUSE_R13_AUTHORIZED / DRAFT_COMPLETE` (Human Architecture approved, r12 PDF NONCANONICAL and visual unverified, M01–M06 pending r13; Publication Preview pending; no Core or canonical Draft replacement)
+`SOL_W42_R13_EXTERNAL_INDEPENDENT_REVIEW_READY` (r13 external-audit repair + depth under `execution/editorial-revision-r13/`: M01/M02/M06 + m01-m05 resolved, F01/F02 held; 7 revised Draft Results REVISED v13.0 + proposed synthesis validated, 103 paras / 19,193 paragraph-only chars; classed citation ledger (117 rows) + 59-key bibliography map; non-canonical TeX/PDF proof `execution/preview-r13/main.pdf` 19 pages with cite traceability, build manifest, all-page PNGs/contact-sheets/review index; canonical Draft/State/Gate/checkpoint bytes unchanged at DRAFT_COMPLETE; independent external re-audit pending; no VALIDATED_DRAFT, Publication Preview, Freeze, or Release)
