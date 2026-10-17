@@ -129,10 +129,18 @@ This is the current human-readable navigation record for the edition. Machine li
 - Architecture Attention shows 50 of 51 notices due frozen display cap. Omitted notice is Qwen-Image Turbo REJECT, present in canonical Selection and Review Summary; fully surfaced in Human dossier.
 - Human-facing full 12-part Architecture Review: `execution/reviews/sol-w42-r9-human-architecture-review-dossier-20261017.md`. **Human Architecture Gate still pending**. No Draft/TeX/PDF. Frozen Core/main unchanged.
 
+## Human Architecture r1 explicit approval — Gate execution pending (2026-10-18 JST)
+
+- Human Owner verbatim: **“W42 Human Architecture ReviewをAPPROVEDとします。Solの出典訂正と品質条件を含めて正式Gateの承認処理を進め、Museの次工程を指示してください。”**
+- Actual, scoped Human decision preserved: `execution/human-architecture-approval-basis-r1.md`, reviewed Human-presented commit `6dc71ec99b0a1ab2b623512f2e5820968c2b496d`; 7 packages / 28 selected / target 28 pp (max 30) **plus binding Sol r9 claim errata and technical quality guards**.
+- Human decision is **APPROVED**, but **canonical `gates/architecture-approval.json`, r1 review record/index and Production State `human_gates.architecture_review=approved` are NOT YET GENERATED**. Do NOT claim official Gate closure until the frozen Core `survey_human_gate_v2.py record-architecture-approval` successfully runs, validates and is pushed.
+- Authorized Muse r10 `execution/instructions/2026-10-18_muse-w42-human-architecture-approval-and-japanese-draft-r10.md`: phase A authentic Human Gate r1 recording and intermediate commit/push; **only after PASS** seven-package substantial Japanese Draft JSON and Core Draft/Synthesis validation, possibly lawful `DRAFT_COMPLETE`; stop `SOL_W42_JAPANESE_DRAFT_JSON_AUDIT_READY`. **No TeX/PDF** or later Human Preview/Release.
+- Frozen Core remains unmodified; #568/#569 remain deferred OPEN_CORE; no accepted source/evidence/selection/Architecture artifact rewritten.
+
 ## Grok X reconciliation continuation
 
 - Sol archived exact returned Grok result, recorded 18-post to 7-candidate map, and issued `execution/instructions/2026-10-17_muse-w42-grok-through-evidence-r5.md`; r5 Muse completed and accepted Discovery+Screening.
 
 ## Final disposition
 
-`HUMAN_ARCHITECTURE_REVIEW_DOSSIER_READY` (Sol r9 independent PASS_WITH_LIMITATIONS; full dossier plus source-label errata published; formal Human Gate still pending; no Draft/TeX/PDF)
+`HUMAN_ARCHITECTURE_APPROVED_BY_HUMAN / FORMAL_GATE_RECORDING_PENDING / MUSE_R10_READY` (formal frozen Core Gate not yet executed; next phase is substantive Japanese Draft JSON after Gate; no TeX/PDF)
