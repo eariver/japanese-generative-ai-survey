@@ -13,10 +13,10 @@ This is the current human-readable navigation record for the edition. Machine li
 - Requested stop: `ARCHITECTURE_REVIEW`
 - Production Profile: `sources/2026-W42/production-profile.json`
 - Production State: `sources/2026-W42/production-state.json`
-- Current State SHA-256: `89719ccb391b426f9ae5407bed386b0c01f329c4484ec0f547c23a6dea9cb148`
-- Current lifecycle: `ISSUE_INITIALIZED`
+- Current State SHA-256: see authoritative `sources/2026-W42/production-state.json` (updated r5; earlier snapshot in index was stale)
+- Current lifecycle: `CANDIDATES_NORMALIZED`
 - Current terminal reason: `none`
-- Current next action: `stage:discovery`
+- Current next action: `stage:evidence-materiality-completeness` (Evidence research and Sol review precede acceptance)
 
 ## Human Gates
 
@@ -69,12 +69,12 @@ This is the current human-readable navigation record for the edition. Machine li
 - X manifest `external/x/x-source-intake-v2.json` COMPLETE (PARTIAL/DISCOVERY_RECORDED → grok ledger; raw bytes match Sol audit)
 - Canonical Discovery 50 (`discovery-v2.jsonl` + `discovery-accepted-v2.json`, graph 5818d9d2); canonical Screening 50 (`screening/v2/accepted/08738e09…`, KEEP 29/INSPECT 16/MAYBE 5)
 - Lifecycle: CANDIDATES_NORMALIZED (discovery + screening passed); evidence executed 50 tasks, NOT accepted
-- Sol Evidence Authority Review r5: pending (`execution/SOL_EVIDENCE_AUTHORITY_REVIEW_HANDOFF-r5.md`)
+- Sol Evidence Authority Review r5: `REQUEST_CHANGES` (`execution/reviews/sol-w42-evidence-authority-review-r5-REQUEST_CHANGES-20261017.md`): accepted Discovery+Screening preserved; current Evidence claims too compressed and primary license/PDF consumption missing; Muse r6 instructed via `execution/instructions/2026-10-17_muse-w42-evidence-authority-deepening-r6.md`.
 
 ## Grok X reconciliation continuation
 
-- Sol archived exact returned Grok result, recorded 18-post to 7-candidate map, and issued `execution/instructions/2026-10-17_muse-w42-grok-through-evidence-r5.md` (pending Muse execution).
+- Sol archived exact returned Grok result, recorded 18-post to 7-candidate map, and issued `execution/instructions/2026-10-17_muse-w42-grok-through-evidence-r5.md`; r5 Muse completed and accepted Discovery+Screening.
 
 ## Final disposition
 
-`IN_PROGRESS` (stopped at instructed Sol review boundary; State ISSUE_INITIALIZED, Gates pending)
+`IN_PROGRESS` (r5 accepted state CANDIDATES_NORMALIZED; Sol Evidence Review REQUEST_CHANGES; r6 primary-source gap fill pending; Human gates pending)
