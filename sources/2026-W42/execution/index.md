@@ -76,7 +76,15 @@ This is the current human-readable navigation record for the edition. Machine li
 
 - 7 license investigations (2 full texts + 3 operative-terms + 2 tag-only); 8 paper/report bodies (PAT/Earth full-text, 3 wet-lab PDFs extracted, Nemotron report, Beam safety, Sakana/Amazon/Minecraft traced)
 - 49 cards rebuilt (`execution/evidence-r6/evidence-cards-r6.PROPOSED.json`, 151 URL+kind-linked claims vs r4 68); views r6; gap matrix; depth audit; bundles r6 run `20261017T100000Z-muse-r6`
-- Sol Evidence Authority Review r6: `RESEARCH_DEPTH_PASS_WITH_REPAIRS` (`execution/reviews/sol-w42-evidence-authority-review-r6-CONDITIONAL-PASS-20261017.md`), formal Core Evidence acceptance pending 20 abbreviated source refs, stale limitations, source-granular authority taxonomy, generic views. Next r7 contract `execution/instructions/2026-10-17_muse-w42-evidence-to-materiality-selection-r7.md`: consolidate corrections, conditionally accept Evidence, prepare Materiality+Selection proposals, stop for Sol review.
+- Sol Evidence Authority Review r6: `RESEARCH_DEPTH_PASS_WITH_REPAIRS` (`execution/reviews/sol-w42-evidence-authority-review-r6-CONDITIONAL-PASS-20261017.md`); r7 executed below.
+
+## Precision repair + conditional acceptance attempt (r7 — blocked without waiver)
+
+- Unit A repairs complete (`execution/evidence-r7/`: cards/views/correction ledger; 22/22 sources fixed verified; EDITORIAL/X_OBSERVATION kinds; per-claim authority; reconciled limits/targets; 48/1 states; OSI scoping; 49 substantive views)
+- Unit B BLOCKED by two proven Core guards: CV2-W42-001 (prepare-vs-advanced-state; reproduces on W41 RELEASED) + CV2-W42-002 (17 source_type vocabulary); defects under `execution/defects/`; accepted chain + State + Gates preserved; no waiver/bypass/mutation
+- Unit C provisional (from unaccepted evidence): materiality PROPOSED (28/14/7/1), completeness note (LIMITED), selection sketch (6-package + alternative + unselected-reasons + pages)
+- Sol Materiality/Selection Review r7: pending (`execution/SOL_MATERIALITY_SELECTION_REVIEW_HANDOFF-r7.md`)
+- `sessions/muse-w42-evidence-materiality-20261017-r7.md`
 
 ## Grok X reconciliation continuation
 
@@ -84,4 +92,4 @@ This is the current human-readable navigation record for the edition. Machine li
 
 ## Final disposition
 
-`IN_PROGRESS` (r6 evidence rebuilt, CANDIDATES_NORMALIZED intact; Sol Evidence re-review pending; Human gates pending)
+`IN_PROGRESS` (r7 repairs complete, Core Evidence blocked by proven guards CV2-W42-001/002, CANDIDATES_NORMALIZED intact; Sol Materiality/Selection review pending; Human gates pending)
