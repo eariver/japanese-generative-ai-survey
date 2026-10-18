@@ -212,3 +212,11 @@ This is the current human-readable navigation record for the edition. Machine li
 - Unit D: genuine r19 render (150/150 verified + tables preserved); 21pp, 509,010B, SHA `7aced283...` (final two identical); log clean; sty identical to r18; ALL 21 PNGs opened; 7 tables/notes in-chapter.
 - Unit E (F-05/F-07): brief on r19 pagination (21 = 1+16+3+1, column-verified chapters); effective area UNMEASURED (<=16), `15.5-17` withdrawn; conditional 26.5+5 = 31.5 labeled; Option B 17.0 verified proposal-only; consultation vs authorization split, no r2 assumption/invocation.
 - Terminal `SOL_W42_R19_PRINT_AND_PAGEPLAN_AUDIT_READY / NONCANONICAL`. Machine `DRAFT_COMPLETE`, Architecture approved, Publication pending. Session: `sessions/muse-w42-r19-20261018.md`. No canonical/Core/main changes; normal commit + non-force push.
+
+## Muse W42 r20 diagnostic-only terminal-stamp closure (2026-10-18 JST) — AUDIT_READY/NONCANONICAL
+
+- Started from remote `b10ae74c...` (Tree `9327b1fb...`); main `c8d0ecc1...`/`801de813...`, Frozen Core `774dd39a...`/`cd46a6f7a...`, r19 baseline `fc5a3cdb5...` all matched read-only. FF-only to Sol dispatch commit (r19 preflight disposition + r20 contract).
+- Bounded fix: header `r19`→`r20` + deleted ONE post-bibliography stamp line (253B); cover 3 warnings intact; TeX 95,034B→94,781B (`b845ad57…`→`909e3b87…`); sty identical `f0492fb6…`; r18 Reader/bib/ledger untouched.
+- Genuine r20 render (deterministic epoch, final two identical): **20pp, 508,316B, SHA `e0e0f56f...`**; log clean; ALL 20 PNGs opened (p16 ends complete, p17 Table7 in-flow, B28 complete p19, B57 kept p20, 90 entries, 7 tables/notes, no stamp-only page); p1–p20 text identical to r19 p1–p20 (diff 167 = r19 p21 only).
+- Page-plan: measured 20 = cover1+body16+bib3 (r19 21 = 1+16+3+1 stamp); conditional 26.5+1+3=**30.5** vs 28/30 (r19 31.5 stamp-inclusive superseded); effective area UNMEASURED (<=16); Option B 17.0 proposal-only; no r2 assumption.
+- Terminal `SOL_W42_R20_FOCUSED_INDEPENDENT_AUDIT_READY / NONCANONICAL`. Machine `DRAFT_COMPLETE`, Architecture approved, Publication pending. Session: `sessions/muse-w42-r20-20261018.md`. Artifacts: `typeset-repair-r20/`, `diagnostic-r20/`. No canonical/Core/main changes; normal commit + non-force push.
