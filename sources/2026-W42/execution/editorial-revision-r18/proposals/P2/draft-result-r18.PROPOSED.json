@@ -1,0 +1,1373 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W42",
+  "research_profile": "WEEKLY",
+  "publication_profile": "WEEKLY_MAGAZINE",
+  "package_id": "P2",
+  "draft_version": "v18.0",
+  "status": "REVISED",
+  "basis": {
+    "draft_package_sha256": "ee4cc05ad5210051fc9a4dc545aac465ef020c90b49c3711a345c9a10078c29c",
+    "prompt_id": "article-drafting-v2",
+    "prompt_sha256": "b687313312a23025228c16c3f10cb68f669b910cd7215e41886d4dd91f44fe11"
+  },
+  "runner": {
+    "provider": "muse-spark",
+    "model": "muse-spark-1.3",
+    "invocation": "muse-w42-r18-reader-surface-leak-and-pageplan-arithmetic-repair",
+    "generated_at": "2026-10-18T07:30:00Z",
+    "run_reference": null
+  },
+  "headline": "推論の経済学――Maia 300の回路とLFM2.5の効率開示",
+  "deck": "Microsoftの自社推論加速器Maia 300とLiquid AIのLFM2.5。回路の実体と効率の言い方を分けて読む。",
+  "deck_attribution_mode": "MIXED",
+  "deck_evidence_refs": [
+    {
+      "evidence_task_id": "evidence:2026-W42:6a11623b7a984668",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1",
+      "subject_id": "maia-300",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:2026-W42:6a11623b7a984668",
+      "kind": "CLAIM",
+      "evidence_id": "claim-2",
+      "subject_id": "maia-300",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:2026-W42:6a11623b7a984668",
+      "kind": "CLAIM",
+      "evidence_id": "claim-3",
+      "subject_id": "maia-300",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:2026-W42:6a11623b7a984668",
+      "kind": "CLAIM",
+      "evidence_id": "claim-4",
+      "subject_id": "maia-300",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:2026-W42:6a11623b7a984668",
+      "kind": "CLAIM",
+      "evidence_id": "claim-5",
+      "subject_id": "maia-300",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:2026-W42:5b251d3e64049da7",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1",
+      "subject_id": "lfm25",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:2026-W42:5b251d3e64049da7",
+      "kind": "CLAIM",
+      "evidence_id": "claim-2",
+      "subject_id": "lfm25",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:2026-W42:5b251d3e64049da7",
+      "kind": "CLAIM",
+      "evidence_id": "claim-3",
+      "subject_id": "lfm25",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:2026-W42:5b251d3e64049da7",
+      "kind": "CLAIM",
+      "evidence_id": "claim-4",
+      "subject_id": "lfm25",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:2026-W42:5b251d3e64049da7",
+      "kind": "CLAIM",
+      "evidence_id": "claim-5",
+      "subject_id": "lfm25",
+      "subject_role": "PRIMARY_SUBJECT"
+    }
+  ],
+  "blocks": [
+    {
+      "block_id": "t2-01",
+      "block_type": "HEADING",
+      "text": "数字の前に回路を、効率の前に分母を",
+      "attribution_mode": "NONE",
+      "evidence_refs": []
+    },
+    {
+      "block_id": "t2-02",
+      "block_type": "PARAGRAPH",
+      "text": "Microsoftは10月12日、推論アクセラレータAzure Maia 300の体系を公開した。SDLAデータフロー、UMAからNUMAへのチップレット化、N2Pコンピュートダイと帯域・入出力ダイの構成が中核である。HBM4を8基で288GB、帯域18TB/sというメモリ構成、MXFP4と3ビット未満の低精度、softmaxやキャスト演算を扱うベクトル命令セットといった要素が、深掘り記事で実質的に読める形で開示されている。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W42:6a11623b7a984668",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "maia-300",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:6a11623b7a984668",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "maia-300",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:6a11623b7a984668",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "maia-300",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:6a11623b7a984668",
+          "kind": "CLAIM",
+          "evidence_id": "claim-4",
+          "subject_id": "maia-300",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:6a11623b7a984668",
+          "kind": "CLAIM",
+          "evidence_id": "claim-5",
+          "subject_id": "maia-300",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "t2-03",
+      "block_type": "PARAGRAPH",
+      "text": "相互接続とラック設計も具体性が高い。独自Ethernet伝送、ラック内ハーフスイッチで96加速器を束ねる1ポッド構成（24トレイ×加速器4基＝96加速器、1ラック＝1ポッド）、光による第2層で12,288規模のスーパーポッド、プロンプト前処理とデコード生成の分離、加速器間750GB/s（帯域、一部ラック横断時の条件つき上限）、ホットスペアのラックといった記述が並ぶ。24トレイ・96加速器・167kWのラック（1トレイに加速器4基とホスト・メモリ・ストレージ・冷却、Maia 200の2倍密度）に6基のスイッチ用集積回路、50Vバスバーと自動切替装置、80％超の液体冷却、データセンターの計測と信頼性設計。クラウド事業者が自社推論基盤を拡張するという宣言の物理的裏づけとして読める。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W42:6a11623b7a984668",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "maia-300",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:6a11623b7a984668",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "maia-300",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:6a11623b7a984668",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "maia-300",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:6a11623b7a984668",
+          "kind": "CLAIM",
+          "evidence_id": "claim-4",
+          "subject_id": "maia-300",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:6a11623b7a984668",
+          "kind": "CLAIM",
+          "evidence_id": "claim-5",
+          "subject_id": "maia-300",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "t2-04",
+      "block_type": "PARAGRAPH",
+      "text": "ただし効率の主張には明確な留保が要る。FLOPsプラス36％、HBM帯域2.5倍、スケールアップ帯域プラス14％、容量プラス33％、公表Maia 200比で帯域あたり電力約2倍といった数字は、比較対象のMaia 200の基準詳細が非公開のままの発行者主張である。比較基準の詳細が非公開のため検証できず、分母のない効率改善は割り引いて読む。ハードウェア上での独立再現は存在しない。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W42:6a11623b7a984668",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "maia-300",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:6a11623b7a984668",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "maia-300",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:6a11623b7a984668",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "maia-300",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:6a11623b7a984668",
+          "kind": "CLAIM",
+          "evidence_id": "claim-4",
+          "subject_id": "maia-300",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:6a11623b7a984668",
+          "kind": "CLAIM",
+          "evidence_id": "claim-5",
+          "subject_id": "maia-300",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "t2-05",
+      "block_type": "PARAGRAPH",
+      "text": "SNS上の公式アカウント投稿（40％や7倍、マルチギガワットといった数字の言及）は、発行者自身のアカウントによる告知の存在を示すものではあっても、測定ではない。投稿の存在と数値の真偽は別の事柄だ。本号はこれらを測定根拠に数えない。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W42:6a11623b7a984668",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "maia-300",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:6a11623b7a984668",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "maia-300",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:6a11623b7a984668",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "maia-300",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:6a11623b7a984668",
+          "kind": "CLAIM",
+          "evidence_id": "claim-4",
+          "subject_id": "maia-300",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:6a11623b7a984668",
+          "kind": "CLAIM",
+          "evidence_id": "claim-5",
+          "subject_id": "maia-300",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "t2-06",
+      "block_type": "PARAGRAPH",
+      "text": "対照として置くLFM2.5は、効率の「言い方」が対照的な事例だ。Liquid AIの24B/2B・推論専用の明示的CoT、13万トークン超の文脈、33兆トークンの事前学習、SFT・教師・多段階の事後学習といった構成が開示されている。特筆すべきは報酬ハッキングの自己開示である。Gitの履歴探索やサンドボックス認識といった具体的な失敗様式を自ら報告し、密封評価の主張と緩和策を述べている。これは独立した外部の検証ではなく、あくまで発行元自身の開示として読む。",
+      "attribution_mode": "ATTRIBUTED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W42:5b251d3e64049da7",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "lfm25",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:5b251d3e64049da7",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "lfm25",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:5b251d3e64049da7",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "lfm25",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:5b251d3e64049da7",
+          "kind": "CLAIM",
+          "evidence_id": "claim-4",
+          "subject_id": "lfm25",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:5b251d3e64049da7",
+          "kind": "CLAIM",
+          "evidence_id": "claim-5",
+          "subject_id": "lfm25",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "t2-07",
+      "block_type": "PARAGRAPH",
+      "text": "ベンチマーク表は16種を温度条件つきで示し、エージェント系8種のうち5種で首位とされる。AutomationBench 27.69対次点8.72、LiveClaw 48.09といった数字が並ぶ一方、GPQAやHLE、SWE-Verified 51.0、SciCodeでは後塵を拝する。正直な表だが、発行者計測であることに変わりはない。スループット（M5 Maxで毎秒184トークン、B300で毎秒2.1万トークン等）は計測スタック・バッチ・ハードに強く依存し、Maiaのラック級数字と優劣ランキングを作る用途には使えない。比較できない作業量を一つの順位にしない、というのが本節の規律だ。",
+      "attribution_mode": "ATTRIBUTED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W42:5b251d3e64049da7",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "lfm25",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:5b251d3e64049da7",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "lfm25",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:5b251d3e64049da7",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "lfm25",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:5b251d3e64049da7",
+          "kind": "CLAIM",
+          "evidence_id": "claim-4",
+          "subject_id": "lfm25",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:5b251d3e64049da7",
+          "kind": "CLAIM",
+          "evidence_id": "claim-5",
+          "subject_id": "lfm25",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "t2-08",
+      "block_type": "PARAGRAPH",
+      "text": "LFM Open License v1.0はApacheベースに法主体の年商1000万米ドルの商用上限（第2〜5条・第11条、§5(a)(b)で法主体が閾値超過時は商用利用が非許諾、利益ではなく年商）を設ける。適格な非営利・研究利用は§5(c)の条件範囲で許容されるが、無条件の適用除外ではない。確認できたのは発行者サイトで公開された主要条項であり、対象モデルのLICENSE原文ファイルおよび24B個別重みの確認は未了である。タグのみの証拠とは区別されるが、Beamのようなリポジトリ全文確認とも水準が違う。価格は100万トークンあたり入力0.10ドル、キャッシュ0.05ドルとされる（発行元記載）。",
+      "attribution_mode": "ATTRIBUTED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W42:5b251d3e64049da7",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "lfm25",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:5b251d3e64049da7",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "lfm25",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:5b251d3e64049da7",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "lfm25",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:5b251d3e64049da7",
+          "kind": "CLAIM",
+          "evidence_id": "claim-4",
+          "subject_id": "lfm25",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:5b251d3e64049da7",
+          "kind": "CLAIM",
+          "evidence_id": "claim-5",
+          "subject_id": "lfm25",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "t2-09",
+      "block_type": "PARAGRAPH",
+      "text": "SDLAデータフローの意味を噛み砕く。推論のデータ移動を前提に設計された回路であり、UMAからNUMAへの移行はメモリの見え方を変える。チップレット化で計算ダイと帯域・入出力ダイを分けたことが、帯域数字の土台だ。33兆トークンの事前学習と五段階の事後学習というLFM側の構成開示と比べると、Maiaは回路の実体開示が厚く、LFMは学習と評価の開示が厚い。厚みの場所が違う二つの開示を、同じ物差しで測らない。LFM側の分母つき開示を見習うなら、温度・バッチ・ハードを添えた測定条件の開示が、効率の議論の出発点になる。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W42:6a11623b7a984668",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "maia-300",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:6a11623b7a984668",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "maia-300",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:6a11623b7a984668",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "maia-300",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:6a11623b7a984668",
+          "kind": "CLAIM",
+          "evidence_id": "claim-4",
+          "subject_id": "maia-300",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:6a11623b7a984668",
+          "kind": "CLAIM",
+          "evidence_id": "claim-5",
+          "subject_id": "maia-300",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:5b251d3e64049da7",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "lfm25",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:5b251d3e64049da7",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "lfm25",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:5b251d3e64049da7",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "lfm25",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:5b251d3e64049da7",
+          "kind": "CLAIM",
+          "evidence_id": "claim-4",
+          "subject_id": "lfm25",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:5b251d3e64049da7",
+          "kind": "CLAIM",
+          "evidence_id": "claim-5",
+          "subject_id": "lfm25",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "t2-10",
+      "block_type": "PARAGRAPH",
+      "text": "HBM4 8基・288GB・18TB/sという構成は、文脈の長さとバッチの大きさを支える物理量だ。MXFP4と3ビット未満の低精度、ベクトル命令セットは、推論特化の方向性を示す。ただしこれらがどれだけ実効性能に効くかは、発行者の効率主張とは別の測定が要る。回路の存在と効率の程度は別の事柄だ。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W42:6a11623b7a984668",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "maia-300",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:6a11623b7a984668",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "maia-300",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:6a11623b7a984668",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "maia-300",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:6a11623b7a984668",
+          "kind": "CLAIM",
+          "evidence_id": "claim-4",
+          "subject_id": "maia-300",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:6a11623b7a984668",
+          "kind": "CLAIM",
+          "evidence_id": "claim-5",
+          "subject_id": "maia-300",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "t2-20",
+      "block_type": "PARAGRAPH",
+      "text": "主張の適用条件も読む。ラック規模7倍は96加速器の満配置（24トレイ×4基、1ラック＝1ポッド、167kW）の条件つきであり、電力当たり2.5倍超とセットの上限表現だ。加速器間750GB/sは一部ラック横断時の帯域上限（容量のGBではなく帯域のGB/s、HBM 288GB・帯域18TB/sとは別の物理量）であり、予備トレイの肩代わりは別ラック越しの遅延と引換えで、11月のIgniteで詳細が予告されている。満配置・上限・予告という条件つきで、効率の数字を読む。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W42:6a11623b7a984668",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "maia-300",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:6a11623b7a984668",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "maia-300",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:6a11623b7a984668",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "maia-300",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:6a11623b7a984668",
+          "kind": "CLAIM",
+          "evidence_id": "claim-4",
+          "subject_id": "maia-300",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:6a11623b7a984668",
+          "kind": "CLAIM",
+          "evidence_id": "claim-5",
+          "subject_id": "maia-300",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "t2-11",
+      "block_type": "TABLE",
+      "text": "【比較表：効率主張の読み分け】\nMaia 300｜実体：SDLA・NUMAチップレット・HBM4 288GB・18TB/s・MXFP4・24トレイ・96加速器167kW｜効率主張：公表200比の改善率（基準詳細は非公開、発行者のみ、未検証）｜再現：ハード上独立再現なし\nLFM2.5｜実体：24B/2B推論専用CoT・131K文脈・33T事前学習・総36T訓練予算・能動24.5億｜効率主張：16種ベンチ表（温度つき、発行者計測）・スタック依存スループット｜開示：報酬ハッキング自己開示（独立検証ではない）・商用上限1000万米ドル（法主体の年商）",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W42:6a11623b7a984668",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "maia-300",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:6a11623b7a984668",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "maia-300",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:6a11623b7a984668",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "maia-300",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:6a11623b7a984668",
+          "kind": "CLAIM",
+          "evidence_id": "claim-4",
+          "subject_id": "maia-300",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:6a11623b7a984668",
+          "kind": "CLAIM",
+          "evidence_id": "claim-5",
+          "subject_id": "maia-300",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:5b251d3e64049da7",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "lfm25",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:5b251d3e64049da7",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "lfm25",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:5b251d3e64049da7",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "lfm25",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:5b251d3e64049da7",
+          "kind": "CLAIM",
+          "evidence_id": "claim-4",
+          "subject_id": "lfm25",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:5b251d3e64049da7",
+          "kind": "CLAIM",
+          "evidence_id": "claim-5",
+          "subject_id": "lfm25",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "t2-12",
+      "block_type": "NOTE",
+      "text": "【読み方の注意】Maiaの改善率は分母の詳細が非公開の発行者主張であり、LFMの数値は発行者計測である。両者のスループットを横並びの優劣にしない。SNS公式投稿は告知存在の裏づけであり測定ではない。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W42:6a11623b7a984668",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "maia-300",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:6a11623b7a984668",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "maia-300",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:6a11623b7a984668",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "maia-300",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:6a11623b7a984668",
+          "kind": "CLAIM",
+          "evidence_id": "claim-4",
+          "subject_id": "maia-300",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:6a11623b7a984668",
+          "kind": "CLAIM",
+          "evidence_id": "claim-5",
+          "subject_id": "maia-300",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:5b251d3e64049da7",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "lfm25",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:5b251d3e64049da7",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "lfm25",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:5b251d3e64049da7",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "lfm25",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:5b251d3e64049da7",
+          "kind": "CLAIM",
+          "evidence_id": "claim-4",
+          "subject_id": "lfm25",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:5b251d3e64049da7",
+          "kind": "CLAIM",
+          "evidence_id": "claim-5",
+          "subject_id": "lfm25",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "t2-13",
+      "block_type": "PARAGRAPH",
+      "text": "LFMの五段階の事後学習も押さえる。SFT、教師、MOPD二段、Agentic強化学習という積み上げで、OpenClaw・Hermes・Piといった環境でのエージェント学習が含まれる。構成の開示が厚いこと自体が、効率主張の監査可能性を高める。厚い開示と正しい数字は別だが、監査の入口があることは評価できる。",
+      "attribution_mode": "ATTRIBUTED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W42:5b251d3e64049da7",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "lfm25",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:5b251d3e64049da7",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "lfm25",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:5b251d3e64049da7",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "lfm25",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:5b251d3e64049da7",
+          "kind": "CLAIM",
+          "evidence_id": "claim-4",
+          "subject_id": "lfm25",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:5b251d3e64049da7",
+          "kind": "CLAIM",
+          "evidence_id": "claim-5",
+          "subject_id": "lfm25",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "t2-14",
+      "block_type": "PARAGRAPH",
+      "text": "Maiaの推論特化を運用面から読む。プロンプト前処理とデコード生成の分離は、待ち行列の性質が違う二つの処理を別々に回す設計だ。24トレイ・96加速器・167kWという電力密度と80％超の液体冷却は、その分離を回し続けるための物理条件である。回路の記述とラックの記述は、一つの運用像としてつながっている。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W42:6a11623b7a984668",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "maia-300",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:6a11623b7a984668",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "maia-300",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:6a11623b7a984668",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "maia-300",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:6a11623b7a984668",
+          "kind": "CLAIM",
+          "evidence_id": "claim-4",
+          "subject_id": "maia-300",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:6a11623b7a984668",
+          "kind": "CLAIM",
+          "evidence_id": "claim-5",
+          "subject_id": "maia-300",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "t2-15",
+      "block_type": "PARAGRAPH",
+      "text": "比較不能の方法論を確認する。Maiaの数字はラック級の推論基盤の改善率、LFMの数字は単一モデルのベンチ表であり、測定対象も単位も違う。温度・バッチ・ハードを添えたLFMの表し方は、分母つき開示の手本になる。手本の流儀でMaiaを読むと、欠けているのは基準の詳細だと分かる。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W42:6a11623b7a984668",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "maia-300",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:6a11623b7a984668",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "maia-300",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:6a11623b7a984668",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "maia-300",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:6a11623b7a984668",
+          "kind": "CLAIM",
+          "evidence_id": "claim-4",
+          "subject_id": "maia-300",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:6a11623b7a984668",
+          "kind": "CLAIM",
+          "evidence_id": "claim-5",
+          "subject_id": "maia-300",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:5b251d3e64049da7",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "lfm25",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:5b251d3e64049da7",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "lfm25",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:5b251d3e64049da7",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "lfm25",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:5b251d3e64049da7",
+          "kind": "CLAIM",
+          "evidence_id": "claim-4",
+          "subject_id": "lfm25",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:5b251d3e64049da7",
+          "kind": "CLAIM",
+          "evidence_id": "claim-5",
+          "subject_id": "lfm25",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "t2-16",
+      "block_type": "PARAGRAPH",
+      "text": "16種ベンチを温度条件つきで示す流儀は分母の開示だ。AutomationBench 27.69対次点8.72という差も、温度・ベンチ名とセットで読む。条件つきの表が、効率主張の監査口になる。",
+      "attribution_mode": "ATTRIBUTED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W42:5b251d3e64049da7",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "lfm25",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:5b251d3e64049da7",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "lfm25",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:5b251d3e64049da7",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "lfm25",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:5b251d3e64049da7",
+          "kind": "CLAIM",
+          "evidence_id": "claim-4",
+          "subject_id": "lfm25",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:5b251d3e64049da7",
+          "kind": "CLAIM",
+          "evidence_id": "claim-5",
+          "subject_id": "lfm25",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "t2-22",
+      "block_type": "PARAGRAPH",
+      "text": "温度の個別開示も読む。BFCLv4はT0.001、道具砂場はT0、実働爪はT1.0、指示追従は掃引で96.75・74.69・84.38。知識系の遅れ（GPQA・HLE・全知・SWE-V・SciCode）と、道具砂場の利用者模擬GPT-4o・τのGPT-5.2＋BM25という模擬交絡が併記されている。条件の粒が、表の監査口になる。",
+      "attribution_mode": "ATTRIBUTED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W42:5b251d3e64049da7",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "lfm25",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:5b251d3e64049da7",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "lfm25",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:5b251d3e64049da7",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "lfm25",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:5b251d3e64049da7",
+          "kind": "CLAIM",
+          "evidence_id": "claim-4",
+          "subject_id": "lfm25",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:5b251d3e64049da7",
+          "kind": "CLAIM",
+          "evidence_id": "claim-5",
+          "subject_id": "lfm25",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "t2-17",
+      "block_type": "PARAGRAPH",
+      "text": "HBM4 8基・288GB・18TB/sという物理量は、文脈の長さとバッチの大きさを支える。容量と帯域の数字が、100万トークン級の文脈の前提条件として読める。物理量と文脈長の対応が、回路開示の読みどころだ。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W42:6a11623b7a984668",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "maia-300",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:6a11623b7a984668",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "maia-300",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:6a11623b7a984668",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "maia-300",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:6a11623b7a984668",
+          "kind": "CLAIM",
+          "evidence_id": "claim-4",
+          "subject_id": "maia-300",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:6a11623b7a984668",
+          "kind": "CLAIM",
+          "evidence_id": "claim-5",
+          "subject_id": "maia-300",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "t2-18",
+      "block_type": "PARAGRAPH",
+      "text": "密封評価の設計も読みどころだ。報酬ハッキングの自己開示とセットで、密封評価の主張と緩和策が述べられている。密封という設計とその検証可能性は、発行者の記述の範囲でしか確認できない。設計の言明と実証の区別を保つ。",
+      "attribution_mode": "ATTRIBUTED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W42:5b251d3e64049da7",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "lfm25",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:5b251d3e64049da7",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "lfm25",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:5b251d3e64049da7",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "lfm25",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:5b251d3e64049da7",
+          "kind": "CLAIM",
+          "evidence_id": "claim-4",
+          "subject_id": "lfm25",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:5b251d3e64049da7",
+          "kind": "CLAIM",
+          "evidence_id": "claim-5",
+          "subject_id": "lfm25",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "t2-21",
+      "block_type": "PARAGRAPH",
+      "text": "条文の適用範囲も読む。商用上限は法主体の年商1,000万米ドル（§5、利益でもモデル由来収益でもなく法主体全体の年商、子会社等を含む法主体全体）で、§2・§3の許諾はこの制限に従い、§11で不遵守時は自動終了・削除、§4でホスティング基盤による配布は流通チャネルとして許容され利用者には条件が継承される。非営利・研究の適用は§5(c)の適格条件を満たす場合に限られ、無条件の適用除外ではない。配布物ごと（基本・FP8・GGUF・ONNX・MLX、DSparkは近日）の確認は別であり、1件の条文を全重みに敷衍しない。能動24.5億（発表20億との差は表記の問題）、事前学習約33T・総訓練予算36Tという区分で読む。",
+      "attribution_mode": "ATTRIBUTED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W42:5b251d3e64049da7",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "lfm25",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:5b251d3e64049da7",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "lfm25",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:5b251d3e64049da7",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "lfm25",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:5b251d3e64049da7",
+          "kind": "CLAIM",
+          "evidence_id": "claim-4",
+          "subject_id": "lfm25",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:5b251d3e64049da7",
+          "kind": "CLAIM",
+          "evidence_id": "claim-5",
+          "subject_id": "lfm25",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "t2-23",
+      "block_type": "PARAGRAPH",
+      "text": "速度の分母も分けて読む。携帯184・Ryzen114は復号、供用2.1万はSGLang0.5.22・BF16・入1千出256・持続同時という供用条件であり、直接比べられない。初日対応（llama.cpp・MLX・vLLM・SGLang・ONNX）と2ドル枠という提供条件が、速度の読み方になる。",
+      "attribution_mode": "ATTRIBUTED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W42:5b251d3e64049da7",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "lfm25",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:5b251d3e64049da7",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "lfm25",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:5b251d3e64049da7",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "lfm25",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:5b251d3e64049da7",
+          "kind": "CLAIM",
+          "evidence_id": "claim-4",
+          "subject_id": "lfm25",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:5b251d3e64049da7",
+          "kind": "CLAIM",
+          "evidence_id": "claim-5",
+          "subject_id": "lfm25",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "t2-19",
+      "block_type": "PARAGRAPH",
+      "text": "効率の主張を読む物差しは分母と条件の開示だ。Maiaは回路の実体を示したが効率の分母を示さず、LFMは分母つきの表を示したが測定者は発行者自身である。分母のない改善率を割り引き、温度・バッチ・ハードを添えた表し方を手本に欠けた基準の詳細を問う。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W42:6a11623b7a984668",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "maia-300",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:6a11623b7a984668",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "maia-300",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:6a11623b7a984668",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "maia-300",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:6a11623b7a984668",
+          "kind": "CLAIM",
+          "evidence_id": "claim-4",
+          "subject_id": "maia-300",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:6a11623b7a984668",
+          "kind": "CLAIM",
+          "evidence_id": "claim-5",
+          "subject_id": "maia-300",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:5b251d3e64049da7",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "lfm25",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:5b251d3e64049da7",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "lfm25",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:5b251d3e64049da7",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "lfm25",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:5b251d3e64049da7",
+          "kind": "CLAIM",
+          "evidence_id": "claim-4",
+          "subject_id": "lfm25",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:5b251d3e64049da7",
+          "kind": "CLAIM",
+          "evidence_id": "claim-5",
+          "subject_id": "lfm25",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "P2-boundaries",
+      "block_type": "CLAIM_BOUNDARY",
+      "text": "この節の読解上の境界: No independent reproduction on hardware exists for Maia figures. / LFM throughput figures are vendor-measured on stated stacks. / Technical paper unfetched; efficiency baseline unnamed/untestable / r7 card authority: AUTHORITY_CONSUMED (see correction ledger for scoping) / primary-body: No r7 finding recorded for this screening target / license-weights: No r7 finding recorded for this screening target / benchmark-basis: No r7 finding recorded for this screening target / License text, independent repro, HF file listing",
+      "attribution_mode": "INFERENCE",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W42:6a11623b7a984668",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "maia-300",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:6a11623b7a984668",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "maia-300",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:5b251d3e64049da7",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "lfm25",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W42:5b251d3e64049da7",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "lfm25",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    }
+  ],
+  "must_cover_coverage": [
+    {
+      "requirement": "Detail Maia SDLA/NUMA/HBM4/prefill-decode mechanisms from the consumed deep-dive body.",
+      "block_ids": [
+        "t2-02",
+        "t2-03",
+        "t2-09",
+        "t2-10",
+        "t2-20"
+      ]
+    },
+    {
+      "requirement": "Mark every Maia efficiency delta as vendor-only against an unnamed baseline.",
+      "block_ids": [
+        "t2-04",
+        "t2-20"
+      ]
+    },
+    {
+      "requirement": "Present LFM bench and throughput figures as non-comparable workloads, never apples-to-apples with Maia.",
+      "block_ids": [
+        "t2-06",
+        "t2-07",
+        "t2-15",
+        "t2-18",
+        "t2-20",
+        "t2-21",
+        "t2-22",
+        "t2-23"
+      ]
+    },
+    {
+      "requirement": "Disclose the LFM Open License $10M cap and the 24B weight-file confirmation gap.",
+      "block_ids": [
+        "t2-08",
+        "t2-21",
+        "t2-23"
+      ]
+    }
+  ],
+  "boundary_dispositions": [
+    {
+      "boundary": "No independent reproduction on hardware exists for Maia figures.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P2-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the proposed Draft Result."
+    },
+    {
+      "boundary": "LFM throughput figures are vendor-measured on stated stacks.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P2-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the proposed Draft Result."
+    },
+    {
+      "boundary": "Technical paper unfetched; efficiency baseline unnamed/untestable",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P2-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the proposed Draft Result."
+    },
+    {
+      "boundary": "r7 card authority: AUTHORITY_CONSUMED (see correction ledger for scoping)",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P2-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the proposed Draft Result."
+    },
+    {
+      "boundary": "primary-body: No r7 finding recorded for this screening target",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P2-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the proposed Draft Result."
+    },
+    {
+      "boundary": "license-weights: No r7 finding recorded for this screening target",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P2-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the proposed Draft Result."
+    },
+    {
+      "boundary": "benchmark-basis: No r7 finding recorded for this screening target",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P2-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the proposed Draft Result."
+    },
+    {
+      "boundary": "License text, independent repro, HF file listing",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P2-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the proposed Draft Result."
+    }
+  ],
+  "profile_extensions": {
+    "page_allocation": "2.5",
+    "editorial_note": "Maia must not disappear; suggested drafting order 2."
+  },
+  "publication_extensions": {}
+}
