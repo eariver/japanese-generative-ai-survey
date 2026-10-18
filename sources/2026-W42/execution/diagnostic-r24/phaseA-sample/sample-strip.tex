@@ -1,0 +1,67 @@
+% W42 r24 Phase A sample — cuted strip feasibility (NONCANONICAL, isolated /tmp only)
+% jlreq + preview toolchain + cuted + capt-of; two verbatim W42 tables + surrounding verbatim paras
+\documentclass[lualatex,a4paper,10pt]{jlreq}
+\usepackage{preview}
+\usepackage{cuted} % [r24-A] non-floating full-width test
+\usepackage{capt-of} % [r24-A] \captionof for strip captions
+\surveysetup{2026-W42}{Japanese Generative AI Technical Survey}{2026-10-18}{2026-10-09 18:00 - 2026-10-16 18:00 America/New\_York}
+\surveyeditiondescriptor{週刊Technical Survey（診断用・非正準・未承認）}
+\surveycoverstory{記憶・回路}{フロンティア実行、推論の経済学。}{NONCANONICAL DIAGNOSTIC \\ NOT A PUBLICATION PREVIEW \\ NOT FOR HUMAN APPROVAL}
+\begin{document}
+\surveycover
+\clearpage
+\twocolumn
+\section{フロンティアエージェント:Wonder と Argon の実行と記憶}
+\label{sec:P1}
+{\Large\bfseries 記憶して働き続けるエージェント――WonderとArgonの実行力\par}
+\bigskip
+Wonderの例示タスクを具体的に読む。保険請求、賃貸契約、家計管理、ゲームやアプリの構築といった個人・業務の作業が挙げられている。いずれも一度の指示で終わらない継続作業であり、記憶の持ち越しと遂行の注意が要る領域だ。例示の選び方が、機構の設計意図を物語っている。
+\cite{B01,B62,B63,B02,B64,B03}
+
+失敗の内訳も監査口になる。605回の死亡の多くは怪物によるもので、終盤のエンダードラゴン戦だけで69回・約14時間を費やした。プログラムの22％は誤り終了し、詰まりには無への跳躍で初期化するという運用で切り抜けた。失敗の記録と立直しの手順が残ることが、実行主張の検証口になる。
+\cite{B05,B65,B08,B04,B07,B06}
+
+\begin{strip}
+\centering\footnotesize
+\captionof{table}{比較表：WonderとArgonの読み分け}
+\begin{tabularx}{0.96\linewidth}{@{}lXXXXX@{}}
+\toprule
+Wonder & 発表：10月12日（Meta） & 核：Active Memory（会話またぎ文脈の保持）・Active Focus（遂行中の注意維持と確認） & 評価：Harvey LAB・FocusBench・SWE-Marathon等を図表化（数値本体は報告書、未刊の安全報告あり） & 料金：API 4/20ドル、Fullは上位プラン限定（開発者ページ） \cite{B01,B62,B63,B02} \\
+\midrule
+Argon & 提供開始：10月13日全世界一般提供 & 料金：導入2/10ドル→11月30日4/20ドル、出力100万トークン & 事例：Chrome改修等（発行元報告） & 長時間：Minecraft 27時間14分・ランダム生成・単一試行・構造化情報のみ（条件明示、固定シードなし） & 流通：Copilot一般提供（10月13日変更履歴） \cite{B05,B65,B08,B04} \\
+\bottomrule
+\end{tabularx}
+\end{strip}
+
+実演と検証の区別も読む。5千行レイトレーサの実演はベンチマークではなく実演であり、発行者の位置づけを保って読む。実演の記録と検証の記録は別の事柄だ。
+\cite{B05,B65,B08,B04,B07,B06}
+
+二つの発表の非対称が今週の要点だ。Wonderは機構の定義が厚く、Argonは事例の厚みが目立つ。定義の厚さは検証の出発点になり、事例の厚さは利用の出発点になる。定義・測定・未公開を切り分け、価格と流通の条件を性能の証拠と混ぜずに記録することが、今週の読み方だ。
+\cite{B01,B62,B63,B02,B64,B03,B05,B65,B08,B04,B07,B06}
+
+\section{推論の経済学:Maia 300 と LFM2.5}
+\label{sec:P2}
+{\Large\bfseries 推論の経済学――Maia 300の回路とLFM2.5の効率開示\par}
+\bigskip
+比較不能の方法論を確認する。Maiaの数字はラック級の推論基盤の改善率、LFMの数字は単一モデルのベンチ表であり、測定対象も単位も違う。温度・バッチ・ハードを添えたLFMの表し方は、分母つき開示の手本になる。手本の流儀でMaiaを読むと、欠けているのは基準の詳細だと分かる。
+\cite{B09,B66,B10,B67,B68,B11,B69,B12}
+
+16種ベンチを温度条件つきで示す流儀は分母の開示だ。AutomationBench 27.69対次点8.72という差も、温度・ベンチ名とセットで読む。条件つきの表が、効率主張の監査口になる。
+\cite{B11,B69,B12}
+
+\begin{strip}
+\centering\footnotesize
+\captionof{table}{比較表：効率主張の読み分け}
+\begin{tabularx}{0.96\linewidth}{@{}lXXX@{}}
+\toprule
+Maia 300 & 実体：SDLA・NUMAチップレット・HBM4 288GB・18TB/s・MXFP4・24トレイ・96加速器167kW & 効率主張：公表200比の改善率（基準詳細は非公開、発行者のみ、未検証） & 再現：ハード上独立再現なし \cite{B09,B66,B10,B67} \\
+\midrule
+LFM2.5 & 実体：24B/2B推論専用CoT・131K文脈・33T事前学習・総36T訓練予算・能動24.5億 & 効率主張：16種ベンチ表（温度つき、発行者計測）・スタック依存スループット & 開示：報酬ハッキング自己開示（独立検証ではない）・商用上限1000万ドル \cite{B11,B69,B12} \\
+\bottomrule
+\end{tabularx}
+\end{strip}
+
+温度の個別開示も読む。BFCLv4はT0.001、道具砂場はT0、実働爪はT1.0、指示追従は掃引で96.75・74.69・84.38。知識系の遅れ（GPQA・HLE・全知・SWE-V・SciCode）と、道具砂場の利用者模擬GPT-4o・τのGPT-5.2＋BM25という模擬交絡が併記されている。条件の粒が、表の監査口になる。
+\cite{B11,B69,B12}
+
+\end{document}
