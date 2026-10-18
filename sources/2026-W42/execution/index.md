@@ -168,3 +168,10 @@ This is the current human-readable navigation record for the edition. Machine li
 ## Final disposition
 
 `SOL_W42_R14_REVIEW_READY / NONCANONICAL` (r14 substantive depth + traceability + layout repair under `execution/editorial-revision-r14/`: M01 Table-8 verified, TECH-02 4x2, per-row cites, chapter boxes removed, floats fixed; 7 revised Draft Results REVISED v14.0 + proposed synthesis validated, 112 paras / 20,479 paragraph-only chars; non-canonical TeX/PDF proof `execution/preview-r14/main.pdf` 17 pages, log fully clean and COMMITTED, all-page PNGs/contact-sheets/review index; canonical Draft/State/Gate/checkpoint bytes unchanged at DRAFT_COMPLETE; independent Sol review pending; no VALIDATED_DRAFT, Publication Preview, Freeze, or Release)
+
+## Muse W42 r15 resumption + depth-recovery rebuild (2026-10-18 JST) — DECISION_REQUIRED, no render
+
+- Resumed existing branch `weekly/2026-W42-v2-work` from remote HEAD `031f5361...` (Tree `75c698...`); reviewed main `c8d0ecc1...`, Frozen Core `774dd39a...` all matched expected read-only (no ZERO-WRITE stop). No git clean; continued from prior untracked v15.0 work.
+- Audited prior v15.0 (122 paras/+1,096 chars, 7/28 matrix, 3 verbatim + 2 near-duplicate blocks, 18pp PDF) as contract-insufficient; rebuilt v15.1 edition-local: 136 paras / 24,162 chars / 27,415 PTN (+24/+3,683 vs r14), 28/28 matrix, S7-S10 sidecars, Earth ±2.7 + 44-vs-45 corrections, duplicates/wrong-refs repaired, frozen 7/7 draft-check + synthesis-check PASS, reader + 177-row ledger regenerated.
+- Preflight: content GO, pagination NOT MET (~19-20pp projected vs 26.5 body plan; short ~6-7 body pages; closable only by named SOURCE_INACCESSIBLE primaries or Human Architecture amendment). STOP BEFORE RENDER per contract; prior 18pp PDF retained byte-identical as v15.0 layout reference (stale-marked, NOT v15.1 proof).
+- Terminal `EDITORIAL_DEPTH_OR_PAGINATION_DECISION_REQUIRED / R15_EVIDENCE_AND_PROPOSALS_DELIVERED`. Machine `DRAFT_COMPLETE`, Architecture approved, Publication pending. Session: `sessions/muse-w42-r15-20261018.md`. Protected/Core/canonical/r11-r14 bytes untouched; normal commit + non-force push.
