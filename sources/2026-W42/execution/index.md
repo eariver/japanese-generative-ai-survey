@@ -201,3 +201,14 @@ This is the current human-readable navigation record for the edition. Machine li
 - Unit C (S17-03): TeX from exact r18 bytes; Table-7 in-body p17 kept (no sentence split); B57 needspace keeps entry on p20 (page-top orphan gone; B28 4-char carry minor residual); 21pp, 511,523B, SHA `d42510f9...` (final two byte-identical); log clean; 21 PNGs + 3 split sheets; DIFF pages viewed.
 - Unit D: 7 NEW v18.0 proposals (136 paras / 25,015 chars, -70); frozen 7/7 draft + synthesis PASS (input-SHA `4cb2b01a...`) + independent surface gate PASS; 90/19/177 held; regression guards held.
 - Terminal `SOL_W42_R18_FOCUSED_CLOSURE_AUDIT_READY / NONCANONICAL`. Machine `DRAFT_COMPLETE`, Architecture approved, Publication pending. Session: `sessions/muse-w42-r18-20261018.md`. No canonical/Core/main changes; normal commit + non-force push.
+
+## Muse W42 r19 print-only typesetting/bibliography reconciliation (2026-10-18 JST) — AUDIT_READY/NONCANONICAL
+
+- Started from remote `8fc8c416...` (Tree `8917ecfe...`); main `c8d0ecc1...`/`801de813...`, Frozen Core `774dd39a...`/`cd46a6f7a...`, r18 baseline `f3840b42...` all matched read-only. FF-only to Sol adopt+dispatch commit (r18 REQUEST_CHANGES + r19 contract).
+- Master frozen: r18 Reader body untouched (7ch/136P/25,015ch/7T/7N/7H/157 blocks; 90/19/177 authority blobs recorded). No proposal/Reader edits in r19.
+- Unit A (F-01): 5 rendered Table-7 alternatives (A/B orphan 22pp rejected; D/F bisect 21pp rejected); adopted G (intro anchor + needspace before t7-07): 21pp, p16 ends completed t7-17, p17 Table 7 in-flow with complete t7-07 below. No split/orphan/drift.
+- Unit B (F-02/F-04): print-only display map (71 full + 19 `→ [Bxx]（同一資料）`); machine strings 0 hits (TeX + PDF text); significance notes concise; B28 orphan gone (kept on p19), B57 kept together p20, all-90 rescanned.
+- Unit C (F-03): cover 3 unbreakable lines + p21 mbox block + JP line, contiguous, prominent, never in reader prose. p21 terminal stub documented honest.
+- Unit D: genuine r19 render (150/150 verified + tables preserved); 21pp, 509,010B, SHA `7aced283...` (final two identical); log clean; sty identical to r18; ALL 21 PNGs opened; 7 tables/notes in-chapter.
+- Unit E (F-05/F-07): brief on r19 pagination (21 = 1+16+3+1, column-verified chapters); effective area UNMEASURED (<=16), `15.5-17` withdrawn; conditional 26.5+5 = 31.5 labeled; Option B 17.0 verified proposal-only; consultation vs authorization split, no r2 assumption/invocation.
+- Terminal `SOL_W42_R19_PRINT_AND_PAGEPLAN_AUDIT_READY / NONCANONICAL`. Machine `DRAFT_COMPLETE`, Architecture approved, Publication pending. Session: `sessions/muse-w42-r19-20261018.md`. No canonical/Core/main changes; normal commit + non-force push.
