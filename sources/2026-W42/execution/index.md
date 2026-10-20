@@ -317,3 +317,14 @@ This is the current human-readable navigation record for the edition. Machine li
 - Trusted re-advance 1: request-only `2b76e1c47` (seven corrected) → run `39431845788` → bot `3d5eef120`: VALIDATED_DRAFT. Trusted re-advance 2: request-only `803bcb4c0` (candidate only) → run `39432231615` → bot `83701c1fe`: RELEASE_CANDIDATE, terminal HUMAN_GATE_REACHED (stop, not approval).
 - r29/r30 history, Arch r1, Core, main untouched; no preview approval/freeze/release/merge.
 - Terminal `SOL_W42_R31_CORRECTED_PREVIEW_READY / RELEASE_CANDIDATE / HUMAN_PUBLICATION_PREVIEW_PENDING / FROZEN_CORE_PRESERVED / NO_FREEZE_NO_RELEASE`. Session: `sessions/muse-w42-r31-20261020.md`. Normal FF commits + non-force push; remote read-back required.
+
+## Muse W42 r32 Issue #570 bounded repair to fresh Preview boundary (2026-10-20 JST) — CORRECTED_PREVIEW_READY
+
+- Started from dispatched remote `3bd2f09bc...` (Tree `91b1bda7...`, parent `734b0d08b...`); main/Frozen Core/impl/Arch r1/r31 SHAs/Gate index (ARCH r1 + PUB r1)/RELEASE_CANDIDATE pending state all matched read-only. FF-only sync; no reset/rebase/new branch/force/manual State edits.
+- Trusted Gate revision only via Actions: request-only `36e55b20` (REQUEST_PUBLICATION_PREVIEW_REVISION r2, boundary DRAFT_COMPLETE, parent-reviewed SHA) → run `39445613584` success → bot `64abe4b41`: Gate `publication-r2.json` REQUEST_CHANGES, State DRAFT_COMPLETE, 2 checkpoints invalidated by design, r1 + Arch r1 preserved.
+- Google primary evidence: 5/5 URLs HTTP 200 with excerpts (unified frame, hop caps, long-decode, remaining budget, model-ID-insufficient; OpenAI-compat unclaimed). TeX repair: exactly L65 body + L106 T1 cell (+ header provenance); prices/dates/examples/cites/P2–P7/T2–T7/bib-90/selection intact.
+- New TeX `e6d53d5a…` / PDF `827a93d8…` (505694 B, 21 pp, log clean); page map identical; worker viewed p02–p05 (T1 atomic p04); separate delta reviewer r32 PASS (own curl/diff/visual, INFO finding only, raw verbatim).
+- Regenerated manuscript/bundle/semantic(11)/visual(2)/surface(4)/gate + 21 new PNGs + log; candidate rebuilt after readvance.
+- Trusted re-advance 1: request-only `5f33d8ce` (seven corrected) → run `39447032288` → bot `a4fbb43f7`: VALIDATED_DRAFT. Trusted re-advance 2: request-only `46ea1f11` (candidate only) → run `39447445907` → bot `52a579638`: RELEASE_CANDIDATE, terminal HUMAN_GATE_REACHED (stop, not approval).
+- r29–r31 history, Arch r1, Core, Evidence/Selection untouched; no preview approval/freeze/release/merge. Issue #570 stays OPEN with factual trace comment.
+- Terminal `SOL_W42_R32_ISSUE570_CORRECTED_PREVIEW_READY / RELEASE_CANDIDATE / HUMAN_PREVIEW_PENDING / CORE_V2_FROZEN / NO_FREEZE_NO_RELEASE`. Session: `sessions/muse-w42-r32-20261020.md`. Normal FF commits + non-force push; remote read-back required.
