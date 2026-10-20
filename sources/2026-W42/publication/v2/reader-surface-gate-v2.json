@@ -1,0 +1,177 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W42",
+  "publication_profile": "WEEKLY_MAGAZINE",
+  "status": "PASSED",
+  "scanned_surfaces": [
+    {
+      "path": "surveys/weekly/2026-W42/main.tex",
+      "sha256": "2ed5848aeaedccdadd80c14f23967ee4017f562fd7409eda412439cb3281ecd3",
+      "kind": "PRIMARY_SOURCE",
+      "byte_count": 96790
+    },
+    {
+      "path": "surveys/weekly/2026-W42/preview.sty",
+      "sha256": "f0492fb6b2b9085f282a12120885b20271ec11b0fab56d8848d6f0ee474d534d",
+      "kind": "SUPPORTING_SOURCE",
+      "byte_count": 6132
+    },
+    {
+      "path": "sources/2026-W42/execution/editorial-revision-r18/reader-preview-r18.PROPOSED.json",
+      "sha256": "54d7e10f94e95187e091b394910654c3f2210d2cdf2e0f16a30fbc23c68c08f6",
+      "kind": "SUPPORTING_SOURCE",
+      "byte_count": 96844
+    },
+    {
+      "path": "sources/2026-W42/execution/editorial-revision-r18/bibliography-map-r18.json",
+      "sha256": "814ebfc3654cfcc78e49e3e92be96223045669e90649d77b00647dcf578ee699",
+      "kind": "SUPPORTING_SOURCE",
+      "byte_count": 15876
+    },
+    {
+      "path": "sources/2026-W42/execution/editorial-revision-r18/citation-repair-ledger-r18.json",
+      "sha256": "084bfd0ea763c71f67d8006ba3d22815670e1d6e42ef9c79df35caabf8a92b80",
+      "kind": "SUPPORTING_SOURCE",
+      "byte_count": 161129
+    },
+    {
+      "path": "sources/2026-W42/publication/v2/reader-manuscript-v2.json",
+      "sha256": "47634ae3ac347dd9529e796e01ed3661defa89e5f31b164dfe9752155b23c76f",
+      "kind": "MANUSCRIPT_MANIFEST",
+      "byte_count": 15908
+    }
+  ],
+  "rules_checked": [
+    {
+      "rule_id": "RSG-LEX-CORE-VOCAB",
+      "layer": "LEXICAL_LINT",
+      "description": "Core v2 pipeline and architecture internal terminology in reader-facing prose",
+      "severity": "BLOCKING"
+    },
+    {
+      "rule_id": "RSG-LEX-SELECTION-SCREENING",
+      "layer": "LEXICAL_LINT",
+      "description": "Candidate screening, selection rounds, and negative selection decisions in reader prose",
+      "severity": "BLOCKING"
+    },
+    {
+      "rule_id": "RSG-LEX-DISCOVERY-INTAKE",
+      "layer": "LEXICAL_LINT",
+      "description": "Discovery intake, observation metadata, and candidate reviews in reader prose",
+      "severity": "BLOCKING"
+    },
+    {
+      "rule_id": "RSG-LEX-VERIFICATION-MATERIALITY",
+      "layer": "LEXICAL_LINT",
+      "description": "Internal verification obligations and materiality markers in reader prose",
+      "severity": "BLOCKING"
+    },
+    {
+      "rule_id": "RSG-LEX-INTERNAL-IDENTIFIERS",
+      "layer": "LEXICAL_LINT",
+      "description": "Internal package identifiers and raw evidence IDs in reader prose",
+      "severity": "BLOCKING"
+    },
+    {
+      "rule_id": "RSG-LEX-STAGE-LIFECYCLE",
+      "layer": "LEXICAL_LINT",
+      "description": "Internal stage and checkpoint lifecycle names used as publication prose",
+      "severity": "BLOCKING"
+    },
+    {
+      "rule_id": "RSG-LEX-INTERNAL-PATHS",
+      "layer": "LEXICAL_LINT",
+      "description": "Internal repository, transport, or Grok paths in reader prose or URLs",
+      "severity": "BLOCKING"
+    },
+    {
+      "rule_id": "RSG-LEX-BIBLIOGRAPHY-LEAKAGE",
+      "layer": "LEXICAL_LINT",
+      "description": "Internal evidence tags and materiality leaked into bibliography records",
+      "severity": "BLOCKING"
+    },
+    {
+      "rule_id": "RSG-LEX-EDITORIAL-PROCESS",
+      "layer": "LEXICAL_LINT",
+      "description": "Internal editorial operations explained as prose rather than underlying facts",
+      "severity": "BLOCKING"
+    },
+    {
+      "rule_id": "RSG-LEX-REVIEW-RATIONALE-COP-OUT",
+      "layer": "LEXICAL_LINT",
+      "description": "Architecture review meta-rebuttals and cop-out coverage assertions",
+      "severity": "BLOCKING"
+    },
+    {
+      "rule_id": "RSG-SEM-PROCESS-LEAKAGE",
+      "layer": "SEMANTIC_REVIEW",
+      "description": "Reader-facing sentence requiring internal pipeline knowledge to make sense",
+      "severity": "BLOCKING"
+    }
+  ],
+  "suppressions": [],
+  "findings": [
+    {
+      "finding_id": "W42-SOL-SURF-F01",
+      "rule_id": "RSG-SEM-PROCESS-LEAKAGE",
+      "artifact": "Semantic Review",
+      "path": "sources/2026-W42/publication/v2/reader-manuscript-v2.json",
+      "field_or_block": "semantic-review",
+      "locator": "surveys/weekly/2026-W42/main.tex Section 7 + Table T7 (B54 prose: \"79件中7位\")",
+      "text_span": "19.17％・79件中7位",
+      "severity": "WARNING",
+      "reason": "Worker L02 confirms the Vals anchor (19.17%, $0.15/test, LegalBench 86.23%) but documents live-source denominator drift: Updates prose pins #7 of 79 while header/table now show #7 of 81 as the leaderboard grew. The TeX pins the 79 snapshot without naming the drift, so a reader comparing against the live page will see a denominator mismatch.",
+      "proposed_normalization": "Add a parenthetical snapshot marker in a future revision (e.g. window-snapshot denominator) or a one-line disclosed-limitation note; do not silently change the number without re-audit.",
+      "disposition": "UNRESOLVED"
+    },
+    {
+      "finding_id": "W42-SOL-SURF-F02",
+      "rule_id": "RSG-SEM-PROCESS-LEAKAGE",
+      "artifact": "Semantic Review",
+      "path": "sources/2026-W42/publication/v2/reader-manuscript-v2.json",
+      "field_or_block": "semantic-review",
+      "locator": "surveys/weekly/2026-W42/main.tex Section 7 (B54 prose, twice: lead paragraph and design paragraph)",
+      "text_span": "1件72分",
+      "severity": "WARNING",
+      "reason": "Worker L02 fetch finds current card latency \"37 min 25 s\" and no 72-min field in the fetched excerpt; the 72-min figure is either source drift or a different timing field (total vs per-test) that cannot be re-fetched for the window. The TeX repeats 72 min twice as a measurement condition, so the field-level provenance is weaker than the ranking anchor.",
+      "proposed_normalization": "Qualify the figure as window-state reported value with disclosed limitation, or drop the minute figure to price-only if the field cannot be sourced; no silent revision.",
+      "disposition": "UNRESOLVED"
+    },
+    {
+      "finding_id": "W42-SOL-SURF-F03",
+      "rule_id": "RSG-SEM-PROCESS-LEAKAGE",
+      "artifact": "Semantic Review",
+      "path": "sources/2026-W42/publication/v2/reader-manuscript-v2.json",
+      "field_or_block": "semantic-review",
+      "locator": "surveys/weekly/2026-W42/main.tex Section 7 (B57 prose: \"10月16日の今週の出来事\", \"10月16日のX投稿は告知\")",
+      "text_span": "10月16日",
+      "severity": "WARNING",
+      "reason": "Worker L02 confirms repo existence, Apache-2.0 apportionment, and June-vs-October split, but the fetched README shows month granularity ([2026-10]) only with no Oct-16 commit/release timestamp in the excerpt. The TeX asserts day precision twice; table T7 itself says month-granularity, creating a prose/table precision asymmetry. No separate ASPIRE X-post bib key exists, so the X sentence is correctly announcement-discipline prose, not a dated citation.",
+      "proposed_normalization": "Soften prose day-precision to month-anchored wording consistent with Table T7, or retain with explicit disclosed-limitation note; do not invent a commit timestamp.",
+      "disposition": "UNRESOLVED"
+    }
+  ],
+  "summary": {
+    "total_findings": 3,
+    "blocking_findings": 0,
+    "warning_findings": 3,
+    "suppressed_findings": 0,
+    "normalized_findings": 0,
+    "verdict": "PASSED"
+  },
+  "evaluated_by": "Core v2 Pre-Publication Reader-Surface Gate",
+  "recorded_at": "2026-10-20T00:13:39Z",
+  "semantic_authority": {
+    "status": "PASSED",
+    "decision": "PASS",
+    "reviewed_by": "Independent review subagent (Sol review role; not the r30 build worker)",
+    "surface_path": "surveys/weekly/2026-W42/main.tex",
+    "surface_sha256": "2ed5848aeaedccdadd80c14f23967ee4017f562fd7409eda412439cb3281ecd3",
+    "recorded_at": "2026-10-20T00:13:39Z",
+    "reviewed_at": "2026-10-20T00:13:39Z",
+    "review_path": "sources/2026-W42/publication/v2/reader-surface-semantic-review-v2.json",
+    "review_sha256": "2bc7ca076b0e5a1befe415933c80a42e8e9bc297514577dd390f640cc9fb3319",
+    "summary": "Bound semantic review passed"
+  },
+  "gate_sha256": "d8d1f3fa33fc74d1c40c244744aa6e3c85be1c0cb6c094e8cada34a8a59c640e"
+}
