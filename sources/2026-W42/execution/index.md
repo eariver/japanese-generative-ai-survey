@@ -328,3 +328,12 @@ This is the current human-readable navigation record for the edition. Machine li
 - Trusted re-advance 1: request-only `5f33d8ce` (seven corrected) → run `39447032288` → bot `a4fbb43f7`: VALIDATED_DRAFT. Trusted re-advance 2: request-only `46ea1f11` (candidate only) → run `39447445907` → bot `52a579638`: RELEASE_CANDIDATE, terminal HUMAN_GATE_REACHED (stop, not approval).
 - r29–r31 history, Arch r1, Core, Evidence/Selection untouched; no preview approval/freeze/release/merge. Issue #570 stays OPEN with factual trace comment.
 - Terminal `SOL_W42_R32_ISSUE570_CORRECTED_PREVIEW_READY / RELEASE_CANDIDATE / HUMAN_PREVIEW_PENDING / CORE_V2_FROZEN / NO_FREEZE_NO_RELEASE`. Session: `sessions/muse-w42-r32-20261020.md`. Normal FF commits + non-force push; remote read-back required.
+
+## Muse W42 r33 Freeze attempt stopped on shared-Core defect (2026-10-21 JST) — NOT RELEASED
+
+- Started from dispatched remote `7008b8c26...` (Tree `25d93f30...`); main/Frozen Core/impl/Arch r1/r3 approval/RELEASE_CANDIDATE-pending-freeze all matched read-only. Step A (r3 APPROVED, run 39453500739) verified, not replayed.
+- Built freeze-record + release-manifest via first-party build_freeze (approved PDF 827a93d8, 21pp; manifest AUTHORIZED); committed + pushed.
+- Trusted Freeze only via Actions: request-only `a36541cb3` → run `39455215003`: preflight SUCCESS, execute FAILED on shared-Core defect (approval provenance vs checkpoint schema; locally reproduced with identical Core; W41 identical precedent, owner-compat noted not adopted).
+- Recorded defect (`execution/defects/w42-r33-freeze-validation-shared-core-defect-20261021.md`) + session; no Freeze/merge/Release/RELEASED claimed; PDF/approvals/Arch/Core/main/Issue #570 untouched.
+- Last-good: remote request-only `a36541cb3`, State RELEASE_CANDIDATE preview-approved pending freeze. Resume: reviewed Core repair + clean trusted rerun.
+- Terminal `W42_R33_FROZEN_BUT_RELEASE_NOT_DISPATCHED / SHARED_CORE_DEFECT / STOP`. Session: `sessions/muse-w42-r33-20261021.md`.
