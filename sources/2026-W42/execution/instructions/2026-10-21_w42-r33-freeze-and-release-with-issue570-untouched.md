@@ -1,0 +1,39 @@
+# J-GAS W42 r33 — approved Publication Preview to Freeze and exact-byte public Release
+
+Date: 2026-10-21 JST
+Status: `HUMAN_APPROVED / FREEZE_AND_RELEASE_EXECUTION_AUTHORITY / FROZEN_CORE_V2_UNCHANGED`
+Repository: `eariver/japanese-generative-ai-survey`. Existing edition branch `weekly/2026-W42-v2-work`.
+
+## Identity / zero-write preflight
+
+Execution starts from Sol dispatcher HEAD/Tree (specified separately after this contract commit); its direct parent must be reviewed W42 r32 HEAD `4a222386e3ed1f82aa09a4815d927f533cf4f1c5` / Tree `a7eaf1f8ab2858be55b3732b4ef9194b7919ff82`. Remote read-only check exact HEAD and Tree, current main HEAD `c8d0ecc1c9566a2303ad3b4c42635d4b672650e4` / Tree `801de813319f08777ab1581a5e8875fc1ac5df19` at dispatch time, Core frozen SHA `774dd39a951c9ac3818e83dfffd4c7666efb0a20` Tree `cd46a6f7a6dcc4031e76220cea4c52c7dd1fc481`, state-pinned implementation `a4f25630270f029656f35771592f9ebda02fa5cc` Tree `e68560d1542806b61b4c55f03063839fd2ec30c0`, approved Architecture r1 and canonical Evidence/Selection. Allow no new/fallback/review branches on the W42 worker lane, reset/rebase/force, or Core/Architecture/PDF source mutations. Human-approved r32 source `surveys/weekly/2026-W42/main.tex` SHA256 `e6d53d5ae962332c85df8b60c52ac614d259da3c7301cdffc4b0112372552697` and PDF SHA256 `827a93d8a7ec786a1e052b4832ab160eff5131402888e5792d82682febf79a34` (505694B, 21pp), Candidate `READY_FOR_PUBLICATION_PREVIEW` and its exact bound records cannot be changed.
+
+Read first: `sources/2026-W42/execution/governance/human-w42-r33-final-preview-approved-freeze-release-authorization-20261021.md`; this contract; Issue #570 only to recognize owner keeps its closure; actual W42 State, Gate review index and Candidate; first-party trusted Operator Bridge, canonical `scripts/survey_publication_v2.py` `build_freeze`, `scripts/survey_stage_validation_v2.py`, first-party `.github/workflows/survey-production-v2-release.yml`, release reconciliation/merge PR policy; prior W42 r32 receipt and formal Review (not regenerate).
+
+## Step A — record genuine formal Human Publication Preview Approval
+
+If the formal approval has not already been applied, perform `RECORD_PUBLICATION_PREVIEW_APPROVAL` on `RELEASE_CANDIDATE`, expected Pub Review revision **r3** derived from live review index; `reviewed_by=Human Owner`, `review_reference` names exact Human r33 authorization + approved PDF and Candidate. `reviewed_at` must be actual formal UTC recording time, not invented exact chat time. Request schema `schemas/operator-execution-request-v2.schema.json`. Commit only one new `sources/2026-W42/execution/requests/<unique-approval-id>.json` file as a **standalone request-only commit**, with `reviewed_repository_commit_sha=<parent HEAD>`; normal FF push. Trigger authenticated Owner-authorized `/survey-core-execute <request-only-SHA>` on transport Issue #448. Verify GitHub Actions `operator-preflight` and `operator-execute` PASS, trusted main runtime, bot commit and read-back. Record true approval r3, snapshot `gates/reviews/approvals/publication-r3.json`, active `gates/publication-preview-approval.json`, Gate index retains prior r1/r2 REQUEST_CHANGES, State `RELEASE_CANDIDATE`, `publication_preview=approved`, `terminal_reason=null`, freeze pending. No approvals unless owner decision exact match; no local CLI Bridge substitute.
+
+If approval already applied by Sol (detected from Gate index/State with same Human authority), **do not replay**; verify its workflow run/receipt and continue Freeze.
+
+## Step B — deterministic Freeze via Core, trusted Stage transition
+
+Generate **only** canonical W42 edition-local `freeze-record-v2.json` and `release-manifest-v2.json` with actual **first-party frozen Core builder** `survey_publication_v2.build_freeze`, using candidate at `sources/2026-W42/publication/v2/publication-candidate-v2.json`, exact approved active preview approval and candidate-bound pre-preview Visual review. Verify `publication.validate_release_manifest`, exact source/PDF original SHA as above, candidate hash, visual review hash, byte count/pages. Commit new freeze documents as normal FF. Do not edit old candidate/TeX/PDF/Reader/quality records or prior reviews.
+
+Then create **separate** request-only Git commit `ADVANCE_STAGE`, `expected_from_state=RELEASE_CANDIDATE`, `state_path=sources/2026-W42/production-state.json`, artifacts **only** `freeze-record` and `release-manifest` with exact canonical paths, truthful agent reviews, and meaningful summary. Trigger trusted reviewed-main GitHub Actions Operator Bridge via authenticated Issue #448 command. Verify request-only admission, true preflight, true Core stage contract, receipt, check `RELEASE_CANDIDATE→FROZEN`, Freeze checkpoint, frozen state and SHA. Fail-closed if any mismatch; do not fabricate Freeze.
+
+## Step C — merge frozen bytes, public GitHub Release and RELEASED provenance
+
+The authoritative Release workflow is `.github/workflows/survey-production-v2-release.yml` **on main** and its `FROZEN→RELEASED` `WORKFLOW_DISPATCH` is intentionally NOT an `ADVANCE_STAGE` request. Do not forge `RELEASED` by manual State edits or perform a third Operator Bridge advance from `FROZEN`. Ensure W42 edition changes can be integrated into main under ordinary PR and branch protection. The W42 production branch is exact frozen authority. Open / update one permitted W42 → main PR, review per changed file that `main` contracts remain identical, and merge via normal non-force mechanism (preserve full edition history; no force pushing). If main advanced, compare and reconcile safely: only continue when proper reviewed-main ancestor/preflight and compatibility proven; never silently rebase or mutate published PDF.
+
+On main AFTER integration verify frozen State SHA256 and Release Manifest SHA256 directly from main. Dispatch `survey-production-v2-release.yml` with exact `issue_id=2026-W42`, `production_state_sha256=<frozen sha>`, `release_manifest_sha256=<manifest sha>`, `confirmation=release:2026-W42`; check input accepted and output actions success. The workflow must compare/reconcile immutable GitHub Release `weekly/2026-W42`, re-download the published `Japanese_Generative_AI_Technical_Survey_2026-W42.pdf`, hash verify expected `827a93d8a7ec786a1e052b4832ab160eff5131402888e5792d82682febf79a34`, and produce exact Merge Verification/Release Record and `RELEASED` State on a post-release provenance PR. Merge or identify required remaining formal provenance PR according to repo policy, never assert main RELEASED before verified integration.
+
+## Explicit scope/Issue #570
+
+User explicitly said **Issueは別で閉じるので対応不要**. Do not close, comment on, change labels or status of Issue #570. Keep the published issue alive independently. NO further editorial changes, no full re-audit, no new Architecture Review, no modification to frozen Core. User has already authorized the exact PDF; do not ask for micro Human re-approval. If the public release workflow cannot be triggered by available tooling, prepare exact independently verifiable invocation and stop honestly without marking `RELEASED`.
+
+## Result
+
+Success: frozen r32 PDF unchanged, Human Preview approval r3 with trusted provenance, `FROZEN` on main and completed `weekly/2026-W42` release workflow with PDF hash match, post-release canonical `RELEASED` provenance recorded, actual GitHub Release URL + asset SHA + main HEAD + W42 HEAD, receipt/run IDs. Preserve approved PDF bytes, no Issue #570 modification.
+
+Stop status: `SOL_W42_R33_RELEASED / HUMAN_APPROVAL_R3 / FREEZE_VERIFIED / EXACT_PDF_RELEASED / CORE_V2_FROZEN / ISSUE570_UNTOUCHED`. If incomplete: report latest *actual* State/HEAD and exact blocker, `W42_R33_FROZEN_BUT_RELEASE_NOT_DISPATCHED` or more precise. Do not misrepresent pending states or imply success merely from writing this contract.
