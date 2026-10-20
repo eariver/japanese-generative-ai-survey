@@ -6,9 +6,9 @@
   "scanned_surfaces": [
     {
       "path": "surveys/weekly/2026-W42/main.tex",
-      "sha256": "2ed5848aeaedccdadd80c14f23967ee4017f562fd7409eda412439cb3281ecd3",
+      "sha256": "008b6a279185b14693ebeffe54ef1f4db4397d00946b9ebcd1248f662ca81e4e",
       "kind": "PRIMARY_SOURCE",
-      "byte_count": 96790
+      "byte_count": 97154
     },
     {
       "path": "surveys/weekly/2026-W42/preview.sty",
@@ -36,9 +36,9 @@
     },
     {
       "path": "sources/2026-W42/publication/v2/reader-manuscript-v2.json",
-      "sha256": "47634ae3ac347dd9529e796e01ed3661defa89e5f31b164dfe9752155b23c76f",
+      "sha256": "b8821c747187aff8bc82b43f477bd0250815efce760fc7bce69fd267abede718",
       "kind": "MANUSCRIPT_MANIFEST",
-      "byte_count": 15908
+      "byte_count": 15902
     }
   ],
   "rules_checked": [
@@ -110,68 +110,28 @@
     }
   ],
   "suppressions": [],
-  "findings": [
-    {
-      "finding_id": "W42-SOL-SURF-F01",
-      "rule_id": "RSG-SEM-PROCESS-LEAKAGE",
-      "artifact": "Semantic Review",
-      "path": "sources/2026-W42/publication/v2/reader-manuscript-v2.json",
-      "field_or_block": "semantic-review",
-      "locator": "surveys/weekly/2026-W42/main.tex Section 7 + Table T7 (B54 prose: \"79件中7位\")",
-      "text_span": "19.17％・79件中7位",
-      "severity": "WARNING",
-      "reason": "Worker L02 confirms the Vals anchor (19.17%, $0.15/test, LegalBench 86.23%) but documents live-source denominator drift: Updates prose pins #7 of 79 while header/table now show #7 of 81 as the leaderboard grew. The TeX pins the 79 snapshot without naming the drift, so a reader comparing against the live page will see a denominator mismatch.",
-      "proposed_normalization": "Add a parenthetical snapshot marker in a future revision (e.g. window-snapshot denominator) or a one-line disclosed-limitation note; do not silently change the number without re-audit.",
-      "disposition": "UNRESOLVED"
-    },
-    {
-      "finding_id": "W42-SOL-SURF-F02",
-      "rule_id": "RSG-SEM-PROCESS-LEAKAGE",
-      "artifact": "Semantic Review",
-      "path": "sources/2026-W42/publication/v2/reader-manuscript-v2.json",
-      "field_or_block": "semantic-review",
-      "locator": "surveys/weekly/2026-W42/main.tex Section 7 (B54 prose, twice: lead paragraph and design paragraph)",
-      "text_span": "1件72分",
-      "severity": "WARNING",
-      "reason": "Worker L02 fetch finds current card latency \"37 min 25 s\" and no 72-min field in the fetched excerpt; the 72-min figure is either source drift or a different timing field (total vs per-test) that cannot be re-fetched for the window. The TeX repeats 72 min twice as a measurement condition, so the field-level provenance is weaker than the ranking anchor.",
-      "proposed_normalization": "Qualify the figure as window-state reported value with disclosed limitation, or drop the minute figure to price-only if the field cannot be sourced; no silent revision.",
-      "disposition": "UNRESOLVED"
-    },
-    {
-      "finding_id": "W42-SOL-SURF-F03",
-      "rule_id": "RSG-SEM-PROCESS-LEAKAGE",
-      "artifact": "Semantic Review",
-      "path": "sources/2026-W42/publication/v2/reader-manuscript-v2.json",
-      "field_or_block": "semantic-review",
-      "locator": "surveys/weekly/2026-W42/main.tex Section 7 (B57 prose: \"10月16日の今週の出来事\", \"10月16日のX投稿は告知\")",
-      "text_span": "10月16日",
-      "severity": "WARNING",
-      "reason": "Worker L02 confirms repo existence, Apache-2.0 apportionment, and June-vs-October split, but the fetched README shows month granularity ([2026-10]) only with no Oct-16 commit/release timestamp in the excerpt. The TeX asserts day precision twice; table T7 itself says month-granularity, creating a prose/table precision asymmetry. No separate ASPIRE X-post bib key exists, so the X sentence is correctly announcement-discipline prose, not a dated citation.",
-      "proposed_normalization": "Soften prose day-precision to month-anchored wording consistent with Table T7, or retain with explicit disclosed-limitation note; do not invent a commit timestamp.",
-      "disposition": "UNRESOLVED"
-    }
-  ],
+  "findings": [],
   "summary": {
-    "total_findings": 3,
+    "total_findings": 0,
     "blocking_findings": 0,
-    "warning_findings": 3,
+    "warning_findings": 0,
     "suppressed_findings": 0,
     "normalized_findings": 0,
     "verdict": "PASSED"
   },
   "evaluated_by": "Core v2 Pre-Publication Reader-Surface Gate",
-  "recorded_at": "2026-10-20T00:13:39Z",
+  "recorded_at": "2026-10-20T13:33:33Z",
   "semantic_authority": {
     "status": "PASSED",
     "decision": "PASS",
-    "reviewed_by": "Independent review subagent (Sol review role; not the r30 build worker)",
+    "reviewed_by": "Independent delta reviewer (Sol review role; not the r31 build worker)",
     "surface_path": "surveys/weekly/2026-W42/main.tex",
-    "surface_sha256": "2ed5848aeaedccdadd80c14f23967ee4017f562fd7409eda412439cb3281ecd3",
-    "recorded_at": "2026-10-20T00:13:39Z",
-    "reviewed_at": "2026-10-20T00:13:39Z",
+    "surface_sha256": "008b6a279185b14693ebeffe54ef1f4db4397d00946b9ebcd1248f662ca81e4e",
+    "recorded_at": "2026-10-20T13:33:33Z",
+    "reviewed_at": "2026-10-20T13:33:33Z",
     "review_path": "sources/2026-W42/publication/v2/reader-surface-semantic-review-v2.json",
-    "review_sha256": "2bc7ca076b0e5a1befe415933c80a42e8e9bc297514577dd390f640cc9fb3319",
+    "review_sha256": "53d1d257dc0402a0fbe27352487256d91b067eea9d82e647b606b34c5670149f",
     "summary": "Bound semantic review passed"
   },
-  "gate_sha256": "d8d1f3fa33fc74d1c40c244744aa6e3c85be1c0cb6c094e8cada34a8a59c640e"
+  "gate_sha256": "f4467114bbe6dd60a718ab5b1cac928a42c4cc2483181b8a241e98c8b5b36c8c"
 }
