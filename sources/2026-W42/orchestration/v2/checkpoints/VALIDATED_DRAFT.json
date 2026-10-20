@@ -1,0 +1,51 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W42",
+  "from_state": "VALIDATED_DRAFT",
+  "to_state": "RELEASE_CANDIDATE",
+  "checkpoints": [],
+  "recorded_at": "2026-10-20T15:20:04Z",
+  "implementation": {
+    "repository_commit_sha": "46ea1f11df4576dcd28ff44388c5577b94222108",
+    "orchestrator_version": "survey-production-core-v2/0.15-postintegration-transport-thematic"
+  },
+  "contract": {
+    "pipeline_contract_version": "2.0-rc1",
+    "pipeline_contract_sha256": "ee89796245c22072cec98f34931180214a4928c24f399280793cd6420a4c8e71",
+    "quality_contract_version": "2.0-rc1",
+    "quality_contract_sha256": "b5b955d524fb438c0f1b2c9490bea1da2083e79028d67a55ca424bbfc20f2958",
+    "research_profile_version": "2.0-rc1",
+    "research_profile_sha256": "666f8a064b190ffd35216e26d6fdf2dd0fa932cac7b1b0d6448e262ded77b9a8",
+    "publication_profile_version": "2.0-rc1",
+    "publication_profile_sha256": "99adff93ff443e02bdcce639ce5fc4d4c959ee45a804da70efc4277db57fdddb"
+  },
+  "artifacts": [
+    {
+      "name": "publication-candidate",
+      "path": "sources/2026-W42/publication/v2/publication-candidate-v2.json",
+      "sha256": "2bcb42a6acb611ee970b3fa96c189d14b06ce740aa5c1059fffaeb9fe1f32649"
+    }
+  ],
+  "reviews": [
+    {
+      "check_id": "CORE_STAGE_CONTRACT",
+      "kind": "DETERMINISTIC",
+      "status": "PASS",
+      "executor": "survey_core_execution_bridge_v2",
+      "evidence": "Canonical Core stage contract validated for immutable request muse-w42-r32-rerelease-20261020.",
+      "result": {
+        "path": "sources/2026-W42/execution/bridge-runs/muse-w42-r32-rerelease-20261020/core-stage-contract.json",
+        "sha256": "3614e71169aa9614317cc72380a2e354090fee156baca1920c0f083d8fe07db4"
+      }
+    },
+    {
+      "check_id": "W42_R32_ISSUE570_CANDIDATE_READY",
+      "kind": "AGENT_EDITORIAL",
+      "status": "PASS",
+      "executor": "Muse (W42 r32 Issue570 build execution)",
+      "evidence": "Issue #570 corrected candidate READY_FOR_PUBLICATION_PREVIEW bound to TeX e6d53d5a / PDF 827a93d8 (21pp); gate PASSED on corrected bytes.",
+      "result": null
+    }
+  ],
+  "summary": "W42 r32 trusted re-advance 2 of 2: VALIDATED_DRAFT to RELEASE_CANDIDATE on Issue #570 corrected candidate. Stop before Human Publication Preview; no Freeze/Release."
+}
