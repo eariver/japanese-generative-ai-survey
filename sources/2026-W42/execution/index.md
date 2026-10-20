@@ -298,3 +298,12 @@ This is the current human-readable navigation record for the edition. Machine li
 - Manifest `reader-manuscript-v2.json` via frozen Core builder (content `78d9928d...`, `READER_FACING_AUTHORED`); 27 coverage + 2 requirements; `validate_manuscript_manifest` PASS.
 - Evidence: `execution/publication-build-r29/` (provenance/diff, manifest/coverage, fidelity/parity, print ledger, build-manifest, main.log, 21 PNGs, 3 sheets, review-pages, PROPOSED audit request). No semantic/visual PASS, no surface-gate PASSED, no Candidate/Gate/Bridge/State change.
 - Terminal `SOL_W42_R29_CANONICAL_BUILD_INDEPENDENT_AUDIT_READY / STAGE_DRAFT_COMPLETE / PUBLICATION_UNAPPROVED`. Session: `sessions/muse-w42-r29-20261020.md`. Normal FF commit(s) + non-force push; remote read-back required.
+
+## Muse W42 r30 integrated validation to Publication Preview boundary (2026-10-20 JST) — PUBLICATION_PREVIEW_READY
+
+- Started from dispatched remote `4ac9e5eb8...` (Tree `cea034f3...`, parent `060d15af3...`); main/Frozen Core/impl/r29 commit/tree, protected blobs, r29 file SHAs, DRAFT_COMPLETE/pending gates all matched read-only. FF-only to remote; no reset/rebase/new branch/force.
+- L02: B16 CONFIRMED, B54 PARTIAL (anchor holds; drift disclosed), B57 PARTIAL (structure holds; day-precision disclosed); no content revision. L03: 21/21 byte-identical re-render. L04: 28/28 IDs to P1-P7. L01 retained limit; L05 untouched.
+- Seven genuine authorities: r29 manuscript/source/PDF immutable + quality bundle PASS + worker semantic/visual PASSED (11+2 checks) + separate-reviewer surface semantic PASS (8 checks, raw report verbatim) + surface gate PASSED; candidate READY_FOR_PUBLICATION_PREVIEW; stage dry-run PASS.
+- Bridge 1 `muse-w42-r30-validate-20261020` (event `aee3a287d`): DRAFT_COMPLETE → VALIDATED_DRAFT, checkpoint DRAFT_COMPLETE.json. Bridge 2 `muse-w42-r30-release-20261020` (event `454e838eb`; first 8-artifact attempt failed closed, retried candidate-only): VALIDATED_DRAFT → RELEASE_CANDIDATE, checkpoint VALIDATED_DRAFT.json, terminal HUMAN_GATE_REACHED (stop, not approval).
+- r29 bytes/Arch r1/Core untouched; no preview approval/freeze/release/merge.
+- Terminal `SOL_W42_R30_PUBLICATION_PREVIEW_READY / RELEASE_CANDIDATE / HUMAN_PUBLICATION_PREVIEW_PENDING / PDF_BYTES_IMMUTABLE / NO_FREEZE_NO_RELEASE`. Session: `sessions/muse-w42-r30-20261020.md`. Normal FF commits + non-force push; remote read-back required.
