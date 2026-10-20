@@ -2,6 +2,7 @@
 % Sources: execution/editorial-revision-r18 READER BYTES (v18.0, print-only transforms). Canonical Draft/State untouched. r16/r17/r18 history preserved.
 % r29: r26 MULTICOL-V2 geometry kept; cover production normalization only (neutral descriptor, no diagnostic stamp). No Reader prose/cell/citation change.
 % r31: Section 7 factual repair only (ASPIRE Aug-public/Oct-16-v1.0 distinction incl. T7 row + deck; Vals Oct-12 snapshot qualifiers; X-post date-neutral). No other prose/cell/citation/geometry change.
+% r32: Section 1 Argon unified-context repair only (L64 body + T1 row; 1,048,576 shared frame vs 65,536/32,768 caps + long decode). No other prose/cell/citation/geometry change.
 \documentclass[lualatex,a4paper,10pt]{jlreq}
 \usepackage{preview}
 \usepackage{multicol} % [r25] segmented two-column body (independent output routine; NOT cuted)
@@ -61,7 +62,7 @@ Wonderの技術的な核は、Active MemoryとActive Focusという二つの定�
 \cite{B01,B62,B63,B02,B64,B03}
 
 
-Argonの料金は導入時が入力2ドル・出力10ドルで、11月30日から4ドル・20ドルに上がる。出力100万トークンという文脈長の大きさとあわせて、長時間作業を前提にした価格設計と読める。料金改定は導入期と定常期を分けた設計であり、長時間利用の見積もりに直結する。
+Argonの料金は導入時が入力2ドル・出力10ドルで、11月30日から4ドル・20ドルに上がる。1,048,576トークンは入力・思考・出力（関数呼出しを含む）で共有する統合枠で、通常の単一生成は最大65,536トークン（直接の非ストリーミングRESTは32,768）に限られる。それを超える生成には対応API・SDKでのlong decode（継続生成）が必要で、入力等が使った分だけ総枠の残りは減る。料金改定は導入期と定常期を分けた設計であり、長時間利用の見積もりに直結する。
 \cite{B05,B65,B08,B04,B07,B06}
 
 
@@ -102,7 +103,7 @@ Minecraftの長時間実行は条件の束として読む。10月15日付の論�
 \toprule
 Wonder & 発表：10月12日（Meta） & 核：Active Memory（会話またぎ文脈の保持）・Active Focus（遂行中の注意維持と確認） & 評価：Harvey LAB・FocusBench・SWE-Marathon等を図表化（数値本体は報告書、未刊の安全報告あり） & 料金：API 4/20ドル、Fullは上位プラン限定（開発者ページ） \cite{B01,B62,B63,B02} \\
 \midrule
-Argon & 提供開始：10月13日全世界一般提供 & 料金：導入2/10ドル→11月30日4/20ドル、出力100万トークン & 事例：Chrome改修等（発行元報告） & 長時間：Minecraft 27時間14分・ランダム生成・単一試行・構造化情報のみ（条件明示、固定シードなし） & 流通：Copilot一般提供（10月13日変更履歴） \cite{B05,B65,B08,B04} \\
+Argon & 提供開始：10月13日全世界一般提供 & 料金：導入2/10ドル→11月30日4/20ドル、統合枠約100万（入力・思考・出力で共有、長文は継続生成条件つき） & 事例：Chrome改修等（発行元報告） & 長時間：Minecraft 27時間14分・ランダム生成・単一試行・構造化情報のみ（条件明示、固定シードなし） & 流通：Copilot一般提供（10月13日変更履歴） \cite{B05,B65,B08,B04} \\
 \bottomrule
 \end{tabularx}
 } % [r25] end inter-segment table

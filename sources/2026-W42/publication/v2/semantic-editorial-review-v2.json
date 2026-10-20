@@ -11,48 +11,48 @@
   },
   "reader_manuscript": {
     "path": "sources/2026-W42/publication/v2/reader-manuscript-v2.json",
-    "sha256": "b8821c747187aff8bc82b43f477bd0250815efce760fc7bce69fd267abede718"
+    "sha256": "ef05d95acf9fcc352324a85fb29077bae5eab90d6cc31b864688c29f4030a879"
   },
   "source": {
     "path": "surveys/weekly/2026-W42/main.tex",
-    "sha256": "008b6a279185b14693ebeffe54ef1f4db4397d00946b9ebcd1248f662ca81e4e",
-    "byte_count": 97154
+    "sha256": "e6d53d5ae962332c85df8b60c52ac614d259da3c7301cdffc4b0112372552697",
+    "byte_count": 97647
   },
   "pdf": {
     "path": "surveys/weekly/2026-W42/main.pdf",
-    "sha256": "026386115c924b9e7188fb697b8bf1585cf824bcd8affa19a912760167b8fc0c",
-    "byte_count": 505327
+    "sha256": "827a93d8a7ec786a1e052b4832ab160eff5131402888e5792d82682febf79a34",
+    "byte_count": 505694
   },
   "page_count": 21,
   "checks": [
     {
       "check_id": "PUBLICATION_BOUNDARY",
       "status": "PASS",
-      "detail": "Corrected reader surface carries no internal pipeline metadata: full new-TeX scan finds 0 DRAFT_COMPLETE/candidate:/TODO/APPROVED/RELEASED/internal-path/diagnostic tokens; neutral cover retained; delta reviewer independently re-scanned new bytes with the same zero result.",
+      "detail": "Corrected surface has no internal pipeline metadata: new-TeX scan 0 hits on pipeline/diagnostic tokens; neutral cover retained; delta reviewer re-scanned new bytes with zero result.",
       "evidence_locations": [
         "surveys/weekly/2026-W42/main.tex",
-        "sources/2026-W42/execution/validation-to-preview-r31/pages/p-01.png"
+        "sources/2026-W42/execution/issue570-r32/pages/p-01.png"
       ]
     },
     {
       "check_id": "ARCHITECTURE_CONTENT_FIDELITY",
       "status": "PASS",
-      "detail": "27/27 must-cover rows map to Sections 1-7 (L04 28/28, placement unchanged by repair). F-B57 event-type error corrected: body/T7/deck now distinguish August repo publication from Oct-16 v1.0, verified against both primary commits. B54 snapshot qualified with Oct-12 date; 72min retained per official hlab-v1 1h12m evidence (delta reviewer concurs). No must-cover breach remains.",
+      "detail": "27/27 must-cover intact (P1 placement verified with corrected Argon cell; all other packages byte-identical). The repair makes P1 MORE faithful: unified-frame numbers now match primary docs. Prior ASPIRE/Vals disclosures persist; no must-cover breach.",
       "evidence_locations": [
-        "surveys/weekly/2026-W42/main.tex: Section 7 + Table T7",
-        "surveys/weekly/2026-W42/main.tex: Section 1",
+        "surveys/weekly/2026-W42/main.tex: Section 1 + Table T1",
         "surveys/weekly/2026-W42/main.tex: Section 2",
         "surveys/weekly/2026-W42/main.tex: Section 3 + Table T3",
         "surveys/weekly/2026-W42/main.tex: Section 4 + Table T4",
         "surveys/weekly/2026-W42/main.tex: Section 5 + Table T5",
         "surveys/weekly/2026-W42/main.tex: Section 6 + Table T6",
-        "sources/2026-W42/execution/validation-to-preview-r31/delta-review-raw-r31.md"
+        "surveys/weekly/2026-W42/main.tex: Section 7 + Table T7",
+        "sources/2026-W42/execution/issue570-r32/google-source-evidence-r32.json"
       ]
     },
     {
       "check_id": "FINAL_SYNTHESIS_QUALITY",
       "status": "PASS",
-      "detail": "Section 7 tail unchanged by repair (only ASPIRE-adjacent sentences outside the tail changed); still re-bundles the three P7 items without new claims. The added v1.0 distinction strengthens rather than alters the synthesis.",
+      "detail": "Section 7 tail untouched by repair; synthesis intact.",
       "evidence_locations": [
         "surveys/weekly/2026-W42/main.tex: Section 7 tail"
       ]
@@ -60,7 +60,7 @@
     {
       "check_id": "BIBLIOGRAPHY_METADATA",
       "status": "PASS",
-      "detail": "90 bibitems / 169 cite calls / 729 keys / 90 distinct / 0 unknown / 19 aliases / 177 ledger / 71 URLs / 17 secondary badges / 0 untranslated SECONDARY — all identical counts to r30; repair adds/removes no keys.",
+      "detail": "90 bibitems / 169 cites / 729 keys / 90 distinct / 0 unknown / 19 aliases / 177 ledger / 71 URLs / 17 secondary / 0 untranslated — identical to r31; repair adds/removes no keys.",
       "evidence_locations": [
         "surveys/weekly/2026-W42/main.tex: bibliography B01-B90"
       ]
@@ -68,25 +68,24 @@
     {
       "check_id": "POST_TRANSFORM_SEMANTIC_REVALIDATION",
       "status": "PASS",
-      "detail": "r30-to-r31 transform is exactly 7 changed TeX lines (header provenance + 6 Section 7 factual lines); P1-P6 byte-identical, bibliography identical, T1-T6 identical, T7 single ASPIRE cell corrected, cites identical order. 21 pages preserved with same table page map.",
+      "detail": "r31-to-r32 transform is 3 changed TeX lines (provenance comment + L65 body + T1 cell); prices/dates/examples/citations/geometry otherwise identical; 21 pages preserved with local-only reflow (p03-p05).",
       "evidence_locations": [
-        "sources/2026-W42/execution/validation-to-preview-r31/corrected-build-provenance-and-diff-r31.md"
+        "surveys/weekly/2026-W42/main.tex: Section 1",
+        "surveys/weekly/2026-W42/main.tex: Table T1"
       ]
     },
     {
       "check_id": "SOURCE_SPECIFIC_FAIL_CLOSED_NOTES",
       "status": "PASS",
-      "detail": "All caveats intact plus tightened ones: ASPIRE August/v1.0 apportionment now precise; Vals snapshot dated Oct 12 with 72min officially grounded; X-post sentence date-neutral (no new uncited fact). All other caveats byte-identical.",
+      "detail": "All prior caveats intact; Argon caveat block now precise (shared frame, hop caps, long-decode condition, remaining budget, no guaranteed-65536 implication). No guaranteed-visible-answer reading.",
       "evidence_locations": [
-        "surveys/weekly/2026-W42/main.tex: Section 7 + Table T7",
-        "surveys/weekly/2026-W42/main.tex: Section 1",
-        "surveys/weekly/2026-W42/main.tex: Section 6"
+        "surveys/weekly/2026-W42/main.tex: Section 1 + Table T1"
       ]
     },
     {
       "check_id": "WEEKLY_CARRY_OVER_DISPOSITION",
       "status": "PASS",
-      "detail": "Unchanged from r30: June papers as background, Decider chain vs W41 v1.1. The repair sharpens the ASPIRE June/August/October three-way split without promoting background to launch.",
+      "detail": "Unchanged: June backgrounds, Decider chain. Argon fix does not promote background.",
       "evidence_locations": [
         "surveys/weekly/2026-W42/main.tex: Section 4 + Table T4",
         "surveys/weekly/2026-W42/main.tex: Section 6",
@@ -96,35 +95,33 @@
     {
       "check_id": "WEEKLY_LATE_BREAKING_SINGLE_HOME",
       "status": "PASS",
-      "detail": "Unchanged: cutoff on cover; no post-cutoff section admitted. Oct-16 v1.0 falls inside the window as an ordinary chapter item with primary commit dates.",
+      "detail": "Unchanged: cutoff on cover; Oct-16 v1.0 and Argon window events homed in chapters.",
       "evidence_locations": [
-        "surveys/weekly/2026-W42/main.tex: cover cutoff",
-        "sources/2026-W42/execution/validation-to-preview-r31/pages/p-01.png"
+        "surveys/weekly/2026-W42/main.tex: cover cutoff"
       ]
     },
     {
       "check_id": "WEEKLY_WATCHLIST_READER_SEMANTICS",
       "status": "PASS",
-      "detail": "Pending artifacts unchanged and concrete (Wonder safety report, third-party guarantees, weight-file gaps, Vals limits, frozen-LLM dependence). The ASPIRE date precision is no longer a watch item.",
+      "detail": "Pending artifacts concrete and unchanged; Argon long-decode API/SDK conditions now stated as the watch criterion itself.",
       "evidence_locations": [
         "surveys/weekly/2026-W42/main.tex: Section 1",
-        "surveys/weekly/2026-W42/main.tex: Section 3",
         "surveys/weekly/2026-W42/main.tex: Section 7"
       ]
     },
     {
       "check_id": "WEEKLY_WHY_THIS_ISSUE",
       "status": "PASS",
-      "detail": "Cover headline/deck updated coherently (ASPIRE v1.0公開); through-line of denominators/conditions/license-levels intact and now more precise on the license-timeline axis.",
+      "detail": "Through-line intact; P1 now denominators-precise on the token axis.",
       "evidence_locations": [
         "surveys/weekly/2026-W42/main.tex: cover headline/deck",
-        "surveys/weekly/2026-W42/main.tex: Section 7 tail"
+        "surveys/weekly/2026-W42/main.tex: Section 1"
       ]
     },
     {
       "check_id": "WEEKLY_COMMUNITY_MOVEMENT",
       "status": "PASS",
-      "detail": "X-post discipline intact; the neutralized announcement sentence keeps posts as existence-only context. No conclusion grounded on a post alone.",
+      "detail": "X-post discipline intact; no conclusion grounded on a post alone.",
       "evidence_locations": [
         "surveys/weekly/2026-W42/main.tex: Section 1",
         "surveys/weekly/2026-W42/main.tex: Section 2",
@@ -132,7 +129,7 @@
       ]
     }
   ],
-  "reviewed_by": "Muse (W42 r31 corrected build execution; worker-authored, not independent)",
-  "recorded_at": "2026-10-20T13:34:51Z",
-  "review_sha256": "3764e89a38ede23070254f21fa741c2c8454e8e27786ddc9b6b4ba007ee6146f"
+  "reviewed_by": "Muse (W42 r32 Issue570 build execution; worker-authored, not independent)",
+  "recorded_at": "2026-10-20T15:16:02Z",
+  "review_sha256": "a1cc6c1b59858ad2039f350a82e463014ae5de7407e43c3e8c553370d99bfa6b"
 }

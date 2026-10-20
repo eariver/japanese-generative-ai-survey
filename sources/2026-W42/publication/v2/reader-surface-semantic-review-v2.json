@@ -5,54 +5,56 @@
   "review_kind": "SEMANTIC_EDITORIAL",
   "reviewed_surface": {
     "path": "surveys/weekly/2026-W42/main.tex",
-    "sha256": "008b6a279185b14693ebeffe54ef1f4db4397d00946b9ebcd1248f662ca81e4e"
+    "sha256": "e6d53d5ae962332c85df8b60c52ac614d259da3c7301cdffc4b0112372552697"
   },
   "checks": [
     {
-      "check_id": "DELTA_FACTUAL_REPAIR",
+      "check_id": "ISSUE570_FACTUAL_REPAIR",
       "status": "PASS",
-      "detail": "ASPIRE Aug-public/Oct-16-v1.0 distinction verified against both primary commits (7ba73d3 2026-08-21 Public release; fa00f0ef 2026-10-16 ASPIRE v1.0 release); TeX body/T7/deck mutually consistent. Vals Oct-12 snapshot qualifiers added twice with all numerics unchanged (19.17/79/0.15/72 counts identical), consistent with r30 audit B54 evidence (79=Oct-12 snapshot, 72min=hlab-v1 1h12m). X-post sentence neutralized per audit fallback. Diff contains only the 6 briefed change classes, no other delta.",
+      "detail": "Unified 1,048,576 shared input/thinking/output frame, 65,536 single-generation cap, 32,768 direct non-streaming REST cap, API/SDK long-decode condition with remaining-budget reduction, and model-ID-alone-insufficient semantics all independently confirmed against primary docs via own curl fetches; TeX L65/L106 faithful, thinking not an independent budget, no guaranteed-65536 implication.",
       "evidence_locations": [
-        "gh api NVlabs/ASPIRE commits 7ba73d3/fa00f0ef",
-        "new TeX Section 7 body/T7/deck/X-post lines",
-        "diff -u r30 vs working-tree TeX",
-        "sources/2026-W42/execution/reviews/independent-w42-r30-publication-readiness-REQUEST_CHANGES-20261020.md section 4"
+        "surveys/weekly/2026-W42/main.tex L65",
+        "surveys/weekly/2026-W42/main.tex L106",
+        "curl https://ai.google.dev/gemini-api/docs/tokens (HTTP 200)",
+        "curl https://ai.google.dev/gemini-api/docs/generate-content/long-decode (HTTP 200)",
+        "sources/2026-W42/execution/issue570-r32/google-source-evidence-r32.json (corroboration only)"
       ]
     },
     {
       "check_id": "DELTA_VISUAL_REGRESSION",
       "status": "PASS",
-      "detail": "New PDF 21 pages (unchanged from r30). PyMuPDF extraction of new bytes: T7 caption+3 rows co-located on p17; longer ASPIRE row did not break pagination (p16=2107, p17=2089, p18=1618 chars). Table page map unchanged: T1 p04, T2 p06, T3 p09, T4 p12, T5 p14, T6 p16, T7 p17 (p15 hits are body cross-references, not moved tables). Stale r30 PNGs not used.",
+      "detail": "21 pages before and after (pypdf); T1 caption+rows co-located on p4 with longer Argon cell intact; table page map identical (T1 p4, T2 p6, T3 p9, T4 p12, T5 p14, T6 p16, T7 p17); per-page chars p02 2282 / p03 2003 / p04 2115 / p05 2203 consistent with local-only reflow.",
       "evidence_locations": [
-        "new main.pdf pp.16-18 PyMuPDF text extraction",
-        "per-page table-locator scan",
-        "pypdf page count 21"
+        "surveys/weekly/2026-W42/main.pdf (SHA256 827a93d8...)",
+        "PyMuPDF page-text extraction pp 1-21"
       ]
     },
     {
       "check_id": "DELTA_SURFACE_LEAKAGE",
       "status": "PASS",
-      "detail": "Full new-TeX scan: DRAFT_COMPLETE 0, candidate: 0, TODO 0, APPROVED 0, RELEASED 0, sources/2026-W42 0, NONCANONICAL 0. Cover neutral (weekly descriptor, no diagnostic/approval stamp). No reader-visible pipeline leakage introduced by the repair.",
+      "detail": "No reader-visible pipeline/diagnostic tokens in TeX or rendered PDF; Sol/Luna/Claude grep hits are legitimate reader prose; cover neutral with no diagnostic stamp.",
       "evidence_locations": [
-        "new main.tex full-text token counts",
-        "cover setup/descriptor lines"
+        "surveys/weekly/2026-W42/main.tex L12-L18 (cover block)",
+        "surveys/weekly/2026-W42/main.pdf p1 cover text",
+        "full-PDF token scan"
       ]
     },
     {
       "check_id": "READER_PIPELINE_INDEPENDENCE",
       "status": "PASS",
-      "detail": "Fresh independent scan of new bytes for pipeline vocabulary (DRAFT/VALIDATED/RELEASE_CANDIDATE/GATE/STATE/workflow/operator/bridge/checkpoint/freeze/execution/publication-v2 etc.): only hits are TeX % provenance comments (not typeset), tabularx X column specifiers, and the substring 'sources' inside bibliography URL word 'resources' (B02). No typeset internal-pipeline prose, paths, digests, or gate records in reader-visible bytes.",
+      "detail": "Reader prose contains no reference to production machinery, gates, stages, reviewers, or operators; TeX provenance comments are source-only and not rendered; edition descriptor and coverstory are neutral topical strings.",
       "evidence_locations": [
-        "new main.tex broad pipeline-term scan with per-line context (L1-L7, tabularx lines, L824 B02)"
+        "surveys/weekly/2026-W42/main.tex L1-L18",
+        "surveys/weekly/2026-W42/main.pdf pp 1, 4 (cover + T1 rendering)"
       ]
     }
   ],
   "decision": "PASS",
-  "reviewed_by": "Independent delta reviewer (Sol review role; not the r31 build worker)",
-  "reviewed_at": "2026-10-20T13:33:33Z",
-  "recorded_at": "2026-10-20T13:33:33Z",
+  "reviewed_by": "Independent delta reviewer r32 (Sol review role; not the r32 build worker)",
+  "reviewed_at": "2026-10-20T15:15:09Z",
+  "recorded_at": "2026-10-20T15:15:09Z",
   "status": "PASSED",
   "findings": [],
-  "summary": "Separate read-only delta review of corrected TeX bytes (reviewer independently confirmed new SHA 008b6a27): 4/4 checks PASS. Reviewer returned 4 INFO findings (D01 repair accepted, D02 qualifier accepted, D03 neutralization accepted, D04 no-action), none blocking; retained verbatim in raw report delta-review-raw-r31.md. Formal findings array empty as no open items require gate action. Limits: delta scope only (no full re-audit); no Human Gate decision.",
-  "review_sha256": "53d1d257dc0402a0fbe27352487256d91b067eea9d82e647b606b34c5670149f"
+  "summary": "Separate read-only delta review of Issue #570 corrected bytes (reviewer independently confirmed new TeX SHA e6d53d5a and PDF 827a93d8, 21pp): 4/4 checks PASS. Reviewer returned one INFO finding (R32-INFO-01: function-call parenthetical goes one step beyond verbatim fetched excerpts but consistent, ACCEPT, no action); retained verbatim in raw report delta-review-raw-r32.md, not carried as an open gate finding. Limits: delta scope only; no Human Gate decision.",
+  "review_sha256": "64d90d254d89e78b4674bebaecfead29a4e85b32a596148ae4daefcc0b1fd6c7"
 }
