@@ -3,7 +3,7 @@
   "issue_id": "2026-W42",
   "research_profile": "WEEKLY",
   "publication_profile": "WEEKLY_MAGAZINE",
-  "lifecycle_state": "RELEASE_CANDIDATE",
+  "lifecycle_state": "FROZEN",
   "profile": {
     "path": "sources/2026-W42/production-profile.json",
     "sha256": "a2cfe143d201717431f98c013e52e86e1e59fb1f481183a381c5a49f3eb121fe"
@@ -37,7 +37,7 @@
     }
   },
   "target_gate": "ARCHITECTURE_REVIEW",
-  "next_action": "stage:freeze",
+  "next_action": "stage:release",
   "terminal_reason": null,
   "exception_gate": {
     "status": "inactive",
@@ -54,7 +54,7 @@
     "draft": "passed",
     "validation": "passed",
     "publication_preview": "passed",
-    "freeze": "pending",
+    "freeze": "passed",
     "release": "pending"
   },
   "checkpoint_provenance": {
@@ -98,7 +98,10 @@
       "path": "sources/2026-W42/gates/publication-preview-approval.json",
       "sha256": "90be771e7ce11ad84b809ca45a9259add0fb74aa1524b2f2f4a714112a7aec8c"
     },
-    "freeze": null,
+    "freeze": {
+      "path": "sources/2026-W42/orchestration/v2/checkpoints/RELEASE_CANDIDATE.json",
+      "sha256": "4cbfcd05b8824be92344c7c1ec895113234c17fb651022f51f3bccd68b776ff8"
+    },
     "release": null
   },
   "legacy_compatibility": {
@@ -161,6 +164,12 @@
       "to": "RELEASE_CANDIDATE",
       "recorded_at": "2026-10-20T15:20:04Z",
       "repository_commit_sha": "46ea1f11df4576dcd28ff44388c5577b94222108"
+    },
+    {
+      "from": "RELEASE_CANDIDATE",
+      "to": "FROZEN",
+      "recorded_at": "2026-10-21T00:40:42Z",
+      "repository_commit_sha": "59041cf56653e7d514bc990655a8e61a379ba268"
     }
   ],
   "publication_revalidation_provenance": null
