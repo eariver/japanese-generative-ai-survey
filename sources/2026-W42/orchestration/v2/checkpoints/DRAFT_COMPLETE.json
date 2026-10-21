@@ -1,0 +1,91 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W42",
+  "from_state": "DRAFT_COMPLETE",
+  "to_state": "VALIDATED_DRAFT",
+  "checkpoints": [
+    "validation"
+  ],
+  "recorded_at": "2026-10-20T15:17:20Z",
+  "implementation": {
+    "repository_commit_sha": "5f33d8cec1f6315acbc1a6ce614fb11a5dfe37df",
+    "orchestrator_version": "survey-production-core-v2/0.15-postintegration-transport-thematic"
+  },
+  "contract": {
+    "pipeline_contract_version": "2.0-rc1",
+    "pipeline_contract_sha256": "ee89796245c22072cec98f34931180214a4928c24f399280793cd6420a4c8e71",
+    "quality_contract_version": "2.0-rc1",
+    "quality_contract_sha256": "b5b955d524fb438c0f1b2c9490bea1da2083e79028d67a55ca424bbfc20f2958",
+    "research_profile_version": "2.0-rc1",
+    "research_profile_sha256": "666f8a064b190ffd35216e26d6fdf2dd0fa932cac7b1b0d6448e262ded77b9a8",
+    "publication_profile_version": "2.0-rc1",
+    "publication_profile_sha256": "99adff93ff443e02bdcce639ce5fc4d4c959ee45a804da70efc4277db57fdddb"
+  },
+  "artifacts": [
+    {
+      "name": "publication-pdf",
+      "path": "surveys/weekly/2026-W42/main.pdf",
+      "sha256": "827a93d8a7ec786a1e052b4832ab160eff5131402888e5792d82682febf79a34"
+    },
+    {
+      "name": "quality-regression-bundle",
+      "path": "sources/2026-W42/publication/v2/quality-regression-bundle-v2.json",
+      "sha256": "ad698a3d22640cc0c420e81c1b7b7f42952a031282dcd3cc46ce0f5d71fe593f"
+    },
+    {
+      "name": "reader-manuscript",
+      "path": "sources/2026-W42/publication/v2/reader-manuscript-v2.json",
+      "sha256": "ef05d95acf9fcc352324a85fb29077bae5eab90d6cc31b864688c29f4030a879"
+    },
+    {
+      "name": "reader-surface-gate",
+      "path": "sources/2026-W42/publication/v2/reader-surface-gate-v2.json",
+      "sha256": "77b2323530d107f5274e3f52e002b954c47012ae934b99f4476dbff22aba84e5"
+    },
+    {
+      "name": "semantic-review",
+      "path": "sources/2026-W42/publication/v2/semantic-editorial-review-v2.json",
+      "sha256": "d13c3be0f5f39f00b94c7284220f2aec6f566f62d1deb3987a14ceba899ee3cd"
+    },
+    {
+      "name": "validated-source",
+      "path": "surveys/weekly/2026-W42/main.tex",
+      "sha256": "e6d53d5ae962332c85df8b60c52ac614d259da3c7301cdffc4b0112372552697"
+    },
+    {
+      "name": "visual-review",
+      "path": "sources/2026-W42/publication/v2/visual-review-v2.json",
+      "sha256": "1da432ca7239c931d62961063cc8b5f65effc22065182dc4759da2635277598f"
+    }
+  ],
+  "reviews": [
+    {
+      "check_id": "CORE_STAGE_CONTRACT",
+      "kind": "DETERMINISTIC",
+      "status": "PASS",
+      "executor": "survey_core_execution_bridge_v2",
+      "evidence": "Canonical Core stage contract validated for immutable request muse-w42-r32-readvance-20261020.",
+      "result": {
+        "path": "sources/2026-W42/execution/bridge-runs/muse-w42-r32-readvance-20261020/core-stage-contract.json",
+        "sha256": "a724d3af91f59955af0bb693071ba2c07d4287aa4dfd233e40e1ed8882504f17"
+      }
+    },
+    {
+      "check_id": "W42_R32_ISSUE570_DELTA_REVIEW",
+      "kind": "AGENT_EDITORIAL",
+      "status": "PASS",
+      "executor": "Muse (W42 r32 Issue570 build execution)",
+      "evidence": "Separate delta reviewer PASS on Issue #570 2-locus repair (own curl/diff/visual checks); unified-frame numbers source-faithful; no other delta.",
+      "result": null
+    },
+    {
+      "check_id": "W42_R32_ISSUE570_VISUAL_CHECK",
+      "kind": "AGENT_VISUAL",
+      "status": "PASS",
+      "executor": "Muse (W42 r32 Issue570 build execution)",
+      "evidence": "New 21 PNGs; p02-p05 viewed; T1 co-located p04; page map identical; log clean.",
+      "result": null
+    }
+  ],
+  "summary": "W42 r32 trusted re-advance 1 of 2: Issue #570 corrected seven authorities advance DRAFT_COMPLETE to VALIDATED_DRAFT after native Gate r2 rollback."
+}

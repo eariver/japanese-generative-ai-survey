@@ -1,0 +1,196 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W42",
+  "evidence_task_id": "evidence:2026-W42:545cfe3f74b1cff0",
+  "basis": {
+    "task_sha256": "d4a663cb45d4933cca3a37cab93695e73174a24ae3581253d78dac818910e838",
+    "screening_acceptance_sha256": "eccf817a07614efc2cdbbcfc42e4109198e509d011b2fed420d1257dcc929d01",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "decider-v12",
+      "canonical_name": "Perplexity Decider v1.2",
+      "entity_type": "MODEL",
+      "organization": "Perplexity",
+      "canonical_url": "x-official:OpenRouter/status/2111200007437402243"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "decider-v12",
+    "artifact_type": "MODEL_UPDATE",
+    "canonical_name": "Perplexity Decider v1.2",
+    "canonical_url": "x-official:OpenRouter/status/2111200007437402243"
+  },
+  "temporal": {
+    "observed_at": "2026-10-17T10:45:00Z",
+    "events": []
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "x-official:OpenRouter/status/2111200007437402243",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "Perplexity: Decider v1.2 on OpenRouter (Oct 16)",
+      "published_at": null,
+      "accessed_at": "2026-10-17T10:45:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    },
+    {
+      "source_id": "supplement-src-22ffbaf412f92c79",
+      "url": "https://docs.perplexity.ai/docs/decisions/quickstart",
+      "source_class": "SECONDARY",
+      "title": "docs.perplexity.ai/docs/decisions/quickstart",
+      "published_at": null,
+      "accessed_at": "2026-10-17T07:00:00Z",
+      "role": "Post-Screening exact authority supplement: Post-Screening exact authority for r7 card claims (capture depth in file header)"
+    },
+    {
+      "source_id": "supplement-src-706546ee04e9f4cc",
+      "url": "https://huggingface.co/perplexity-ai/pplx-decider-v1.2",
+      "source_class": "PRIMARY_REPOSITORY",
+      "title": "huggingface.co/perplexity-ai/pplx-decider-v1.2",
+      "published_at": null,
+      "accessed_at": "2026-10-17T07:00:00Z",
+      "role": "Post-Screening exact authority supplement: Post-Screening exact authority for r7 card claims (capture depth in file header)"
+    },
+    {
+      "source_id": "supplement-src-8d8172723798253c",
+      "url": "https://openrouter.ai/perplexity/pplx-decider-v1.2",
+      "source_class": "SECONDARY",
+      "title": "openrouter.ai/perplexity/pplx-decider-v1.2",
+      "published_at": null,
+      "accessed_at": "2026-10-17T07:00:00Z",
+      "role": "Post-Screening exact authority supplement: Post-Screening exact authority for r7 card claims (capture depth in file header)"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "27B on Qwen3.8-27B backbone (note class naming); joint request format + training-data change vs v1.1 (multi-question readout at marker tokens; grouped questions inform each other)",
+      "subject_id": "decider-v12",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1",
+        "supplement-src-22ffbaf412f92c79",
+        "supplement-src-706546ee04e9f4cc",
+        "supplement-src-8d8172723798253c"
+      ],
+      "context": "https://huggingface.co/perplexity-ai/pplx-decider-v1.2"
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "256K ctx; $0.02/M in, outputs free; Flash 4B $0.01; 255 options/10 rubric levels; Decisions API (not chat endpoint); v1.1 names route to v1.2 (bill at v1.2)",
+      "subject_id": "decider-v12",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1",
+        "supplement-src-22ffbaf412f92c79",
+        "supplement-src-706546ee04e9f4cc",
+        "supplement-src-8d8172723798253c"
+      ],
+      "context": "https://docs.perplexity.ai/docs/decisions/quickstart"
+    },
+    {
+      "statement_id": "claim-3",
+      "text": "Released Oct 16 IN (OpenRouter); native checkpoint layout (Qwen3_5Model + [255,5120] head); pip-installable source",
+      "subject_id": "decider-v12",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1",
+        "supplement-src-22ffbaf412f92c79",
+        "supplement-src-706546ee04e9f4cc",
+        "supplement-src-8d8172723798253c"
+      ],
+      "context": "https://openrouter.ai/perplexity/pplx-decider-v1.2"
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Spec diff unfetched",
+      "subject_id": "decider-v12",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1",
+        "supplement-src-22ffbaf412f92c79",
+        "supplement-src-706546ee04e9f4cc",
+        "supplement-src-8d8172723798253c"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "r7 card authority: AUTHORITY_CONSUMED (see correction ledger for scoping)",
+      "subject_id": "decider-v12",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1",
+        "supplement-src-22ffbaf412f92c79",
+        "supplement-src-706546ee04e9f4cc",
+        "supplement-src-8d8172723798253c"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "primary-body",
+        "status": "UNRESOLVED",
+        "finding": "No r7 finding recorded for this screening target",
+        "subject_ids": [
+          "decider-v12"
+        ],
+        "source_ids": [
+          "src-1",
+          "supplement-src-22ffbaf412f92c79",
+          "supplement-src-706546ee04e9f4cc",
+          "supplement-src-8d8172723798253c"
+        ]
+      },
+      {
+        "target": "license-weights",
+        "status": "UNRESOLVED",
+        "finding": "No r7 finding recorded for this screening target",
+        "subject_ids": [
+          "decider-v12"
+        ],
+        "source_ids": [
+          "src-1",
+          "supplement-src-22ffbaf412f92c79",
+          "supplement-src-706546ee04e9f4cc",
+          "supplement-src-8d8172723798253c"
+        ]
+      },
+      {
+        "target": "benchmark-basis",
+        "status": "UNRESOLVED",
+        "finding": "No r7 finding recorded for this screening target",
+        "subject_ids": [
+          "decider-v12"
+        ],
+        "source_ids": [
+          "src-1",
+          "supplement-src-22ffbaf412f92c79",
+          "supplement-src-706546ee04e9f4cc",
+          "supplement-src-8d8172723798253c"
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      "primary-body: No r7 finding recorded for this screening target",
+      "license-weights: No r7 finding recorded for this screening target",
+      "benchmark-basis: No r7 finding recorded for this screening target"
+    ],
+    "contradictions": []
+  }
+}

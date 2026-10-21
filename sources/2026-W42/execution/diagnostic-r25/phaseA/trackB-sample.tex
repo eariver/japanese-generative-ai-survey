@@ -1,0 +1,94 @@
+% W42 r25 Phase A Track B — multicol segmented sample (NONCANONICAL, /tmp only)
+% multicol two-column segments + full-width nonfloating tables between segments; same verbatim content as Track A + tcolorbox note for compat proof
+\documentclass[lualatex,a4paper,10pt]{jlreq}
+\usepackage{preview}
+\usepackage{multicol} % [r25-B] segmented two-column body (NOT cuted; independent output routine)
+\usepackage{capt-of} % [r25-B] captionof for inter-segment tables
+\setlength{\columnsep}{7mm} % match preview.sty gutter (same geometry; multicol default might differ — enforce)
+\surveysetup{2026-W42}{Japanese Generative AI Technical Survey}{2026-10-18}{2026-10-09 18:00 - 2026-10-16 18:00 America/New\_York}
+\surveyeditiondescriptor{週刊Technical Survey（診断用・非正準・未承認）}
+\surveycoverstory{重み・生産性}{オープンウェイト、エージェント工学。}{NONCANONICAL DIAGNOSTIC \\ NOT A PUBLICATION PREVIEW \\ NOT FOR HUMAN APPROVAL}
+\begin{document}
+\surveycover
+\clearpage
+% NO \twocolumn — body is segmented multicols (still two columns, not one-column fallback)
+\begin{multicols}{2}
+MiniCPM-V 4.7（35B-A3B初のMoE、LESによる非可逆なしオンデバイスMoE、iPhone 17 Pro Maxで3GB・毎秒13トークン超）は、携帯端末実装の事例だ。BF16・FP8・int4・AWQ・GPTQ・GGUFと日付つきREADME（12日・15日）、SGLang・vLLM・llama.cpp・Ollama対応、SRFT微調整。使う側の選択肢が具体的に並んでいる。Apache 2.0はこちらもタグ確認のみであり、ファイル未確認の限界をGraniteと同様に明記する。
+\cite{B27,B74,B26}
+
+FLUX 3 Image Klein（5.6B、Qwen3-VL-4Bエンコーダ、蒸留16ステップと基盤50ステップの使い分け、4K・BBox、ComfyUI・NVFP4で8GB GPU可）は、制限的ライセンスの事例として欠かせない。FLUX Kommmunity v1.0の全文が確認でき、非商用＋500万ドル未満の適格商用のみが出力利用可、派生物に蒸留・合成学習を含み、軍事・監視・生体認証の禁止、同種モデルの改善禁止といった運用条項がある。制限と実装量（BF16 11.1GB・NVFP4 5.3GB、9Bアップスケーラは別体）が表裏一体になっており、画像モデルの実装可否を左右する。
+\cite{B29,B28,B30}
+
+Graniteの提供形態を確認する。一つのエンドポイントでほぼ基盤と同等のVRAM、共有KVキャッシュ、vLLMとllama.cpp対応、入れ替え可能な構成。合成の思想が、提供の形に表れている。30B同型カードは未確認であり、あるものとないものを分ける。
+\cite{B24,B73,B23,B25}
+
+重みの公開は進んだが、条件はまちまちである。Beamは全文確認の許容条件、FLUXは用途と派生を縛る条件、Sparkは表示と収益門の計算が必要な条件、Nemotronは学習開示の厚さと未確認ファイルの留保、GraniteとMiniCPMは合成と端末用途の試用に適したタグ確認の条件。実装の可否は重みの有無ではなく条件で決まる。使う側は自分の用途が表のどの行に属するかを確認し、契約判断の前に四つの確認水準（全文・条項・タグ・未確認）を照合してほしい。
+\cite{B14,B70,B15,B13,B71,B17,B19,B18,B16,B21,B72,B22,B20,B24,B73,B23,B25,B27,B74,B26,B29,B28,B30}
+\end{multicols}
+
+% Full-width table between segments (paragraph boundary; never splits; caption+rows atomic by construction — no float, no page-top drift)
+{\centering\footnotesize
+\captionof{table}{比較表：重み・実装・ライセンス}
+\begin{tabularx}{0.96\linewidth}{@{}lXXXX@{}}
+\toprule
+Spark Open & 816B/42B MoE・文脈100万・マルチモーダル入力 & 2×M5 Ultra実装像（発行者） & Muse条項：表示義務・2000万ドルMaaS門（ページ/鏡/解説で確認、原本完全バイトではない。個別配布物への適用は別途要確認）・OSI非該当 \cite{B14,B70,B15,B13} \\
+\midrule
+Beam & 501B/23B MoE・文脈100万 & LICENSE全文確認（最も許容的。独自表示バッジ義務なし。ただしApache 2.0の再配布条件＝ライセンス複製・著作権/帰属/NOTICE保持・変更明示・特許・第三者条項は残る） & 安全報告は社内評価、第三者保証は未検証 \cite{B17,B19,B18,B16} \\
+\midrule
+Nemotron 3.5 & 120B/12B Mamba-2＋視覚 & MOPD/MTP/QAD開示（発行者） & Bolt 74B今・E4B未来 & OpenMDW：Super VL未開封、OSI主張不可、EXO不採用 \cite{B21,B72,B22,B20} \\
+\midrule
+Granite Switch 4.1 & 8B+30B合成・共有KV & Decision Index 42.9 & Apacheタグのみ（ファイルなし） \cite{B24,B73,B23,B25} \\
+\midrule
+MiniCPM-V 4.7 & 35B-A3B MoE・端末毎秒13トークン超 & Apacheタグのみ（ファイルなし） \cite{B27,B74,B26} \\
+\midrule
+FLUX 3 Klein & 5.6B・蒸留16段階 & Kommunity全文：非商用＋500万未満適格商用のみ、蒸留派生含む、軍事等禁止 \cite{B29,B28,B30} \\
+\bottomrule
+\end{tabularx}
+}
+
+\begin{multicols}{2}
+\section{エージェント工学:Codex・Scion・HydraFusion と運用ゲート}
+\label{sec:P4}
+{\Large\bfseries 作る現場の生産性――Codexの実践、Scionの統合、HydraFusionの編成\par}
+\bigskip
+OpenAIのCodex GPT-6に関する保守実践の報告は、数字の出し方が珍しいほど具体的だ。1400超のプルリクエスト、80万行、Slack・Statsig・テレメトリを根拠にした死コード除去、コンテナ3.31GBから1.72GB（マイナス48％）、400件のスナップショット変種の削除。CI中央値10分から4.5分、モック592.6秒から29.8秒（マイナス95％、63件のテスト維持）。ここまで書かれると実務の手触りがある。ただし単一チームの社内実践であり、発行者計測である。普遍的な開発加速の証拠として引用してはならない。
+\cite{B31}
+
+PerplexityのDecider v1.2（10月16日）は、版管理の手本としてP4を締める。Qwen3.8-27B系統の27B、v1.1からの結合要求形式と学習データ変更、文脈25.6万、入力100万トークン2セント・出力無料、Decisions API（対話端点ではない）、v1.1名のv1.2課金、ネイティブのチェックポイント配置とpip導入可能なソース。W41のv1.1からの継承が閉じている。精度の主張は発行者記載である。なお基盤名のQwen3.8表記は命名上の注意として添えられており、断定の根拠にはしない。
+\cite{B37,B36,B38}
+\end{multicols}
+
+{\centering\footnotesize
+\captionof{table}{比較表：生産性とゲートの条件}
+\begin{tabularx}{0.96\linewidth}{@{}lXXXX@{}}
+\toprule
+Codex実践 & 社内単一チーム（発行者計測） & 容器-48％・CI中央値10→4.5分 & 実験費表つき & 普遍加速の証拠ではない \cite{B31} \\
+\midrule
+Scion & 社内システム（非公開、Git代替ではない） & 日3万超マージ・占有200分の1・秒級CI & WAL・ロックフリー・階層キャッシュ & 来歴・版固定あり \cite{B32,B75} \\
+\midrule
+HydraFusion & 研究プレビュー & 多モデル編成・経路づけ & 上位プラン・組織方針 \cite{B33,B76} \\
+\midrule
+AutoFix & 一般提供 & 調査→修正→再検査→PR、上限25・既定枝のみ & 課金・方針ゲート \cite{B34,B77} \\
+\midrule
+AI Scan & 一般提供 & 助言のみ、止められない & 製品文書が根拠 \cite{B35,B78} \\
+\midrule
+Decider v1.2 & 版継承閉鎖 & 2セント/M入力・出力無料 & 精度は発行者 \cite{B37,B36,B38} \\
+\bottomrule
+\end{tabularx}
+}
+
+\begin{multicols}{2}
+\begin{tcolorbox}[colback=SurveySoft,colframe=SurveyRule,arc=1mm,boxrule=0.4pt,left=2mm,right=2mm]
+【読み方の注意】Codex・Scion・HydraFusionの数値は社内発行者計測であり、対照実験ではない。AI Scanの変更履歴は製品文書であり、検証や法文ではない。Deciderの基盤名表記は命名注意つきである。
+\end{tcolorbox}
+\cite{B31,B32,B75,B33,B76,B34,B77,B35,B78,B37,B36,B38}
+
+\section{安全性と透明性:開示・蒸留・検証アクセス}
+\label{sec:P5}
+{\Large\bfseries 開示・防御・解明・接近――安全の四つの局面\par}
+\bigskip
+安全の四つの局面は、対象が違う。開示は起きた出来事、防御は効いたとされる仕組み、解明は閉じた謎、接近は評価に近づく仕組みである。三つに畳むと、評価アクセスが出来事の列に混ざってしまう。本節は四つを分けて読む。
+\cite{B40,B79,B41,B80,B42,B81,B39,B82}
+\end{multicols}
+
+\end{document}

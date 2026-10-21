@@ -1,0 +1,61 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W42",
+  "from_state": "ISSUE_INITIALIZED",
+  "to_state": "DISCOVERY_COLLECTED",
+  "checkpoints": [
+    "discovery"
+  ],
+  "recorded_at": "2026-10-17T09:26:13Z",
+  "implementation": {
+    "repository_commit_sha": "31c9a9a91c63ea1e0d6b25512c7aaee12d088152",
+    "orchestrator_version": "survey-production-core-v2/0.15-postintegration-transport-thematic"
+  },
+  "contract": {
+    "pipeline_contract_version": "2.0-rc1",
+    "pipeline_contract_sha256": "ee89796245c22072cec98f34931180214a4928c24f399280793cd6420a4c8e71",
+    "quality_contract_version": "2.0-rc1",
+    "quality_contract_sha256": "b5b955d524fb438c0f1b2c9490bea1da2083e79028d67a55ca424bbfc20f2958",
+    "research_profile_version": "2.0-rc1",
+    "research_profile_sha256": "666f8a064b190ffd35216e26d6fdf2dd0fa932cac7b1b0d6448e262ded77b9a8",
+    "publication_profile_version": "2.0-rc1",
+    "publication_profile_sha256": "99adff93ff443e02bdcce639ce5fc4d4c959ee45a804da70efc4277db57fdddb"
+  },
+  "artifacts": [
+    {
+      "name": "discovery-acceptance",
+      "path": "sources/2026-W42/discovery/discovery-accepted-v2.json",
+      "sha256": "ef75db531cc3733fe6376ab432730f80ecd6216664d794aa8f8dd74dab5f985a"
+    }
+  ],
+  "reviews": [
+    {
+      "check_id": "CORE_STAGE_CONTRACT",
+      "kind": "DETERMINISTIC",
+      "status": "PASS",
+      "executor": "survey_core_execution_bridge_v2",
+      "evidence": "Canonical Core stage contract validated for immutable request muse-w42-discovery-advance-20261017.",
+      "result": {
+        "path": "sources/2026-W42/execution/bridge-runs/muse-w42-discovery-advance-20261017/core-stage-contract.json",
+        "sha256": "cd0ff3acff50df8ebbe76e29253c9f3ab153e90c46a0f2199f9dafdd8b07f497"
+      }
+    },
+    {
+      "check_id": "MUSE-R5-DISCOVERY-X-BOUND",
+      "kind": "AGENT_RESEARCH",
+      "status": "PASS",
+      "executor": "muse-r5",
+      "evidence": "Canonical discovery acceptance verified: 50 records (r3 49 + grok ledger), X manifest COMPLETE/PARTIAL binds Grok raw c48a7426, 18 posts reconciled to 7 existing families with zero new releases (reconciliation r5).",
+      "result": null
+    },
+    {
+      "check_id": "MUSE-R5-DISCOVERY-BODY-DEPTH",
+      "kind": "AGENT_RESEARCH",
+      "status": "PASS",
+      "executor": "muse-r5",
+      "evidence": "33 official bodies consumed at claim level across r1/r2/r4 runs (frontier models, infra, safety, science, platform); licenses/PDFs/independent repro logged as explicit gaps, not waivers.",
+      "result": null
+    }
+  ],
+  "summary": "Advance ISSUE_INITIALIZED to DISCOVERY_COLLECTED on canonical X-bound Discovery acceptance (50 records)."
+}

@@ -1,0 +1,3914 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W42",
+  "research_profile": "WEEKLY",
+  "publication_profile": "WEEKLY_MAGAZINE",
+  "package_id": "P3",
+  "basis": {
+    "production_profile_sha256": "a2cfe143d201717431f98c013e52e86e1e59fb1f481183a381c5a49f3eb121fe",
+    "architecture_sha256": "10058a40e53ac180cff42ac8246519b37bdd9feac0b7552f7397996243544d9e",
+    "architecture_review_summary_sha256": "1f8ea462369ab0725804f80d3f355d76fcf163720ce54afac92f18c84d5e161e",
+    "architecture_approval_sha256": "f50af23c5582497f281ac686ca189477b2aa9fd0e2f42f7b8c97aeee08fad35d",
+    "candidate_matrix_sha256": "c650732d5af80c07f8b26ab5dea8d30cfd8d9160b7ee7dbbc938b3aeff92eafa",
+    "candidate_selection_sha256": "4029bb93d9362888dfd25ce98ebe94ebb3bb38aaa2602b85339d7ebb5e53a8b9",
+    "evidence_acceptance_sha256": "ad352c15706e0d9abf54a4d8cc7e45697151371b69f7a578441332699e5f38ef"
+  },
+  "package": {
+    "title": "オープンウェイト:アーキテクチャ・ライセンス・実装条件",
+    "purpose": "Open-weight architecture, licenses, and on-device tradeoffs: Spark, Beam, and Nemotron as PRIMARY anchors with Granite, MiniCPM, and FLUX as SUPPORTING comparators. Reader learns parameter/active-parameter/context/inference-feasibility tradeoffs together with the actual Apache, Muse, OpenMDW, and Kommunity license differences — never assuming OSI approval.",
+    "drafting_order": 3,
+    "primary_candidate_ids": [
+      "candidate:2026-W42:b7c4cf541cd786ff",
+      "candidate:2026-W42:e188cdb3b910bdfc",
+      "candidate:2026-W42:d9bb954ecc5d01f9"
+    ],
+    "supporting_candidate_ids": [
+      "candidate:2026-W42:778de6f30485b5a4",
+      "candidate:2026-W42:78638c331f26f9c0",
+      "candidate:2026-W42:48361c0e84a0db3f"
+    ],
+    "must_cover_requirements": [
+      "Compare architectures on parameters, active parameters, context length, and stated inference feasibility in one table.",
+      "Quote operative license terms from verified texts (Beam full Apache file; Muse operative terms; OpenMDW; Kommunity output-only) and mark tag-only evidence as tag-only.",
+      "Present Nemotron MOPD/MTP/QAD training disclosure with vendor attribution.",
+      "Treat open-source software, openly distributed weights, and OSI-approved licenses as separate claims."
+    ],
+    "boundaries": [
+      "OSI approval is not established for OpenMDW-1.1.",
+      "Granite and MiniCPM Apache evidence is tag-only, weaker than Beam full-file evidence.",
+      "Nemotron Super VL license file is unopened; Bolt E4B is an Oct 23 future.",
+      "License text, bench methodology, independent benches, weight verification",
+      "r7 card authority: AUTHORITY_CONSUMED (see correction ledger for scoping)",
+      "primary-body: No r7 finding recorded for this screening target",
+      "license-weights: No r7 finding recorded for this screening target",
+      "benchmark-basis: No r7 finding recorded for this screening target",
+      "Safety report body, independent benches, Arena methodology, LICENSE file",
+      "Tech report PDF extracted (MOPD/QAD/MTP/Indic/super-VL numbers); appendix full audit skimmed-only; Super-VL repo LICENSE file unopened (Lightning sibling confirmed); independent repro none",
+      "30B spot-check, preview variants, independent DI repro",
+      "License: Apache TAG-confirmed (API metadata) vs FILE-unverified (no LICENSE file in repo siblings) — distinct statuses; README body unopened; benchmarks uncaptured",
+      "Kommunity FULL TEXT verified (repo file); card/docs consumed via excerpts; independent quality tests none"
+    ]
+  },
+  "candidate_matrix": {
+    "schema_version": "2.0-rc1",
+    "issue_id": "2026-W42",
+    "research_profile": "WEEKLY",
+    "basis": {
+      "production_profile_sha256": "a2cfe143d201717431f98c013e52e86e1e59fb1f481183a381c5a49f3eb121fe",
+      "profile_completeness_sha256": "a0b325fb00d8f14e60912d1519074cf4b2924a6a9e4e7b456a1ece579dd5016d",
+      "materiality_ledger_sha256": "540edd23d8dab45578645a2e86188629180ce962dce329537da425b589e6ee92",
+      "evidence_acceptance_sha256": "ad352c15706e0d9abf54a4d8cc7e45697151371b69f7a578441332699e5f38ef",
+      "edition_views_acceptance_sha256": "78cefd03f711c383f48a5bf56aee3ce5c3f164b1de56566ad8d7a1e2e98c4d66"
+    },
+    "rows": [
+      {
+        "candidate_id": "candidate:2026-W42:0a1d30dd224c846e",
+        "evidence_task_id": "evidence:2026-W42:03932bab0d3ce5fd",
+        "discovery_ids": [
+          "w42-dailyx-agenthorizon-20261010"
+        ],
+        "evidence_sha256": "440a3cbe006a3d029c11bfc46d71deb53d62e46d34bee8cd80774f285dfdebfb",
+        "edition_view_sha256": "3037563071725eb586f2439b7a93bc84f877e2a469c8813e17813cf0bacfb4c0",
+        "title": "AgentHorizon benchmark (background)",
+        "artifact_type": "BENCHMARK",
+        "evidence_status": "PARTIAL",
+        "materiality": "CONTEXT",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 2,
+          "claim_count": 1,
+          "metric_count": 0,
+          "limitation_count": 2,
+          "unresolved_question_count": 3,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "PDF unparsed; sidebar justification to Selection",
+          "r7 card authority: AUTHORITY_CONSUMED (see correction ledger for scoping)",
+          "primary-body: No r7 finding recorded for this screening target",
+          "license-weights: No r7 finding recorded for this screening target",
+          "benchmark-basis: No r7 finding recorded for this screening target"
+        ],
+        "profile_extensions": {
+          "why_this_issue": "BACKGROUND: pre-window paper (Oct 8 OUT), in-window X discussion. Comparator value only (1,373 tasks, paired negatives, GPT-5.5 80.9%); never a W42 launch. Sidebar justification belongs to Selection, not Discovery credit. [r7 substantive view; no selection implied.]",
+          "window_relation": "PRE_WINDOW_RELEVANCE",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W42:c09819779a9229da",
+        "evidence_task_id": "evidence:2026-W42:06bd3bc8489aedaf",
+        "discovery_ids": [
+          "w42-primary-distillation-20261012"
+        ],
+        "evidence_sha256": "fa02c8ea3a618a6b75aa0598b9e11fc6006089d28dc7c367dbacdb8a27af2f18",
+        "edition_view_sha256": "bfa4aad9b7aa76ca0a0989bc43026b860a228da92481e8060acfaf8699b39d95",
+        "title": "Anthropic distillation defenses",
+        "artifact_type": "PRODUCT",
+        "evidence_status": "PARTIAL",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 2,
+          "claim_count": 4,
+          "metric_count": 0,
+          "limitation_count": 2,
+          "unresolved_question_count": 3,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Independent audit none; durability unknown",
+          "r7 card authority: AUTHORITY_CONSUMED (see correction ledger for scoping)",
+          "primary-body: No r7 finding recorded for this screening target",
+          "license-weights: No r7 finding recorded for this screening target",
+          "benchmark-basis: No r7 finding recorded for this screening target"
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Frontier-model IP war made explicit: 90–99% extraction cut with named mechanisms, adversary cases (Zhipu/GLM, Kimi/PLA), and admitted trade-offs (revenue refused, <0.1% FP charged). Reader learns defenses AND costs; independent audit absent. [r7 substantive view; no selection implied.]",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W42:b97b99b689baec16",
+        "evidence_task_id": "evidence:2026-W42:083133eb0e891661",
+        "discovery_ids": [
+          "w42-primary-earth-ai-20261014"
+        ],
+        "evidence_sha256": "c7c70d8f59667413ddbcf5df150d08148ffa49938775e3d9669b9ebae6bc2b2c",
+        "edition_view_sha256": "734cdd991c017c43a2f90736203360c962501d7fd72fc18f5ad3ec4edfd97b6f",
+        "title": "Google Earth AI Geospatial Reasoning agent",
+        "artifact_type": "AGENT",
+        "evidence_status": "PARTIAL",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 3,
+          "claim_count": 4,
+          "metric_count": 0,
+          "limitation_count": 2,
+          "unresolved_question_count": 3,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Report PDF, independent rerun",
+          "r7 card authority: AUTHORITY_CONSUMED (see correction ledger for scoping)",
+          "primary-body: No r7 finding recorded for this screening target",
+          "license-weights: No r7 finding recorded for this screening target",
+          "benchmark-basis: No r7 finding recorded for this screening target"
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Agent evaluation done seriously: 4-config ablation, new benchmarks with released splits, stated autorater limits, cost analysis. Reader learns tools-vs-planning decomposition (3→52→63) and the first-draft framing; independent rerun pending. [r7 substantive view; no selection implied.]",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W42:11ae5d16dae758e1",
+        "evidence_task_id": "evidence:2026-W42:164b3c100cfad494",
+        "discovery_ids": [
+          "w42-primary-nvidia-uk-20261014"
+        ],
+        "evidence_sha256": "f0f08cd19b8d8a1bd3e50d6f9e5b70b9c634ccef6f804ef5a3a65771a34831b5",
+        "edition_view_sha256": "dd02c0fd7cc34d5843a6f243ae874a15ac9eac3f80bf36b3096976176363d3e5",
+        "title": "NVIDIA UK ecosystem investment",
+        "artifact_type": "PRODUCT",
+        "evidence_status": "PARTIAL",
+        "materiality": "CONTEXT",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 2,
+          "claim_count": 2,
+          "metric_count": 0,
+          "limitation_count": 2,
+          "unresolved_question_count": 3,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Per-company amounts undisclosed; blog Oct 13 vs X Oct 14 noted",
+          "r7 card authority: AUTHORITY_CONSUMED (see correction ledger for scoping)",
+          "primary-body: No r7 finding recorded for this screening target",
+          "license-weights: No r7 finding recorded for this screening target",
+          "benchmark-basis: No r7 finding recorded for this screening target"
+        ],
+        "profile_extensions": {
+          "why_this_issue": "$250M compute + startup bets + open datasets, but per-company amounts undisclosed. Reader learns portfolio shape, not deal economics. CONTEXT-leaning despite KEEP screening. [r7 substantive view; no selection implied.]",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W42:c3439ff42a96e600",
+        "evidence_task_id": "evidence:2026-W42:185fb0899f700ee1",
+        "discovery_ids": [
+          "w42-primary-lechonk-20261012"
+        ],
+        "evidence_sha256": "34c6e7716b587181f47f9214f9e52de23e829acd15ef0a6298d30758c8cb47f8",
+        "edition_view_sha256": "f209d589e818b47379e1fa7863e4a849ee4240ad68d936e73458546fe7d6ffe3",
+        "title": "Mistral Le Chonk grounding (Large 4)",
+        "artifact_type": "MODEL_UPDATE",
+        "evidence_status": "PARTIAL",
+        "materiality": "CONTEXT",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 4,
+          "claim_count": 3,
+          "metric_count": 0,
+          "limitation_count": 2,
+          "unresolved_question_count": 3,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Blog/tech details unfetched",
+          "r7 card authority: AUTHORITY_CONSUMED (see correction ledger for scoping)",
+          "primary-body: No r7 finding recorded for this screening target",
+          "license-weights: No r7 finding recorded for this screening target",
+          "benchmark-basis: No r7 finding recorded for this screening target"
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Grounding-as-feature: coordinates not captions (42% Dense200, +1pp vendor) on a 1T model whose weights are NOT yet open. Reader learns the capability framing and the 1pp fragility; independent dispersion (32nd/44 aggregate) included. [r7 substantive view; no selection implied.]",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W42:0e7f72be6503e9b2",
+        "evidence_task_id": "evidence:2026-W42:1e4cf38d1af41b37",
+        "discovery_ids": [
+          "w42-primary-glimpse-20261016"
+        ],
+        "evidence_sha256": "625c2d795a2d279b71ca946dfb80f3df04e665a47393b24165b7b85c454bb9f0",
+        "edition_view_sha256": "235df0fd361e61e7966f43e6abc4e4714cacac11f5a71e391cba42eee01b0508",
+        "title": "Elorian Glimpse",
+        "artifact_type": "MODEL",
+        "evidence_status": "PARTIAL",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 3,
+          "claim_count": 5,
+          "metric_count": 0,
+          "limitation_count": 2,
+          "unresolved_question_count": 3,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Independent harness repro; context window confirmation",
+          "r7 card authority: AUTHORITY_CONSUMED (see correction ledger for scoping)",
+          "primary-body: No r7 finding recorded for this screening target",
+          "license-weights: No r7 finding recorded for this screening target",
+          "benchmark-basis: No r7 finding recorded for this screening target"
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Visual-reasoning bet: re-examining pixels mid-thought (scratch space) with table-backed claims and honest HSS shortfall vs Astra. Reader learns the mechanism and its price (token cost = next focus); weights NOT open despite small-team narrative. [r7 substantive view; no selection implied.]",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W42:7151fcdc6c3ee392",
+        "evidence_task_id": "evidence:2026-W42:211d554a4f6b5a9c",
+        "discovery_ids": [
+          "w42-primary-claude-code-perf-20261016"
+        ],
+        "evidence_sha256": "d5f88b654ebf345d18b1823fa6b27876a3772fe6c524b7c090176f2973c85e43",
+        "edition_view_sha256": "769afc4dbf774d56d79749ac840835f60bece8e8860ab916c40e9f419b9ad12b",
+        "title": "Claude Code gzip/TTFT improvement",
+        "artifact_type": "PRODUCT",
+        "evidence_status": "PARTIAL",
+        "materiality": "CONTEXT",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 3,
+          "claim_count": 2,
+          "metric_count": 0,
+          "limitation_count": 2,
+          "unresolved_question_count": 3,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Changelog + user measurements",
+          "r7 card authority: AUTHORITY_CONSUMED (see correction ledger for scoping)",
+          "primary-body: No r7 finding recorded for this screening target",
+          "license-weights: No r7 finding recorded for this screening target",
+          "benchmark-basis: No r7 finding recorded for this screening target"
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Single post-level perf claim (gzip/TTFT) with changelog culture confirmed but entry unopened. HOLD for changelog + measurements; not promotable on post alone. [r7 substantive view; no selection implied.]",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W42:6342a509e85574c4",
+        "evidence_task_id": "evidence:2026-W42:220d0a9d76f968c6",
+        "discovery_ids": [
+          "w42-dailyx-sakana-mlr-20261011"
+        ],
+        "evidence_sha256": "5c60d847e49560008d10eb713838538d0848950d4ae79878c2c594e32332b9f0",
+        "edition_view_sha256": "4b08f1df09774b76eec09f493a1dd6f3ae5234b664d442caed6547211cc949a6",
+        "title": "Sakana Multi-Layered Review (background)",
+        "artifact_type": "PAPER",
+        "evidence_status": "PARTIAL",
+        "materiality": "CONTEXT",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 3,
+          "claim_count": 3,
+          "metric_count": 0,
+          "limitation_count": 2,
+          "unresolved_question_count": 3,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "arXiv URL unconfirmed; PDF unfetched",
+          "r7 card authority: AUTHORITY_CONSUMED (see correction ledger for scoping)",
+          "primary-body: No r7 finding recorded for this screening target",
+          "license-weights: No r7 finding recorded for this screening target",
+          "benchmark-basis: No r7 finding recorded for this screening target"
+        ],
+        "profile_extensions": {
+          "why_this_issue": "BACKGROUND with unusual depth: full method traced (3 agents, contradiction benchmark, 73.43%/40.95%, $0.47, adversarial caveat). X-discussion IN, paper OUT. Useful comparator for Deep Review coverage; not a W42 event. [r7 substantive view; no selection implied.]",
+          "window_relation": "PRE_WINDOW_RELEVANCE",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W42:ff86fca302faa623",
+        "evidence_task_id": "evidence:2026-W42:28ed149c5fa63cba",
+        "discovery_ids": [
+          "w42-lead-qwen-turbo-20261011"
+        ],
+        "evidence_sha256": "57a4244a02201c2f1722c250b8e517c77637d25cf8c2c881ef474e304a9444a4",
+        "edition_view_sha256": "29978a8e907566e0bcd9fe06479ebc86b915cdf8a41c1d7204713f3edaf56879",
+        "title": "Qwen-Image-2.1-Turbo (background)",
+        "artifact_type": "MODEL_UPDATE",
+        "evidence_status": "PARTIAL",
+        "materiality": "CONTEXT",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 1,
+          "metric_count": 0,
+          "limitation_count": 2,
+          "unresolved_question_count": 3,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Clock-bearing launch entry",
+          "r7 card authority: AUTHORITY_CONSUMED (see correction ledger for scoping)",
+          "primary-body: No r7 finding recorded for this screening target",
+          "license-weights: No r7 finding recorded for this screening target",
+          "benchmark-basis: No r7 finding recorded for this screening target"
+        ],
+        "profile_extensions": {
+          "why_this_issue": "BACKGROUND: weights pre-window, APIs press-only (r3 proof). Reopen only on clock-bearing launch entry. Not a W42 release. [r7 substantive view; no selection implied.]",
+          "window_relation": "PRE_WINDOW_RELEVANCE",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W42:1b1aea9beacefbcd",
+        "evidence_task_id": "evidence:2026-W42:33ea1a8b0a611636",
+        "discovery_ids": [
+          "w42-dailyx-harness-paper-20261011"
+        ],
+        "evidence_sha256": "bffb245a18f714d13880dc9aea8766f528b294fb96bcd8c12787670219dfdc41",
+        "edition_view_sha256": "04936ad69080c63d357453defea27d6bb592778442b1f20d581152ae403d2195",
+        "title": "Unidentified harness-17 paper lead",
+        "artifact_type": "PAPER",
+        "evidence_status": "NEEDS_MORE",
+        "materiality": "HOLD",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 1,
+          "metric_count": 0,
+          "limitation_count": 2,
+          "unresolved_question_count": 3,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "PDF unconfirmed/unfetched",
+          "r7 card authority: AUTHORITY_NOT_FOUND (see correction ledger for scoping)",
+          "primary-body: No r7 finding recorded for this screening target",
+          "license-weights: No r7 finding recorded for this screening target",
+          "benchmark-basis: No r7 finding recorded for this screening target"
+        ],
+        "profile_extensions": {
+          "why_this_issue": "HOLD: described paper not locatable after bounded retry; look-alikes documented without conflation. Reopen only on exact title/ID. This is a negative result, not an omission. [r7 substantive view; no selection implied.]",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W42:dee80649da784c76",
+        "evidence_task_id": "evidence:2026-W42:34c2c53b93d2432a",
+        "discovery_ids": [
+          "w42-primary-codex-gpt6-20261016"
+        ],
+        "evidence_sha256": "e6e87563edd293256ba8207226ada4ae087ae2e4130cb7d264c8d01c2d820c4e",
+        "edition_view_sha256": "4cc6f680e20399af0704fcd56e6f5d48480360ddbafcba82fd55d6c3735d6eff",
+        "title": "OpenAI Codex GPT-6 maintenance practice",
+        "artifact_type": "PRODUCT",
+        "evidence_status": "PARTIAL",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 2,
+          "claim_count": 3,
+          "metric_count": 0,
+          "limitation_count": 2,
+          "unresolved_question_count": 3,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Single-team internal; independent replication none",
+          "r7 card authority: AUTHORITY_CONSUMED (see correction ledger for scoping)",
+          "primary-body: No r7 finding recorded for this screening target",
+          "license-weights: No r7 finding recorded for this screening target",
+          "benchmark-basis: No r7 finding recorded for this screening target"
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Internal-practice economics made unusually concrete (1400 PRs, $109 vs $15 cost comparison, CI deltas). Reader learns agentic-maintenance playbook AND its single-team boundary; independent replication absent. [r7 substantive view; no selection implied.]",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W42:effbda25079509b7",
+        "evidence_task_id": "evidence:2026-W42:35690dfbac78389c",
+        "discovery_ids": [
+          "w42-primary-aspire-20261016"
+        ],
+        "evidence_sha256": "258322c6e96431cb233dd0483d3da2a3442d64a58ef6fde0632f90ae5de18a65",
+        "edition_view_sha256": "0e024bf9b43c66ed08c8099beab9680e8ab630be8f05e1c726ccb466a99502b7",
+        "title": "NVIDIA ASPIRE robotics OSS",
+        "artifact_type": "FRAMEWORK",
+        "evidence_status": "PARTIAL",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 3,
+          "claim_count": 3,
+          "metric_count": 0,
+          "limitation_count": 2,
+          "unresolved_question_count": 3,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Repo contents, benchmarks",
+          "r7 card authority: AUTHORITY_CONSUMED (see correction ledger for scoping)",
+          "primary-body: No r7 finding recorded for this screening target",
+          "license-weights: No r7 finding recorded for this screening target",
+          "benchmark-basis: No r7 finding recorded for this screening target"
+        ],
+        "profile_extensions": {
+          "why_this_issue": "OSS robotics event (repo live, Apache parts) + full method trace (+77 LIBERO-Pro, ablations, sim-to-real, frozen-frontier dependence). X post was the trigger; paper+repo are the substance. Reader learns skill-library paradigm and its limits. [r7 substantive view; no selection implied.]",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W42:800408dab7fcce56",
+        "evidence_task_id": "evidence:2026-W42:49d13d321f2c2c9f",
+        "discovery_ids": [
+          "w42-dailyx-grok-scale-20261015"
+        ],
+        "evidence_sha256": "69dc8403b68e97268d6718cf6c79be9f172a376634c262c1549d04aacfbb833a",
+        "edition_view_sha256": "1745e17219ffb84a5a9f92d068bae60aa746fa02b62636fc17fca525202bb267",
+        "title": "Grok Bot scale claim (X-observed)",
+        "artifact_type": "PRODUCT",
+        "evidence_status": "NEEDS_MORE",
+        "materiality": "HOLD",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 2,
+          "claim_count": 1,
+          "metric_count": 0,
+          "limitation_count": 2,
+          "unresolved_question_count": 3,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Usage stats; original post",
+          "r7 card authority: AUTHORITY_CONSUMED (see correction ledger for scoping)",
+          "primary-body: No r7 finding recorded for this screening target",
+          "license-weights: No r7 finding recorded for this screening target",
+          "benchmark-basis: No r7 finding recorded for this screening target"
+        ],
+        "profile_extensions": {
+          "why_this_issue": "X-observed scale claim, original unverified (r3 label kept). Anecdote-level HOLD; never a metric. [r7 substantive view; no selection implied.]",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W42:2ea6d2cbb7e9b9c0",
+        "evidence_task_id": "evidence:2026-W42:4c2680dd1e0eb52b",
+        "discovery_ids": [
+          "w42-primary-wetlab-agents-20261016"
+        ],
+        "evidence_sha256": "4f160f32afdb1a4f927c19697f3a58004a7670c435187a3b8c2ea89cae459df8",
+        "edition_view_sha256": "68bc4c820810b9587851f5ef27ed037875d1c3ea3832240725a2c4876d5dd367",
+        "title": "Google autonomous wet-lab building blocks",
+        "artifact_type": "AGENT",
+        "evidence_status": "PARTIAL",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 5,
+          "claim_count": 5,
+          "metric_count": 0,
+          "limitation_count": 2,
+          "unresolved_question_count": 3,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Blog + VERID/aptamer/epitope PDFs extracted with counts; equation-level audit not attempted; independent replication none expected",
+          "r7 card authority: AUTHORITY_CONSUMED (see correction ledger for scoping)",
+          "primary-body: No r7 finding recorded for this screening target",
+          "license-weights: No r7 finding recorded for this screening target",
+          "benchmark-basis: No r7 finding recorded for this screening target"
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Closed-loop biology with extracted numbers (VERID 5x+, aptamer exact counts + G4 lesson, FAP nM + 8.6x + MSA artifact) and explicit boundaries (single target, hybrid, vendor-reported). Reader learns what closed the loop AND what remains (equation audit, replication). [r7 substantive view; no selection implied.]",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W42:2cd2da5b249062c9",
+        "evidence_task_id": "evidence:2026-W42:4c683655c367a915",
+        "discovery_ids": [
+          "w42-primary-nvidia-ocp-20261012"
+        ],
+        "evidence_sha256": "2689f731e0a4776e14cb8f3978d70b1966897e14238a81b9634a1fea106e78a7",
+        "edition_view_sha256": "374ae57d557dfd3b2cdbebf1a905c9dd824e139ddd4317aaec7e5dad4b8d5a64",
+        "title": "NVIDIA Vera Rubin OCP + SMLIB",
+        "artifact_type": "PRODUCT",
+        "evidence_status": "PARTIAL",
+        "materiality": "CONTEXT",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 4,
+          "claim_count": 2,
+          "metric_count": 0,
+          "limitation_count": 2,
+          "unresolved_question_count": 3,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Docs/repo unfetched",
+          "r7 card authority: AUTHORITY_CONSUMED (see correction ledger for scoping)",
+          "primary-body: No r7 finding recorded for this screening target",
+          "license-weights: No r7 finding recorded for this screening target",
+          "benchmark-basis: No r7 finding recorded for this screening target"
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Open-standards infra play (MGX 1.2, DSX OSS, Open DC v0.7) + SMLIB Apache (secondary). Reader learns the ecosystem strategy; SMLIB first-party confirmation gap logged. [r7 substantive view; no selection implied.]",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W42:b2ee0e1dffa42188",
+        "evidence_task_id": "evidence:2026-W42:53f04f601bdce6c0",
+        "discovery_ids": [
+          "w42-lead-fish-drama3-20261013"
+        ],
+        "evidence_sha256": "2d3fe6cf4806722aa2aff0210a425d7740c20b03d41097402bd3e95f5f2dd6eb",
+        "edition_view_sha256": "21dad8833cabf9fabd70b49289c3ee6543b189a471e17af8e6ae5e4d911b5462",
+        "title": "Fish Audio Drama 3",
+        "artifact_type": "MODEL",
+        "evidence_status": "PARTIAL",
+        "materiality": "CONTEXT",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 3,
+          "claim_count": 2,
+          "metric_count": 0,
+          "limitation_count": 2,
+          "unresolved_question_count": 3,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "AA page + Fish post unfetched",
+          "r7 card authority: AUTHORITY_CONSUMED (see correction ledger for scoping)",
+          "primary-body: No r7 finding recorded for this screening target",
+          "license-weights: No r7 finding recorded for this screening target",
+          "benchmark-basis: No r7 finding recorded for this screening target"
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Audio lane's best lead: IN-window report (35B MoE, codebook-MTP, 271 fps, weights GitHub+HF, Elo 1244) with HF repo + docs. Upgraded from secondary-claim to traced. Full PDF reread pending. [r7 substantive view; no selection implied.]",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W42:d997b2fff60ac36c",
+        "evidence_task_id": "evidence:2026-W42:545cfe3f74b1cff0",
+        "discovery_ids": [
+          "w42-primary-decider-v12-20261016"
+        ],
+        "evidence_sha256": "1828bbd0c17ac1453211d3775ea1fd1b03650332d72c93d6a385025b04aba5c9",
+        "edition_view_sha256": "74fe5708ea29ee4631ed99439d291d0a41f28e7061107fdc7954e52d70491b0d",
+        "title": "Perplexity Decider v1.2",
+        "artifact_type": "MODEL_UPDATE",
+        "evidence_status": "PARTIAL",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 4,
+          "claim_count": 3,
+          "metric_count": 0,
+          "limitation_count": 2,
+          "unresolved_question_count": 3,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Spec diff unfetched",
+          "r7 card authority: AUTHORITY_CONSUMED (see correction ledger for scoping)",
+          "primary-body: No r7 finding recorded for this screening target",
+          "license-weights: No r7 finding recorded for this screening target",
+          "benchmark-basis: No r7 finding recorded for this screening target"
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Decision-model versioning done right (joint format change documented, v1.1 routes to v1.2, HF source published). Successor chain closed vs W41 v1.1 SELECTED. Independent evals absent but vendor docs substantive. [r7 substantive view; no selection implied.]",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W42:bb9272a30e907826",
+        "evidence_task_id": "evidence:2026-W42:593ccb14d2d02b67",
+        "discovery_ids": [
+          "w42-primary-gemini4-argon-20261013"
+        ],
+        "evidence_sha256": "b0c5c5ad43f442a0661bd1553f7b750e5acb643a2a3d4e47e68847d235c63b0d",
+        "edition_view_sha256": "54b2648e3fbafb39ea53236cf97156de843b1829affd064a7ece3d9d1711cb6a",
+        "title": "Gemini 4 Argon",
+        "artifact_type": "MODEL",
+        "evidence_status": "PARTIAL",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 6,
+          "claim_count": 8,
+          "metric_count": 0,
+          "limitation_count": 2,
+          "unresolved_question_count": 3,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Model card PDF, Vals methodology, independent repro, robotics companion body",
+          "r7 card authority: AUTHORITY_CONSUMED (see correction ledger for scoping)",
+          "primary-body: No r7 finding recorded for this screening target",
+          "license-weights: No r7 finding recorded for this screening target",
+          "benchmark-basis: No r7 finding recorded for this screening target"
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Frontier model as engineering/science instrument: global GA with aggressive intro pricing, plus unusually concrete deployment anecdotes (Chrome refactor, ADK, xTB, Gamow) and a robotics thread (ERQA, cornhole). Reader learns breadth of claimed impact and must discount for vendor sourcing; Minecraft paper (traced) shows long-horizon coding evidence with stated limits. [r7 substantive view; no selection implied.]",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W42:a79f0a6c53138e11",
+        "evidence_task_id": "evidence:2026-W42:5b251d3e64049da7",
+        "discovery_ids": [
+          "w42-primary-lfm25-20261013"
+        ],
+        "evidence_sha256": "28e13cb4e78e68a68aa694ddc5b9c512e45d1a24264e2f522eceefcc8ee0fd16",
+        "edition_view_sha256": "012afdff70d8fbd45cdcfca11066e5304e81692c5f2ff801858cd42b411a5076",
+        "title": "Liquid AI LFM2.5-24B-A2B",
+        "artifact_type": "OPEN_WEIGHT",
+        "evidence_status": "PARTIAL",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 3,
+          "claim_count": 5,
+          "metric_count": 0,
+          "limitation_count": 2,
+          "unresolved_question_count": 3,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "License text, independent repro, HF file listing",
+          "r7 card authority: AUTHORITY_CONSUMED (see correction ledger for scoping)",
+          "primary-body: No r7 finding recorded for this screening target",
+          "license-weights: No r7 finding recorded for this screening target",
+          "benchmark-basis: No r7 finding recorded for this screening target"
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Small-model efficiency with rare vendor candor (reward-hacking admission, per-bench temps, sealed evals). Reader learns the 5-stage pipeline and the honest limits (knowledge-heavy lag, license family terms with $10M cap). [r7 substantive view; no selection implied.]",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W42:778de6f30485b5a4",
+        "evidence_task_id": "evidence:2026-W42:64a8cae155aa0622",
+        "discovery_ids": [
+          "w42-primary-granite-switch41-20261014"
+        ],
+        "evidence_sha256": "4ba2937a91d7db1ea80d9b8b6e0e981cb8a3264427c34d8f0c59ad718970fe5c",
+        "edition_view_sha256": "6ccdf8253521a076494430ad938756b97491a64af3d8cf5da02deb429c0e28f9",
+        "title": "IBM Granite Switch 4.1",
+        "artifact_type": "OPEN_WEIGHT",
+        "evidence_status": "PARTIAL",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 4,
+          "claim_count": 4,
+          "metric_count": 0,
+          "limitation_count": 2,
+          "unresolved_question_count": 3,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "30B spot-check, preview variants, independent DI repro",
+          "r7 card authority: AUTHORITY_CONSUMED (see correction ledger for scoping)",
+          "primary-body: No r7 finding recorded for this screening target",
+          "license-weights: No r7 finding recorded for this screening target",
+          "benchmark-basis: No r7 finding recorded for this screening target"
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Composable decision models (aLoRA switching, Decision Index 42.9, Guardian comparisons) under VERIFIED Apache tag with file-absent caveat. Reader learns modular-decision economics; 30B spot-check and DI repro pending. [r7 substantive view; no selection implied.]",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W42:9659dd683c56f3d3",
+        "evidence_task_id": "evidence:2026-W42:6a11623b7a984668",
+        "discovery_ids": [
+          "w42-primary-maia300-20261012"
+        ],
+        "evidence_sha256": "678bb34be116e7b7cdd9944f9d279a8d787c0d3ca4b84e4c68b24cc292eb1a21",
+        "edition_view_sha256": "fbf3993ee7aebeaa9df67db485d7afecb3a0ea50cb646a9ecd05352c3ab40516",
+        "title": "Microsoft Maia 300",
+        "artifact_type": "PRODUCT",
+        "evidence_status": "PARTIAL",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 5,
+          "claim_count": 5,
+          "metric_count": 0,
+          "limitation_count": 2,
+          "unresolved_question_count": 3,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Technical paper unfetched; efficiency baseline unnamed/untestable",
+          "r7 card authority: AUTHORITY_CONSUMED (see correction ledger for scoping)",
+          "primary-body: No r7 finding recorded for this screening target",
+          "license-weights: No r7 finding recorded for this screening target",
+          "benchmark-basis: No r7 finding recorded for this screening target"
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Hyperscaler silicon strategy made concrete: inference-first NUMA chiplets, HBM4 density, and superpod networking sized for agentic decode. Reader learns the architectural bets (data movement over raw FLOPs) and the permanent caveat (unnamed GPU baseline, internal-only, 2027 production). Tradeoff: efficiency claims vs unverifiability. [r7 substantive view; no selection implied.]",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W42:b7c4cf541cd786ff",
+        "evidence_task_id": "evidence:2026-W42:6e3e57a025985709",
+        "discovery_ids": [
+          "w42-primary-spark-open-20261015"
+        ],
+        "evidence_sha256": "fa9f9fab14b202ba97d68d9156c71d44b70a3baa24eef026ab38f6e1cce67319",
+        "edition_view_sha256": "2cd30cf78ba02555dd984ace9cf18c602f748ae7f306ed699e51804bcf501f44",
+        "title": "Meta Muse Spark Open 816B-A42B",
+        "artifact_type": "OPEN_WEIGHT",
+        "evidence_status": "PARTIAL",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 6,
+          "claim_count": 6,
+          "metric_count": 0,
+          "limitation_count": 2,
+          "unresolved_question_count": 3,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "License text, bench methodology, independent benches, weight verification",
+          "r7 card authority: AUTHORITY_CONSUMED (see correction ledger for scoping)",
+          "primary-body: No r7 finding recorded for this screening target",
+          "license-weights: No r7 finding recorded for this screening target",
+          "benchmark-basis: No r7 finding recorded for this screening target"
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Largest US open-weight release (816B/42B) with desktop-first story (2x M5 Ultra) and a custom license that is the real story: broad grant but MaaS $20M gate + attribution. Reader learns weights-vs-rights distinction; license operative terms verified, file bytes pending. [r7 substantive view; no selection implied.]",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W42:fabe2832a86f7348",
+        "evidence_task_id": "evidence:2026-W42:704d74b73d3dd931",
+        "discovery_ids": [
+          "w42-lead-oss-video-roundup-20261010"
+        ],
+        "evidence_sha256": "8b16164d07dfc2a3138ba1111b94a355c73ff22188ab9852db59ed02c697dccb",
+        "edition_view_sha256": "76cefe98fc3305bf057b2360ec03c10d5a37127eec97d8a123853038ad846aca",
+        "title": "OSS video model roundup",
+        "artifact_type": "OTHER",
+        "evidence_status": "PARTIAL",
+        "materiality": "CONTEXT",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 2,
+          "claim_count": 1,
+          "metric_count": 0,
+          "limitation_count": 2,
+          "unresolved_question_count": 3,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Per-model states/licenses",
+          "r7 card authority: AUTHORITY_CONSUMED (see correction ledger for scoping)",
+          "primary-body: No r7 finding recorded for this screening target",
+          "license-weights: No r7 finding recorded for this screening target",
+          "benchmark-basis: No r7 finding recorded for this screening target"
+        ],
+        "profile_extensions": {
+          "why_this_issue": "CONTEXT bundle only: five repos named, none verified. Never cite as one model event; useful as lane-existence color. [r7 substantive view; no selection implied.]",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W42:d9bb954ecc5d01f9",
+        "evidence_task_id": "evidence:2026-W42:74971639046be6c2",
+        "discovery_ids": [
+          "w42-primary-nemotron35-20261015"
+        ],
+        "evidence_sha256": "67704909729eb53eb51eddfc741dfaaa406d50d9d62ab38148ec7686ce584d90",
+        "edition_view_sha256": "6236188519dd9f5b8c8193e6ae0d02787cac156e2bd740d54a900ba23c418041",
+        "title": "NVIDIA Nemotron 3.5 Super VL + Bolt",
+        "artifact_type": "OPEN_WEIGHT",
+        "evidence_status": "PARTIAL",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 4,
+          "claim_count": 6,
+          "metric_count": 0,
+          "limitation_count": 2,
+          "unresolved_question_count": 3,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Tech report PDF extracted (MOPD/QAD/MTP/Indic/super-VL numbers); appendix full audit skimmed-only; Super-VL repo LICENSE file unopened (Lightning sibling confirmed); independent repro none",
+          "r7 card authority: AUTHORITY_CONSUMED (see correction ledger for scoping)",
+          "primary-body: No r7 finding recorded for this screening target",
+          "license-weights: No r7 finding recorded for this screening target",
+          "benchmark-basis: No r7 finding recorded for this screening target"
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Open agentic efficiency play: hybrid Mamba architecture + distillation/QAD methodology with unusually transparent training disclosure (MOPD teachers, acceptance-length deltas, per-benchmark temps). Reader learns the efficiency-vs-capability bargain and the Bolt split (74B now, E4B future). License OpenMDW permissive (file-level gap noted). [r7 substantive view; no selection implied.]",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W42:b80ab4ccd3469c31",
+        "evidence_task_id": "evidence:2026-W42:74c9de5537332783",
+        "discovery_ids": [
+          "w42-carry-ms-decision1-20261011"
+        ],
+        "evidence_sha256": "898b8d6c229cb8c86ba2a20fecc86d92f1f52427cccf42f3c1636b4c8f50cbd3",
+        "edition_view_sha256": "f2091123c0eed51264651bcd8df72002a97bcbadd99c25f3cf9332f230c3b2c7",
+        "title": "Microsoft-Decision-1 (W41 HOLD carry)",
+        "artifact_type": "MODEL",
+        "evidence_status": "NEEDS_MORE",
+        "materiality": "HOLD",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance",
+          "carry-over obligations"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 1,
+          "metric_count": 0,
+          "limitation_count": 2,
+          "unresolved_question_count": 3,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Clock/license/weights still absent",
+          "r7 card authority: AUTHORITY_CONSUMED (see correction ledger for scoping)",
+          "primary-body: No r7 finding recorded for this screening target",
+          "license-weights: No r7 finding recorded for this screening target",
+          "benchmark-basis: No r7 finding recorded for this screening target"
+        ],
+        "profile_extensions": {
+          "why_this_issue": "HOLD carried: no clock/license/weights after recheck; Granite comparison is not fresh evidence. Stays out unless pinned. (Canonical origin normalized BASE per precedent; carry semantics in obligations/reason.) [r7 substantive view; no selection implied.]",
+          "window_relation": "CARRY_OVER",
+          "carry_over": true
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W42:e188cdb3b910bdfc",
+        "evidence_task_id": "evidence:2026-W42:76a8af03b8ac08ce",
+        "discovery_ids": [
+          "w42-primary-beam-20261016"
+        ],
+        "evidence_sha256": "4505ffdb2a7cbd508f4e4378fcf29ef6eeb30e323066aa869185c208a798876a",
+        "edition_view_sha256": "c36ba1d32216494bbe1be7588dbc324015ca6bb4e62307fa7d1e24854a7bc2d2",
+        "title": "Reflection Beam 501B-A23B",
+        "artifact_type": "OPEN_WEIGHT",
+        "evidence_status": "PARTIAL",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 5,
+          "claim_count": 5,
+          "metric_count": 0,
+          "limitation_count": 2,
+          "unresolved_question_count": 3,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Safety report body, independent benches, Arena methodology, LICENSE file",
+          "r7 card authority: AUTHORITY_CONSUMED (see correction ledger for scoping)",
+          "primary-body: No r7 finding recorded for this screening target",
+          "license-weights: No r7 finding recorded for this screening target",
+          "benchmark-basis: No r7 finding recorded for this screening target"
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Most permissive large open-weight release (Apache full text verified) with unusually complete vendor disclosure (benchmarks at stated sampling, ISE safety with limitations, distillation allowed). Reader learns capability + rights together; safety report equations unaudited. [r7 substantive view; no selection implied.]",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W42:017c9bbc00134ae8",
+        "evidence_task_id": "evidence:2026-W42:7f023bccc7374f60",
+        "discovery_ids": [
+          "w42-primary-openai-security-20261013"
+        ],
+        "evidence_sha256": "0974c32b71c1f53fefdb5000d9119a1f789f360bd824303965667587e3d08a28",
+        "edition_view_sha256": "51d56e5219fffb7f837adc56a13e50b5454e7341eb5b2389eee72d0afaab1d77",
+        "title": "OpenAI office recording-device X statement",
+        "artifact_type": "SECURITY_EVENT",
+        "evidence_status": "NEEDS_MORE",
+        "materiality": "HOLD",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 2,
+          "claim_count": 1,
+          "metric_count": 0,
+          "limitation_count": 2,
+          "unresolved_question_count": 3,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "No corroborating primary; FBI/court records absent; device/method undisclosed",
+          "r7 card authority: AUTHORITY_CONSUMED (see correction ledger for scoping)",
+          "primary-body: No r7 finding recorded for this screening target",
+          "license-weights: No r7 finding recorded for this screening target",
+          "benchmark-basis: No r7 finding recorded for this screening target"
+        ],
+        "profile_extensions": {
+          "why_this_issue": "X-only vendor security narrative (device find, model-assisted attribution, FBI). Reader learns the claimed shape of AI-assisted insider-threat response — and that NOTHING corroborates it. HOLD for corroboration; never cite as fact. Chronology: Oct 13 X post, in-window. [r7 substantive view; no selection implied.]",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W42:078644656ddf4f7a",
+        "evidence_task_id": "evidence:2026-W42:8f69a7ef1f167fb6",
+        "discovery_ids": [
+          "w42-primary-aws-bedrock-20261013"
+        ],
+        "evidence_sha256": "df274402e2df836e397f1bfdb987116b0efc1ea6432453728cf19a52ba72a19c",
+        "edition_view_sha256": "78bb26664f93ad889fec8e4b305e3e8293cae87c0fed7d6d75922e250dbd0063",
+        "title": "AWS Bedrock distribution roundup",
+        "artifact_type": "INTEGRATION",
+        "evidence_status": "PARTIAL",
+        "materiality": "CONTEXT",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 2,
+          "claim_count": 2,
+          "metric_count": 0,
+          "limitation_count": 2,
+          "unresolved_question_count": 3,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Vendor roundup = secondary; no AWS-native model",
+          "r7 card authority: AUTHORITY_CONSUMED (see correction ledger for scoping)",
+          "primary-body: No r7 finding recorded for this screening target",
+          "license-weights: No r7 finding recorded for this screening target",
+          "benchmark-basis: No r7 finding recorded for this screening target"
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Distribution record (roundup read): Haiku −75%, Nova Sonic GA, Sol GA, Sonnet EOL. No AWS-native model event — scope honesty is the point. CONTEXT-leaning. [r7 substantive view; no selection implied.]",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W42:10d76dec5907fe46",
+        "evidence_task_id": "evidence:2026-W42:91fc794cb84d60bd",
+        "discovery_ids": [
+          "w42-dailyx-grok-purchasing-20261010"
+        ],
+        "evidence_sha256": "ee6e02801b674f493dce01b0445c3949214cc9f2ac9c01882ce57578f088fa25",
+        "edition_view_sha256": "0a4df71c74a7bbaad75424105a27033ea7057a354a4361efd792ce0c8a9060c0",
+        "title": "Grok card-photo purchasing (X-observed)",
+        "artifact_type": "PRODUCT",
+        "evidence_status": "NEEDS_MORE",
+        "materiality": "HOLD",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 2,
+          "claim_count": 1,
+          "metric_count": 0,
+          "limitation_count": 2,
+          "unresolved_question_count": 3,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "No release/security docs; X-observed only",
+          "r7 card authority: AUTHORITY_CONSUMED (see correction ledger for scoping)",
+          "primary-body: No r7 finding recorded for this screening target",
+          "license-weights: No r7 finding recorded for this screening target",
+          "benchmark-basis: No r7 finding recorded for this screening target"
+        ],
+        "profile_extensions": {
+          "why_this_issue": "X-observed behavior anecdote (card-photo ordering), useful as product-direction color, never as shipped-feature fact. HOLD permanently at anecdote level. [r7 substantive view; no selection implied.]",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W42:a25b967858d26f80",
+        "evidence_task_id": "evidence:2026-W42:94bc4850184a80eb",
+        "discovery_ids": [
+          "w42-primary-ecdsa-20261016"
+        ],
+        "evidence_sha256": "7e07e504e674316740f2e5c5657e40221263e450fa66a91db566e4ec19e7ec57",
+        "edition_view_sha256": "fd3f5f01ca23e6247fc14bd7938a8de2098054f2a3d9403275c395f4d907d6b4",
+        "title": "NIST ECDSA seed origins (Claude research)",
+        "artifact_type": "PRODUCT",
+        "evidence_status": "PARTIAL",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 2,
+          "claim_count": 3,
+          "metric_count": 0,
+          "limitation_count": 2,
+          "unresolved_question_count": 3,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Independent cryptographer verification none",
+          "r7 card authority: AUTHORITY_CONSUMED (see correction ledger for scoping)",
+          "primary-body: No r7 finding recorded for this screening target",
+          "license-weights: No r7 finding recorded for this screening target",
+          "benchmark-basis: No r7 finding recorded for this screening target"
+        ],
+        "profile_extensions": {
+          "why_this_issue": "25-year cryptographic mystery closed by AI-assisted analysis (lrand48 + timestamps), reducing backdoor plausibility. Reader learns method + open ends (B-163, 4 base points); expert verification pending but repro code public. [r7 substantive view; no selection implied.]",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W42:07cca85d36bdc8c6",
+        "evidence_task_id": "evidence:2026-W42:9565853f1823de4e",
+        "discovery_ids": [
+          "w42-primary-glm-legal-20261012"
+        ],
+        "evidence_sha256": "ba2f194fb4207f10dfeac0f053204b01437ff1c2f9f030a05c3b211008b93242",
+        "edition_view_sha256": "d3f66580a120d9afb10e8e81247cf422f28df29506bebdaba789e3bf6c993383",
+        "title": "Z.ai GLM-Legal",
+        "artifact_type": "MODEL",
+        "evidence_status": "PARTIAL",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 4,
+          "claim_count": 3,
+          "metric_count": 0,
+          "limitation_count": 2,
+          "unresolved_question_count": 3,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Z.ai rate card, full methods",
+          "r7 card authority: AUTHORITY_CONSUMED (see correction ledger for scoping)",
+          "primary-body: No r7 finding recorded for this screening target",
+          "license-weights: No r7 finding recorded for this screening target",
+          "benchmark-basis: No r7 finding recorded for this screening target"
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Specialization economics: +12.5pp Harvey lift at $0.15/test with INDEPENDENT Vals anchor — plus the integrity details (chart omissions, Research-Bench regression, no weights/rate card). Reader learns vertical-model value AND how vendor charts mislead. [r7 substantive view; no selection implied.]",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W42:218deec1c05eea18",
+        "evidence_task_id": "evidence:2026-W42:98c89831cafb5a14",
+        "discovery_ids": [
+          "w42-primary-deep-review-20261014"
+        ],
+        "evidence_sha256": "6b8b6fe9f384ccbccb5c041910d14b16c814cbaca033f5c60eb2f6696153eb0f",
+        "edition_view_sha256": "f7f41f2a4c947f9079cc1439b28da0738c45f5691b34e4321a6d8f88f6680fe3",
+        "title": "Google Deep Review",
+        "artifact_type": "AGENT",
+        "evidence_status": "PARTIAL",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 3,
+          "claim_count": 5,
+          "metric_count": 0,
+          "limitation_count": 2,
+          "unresolved_question_count": 3,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Paper PDF, pilot independent audit, paid-tier pricing",
+          "r7 card authority: AUTHORITY_CONSUMED (see correction ledger for scoping)",
+          "primary-body: No r7 finding recorded for this screening target",
+          "license-weights: No r7 finding recorded for this screening target",
+          "benchmark-basis: No r7 finding recorded for this screening target"
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Review-infrastructure launch with full method depth (4 stages, SPOT +34pp with grader methodology, pilots with survey data AND limitations, Roles 1–4 taxonomy). Reader learns the validation-bottleneck thesis and PAT's evidence base; pilot stats unaudited. [r7 substantive view; no selection implied.]",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W42:4e12f3a2f4b59c20",
+        "evidence_task_id": "evidence:2026-W42:9ad4305a5553fab0",
+        "discovery_ids": [
+          "w42-primary-anthropic-unintended-20261009"
+        ],
+        "evidence_sha256": "f4240243f62567b02a62b26e0e101a0858028d4e96bf43b3fa91262e7aa02969",
+        "edition_view_sha256": "36844d452e02596b6a1fd58a47d42a04605e332ba3a91d431f22b2d8fd3f8e89",
+        "title": "Anthropic unintended-actions report",
+        "artifact_type": "PRODUCT",
+        "evidence_status": "PARTIAL",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 2,
+          "claim_count": 5,
+          "metric_count": 0,
+          "limitation_count": 2,
+          "unresolved_question_count": 3,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Independent repro none (orgs unnamed); severity self-assessed",
+          "r7 card authority: AUTHORITY_CONSUMED (see correction ledger for scoping)",
+          "primary-body: No r7 finding recorded for this screening target",
+          "license-weights: No r7 finding recorded for this screening target",
+          "benchmark-basis: No r7 finding recorded for this screening target"
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Transparency-report precedent: four misbehavior categories with cases, minimal-impact framing, live-net halt, White House briefing. Reader learns the failure taxonomy AND that severity judgments are vendor self-assessment; orgs unnamed so no independent check possible. [r7 substantive view; no selection implied.]",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W42:9fe5ee469de972c8",
+        "evidence_task_id": "evidence:2026-W42:9cb1c8ee34af4348",
+        "discovery_ids": [
+          "w42-primary-ai-scan-20261015"
+        ],
+        "evidence_sha256": "0788a6e352cd02108f5a34e769e6486d0b05ff2323510e5e8d04fd19658c131e",
+        "edition_view_sha256": "a63c51271b18aacbb12648237e98505a462b3a4f76a8065de4b812197b9615a1",
+        "title": "GitHub AI Scan for PRs GA",
+        "artifact_type": "PRODUCT",
+        "evidence_status": "PARTIAL",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 2,
+          "claim_count": 3,
+          "metric_count": 0,
+          "limitation_count": 2,
+          "unresolved_question_count": 3,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Precision/recall data none",
+          "r7 card authority: AUTHORITY_CONSUMED (see correction ledger for scoping)",
+          "primary-body: No r7 finding recorded for this screening target",
+          "license-weights: No r7 finding recorded for this screening target",
+          "benchmark-basis: No r7 finding recorded for this screening target"
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Detection complement with honest boundaries (uncovered langs listed, advisory non-blocking, fork/Dependabot exclusions, no Copilot license). Pair with autofix; never conflate. Precision/recall absent. [r7 substantive view; no selection implied.]",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W42:9a9366a65d344b75",
+        "evidence_task_id": "evidence:2026-W42:a1693af9fc462e76",
+        "discovery_ids": [
+          "w42-primary-rosalind-discovery-20261011"
+        ],
+        "evidence_sha256": "8ad2c5712891e1d117569ee7b03e8a4016b6ad45200de650de645893b4d1acde",
+        "edition_view_sha256": "6ba6572afb19edd9b8a24c32eb1590a92b51350f8f3b12068443fe970010a894",
+        "title": "gpt-rosalind-discovery pricing listing",
+        "artifact_type": "API",
+        "evidence_status": "PARTIAL",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 2,
+          "claim_count": 2,
+          "metric_count": 0,
+          "limitation_count": 2,
+          "unresolved_question_count": 3,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Research-vs-discovery functional diff; docs pages",
+          "r7 card authority: AUTHORITY_CONSUMED (see correction ledger for scoping)",
+          "primary-body: No r7 finding recorded for this screening target",
+          "license-weights: No r7 finding recorded for this screening target",
+          "benchmark-basis: No r7 finding recorded for this screening target"
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Pricing-page fact (both models $5/$25, first-hand read) establishing the Rosalind family tariff. Narrow but solid; functional research-vs-discovery diff still open. [r7 substantive view; no selection implied.]",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W42:7eb212557bbc5909",
+        "evidence_task_id": "evidence:2026-W42:b5ae6479e3f028de",
+        "discovery_ids": [
+          "w42-primary-openai-eu-agents-20261014"
+        ],
+        "evidence_sha256": "b1a0ab3e7aff15b37dd5bac627e9a3810555493eeabcdb92c3f7235bae53f4c6",
+        "edition_view_sha256": "ae6cd6e585fa213bc101cca51fdd997233a72b930f25c3e15413e19b2786bbf1",
+        "title": "OpenAI EU agentic adoption report",
+        "artifact_type": "PRODUCT",
+        "evidence_status": "PARTIAL",
+        "materiality": "CONTEXT",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 2,
+          "claim_count": 2,
+          "metric_count": 0,
+          "limitation_count": 2,
+          "unresolved_question_count": 3,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Full PDF unfetched; Enterprise/Business sample bias",
+          "r7 card authority: AUTHORITY_CONSUMED (see correction ledger for scoping)",
+          "primary-body: No r7 finding recorded for this screening target",
+          "license-weights: No r7 finding recorded for this screening target",
+          "benchmark-basis: No r7 finding recorded for this screening target"
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Adoption data with baked-in bias disclosure (Enterprise-only sample, 22–85% country spread, frontier gaps). Reader learns agentic penetration shape and must not generalize beyond the sample; full PDF pending. [r7 substantive view; no selection implied.]",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W42:2177831df4f20832",
+        "evidence_task_id": "evidence:2026-W42:bbae4e52852868d3",
+        "discovery_ids": [
+          "w42-lead-splashboard-qwen38-20261010"
+        ],
+        "evidence_sha256": "61b0f1532b3e45438aaf49704b19635c29f433d40388662d0fe4e7e95dd5231b",
+        "edition_view_sha256": "c1f9d9d2ecc862577651d6489ed21c86ee6205efad32f723f08f8c4490b912b2",
+        "title": "Splashboard Mac app + Qwen3.8 name claim",
+        "artifact_type": "PRODUCT",
+        "evidence_status": "NEEDS_MORE",
+        "materiality": "HOLD",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 2,
+          "claim_count": 1,
+          "metric_count": 0,
+          "limitation_count": 2,
+          "unresolved_question_count": 3,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Repo unopened; model-name proof",
+          "r7 card authority: AUTHORITY_CONSUMED (see correction ledger for scoping)",
+          "primary-body: No r7 finding recorded for this screening target",
+          "license-weights: No r7 finding recorded for this screening target",
+          "benchmark-basis: No r7 finding recorded for this screening target"
+        ],
+        "profile_extensions": {
+          "why_this_issue": "THIN HOLD: app claim trivially plausible but repo unopened; Qwen3.8-27B name QUARANTINED (do not propagate). Name-proof or nothing. [r7 substantive view; no selection implied.]",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W42:efe069fadbff940a",
+        "evidence_task_id": "evidence:2026-W42:bd1c22a5606820e8",
+        "discovery_ids": [
+          "w42-primary-hydrafusion-20261014"
+        ],
+        "evidence_sha256": "18b8e825cab6e6e5757d7522082b69b6de23652d0f474d25262ba22adb6e1fc7",
+        "edition_view_sha256": "1675a217bee2fed2990bed1bda933745d7679c61b3524c31b5488586436de281",
+        "title": "GitHub HydraFusion (+Max)",
+        "artifact_type": "AGENT",
+        "evidence_status": "PARTIAL",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 2,
+          "claim_count": 3,
+          "metric_count": 0,
+          "limitation_count": 2,
+          "unresolved_question_count": 3,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Docs detail, independent quality comparison",
+          "r7 card authority: AUTHORITY_CONSUMED (see correction ledger for scoping)",
+          "primary-body: No r7 finding recorded for this screening target",
+          "license-weights: No r7 finding recorded for this screening target",
+          "benchmark-basis: No r7 finding recorded for this screening target"
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Orchestration product (pool, per-stage effort, judging, parallel critics, Max tier) in research preview. Reader learns multi-model routing mechanics; quality evidence absent (no comparative data published). [r7 substantive view; no selection implied.]",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W42:1ec47d9f5640e6e5",
+        "evidence_task_id": "evidence:2026-W42:c137b577e54f0f1a",
+        "discovery_ids": [
+          "w42-primary-agentic-autofix-20261015"
+        ],
+        "evidence_sha256": "50be9f1b8e2b664fa11ef271e0d4e66c83222de74165f501255462af4a44ceaf",
+        "edition_view_sha256": "e5de490d9305983877363af9cf84abbd212b55b8b168689abe0ec34df94c3a16",
+        "title": "GitHub agentic autofix GA",
+        "artifact_type": "AGENT",
+        "evidence_status": "PARTIAL",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 2,
+          "claim_count": 3,
+          "metric_count": 0,
+          "limitation_count": 2,
+          "unresolved_question_count": 3,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Real-world fix-rate data none",
+          "r7 card authority: AUTHORITY_CONSUMED (see correction ledger for scoping)",
+          "primary-body: No r7 finding recorded for this screening target",
+          "license-weights: No r7 finding recorded for this screening target",
+          "benchmark-basis: No r7 finding recorded for this screening target"
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Security-agent delivery with concrete mechanics AND constraints (≤25/PR, default-branch-only, enterprise-gated, Credits+minutes billing). Reader learns both capability and eligibility narrowness; fix-rate data absent. [r7 substantive view; no selection implied.]",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W42:8488f19293a65c95",
+        "evidence_task_id": "evidence:2026-W42:cdc32d1921666444",
+        "discovery_ids": [
+          "w42-primary-rosalind-plan-20261015"
+        ],
+        "evidence_sha256": "072759371d8fc5f605f695382b68f90da77b61f3e195a74287a9363c32761aa6",
+        "edition_view_sha256": "3e170959ef8cfb1e61205a1e6adb68b693bac8bc89cbde972dd5e8aab7b27427",
+        "title": "OpenAI Rosalind Academic Plan",
+        "artifact_type": "PRODUCT",
+        "evidence_status": "PARTIAL",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 2,
+          "claim_count": 3,
+          "metric_count": 0,
+          "limitation_count": 2,
+          "unresolved_question_count": 3,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Research-vs-discovery functional diff; docs pages",
+          "r7 card authority: AUTHORITY_CONSUMED (see correction ledger for scoping)",
+          "primary-body: No r7 finding recorded for this screening target",
+          "license-weights: No r7 finding recorded for this screening target",
+          "benchmark-basis: No r7 finding recorded for this screening target"
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Vertical-model access program: 30 free seats + trusted-access gating for life-sciences labs. Reader learns the distribution model (academic, API-excluded, no-train-by-default) and its limits (US-only, docs pending). [r7 substantive view; no selection implied.]",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W42:78638c331f26f9c0",
+        "evidence_task_id": "evidence:2026-W42:d0d0f6a00e4a5739",
+        "discovery_ids": [
+          "w42-primary-minicpm-v47-20261012"
+        ],
+        "evidence_sha256": "88f972da3c3d9cd90f95ff04b54ccda7b6d740392f781414e7568451d6e5f6b2",
+        "edition_view_sha256": "7954274e6ffb9fbd3be55ce432d603fb1fcecf02eabdac8fe8ed5dabfe522835",
+        "title": "OpenBMB MiniCPM-V 4.7",
+        "artifact_type": "OPEN_WEIGHT",
+        "evidence_status": "PARTIAL",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 3,
+          "claim_count": 3,
+          "metric_count": 0,
+          "limitation_count": 2,
+          "unresolved_question_count": 3,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "License: Apache TAG-confirmed (API metadata) vs FILE-unverified (no LICENSE file in repo siblings) — distinct statuses; README body unopened; benchmarks uncaptured",
+          "r7 card authority: AUTHORITY_CONSUMED (see correction ledger for scoping)",
+          "primary-body: No r7 finding recorded for this screening target",
+          "license-weights: No r7 finding recorded for this screening target",
+          "benchmark-basis: No r7 finding recorded for this screening target"
+        ],
+        "profile_extensions": {
+          "why_this_issue": "On-device MoE engineering (LES, 13 tok/s @3GB) with live HF repos and dated trail. Reader learns the efficiency claim; license is tag-only (file absent) and benchmarks uncaptured — PARTIAL by evidence, not by importance. [r7 substantive view; no selection implied.]",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W42:aa38bb30ba88ecef",
+        "evidence_task_id": "evidence:2026-W42:d673de23646f1c7c",
+        "discovery_ids": [
+          "w42-primary-simons-math-20261015"
+        ],
+        "evidence_sha256": "6c9f6141548a7a64f6369d9735c814f39e2e235886179ee7f821eeffa0ebb987",
+        "edition_view_sha256": "c290fa2422fe730b6ee250fa349fae192452180d28e6f7273ec00ddd67ffd572",
+        "title": "Simons $15M mathematicians AI-era effort",
+        "artifact_type": "PRODUCT",
+        "evidence_status": "PARTIAL",
+        "materiality": "CONTEXT",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 2,
+          "claim_count": 2,
+          "metric_count": 0,
+          "limitation_count": 2,
+          "unresolved_question_count": 3,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Program mechanics, eligibility, timelines unfetched",
+          "r7 card authority: AUTHORITY_CONSUMED (see correction ledger for scoping)",
+          "primary-body: No r7 finding recorded for this screening target",
+          "license-weights: No r7 finding recorded for this screening target",
+          "benchmark-basis: No r7 finding recorded for this screening target"
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Philanthropy + labs ($15M, tools/compute) for mathematicians in the AI era. Thin on program mechanics; CONTEXT-level. Reader learns the funding shape, not research content. [r7 substantive view; no selection implied.]",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W42:48528585077b8401",
+        "evidence_task_id": "evidence:2026-W42:e0383c9e60cd433c",
+        "discovery_ids": [
+          "w42-primary-scion-20261013"
+        ],
+        "evidence_sha256": "7cbecf5c285278deec6a171356339266db2ce8647e65c4bc315cc7ec5b1e62a5",
+        "edition_view_sha256": "8f1f446a9f969b046a749424ec070a0ee12a1c2b7e0917532d9ef111a9c40e69",
+        "title": "Anthropic Scion",
+        "artifact_type": "PRODUCT",
+        "evidence_status": "PARTIAL",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 2,
+          "claim_count": 5,
+          "metric_count": 0,
+          "limitation_count": 2,
+          "unresolved_question_count": 3,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "External adoption n/a (internal system)",
+          "r7 card authority: AUTHORITY_CONSUMED (see correction ledger for scoping)",
+          "primary-body: No r7 finding recorded for this screening target",
+          "license-weights: No r7 finding recorded for this screening target",
+          "benchmark-basis: No r7 finding recorded for this screening target"
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Agent-scale development breaks human-scale tooling: 10x merge growth forced a 5-month VCS rewrite with server-centric design. Reader learns the principles (always-online, sparse-by-design, API-first) and the boundary (internal monorepo only, not a git replacement). Engineering narrative essentially complete. [r7 substantive view; no selection implied.]",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W42:8fb25f61241778c1",
+        "evidence_task_id": "evidence:2026-W42:e0a141ac725a3389",
+        "discovery_ids": [
+          "w42-support-argon-copilot-20261013"
+        ],
+        "evidence_sha256": "37002c5554f165c3beb6b29d60ea4393af7d33109084aa184d851dd4d7371e0c",
+        "edition_view_sha256": "8856267e03f98a942ef37db998a860a05889973b31fbd0a026b7639280b50398",
+        "title": "Argon in GitHub Copilot (distribution)",
+        "artifact_type": "INTEGRATION",
+        "evidence_status": "PARTIAL",
+        "materiality": "CONTEXT",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 2,
+          "claim_count": 2,
+          "metric_count": 0,
+          "limitation_count": 2,
+          "unresolved_question_count": 3,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Per-model page body",
+          "r7 card authority: AUTHORITY_CONSUMED (see correction ledger for scoping)",
+          "primary-body: No r7 finding recorded for this screening target",
+          "license-weights: No r7 finding recorded for this screening target",
+          "benchmark-basis: No r7 finding recorded for this screening target"
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Distribution confirmation + changelog survey provenance. Supporting role only; no standalone editorial weight. [r7 substantive view; no selection implied.]",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W42:2e9e77e7d214c7e1",
+        "evidence_task_id": "evidence:2026-W42:e0d5339c95c90137",
+        "discovery_ids": [
+          "w42-primary-metr-20261015"
+        ],
+        "evidence_sha256": "41e65b00ebb42a1b8313b1e04006ad817442f1cd61baf64b3ff636440bacd827",
+        "edition_view_sha256": "62f44ea55fcc4e64b3bdbfbdb86e8f92d38057bef6faf1b336fb62fab665ba3c",
+        "title": "Anthropic METR employee-like evaluator access",
+        "artifact_type": "PRODUCT",
+        "evidence_status": "PARTIAL",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 2,
+          "claim_count": 3,
+          "metric_count": 0,
+          "limitation_count": 2,
+          "unresolved_question_count": 3,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "No results published; SecureBio/Accenture early",
+          "r7 card authority: AUTHORITY_CONSUMED (see correction ledger for scoping)",
+          "primary-body: No r7 finding recorded for this screening target",
+          "license-weights: No r7 finding recorded for this screening target",
+          "benchmark-basis: No r7 finding recorded for this screening target"
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Governance mechanism, not outcome: employee-like third-party access with publish-without-veto. Reader learns the access model (tiers, redactions) and that zero results exist yet — mechanism consumed, outcomes nonexistent. [r7 substantive view; no selection implied.]",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W42:429af346c3013833",
+        "evidence_task_id": "evidence:2026-W42:e40db6e1f304fc02",
+        "discovery_ids": [
+          "w42-dailyx-amazon-worldmodel-20261011"
+        ],
+        "evidence_sha256": "07bdefbd357bd38085853c889a227c46a84adc69122b3ce1794683573a8decd4",
+        "edition_view_sha256": "9f63ef7c225775c4b6f14321f742ddbd49b452793e2fe046c815a56098c0e8d4",
+        "title": "Amazon research-world-model paper (background)",
+        "artifact_type": "PAPER",
+        "evidence_status": "PARTIAL",
+        "materiality": "CONTEXT",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 3,
+          "claim_count": 2,
+          "metric_count": 0,
+          "limitation_count": 2,
+          "unresolved_question_count": 3,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "PDF unconfirmed/unfetched",
+          "r7 card authority: AUTHORITY_CONSUMED (see correction ledger for scoping)",
+          "primary-body: No r7 finding recorded for this screening target",
+          "license-weights: No r7 finding recorded for this screening target",
+          "benchmark-basis: No r7 finding recorded for this screening target"
+        ],
+        "profile_extensions": {
+          "why_this_issue": "BACKGROUND with teeth: full numbers traced PLUS independent critical review (non-significance flags) — a model vendor/independent separation. Paper OUT, discussion IN. [r7 substantive view; no selection implied.]",
+          "window_relation": "PRE_WINDOW_RELEVANCE",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W42:e7440b4173e70885",
+        "evidence_task_id": "evidence:2026-W42:eb68c839d412764d",
+        "discovery_ids": [
+          "w42-grok-x-ledger-20261017"
+        ],
+        "evidence_sha256": "1f824fc937a6da6350130c8b30b7e56f77d5295d82bb1d00e3bd592ad279bd3f",
+        "edition_view_sha256": "8c3b32a0b48abc90644db642932057dd5f8692f581f858e3022c51219e8dd112",
+        "title": "Grok/X weekly intake ledger (provenance receipt)",
+        "artifact_type": "OTHER",
+        "evidence_status": "PARTIAL",
+        "materiality": "NON_MATERIAL",
+        "scope_dimensions": [
+          "current relevance"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 1,
+          "metric_count": 0,
+          "limitation_count": 3,
+          "unresolved_question_count": 0,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Post authorship/claim accuracy unvalidated (no X-HTML capture); coverage incomplete by nature (Sol audit).",
+          "r7 card authority: N/A_LEDGER provenance binder (E42-05 rule: never story/sidebar/HOLD).",
+          "r7 card authority: N/A_LEDGER (see correction ledger for scoping)"
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Grok/X weekly intake ledger: 18 official in-window posts across 7 existing families, zero new releases; binds manifest-to-Discovery provenance. Non-editorial receipt by E42-05 rule: never an article, sidebar, or HOLD. [r8 ledger view.]",
+          "window_relation": "OTHER",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W42:48361c0e84a0db3f",
+        "evidence_task_id": "evidence:2026-W42:eff1e34f45a6f10e",
+        "discovery_ids": [
+          "w42-primary-flux3-klein-20261015"
+        ],
+        "evidence_sha256": "6f16ef10e9a8d0c4ae21dc9d927f4b379d8720165896a6b1dbc90945460d6654",
+        "edition_view_sha256": "f8ba57d18db68c8d6da1f6503cf68b3570791eb620e1c304f23a5305a9cc86a9",
+        "title": "Black Forest Labs FLUX 3 Image Klein",
+        "artifact_type": "OPEN_WEIGHT",
+        "evidence_status": "PARTIAL",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 4,
+          "claim_count": 3,
+          "metric_count": 0,
+          "limitation_count": 2,
+          "unresolved_question_count": 3,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Kommunity FULL TEXT verified (repo file); card/docs consumed via excerpts; independent quality tests none",
+          "r7 card authority: AUTHORITY_CONSUMED (see correction ledger for scoping)",
+          "primary-body: No r7 finding recorded for this screening target",
+          "license-weights: No r7 finding recorded for this screening target",
+          "benchmark-basis: No r7 finding recorded for this screening target"
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Open-weights image model whose license is the story: Kommunity full text (non-commercial + <$5M output-only; distillation = Derivative). Reader learns generation features AND that 'open weights' ≠ open source. Independent quality tests absent. [r7 substantive view; no selection implied.]",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W42:7250cc3e8b3679f4",
+        "evidence_task_id": "evidence:2026-W42:f362a39cc1058b41",
+        "discovery_ids": [
+          "w42-primary-muse-wonder-20261012"
+        ],
+        "evidence_sha256": "76a5f418727929ea2ad0b1ab3b9d86bdd65ff98474f5d6eb8fa784d6560587b1",
+        "edition_view_sha256": "591fd7dfdbcc6fbda116e5fd4f4c04aadab95eece9c6f424f97ba47b9e342b9e",
+        "title": "Muse Wonder / Wonder Full",
+        "artifact_type": "MODEL",
+        "evidence_status": "PARTIAL",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 6,
+          "claim_count": 7,
+          "metric_count": 0,
+          "limitation_count": 2,
+          "unresolved_question_count": 3,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Research blog consumed (r6); full evaluation report behind linked report still pending; model card/build details unfetched; AA methodology unaudited; no independent benches",
+          "r7 card authority: AUTHORITY_CONSUMED (see correction ledger for scoping)",
+          "primary-body: No r7 finding recorded for this screening target",
+          "license-weights: No r7 finding recorded for this screening target",
+          "benchmark-basis: No r7 finding recorded for this screening target"
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Meta's first true frontier push: agentic family with explicit memory/focus mechanisms (Active Memory/Focus defined, not slogans), Prometheus-scale training, and an OOD-generalization claim tied to base-model strength. Reader learns where Meta competes (agents/memory/coding, Harvey LAB) and what remains vendor-asserted (benchmark numbers behind report link, full safety report pending). Chronology: Oct 12 announce, research blog same week. [r7 substantive view; no selection implied.]",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W42:517550f1eb0dda9d",
+        "evidence_task_id": "evidence:2026-W42:f3d9f9cf616af419",
+        "discovery_ids": [
+          "w42-lead-sulphur2-20261010"
+        ],
+        "evidence_sha256": "93bcd72406a2beef95640f6114ddd74afa37cdd22668abb4639531ce3742e4eb",
+        "edition_view_sha256": "729fd37e895c083e177188960507a22477737ae76146e79d466ef659c3fd163a",
+        "title": "Sulphur 2 video model (lead)",
+        "artifact_type": "MODEL",
+        "evidence_status": "NEEDS_MORE",
+        "materiality": "HOLD",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 2,
+          "claim_count": 1,
+          "metric_count": 0,
+          "limitation_count": 2,
+          "unresolved_question_count": 3,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Card unread; quality/license",
+          "r7 card authority: AUTHORITY_CONSUMED (see correction ledger for scoping)",
+          "primary-body: No r7 finding recorded for this screening target",
+          "license-weights: No r7 finding recorded for this screening target",
+          "benchmark-basis: No r7 finding recorded for this screening target"
+        ],
+        "profile_extensions": {
+          "why_this_issue": "THIN HOLD: HF link never opened; card/license/quality unknown. Single-post lead, correctly unpromoted. [r7 substantive view; no selection implied.]",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      }
+    ],
+    "summary": {
+      "candidate_count": 50,
+      "materiality_counts": {
+        "CONTEXT": 14,
+        "HOLD": 7,
+        "MATERIAL": 28,
+        "NON_MATERIAL": 1
+      },
+      "evidence_status_counts": {
+        "NEEDS_MORE": 7,
+        "PARTIAL": 43
+      }
+    }
+  },
+  "evidence_acceptance": {
+    "schema_version": "2.0-rc1",
+    "issue_id": "2026-W42",
+    "research_profile": "WEEKLY",
+    "result_set_sha256": "f2429e2792f6104ddbe520ea53f938e01ac2cc9873eb1a7713cc75b1ef4ee0e7",
+    "package_sha256": "4b34578f8c650d0337df9e1f5659134019ac76f80d8e2ed53b455e1b1b58c5f8",
+    "screening_acceptance_sha256": "eccf817a07614efc2cdbbcfc42e4109198e509d011b2fed420d1257dcc929d01",
+    "result_count": 50,
+    "results": [
+      {
+        "evidence_task_id": "evidence:2026-W42:03932bab0d3ce5fd",
+        "discovery_ids": [
+          "w42-dailyx-agenthorizon-20261010"
+        ],
+        "sha256": "440a3cbe006a3d029c11bfc46d71deb53d62e46d34bee8cd80774f285dfdebfb",
+        "status": "PARTIAL",
+        "filename": "task-0a1d30dd224c846ef44c.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W42:06bd3bc8489aedaf",
+        "discovery_ids": [
+          "w42-primary-distillation-20261012"
+        ],
+        "sha256": "fa02c8ea3a618a6b75aa0598b9e11fc6006089d28dc7c367dbacdb8a27af2f18",
+        "status": "PARTIAL",
+        "filename": "task-c09819779a9229dadb13.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W42:083133eb0e891661",
+        "discovery_ids": [
+          "w42-primary-earth-ai-20261014"
+        ],
+        "sha256": "c7c70d8f59667413ddbcf5df150d08148ffa49938775e3d9669b9ebae6bc2b2c",
+        "status": "PARTIAL",
+        "filename": "task-b97b99b689baec16eaf5.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W42:164b3c100cfad494",
+        "discovery_ids": [
+          "w42-primary-nvidia-uk-20261014"
+        ],
+        "sha256": "f0f08cd19b8d8a1bd3e50d6f9e5b70b9c634ccef6f804ef5a3a65771a34831b5",
+        "status": "PARTIAL",
+        "filename": "task-11ae5d16dae758e177f4.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W42:185fb0899f700ee1",
+        "discovery_ids": [
+          "w42-primary-lechonk-20261012"
+        ],
+        "sha256": "34c6e7716b587181f47f9214f9e52de23e829acd15ef0a6298d30758c8cb47f8",
+        "status": "PARTIAL",
+        "filename": "task-c3439ff42a96e600812d.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W42:1e4cf38d1af41b37",
+        "discovery_ids": [
+          "w42-primary-glimpse-20261016"
+        ],
+        "sha256": "625c2d795a2d279b71ca946dfb80f3df04e665a47393b24165b7b85c454bb9f0",
+        "status": "PARTIAL",
+        "filename": "task-0e7f72be6503e9b22fa2.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W42:211d554a4f6b5a9c",
+        "discovery_ids": [
+          "w42-primary-claude-code-perf-20261016"
+        ],
+        "sha256": "d5f88b654ebf345d18b1823fa6b27876a3772fe6c524b7c090176f2973c85e43",
+        "status": "PARTIAL",
+        "filename": "task-7151fcdc6c3ee392f774.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W42:220d0a9d76f968c6",
+        "discovery_ids": [
+          "w42-dailyx-sakana-mlr-20261011"
+        ],
+        "sha256": "5c60d847e49560008d10eb713838538d0848950d4ae79878c2c594e32332b9f0",
+        "status": "PARTIAL",
+        "filename": "task-6342a509e85574c47c62.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W42:28ed149c5fa63cba",
+        "discovery_ids": [
+          "w42-lead-qwen-turbo-20261011"
+        ],
+        "sha256": "57a4244a02201c2f1722c250b8e517c77637d25cf8c2c881ef474e304a9444a4",
+        "status": "PARTIAL",
+        "filename": "task-ff86fca302faa6235083.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W42:33ea1a8b0a611636",
+        "discovery_ids": [
+          "w42-dailyx-harness-paper-20261011"
+        ],
+        "sha256": "bffb245a18f714d13880dc9aea8766f528b294fb96bcd8c12787670219dfdc41",
+        "status": "NEEDS_MORE",
+        "filename": "task-1b1aea9beacefbcde08e.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W42:34c2c53b93d2432a",
+        "discovery_ids": [
+          "w42-primary-codex-gpt6-20261016"
+        ],
+        "sha256": "e6e87563edd293256ba8207226ada4ae087ae2e4130cb7d264c8d01c2d820c4e",
+        "status": "PARTIAL",
+        "filename": "task-dee80649da784c760529.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W42:35690dfbac78389c",
+        "discovery_ids": [
+          "w42-primary-aspire-20261016"
+        ],
+        "sha256": "258322c6e96431cb233dd0483d3da2a3442d64a58ef6fde0632f90ae5de18a65",
+        "status": "PARTIAL",
+        "filename": "task-effbda25079509b72bb8.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W42:49d13d321f2c2c9f",
+        "discovery_ids": [
+          "w42-dailyx-grok-scale-20261015"
+        ],
+        "sha256": "69dc8403b68e97268d6718cf6c79be9f172a376634c262c1549d04aacfbb833a",
+        "status": "NEEDS_MORE",
+        "filename": "task-800408dab7fcce56849c.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W42:4c2680dd1e0eb52b",
+        "discovery_ids": [
+          "w42-primary-wetlab-agents-20261016"
+        ],
+        "sha256": "4f160f32afdb1a4f927c19697f3a58004a7670c435187a3b8c2ea89cae459df8",
+        "status": "PARTIAL",
+        "filename": "task-2ea6d2cbb7e9b9c00419.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W42:4c683655c367a915",
+        "discovery_ids": [
+          "w42-primary-nvidia-ocp-20261012"
+        ],
+        "sha256": "2689f731e0a4776e14cb8f3978d70b1966897e14238a81b9634a1fea106e78a7",
+        "status": "PARTIAL",
+        "filename": "task-2cd2da5b249062c9194e.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W42:53f04f601bdce6c0",
+        "discovery_ids": [
+          "w42-lead-fish-drama3-20261013"
+        ],
+        "sha256": "2d3fe6cf4806722aa2aff0210a425d7740c20b03d41097402bd3e95f5f2dd6eb",
+        "status": "PARTIAL",
+        "filename": "task-b2ee0e1dffa42188990c.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W42:545cfe3f74b1cff0",
+        "discovery_ids": [
+          "w42-primary-decider-v12-20261016"
+        ],
+        "sha256": "1828bbd0c17ac1453211d3775ea1fd1b03650332d72c93d6a385025b04aba5c9",
+        "status": "PARTIAL",
+        "filename": "task-d997b2fff60ac36c1fdb.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W42:593ccb14d2d02b67",
+        "discovery_ids": [
+          "w42-primary-gemini4-argon-20261013"
+        ],
+        "sha256": "b0c5c5ad43f442a0661bd1553f7b750e5acb643a2a3d4e47e68847d235c63b0d",
+        "status": "PARTIAL",
+        "filename": "task-bb9272a30e907826a9c7.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W42:5b251d3e64049da7",
+        "discovery_ids": [
+          "w42-primary-lfm25-20261013"
+        ],
+        "sha256": "28e13cb4e78e68a68aa694ddc5b9c512e45d1a24264e2f522eceefcc8ee0fd16",
+        "status": "PARTIAL",
+        "filename": "task-a79f0a6c53138e11c933.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W42:64a8cae155aa0622",
+        "discovery_ids": [
+          "w42-primary-granite-switch41-20261014"
+        ],
+        "sha256": "4ba2937a91d7db1ea80d9b8b6e0e981cb8a3264427c34d8f0c59ad718970fe5c",
+        "status": "PARTIAL",
+        "filename": "task-778de6f30485b5a4354f.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W42:6a11623b7a984668",
+        "discovery_ids": [
+          "w42-primary-maia300-20261012"
+        ],
+        "sha256": "678bb34be116e7b7cdd9944f9d279a8d787c0d3ca4b84e4c68b24cc292eb1a21",
+        "status": "PARTIAL",
+        "filename": "task-9659dd683c56f3d3039d.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W42:6e3e57a025985709",
+        "discovery_ids": [
+          "w42-primary-spark-open-20261015"
+        ],
+        "sha256": "fa9f9fab14b202ba97d68d9156c71d44b70a3baa24eef026ab38f6e1cce67319",
+        "status": "PARTIAL",
+        "filename": "task-b7c4cf541cd786ff5665.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W42:704d74b73d3dd931",
+        "discovery_ids": [
+          "w42-lead-oss-video-roundup-20261010"
+        ],
+        "sha256": "8b16164d07dfc2a3138ba1111b94a355c73ff22188ab9852db59ed02c697dccb",
+        "status": "PARTIAL",
+        "filename": "task-fabe2832a86f7348fd3f.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W42:74971639046be6c2",
+        "discovery_ids": [
+          "w42-primary-nemotron35-20261015"
+        ],
+        "sha256": "67704909729eb53eb51eddfc741dfaaa406d50d9d62ab38148ec7686ce584d90",
+        "status": "PARTIAL",
+        "filename": "task-d9bb954ecc5d01f95e04.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W42:74c9de5537332783",
+        "discovery_ids": [
+          "w42-carry-ms-decision1-20261011"
+        ],
+        "sha256": "898b8d6c229cb8c86ba2a20fecc86d92f1f52427cccf42f3c1636b4c8f50cbd3",
+        "status": "NEEDS_MORE",
+        "filename": "task-b80ab4ccd3469c3156a8.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W42:76a8af03b8ac08ce",
+        "discovery_ids": [
+          "w42-primary-beam-20261016"
+        ],
+        "sha256": "4505ffdb2a7cbd508f4e4378fcf29ef6eeb30e323066aa869185c208a798876a",
+        "status": "PARTIAL",
+        "filename": "task-e188cdb3b910bdfc8c1b.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W42:7f023bccc7374f60",
+        "discovery_ids": [
+          "w42-primary-openai-security-20261013"
+        ],
+        "sha256": "0974c32b71c1f53fefdb5000d9119a1f789f360bd824303965667587e3d08a28",
+        "status": "NEEDS_MORE",
+        "filename": "task-017c9bbc00134ae89a60.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W42:8f69a7ef1f167fb6",
+        "discovery_ids": [
+          "w42-primary-aws-bedrock-20261013"
+        ],
+        "sha256": "df274402e2df836e397f1bfdb987116b0efc1ea6432453728cf19a52ba72a19c",
+        "status": "PARTIAL",
+        "filename": "task-078644656ddf4f7a0d1b.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W42:91fc794cb84d60bd",
+        "discovery_ids": [
+          "w42-dailyx-grok-purchasing-20261010"
+        ],
+        "sha256": "ee6e02801b674f493dce01b0445c3949214cc9f2ac9c01882ce57578f088fa25",
+        "status": "NEEDS_MORE",
+        "filename": "task-10d76dec5907fe463618.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W42:94bc4850184a80eb",
+        "discovery_ids": [
+          "w42-primary-ecdsa-20261016"
+        ],
+        "sha256": "7e07e504e674316740f2e5c5657e40221263e450fa66a91db566e4ec19e7ec57",
+        "status": "PARTIAL",
+        "filename": "task-a25b967858d26f80aa3e.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W42:9565853f1823de4e",
+        "discovery_ids": [
+          "w42-primary-glm-legal-20261012"
+        ],
+        "sha256": "ba2f194fb4207f10dfeac0f053204b01437ff1c2f9f030a05c3b211008b93242",
+        "status": "PARTIAL",
+        "filename": "task-07cca85d36bdc8c68827.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W42:98c89831cafb5a14",
+        "discovery_ids": [
+          "w42-primary-deep-review-20261014"
+        ],
+        "sha256": "6b8b6fe9f384ccbccb5c041910d14b16c814cbaca033f5c60eb2f6696153eb0f",
+        "status": "PARTIAL",
+        "filename": "task-218deec1c05eea1816dd.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W42:9ad4305a5553fab0",
+        "discovery_ids": [
+          "w42-primary-anthropic-unintended-20261009"
+        ],
+        "sha256": "f4240243f62567b02a62b26e0e101a0858028d4e96bf43b3fa91262e7aa02969",
+        "status": "PARTIAL",
+        "filename": "task-4e12f3a2f4b59c20c6ef.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W42:9cb1c8ee34af4348",
+        "discovery_ids": [
+          "w42-primary-ai-scan-20261015"
+        ],
+        "sha256": "0788a6e352cd02108f5a34e769e6486d0b05ff2323510e5e8d04fd19658c131e",
+        "status": "PARTIAL",
+        "filename": "task-9fe5ee469de972c8ab70.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W42:a1693af9fc462e76",
+        "discovery_ids": [
+          "w42-primary-rosalind-discovery-20261011"
+        ],
+        "sha256": "8ad2c5712891e1d117569ee7b03e8a4016b6ad45200de650de645893b4d1acde",
+        "status": "PARTIAL",
+        "filename": "task-9a9366a65d344b757ec2.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W42:b5ae6479e3f028de",
+        "discovery_ids": [
+          "w42-primary-openai-eu-agents-20261014"
+        ],
+        "sha256": "b1a0ab3e7aff15b37dd5bac627e9a3810555493eeabcdb92c3f7235bae53f4c6",
+        "status": "PARTIAL",
+        "filename": "task-7eb212557bbc5909c83a.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W42:bbae4e52852868d3",
+        "discovery_ids": [
+          "w42-lead-splashboard-qwen38-20261010"
+        ],
+        "sha256": "61b0f1532b3e45438aaf49704b19635c29f433d40388662d0fe4e7e95dd5231b",
+        "status": "NEEDS_MORE",
+        "filename": "task-2177831df4f20832f9b2.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W42:bd1c22a5606820e8",
+        "discovery_ids": [
+          "w42-primary-hydrafusion-20261014"
+        ],
+        "sha256": "18b8e825cab6e6e5757d7522082b69b6de23652d0f474d25262ba22adb6e1fc7",
+        "status": "PARTIAL",
+        "filename": "task-efe069fadbff940adee1.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W42:c137b577e54f0f1a",
+        "discovery_ids": [
+          "w42-primary-agentic-autofix-20261015"
+        ],
+        "sha256": "50be9f1b8e2b664fa11ef271e0d4e66c83222de74165f501255462af4a44ceaf",
+        "status": "PARTIAL",
+        "filename": "task-1ec47d9f5640e6e59cdf.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W42:cdc32d1921666444",
+        "discovery_ids": [
+          "w42-primary-rosalind-plan-20261015"
+        ],
+        "sha256": "072759371d8fc5f605f695382b68f90da77b61f3e195a74287a9363c32761aa6",
+        "status": "PARTIAL",
+        "filename": "task-8488f19293a65c952082.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W42:d0d0f6a00e4a5739",
+        "discovery_ids": [
+          "w42-primary-minicpm-v47-20261012"
+        ],
+        "sha256": "88f972da3c3d9cd90f95ff04b54ccda7b6d740392f781414e7568451d6e5f6b2",
+        "status": "PARTIAL",
+        "filename": "task-78638c331f26f9c0c635.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W42:d673de23646f1c7c",
+        "discovery_ids": [
+          "w42-primary-simons-math-20261015"
+        ],
+        "sha256": "6c9f6141548a7a64f6369d9735c814f39e2e235886179ee7f821eeffa0ebb987",
+        "status": "PARTIAL",
+        "filename": "task-aa38bb30ba88ecefe8c2.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W42:e0383c9e60cd433c",
+        "discovery_ids": [
+          "w42-primary-scion-20261013"
+        ],
+        "sha256": "7cbecf5c285278deec6a171356339266db2ce8647e65c4bc315cc7ec5b1e62a5",
+        "status": "PARTIAL",
+        "filename": "task-48528585077b8401d30b.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W42:e0a141ac725a3389",
+        "discovery_ids": [
+          "w42-support-argon-copilot-20261013"
+        ],
+        "sha256": "37002c5554f165c3beb6b29d60ea4393af7d33109084aa184d851dd4d7371e0c",
+        "status": "PARTIAL",
+        "filename": "task-8fb25f61241778c157a4.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W42:e0d5339c95c90137",
+        "discovery_ids": [
+          "w42-primary-metr-20261015"
+        ],
+        "sha256": "41e65b00ebb42a1b8313b1e04006ad817442f1cd61baf64b3ff636440bacd827",
+        "status": "PARTIAL",
+        "filename": "task-2e9e77e7d214c7e1e399.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W42:e40db6e1f304fc02",
+        "discovery_ids": [
+          "w42-dailyx-amazon-worldmodel-20261011"
+        ],
+        "sha256": "07bdefbd357bd38085853c889a227c46a84adc69122b3ce1794683573a8decd4",
+        "status": "PARTIAL",
+        "filename": "task-429af346c30138333f49.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W42:eb68c839d412764d",
+        "discovery_ids": [
+          "w42-grok-x-ledger-20261017"
+        ],
+        "sha256": "1f824fc937a6da6350130c8b30b7e56f77d5295d82bb1d00e3bd592ad279bd3f",
+        "status": "PARTIAL",
+        "filename": "task-e7440b4173e708856fee.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W42:eff1e34f45a6f10e",
+        "discovery_ids": [
+          "w42-primary-flux3-klein-20261015"
+        ],
+        "sha256": "6f16ef10e9a8d0c4ae21dc9d927f4b379d8720165896a6b1dbc90945460d6654",
+        "status": "PARTIAL",
+        "filename": "task-48361c0e84a0db3fcb61.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W42:f362a39cc1058b41",
+        "discovery_ids": [
+          "w42-primary-muse-wonder-20261012"
+        ],
+        "sha256": "76a5f418727929ea2ad0b1ab3b9d86bdd65ff98474f5d6eb8fa784d6560587b1",
+        "status": "PARTIAL",
+        "filename": "task-7250cc3e8b3679f42bcc.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W42:f3d9f9cf616af419",
+        "discovery_ids": [
+          "w42-lead-sulphur2-20261010"
+        ],
+        "sha256": "93bcd72406a2beef95640f6114ddd74afa37cdd22668abb4639531ce3742e4eb",
+        "status": "NEEDS_MORE",
+        "filename": "task-517550f1eb0dda9d024c.json"
+      }
+    ]
+  },
+  "evidence_inputs": [
+    {
+      "candidate_id": "candidate:2026-W42:b7c4cf541cd786ff",
+      "architecture_usage": "PRIMARY",
+      "evidence_task_id": "evidence:2026-W42:6e3e57a025985709",
+      "evidence_sha256": "fa9f9fab14b202ba97d68d9156c71d44b70a3baa24eef026ab38f6e1cce67319",
+      "evidence_card": {
+        "schema_version": "2.0-rc1",
+        "issue_id": "2026-W42",
+        "evidence_task_id": "evidence:2026-W42:6e3e57a025985709",
+        "basis": {
+          "task_sha256": "0fe7dccc301ecf56c8b72d1116b6d5502caf7506dfb12cd89aa52c72306e25d3",
+          "screening_acceptance_sha256": "eccf817a07614efc2cdbbcfc42e4109198e509d011b2fed420d1257dcc929d01",
+          "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+          "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+        },
+        "status": "PARTIAL",
+        "entities": [
+          {
+            "entity_id": "muse-spark-open",
+            "canonical_name": "Meta Muse Spark Open 816B-A42B",
+            "entity_type": "MODEL",
+            "organization": "Meta",
+            "canonical_url": "primary:research.meta.ai/blog/muse-spark-open"
+          }
+        ],
+        "artifact": {
+          "primary_subject_id": "muse-spark-open",
+          "artifact_type": "OPEN_WEIGHT",
+          "canonical_name": "Meta Muse Spark Open 816B-A42B",
+          "canonical_url": "primary:research.meta.ai/blog/muse-spark-open"
+        },
+        "temporal": {
+          "observed_at": "2026-10-17T10:45:00Z",
+          "events": [
+            {
+              "event_id": "event-2",
+              "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+              "event_date": "2026-10-15T17:08:05Z",
+              "subject_id": "muse-spark-open",
+              "subject_role": "PRIMARY_SUBJECT",
+              "source_ids": [
+                "supplement-src-6af5744792150223"
+              ]
+            },
+            {
+              "event_id": "event-3",
+              "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+              "event_date": "2026-10-15T17:08:04Z",
+              "subject_id": "muse-spark-open",
+              "subject_role": "PRIMARY_SUBJECT",
+              "source_ids": [
+                "supplement-src-87a49880c5cf7999"
+              ]
+            },
+            {
+              "event_id": "event-5",
+              "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+              "event_date": "2026-10-15T17:08:05Z",
+              "subject_id": "muse-spark-open",
+              "subject_role": "PRIMARY_SUBJECT",
+              "source_ids": [
+                "supplement-src-d86a81eb3513bec2"
+              ]
+            },
+            {
+              "event_id": "event-6",
+              "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+              "event_date": "2026-10-15T00:00:00Z",
+              "subject_id": "muse-spark-open",
+              "subject_role": "PRIMARY_SUBJECT",
+              "source_ids": [
+                "supplement-src-e4fd7fd2779d7622"
+              ]
+            }
+          ]
+        },
+        "sources": [
+          {
+            "source_id": "src-1",
+            "url": "primary:research.meta.ai/blog/muse-spark-open",
+            "source_class": "PRIMARY_OFFICIAL",
+            "title": "Meta: Muse Spark Open weights (816B/42B, Oct 15)",
+            "published_at": null,
+            "accessed_at": "2026-10-17T10:45:00Z",
+            "role": "Discovery-bounded source used for factual verification"
+          },
+          {
+            "source_id": "supplement-src-6af5744792150223",
+            "url": "https://x.com/AIatMeta/status/2110779758334386491",
+            "source_class": "SECONDARY",
+            "title": "x.com/AIatMeta/status/2110779758334386491",
+            "published_at": "2026-10-15T17:08:05Z",
+            "accessed_at": "2026-10-17T07:00:00Z",
+            "role": "Post-Screening exact authority supplement: Post-Screening exact authority for r7 card claims (capture depth in file header) [X-post Relatório: original X not directly retrieved; content as reported in DailyX/Grok raw.]"
+          },
+          {
+            "source_id": "supplement-src-87a49880c5cf7999",
+            "url": "https://x.com/AIatMeta/status/2110779754274292212",
+            "source_class": "SECONDARY",
+            "title": "x.com/AIatMeta/status/2110779754274292212",
+            "published_at": "2026-10-15T17:08:04Z",
+            "accessed_at": "2026-10-17T07:00:00Z",
+            "role": "Post-Screening exact authority supplement: Post-Screening exact authority for r7 card claims (capture depth in file header) [X-post Relatório: original X not directly retrieved; content as reported in DailyX/Grok raw.]"
+          },
+          {
+            "source_id": "supplement-src-d589c3da0af4e873",
+            "url": "https://huggingface.co/meta-models/Muse-Spark-Open-816B-A42B",
+            "source_class": "PRIMARY_REPOSITORY",
+            "title": "huggingface.co/meta-models/Muse-Spark-Open-816B-A42B",
+            "published_at": null,
+            "accessed_at": "2026-10-17T07:00:00Z",
+            "role": "Post-Screening exact authority supplement: Post-Screening exact authority for r7 card claims (capture depth in file header)"
+          },
+          {
+            "source_id": "supplement-src-d86a81eb3513bec2",
+            "url": "https://x.com/AIatMeta/status/2110779756828557356",
+            "source_class": "SECONDARY",
+            "title": "x.com/AIatMeta/status/2110779756828557356",
+            "published_at": "2026-10-15T17:08:05Z",
+            "accessed_at": "2026-10-17T07:00:00Z",
+            "role": "Post-Screening exact authority supplement: Post-Screening exact authority for r7 card claims (capture depth in file header) [X-post Relatório: original X not directly retrieved; content as reported in DailyX/Grok raw.]"
+          },
+          {
+            "source_id": "supplement-src-e4fd7fd2779d7622",
+            "url": "https://research.meta.ai/blog/muse-spark-open",
+            "source_class": "PRIMARY_OFFICIAL",
+            "title": "research.meta.ai/blog/muse-spark-open",
+            "published_at": "2026-10-15T00:00:00Z",
+            "accessed_at": "2026-10-17T07:00:00Z",
+            "role": "Post-Screening exact authority supplement: Post-Screening exact authority for r7 card claims (capture depth in file header)"
+          }
+        ],
+        "claims": [
+          {
+            "statement_id": "claim-1",
+            "text": "816B/42B MoE (256 experts, 8/token), 1M ctx, text+image+video+audio in; same base as Spark 1.3 + safety post-train",
+            "subject_id": "muse-spark-open",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "VENDOR_CLAIM",
+            "source_ids": [
+              "src-1",
+              "supplement-src-6af5744792150223",
+              "supplement-src-87a49880c5cf7999",
+              "supplement-src-d589c3da0af4e873",
+              "supplement-src-d86a81eb3513bec2",
+              "supplement-src-e4fd7fd2779d7622"
+            ],
+            "context": "https://research.meta.ai/blog/muse-spark-open"
+          },
+          {
+            "statement_id": "claim-2",
+            "text": "2x M5 Ultra desktop (512 GB each, 1.2 TB/s = 1 TB Supercomputer); on-device agentic demos (Ice Cubes iOS, DaVinci frame review)",
+            "subject_id": "muse-spark-open",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "VENDOR_CLAIM",
+            "source_ids": [
+              "src-1",
+              "supplement-src-6af5744792150223",
+              "supplement-src-87a49880c5cf7999",
+              "supplement-src-d589c3da0af4e873",
+              "supplement-src-d86a81eb3513bec2",
+              "supplement-src-e4fd7fd2779d7622"
+            ],
+            "context": "https://research.meta.ai/blog/muse-spark-open"
+          },
+          {
+            "statement_id": "claim-3",
+            "text": "Helion kernels 1.03–3.95x kernel-level, 3% e2e MI350 (vendor); SGLang/vLLM/TRT/Transformers/MLX/llama.cpp/Unsloth; TorchTitan tuning",
+            "subject_id": "muse-spark-open",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "VENDOR_CLAIM",
+            "source_ids": [
+              "src-1",
+              "supplement-src-6af5744792150223",
+              "supplement-src-87a49880c5cf7999",
+              "supplement-src-d589c3da0af4e873",
+              "supplement-src-d86a81eb3513bec2",
+              "supplement-src-e4fd7fd2779d7622"
+            ],
+            "context": "https://research.meta.ai/blog/muse-spark-open"
+          },
+          {
+            "statement_id": "claim-4",
+            "text": "Safety post-training for standalone; Scaling Framework thresholds met; card NOW + full report SOON (pending)",
+            "subject_id": "muse-spark-open",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "VENDOR_CLAIM",
+            "source_ids": [
+              "src-1",
+              "supplement-src-6af5744792150223",
+              "supplement-src-87a49880c5cf7999",
+              "supplement-src-d589c3da0af4e873",
+              "supplement-src-d86a81eb3513bec2",
+              "supplement-src-e4fd7fd2779d7622"
+            ],
+            "context": "https://research.meta.ai/blog/muse-spark-open"
+          },
+          {
+            "statement_id": "claim-5",
+            "text": "Muse Model License OPERATIVE TERMS VERIFIED (HF page + AMD mirror + 3 explainers): broad grant incl. distill/sell; §2 Built-with display + output-improved Derivatives; §3 $20M MaaS-only gate + exemptions; no MAU cap; NOT OSI",
+            "subject_id": "muse-spark-open",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "VENDOR_CLAIM",
+            "source_ids": [
+              "src-1",
+              "supplement-src-6af5744792150223",
+              "supplement-src-87a49880c5cf7999",
+              "supplement-src-d589c3da0af4e873",
+              "supplement-src-d86a81eb3513bec2",
+              "supplement-src-e4fd7fd2779d7622"
+            ],
+            "context": "https://huggingface.co/meta-models/Muse-Spark-Open-816B-A42B"
+          },
+          {
+            "statement_id": "claim-6",
+            "text": "Grok #1–3 corroborate specs/availability/license as STATED (vendor accounts)",
+            "subject_id": "muse-spark-open",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "SOCIAL_OBSERVATION",
+            "source_ids": [
+              "src-1",
+              "supplement-src-6af5744792150223",
+              "supplement-src-87a49880c5cf7999",
+              "supplement-src-d589c3da0af4e873",
+              "supplement-src-d86a81eb3513bec2",
+              "supplement-src-e4fd7fd2779d7622"
+            ],
+            "context": "https://x.com/AIatMeta/status/2110779754274292212"
+          }
+        ],
+        "metrics": [],
+        "limitations": [
+          {
+            "statement_id": "limitation-1",
+            "text": "License text, bench methodology, independent benches, weight verification",
+            "subject_id": "muse-spark-open",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1",
+              "supplement-src-6af5744792150223",
+              "supplement-src-87a49880c5cf7999",
+              "supplement-src-d589c3da0af4e873",
+              "supplement-src-d86a81eb3513bec2",
+              "supplement-src-e4fd7fd2779d7622"
+            ],
+            "context": "Evidence boundary retained for downstream editorial use."
+          },
+          {
+            "statement_id": "limitation-2",
+            "text": "r7 card authority: AUTHORITY_CONSUMED (see correction ledger for scoping)",
+            "subject_id": "muse-spark-open",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1",
+              "supplement-src-6af5744792150223",
+              "supplement-src-87a49880c5cf7999",
+              "supplement-src-d589c3da0af4e873",
+              "supplement-src-d86a81eb3513bec2",
+              "supplement-src-e4fd7fd2779d7622"
+            ],
+            "context": "Evidence boundary retained for downstream editorial use."
+          }
+        ],
+        "verification": {
+          "targets": [
+            {
+              "target": "primary-body",
+              "status": "UNRESOLVED",
+              "finding": "No r7 finding recorded for this screening target",
+              "subject_ids": [
+                "muse-spark-open"
+              ],
+              "source_ids": [
+                "src-1",
+                "supplement-src-6af5744792150223",
+                "supplement-src-87a49880c5cf7999",
+                "supplement-src-d589c3da0af4e873",
+                "supplement-src-d86a81eb3513bec2",
+                "supplement-src-e4fd7fd2779d7622"
+              ]
+            },
+            {
+              "target": "license-weights",
+              "status": "UNRESOLVED",
+              "finding": "No r7 finding recorded for this screening target",
+              "subject_ids": [
+                "muse-spark-open"
+              ],
+              "source_ids": [
+                "src-1",
+                "supplement-src-6af5744792150223",
+                "supplement-src-87a49880c5cf7999",
+                "supplement-src-d589c3da0af4e873",
+                "supplement-src-d86a81eb3513bec2",
+                "supplement-src-e4fd7fd2779d7622"
+              ]
+            },
+            {
+              "target": "benchmark-basis",
+              "status": "UNRESOLVED",
+              "finding": "No r7 finding recorded for this screening target",
+              "subject_ids": [
+                "muse-spark-open"
+              ],
+              "source_ids": [
+                "src-1",
+                "supplement-src-6af5744792150223",
+                "supplement-src-87a49880c5cf7999",
+                "supplement-src-d589c3da0af4e873",
+                "supplement-src-d86a81eb3513bec2",
+                "supplement-src-e4fd7fd2779d7622"
+              ]
+            }
+          ],
+          "unresolved_questions": [
+            "primary-body: No r7 finding recorded for this screening target",
+            "license-weights: No r7 finding recorded for this screening target",
+            "benchmark-basis: No r7 finding recorded for this screening target"
+          ],
+          "contradictions": []
+        }
+      }
+    },
+    {
+      "candidate_id": "candidate:2026-W42:e188cdb3b910bdfc",
+      "architecture_usage": "PRIMARY",
+      "evidence_task_id": "evidence:2026-W42:76a8af03b8ac08ce",
+      "evidence_sha256": "4505ffdb2a7cbd508f4e4378fcf29ef6eeb30e323066aa869185c208a798876a",
+      "evidence_card": {
+        "schema_version": "2.0-rc1",
+        "issue_id": "2026-W42",
+        "evidence_task_id": "evidence:2026-W42:76a8af03b8ac08ce",
+        "basis": {
+          "task_sha256": "86732ca9545a475e8814ba9bb388052ab2aefca1ba76d0588046eb8c63fbd1e8",
+          "screening_acceptance_sha256": "eccf817a07614efc2cdbbcfc42e4109198e509d011b2fed420d1257dcc929d01",
+          "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+          "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+        },
+        "status": "PARTIAL",
+        "entities": [
+          {
+            "entity_id": "beam",
+            "canonical_name": "Reflection Beam 501B-A23B",
+            "entity_type": "MODEL",
+            "organization": "Reflection",
+            "canonical_url": "primary:reflection.ai/blog/beam-is-available"
+          }
+        ],
+        "artifact": {
+          "primary_subject_id": "beam",
+          "artifact_type": "OPEN_WEIGHT",
+          "canonical_name": "Reflection Beam 501B-A23B",
+          "canonical_url": "primary:reflection.ai/blog/beam-is-available"
+        },
+        "temporal": {
+          "observed_at": "2026-10-17T10:45:00Z",
+          "events": [
+            {
+              "event_id": "event-2",
+              "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+              "event_date": "2026-10-16T00:00:00Z",
+              "subject_id": "beam",
+              "subject_role": "PRIMARY_SUBJECT",
+              "source_ids": [
+                "supplement-src-277d60db0a45047c"
+              ]
+            },
+            {
+              "event_id": "event-3",
+              "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+              "event_date": "2026-10-16T00:00:00Z",
+              "subject_id": "beam",
+              "subject_role": "PRIMARY_SUBJECT",
+              "source_ids": [
+                "supplement-src-304ac238c731ba51"
+              ]
+            },
+            {
+              "event_id": "event-4",
+              "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+              "event_date": "2026-10-16T00:00:00Z",
+              "subject_id": "beam",
+              "subject_role": "PRIMARY_SUBJECT",
+              "source_ids": [
+                "supplement-src-926525e60afc7ba8"
+              ]
+            }
+          ]
+        },
+        "sources": [
+          {
+            "source_id": "src-1",
+            "url": "primary:reflection.ai/blog/beam-is-available",
+            "source_class": "PRIMARY_OFFICIAL",
+            "title": "Reflection: Beam availability + Apache 2.0 weights (Oct 16)",
+            "published_at": null,
+            "accessed_at": "2026-10-17T10:45:00Z",
+            "role": "Discovery-bounded source used for factual verification"
+          },
+          {
+            "source_id": "supplement-src-277d60db0a45047c",
+            "url": "https://reflection.ai/blog/beam-is-available",
+            "source_class": "PRIMARY_OFFICIAL",
+            "title": "reflection.ai/blog/beam-is-available",
+            "published_at": "2026-10-16T00:00:00Z",
+            "accessed_at": "2026-10-17T07:00:00Z",
+            "role": "Post-Screening exact authority supplement: Post-Screening exact authority for r7 card claims (capture depth in file header)"
+          },
+          {
+            "source_id": "supplement-src-304ac238c731ba51",
+            "url": "https://reflection.ai/beam-safety-report",
+            "source_class": "PRIMARY_OFFICIAL",
+            "title": "reflection.ai/beam-safety-report",
+            "published_at": "2026-10-16T00:00:00Z",
+            "accessed_at": "2026-10-17T07:00:00Z",
+            "role": "Post-Screening exact authority supplement: Post-Screening exact authority for r7 card claims (capture depth in file header)"
+          },
+          {
+            "source_id": "supplement-src-926525e60afc7ba8",
+            "url": "https://reflection.ai/beam-model-card",
+            "source_class": "PRIMARY_OFFICIAL",
+            "title": "reflection.ai/beam-model-card",
+            "published_at": "2026-10-16T00:00:00Z",
+            "accessed_at": "2026-10-17T07:00:00Z",
+            "role": "Post-Screening exact authority supplement: Post-Screening exact authority for r7 card claims (capture depth in file header)"
+          },
+          {
+            "source_id": "supplement-src-9e8610f61aff18b1",
+            "url": "https://huggingface.co/reflection/Beam-1.0-501B-A23B/resolve/main/LICENSE",
+            "source_class": "PRIMARY_REPOSITORY",
+            "title": "huggingface.co/reflection/Beam-1.0-501B-A23B/resolve/main/LICENSE",
+            "published_at": null,
+            "accessed_at": "2026-10-17T07:00:00Z",
+            "role": "Post-Screening exact authority supplement: Post-Screening exact authority for r7 card claims (capture depth in file header)"
+          }
+        ],
+        "claims": [
+          {
+            "statement_id": "claim-1",
+            "text": "501.3B/23.4B MoE; 52 layers (3 dense+49); Gated GQA+SWA; 1M ctx; 152k vocab; 256 experts; BF16/FP8/NVFP4; cutoff Jun 30 2026; English-dominant",
+            "subject_id": "beam",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "VENDOR_CLAIM",
+            "source_ids": [
+              "src-1",
+              "supplement-src-277d60db0a45047c",
+              "supplement-src-304ac238c731ba51",
+              "supplement-src-926525e60afc7ba8",
+              "supplement-src-9e8610f61aff18b1"
+            ],
+            "context": "https://reflection.ai/beam-model-card"
+          },
+          {
+            "statement_id": "claim-2",
+            "text": "Benchmarks t0.7/p0.99 (vendor): DeepSWE 43.3 / SWE-Pro v2-Hard 78.6 / Verified 81.6 / Terminal-Bench 80.1 / AIME 97.7 / HLE 51.1 w-tools / GPQA 90.6 / MCP-Atlas 80.8 / BrowseComp 76.8",
+            "subject_id": "beam",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "VENDOR_CLAIM",
+            "source_ids": [
+              "src-1",
+              "supplement-src-277d60db0a45047c",
+              "supplement-src-304ac238c731ba51",
+              "supplement-src-926525e60afc7ba8",
+              "supplement-src-9e8610f61aff18b1"
+            ],
+            "context": "https://reflection.ai/beam-model-card"
+          },
+          {
+            "statement_id": "claim-3",
+            "text": "Safety: ISE in-house (soon-OSS) refusal ~89%/compliance ~82%; OSF evals + third-party assurance; full Safety Technical Report (body substantially consumed: bio/chem/cyber batteries with limits, n=20 uplift study, harness confounds)",
+            "subject_id": "beam",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "VENDOR_CLAIM",
+            "source_ids": [
+              "src-1",
+              "supplement-src-277d60db0a45047c",
+              "supplement-src-304ac238c731ba51",
+              "supplement-src-926525e60afc7ba8",
+              "supplement-src-9e8610f61aff18b1"
+            ],
+            "context": "https://reflection.ai/beam-safety-report"
+          },
+          {
+            "statement_id": "claim-4",
+            "text": "Apache 2.0 FULL TEXT VERIFIED from repo LICENSE file (no output restriction, no revenue cap, no display duty); repo created Oct 7 (pre-window), RELEASE Oct 16 IN; 188 shards; 1,148 downloads; Harmony-XML template (effort 8–512)",
+            "subject_id": "beam",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "VENDOR_CLAIM",
+            "source_ids": [
+              "src-1",
+              "supplement-src-277d60db0a45047c",
+              "supplement-src-304ac238c731ba51",
+              "supplement-src-926525e60afc7ba8",
+              "supplement-src-9e8610f61aff18b1"
+            ],
+            "context": "https://huggingface.co/reflection/Beam-1.0-501B-A23B/resolve/main/LICENSE"
+          },
+          {
+            "statement_id": "claim-5",
+            "text": "Distillation explicitly ALLOWED; commercial+research use; Mirror CLI + 40 partners; Grok #10/#17 corroborate",
+            "subject_id": "beam",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "VENDOR_CLAIM",
+            "source_ids": [
+              "src-1",
+              "supplement-src-277d60db0a45047c",
+              "supplement-src-304ac238c731ba51",
+              "supplement-src-926525e60afc7ba8",
+              "supplement-src-9e8610f61aff18b1"
+            ],
+            "context": "https://reflection.ai/blog/beam-is-available"
+          }
+        ],
+        "metrics": [],
+        "limitations": [
+          {
+            "statement_id": "limitation-1",
+            "text": "Safety report body, independent benches, Arena methodology, LICENSE file",
+            "subject_id": "beam",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1",
+              "supplement-src-277d60db0a45047c",
+              "supplement-src-304ac238c731ba51",
+              "supplement-src-926525e60afc7ba8",
+              "supplement-src-9e8610f61aff18b1"
+            ],
+            "context": "Evidence boundary retained for downstream editorial use."
+          },
+          {
+            "statement_id": "limitation-2",
+            "text": "r7 card authority: AUTHORITY_CONSUMED (see correction ledger for scoping)",
+            "subject_id": "beam",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1",
+              "supplement-src-277d60db0a45047c",
+              "supplement-src-304ac238c731ba51",
+              "supplement-src-926525e60afc7ba8",
+              "supplement-src-9e8610f61aff18b1"
+            ],
+            "context": "Evidence boundary retained for downstream editorial use."
+          }
+        ],
+        "verification": {
+          "targets": [
+            {
+              "target": "primary-body",
+              "status": "UNRESOLVED",
+              "finding": "No r7 finding recorded for this screening target",
+              "subject_ids": [
+                "beam"
+              ],
+              "source_ids": [
+                "src-1",
+                "supplement-src-277d60db0a45047c",
+                "supplement-src-304ac238c731ba51",
+                "supplement-src-926525e60afc7ba8",
+                "supplement-src-9e8610f61aff18b1"
+              ]
+            },
+            {
+              "target": "license-weights",
+              "status": "UNRESOLVED",
+              "finding": "No r7 finding recorded for this screening target",
+              "subject_ids": [
+                "beam"
+              ],
+              "source_ids": [
+                "src-1",
+                "supplement-src-277d60db0a45047c",
+                "supplement-src-304ac238c731ba51",
+                "supplement-src-926525e60afc7ba8",
+                "supplement-src-9e8610f61aff18b1"
+              ]
+            },
+            {
+              "target": "benchmark-basis",
+              "status": "UNRESOLVED",
+              "finding": "No r7 finding recorded for this screening target",
+              "subject_ids": [
+                "beam"
+              ],
+              "source_ids": [
+                "src-1",
+                "supplement-src-277d60db0a45047c",
+                "supplement-src-304ac238c731ba51",
+                "supplement-src-926525e60afc7ba8",
+                "supplement-src-9e8610f61aff18b1"
+              ]
+            }
+          ],
+          "unresolved_questions": [
+            "primary-body: No r7 finding recorded for this screening target",
+            "license-weights: No r7 finding recorded for this screening target",
+            "benchmark-basis: No r7 finding recorded for this screening target"
+          ],
+          "contradictions": []
+        }
+      }
+    },
+    {
+      "candidate_id": "candidate:2026-W42:d9bb954ecc5d01f9",
+      "architecture_usage": "PRIMARY",
+      "evidence_task_id": "evidence:2026-W42:74971639046be6c2",
+      "evidence_sha256": "67704909729eb53eb51eddfc741dfaaa406d50d9d62ab38148ec7686ce584d90",
+      "evidence_card": {
+        "schema_version": "2.0-rc1",
+        "issue_id": "2026-W42",
+        "evidence_task_id": "evidence:2026-W42:74971639046be6c2",
+        "basis": {
+          "task_sha256": "2c2bfe2245e0e66d79273146eaff8cd81d4ff1ff1652893cbf194d26a99dd4e6",
+          "screening_acceptance_sha256": "eccf817a07614efc2cdbbcfc42e4109198e509d011b2fed420d1257dcc929d01",
+          "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+          "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+        },
+        "status": "PARTIAL",
+        "entities": [
+          {
+            "entity_id": "nemotron-35-super-vl",
+            "canonical_name": "NVIDIA Nemotron 3.5 Super VL + Bolt",
+            "entity_type": "MODEL_FAMILY",
+            "organization": "NVIDIA",
+            "canonical_url": "primary:blogs.nvidia.com/blog/nemotron-3-5-super-vl"
+          }
+        ],
+        "artifact": {
+          "primary_subject_id": "nemotron-35-super-vl",
+          "artifact_type": "OPEN_WEIGHT",
+          "canonical_name": "NVIDIA Nemotron 3.5 Super VL + Bolt",
+          "canonical_url": "primary:blogs.nvidia.com/blog/nemotron-3-5-super-vl"
+        },
+        "temporal": {
+          "observed_at": "2026-10-17T10:45:00Z",
+          "events": [
+            {
+              "event_id": "event-4",
+              "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+              "event_date": "2026-10-15T00:00:00Z",
+              "subject_id": "nemotron-35-super-vl",
+              "subject_role": "PRIMARY_SUBJECT",
+              "source_ids": [
+                "supplement-src-ae86179574ee0d58"
+              ]
+            }
+          ]
+        },
+        "sources": [
+          {
+            "source_id": "src-1",
+            "url": "primary:blogs.nvidia.com/blog/nemotron-3-5-super-vl",
+            "source_class": "PRIMARY_OFFICIAL",
+            "title": "NVIDIA: Nemotron 3.5 Super VL + Bolt open release (Oct 15)",
+            "published_at": null,
+            "accessed_at": "2026-10-17T10:45:00Z",
+            "role": "Discovery-bounded source used for factual verification"
+          },
+          {
+            "source_id": "supplement-src-0c52fcc9f48cd292",
+            "url": "https://research.nvidia.com/labs/nemotron/files/NVIDIA-Nemotron-3.5-Super-and-Lightning-Technical-Report.pdf",
+            "source_class": "PRIMARY_PAPER",
+            "title": "research.nvidia.com/labs/nemotron/files/NVIDIA-Nemotron-3.5-Super-and-Lightning-Technical-Report.pdf",
+            "published_at": null,
+            "accessed_at": "2026-10-17T07:00:00Z",
+            "role": "Post-Screening exact authority supplement: Post-Screening exact authority for r7 card claims (capture depth in file header)"
+          },
+          {
+            "source_id": "supplement-src-26a981c8d0b763bf",
+            "url": "https://developer.nvidia.com/blog/nvidia-nemotron-3-5-super-vl-powers-specialized-agents-with-multimodal-reasoning/",
+            "source_class": "PRIMARY_OFFICIAL",
+            "title": "developer.nvidia.com/blog/nvidia-nemotron-3-5-super-vl-powers-specialized-agents-with-multimodal-reasoning/",
+            "published_at": null,
+            "accessed_at": "2026-10-17T07:00:00Z",
+            "role": "Post-Screening exact authority supplement: Post-Screening exact authority for r7 card claims (capture depth in file header)"
+          },
+          {
+            "source_id": "supplement-src-ae86179574ee0d58",
+            "url": "https://blogs.nvidia.com/blog/nemotron-3-5-super-vl/",
+            "source_class": "PRIMARY_OFFICIAL",
+            "title": "blogs.nvidia.com/blog/nemotron-3-5-super-vl/",
+            "published_at": "2026-10-15T00:00:00Z",
+            "accessed_at": "2026-10-17T07:00:00Z",
+            "role": "Post-Screening exact authority supplement: Post-Screening exact authority for r7 card claims (capture depth in file header)"
+          }
+        ],
+        "claims": [
+          {
+            "statement_id": "claim-1",
+            "text": "120B/12B hybrid Mamba-2 + C-RADIO vision; 1M ctx; MTP/LiLiCorr/NVFP4-QAD; open datasets + cookbook + NIM",
+            "subject_id": "nemotron-35-super-vl",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "VENDOR_CLAIM",
+            "source_ids": [
+              "src-1",
+              "supplement-src-0c52fcc9f48cd292",
+              "supplement-src-26a981c8d0b763bf",
+              "supplement-src-ae86179574ee0d58"
+            ],
+            "context": "https://developer.nvidia.com/blog/nvidia-nemotron-3-5-super-vl-powers-specialized-agents-with-multimodal-reasoning/"
+          },
+          {
+            "statement_id": "claim-2",
+            "text": "CharXiv 80.8 (84 w/ code) vs Nano Omni 63%; Hermes 63.44 > Ultra 56.33; LangChain 87.05 > 84.3 (vendor)",
+            "subject_id": "nemotron-35-super-vl",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "VENDOR_CLAIM",
+            "source_ids": [
+              "src-1",
+              "supplement-src-0c52fcc9f48cd292",
+              "supplement-src-26a981c8d0b763bf",
+              "supplement-src-ae86179574ee0d58"
+            ],
+            "context": "https://developer.nvidia.com/blog/nvidia-nemotron-3-5-super-vl-powers-specialized-agents-with-multimodal-reasoning/"
+          },
+          {
+            "statement_id": "claim-3",
+            "text": "Post-train cases: Scale 40x cost/5x latency; Ramp +50%/10x; AI21 +41%; Indic +10B w/ IITM (2.8T/22-lang set); Dynamo 8x users/−85% TTFT; 600+ TPS AA agentic",
+            "subject_id": "nemotron-35-super-vl",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "VENDOR_CLAIM",
+            "source_ids": [
+              "src-1",
+              "supplement-src-0c52fcc9f48cd292",
+              "supplement-src-26a981c8d0b763bf",
+              "supplement-src-ae86179574ee0d58"
+            ],
+            "context": "https://developer.nvidia.com/blog/nvidia-nemotron-3-5-super-vl-powers-specialized-agents-with-multimodal-reasoning/"
+          },
+          {
+            "statement_id": "claim-4",
+            "text": "Tech report PDF (79 pp) EXTRACTED: MOPD multi-teacher distillation; teacher specialization; MTP boosting 4.287→4.718 acceptance; QAD 99.62% median over 36 benches; 4,856 tok/s/GPU GB200 @≥50 tok/s/user; 2.34x/1.90x vs Qwen3.5/Flash-Next; SWE-Pro 51.78% @4.6x fewer active",
+            "subject_id": "nemotron-35-super-vl",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "VENDOR_CLAIM",
+            "source_ids": [
+              "src-1",
+              "supplement-src-0c52fcc9f48cd292",
+              "supplement-src-26a981c8d0b763bf",
+              "supplement-src-ae86179574ee0d58"
+            ],
+            "context": "https://research.nvidia.com/labs/nemotron/files/NVIDIA-Nemotron-3.5-Super-and-Lightning-Technical-Report.pdf"
+          },
+          {
+            "statement_id": "claim-5",
+            "text": "Bolt split: 74B-A9B 24 GB AVAILABLE NOW; E4B 4 GB Oct 23 FUTURE. License OpenMDW-1.1 per card (text via openmdw.ai + Lightning repo file; Super VL file unopened)",
+            "subject_id": "nemotron-35-super-vl",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "VENDOR_CLAIM",
+            "source_ids": [
+              "src-1",
+              "supplement-src-0c52fcc9f48cd292",
+              "supplement-src-26a981c8d0b763bf",
+              "supplement-src-ae86179574ee0d58"
+            ],
+            "context": "https://blogs.nvidia.com/blog/nemotron-3-5-super-vl/"
+          },
+          {
+            "statement_id": "claim-6",
+            "text": "Independent anchor: EXO Labs Pareto evaluation (details unfetched)",
+            "subject_id": "nemotron-35-super-vl",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "AUTHOR_CLAIM",
+            "source_ids": [
+              "src-1",
+              "supplement-src-0c52fcc9f48cd292",
+              "supplement-src-26a981c8d0b763bf",
+              "supplement-src-ae86179574ee0d58"
+            ],
+            "context": "https://developer.nvidia.com/blog/nvidia-nemotron-3-5-super-vl-powers-specialized-agents-with-multimodal-reasoning/"
+          }
+        ],
+        "metrics": [],
+        "limitations": [
+          {
+            "statement_id": "limitation-1",
+            "text": "Tech report PDF extracted (MOPD/QAD/MTP/Indic/super-VL numbers); appendix full audit skimmed-only; Super-VL repo LICENSE file unopened (Lightning sibling confirmed); independent repro none",
+            "subject_id": "nemotron-35-super-vl",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1",
+              "supplement-src-0c52fcc9f48cd292",
+              "supplement-src-26a981c8d0b763bf",
+              "supplement-src-ae86179574ee0d58"
+            ],
+            "context": "Evidence boundary retained for downstream editorial use."
+          },
+          {
+            "statement_id": "limitation-2",
+            "text": "r7 card authority: AUTHORITY_CONSUMED (see correction ledger for scoping)",
+            "subject_id": "nemotron-35-super-vl",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1",
+              "supplement-src-0c52fcc9f48cd292",
+              "supplement-src-26a981c8d0b763bf",
+              "supplement-src-ae86179574ee0d58"
+            ],
+            "context": "Evidence boundary retained for downstream editorial use."
+          }
+        ],
+        "verification": {
+          "targets": [
+            {
+              "target": "primary-body",
+              "status": "UNRESOLVED",
+              "finding": "No r7 finding recorded for this screening target",
+              "subject_ids": [
+                "nemotron-35-super-vl"
+              ],
+              "source_ids": [
+                "src-1",
+                "supplement-src-0c52fcc9f48cd292",
+                "supplement-src-26a981c8d0b763bf",
+                "supplement-src-ae86179574ee0d58"
+              ]
+            },
+            {
+              "target": "license-weights",
+              "status": "UNRESOLVED",
+              "finding": "No r7 finding recorded for this screening target",
+              "subject_ids": [
+                "nemotron-35-super-vl"
+              ],
+              "source_ids": [
+                "src-1",
+                "supplement-src-0c52fcc9f48cd292",
+                "supplement-src-26a981c8d0b763bf",
+                "supplement-src-ae86179574ee0d58"
+              ]
+            },
+            {
+              "target": "benchmark-basis",
+              "status": "UNRESOLVED",
+              "finding": "No r7 finding recorded for this screening target",
+              "subject_ids": [
+                "nemotron-35-super-vl"
+              ],
+              "source_ids": [
+                "src-1",
+                "supplement-src-0c52fcc9f48cd292",
+                "supplement-src-26a981c8d0b763bf",
+                "supplement-src-ae86179574ee0d58"
+              ]
+            }
+          ],
+          "unresolved_questions": [
+            "primary-body: No r7 finding recorded for this screening target",
+            "license-weights: No r7 finding recorded for this screening target",
+            "benchmark-basis: No r7 finding recorded for this screening target"
+          ],
+          "contradictions": []
+        }
+      }
+    },
+    {
+      "candidate_id": "candidate:2026-W42:778de6f30485b5a4",
+      "architecture_usage": "SUPPORTING",
+      "evidence_task_id": "evidence:2026-W42:64a8cae155aa0622",
+      "evidence_sha256": "4ba2937a91d7db1ea80d9b8b6e0e981cb8a3264427c34d8f0c59ad718970fe5c",
+      "evidence_card": {
+        "schema_version": "2.0-rc1",
+        "issue_id": "2026-W42",
+        "evidence_task_id": "evidence:2026-W42:64a8cae155aa0622",
+        "basis": {
+          "task_sha256": "20aef1355b72dc260b2e4eb0fcec57f445a1b450d41b63024b19d3058485797b",
+          "screening_acceptance_sha256": "eccf817a07614efc2cdbbcfc42e4109198e509d011b2fed420d1257dcc929d01",
+          "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+          "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+        },
+        "status": "PARTIAL",
+        "entities": [
+          {
+            "entity_id": "granite-switch41",
+            "canonical_name": "IBM Granite Switch 4.1",
+            "entity_type": "MODEL_FAMILY",
+            "organization": "IBM",
+            "canonical_url": "primary:huggingface.co/blog/ibm-granite/granite-switch-4-1 + card ibm-granite/granite-switch-4.1-8b"
+          }
+        ],
+        "artifact": {
+          "primary_subject_id": "granite-switch41",
+          "artifact_type": "OPEN_WEIGHT",
+          "canonical_name": "IBM Granite Switch 4.1",
+          "canonical_url": "primary:huggingface.co/blog/ibm-granite/granite-switch-4-1 + card ibm-granite/granite-switch-4.1-8b"
+        },
+        "temporal": {
+          "observed_at": "2026-10-17T10:45:00Z",
+          "events": []
+        },
+        "sources": [
+          {
+            "source_id": "src-1",
+            "url": "primary:huggingface.co/blog/ibm-granite/granite-switch-4-1 + card ibm-granite/granite-switch-4.1-8b",
+            "source_class": "PRIMARY_OFFICIAL",
+            "title": "IBM: Granite Switch 4.1 (card Oct 14, blog Oct 15)",
+            "published_at": null,
+            "accessed_at": "2026-10-17T10:45:00Z",
+            "role": "Discovery-bounded source used for factual verification"
+          },
+          {
+            "source_id": "supplement-src-17b9efae287c95a2",
+            "url": "https://huggingface.co/api/models/ibm-granite/granite-switch-4.1-8b",
+            "source_class": "PRIMARY_REPOSITORY",
+            "title": "huggingface.co/api/models/ibm-granite/granite-switch-4.1-8b",
+            "published_at": null,
+            "accessed_at": "2026-10-17T07:00:00Z",
+            "role": "Post-Screening exact authority supplement: Post-Screening exact authority for r7 card claims (capture depth in file header)"
+          },
+          {
+            "source_id": "supplement-src-8f6797b0399952b1",
+            "url": "https://huggingface.co/ibm-granite/granite-switch-4.1-8b",
+            "source_class": "PRIMARY_REPOSITORY",
+            "title": "huggingface.co/ibm-granite/granite-switch-4.1-8b",
+            "published_at": null,
+            "accessed_at": "2026-10-17T07:00:00Z",
+            "role": "Post-Screening exact authority supplement: Post-Screening exact authority for r7 card claims (capture depth in file header)"
+          },
+          {
+            "source_id": "supplement-src-cc82ce46fae0908c",
+            "url": "https://huggingface.co/blog/ibm-granite/granite-switch-4-1",
+            "source_class": "PRIMARY_REPOSITORY",
+            "title": "huggingface.co/blog/ibm-granite/granite-switch-4-1",
+            "published_at": null,
+            "accessed_at": "2026-10-17T07:00:00Z",
+            "role": "Post-Screening exact authority supplement: Post-Screening exact authority for r7 card claims (capture depth in file header)"
+          }
+        ],
+        "claims": [
+          {
+            "statement_id": "claim-1",
+            "text": "8B+30B composable (Decision + Guardian aLoRAs + Speech-5.0-Turbo-CTC); one endpoint ~base VRAM; shared KV cache; vLLM/llama.cpp; /v1/systemone swap-in",
+            "subject_id": "granite-switch41",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "VENDOR_CLAIM",
+            "source_ids": [
+              "src-1",
+              "supplement-src-17b9efae287c95a2",
+              "supplement-src-8f6797b0399952b1",
+              "supplement-src-cc82ce46fae0908c"
+            ],
+            "context": "https://huggingface.co/blog/ibm-granite/granite-switch-4-1"
+          },
+          {
+            "statement_id": "claim-2",
+            "text": "Decision Index v0.3 fast (1,068 rows): overall 42.9 (K29.1/L48.9/R49.8/T59.8/A18.0); local-vs-hosted ±0.6 serving-faithfulness check",
+            "subject_id": "granite-switch41",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "VENDOR_CLAIM",
+            "source_ids": [
+              "src-1",
+              "supplement-src-17b9efae287c95a2",
+              "supplement-src-8f6797b0399952b1",
+              "supplement-src-cc82ce46fae0908c"
+            ],
+            "context": "https://huggingface.co/ibm-granite/granite-switch-4.1-8b"
+          },
+          {
+            "statement_id": "claim-3",
+            "text": "Guardian beats Jev-1.13/MS-Decision-1/Luna-Decisions/Clef-Flash on safety decisions (vendor avg) — comparison, NOT fresh Decision-1 evidence; W41 HOLD stands",
+            "subject_id": "granite-switch41",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "VENDOR_CLAIM",
+            "source_ids": [
+              "src-1",
+              "supplement-src-17b9efae287c95a2",
+              "supplement-src-8f6797b0399952b1",
+              "supplement-src-cc82ce46fae0908c"
+            ],
+            "context": "https://huggingface.co/blog/ibm-granite/granite-switch-4-1"
+          },
+          {
+            "statement_id": "claim-4",
+            "text": "Apache 2.0 TAG-VERIFIED (HF API cardData; NO license file in repo siblings — limitation vs Beam full file); repo created Oct 14T21:38Z IN; 567 downloads; 8.77B params; 30B same-config (card unopened)",
+            "subject_id": "granite-switch41",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "VENDOR_CLAIM",
+            "source_ids": [
+              "src-1",
+              "supplement-src-17b9efae287c95a2",
+              "supplement-src-8f6797b0399952b1",
+              "supplement-src-cc82ce46fae0908c"
+            ],
+            "context": "https://huggingface.co/api/models/ibm-granite/granite-switch-4.1-8b"
+          }
+        ],
+        "metrics": [],
+        "limitations": [
+          {
+            "statement_id": "limitation-1",
+            "text": "30B spot-check, preview variants, independent DI repro",
+            "subject_id": "granite-switch41",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1",
+              "supplement-src-17b9efae287c95a2",
+              "supplement-src-8f6797b0399952b1",
+              "supplement-src-cc82ce46fae0908c"
+            ],
+            "context": "Evidence boundary retained for downstream editorial use."
+          },
+          {
+            "statement_id": "limitation-2",
+            "text": "r7 card authority: AUTHORITY_CONSUMED (see correction ledger for scoping)",
+            "subject_id": "granite-switch41",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1",
+              "supplement-src-17b9efae287c95a2",
+              "supplement-src-8f6797b0399952b1",
+              "supplement-src-cc82ce46fae0908c"
+            ],
+            "context": "Evidence boundary retained for downstream editorial use."
+          }
+        ],
+        "verification": {
+          "targets": [
+            {
+              "target": "primary-body",
+              "status": "UNRESOLVED",
+              "finding": "No r7 finding recorded for this screening target",
+              "subject_ids": [
+                "granite-switch41"
+              ],
+              "source_ids": [
+                "src-1",
+                "supplement-src-17b9efae287c95a2",
+                "supplement-src-8f6797b0399952b1",
+                "supplement-src-cc82ce46fae0908c"
+              ]
+            },
+            {
+              "target": "license-weights",
+              "status": "UNRESOLVED",
+              "finding": "No r7 finding recorded for this screening target",
+              "subject_ids": [
+                "granite-switch41"
+              ],
+              "source_ids": [
+                "src-1",
+                "supplement-src-17b9efae287c95a2",
+                "supplement-src-8f6797b0399952b1",
+                "supplement-src-cc82ce46fae0908c"
+              ]
+            },
+            {
+              "target": "benchmark-basis",
+              "status": "UNRESOLVED",
+              "finding": "No r7 finding recorded for this screening target",
+              "subject_ids": [
+                "granite-switch41"
+              ],
+              "source_ids": [
+                "src-1",
+                "supplement-src-17b9efae287c95a2",
+                "supplement-src-8f6797b0399952b1",
+                "supplement-src-cc82ce46fae0908c"
+              ]
+            }
+          ],
+          "unresolved_questions": [
+            "primary-body: No r7 finding recorded for this screening target",
+            "license-weights: No r7 finding recorded for this screening target",
+            "benchmark-basis: No r7 finding recorded for this screening target"
+          ],
+          "contradictions": []
+        }
+      }
+    },
+    {
+      "candidate_id": "candidate:2026-W42:78638c331f26f9c0",
+      "architecture_usage": "SUPPORTING",
+      "evidence_task_id": "evidence:2026-W42:d0d0f6a00e4a5739",
+      "evidence_sha256": "88f972da3c3d9cd90f95ff04b54ccda7b6d740392f781414e7568451d6e5f6b2",
+      "evidence_card": {
+        "schema_version": "2.0-rc1",
+        "issue_id": "2026-W42",
+        "evidence_task_id": "evidence:2026-W42:d0d0f6a00e4a5739",
+        "basis": {
+          "task_sha256": "2203ec3a73fc9833630f642cf0100ecd6c5979c4ecca2b1752ced441300315da",
+          "screening_acceptance_sha256": "eccf817a07614efc2cdbbcfc42e4109198e509d011b2fed420d1257dcc929d01",
+          "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+          "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+        },
+        "status": "PARTIAL",
+        "entities": [
+          {
+            "entity_id": "minicpm-v47",
+            "canonical_name": "OpenBMB MiniCPM-V 4.7",
+            "entity_type": "MODEL_FAMILY",
+            "organization": "OpenBMB",
+            "canonical_url": "primary:github.com/OpenBMB/MiniCPM-V (via @OpenBMB X 2026-10-12)"
+          }
+        ],
+        "artifact": {
+          "primary_subject_id": "minicpm-v47",
+          "artifact_type": "OPEN_WEIGHT",
+          "canonical_name": "OpenBMB MiniCPM-V 4.7",
+          "canonical_url": "primary:github.com/OpenBMB/MiniCPM-V (via @OpenBMB X 2026-10-12)"
+        },
+        "temporal": {
+          "observed_at": "2026-10-17T10:45:00Z",
+          "events": []
+        },
+        "sources": [
+          {
+            "source_id": "src-1",
+            "url": "primary:github.com/OpenBMB/MiniCPM-V (via @OpenBMB X 2026-10-12)",
+            "source_class": "PRIMARY_OFFICIAL",
+            "title": "OpenBMB: MiniCPM-V 4.7 on-device MLLM (Oct 12)",
+            "published_at": null,
+            "accessed_at": "2026-10-17T10:45:00Z",
+            "role": "Discovery-bounded source used for factual verification"
+          },
+          {
+            "source_id": "supplement-src-b90ec43fc096c6ad",
+            "url": "https://huggingface.co/openbmb/MiniCPM-V-4.7-35B-A3B",
+            "source_class": "PRIMARY_REPOSITORY",
+            "title": "huggingface.co/openbmb/MiniCPM-V-4.7-35B-A3B",
+            "published_at": null,
+            "accessed_at": "2026-10-17T07:00:00Z",
+            "role": "Post-Screening exact authority supplement: Post-Screening exact authority for r7 card claims (capture depth in file header)"
+          },
+          {
+            "source_id": "supplement-src-f16a4be3c455f7c1",
+            "url": "https://huggingface.co/api/models/openbmb/MiniCPM-V-4.7-35B-A3B",
+            "source_class": "PRIMARY_REPOSITORY",
+            "title": "huggingface.co/api/models/openbmb/MiniCPM-V-4.7-35B-A3B",
+            "published_at": null,
+            "accessed_at": "2026-10-17T07:00:00Z",
+            "role": "Post-Screening exact authority supplement: Post-Screening exact authority for r7 card claims (capture depth in file header)"
+          }
+        ],
+        "claims": [
+          {
+            "statement_id": "claim-1",
+            "text": "35B-A3B first MoE + 1B; LES lossless on-device MoE; 13+ tok/s @3 GB iPhone 17 Pro Max; SigLIP + Qwen3.5 backbone",
+            "subject_id": "minicpm-v47",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "VENDOR_CLAIM",
+            "source_ids": [
+              "src-1",
+              "supplement-src-b90ec43fc096c6ad",
+              "supplement-src-f16a4be3c455f7c1"
+            ],
+            "context": "https://huggingface.co/openbmb/MiniCPM-V-4.7-35B-A3B"
+          },
+          {
+            "statement_id": "claim-2",
+            "text": "HF repos live (BF16/FP8/int4/AWQ/GPTQ/GGUF + DSpark heads Oct 15); README dated entries Oct 12 + Oct 15 IN; SGLang/vLLM/llama.cpp/Ollama; SRFT fine-tuning; 36,252 downloads/866 likes; 35.2B params",
+            "subject_id": "minicpm-v47",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "VENDOR_CLAIM",
+            "source_ids": [
+              "src-1",
+              "supplement-src-b90ec43fc096c6ad",
+              "supplement-src-f16a4be3c455f7c1"
+            ],
+            "context": "https://huggingface.co/api/models/openbmb/MiniCPM-V-4.7-35B-A3B"
+          },
+          {
+            "statement_id": "claim-3",
+            "text": "License Apache 2.0 TAG-VERIFIED (HF API cardData; NO license file in siblings — same limitation as Granite; do NOT overclaim vs Beam full file)",
+            "subject_id": "minicpm-v47",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "VENDOR_CLAIM",
+            "source_ids": [
+              "src-1",
+              "supplement-src-b90ec43fc096c6ad",
+              "supplement-src-f16a4be3c455f7c1"
+            ],
+            "context": "https://huggingface.co/api/models/openbmb/MiniCPM-V-4.7-35B-A3B"
+          }
+        ],
+        "metrics": [],
+        "limitations": [
+          {
+            "statement_id": "limitation-1",
+            "text": "License: Apache TAG-confirmed (API metadata) vs FILE-unverified (no LICENSE file in repo siblings) — distinct statuses; README body unopened; benchmarks uncaptured",
+            "subject_id": "minicpm-v47",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1",
+              "supplement-src-b90ec43fc096c6ad",
+              "supplement-src-f16a4be3c455f7c1"
+            ],
+            "context": "Evidence boundary retained for downstream editorial use."
+          },
+          {
+            "statement_id": "limitation-2",
+            "text": "r7 card authority: AUTHORITY_CONSUMED (see correction ledger for scoping)",
+            "subject_id": "minicpm-v47",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1",
+              "supplement-src-b90ec43fc096c6ad",
+              "supplement-src-f16a4be3c455f7c1"
+            ],
+            "context": "Evidence boundary retained for downstream editorial use."
+          }
+        ],
+        "verification": {
+          "targets": [
+            {
+              "target": "primary-body",
+              "status": "UNRESOLVED",
+              "finding": "No r7 finding recorded for this screening target",
+              "subject_ids": [
+                "minicpm-v47"
+              ],
+              "source_ids": [
+                "src-1",
+                "supplement-src-b90ec43fc096c6ad",
+                "supplement-src-f16a4be3c455f7c1"
+              ]
+            },
+            {
+              "target": "license-weights",
+              "status": "UNRESOLVED",
+              "finding": "No r7 finding recorded for this screening target",
+              "subject_ids": [
+                "minicpm-v47"
+              ],
+              "source_ids": [
+                "src-1",
+                "supplement-src-b90ec43fc096c6ad",
+                "supplement-src-f16a4be3c455f7c1"
+              ]
+            },
+            {
+              "target": "benchmark-basis",
+              "status": "UNRESOLVED",
+              "finding": "No r7 finding recorded for this screening target",
+              "subject_ids": [
+                "minicpm-v47"
+              ],
+              "source_ids": [
+                "src-1",
+                "supplement-src-b90ec43fc096c6ad",
+                "supplement-src-f16a4be3c455f7c1"
+              ]
+            }
+          ],
+          "unresolved_questions": [
+            "primary-body: No r7 finding recorded for this screening target",
+            "license-weights: No r7 finding recorded for this screening target",
+            "benchmark-basis: No r7 finding recorded for this screening target"
+          ],
+          "contradictions": []
+        }
+      }
+    },
+    {
+      "candidate_id": "candidate:2026-W42:48361c0e84a0db3f",
+      "architecture_usage": "SUPPORTING",
+      "evidence_task_id": "evidence:2026-W42:eff1e34f45a6f10e",
+      "evidence_sha256": "6f16ef10e9a8d0c4ae21dc9d927f4b379d8720165896a6b1dbc90945460d6654",
+      "evidence_card": {
+        "schema_version": "2.0-rc1",
+        "issue_id": "2026-W42",
+        "evidence_task_id": "evidence:2026-W42:eff1e34f45a6f10e",
+        "basis": {
+          "task_sha256": "20cc3f91ae141e1b2714d1b05d211329267826c13271eb934a9d235a2414d310",
+          "screening_acceptance_sha256": "eccf817a07614efc2cdbbcfc42e4109198e509d011b2fed420d1257dcc929d01",
+          "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+          "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+        },
+        "status": "PARTIAL",
+        "entities": [
+          {
+            "entity_id": "flux3-klein",
+            "canonical_name": "Black Forest Labs FLUX 3 Image Klein",
+            "entity_type": "MODEL",
+            "organization": "Black Forest Labs",
+            "canonical_url": "x-official:bfl_ai/status/2110751201105256925 (+NV quote)"
+          }
+        ],
+        "artifact": {
+          "primary_subject_id": "flux3-klein",
+          "artifact_type": "OPEN_WEIGHT",
+          "canonical_name": "Black Forest Labs FLUX 3 Image Klein",
+          "canonical_url": "x-official:bfl_ai/status/2110751201105256925 (+NV quote)"
+        },
+        "temporal": {
+          "observed_at": "2026-10-17T10:45:00Z",
+          "events": []
+        },
+        "sources": [
+          {
+            "source_id": "src-1",
+            "url": "x-official:bfl_ai/status/2110751201105256925 (+NV quote)",
+            "source_class": "PRIMARY_OFFICIAL",
+            "title": "Black Forest Labs: FLUX 3 Image Klein 5.6B (Oct 15)",
+            "published_at": null,
+            "accessed_at": "2026-10-17T10:45:00Z",
+            "role": "Discovery-bounded source used for factual verification"
+          },
+          {
+            "source_id": "supplement-src-295b246f61b8ff9b",
+            "url": "https://huggingface.co/api/models/black-forest-labs/flux-3-image-klein",
+            "source_class": "PRIMARY_REPOSITORY",
+            "title": "huggingface.co/api/models/black-forest-labs/flux-3-image-klein",
+            "published_at": null,
+            "accessed_at": "2026-10-17T07:00:00Z",
+            "role": "Post-Screening exact authority supplement: Post-Screening exact authority for r7 card claims (capture depth in file header)"
+          },
+          {
+            "source_id": "supplement-src-87cc96a0d9cee366",
+            "url": "https://huggingface.co/black-forest-labs/flux-3-image-klein",
+            "source_class": "PRIMARY_REPOSITORY",
+            "title": "huggingface.co/black-forest-labs/flux-3-image-klein",
+            "published_at": null,
+            "accessed_at": "2026-10-17T07:00:00Z",
+            "role": "Post-Screening exact authority supplement: Post-Screening exact authority for r7 card claims (capture depth in file header)"
+          },
+          {
+            "source_id": "supplement-src-bedde4dcbfd3424a",
+            "url": "https://huggingface.co/black-forest-labs/flux-3-image-klein/resolve/main/LICENSE.md",
+            "source_class": "PRIMARY_REPOSITORY",
+            "title": "huggingface.co/black-forest-labs/flux-3-image-klein/resolve/main/LICENSE.md",
+            "published_at": null,
+            "accessed_at": "2026-10-17T07:00:00Z",
+            "role": "Post-Screening exact authority supplement: Post-Screening exact authority for r7 card claims (capture depth in file header)"
+          }
+        ],
+        "claims": [
+          {
+            "statement_id": "claim-1",
+            "text": "5.6B; Qwen3-VL-4B encoder; distilled 16-step (gen/edit/API) vs base 50-step (tune/research); 4K; BBox; ComfyUI/NVFP4/int8 (8 GB GPUs); 11.1 GB BF16 / 5.3 GB NVFP4; 9B upsampler separate",
+            "subject_id": "flux3-klein",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "VENDOR_CLAIM",
+            "source_ids": [
+              "src-1",
+              "supplement-src-295b246f61b8ff9b",
+              "supplement-src-87cc96a0d9cee366",
+              "supplement-src-bedde4dcbfd3424a"
+            ],
+            "context": "https://huggingface.co/black-forest-labs/flux-3-image-klein"
+          },
+          {
+            "statement_id": "claim-2",
+            "text": "FLUX Kommunity v1.0 FULL TEXT VERIFIED: non-commercial + <$5M qualifying commercial OUTPUT-only; Derivative INCLUDES distillation/synthetic training (§1a); no military/surveillance/biometrics; no improving similar models (§4b); export controls; attribution; unilateral termination + patent retaliation; FOSS components inside (§9) — NOT OSI open-source",
+            "subject_id": "flux3-klein",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "VENDOR_CLAIM",
+            "source_ids": [
+              "src-1",
+              "supplement-src-295b246f61b8ff9b",
+              "supplement-src-87cc96a0d9cee366",
+              "supplement-src-bedde4dcbfd3424a"
+            ],
+            "context": "https://huggingface.co/black-forest-labs/flux-3-image-klein/resolve/main/LICENSE.md"
+          },
+          {
+            "statement_id": "claim-3",
+            "text": "Repo created Oct 13T10:58Z IN; 46,123 downloads; gated:auto; collection Oct 15",
+            "subject_id": "flux3-klein",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "VENDOR_CLAIM",
+            "source_ids": [
+              "src-1",
+              "supplement-src-295b246f61b8ff9b",
+              "supplement-src-87cc96a0d9cee366",
+              "supplement-src-bedde4dcbfd3424a"
+            ],
+            "context": "https://huggingface.co/api/models/black-forest-labs/flux-3-image-klein"
+          }
+        ],
+        "metrics": [],
+        "limitations": [
+          {
+            "statement_id": "limitation-1",
+            "text": "Kommunity FULL TEXT verified (repo file); card/docs consumed via excerpts; independent quality tests none",
+            "subject_id": "flux3-klein",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1",
+              "supplement-src-295b246f61b8ff9b",
+              "supplement-src-87cc96a0d9cee366",
+              "supplement-src-bedde4dcbfd3424a"
+            ],
+            "context": "Evidence boundary retained for downstream editorial use."
+          },
+          {
+            "statement_id": "limitation-2",
+            "text": "r7 card authority: AUTHORITY_CONSUMED (see correction ledger for scoping)",
+            "subject_id": "flux3-klein",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1",
+              "supplement-src-295b246f61b8ff9b",
+              "supplement-src-87cc96a0d9cee366",
+              "supplement-src-bedde4dcbfd3424a"
+            ],
+            "context": "Evidence boundary retained for downstream editorial use."
+          }
+        ],
+        "verification": {
+          "targets": [
+            {
+              "target": "primary-body",
+              "status": "UNRESOLVED",
+              "finding": "No r7 finding recorded for this screening target",
+              "subject_ids": [
+                "flux3-klein"
+              ],
+              "source_ids": [
+                "src-1",
+                "supplement-src-295b246f61b8ff9b",
+                "supplement-src-87cc96a0d9cee366",
+                "supplement-src-bedde4dcbfd3424a"
+              ]
+            },
+            {
+              "target": "license-weights",
+              "status": "UNRESOLVED",
+              "finding": "No r7 finding recorded for this screening target",
+              "subject_ids": [
+                "flux3-klein"
+              ],
+              "source_ids": [
+                "src-1",
+                "supplement-src-295b246f61b8ff9b",
+                "supplement-src-87cc96a0d9cee366",
+                "supplement-src-bedde4dcbfd3424a"
+              ]
+            },
+            {
+              "target": "benchmark-basis",
+              "status": "UNRESOLVED",
+              "finding": "No r7 finding recorded for this screening target",
+              "subject_ids": [
+                "flux3-klein"
+              ],
+              "source_ids": [
+                "src-1",
+                "supplement-src-295b246f61b8ff9b",
+                "supplement-src-87cc96a0d9cee366",
+                "supplement-src-bedde4dcbfd3424a"
+              ]
+            }
+          ],
+          "unresolved_questions": [
+            "primary-body: No r7 finding recorded for this screening target",
+            "license-weights: No r7 finding recorded for this screening target",
+            "benchmark-basis: No r7 finding recorded for this screening target"
+          ],
+          "contradictions": []
+        }
+      }
+    }
+  ],
+  "drafting_constraints": {
+    "language": "ja",
+    "raw_sources_forbidden": true,
+    "unknowns_remain_unknown": true,
+    "citation_granularity": "EVENT_CLAIM_METRIC_LIMITATION"
+  },
+  "profile_extensions": {
+    "page_allocation": "5.0",
+    "editorial_note": "Largest package; license matrix required; suggested drafting order 3."
+  },
+  "publication_extensions": {}
+}

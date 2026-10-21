@@ -1,0 +1,65 @@
+{
+ "issue": 570,
+ "fetched_at_utc": "2026-10-20",
+ "method": "curl -sL (HTTP 200 all five), HTML stripped, short excerpts",
+ "sources": {
+  "model_page": {
+   "url": "https://ai.google.dev/gemini-api/docs/models/gemini-4-argon",
+   "http": 200,
+   "bytes": 107794,
+   "facts": [
+    "Context window (unified input and output token limit) 1,048,576",
+    "Max output 65,536 (default synchronous) / up to 1,048,576 (with long decode)"
+   ]
+  },
+  "tokens": {
+   "url": "https://ai.google.dev/gemini-api/docs/tokens",
+   "http": 200,
+   "bytes": 240366,
+   "facts": [
+    "Gemini 4 models (gemini-4-argon): Share a single 1M-token context window (1,048,576 tokens) across input, thinking, and output tokens",
+    "By default, synchronous responses (background=False, streaming or non-streaming) are capped at 65,536 output tokens, or you can generate up to 1,048,576 tokens using long decode",
+    "If your input tokens plus max_output_tokens exceed 1,048,576 tokens, the API automatically caps the output limit to the remaining space in the context window (1,048,576 minus your input ...)"
+   ]
+  },
+  "long_decode_interactions": {
+   "url": "https://ai.google.dev/gemini-api/docs/long-decode",
+   "http": 200,
+   "bytes": 131608,
+   "facts": [
+    "up to the unified 1M-token context window (1,048,576 tokens shared across input, thinking, and output)",
+    "You create an interaction with background: true and max_output_tokens greater than 65,536, up to 1M",
+    "400: max_output_tokens greater than 65536 is not yet supported with background=false"
+   ]
+  },
+  "long_decode_generate_content": {
+   "url": "https://ai.google.dev/gemini-api/docs/generate-content/long-decode",
+   "http": 200,
+   "bytes": 156121,
+   "facts": [
+    "up to the unified 1M-token context window (1,048,576 tokens shared across input, thinking, and output)",
+    "Changing the model ID alone doesn't enable long decode",
+    "One hop returns up to 65,536 output tokens. Non-streaming REST requests return up to 32,768",
+    "upgrade the Google GenAI SDK and set max_output_tokens greater than 65,536"
+   ]
+  },
+  "latest_model": {
+   "url": "https://ai.google.dev/gemini-api/docs/latest-model",
+   "http": 200,
+   "bytes": 156219,
+   "facts": [
+    "retrieved (nav-level); no additional token-limit passage relied upon"
+   ]
+  }
+ },
+ "openai_compat": "No official passage confirming or denying OpenAI-compatible long decode found in fetched excerpts; TeX makes no such claim (per Sol disposition).",
+ "verdict": {
+  "a_unified_1048576": "CONFIRMED",
+  "b_65536_hop": "CONFIRMED",
+  "c_32768_rest": "CONFIRMED",
+  "d_long_decode_conditions": "CONFIRMED",
+  "e_remaining_budget": "CONFIRMED",
+  "f_model_id_insufficient": "CONFIRMED",
+  "g_openai_compat": "NOT_CLAIMED"
+ }
+}
