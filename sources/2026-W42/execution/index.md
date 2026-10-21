@@ -337,3 +337,12 @@ This is the current human-readable navigation record for the edition. Machine li
 - Recorded defect (`execution/defects/w42-r33-freeze-validation-shared-core-defect-20261021.md`) + session; no Freeze/merge/Release/RELEASED claimed; PDF/approvals/Arch/Core/main/Issue #570 untouched.
 - Last-good: remote request-only `a36541cb3`, State RELEASE_CANDIDATE preview-approved pending freeze. Resume: reviewed Core repair + clean trusted rerun.
 - Terminal `W42_R33_FROZEN_BUT_RELEASE_NOT_DISPATCHED / SHARED_CORE_DEFECT / STOP`. Session: `sessions/muse-w42-r33-20261021.md`.
+
+## Muse W42 r34 edition-local compat Freeze to public Release (2026-10-21 JST) — RELEASED
+
+- Started from dispatched remote `59041cf56...` (Tree `eb625e0f...`, child of r33 STOP); main/Frozen Core/impl/Arch r1/r31 SHAs/r3 APPROVED/RELEASE_CANDIDATE pending-freeze all matched read-only. FF-only sync; no reset/rebase/new branch/force; Issue #570 untouched.
+- Verified r33 trusted Freeze failure as shared-Core defect (run 39455215003; W41 precedent). Regenerated freeze-record/manifest with truthful frozen_at via first-party builder.
+- W42-only compat driver + validation PASS + genuine Core checkpoint/advance → FROZEN (disclosed, not a Bridge PASS). Committed + pushed.
+- PR #571 (edition-only) merged `c4fc72342`; main State FROZEN verified. Release workflow run 39523390651: public Release weekly/2026-W42 created; post-processing hit known CV2-DM-004 (no false success).
+- Downloaded public asset: SHA256 827a93d8 exact, 505694 B. Provenance-only recovery (merge-verification VERIFIED + release-record RELEASED + release checkpoint + state validate) via release-record branch; PR #572 merged `041a08dfe`. Main State RELEASED / COMPLETE verified.
+- Terminal `SOL_W42_R34_RELEASED / HUMAN_PREVIEW_R3_APPROVED / FROZEN_EDITION_LOCAL_RUNTIME_COMPAT_DISCLOSED / PUBLIC_ASSET_EXACT_HASH_VERIFIED / RELEASED_COMPLETE / CORE_V2_FROZEN / ISSUE570_UNTOUCHED`. Session: `sessions/muse-w42-r34-20261021.md`.
