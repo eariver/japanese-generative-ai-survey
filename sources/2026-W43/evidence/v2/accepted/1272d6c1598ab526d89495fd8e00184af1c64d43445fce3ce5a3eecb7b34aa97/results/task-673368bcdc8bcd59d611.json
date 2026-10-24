@@ -1,0 +1,143 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W43",
+  "evidence_task_id": "evidence:2026-W43:972ae1540f70e008",
+  "basis": {
+    "task_sha256": "b9e5d6783d883cd8edb3d4ead4395e459a9ecd9573716a073273ade490d06ae7",
+    "screening_acceptance_sha256": "566cde3bd287dffb38d705c4b6c3fec71a98f67dea96016a009bd929923be48a",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "onepassword-for-agents",
+      "canonical_name": "1Password for Agents",
+      "entity_type": "PRODUCT",
+      "organization": "1Password",
+      "canonical_url": "https://1password.com/blog/1password-for-ai-agents"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "onepassword-for-agents",
+    "artifact_type": "PRODUCT",
+    "canonical_name": "1Password for Agents",
+    "canonical_url": "https://1password.com/blog/1password-for-ai-agents"
+  },
+  "temporal": {
+    "observed_at": "2026-10-24T18:32:48Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-10-22",
+        "subject_id": "onepassword-for-agents",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "primary:1password.com/blog/1password-for-ai-agents",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "1Password for Agents trust layer (Oct 22)",
+      "published_at": "2026-10-22",
+      "accessed_at": "2026-10-24T18:32:48Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Agent credential-handoff trust layer Oct 22 (blog plus Toronto press 9am EDT): approve-on-own-device plus autofill into sign-in form; agent never sees password or OTP; unique digital key verifies agent; disconnect anytime; single-vault updates.",
+      "subject_id": "onepassword-for-agents",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "1Password blog (John Torrey) + press release (both read)"
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Muse and Grok Bot rolling out; Duet, ChatGPT Work/dots and Townie coming soon; Browserbase/Browser Use/Dana/Instinct/KERNEL/Perplexity/Ramp/Tomo/Wajo coming; no additional cost for Individual/Family on 1password.com only (no .eu/.ca).",
+      "subject_id": "onepassword-for-agents",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "1Password blog + press (availability matrix)"
+    },
+    {
+      "statement_id": "claim-3",
+      "text": "Partner quotes corroborate per-vendor framing (Meta, Anthropic, OpenAI, SpaceXSI, Town); intersects Duet, Muse, ChatGPT Work/dots and Grok Bot in the same week.",
+      "subject_id": "onepassword-for-agents",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Press-release partner quotes"
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Per-integration live status varies (rolling vs soon); enterprise vault context 1.6B/200k is background scale, not release proof",
+      "subject_id": "onepassword-for-agents",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "per-integration-live-status",
+        "status": "UNRESOLVED",
+        "finding": "Rolling-out vs coming-soon split stated; per-integration live proof pending.",
+        "subject_ids": [
+          "onepassword-for-agents"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "platform-and-plan-scope",
+        "status": "VERIFIED",
+        "finding": ".com Individual/Family scope and .eu/.ca exclusion stated.",
+        "subject_ids": [
+          "onepassword-for-agents"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "trust-model-docs",
+        "status": "VERIFIED",
+        "finding": "Approve/autofill/no-exposure mechanism read in both sources.",
+        "subject_ids": [
+          "onepassword-for-agents"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      "per-integration-live-status: Rolling-out vs coming-soon split stated; per-integration live proof pending."
+    ],
+    "contradictions": []
+  }
+}

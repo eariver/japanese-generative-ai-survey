@@ -1,0 +1,132 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W43",
+  "evidence_task_id": "evidence:2026-W43:0714ceb7b0ee82be",
+  "basis": {
+    "task_sha256": "59d2b1223f7fd04c491bb619f9617e1c3f400e3dfef15cae067a664c5adae80f",
+    "screening_acceptance_sha256": "566cde3bd287dffb38d705c4b6c3fec71a98f67dea96016a009bd929923be48a",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "grok-ledger",
+      "canonical_name": "Grok X weekly intake ledger",
+      "entity_type": "OTHER",
+      "organization": "N/A (provenance)",
+      "canonical_url": "grok-task:weekly-x-2026-W43"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "grok-ledger",
+    "artifact_type": "OTHER",
+    "canonical_name": "Grok X weekly intake ledger",
+    "canonical_url": "grok-task:weekly-x-2026-W43"
+  },
+  "temporal": {
+    "observed_at": "2026-10-24T18:32:48Z",
+    "events": []
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "grok-task:weekly-x-2026-W43",
+      "source_class": "SOCIAL",
+      "title": "Grok X weekly intake ledger (Oct 24 observation)",
+      "published_at": null,
+      "accessed_at": "2026-10-24T18:32:48Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Grok weekly X raw received byte-identical (13425 bytes, sha256 4571e0de469a7143fb1c46710c2e419a91404ff2d9538ae4d9a31a8b8f0be54a, Git blob f05a0c27; Sol independently computed from GitHub readback); observed 2026-10-24T12:43:17Z; window UTC Oct 16 22:00 to Oct 23 22:00.",
+      "subject_id": "grok-ledger",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Exact Grok Raw bytes (Sol-imported, verified locally)"
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Lanes A-C/F-H/J/K SELECTED; D/I/L candidate; E video NONE_FOUND (X-signal-only, not global veto); 1 pinned Kimi post plus 1 pinned Muse Spark post; remaining claims topic-level without exact post IDs; no independent reproduction.",
+      "subject_id": "grok-ledger",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "SOCIAL_OBSERVATION",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Grok raw coverage-audit table (PARTIAL sensor)"
+    },
+    {
+      "statement_id": "claim-3",
+      "text": "Audit and provenance binder for X intake integration; Grok lane SELECTED is sensor ranking only; NEVER a Selection candidate or technical story.",
+      "subject_id": "grok-ledger",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Editorial boundary (sensor vs Selection separation)"
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "PARTIAL sensor: 2 pinned posts only; most X claims lack exact IDs; no independent validation of vendor scores, licenses, weights or dates",
+      "subject_id": "grok-ledger",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "grok-raw-bytes-and-sha",
+        "status": "VERIFIED",
+        "finding": "13425B / 4571e0de / f05a0c27 verified locally against Sol review.",
+        "subject_ids": [
+          "grok-ledger"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "pinned-post-ids",
+        "status": "VERIFIED",
+        "finding": "Kimi 19-digit and lm_zheng IDs read in raw; only 2 exact IDs present.",
+        "subject_ids": [
+          "grok-ledger"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "independent-repro-status",
+        "status": "UNRESOLVED",
+        "finding": "No independent reproduction by definition of sensor.",
+        "subject_ids": [
+          "grok-ledger"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      "independent-repro-status: No independent reproduction by definition of sensor."
+    ],
+    "contradictions": []
+  }
+}

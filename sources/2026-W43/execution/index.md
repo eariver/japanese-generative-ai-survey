@@ -13,10 +13,10 @@ This is the current human-readable navigation record for the edition. Machine li
 - Requested stop: `ARCHITECTURE_REVIEW`
 - Production Profile: `sources/2026-W43/production-profile.json`
 - Production State: `sources/2026-W43/production-state.json`
-- Current State SHA-256: `885927bd98e1ade491bc88e666aa0f39233ba7f0fb93f8ed87c9d2760ac22596`
-- Current lifecycle: `DISCOVERY_COLLECTED`
+- Current State SHA-256: `f356b238554a035363d15239b58355b84777da091104265899332236c88740e8`
+- Current lifecycle: `CANDIDATES_NORMALIZED`
 - Current terminal reason: `none`
-- Current next action: `stage:screening`
+- Current next action: `stage:evidence-materiality-completeness`
 
 ## Human Gates
 
@@ -56,6 +56,7 @@ This is the current human-readable navigation record for the edition. Machine li
 - `sessions/muse-w43-screening-r1-blocked-20261025.md` (screening r1 attempt BLOCKED on shared-Core state-basis defect; 0 decisions; preserved as legacy-path incompatibility evidence)
 - `sessions/muse-w43-screening-native-r2-20261025.md` (screening r2 native-compat retry via frozen `survey_agent_tool_v2`; 51/51 accepted; bounded to `SOL_SCREENING_REVIEW_READY_R2`)
 - `sessions/muse-w43-screening-chronology-r3-20261025.md` (screening r3 single-reason repair; 1-row diff; bounded to `SOL_SCREENING_REVIEW_READY_R3`)
+- `sessions/muse-w43-evidence-authority-r1-20261025.md` (evidence authority/materiality/completeness r1; 32 cards/views + ledgers; bounded to `SOL_EVIDENCE_MATERIALITY_COMPLETENESS_REVIEW_READY_R1`)
 
 ## Discovery (proposed, not accepted)
 
@@ -158,7 +159,21 @@ This is the current human-readable navigation record for the edition. Machine li
 
 ## Final disposition
 
-`IN_PROGRESS` (screening r3 single-reason repair complete, new acceptance materialized, awaiting Sol r3 readback; no ADVANCE_STAGE, no Evidence/Selection/Architecture)
+`IN_PROGRESS` (evidence r1 authority/materiality/completeness materialized, 32 cards/views accepted, awaiting Sol r1 Evidence review; no ADVANCE_STAGE, no Selection/Architecture/Draft)
+
+## Evidence r1 (authority + materiality + completeness; Screening r3 preserved as basis)
+
+- Compat package `execution/compat/evidence-source-class-projection/compat-package/package.json` (SHA-256 `5c98e4752bc9364969a94cb9ed7af61e709d768717f3d0a77b32e07fbc27bc0d`, 32 tasks: 25 passthrough + 7 projected SOCIAL/SECONDARY with one-field-diff ledger `29bf6b74…`)
+- Interactive input `execution/compat/evidence-source-class-projection/interactive-evidence-r1.json` (SHA-256 `db5f2be80bb9ccc0ff73300d1f9e0b461327db310708fee7053ec753eebfb04f`, 32 records; runner muse/muse-spark)
+- Supplement `external/evidence-supplement/evidence-authority-supplement-r1.json` (SHA-256 `49f9face1a331409b0865776c08ccf9efdf18d2713435bd78940811168b9f7e8`; 2 PRIMARY_PAPER entries; PDFs 2,377,923B + 261,750B)
+- Evidence accepted `evidence/v2/accepted/1272d6c1598ab526d89495fd8e00184af1c64d43445fce3ce5a3eecb7b34aa97/evidence-accepted.json` (SHA-256 `2c3ccb1f36cbda3a071e9b7640ef976d7469f89283d1c8ad1406fa2dba30f15f`, 32 cards: PARTIAL 28 / NEEDS_MORE 4)
+- Views accepted `evidence/v2/views/accepted/97586879563080bead28fa7dafdfd17af987ec5ba307df19c2bad9be1c335ddf/edition-views-accepted.json` (SHA-256 `94797fb341b83f696d9796b4183edb505d48bf5ed674eac685b2cbc3b26c7929`, 32 views: MATERIAL 17 / CONTEXT 10 / NON_MATERIAL 1 / HOLD 4)
+- Materiality ledger `materiality-ledger-v2.json` (SHA-256 `3c36ed7ab3f4b7328e2c76839437b2cd0021fd80bed51a61bbe9397f831ef4c9`; 51 rows: MATERIAL 17 / CONTEXT 10 / HOLD 4 / NON_MATERIAL 1 / EXCLUDED 19)
+- Completeness `profile-completeness-v2.json` (SHA-256 `15f557a0cf96fdd5ed2f936771e9daadd38f46bae57a9e1b6c98b5cf442241ff`; LIMITED: LIMITATION/LIMITATION/SATISFIED + 6 residual limitations)
+- Depth ledger `execution/source-intake/w43-evidence-source-depth-r1.md` (reads vs gaps; 0 independent repros)
+- Sol handoff r1: `execution/SOL_EVIDENCE_MATERIALITY_COMPLETENESS_REVIEW_HANDOFF-r1.md` (`SOL_EVIDENCE_MATERIALITY_COMPLETENESS_REVIEW_READY_R1`)
+- Validators: prepare/accept/views/materiality/completeness via frozen native adapter — all PASS; X require_complete PASS; stage precheck PASS (`CANDIDATES_NORMALIZED`→`EVIDENCE_REVIEWED`, `/tmp`, state untouched); profile/state PASS; execution-record PASS; adapter tests 5/5; negatives fail-closed (tampered acceptance/card-basis/supplement-byte-count/legacy-direct)
+- Canonical stage: `CANDIDATES_NORMALIZED` (acceptances materialized; advancement awaits Sol + trusted operator bridge)
 
 ## Screening r3 (one-reason correction; r1 BLOCKED + r2 preserved as history)
 

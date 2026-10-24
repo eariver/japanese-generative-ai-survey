@@ -1,0 +1,167 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W43",
+  "evidence_task_id": "evidence:2026-W43:76da1b3274338d00",
+  "basis": {
+    "task_sha256": "749998f08c4cea54ee4b1ff8fd52ce73a61560725092fe7ea9661afac35cc26d",
+    "screening_acceptance_sha256": "566cde3bd287dffb38d705c4b6c3fec71a98f67dea96016a009bd929923be48a",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "deepinfer",
+      "canonical_name": "DeepSeek DeepInfer",
+      "entity_type": "FRAMEWORK",
+      "organization": "DeepSeek",
+      "canonical_url": "https://github.com/deepseek-ai/DeepInfer"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "deepinfer",
+    "artifact_type": "FRAMEWORK",
+    "canonical_name": "DeepSeek DeepInfer",
+    "canonical_url": "https://github.com/deepseek-ai/DeepInfer"
+  },
+  "temporal": {
+    "observed_at": "2026-10-24T18:32:48Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-10-20",
+        "subject_id": "deepinfer",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "primary:github.com/deepseek-ai/DeepInfer",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "DeepSeek DeepInfer OSS inference (Oct 20)",
+      "published_at": "2026-10-20",
+      "accessed_at": "2026-10-24T18:32:48Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Apache 2.0 offline-only OSS cut of production inference framework for V4.1-Flash (single-model support); 21.5k stars / 2.4k forks / 4 commits observed.",
+      "subject_id": "deepinfer",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "DeepInfer GitHub README (Oct 20 announcement; repo created Oct 16 OUT, announce IN)"
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Kernels FlashMLA/DeepGEMM/DeepEP/TileKernels/DeepSelect/TileLang; Attention DP/balanced CP, MoE EP+EPLB; DSpark plus confidence-scheduled verification (ENABLE_MTP_VARLEN=1, NEXTN_DECODE default 5); SWA bounded replay (YOCO compact, KEEP 140); async scheduling default; batch-invariant and deterministic sampling (NVIDIA); structured outputs.",
+      "subject_id": "deepinfer",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "DeepInfer GitHub README (feature list)"
+    },
+    {
+      "statement_id": "claim-3",
+      "text": "Hardware NVIDIA SM100 plus Huawei Ascend 950; build GCC>=13, Python 3.12, CUDA 13, CANN 9.2; default checkpoint 1017; benches on 4 SM100 (prefill) + 64 decode; vLLM-derived with SGLang/TRT-LLM credit.",
+      "subject_id": "deepinfer",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "DeepInfer GitHub README (hardware + build + benchmarks)"
+    },
+    {
+      "statement_id": "claim-4",
+      "text": "Explicit non-inclusions: KV cache system, VE/prefill/decode disaggregation, load balancing across data-parallel replicas (most engine work already implemented).",
+      "subject_id": "deepinfer",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "DeepInfer GitHub README (required-but-missing section)"
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Throughput figures vendor-only, unreproduced; repo tag not pinned; license file bytes unopened; no local build/run",
+      "subject_id": "deepinfer",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "repo-release-tag",
+        "status": "UNRESOLVED",
+        "finding": "Release tag not pinned; README read at Oct 20 state.",
+        "subject_ids": [
+          "deepinfer"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "hardware-requirements",
+        "status": "VERIFIED",
+        "finding": "SM100 plus Ascend 950 and build toolchain stated in README.",
+        "subject_ids": [
+          "deepinfer"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "license-file",
+        "status": "UNRESOLVED",
+        "finding": "Apache 2.0 claimed in repo metadata; LICENSE file bytes unopened.",
+        "subject_ids": [
+          "deepinfer"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "independent-throughput-repro",
+        "status": "UNRESOLVED",
+        "finding": "Vendor 4+64 GPU benches unreproduced.",
+        "subject_ids": [
+          "deepinfer"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      "repo-release-tag: Release tag not pinned; README read at Oct 20 state.",
+      "license-file: Apache 2.0 claimed in repo metadata; LICENSE file bytes unopened.",
+      "independent-throughput-repro: Vendor 4+64 GPU benches unreproduced."
+    ],
+    "contradictions": []
+  }
+}

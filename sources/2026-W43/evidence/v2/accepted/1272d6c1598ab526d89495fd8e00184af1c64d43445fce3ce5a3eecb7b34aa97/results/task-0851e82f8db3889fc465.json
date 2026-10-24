@@ -1,0 +1,123 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W43",
+  "evidence_task_id": "evidence:2026-W43:f6f8199fe5ebe98f",
+  "basis": {
+    "task_sha256": "ec86b45ce81f6b98e299fc7efb88796e4cfab3691cf16de929d041e2a9a1320d",
+    "screening_acceptance_sha256": "566cde3bd287dffb38d705c4b6c3fec71a98f67dea96016a009bd929923be48a",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "NEEDS_MORE",
+  "entities": [
+    {
+      "entity_id": "openai-google-cloud",
+      "canonical_name": "OpenAI models on Google Cloud",
+      "entity_type": "PRODUCT",
+      "organization": "OpenAI",
+      "canonical_url": "https://openai.com/index/openai-models-google-cloud"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "openai-google-cloud",
+    "artifact_type": "INTEGRATION",
+    "canonical_name": "OpenAI models on Google Cloud",
+    "canonical_url": "https://openai.com/index/openai-models-google-cloud"
+  },
+  "temporal": {
+    "observed_at": "2026-10-24T18:32:48Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-10-21",
+        "subject_id": "openai-google-cloud",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "primary:openai.com/index/openai-models-google-cloud",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "OpenAI models on Google Cloud Model Garden (Oct 21)",
+      "published_at": "2026-10-21",
+      "accessed_at": "2026-10-24T18:32:48Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "RSS title-level signal of frontier models plus Codex workflows in Gemini Model Garden via GCP Marketplace; distribution, not a new base model.",
+      "subject_id": "openai-google-cloud",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "openai.com RSS listing (title only; pages unfetched)"
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Page bodies, model/rate-limit scope and data-residency terms unverified; deployment vs capability undistinguished",
+      "subject_id": "openai-google-cloud",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "page-bodies",
+        "status": "UNRESOLVED",
+        "finding": "Announcement pages unfetched.",
+        "subject_ids": [
+          "openai-google-cloud"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "model-and-rate-limits",
+        "status": "UNRESOLVED",
+        "finding": "Which models and limits unknown.",
+        "subject_ids": [
+          "openai-google-cloud"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "data-residency-terms",
+        "status": "UNRESOLVED",
+        "finding": "Residency terms unknown.",
+        "subject_ids": [
+          "openai-google-cloud"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      "page-bodies: Announcement pages unfetched.",
+      "model-and-rate-limits: Which models and limits unknown.",
+      "data-residency-terms: Residency terms unknown."
+    ],
+    "contradictions": []
+  }
+}

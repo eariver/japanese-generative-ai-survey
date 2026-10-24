@@ -1,0 +1,156 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W43",
+  "evidence_task_id": "evidence:2026-W43:81d172340376c7d1",
+  "basis": {
+    "task_sha256": "3d731a9cd31e6999d1c5d4d915332523e2513d48739ef047f1061cad653bf574",
+    "screening_acceptance_sha256": "566cde3bd287dffb38d705c4b6c3fec71a98f67dea96016a009bd929923be48a",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "flint",
+      "canonical_name": "Recursive Flint",
+      "entity_type": "MODEL",
+      "organization": "Recursive",
+      "canonical_url": "https://huggingface.co/RecursiveSI/flint"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "flint",
+    "artifact_type": "OPEN_WEIGHT",
+    "canonical_name": "Recursive Flint",
+    "canonical_url": "https://huggingface.co/RecursiveSI/flint"
+  },
+  "temporal": {
+    "observed_at": "2026-10-24T18:32:48Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-10-21",
+        "subject_id": "flint",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "primary:recursive.com/updates/introducing-recursive-flint + primary:huggingface.co/RecursiveSI/flint",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "Recursive Flint open-weight coding model (Oct 21)",
+      "published_at": "2026-10-21",
+      "accessed_at": "2026-10-24T18:32:48Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Open-weight coding model Oct 21 (announce + HF weights created 14:20:58Z, 733 likes): 39.8B/2.5B MoE, 49 layers (2 dense + 47 MoE), 256 routed experts 6/token plus shared, SWA-513, 262144 ctx, 150144 vocab, cutoff June 2026; train from scratch (pretrain/mid/SFT/RL); Eureka Machine searched recipes and 4-bit lm_head quantization.",
+      "subject_id": "flint",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "HF model card + announcement page (both read; card LICENSE Apache 2.0)"
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Terminal-Bench 2.1 54.9 / SWE-bench Pro v2 89.7 / SWE-bench Verified 74.2 (Terminus2/mini-swe-agent, temp 1.0/top-p 0.95/top-k 20, avg pass@1 5+ attempts, web-retrieval-as-failure); 125+ tok/s M4 Pro and 150+ 64GB RTX Spark publisher-claimed (short contexts, prefill excluded); 1xB200/H200 SGLang, 80GB, rec engine; Unsloth/LM Studio/vLLM/SGLang; 43 quants, 8 finetunes.",
+      "subject_id": "flint",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "HF model card (eval + serving sections)"
+    },
+    {
+      "statement_id": "claim-3",
+      "text": "Apache 2.0 weights (card metadata); hosted API terms separate; WIRED Oct 21 hands-on corroborates same-day availability; Grok observed Flint plus M4 Pro chatter (no post IDs) as corroboration, not a second release.",
+      "subject_id": "flint",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "HF card license + WIRED hands-on + Grok raw topic mention"
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Publisher-claimed speed (M4 Pro/RTX Spark) unreproduced; full HF file hashes unvalidated; license file bytes unopened; one family with Grok corroboration (no double Selection)",
+      "subject_id": "flint",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "hf-weight-sha-and-license-file",
+        "status": "UNRESOLVED",
+        "finding": "Card metadata read (Apache 2.0, 80GB BF16); file bytes/SHA unhashed.",
+        "subject_ids": [
+          "flint"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "release-tag",
+        "status": "UNRESOLVED",
+        "finding": "Oct 21 availability triple-corroborated (index/HF/WIRED); repo tag not pinned.",
+        "subject_ids": [
+          "flint"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "benchmark-denominators-and-harnesses",
+        "status": "VERIFIED",
+        "finding": "Harness, sampling and scoring conventions documented on card.",
+        "subject_ids": [
+          "flint"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "independent-tokens-per-second-repro",
+        "status": "UNRESOLVED",
+        "finding": "No independent tok/s run; publisher claims only.",
+        "subject_ids": [
+          "flint"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      "hf-weight-sha-and-license-file: Card metadata read (Apache 2.0, 80GB BF16); file bytes/SHA unhashed.",
+      "release-tag: Oct 21 availability triple-corroborated (index/HF/WIRED); repo tag not pinned.",
+      "independent-tokens-per-second-repro: No independent tok/s run; publisher claims only."
+    ],
+    "contradictions": []
+  }
+}
