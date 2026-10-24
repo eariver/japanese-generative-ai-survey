@@ -58,6 +58,15 @@ This is the current human-readable navigation record for the edition. Machine li
 - Sol handoff: `execution/SOL_DISCOVERY_COMPLETENESS_REVIEW_HANDOFF-r1.md` (`SOL_DISCOVERY_COMPLETENESS_REVIEW_READY`)
 - Canonical stage: `ISSUE_INITIALIZED` (DISCOVERY_COLLECTED NOT claimed; X incomplete fail-closed proven)
 
+## Sol supervisory Discovery Review r1 (2026-10-24)
+
+- Review commit: `3b5652a37d81ab5aa1aa5f50238299fdd531db5e`; verdict `REQUEST_CHANGES` (editorial, not Human Gate or separate independent audit).
+- Review document: `execution/reviews/sol-w43-discovery-completeness-review-r1-20261024.md`.
+- Findings: 0 original bodies consumed, required Grok/X incomplete, high-signal OpenAI/security/biology/coding, 1Password for Agents, MOSS-Image and MemT omissions, malformed Kimi timestamp/status ID, arXiv edge times fix.
+- Sol r2 Worker contract: `execution/instructions/sol-w43-r2-discovery-coverage-repair-20261024.md`.
+- Google Drive Grok task transport: https://docs.google.com/document/d/1BubHtxps3Lg711pDJKfoNwe8AyeND7miT9hMQwSnsjw/edit (native Google Docs task copy, original Markdown still in repository; Grok result **not yet received**).
+- Current authoritative State: `ISSUE_INITIALIZED` / `stage:discovery`. Do not advance to Screening or fabricate Discovery acceptance until fresh Sol review and complete X intake.
+
 ## Final disposition
 
-`IN_PROGRESS` (awaiting Sol Discovery Completeness Review; no Screening/Evidence/Selection/Architecture)
+`IN_PROGRESS` (Sol r1 REQUEST_CHANGES; bounded Muse r2 Discovery gap-fill pending; no Screening/Evidence/Selection/Architecture)
