@@ -57,6 +57,7 @@ This is the current human-readable navigation record for the edition. Machine li
 - `sessions/muse-w43-screening-native-r2-20261025.md` (screening r2 native-compat retry via frozen `survey_agent_tool_v2`; 51/51 accepted; bounded to `SOL_SCREENING_REVIEW_READY_R2`)
 - `sessions/muse-w43-screening-chronology-r3-20261025.md` (screening r3 single-reason repair; 1-row diff; bounded to `SOL_SCREENING_REVIEW_READY_R3`)
 - `sessions/muse-w43-evidence-authority-r1-20261025.md` (evidence authority/materiality/completeness r1; 32 cards/views + ledgers; bounded to `SOL_EVIDENCE_MATERIALITY_COMPLETENESS_REVIEW_READY_R1`)
+- `sessions/muse-w43-evidence-authority-r2-20261025.md` (evidence authority r2 deepening; 32 cards/views re-accepted; bounded to `SOL_EVIDENCE_MATERIALITY_COMPLETENESS_REVIEW_READY_R2`)
 
 ## Discovery (proposed, not accepted)
 
@@ -167,7 +168,23 @@ This is the current human-readable navigation record for the edition. Machine li
 
 ## Final disposition
 
-`IN_PROGRESS` (evidence r1 authority/materiality/completeness materialized, 32 cards/views accepted, awaiting Sol r1 Evidence review; no ADVANCE_STAGE, no Selection/Architecture/Draft)
+`IN_PROGRESS` (evidence r2 authority/materiality/completeness materialized, 32 cards/views accepted, awaiting Sol r2 Evidence review; no ADVANCE_STAGE, no Selection/Architecture/Draft)
+
+## Evidence r2 (first-party deepening + MemT archive repair; r1 preserved as history)
+
+- Compat package r2 `execution/compat/evidence-source-class-projection/compat-package-r2/package.json` (SHA-256 `d06cc6d8b1d6feefe58883d5989e421926790ccd36459ef99a2691dae2079e0e`, 32 tasks: 25 passthrough + 7 projected SOCIAL/SECONDARY with one-field-diff ledger `d2e11023…`)
+- Interactive input r2 `execution/compat/evidence-source-class-projection/interactive-evidence-r2.json` (`cffa7be9…`, 32 records; 4 INSPECT→PARTIAL upgraded, MemT conflation fixed, 6 supplement bindings)
+- Supplement r2 `external/evidence-supplement/evidence-authority-supplement-r2.json` (`f876e81f…`; 8 entries: 2 carried papers + automode/changelog/GCP/MemT raws; Kimi X deliberately not a supplement source)
+- Raw: automode article HTML 599,884B, changelog HTML 553,250B, GCP blog HTML 224,991B, MemT PDF 65pp 7,096,280B (all fetched Oct 24, SHA-bound)
+- Evidence accepted (NEW dir) `evidence/v2/accepted/3e7fa82772523bdb9303190c64ecd5f9a515e8493261fe6826332b2e94ddb37a/evidence-accepted.json` (SHA-256 `7615b2ce0…`, 32 cards: PARTIAL 32, HOLD 0)
+- Views accepted (NEW dir) `evidence/v2/views/accepted/c4e0ce931ec176ae56ad0c32483fca599023e2fc8060861b4f1c2771d6f3190c/edition-views-accepted.json` (SHA-256 `5b04bc16…`, 32 views: MATERIAL 20 / CONTEXT 11 / NON_MATERIAL 1 / HOLD 0)
+- Materiality ledger `materiality-ledger-v2.json` (SHA-256 `6a5c2321…`, 51 rows: MATERIAL 20 / CONTEXT 11 / HOLD 0 / NON_MATERIAL 1 / EXCLUDED 19)
+- Completeness `profile-completeness-v2.json` (SHA-256 `09e1a206…`, LIMITED: LIMITATION/LIMITATION/SATISFIED + 6 residual limitations)
+- Depth ledger r2: `execution/source-intake/w43-evidence-source-depth-r2.md` (reads vs gaps; 0 independent repros)
+- r1 history snapshot: `execution/history/r1/` (r1 ledger/completeness SHAs preserved)
+- Sol handoff r2: `execution/SOL_EVIDENCE_MATERIALITY_COMPLETENESS_REVIEW_HANDOFF-r2.md` (`SOL_EVIDENCE_MATERIALITY_COMPLETENESS_REVIEW_READY_R2`)
+- Validators: all Core checks PASS (schema/graph/raw/Grok/X/stage-precheck to `/tmp`/profile/state/exec-record); adapter tests 5/5; negatives fail-closed (tampered acceptance, forged card basis, tampered supplement, legacy direct)
+- Canonical stage: `CANDIDATES_NORMALIZED` (acceptances materialized; advancement awaits Sol + trusted operator bridge)
 
 ## Evidence r1 (authority + materiality + completeness; Screening r3 preserved as basis)
 

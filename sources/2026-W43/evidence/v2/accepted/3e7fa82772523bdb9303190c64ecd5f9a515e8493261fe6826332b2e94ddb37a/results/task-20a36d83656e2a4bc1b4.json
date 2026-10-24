@@ -1,0 +1,132 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W43",
+  "evidence_task_id": "evidence:2026-W43:f35c6ce039a8d355",
+  "basis": {
+    "task_sha256": "e9a2ac221bfe987e1e6e4e4c86b31f1e9ffd362ef8d67be3d3390f45966d963e",
+    "screening_acceptance_sha256": "566cde3bd287dffb38d705c4b6c3fec71a98f67dea96016a009bd929923be48a",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "tanstack-ai-1-0",
+      "canonical_name": "TanStack AI 1.0",
+      "entity_type": "FRAMEWORK",
+      "organization": "TanStack",
+      "canonical_url": "https://tanstack.com/blog/tanstack-ai-1-0"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "tanstack-ai-1-0",
+    "artifact_type": "FRAMEWORK",
+    "canonical_name": "TanStack AI 1.0",
+    "canonical_url": "https://tanstack.com/blog/tanstack-ai-1-0"
+  },
+  "temporal": {
+    "observed_at": "2026-10-24T19:30:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-10-23",
+        "subject_id": "tanstack-ai-1-0",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "primary:tanstack.com/blog/tanstack-ai-1-0",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "TanStack AI 1.0 stable toolkit (Oct 23)",
+      "published_at": "2026-10-23",
+      "accessed_at": "2026-10-24T19:30:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Stable core toolkit Oct 23 (76 pkgs, 23 adapters plus openaiCompatible, 8 UI frameworks, 143 contributors); upgrade codemod with threadId required; 3 older UI pkgs dropped; saved-data migration.",
+      "subject_id": "tanstack-ai-1-0",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "TanStack blog (Oct 23, read in full)"
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Agent harness explicitly experimental 0.x (durable sessions, steer/follow-up, typed agents, plugins, background work); runCli coding agent with non-sandbox permissions (host tools); AG-UI routes; ACP/MCP only with packages.",
+      "subject_id": "tanstack-ai-1-0",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "TanStack blog (harness section)"
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Repo tag unpinned; upgrade outcomes untested; harness API explicitly unstable",
+      "subject_id": "tanstack-ai-1-0",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "repo-tag",
+        "status": "UNRESOLVED",
+        "finding": "Blog date verified; repo tag not pinned.",
+        "subject_ids": [
+          "tanstack-ai-1-0"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "upgrade-guide",
+        "status": "VERIFIED",
+        "finding": "Upgrade section read (codemod, threadId, dropped pkgs, saved-data steps).",
+        "subject_ids": [
+          "tanstack-ai-1-0"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "harness-experimental-boundary",
+        "status": "VERIFIED",
+        "finding": "0.x status and non-sandbox permissions explicitly stated.",
+        "subject_ids": [
+          "tanstack-ai-1-0"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      "repo-tag: Blog date verified; repo tag not pinned."
+    ],
+    "contradictions": []
+  }
+}

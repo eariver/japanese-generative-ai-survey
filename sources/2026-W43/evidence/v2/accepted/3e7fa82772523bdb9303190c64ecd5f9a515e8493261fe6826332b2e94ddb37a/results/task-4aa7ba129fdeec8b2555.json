@@ -1,0 +1,156 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W43",
+  "evidence_task_id": "evidence:2026-W43:aecfbb1186d2a6ec",
+  "basis": {
+    "task_sha256": "79b3ffe5e04e6662108eefa170bb6cb3b241473e1e91e0423db5f6e4625ccdcc",
+    "screening_acceptance_sha256": "566cde3bd287dffb38d705c4b6c3fec71a98f67dea96016a009bd929923be48a",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "ming-3-0-tts",
+      "canonical_name": "InclusionAI Ming-3.0-tts",
+      "entity_type": "MODEL",
+      "organization": "InclusionAI",
+      "canonical_url": "https://github.com/inclusionAI/Ming-3.0-tts"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "ming-3-0-tts",
+    "artifact_type": "MODEL",
+    "canonical_name": "InclusionAI Ming-3.0-tts",
+    "canonical_url": "https://github.com/inclusionAI/Ming-3.0-tts"
+  },
+  "temporal": {
+    "observed_at": "2026-10-24T19:30:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-10-19",
+        "subject_id": "ming-3-0-tts",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "primary:github.com/inclusionAI/Ming-3.0-tts",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "InclusionAI Ming-3.0-tts TTS family (repo Oct 19 IN)",
+      "published_at": "2026-10-19",
+      "accessed_at": "2026-10-24T19:30:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "TTS family (repo Oct 19 IN; News month-only [2026.10], day unproven): 0.5B dense plus 7.9B-A1.3B MoE tiny (Ling V3); MIT license; 7 langs plus Sichuanese/Cantonese; 14 paralinguistic tags; tasks seed/multilingual/paralinguistic/podcast/basic/emotion/dialect/freeform/voice_design/ip.",
+      "subject_id": "ming-3-0-tts",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Ming README (read in full) + repo meta (created Oct 19, 197 stars)"
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "AA Controlled Voice 1069 (1st open-weights, 13th overall); Pronunciation Robustness 93.2% (1st overall; shorthand 96.5%, exact-seq 90.6%); Provider Voice 1188 (3rd open-weights, 17th overall); vendor tables (NVBench single-tag SOTA, dialect/emotion splits) with historical Ming-omni-tts records retained where stronger.",
+      "subject_id": "ming-3-0-tts",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Ming README (AA ranks + vendor benchmark tables)"
+    },
+    {
+      "statement_id": "claim-3",
+      "text": "Roadmap pending (vLLM-Omni, technical report); release-day precision honestly month-only; repo creation is the IN anchor.",
+      "subject_id": "ming-3-0-tts",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "README News section vs repo created_at (no day-level release proof)"
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Day-level model release date unproven; tech report pending; weight SHA and license file unopened; AA pages unfetched",
+      "subject_id": "ming-3-0-tts",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "exact-first-availability-date",
+        "status": "UNRESOLVED",
+        "finding": "Month-only News vs Oct 19 repo creation; day-level release unproven.",
+        "subject_ids": [
+          "ming-3-0-tts"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "tech-report",
+        "status": "UNRESOLVED",
+        "finding": "Roadmap pending; no report.",
+        "subject_ids": [
+          "ming-3-0-tts"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "weight-sha-and-license-file",
+        "status": "UNRESOLVED",
+        "finding": "HF links listed; bytes unhashed; MIT stated in README.",
+        "subject_ids": [
+          "ming-3-0-tts"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "tts-eval-methodology",
+        "status": "VERIFIED",
+        "finding": "README benchmark tables and AA ranks read; AA pages unfetched.",
+        "subject_ids": [
+          "ming-3-0-tts"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      "exact-first-availability-date: Month-only News vs Oct 19 repo creation; day-level release unproven.",
+      "tech-report: Roadmap pending; no report.",
+      "weight-sha-and-license-file: HF links listed; bytes unhashed; MIT stated in README."
+    ],
+    "contradictions": []
+  }
+}

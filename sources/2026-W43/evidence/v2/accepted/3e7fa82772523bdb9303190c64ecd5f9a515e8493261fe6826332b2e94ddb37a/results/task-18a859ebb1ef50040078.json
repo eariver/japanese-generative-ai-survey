@@ -1,0 +1,166 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W43",
+  "evidence_task_id": "evidence:2026-W43:67a30ffa2455924c",
+  "basis": {
+    "task_sha256": "6aefdad96abd11b1c65cc43f200a312f11857502816ae7f334d0a578052c0aa5",
+    "screening_acceptance_sha256": "566cde3bd287dffb38d705c4b6c3fec71a98f67dea96016a009bd929923be48a",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "voxtral-3",
+      "canonical_name": "Mistral Voxtral 3",
+      "entity_type": "MODEL",
+      "organization": "Mistral AI",
+      "canonical_url": "https://mistral.ai/news/voxtral-3"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "voxtral-3",
+    "artifact_type": "PRODUCT",
+    "canonical_name": "Mistral Voxtral 3",
+    "canonical_url": "https://mistral.ai/news/voxtral-3"
+  },
+  "temporal": {
+    "observed_at": "2026-10-24T19:30:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-10-20",
+        "subject_id": "voxtral-3",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "primary:mistral.ai/news/voxtral-3",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "Mistral Voxtral 3 speech + agent SDK (Oct 20)",
+      "published_at": "2026-10-20",
+      "accessed_at": "2026-10-24T19:30:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Family Oct 20 12:00 UTC: Small Transcribe 3 (flagship batch + diarization), Mini 4B, Realtime, Speech 3 TTS, plus LiveKit voice-agent SDK (listen/reason/speak single pipeline, turn under 1s, barge-in); 50+ transcription langs, 35+ langs and 50+ dialects speech.",
+      "subject_id": "voxtral-3",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Mistral announcement + model docs (Oct 20)"
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Small SOTA transcription/diarization/context-biasing: FLEURS 45 WER Small 4.1/4.0; diarization cpWER 18.4/18.6 vs Pyannote 19.0; keyphrase recall 94.6/81.4; realtime sub-500ms across 40+ langs; TTS internal evals (Voice Code Bench 300 prompts, pronunciation 300 sentences, multilingual 377 prompts, expressive 237; judge gemini-3.8-flash; generated 2026-10-20).",
+      "subject_id": "voxtral-3",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Mistral announcement eval charts + docs"
+    },
+    {
+      "statement_id": "claim-3",
+      "text": "Pricing Mini $0.0035/min, Small $0.004, Realtime $0.008, Speech $13/M chars; agent API $0.04/$0.08; EU/US/global endpoints plus self-deploy (sovereignty); Pro Voice 30min adaptation.",
+      "subject_id": "voxtral-3",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Mistral announcement pricing + docs"
+    },
+    {
+      "statement_id": "claim-4",
+      "text": "Distinct from W42 INSPECT Le Chonk grounding: Voxtral is speech/TTS/SDK, resolves nothing about grounding weights.",
+      "subject_id": "voxtral-3",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Family comparison from consumed announcements (no conflation)"
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Vendor-run evals with vendor-chosen judge; AA pages unfetched; end-to-end agent repro absent; Le Chonk gap untouched",
+      "subject_id": "voxtral-3",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "announcement-and-docs-bodies",
+        "status": "VERIFIED",
+        "finding": "Announcement plus model docs read Oct 24 (rendered); original HTML not archived.",
+        "subject_ids": [
+          "voxtral-3"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "transcription-eval-details",
+        "status": "UNRESOLVED",
+        "finding": "Vendor FLEURS/diarization/keyphrase tables read; independent replication absent.",
+        "subject_ids": [
+          "voxtral-3"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "tts-eval-methodology",
+        "status": "UNRESOLVED",
+        "finding": "Internal-eval design read; judge and sample limits noted; no independent run.",
+        "subject_ids": [
+          "voxtral-3"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "pricing-and-endpoints",
+        "status": "VERIFIED",
+        "finding": "Rate card and endpoint scope stated on announcement page.",
+        "subject_ids": [
+          "voxtral-3"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      "transcription-eval-details: Vendor FLEURS/diarization/keyphrase tables read; independent replication absent.",
+      "tts-eval-methodology: Internal-eval design read; judge and sample limits noted; no independent run."
+    ],
+    "contradictions": []
+  }
+}

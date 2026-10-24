@@ -1,0 +1,173 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W43",
+  "evidence_task_id": "evidence:2026-W43:8c735edcfc5e51f3",
+  "basis": {
+    "task_sha256": "3e6c7929cb7387f6638004bb8fd8ee9db43655952dd97bd4ff1f2bd6497c5142",
+    "screening_acceptance_sha256": "566cde3bd287dffb38d705c4b6c3fec71a98f67dea96016a009bd929923be48a",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "memt-1-0",
+      "canonical_name": "MemTensor MemT-1.0",
+      "entity_type": "MODEL",
+      "organization": "MemTensor",
+      "canonical_url": "https://github.com/MemTensor/MemT-1.0"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "memt-1-0",
+    "artifact_type": "MODEL",
+    "canonical_name": "MemTensor MemT-1.0",
+    "canonical_url": "https://github.com/MemTensor/MemT-1.0"
+  },
+  "temporal": {
+    "observed_at": "2026-10-24T19:30:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-10-19",
+        "subject_id": "memt-1-0",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "primary:arxiv.org/abs/2610.26825",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "MemTensor MemT-1.0 memory foundation (Oct 19)",
+      "published_at": "2026-10-19",
+      "accessed_at": "2026-10-24T19:30:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    },
+    {
+      "source_id": "supplement-src-927931f4a303eaa6",
+      "url": "paper:arxiv.org/abs/2610.26825",
+      "source_class": "PRIMARY_PAPER",
+      "title": "MemT-1.0: Towards Memory-Native Evolution (arXiv 2610.26825v1, Oct 19 2026; 65pp)",
+      "published_at": null,
+      "accessed_at": "2026-10-24T19:18:19Z",
+      "role": "Post-Screening exact authority supplement: Post-Screening exact paper authority (real MemT PDF; supersedes r1 abs-only reading). v1 submission Oct 19 day precision per abs page. Licenses live in repo README, not paper text."
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Memory foundation family IN (paper v1 Oct 19; repo created Oct 19 03:29:30Z, 382 stars/17 forks/2 commits): Gated DeltaNet-2 stable token-level update plus Mixture-of-Storage; 34B training tokens; two-stage continued-pretrain plus post-train.",
+      "subject_id": "memt-1-0",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1",
+        "supplement-src-927931f4a303eaa6"
+      ],
+      "context": "arXiv 2610.26825 abs+intro+spec sections (PDF archived 7,096,280B = MemT paper; NOT the 2.38MB AM-Bench file)"
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Nano Qwen3.6-35B-A3B (36B/3B, mem 451M/10M) plus Flash DeepSeek-V4-Flash (288B/17B, mem 3.61B/336M); 11 memory benchmarks Flash 1st / Nano 2nd parametric; 1.86x end-to-end at 128K plus 66x persistent storage vs full KV cache.",
+      "subject_id": "memt-1-0",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1",
+        "supplement-src-927931f4a303eaa6"
+      ],
+      "context": "MemT paper spec tables (abs/intro + Nano/Flash parameter blocks read)"
+    },
+    {
+      "statement_id": "claim-3",
+      "text": "Experience-guided agentic coding (procedural experience in native memory, no context bloat); SGLang serve with snapshots and save/restore; licenses live in repo README (CC BY-NC-SA paper / PolyForm Noncommercial software / weights-datasets NOT covered) - paper text itself contains no license terms.",
+      "subject_id": "memt-1-0",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1",
+        "supplement-src-927931f4a303eaa6"
+      ],
+      "context": "MemT paper (agentic section) + repo README license section (read)"
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Full 65pp body beyond abs/intro/spec tables unaudited; benchmark denominators vendor-framed; SGLang config unexecuted; weight/dataset files unhashed",
+      "subject_id": "memt-1-0",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1",
+        "supplement-src-927931f4a303eaa6"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "tech-report-pdf",
+        "status": "VERIFIED",
+        "finding": "Real MemT PDF archived (7,096,280B); abs+intro+Nano/Flash/benchmark/license sections consumed; equation-level audit not attempted.",
+        "subject_ids": [
+          "memt-1-0"
+        ],
+        "source_ids": [
+          "src-1",
+          "supplement-src-927931f4a303eaa6"
+        ]
+      },
+      {
+        "target": "weight-and-license-files",
+        "status": "UNRESOLVED",
+        "finding": "License split read in README (paper has no license text); weight/dataset files not fetched.",
+        "subject_ids": [
+          "memt-1-0"
+        ],
+        "source_ids": [
+          "src-1",
+          "supplement-src-927931f4a303eaa6"
+        ]
+      },
+      {
+        "target": "benchmark-denominators",
+        "status": "UNRESOLVED",
+        "finding": "11-bench vendor framing only; denominators unvalidated.",
+        "subject_ids": [
+          "memt-1-0"
+        ],
+        "source_ids": [
+          "src-1",
+          "supplement-src-927931f4a303eaa6"
+        ]
+      },
+      {
+        "target": "sglang-serve-config",
+        "status": "UNRESOLVED",
+        "finding": "Quickstart documented; not executed.",
+        "subject_ids": [
+          "memt-1-0"
+        ],
+        "source_ids": [
+          "src-1",
+          "supplement-src-927931f4a303eaa6"
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      "weight-and-license-files: License split read in README (paper has no license text); weight/dataset files not fetched.",
+      "benchmark-denominators: 11-bench vendor framing only; denominators unvalidated.",
+      "sglang-serve-config: Quickstart documented; not executed."
+    ],
+    "contradictions": []
+  }
+}

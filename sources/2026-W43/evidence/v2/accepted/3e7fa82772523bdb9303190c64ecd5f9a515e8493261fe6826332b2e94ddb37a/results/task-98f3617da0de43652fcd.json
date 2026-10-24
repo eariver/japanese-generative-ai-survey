@@ -1,0 +1,167 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W43",
+  "evidence_task_id": "evidence:2026-W43:0186d12abaa2b682",
+  "basis": {
+    "task_sha256": "922ba29fea22166dcf3de62fb575fc7679c3e4807cb7ec9150814894885d0d6f",
+    "screening_acceptance_sha256": "566cde3bd287dffb38d705c4b6c3fec71a98f67dea96016a009bd929923be48a",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "kimi-k3-1-pro",
+      "canonical_name": "Moonshot Kimi K3.1 Pro",
+      "entity_type": "MODEL",
+      "organization": "Moonshot AI",
+      "canonical_url": "https://www.kimi.ai/blog/kimi-k3-1-pro"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "kimi-k3-1-pro",
+    "artifact_type": "MODEL",
+    "canonical_name": "Moonshot Kimi K3.1 Pro",
+    "canonical_url": "https://www.kimi.ai/blog/kimi-k3-1-pro"
+  },
+  "temporal": {
+    "observed_at": "2026-10-24T19:30:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-10-23T17:15:24Z",
+        "subject_id": "kimi-k3-1-pro",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://x.com/Kimi_Moonshot/status/2113680701770068067 + primary:kimi.ai/blog/kimi-k3-1-pro",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "Moonshot Kimi K3.1 Pro API/announce (Oct 23, weights by Nov 4)",
+      "published_at": "2026-10-23T17:15:24Z",
+      "accessed_at": "2026-10-24T19:30:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Announcement and API live Oct 23 17:15:24Z (13:15 EDT), 4h44m36s inside exclusive 22:00Z cutoff; X post ID 2113680701770068067 archived as raw HTML; full weights promised by Nov 4 and NOT currently available.",
+      "subject_id": "kimi-k3-1-pro",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "X raw HTML 208731B SHA 0891bc1e (embedded 2026-10-23T17:15:24.000Z) + tech blog"
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "2.8T total / 104B active MoE, 1M-token multimodal context; Highspeed variant 2-3x faster at 2x price with cache-hit pricing unchanged; $2 input / $10 output per 1M.",
+      "subject_id": "kimi-k3-1-pro",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "https://www.kimi.ai/blog/kimi-k3-1-pro"
+    },
+    {
+      "statement_id": "claim-3",
+      "text": "Terminal-Bench 4.0 65.7% vs GPT-6 Astra 58.2% vs Claude Opus 5.5 66.4%; Kimi Code Bench 3.0 Long-horizon 61.2% vs K3 55.95%; BenchCAD 92.7% with tools; OfficeQA Pro v2 64.4; hallucination claim rate 23.4% to 8.3% on Kimi Hallu Bench Hard.",
+      "subject_id": "kimi-k3-1-pro",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "https://www.kimi.ai/blog/kimi-k3-1-pro (harness footnotes: Claude-Code harness, temp 1.0, top-p 0.95, max effort)"
+    },
+    {
+      "statement_id": "claim-4",
+      "text": "Targeted cyber-data removal at mid-training and RL stages; checkpoint without controls solves 90.5% xdev-bench-hard vs 81.0% final; capability still behind frontier proprietary models.",
+      "subject_id": "kimi-k3-1-pro",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "https://www.kimi.ai/blog/kimi-k3-1-pro (cybersecurity section)"
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Weights unavailable until Nov 4: no independent local run or weight-hash verification; vendor harnesses and denominators; API pricing is not weight-license terms",
+      "subject_id": "kimi-k3-1-pro",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "weights-release-by-Nov-4",
+        "status": "UNRESOLVED",
+        "finding": "Weights promised by Nov 4; not yet published at observation time.",
+        "subject_ids": [
+          "kimi-k3-1-pro"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "independent-local-run",
+        "status": "UNRESOLVED",
+        "finding": "No independent local run possible before weights; early API/AA measurements vendor- or third-party-reported.",
+        "subject_ids": [
+          "kimi-k3-1-pro"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "cyber-removal-scope",
+        "status": "UNRESOLVED",
+        "finding": "Removal mechanism described in tech blog; independent scope unconfirmed.",
+        "subject_ids": [
+          "kimi-k3-1-pro"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "benchmark-denominators-and-harnesses",
+        "status": "VERIFIED",
+        "finding": "Denominators and harnesses documented in blog footnotes (Claude-Code harness, temp 1.0/top-p/max effort).",
+        "subject_ids": [
+          "kimi-k3-1-pro"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      "weights-release-by-Nov-4: Weights promised by Nov 4; not yet published at observation time.",
+      "independent-local-run: No independent local run possible before weights; early API/AA measurements vendor- or third-party-reported.",
+      "cyber-removal-scope: Removal mechanism described in tech blog; independent scope unconfirmed."
+    ],
+    "contradictions": []
+  }
+}

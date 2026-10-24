@@ -1,0 +1,179 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W43",
+  "evidence_task_id": "evidence:2026-W43:956202d0dbd04246",
+  "basis": {
+    "task_sha256": "db16cfde1f73178b36f0f539d03b0dcfe9181b1223442ae594a9e5f2bb7ed9a2",
+    "screening_acceptance_sha256": "566cde3bd287dffb38d705c4b6c3fec71a98f67dea96016a009bd929923be48a",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "claude-auto-mode",
+      "canonical_name": "Anthropic auto-mode default",
+      "entity_type": "PRODUCT",
+      "organization": "Anthropic",
+      "canonical_url": "x-official:claudeai/status/2113360845409583307"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "claude-auto-mode",
+    "artifact_type": "PRODUCT",
+    "canonical_name": "Anthropic auto-mode default",
+    "canonical_url": "x-official:claudeai/status/2113360845409583307"
+  },
+  "temporal": {
+    "observed_at": "2026-10-24T19:30:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-10-21",
+        "subject_id": "claude-auto-mode",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "event_id": "event-2",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-10-22T00:00:00Z",
+        "subject_id": "claude-auto-mode",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "supplement-src-6f18c05b01b43f45"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "x-official:claudeai/status/2113360845409583307",
+      "source_class": "SOCIAL",
+      "title": "Anthropic auto-mode default next week (Oct 21 X)",
+      "published_at": "2026-10-21",
+      "accessed_at": "2026-10-24T19:30:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    },
+    {
+      "source_id": "supplement-src-6f18c05b01b43f45",
+      "url": "https://claude.com/resources/articles/auto-mode-default-in-claude-code",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "Auto mode is now the default in Claude Code for Pro, Max, and Team plans (Oct 22, 2026 update; original Aug 7, 2026)",
+      "published_at": "2026-10-22T00:00:00Z",
+      "accessed_at": "2026-10-24T19:17:20Z",
+      "role": "Post-Screening exact authority supplement: Post-Screening exact first-party authority: Oct 22 update is the IN revision event (future rollout next week); original Aug 7 OUT. Day precision for update date."
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Article published Aug 7, 2026 made auto mode default in Claude Code (effective Aug 14, Pro/Max/Team; classifier overhead no longer billed). Oct 22, 2026 update announces rollout NEXT WEEK as default for new sessions in MOST Claude apps (Pro/Max/Team).",
+      "subject_id": "claude-auto-mode",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1",
+        "supplement-src-6f18c05b01b43f45"
+      ],
+      "context": "Anthropic article + Oct 22 update block (raw HTML archived 599,884B)"
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Mechanism: automated check approves safe actions, blocks risky ones and seeks alternatives; enterprise admins get email first; still opt-in for Enterprise, API, Bedrock, Google Agent Platform, Foundry; plan to extend to all apps with cloud partners.",
+      "subject_id": "claude-auto-mode",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1",
+        "supplement-src-6f18c05b01b43f45"
+      ],
+      "context": "Oct 22 update block (rollout scope + exclusions)"
+    },
+    {
+      "statement_id": "claim-3",
+      "text": "Safety basis stated: internal testing plus third-party red-teaming; classifier uses small extra tokens per tool call; Oct 21 X statement describes the same rollout (no X-HTML capture).",
+      "subject_id": "claude-auto-mode",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1",
+        "supplement-src-6f18c05b01b43f45"
+      ],
+      "context": "Oct 22 update block (testing + overhead lines)"
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Rollout had not completed in-window (future rollout); completed-default state unobserved",
+      "subject_id": "claude-auto-mode",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1",
+        "supplement-src-6f18c05b01b43f45"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "Enterprise/API/Bedrock/Agent-Platform/Foundry behavior unobserved; cloud-partner extension pending",
+      "subject_id": "claude-auto-mode",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1",
+        "supplement-src-6f18c05b01b43f45"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "official-changelog-or-docs",
+        "status": "VERIFIED",
+        "finding": "Publisher article plus dated Oct 22 update block read in archived HTML.",
+        "subject_ids": [
+          "claude-auto-mode"
+        ],
+        "source_ids": [
+          "src-1",
+          "supplement-src-6f18c05b01b43f45"
+        ]
+      },
+      {
+        "target": "classifier-gating-spec",
+        "status": "VERIFIED",
+        "finding": "Auto-approve vs block-and-seek-alternative mechanism stated; red-team basis stated.",
+        "subject_ids": [
+          "claude-auto-mode"
+        ],
+        "source_ids": [
+          "src-1",
+          "supplement-src-6f18c05b01b43f45"
+        ]
+      },
+      {
+        "target": "rollout-scope",
+        "status": "VERIFIED",
+        "finding": "Most-apps next-week scope plus Enterprise/API exclusions read; completion not yet observed.",
+        "subject_ids": [
+          "claude-auto-mode"
+        ],
+        "source_ids": [
+          "src-1",
+          "supplement-src-6f18c05b01b43f45"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

@@ -1,0 +1,121 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W43",
+  "evidence_task_id": "evidence:2026-W43:29dd9729d8676386",
+  "basis": {
+    "task_sha256": "3e7ac01a33f1fac24b286ad0bcc95cf6243919d29f6d4dd6deb3631c1d78934e",
+    "screening_acceptance_sha256": "566cde3bd287dffb38d705c4b6c3fec71a98f67dea96016a009bd929923be48a",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "moss-report-announce",
+      "canonical_name": "MOSS-Image technical report arXiv announcement",
+      "entity_type": "PAPER",
+      "organization": "OpenMOSS",
+      "canonical_url": "https://arxiv.org/abs/2610.23374"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "moss-report-announce",
+    "artifact_type": "PAPER",
+    "canonical_name": "MOSS-Image technical report arXiv announcement",
+    "canonical_url": "https://arxiv.org/abs/2610.23374"
+  },
+  "temporal": {
+    "observed_at": "2026-10-24T19:30:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-10-19",
+        "subject_id": "moss-report-announce",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "primary:arxiv.org/abs/2610.23374",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "MOSS-Image technical report arXiv announcement (Oct 19 distro)",
+      "published_at": "2026-10-19",
+      "accessed_at": "2026-10-24T19:30:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "README Oct 19 announces technical report arXiv 2610.23374 (submitted Oct 16 12:27:37Z OUT as research); announcement is distribution, not new research.",
+      "subject_id": "moss-report-announce",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "MOSS-Image README News + arXiv submission time (API-verified)"
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Citation ai2026mossimagetechnicalreport; must not redated Oct 16 submission into W43 news.",
+      "subject_id": "moss-report-announce",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Chronology rule (submission vs announcement separation)"
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Report PDF body unread; announcement is not research content",
+      "subject_id": "moss-report-announce",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "report-pdf-body",
+        "status": "UNRESOLVED",
+        "finding": "PDF body unread.",
+        "subject_ids": [
+          "moss-report-announce"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "announcement-vs-submission-dates",
+        "status": "VERIFIED",
+        "finding": "Oct 19 announce vs Oct 16 12:27:37Z submission separated with API proof.",
+        "subject_ids": [
+          "moss-report-announce"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      "report-pdf-body: PDF body unread."
+    ],
+    "contradictions": []
+  }
+}

@@ -1,0 +1,152 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W43",
+  "evidence_task_id": "evidence:2026-W43:6125808e31e3fd0e",
+  "basis": {
+    "task_sha256": "d8ed62945f8b59fdd32c75b1f4b5ce4ce4143a99d589e945783f45c44058f453",
+    "screening_acceptance_sha256": "566cde3bd287dffb38d705c4b6c3fec71a98f67dea96016a009bd929923be48a",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "openai-lowresource-coding-evals",
+      "canonical_name": "OpenAI low-resource language coding evaluations",
+      "entity_type": "BENCHMARK",
+      "organization": "OpenAI",
+      "canonical_url": "https://openai.com/index/low-resource-programming-languages/"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "openai-lowresource-coding-evals",
+    "artifact_type": "BENCHMARK",
+    "canonical_name": "OpenAI low-resource language coding evaluations",
+    "canonical_url": "https://openai.com/index/low-resource-programming-languages/"
+  },
+  "temporal": {
+    "observed_at": "2026-10-24T19:30:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-10-19",
+        "subject_id": "openai-lowresource-coding-evals",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "primary:openai.com/index/low-resource-programming-languages/",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "OpenAI low-resource language coding evals (Oct 19)",
+      "published_at": "2026-10-19",
+      "accessed_at": "2026-10-24T19:30:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "MultiLangBench: SQLite-compatible engine from scratch, 20 langs, DB-file shared interface, reference-SQLite check; Astra 87.4% avg vs Sol 26.8%; every lang up incl. COBOL 10.9 to 72.1, OCaml 25.6 to 85.8, Fortran 21.4 to 83.5, VB 27.5 to 89.4; 19/20 at or above 83% (COBOL hardest 72%).",
+      "subject_id": "openai-lowresource-coding-evals",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "OpenAI research page Oct 19 (read in full)"
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "COBOL migration eval: hidden byte-for-byte parity tests (fixed-point truncation trap); GPT-6.1 Sol 86.6% low effort at 61% of Sol 5.6 cost vs 5.4% baseline; 97.9% high effort (near saturation); GitHub MultiLangBench suite open; expert review still required.",
+      "subject_id": "openai-lowresource-coding-evals",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "OpenAI research page Oct 19 (both evaluations)"
+    },
+    {
+      "statement_id": "claim-3",
+      "text": "Enterprise feedback-driven (COBOL 40%+ online banking, Fortran weather/nuclear); Luna 40.3% at $0.77 vs $3.48 Sol (-78%).",
+      "subject_id": "openai-lowresource-coding-evals",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "OpenAI research page (context + cost figures)"
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Vendor-measured tables; production migration still needs expert review and business-rule testing",
+      "subject_id": "openai-lowresource-coding-evals",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "eval-repo-and-suite",
+        "status": "VERIFIED",
+        "finding": "GitHub MultiLangBench suite linked and open.",
+        "subject_ids": [
+          "openai-lowresource-coding-evals"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "per-language-tables",
+        "status": "VERIFIED",
+        "finding": "20-lang table with COBOL/OCaml/Fortran/VB deltas read.",
+        "subject_ids": [
+          "openai-lowresource-coding-evals"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "migration-hidden-tests",
+        "status": "VERIFIED",
+        "finding": "Byte-parity hidden-test design and 86.6/97.9 figures read.",
+        "subject_ids": [
+          "openai-lowresource-coding-evals"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "cost-basis",
+        "status": "VERIFIED",
+        "finding": "Cost figures read ($0.77 vs $3.48; 61%); vendor-measured.",
+        "subject_ids": [
+          "openai-lowresource-coding-evals"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}
