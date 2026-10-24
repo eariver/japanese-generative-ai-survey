@@ -33,8 +33,9 @@ This is the current human-readable navigation record for the edition. Machine li
 ## Grok/X
 
 - Profile applicability policy: `REQUIRED_BY_PROFILE`
-- Latest Drive task-file path/reference: none recorded yet
-- Latest result disposition: none recorded yet
+- Latest Drive task-file path/reference: `Grok_X_SourseIntake/Weekly/2026-W43/weekly-x-2026-W43/grok-task.md` (repo `sources/2026-W43/external/x/weekly-x-2026-W43/grok-task.md`, SHA-256 `083374d4c17e81e984dd89ae24da43051960ddfe1c4ca893af4b57410cc2a413`)
+- Manifest: `sources/2026-W43/external/x/x-source-intake-v2.json` (SHA-256 `6c3184c876f056dd32d555e9832b12183d2e3b331943b9b35490975a41f4fbd9`, status `AWAITING_GROK`)
+- Latest result disposition: `X_INTAKE_PENDING` (no Grok bytes imported; Sol owns Drive handoff/import)
 
 ## Deviations
 
@@ -47,7 +48,16 @@ This is the current human-readable navigation record for the edition. Machine li
 ## Sessions
 
 - `sessions/sol-w43-init-20261024.md`
+- `sessions/muse-w43-discovery-20261024.md` (r1 Source Intake/Discovery, bounded to SOL_DISCOVERY_COMPLETENESS_REVIEW_READY)
+
+## Discovery (proposed, not accepted)
+
+- Proposal: `discovery/discovery-v2-proposal-r1.jsonl` (SHA-256 `af44d67e77470c7728007e29fdb2c76d85cbd0269023d65c352c7e77f153f206`, 36 records, 36/36 schema PASS, PROPOSED_NOT_ACCEPTED)
+- Raw bundles: `collectors/primary/runs/20261024T120000Z-muse-r1/` (6 bundles + ledger, 20607 bytes, 0 bodies consumed)
+- Intake records: `execution/source-intake/w43-source-intake-summary-r1.md`, `w43-carryover-table-r1.md`, `w43-lane-coverage-matrix-r1.md`, `w43-chronology-r1.md`, `w43-notfound-ledger-r1.md`, `w43-completeness-report-r1.md`
+- Sol handoff: `execution/SOL_DISCOVERY_COMPLETENESS_REVIEW_HANDOFF-r1.md` (`SOL_DISCOVERY_COMPLETENESS_REVIEW_READY`)
+- Canonical stage: `ISSUE_INITIALIZED` (DISCOVERY_COLLECTED NOT claimed; X incomplete fail-closed proven)
 
 ## Final disposition
 
-`IN_PROGRESS`
+`IN_PROGRESS` (awaiting Sol Discovery Completeness Review; no Screening/Evidence/Selection/Architecture)
