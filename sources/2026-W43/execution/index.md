@@ -120,6 +120,14 @@ This is the current human-readable navigation record for the edition. Machine li
 - **Canonical State: `DISCOVERY_COLLECTED`**, `next_action=stage:screening`; Discovery checkpoint `passed`, all downstream checkpoints `pending`, both Human Gates `pending`.
 - Next bounded Muse contract: `execution/instructions/sol-w43-screening-r1-20261025.md`. Generate full 51/51 Screening decisions and Core Screening acceptance; **no** `ADVANCE_STAGE` before Sol independent screening review.
 
+
+## Screening r1 BLOCKED — frozen Core-native agent-first retry authorised (2026-10-25)
+
+- Worker r1 blocked commit `3ee1ef1d73ab1d2436457299e0021bd0ae2c2f24` / Root Tree `8e9a9f160a4e6cee907dba5f8d8ec51f5460d26b`. Actual Git parent `377bec67fd12d0c2aa2b534910f73bb7831e407c` (worker session/feedback mis-typed the last part of SHA). ZERO Screening decisions/Acceptance; State remains `DISCOVERY_COLLECTED`.
+- Failure is real for **legacy direct** `survey_screening_v2.py prepare` (checkpoint path + history SHA incompatibility), recorded at `execution/defects/w43-screening-prepare-state-basis-20261025.md`; no false PASS or State repair.
+- Existing cross-edition `https://github.com/eariver/japanese-generative-ai-survey/issues/568` already tracks this legacy direct-helper discrepancy and authorizes use of the **existing first-party** frozen Core adapter `scripts/survey_agent_tool_v2.py` under agent-first State validation. Adapter SHA verified identical across current main/Frozen Core/W43 (Git blob `16e6ab9050b92526004b69d7ef1852c103110703`). Sol added W43 corroboration to Issue #568; issue stays OPEN and Core changes remain prohibited.
+- Sol review: `execution/reviews/sol-w43-screening-blocker-native-adapter-review-20261025.md` (NOT Human Gate). Native retry contract: `execution/instructions/sol-w43-screening-native-agent-tool-retry-r2-20261025.md`. Run both `prepare` and `accept` via verified allowlisted native `python -m scripts.survey_agent_tool_v2`, not direct legacy entrypoint; negative tamper checks and exact acceptance SHA checks mandatory. No Core modifications, no Stage advancement before independent Sol Screening review.
+
 ## Final disposition
 
 `BLOCKED` (screening r1 prepare fails closed on shared-Core state-basis defect; 0 decisions; State `DISCOVERY_COLLECTED` intact; clean rerun required after reviewed Core repair; no Screening/Evidence/Selection/Architecture)
