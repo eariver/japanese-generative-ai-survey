@@ -138,6 +138,14 @@ This is the current human-readable navigation record for the edition. Machine li
 - Sol review `execution/reviews/sol-w43-screening-r2-chronology-review-20261025.md`: **MECHANICAL PASS / EDITORIAL LIMITED_REQUEST_CHANGES**, not a Human Gate. The accepted Kimi `w43-primary-kimi-20261023` reason incorrectly says `17:15:24Z (45min inside cutoff)`; exact W43 end `22:00:00Z`, correct margin `4h44m36s`. This **repeats r1 chronological error already fixed at Discovery r3**. Technical KEEP and 50 other decisions remain accepted editorially; no Stage advancement yet.
 - Bounded Muse r3 repair `execution/instructions/sol-w43-screening-r3-kimi-chronology-repair-20261025.md`: reproduce r2 51 decisions unchanged except Kimi **reason** correction using Core-native adapter, publish new content-addressed Screening Acceptance, keep original r2 immutable, stop `SOL_SCREENING_REVIEW_READY_R3`. No re-research, Human Gate/State/Core changes, or `ADVANCE_STAGE`.
 
+
+## Sol Screening r3 final acceptance and operator authorization (2026-10-25)
+
+- Muse r3 final `d9e1fd772da8f3898c9056b6a822e3c36f25e954` / tree `43dc319dd24ea46d85944bef07d11310320471ae`. New accepted Screening `screening/v2/accepted/75dd95db5c40b28cc2d9a665dab8a46294e010096095c2bf92aba36d5ed9817d/screening-accepted.json`, 51/51 decisions, KEEP 17 / MAYBE 11 / INSPECT 4 / DROP 19; old r2 accepted digest `18525774…` immutable.
+- Sol direct comparison r2 vs r3: exactly `w43-primary-kimi-20261023.reason` corrected `45min` → `4h44m36s` before Oct23 22Z cutoff. Other 50 decisions and all non-reason fields unchanged; basis package SHA `b7e9a6d4…` identical.
+- Final editorial review `execution/reviews/sol-w43-screening-r3-accepted-20261025.md`: **PASS and authorize trusted operator Screening advance**, not Human Gate, both Human Gates pending.
+- Next operation: immutable request-only `ADVANCE_STAGE` `DISCOVERY_COLLECTED` → `CANDIDATES_NORMALIZED` through Issue #448 trusted bridge, artifact precisely above; no Evidence before receipt readback. Issue #568 legacy direct CLI bug remains OPEN, frozen Core unchanged.
+
 ## Final disposition
 
 `IN_PROGRESS` (screening r3 single-reason repair complete, new acceptance materialized, awaiting Sol r3 readback; no ADVANCE_STAGE, no Evidence/Selection/Architecture)
