@@ -13,10 +13,10 @@ This is the current human-readable navigation record for the edition. Machine li
 - Requested stop: `ARCHITECTURE_REVIEW`
 - Production Profile: `sources/2026-W43/production-profile.json`
 - Production State: `sources/2026-W43/production-state.json`
-- Current State SHA-256: `b1a746a0f0f20ace55fdfaf9694e82b2f96720d1b1e7117723d055c8a53add2b`
-- Current lifecycle: `ISSUE_INITIALIZED`
+- Current State SHA-256: `885927bd98e1ade491bc88e666aa0f39233ba7f0fb93f8ed87c9d2760ac22596`
+- Current lifecycle: `DISCOVERY_COLLECTED`
 - Current terminal reason: `none`
-- Current next action: `stage:discovery`
+- Current next action: `stage:screening`
 
 ## Human Gates
 
@@ -43,7 +43,7 @@ This is the current human-readable navigation record for the edition. Machine li
 
 ## Shared Core defects
 
-- None recorded at initialization.
+- `defects/w43-screening-prepare-state-basis-20261025.md` (BLOCKED screening r1: frozen screening entry points reject trusted bridge-advanced State; W42 precedent confirms systematic convention mismatch; Core-maintenance repair required, no edition workaround).
 
 ## Sessions
 
@@ -53,6 +53,7 @@ This is the current human-readable navigation record for the edition. Machine li
 - `sessions/muse-w43-discovery-r3-20261024.md` (r3 identity/provenance/chronology normalization, bounded to SOL_DISCOVERY_COMPLETENESS_REVIEW_READY_R3)
 - `sessions/muse-w43-discovery-r4-20261024.md` (r4 Grok/X + Flint gap-fill, bounded to SOL_DISCOVERY_COMPLETENESS_REVIEW_READY_R4)
 - `sessions/muse-w43-discovery-acceptance-r5-20261025.md` (r5 two-fix canonical acceptance, bounded to SOL_CANONICAL_DISCOVERY_ACCEPTANCE_READY_R5)
+- `sessions/muse-w43-screening-r1-blocked-20261025.md` (screening r1 attempt BLOCKED on shared-Core state-basis defect; 0 decisions; no stage movement)
 
 ## Discovery (proposed, not accepted)
 
@@ -121,7 +122,7 @@ This is the current human-readable navigation record for the edition. Machine li
 
 ## Final disposition
 
-`IN_PROGRESS` (Sol r4 substantive Discovery PASS_WITH_LIMITATIONS; Muse r5 canonical acceptance materialized, awaiting Sol r5 readback + trusted operator `ADVANCE_STAGE`; no Screening/Evidence/Selection/Architecture)
+`BLOCKED` (screening r1 prepare fails closed on shared-Core state-basis defect; 0 decisions; State `DISCOVERY_COLLECTED` intact; clean rerun required after reviewed Core repair; no Screening/Evidence/Selection/Architecture)
 
 ## Discovery r5 (canonical accepted authority; r1–r4 preserved as history)
 
@@ -157,4 +158,10 @@ This is the current human-readable navigation record for the edition. Machine li
 - r2 run: `collectors/primary/runs/20261024T133000Z-muse-r2/` (6 notes + ledger + 6 byte-raw: Kimi X HTML 208731B + 5 GitHub API JSONs; 19 rendered bodies consumed; 0 repros)
 - Intake r2: `execution/source-intake/w43-source-intake-addendum-r2.md`, `w43-lane-coverage-matrix-r2.md`, `w43-chronology-r2.md`, `w43-carryover-table-r2.md`, `w43-notfound-ledger-r2.md`, `w43-completeness-report-r2.md`
 - Sol handoff r2: `execution/SOL_DISCOVERY_COMPLETENESS_REVIEW_HANDOFF-r2.md` (`SOL_DISCOVERY_COMPLETENESS_REVIEW_READY_R2`)
-- Canonical stage: `ISSUE_INITIALIZED` (DISCOVERY_COLLECTED NOT claimed; X incomplete fail-closed preserved)
+- Note: stage lines below it marked `ISSUE_INITIALIZED` are historical (correct at r2 time); canonical stage is `DISCOVERY_COLLECTED` per Trusted receipt section above.
+
+## Screening r1 (BLOCKED on shared-Core defect; 0 decisions materialized)
+
+- Canonical accepted Discovery (51 records) and X manifest re-validated PASS at r1 start; State `DISCOVERY_COLLECTED` intact.
+- `survey_screening_v2.py prepare` fails closed (exit 2) on trusted bridge-advanced State: checkpoint discovery path + history[1] SHA vs frozen direct-local conventions. Defect: `execution/defects/w43-screening-prepare-state-basis-20261025.md` (W42 RELEASED precedent confirms systematic mismatch; Core-maintenance repair required).
+- No Screening package/results/acceptance produced; no `ADVANCE_STAGE`; no state/checkpoint writes. Failed run carries no PASS forward; clean rerun required after reviewed Core repair.
