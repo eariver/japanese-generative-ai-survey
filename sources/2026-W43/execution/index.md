@@ -157,6 +157,14 @@ This is the current human-readable navigation record for the edition. Machine li
 - After 19 DROP decisions, **32 non-DROP** requiring bounded Evidence Tasks/Cards/Views: 17 KEEP, 11 MAYBE, 4 INSPECT (including one Grok provenance binder, **31 possible substantive technical/editorial candidates**). Seven source records have noncanonical Evidence `source_type` and need W42 Issue #569 precedent of **derived-only**, separately auditable class projection; Issue #568 native agent-first State adapter. Do not modify accepted Discovery/Screening or Frozen Core; Issues #568/#569 remain OPEN.
 - Next Muse contract: `execution/instructions/sol-w43-evidence-authority-materiality-r1-20261025.md`. Deep official-source Evidence + 32 factual cards/edition views + Core Materiality and Completeness, stop for independent Sol review, **NO ADVANCE_STAGE** or Human Gate creation.
 
+
+## Sol Evidence r1 independent technical-content review — REQUEST_CHANGES (2026-10-25)
+
+- Muse r1 completed 32 Evidence Cards (28 PARTIAL / 4 NEEDS_MORE), 32 Views (17 MATERIAL / 10 CONTEXT / 1 Grok NON_MATERIAL / 4 HOLD), 51-row Materiality and `LIMITED` Completeness. Work commit `1aba42fc0a03a9035268e18b695ccc4f758d7116`, Tree `173ed0d433fa148119215abf0c84fd758ba9ff6c`. Frozen Core-native adapter/source projection mechanical validation reported PASS. **Canonical State remains `CANDIDATES_NORMALIZED`; no Stage advancement**.
+- Sol editorial review: `execution/reviews/sol-w43-evidence-r1-first-party-gaps-and-memt-archive-20261025.md` = **REQUEST_CHANGES**. Four original `INSPECT/NEEDS_MORE` records have publicly accessible official publisher bodies (OpenAI Decisions API Oct22 GA, Patch the Planet Oct21 PHP coordinated disclosure, Google Cloud OpenAI models Oct21, Claude auto-mode official **Oct22 update** to older Aug7 original article, next-week future rollout); their r1 source-ignorance is remediable and materiality must be reevaluated, not rubber-stamped.
+- MemT r1 Card `tech-report-pdf` falsely calls a `2.38MB` PDF archived; the only 2.38MB r1 archived paper is **AM-Bench**, not MemT. Correct exact provenance by archiving actual MemT PDF or retracting false archive/read assertions in NEW authority. Preserve historical r1 content-addressed Evidence/Views untouched.
+- Bounded r2 worker contract: `execution/instructions/sol-w43-evidence-r2-first-party-deepening-20261025.md`. Genuine first-party reading/source capture and task-bound supplements, 32-to-32 revised Core Evidence/Views, rerun Materiality/Completeness, no Selection or `ADVANCE_STAGE`. User Human Gates remain pending. Source-type native compatibility issue #569 updated (7 W43 projected only), remains OPEN; Issue #568 remains OPEN; Frozen Core still unmodified.
+
 ## Final disposition
 
 `IN_PROGRESS` (evidence r1 authority/materiality/completeness materialized, 32 cards/views accepted, awaiting Sol r1 Evidence review; no ADVANCE_STAGE, no Selection/Architecture/Draft)
