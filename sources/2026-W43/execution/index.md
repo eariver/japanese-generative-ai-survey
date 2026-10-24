@@ -110,6 +110,15 @@ This is the current human-readable navigation record for the edition. Machine li
 - Sol final review: `execution/reviews/sol-w43-canonical-discovery-acceptance-r5-20261025.md` — **Sol editorial Discovery ACCEPTED**; **not Human Gate**, both Human Gate statuses pending.
 - Authorized next action: **one immutable trusted operator `ADVANCE_STAGE`** request `ISSUE_INITIALIZED`→`DISCOVERY_COLLECTED`, with ONLY `discovery-acceptance` artifact; no Screening until operator receipt and remote State/checkpoint readback.
 
+
+## Trusted Discovery Stage receipt and Screening handoff (2026-10-25)
+
+- Immutable operator request `execution/requests/sol-w43-discovery-advance-20261025.json`, request-only commit `e67099d534cb2975e111592d00fe0e626a6ea07a`, transport Issue #448 comment 6387325938.
+- Default-branch trusted GitHub Actions run `40116386580`: `operator-preflight PASS`, `operator-execute PASS`. Trusted output HEAD `ab30004ead9aea480fac8c243d98af92925dcfa9` / Root Tree `be512ea8a7e76a9ebdf1bc4f23c7462dd85005e3`.
+- Bridge `execution/bridge-runs/sol-w43-discovery-advance-20261025/receipt.json` status PASS; `orchestration/v2/checkpoints/ISSUE_INITIALIZED.json` passed Discovery checkpoint bound to Acceptance SHA256 `edad13b1a90fa4965fe2ef37f9ce522c110ffed7727d839e4e62fde04ec93f1b`.
+- **Canonical State: `DISCOVERY_COLLECTED`**, `next_action=stage:screening`; Discovery checkpoint `passed`, all downstream checkpoints `pending`, both Human Gates `pending`.
+- Next bounded Muse contract: `execution/instructions/sol-w43-screening-r1-20261025.md`. Generate full 51/51 Screening decisions and Core Screening acceptance; **no** `ADVANCE_STAGE` before Sol independent screening review.
+
 ## Final disposition
 
 `IN_PROGRESS` (Sol r4 substantive Discovery PASS_WITH_LIMITATIONS; Muse r5 canonical acceptance materialized, awaiting Sol r5 readback + trusted operator `ADVANCE_STAGE`; no Screening/Evidence/Selection/Architecture)
