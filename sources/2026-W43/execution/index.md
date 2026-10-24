@@ -129,6 +129,14 @@ This is the current human-readable navigation record for the edition. Machine li
 - Existing cross-edition `https://github.com/eariver/japanese-generative-ai-survey/issues/568` already tracks this legacy direct-helper discrepancy and authorizes use of the **existing first-party** frozen Core adapter `scripts/survey_agent_tool_v2.py` under agent-first State validation. Adapter SHA verified identical across current main/Frozen Core/W43 (Git blob `16e6ab9050b92526004b69d7ef1852c103110703`). Sol added W43 corroboration to Issue #568; issue stays OPEN and Core changes remain prohibited.
 - Sol review: `execution/reviews/sol-w43-screening-blocker-native-adapter-review-20261025.md` (NOT Human Gate). Native retry contract: `execution/instructions/sol-w43-screening-native-agent-tool-retry-r2-20261025.md`. Run both `prepare` and `accept` via verified allowlisted native `python -m scripts.survey_agent_tool_v2`, not direct legacy entrypoint; negative tamper checks and exact acceptance SHA checks mandatory. No Core modifications, no Stage advancement before independent Sol Screening review.
 
+
+## Sol Screening r2 review and one chronology correction (2026-10-25)
+
+- Muse r2 final `757d62c59d82d0e9745e27734756ee984c79623e` / tree `d5bfb59280bc65b40bf7d491eb4be152cab521c8`. Core-native adapter `prepare` and `accept` PASS, 51/51 decisions, 4 batches 13/13/13/12; KEEP 17 / MAYBE 11 / INSPECT 4 / DROP 19.
+- Historical accepted Screening `screening/v2/accepted/185257742e7a5ad7d2253312e4cc1bd731da6fd9fe484f7b978a8de85f5e93af/screening-accepted.json`, immutable, package SHA `b7e9a6d4b138ef3c9ceb06f76537d9bf23ba26796475b9c2933e9ad36b718aa0`. Native tests 5/5 PASS and isolated tampered State fail-closed; direct legacy Core FAIL remains tracked Issue #568 OPEN.
+- Sol review `execution/reviews/sol-w43-screening-r2-chronology-review-20261025.md`: **MECHANICAL PASS / EDITORIAL LIMITED_REQUEST_CHANGES**, not a Human Gate. The accepted Kimi `w43-primary-kimi-20261023` reason incorrectly says `17:15:24Z (45min inside cutoff)`; exact W43 end `22:00:00Z`, correct margin `4h44m36s`. This **repeats r1 chronological error already fixed at Discovery r3**. Technical KEEP and 50 other decisions remain accepted editorially; no Stage advancement yet.
+- Bounded Muse r3 repair `execution/instructions/sol-w43-screening-r3-kimi-chronology-repair-20261025.md`: reproduce r2 51 decisions unchanged except Kimi **reason** correction using Core-native adapter, publish new content-addressed Screening Acceptance, keep original r2 immutable, stop `SOL_SCREENING_REVIEW_READY_R3`. No re-research, Human Gate/State/Core changes, or `ADVANCE_STAGE`.
+
 ## Final disposition
 
 `IN_PROGRESS` (screening r2 native-compat complete, 51/51 accepted, awaiting Sol r2 screening review; no ADVANCE_STAGE, no Evidence/Selection/Architecture)
