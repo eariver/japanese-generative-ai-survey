@@ -35,7 +35,7 @@ This is the current human-readable navigation record for the edition. Machine li
 - Profile applicability policy: `REQUIRED_BY_PROFILE`
 - Latest Drive task-file path/reference: `Grok_X_SourseIntake/Weekly/2026-W43/weekly-x-2026-W43/grok-task.md` (repo `sources/2026-W43/external/x/weekly-x-2026-W43/grok-task.md`, SHA-256 `083374d4c17e81e984dd89ae24da43051960ddfe1c4ca893af4b57410cc2a413`)
 - Manifest: `sources/2026-W43/external/x/x-source-intake-v2.json` (SHA-256 `6c3184c876f056dd32d555e9832b12183d2e3b331943b9b35490975a41f4fbd9`, status `AWAITING_GROK`)
-- Latest result disposition: `X_INTAKE_PENDING` (no Grok bytes imported; Sol owns Drive handoff/import)
+- Latest result disposition: `GROK_RAW_IMPORTED / MANIFEST_AWAITING_GROK` (exact Grok bytes now archived by Sol; Core X result registration pending Muse r4)
 
 ## Deviations
 
@@ -80,9 +80,19 @@ This is the current human-readable navigation record for the edition. Machine li
 - Grok Drive run folder checked: only task Google Doc present; required result missing. X manifest `AWAITING_GROK` remains.
 - Machine State authority: `ISSUE_INITIALIZED`; no accepted Discovery and no trusted `ADVANCE_STAGE`. Screening/Evidence prohibited pending r3 Sol review and canonical X complete.
 
+## Sol r3 editorial review and actual Grok Raw (2026-10-24)
+
+- Muse r3 HEAD/Tree: `56779badd11dcd649afd70b8b208a0f578ee8e47` / `7300ffc880738a554181f94c39616ef37f817182`, 49 active proposed Discovery rows / 44 event families, normalization PASS_WITH_LIMITATIONS.
+- Sol r3/X review: `execution/reviews/sol-w43-discovery-completeness-review-r3-and-grok-20261024.md` (NOT Human Gate).
+- Original Grok file on Drive: https://drive.google.com/file/d/1mNb23uZ_QB3RLqXTMmMu18Y51ahao6dO/view ; exact raw archive at `external/x/weekly-x-2026-W43/weekly-x-2026-W43.md` (git commit `2282e146f2d866f832ad9ed8ee52334710c622c1`, 13425 B, SHA256 `4571e0de469a7143fb1c46710c2e419a91404ff2d9538ae4d9a31a8b8f0be54a`, Git blob `f05a0c275f0103d0e1bfa5696bfebcae0b559536`).
+- Grok result assessed `PARTIAL` — actual X observation has limited exact per-post traceability, not editorial Selection. `Recursive Flint` Oct 21 first-party new W43 event missing r3; `Reflection Beam` weights Oct 16 13:01Z are **OUT** before W43 start 22:00Z. Muse Spark Open original weights Oct 15 OUT.
+- Sol-owned execution-record compatibility correction: r1/r2 Sol editorial review documents appended truthful required headings, with `Human decision = NONE/NOT_APPLICABLE`; original versions remain in Git commit history, genuine Human Gates remain pending.
+- Muse r4 bounded contract: `execution/instructions/sol-w43-r4-grok-x-flint-intake-20261024.md`.
+- Current Core X manifest still `AWAITING_GROK` until **canonical `record-result`** invoked with real raw and Discovery IDs; production State still `ISSUE_INITIALIZED`. No `ADVANCE_STAGE` or Screening until post-r4 Sol review/trusted operator bridge.
+
 ## Final disposition
 
-`IN_PROGRESS` (Sol r2 LIMITED_REQUEST_CHANGES; Muse r3 normalization complete, awaiting Sol r3 ruling; no Screening/Evidence/Selection/Architecture)
+`IN_PROGRESS` (Sol r3 PASS_WITH_LIMITATIONS; Grok Raw imported; targeted Muse r4 Flint/X integration pending; no accepted Discovery or Screening/Evidence/Selection/Architecture)
 
 ## Discovery r3 (coherent active canonical; r1/r2 preserved as history)
 
