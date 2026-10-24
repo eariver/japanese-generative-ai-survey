@@ -146,6 +146,16 @@ This is the current human-readable navigation record for the edition. Machine li
 - Final editorial review `execution/reviews/sol-w43-screening-r3-accepted-20261025.md`: **PASS and authorize trusted operator Screening advance**, not Human Gate, both Human Gates pending.
 - Next operation: immutable request-only `ADVANCE_STAGE` `DISCOVERY_COLLECTED` → `CANDIDATES_NORMALIZED` through Issue #448 trusted bridge, artifact precisely above; no Evidence before receipt readback. Issue #568 legacy direct CLI bug remains OPEN, frozen Core unchanged.
 
+
+## Trusted Screening Stage receipt and deep Evidence handoff (2026-10-25)
+
+- Immutable Screening request `execution/requests/sol-w43-screening-advance-20261025.json`, request-only commit `0e6ecaa5996b4770c729b3b2b462e67c9c7399ce`, Issue #448 comment `6387758286`.
+- Trusted GitHub Actions `40119556568` `operator-preflight PASS` and `operator-execute PASS`; resulting stage commit `e881335c3644a106103b29da9d475d5988dfc394` / Root Tree `e2f054348107895174ff9cd150f54ee3a8ecd1f8`.
+- Bridge `execution/bridge-runs/sol-w43-screening-advance-20261025/receipt.json`: PASS; Stage Checkpoint `orchestration/v2/checkpoints/DISCOVERY_COLLECTED.json`, Screening Acceptance SHA256 `566cde3bd287dffb38d705c4b6c3fec71a98f67dea96016a009bd929923be48a`.
+- **Canonical State `CANDIDATES_NORMALIZED`**, next `stage:evidence-materiality-completeness`; Discovery and Screening passed, Evidence onward pending, both Human Gates pending.
+- After 19 DROP decisions, **32 non-DROP** requiring bounded Evidence Tasks/Cards/Views: 17 KEEP, 11 MAYBE, 4 INSPECT (including one Grok provenance binder, **31 possible substantive technical/editorial candidates**). Seven source records have noncanonical Evidence `source_type` and need W42 Issue #569 precedent of **derived-only**, separately auditable class projection; Issue #568 native agent-first State adapter. Do not modify accepted Discovery/Screening or Frozen Core; Issues #568/#569 remain OPEN.
+- Next Muse contract: `execution/instructions/sol-w43-evidence-authority-materiality-r1-20261025.md`. Deep official-source Evidence + 32 factual cards/edition views + Core Materiality and Completeness, stop for independent Sol review, **NO ADVANCE_STAGE** or Human Gate creation.
+
 ## Final disposition
 
 `IN_PROGRESS` (screening r3 single-reason repair complete, new acceptance materialized, awaiting Sol r3 readback; no ADVANCE_STAGE, no Evidence/Selection/Architecture)
