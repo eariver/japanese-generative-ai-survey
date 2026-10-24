@@ -57,3 +57,25 @@ The actual result `weekly-x-2026-W43.md` is not in the designated Drive run fold
 `LIMITED_REQUEST_CHANGES`: one **r3 metadata/dedup/provenance correction only**, not a new broad research round. Preserve all r1/r2 archived files; create r3 active proposal and explicit reconciliation/errata. Stop at `SOL_DISCOVERY_COMPLETENESS_REVIEW_READY_R3`. No `ADVANCE_STAGE`, Screening, Evidence, Selection, Human Gate, or Frozen Core modifications.
 
 Sol may determine provisional research completeness after r3; canonical Discovery acceptance additionally depends on genuine Grok result and required trusted operator workflow.
+
+---
+
+## Reviewed authority
+
+This is the **Sol supervisory editorial Discovery completeness review** of Muse r2 at `ab69aed74c1c6418ece2842796830134d63fbc30`. These five compatibility sections were appended later by Sol to satisfy the Core execution-record review-directory heading contract; the original bytes remain retrievable at immutable Git commit `663f714d2ebb50d0e9b327cd283fa23cad25ed4a`.
+
+## Human decision
+
+**NONE / NOT_APPLICABLE.** No Human Architecture or Publication Preview Gate action was taken. Human Gate State stays `pending`. The main body's `LIMITED_REQUEST_CHANGES` is a Sol internal editorial decision only, not Human authorization or an APPROVED/REQUEST_CHANGES Human Gate decision.
+
+## Requested changes
+
+Sol internal r2 request: one r3 Discovery identity/timing/provenance reconciliation, retaining the r1/r2 source artifacts and preserving all Human Gates.
+
+## Regeneration boundary
+
+Only W43 edition-local Discovery proposal metadata and its provenance records. No canonical stage advancement or edition Draft/PDF/Release.
+
+## Shared-Core implication
+
+**NONE.** Shared Core v2 remains frozen. This formatting addendum prevents validator failure without implying any Human approval.
