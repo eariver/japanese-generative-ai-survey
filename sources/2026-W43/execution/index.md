@@ -68,6 +68,17 @@ This is the current human-readable navigation record for the edition. Machine li
 - Google Drive Grok task transport: https://docs.google.com/document/d/1BubHtxps3Lg711pDJKfoNwe8AyeND7miT9hMQwSnsjw/edit (native Google Docs task copy, original Markdown still in repository; Grok result **not yet received**).
 - Current authoritative State: `ISSUE_INITIALIZED` / `stage:discovery`. Do not advance to Screening or fabricate Discovery acceptance until fresh Sol review and complete X intake.
 
+
+## Sol supervisory Discovery Review r2 (2026-10-24)
+
+- Reviewed Muse r2 remote HEAD/Tree: `ab69aed74c1c6418ece2842796830134d63fbc30` / `dda0b894194a6ee27cebc11dea458cc7bc167e3d`.
+- Editorial outcome: **coverage materially improved** (51 proposal rows, 19 worker-reported rendered bodies consumed; 6 archived bytes files, of which five are short API projections). Formal Discovery remains NOT ACCEPTED.
+- Narrow decision: `LIMITED_REQUEST_CHANGES` for active proposal contradictions, 51→canonical-event dedup, r1 future `observed_at` and r2 future-coded run ID. No further broad Source Intake requested.
+- Review: `execution/reviews/sol-w43-discovery-completeness-review-r2-20261024.md`.
+- Muse r3 contract: `execution/instructions/sol-w43-r3-discovery-identity-provenance-normalization-20261024.md`.
+- Grok Drive run folder checked: only task Google Doc present; required result missing. X manifest `AWAITING_GROK` remains.
+- Machine State authority: `ISSUE_INITIALIZED`; no accepted Discovery and no trusted `ADVANCE_STAGE`. Screening/Evidence prohibited pending r3 Sol review and canonical X complete.
+
 ## Final disposition
 
 `IN_PROGRESS` (Sol r1 REQUEST_CHANGES; Muse r2 gap-fill complete, awaiting Sol r2 review; no Screening/Evidence/Selection/Architecture)
