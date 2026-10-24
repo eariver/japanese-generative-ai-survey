@@ -1,0 +1,61 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W43",
+  "from_state": "ISSUE_INITIALIZED",
+  "to_state": "DISCOVERY_COLLECTED",
+  "checkpoints": [
+    "discovery"
+  ],
+  "recorded_at": "2026-10-24T17:29:03Z",
+  "implementation": {
+    "repository_commit_sha": "e67099d534cb2975e111592d00fe0e626a6ea07a",
+    "orchestrator_version": "survey-production-core-v2/0.15-postintegration-transport-thematic"
+  },
+  "contract": {
+    "pipeline_contract_version": "2.0-rc1",
+    "pipeline_contract_sha256": "ee89796245c22072cec98f34931180214a4928c24f399280793cd6420a4c8e71",
+    "quality_contract_version": "2.0-rc1",
+    "quality_contract_sha256": "b5b955d524fb438c0f1b2c9490bea1da2083e79028d67a55ca424bbfc20f2958",
+    "research_profile_version": "2.0-rc1",
+    "research_profile_sha256": "666f8a064b190ffd35216e26d6fdf2dd0fa932cac7b1b0d6448e262ded77b9a8",
+    "publication_profile_version": "2.0-rc1",
+    "publication_profile_sha256": "99adff93ff443e02bdcce639ce5fc4d4c959ee45a804da70efc4277db57fdddb"
+  },
+  "artifacts": [
+    {
+      "name": "discovery-acceptance",
+      "path": "sources/2026-W43/discovery/discovery-accepted-v2.json",
+      "sha256": "edad13b1a90fa4965fe2ef37f9ce522c110ffed7727d839e4e62fde04ec93f1b"
+    }
+  ],
+  "reviews": [
+    {
+      "check_id": "CORE_STAGE_CONTRACT",
+      "kind": "DETERMINISTIC",
+      "status": "PASS",
+      "executor": "survey_core_execution_bridge_v2",
+      "evidence": "Canonical Core stage contract validated for immutable request sol-w43-discovery-advance-20261025.",
+      "result": {
+        "path": "sources/2026-W43/execution/bridge-runs/sol-w43-discovery-advance-20261025/core-stage-contract.json",
+        "sha256": "0d3f2320fbd20f3c4b6e8a09f1ec5682d275400e058f9dc3df6dab6af3c868c0"
+      }
+    },
+    {
+      "check_id": "SOL-W43-R5-CANONICAL-DISCOVERY-REVIEW",
+      "kind": "AGENT_EDITORIAL",
+      "status": "PASS",
+      "executor": "Sol independent supervisory editorial reviewer",
+      "evidence": "Sol reviewed 51 canonical Discovery rows and verified r4->r5 only the Grok ledger provenance repair; exact X PARTIAL/COMPLETE result and Flint+ledger raw references, correct IDs, main/Core unchanged. Review: sources/2026-W43/execution/reviews/sol-w43-canonical-discovery-acceptance-r5-20261025.md. Human Gates NOT assessed.",
+      "result": null
+    },
+    {
+      "check_id": "MUSE-W43-R5-CORE-DISCOVERY-VALIDATION",
+      "kind": "AGENT_RESEARCH",
+      "status": "PASS",
+      "executor": "Muse r5",
+      "evidence": "Frozen Core generated sources/2026-W43/discovery/discovery-accepted-v2.json; validate_acceptance PASS, 51 records, graph 5a94b7574b9d59f05bd82e00cb464512b359a45eae00a2721b1d119abc4bd43a. X Intake COMPLETE with PARTIAL Grok Raw. Schema/graph/links/Execution Record PASS; see execution/SOL_DISCOVERY_COMPLETENESS_REVIEW_HANDOFF-r5.md.",
+      "result": null
+    }
+  ],
+  "summary": "W43: advance ISSUE_INITIALIZED to DISCOVERY_COLLECTED using Sol-reviewed canonical 51-record X-bound Discovery acceptance; reserve Screening/Evidence/Selection/Architecture and all Human Gates for later explicit contracts."
+}
