@@ -53,7 +53,8 @@ This is the current human-readable navigation record for the edition. Machine li
 - `sessions/muse-w43-discovery-r3-20261024.md` (r3 identity/provenance/chronology normalization, bounded to SOL_DISCOVERY_COMPLETENESS_REVIEW_READY_R3)
 - `sessions/muse-w43-discovery-r4-20261024.md` (r4 Grok/X + Flint gap-fill, bounded to SOL_DISCOVERY_COMPLETENESS_REVIEW_READY_R4)
 - `sessions/muse-w43-discovery-acceptance-r5-20261025.md` (r5 two-fix canonical acceptance, bounded to SOL_CANONICAL_DISCOVERY_ACCEPTANCE_READY_R5)
-- `sessions/muse-w43-screening-r1-blocked-20261025.md` (screening r1 attempt BLOCKED on shared-Core state-basis defect; 0 decisions; no stage movement)
+- `sessions/muse-w43-screening-r1-blocked-20261025.md` (screening r1 attempt BLOCKED on shared-Core state-basis defect; 0 decisions; preserved as legacy-path incompatibility evidence)
+- `sessions/muse-w43-screening-native-r2-20261025.md` (screening r2 native-compat retry via frozen `survey_agent_tool_v2`; 51/51 accepted; bounded to `SOL_SCREENING_REVIEW_READY_R2`)
 
 ## Discovery (proposed, not accepted)
 
@@ -130,7 +131,17 @@ This is the current human-readable navigation record for the edition. Machine li
 
 ## Final disposition
 
-`BLOCKED` (screening r1 prepare fails closed on shared-Core state-basis defect; 0 decisions; State `DISCOVERY_COLLECTED` intact; clean rerun required after reviewed Core repair; no Screening/Evidence/Selection/Architecture)
+`IN_PROGRESS` (screening r2 native-compat complete, 51/51 accepted, awaiting Sol r2 screening review; no ADVANCE_STAGE, no Evidence/Selection/Architecture)
+
+## Screening r2 (native agent-first; r1 BLOCKED preserved as incompatibility evidence)
+
+- Package `screening/v2/packages/r1/package.json` (SHA-256 `b7e9a6d4b138ef3c9ceb06f76537d9bf23ba26796475b9c2933e9ad36b718aa0`, 51 records, 4 batches 13/13/13/12, basis state `885927bd…` / discovery `f62d8459…`)
+- Results `screening/v2/packages/r1/results/batch-001..004.json` (KEEP 17 / MAYBE 11 / INSPECT 4 / DROP 19)
+- Accepted `screening/v2/accepted/185257742e7a5ad7d2253312e4cc1bd731da6fd9fe484f7b978a8de85f5e93af/screening-accepted.json` (SHA-256 `666927d4ee6d7f707420865cd342a958ab081a2dca74401a7a749c14fada31d5`, 51 decisions, Core `accept` PASS)
+- Summary `execution/source-intake/w43-screening-summary-r2.md` (distribution, ledger, evidence targets, limitations)
+- Sol handoff r2: `execution/SOL_SCREENING_REVIEW_HANDOFF-r2.md` (`SOL_SCREENING_REVIEW_READY_R2`)
+- Validators: adapter unit tests 5/5, negative tamper fail-closed, schema/graph/raw/Grok-binding, X require_complete, acceptance validate, stage precheck (`DISCOVERY_COLLECTED`→`CANDIDATES_NORMALIZED`, `/tmp`, state untouched), profile/state, execution-record — all PASS; legacy direct re-confirmed FAIL (exit 2, zero writes)
+- Canonical stage: `DISCOVERY_COLLECTED` (acceptance materialized; advancement awaits Sol + trusted operator bridge)
 
 ## Discovery r5 (canonical accepted authority; r1–r4 preserved as history)
 
