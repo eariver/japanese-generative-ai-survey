@@ -49,6 +49,7 @@ This is the current human-readable navigation record for the edition. Machine li
 
 - `sessions/sol-w43-init-20261024.md`
 - `sessions/muse-w43-discovery-20261024.md` (r1 Source Intake/Discovery, bounded to SOL_DISCOVERY_COMPLETENESS_REVIEW_READY)
+- `sessions/muse-w43-discovery-r2-20261024.md` (r2 coverage gap-fill + chronology, bounded to SOL_DISCOVERY_COMPLETENESS_REVIEW_READY_R2)
 
 ## Discovery (proposed, not accepted)
 
@@ -69,4 +70,12 @@ This is the current human-readable navigation record for the edition. Machine li
 
 ## Final disposition
 
-`IN_PROGRESS` (Sol r1 REQUEST_CHANGES; bounded Muse r2 Discovery gap-fill pending; no Screening/Evidence/Selection/Architecture)
+`IN_PROGRESS` (Sol r1 REQUEST_CHANGES; Muse r2 gap-fill complete, awaiting Sol r2 review; no Screening/Evidence/Selection/Architecture)
+
+## Discovery r2 (proposed, not accepted; appends r1)
+
+- Proposal r2: `discovery/discovery-v2-proposal-r2.jsonl` (SHA-256 `600709067bcd2e77155811578c4ab5d59e724d6411c2049e470db82059008fae`, 51 records = 36 r1 preserved + 15 new, 51/51 schema PASS, PROPOSED_NOT_ACCEPTED)
+- r2 run: `collectors/primary/runs/20261024T133000Z-muse-r2/` (6 notes + ledger + 6 byte-raw: Kimi X HTML 208731B + 5 GitHub API JSONs; 19 rendered bodies consumed; 0 repros)
+- Intake r2: `execution/source-intake/w43-source-intake-addendum-r2.md`, `w43-lane-coverage-matrix-r2.md`, `w43-chronology-r2.md`, `w43-carryover-table-r2.md`, `w43-notfound-ledger-r2.md`, `w43-completeness-report-r2.md`
+- Sol handoff r2: `execution/SOL_DISCOVERY_COMPLETENESS_REVIEW_HANDOFF-r2.md` (`SOL_DISCOVERY_COMPLETENESS_REVIEW_READY_R2`)
+- Canonical stage: `ISSUE_INITIALIZED` (DISCOVERY_COLLECTED NOT claimed; X incomplete fail-closed preserved)
