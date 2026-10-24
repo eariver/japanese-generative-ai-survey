@@ -101,6 +101,15 @@ This is the current human-readable navigation record for the edition. Machine li
 - Muse r5 bounded instruction: `execution/instructions/sol-w43-r5-canonical-discovery-acceptance-20261025.md`. Canonical `discovery-v2.jsonl` and Core-generated `discovery-accepted-v2.json` to be produced and validated; `ADVANCE_STAGE` remains Sol/Issue #448 responsibility after exact audit.
 - Human Architecture Review / Publication Preview: both still `pending`. State remains `ISSUE_INITIALIZED`; do not start Screening before trusted Stage receipt PASS.
 
+
+## Sol r5 canonical Discovery acceptance audit (2026-10-25)
+
+- Muse r5 verified HEAD/Root Tree: `aabd902d7a111948ee7de73f1dc66969c7f959ef` / `d4c0103d1f24d22b8dc6e65bde76a6744d4f7b83`.
+- Canonical authority `discovery/discovery-v2.jsonl` (51 rows; identical to r5 proposal) plus frozen Core-generated `discovery/discovery-accepted-v2.json`; graph SHA256 `5a94b7574b9d59f05bd82e00cb464512b359a45eae00a2721b1d119abc4bd43a`.
+- X manifest `COMPLETE` (registered `PARTIAL` sensor), X raw SHA `4571e0de…`; Flint + X ledger both bind exact raw. One Grok sensor metadata fix and one X post transcription erratum closed; no re-research.
+- Sol final review: `execution/reviews/sol-w43-canonical-discovery-acceptance-r5-20261025.md` — **Sol editorial Discovery ACCEPTED**; **not Human Gate**, both Human Gate statuses pending.
+- Authorized next action: **one immutable trusted operator `ADVANCE_STAGE`** request `ISSUE_INITIALIZED`→`DISCOVERY_COLLECTED`, with ONLY `discovery-acceptance` artifact; no Screening until operator receipt and remote State/checkpoint readback.
+
 ## Final disposition
 
 `IN_PROGRESS` (Sol r4 substantive Discovery PASS_WITH_LIMITATIONS; Muse r5 canonical acceptance materialized, awaiting Sol r5 readback + trusted operator `ADVANCE_STAGE`; no Screening/Evidence/Selection/Architecture)
