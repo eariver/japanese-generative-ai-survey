@@ -51,6 +51,7 @@ This is the current human-readable navigation record for the edition. Machine li
 - `sessions/muse-w43-discovery-20261024.md` (r1 Source Intake/Discovery, bounded to SOL_DISCOVERY_COMPLETENESS_REVIEW_READY)
 - `sessions/muse-w43-discovery-r2-20261024.md` (r2 coverage gap-fill + chronology, bounded to SOL_DISCOVERY_COMPLETENESS_REVIEW_READY_R2)
 - `sessions/muse-w43-discovery-r3-20261024.md` (r3 identity/provenance/chronology normalization, bounded to SOL_DISCOVERY_COMPLETENESS_REVIEW_READY_R3)
+- `sessions/muse-w43-discovery-r4-20261024.md` (r4 Grok/X + Flint gap-fill, bounded to SOL_DISCOVERY_COMPLETENESS_REVIEW_READY_R4)
 
 ## Discovery (proposed, not accepted)
 
@@ -92,7 +93,17 @@ This is the current human-readable navigation record for the edition. Machine li
 
 ## Final disposition
 
-`IN_PROGRESS` (Sol r3 PASS_WITH_LIMITATIONS; Grok Raw imported; targeted Muse r4 Flint/X integration pending; no accepted Discovery or Screening/Evidence/Selection/Architecture)
+`IN_PROGRESS` (Sol r3 PASS_WITH_LIMITATIONS + Grok handoff; Muse r4 integration complete, awaiting Sol r4 ruling; no Screening/Evidence/Selection/Architecture)
+
+## Discovery r4 (Grok-integrated; r1/r2/r3 preserved as history)
+
+- Proposal r4: `discovery/discovery-v2-proposal-r4.jsonl` (SHA-256 `6c3c39424fcd823eb4d5c667f95e3d6b61a315e0ad255d99cf6b651443996dc1`, 51 rows = 49 r3 + Flint + Grok ledger, 51/51 schema PASS, Core graph PASS, PROPOSED_NOT_ACCEPTED)
+- r4 run: `collectors/primary/runs/20261024T133000Z-muse-r4/` (ledger + Flint/Beam/crosswalk notes; announce HTML 366583B + HF API full body 5478B raw; Flint consumed, Beam OUT parked)
+- Intake r4: `execution/source-intake/w43-raw-receipt-r4.md`, `w43-discovery-identity-reconciliation-r4.md`
+- Grok manifest: `external/x/x-source-intake-v2.json` (SHA-256 `f58a1c082a2bc577a3ba55fd614db87e6a1015a53f0806796c6f0b199bc4e6fa`, COMPLETE via canonical `record-result`; PARTIAL sensor, 13425B, SHA `4571e0de…`)
+- Acceptance pre-validation: sandbox `/tmp/w43-accept-r4.json` PASS (51 records, NOT committed as authority)
+- Sol handoff r4: `execution/SOL_DISCOVERY_COMPLETENESS_REVIEW_HANDOFF-r4.md` (`SOL_DISCOVERY_COMPLETENESS_REVIEW_READY_R4`)
+- Canonical stage: `ISSUE_INITIALIZED` (DISCOVERY_COLLECTED NOT claimed; no `ADVANCE_STAGE`)
 
 ## Discovery r3 (coherent active canonical; r1/r2 preserved as history)
 
