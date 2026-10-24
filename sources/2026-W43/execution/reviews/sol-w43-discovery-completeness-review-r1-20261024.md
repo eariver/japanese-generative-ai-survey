@@ -46,3 +46,25 @@ This ruling does not require a new Human Gate: it is internal Sol editorial corr
 ## 4. Boundary and authority
 
 No shared `scripts/`, `schemas/`, `config/`, `.github/`, `tests/`, frozen Core or W42 Release modifications; no fallback branch, rebase, reset or forced push. Exact starting SHA/Tree guard for Muse in separately committed r2 contract. Official Human Architecture and exact-byte Publication Preview Gates remain protected.
+
+---
+
+## Reviewed authority
+
+This document is a **Sol supervisory editorial Discovery completeness review**, covering Muse r1 at `57afcd292d946078ae03900bd242b6f0b4f7de60`. This five-heading compatibility addendum was appended by Sol after r3 to satisfy the Core v2 execution-record directory format. The original prior version remains immutable in Git history at commit `3b5652a37d81ab5aa1aa5f50238299fdd531db5e`.
+
+## Human decision
+
+**NONE / NOT_APPLICABLE.** This file is not a Human Architecture Review or Publication Preview Gate. The two Human Gates remain `pending`; no Human consent, APPROVED or REQUEST_CHANGES decision has been issued here. `REQUEST_CHANGES` in the main body is solely Sol's internal Discovery editorial judgment.
+
+## Requested changes
+
+Sol internal r1 request: add verified original-source depth, correct source chronology, complete required Grok/X intake before formal Discovery acceptance. Worker r2 instruction is linked in the execution index.
+
+## Regeneration boundary
+
+Only W43 edition-local Discovery work; no accepted State/stage change, Screening/Evidence/Selection/Architecture, Human Gate or publication.
+
+## Shared-Core implication
+
+**NONE.** This addendum provides section-format compatibility without changing or interpreting frozen shared Core v2 and without converting an editorial review into a Human Gate.
