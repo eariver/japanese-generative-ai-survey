@@ -52,6 +52,7 @@ This is the current human-readable navigation record for the edition. Machine li
 - `sessions/muse-w43-discovery-r2-20261024.md` (r2 coverage gap-fill + chronology, bounded to SOL_DISCOVERY_COMPLETENESS_REVIEW_READY_R2)
 - `sessions/muse-w43-discovery-r3-20261024.md` (r3 identity/provenance/chronology normalization, bounded to SOL_DISCOVERY_COMPLETENESS_REVIEW_READY_R3)
 - `sessions/muse-w43-discovery-r4-20261024.md` (r4 Grok/X + Flint gap-fill, bounded to SOL_DISCOVERY_COMPLETENESS_REVIEW_READY_R4)
+- `sessions/muse-w43-discovery-acceptance-r5-20261025.md` (r5 two-fix canonical acceptance, bounded to SOL_CANONICAL_DISCOVERY_ACCEPTANCE_READY_R5)
 
 ## Discovery (proposed, not accepted)
 
@@ -102,7 +103,16 @@ This is the current human-readable navigation record for the edition. Machine li
 
 ## Final disposition
 
-`IN_PROGRESS` (Sol r4 substantive Discovery PASS_WITH_LIMITATIONS; bounded Muse r5 two provenance fixes + canonical acceptance generation pending; official Stage still ISSUE_INITIALIZED)
+`IN_PROGRESS` (Sol r4 substantive Discovery PASS_WITH_LIMITATIONS; Muse r5 canonical acceptance materialized, awaiting Sol r5 readback + trusted operator `ADVANCE_STAGE`; no Screening/Evidence/Selection/Architecture)
+
+## Discovery r5 (canonical accepted authority; r1–r4 preserved as history)
+
+- Proposal r5: `discovery/discovery-v2-proposal-r5.jsonl` (SHA-256 `f62d8459b18bba9e939db3547a24c56722b7d59c97e7dc609cd3be6a42907ae2`, 51 rows = r4 + only CR-01 ledger fix, 51/51 schema PASS, Core graph PASS)
+- Canonical `discovery/discovery-v2.jsonl` (SHA-256 `f62d8459b18bba9e939db3547a24c56722b7d59c97e7dc609cd3be6a42907ae2`, byte-identical copy)
+- Accepted `discovery/discovery-accepted-v2.json` (SHA-256 `edad13b1a90fa4965fe2ef37f9ce522c110ffed7727d839e4e62fde04ec93f1b`, 47217B, 51 records, graph `5a94b757…`, Core `build_acceptance` + `validate_acceptance` PASS — NOT hand-forged)
+- Errata: `execution/source-intake/w43-grok-x-post-id-errata-r5.md` (CR-02 exact Raw ID vs r4 note; JSONL never contained either ID)
+- Sol handoff r5: `execution/SOL_DISCOVERY_COMPLETENESS_REVIEW_HANDOFF-r5.md` (`SOL_CANONICAL_DISCOVERY_ACCEPTANCE_READY_R5`)
+- Canonical stage: `ISSUE_INITIALIZED` (acceptance materialized; DISCOVERY_COLLECTED advancement awaits Sol + trusted operator bridge)
 
 ## Discovery r4 (Grok-integrated; r1/r2/r3 preserved as history)
 
