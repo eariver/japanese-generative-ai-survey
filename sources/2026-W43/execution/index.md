@@ -89,11 +89,20 @@ This is the current human-readable navigation record for the edition. Machine li
 - Grok result assessed `PARTIAL` — actual X observation has limited exact per-post traceability, not editorial Selection. `Recursive Flint` Oct 21 first-party new W43 event missing r3; `Reflection Beam` weights Oct 16 13:01Z are **OUT** before W43 start 22:00Z. Muse Spark Open original weights Oct 15 OUT.
 - Sol-owned execution-record compatibility correction: r1/r2 Sol editorial review documents appended truthful required headings, with `Human decision = NONE/NOT_APPLICABLE`; original versions remain in Git commit history, genuine Human Gates remain pending.
 - Muse r4 bounded contract: `execution/instructions/sol-w43-r4-grok-x-flint-intake-20261024.md`.
-- Current Core X manifest still `AWAITING_GROK` until **canonical `record-result`** invoked with real raw and Discovery IDs; production State still `ISSUE_INITIALIZED`. No `ADVANCE_STAGE` or Screening until post-r4 Sol review/trusted operator bridge.
+- Historical status at r3 review: X manifest was `AWAITING_GROK`; this is **superseded by the r4 canonical `record-result`**, which sets manifest COMPLETE. Production State remains `ISSUE_INITIALIZED` pending trusted ADVANCE_STAGE.
+
+## Sol supervisory Discovery Review r4 — substantive completeness PASS (2026-10-25)
+
+- Muse r4 HEAD/Root Tree: `59798654f24f5c096f06bcd816b7cb06c80ff8d5` / `e21e7ae8850ef901a2515d367c09082c6c578ffe`.
+- Editorial decision: `PASS_WITH_LIMITATIONS` for substantive Discovery coverage (51 records/46 families, X manifest COMPLETE/PARTIAL observation, Flint Oct 21 new primary, Beam Oct 16 OUT). No more broad source collection necessary.
+- Review authority (NOT Human Gate): `execution/reviews/sol-w43-discovery-completeness-review-r4-20261025.md`.
+- Two edition-local corrections pre-freeze: Grok ledger source_type `PRIMARY_OFFICIAL` → `X_OBSERVATION`; incorrectly transcribed Muse Spark X post ID `2110889415895234942` → exact Grok Raw `2110889410615234942` in new errata record (do not mutate old worker note).
+- Muse r5 bounded instruction: `execution/instructions/sol-w43-r5-canonical-discovery-acceptance-20261025.md`. Canonical `discovery-v2.jsonl` and Core-generated `discovery-accepted-v2.json` to be produced and validated; `ADVANCE_STAGE` remains Sol/Issue #448 responsibility after exact audit.
+- Human Architecture Review / Publication Preview: both still `pending`. State remains `ISSUE_INITIALIZED`; do not start Screening before trusted Stage receipt PASS.
 
 ## Final disposition
 
-`IN_PROGRESS` (Sol r3 PASS_WITH_LIMITATIONS + Grok handoff; Muse r4 integration complete, awaiting Sol r4 ruling; no Screening/Evidence/Selection/Architecture)
+`IN_PROGRESS` (Sol r4 substantive Discovery PASS_WITH_LIMITATIONS; bounded Muse r5 two provenance fixes + canonical acceptance generation pending; official Stage still ISSUE_INITIALIZED)
 
 ## Discovery r4 (Grok-integrated; r1/r2/r3 preserved as history)
 
