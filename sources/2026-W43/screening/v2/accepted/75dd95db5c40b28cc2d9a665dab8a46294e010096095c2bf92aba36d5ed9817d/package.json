@@ -1,0 +1,64 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W43",
+  "research_profile": "WEEKLY",
+  "basis": {
+    "profile_path": "sources/2026-W43/production-profile.json",
+    "profile_sha256": "4447d25ea73ab76062028e63f91065f80c9b93886a542356c50ae54bfb10b5af",
+    "state_path": "sources/2026-W43/production-state.json",
+    "state_sha256": "885927bd98e1ade491bc88e666aa0f39233ba7f0fb93f8ed87c9d2760ac22596",
+    "discovery_path": "sources/2026-W43/discovery/discovery-v2.jsonl",
+    "discovery_sha256": "f62d8459b18bba9e939db3547a24c56722b7d59c97e7dc609cd3be6a42907ae2"
+  },
+  "prompt": {
+    "path": "config/prompts/source-screening-v2.md",
+    "sha256": "3e45900ead73688eab8734036e6e476c1ec4f1a7ce38da42d5ca52a68ef0a862"
+  },
+  "result_contract": {
+    "path": "schemas/screening-v2-batch-result.schema.json",
+    "sha256": "a05b65b41efbcaf654df5c3c5944254a76d93d8a28cab961f2c06f6d580da5a2"
+  },
+  "input": {
+    "record_count": 51,
+    "batch_policy": {
+      "max_records": 13,
+      "max_json_chars": 120000
+    },
+    "batches": [
+      {
+        "batch_id": "batch-001",
+        "path": "input/batches/batch-001.jsonl",
+        "record_count": 13,
+        "sha256": "2a196d673d8b387562a71661dfca29802aa1fde46bd73efcd53ff3f4966b5181"
+      },
+      {
+        "batch_id": "batch-002",
+        "path": "input/batches/batch-002.jsonl",
+        "record_count": 13,
+        "sha256": "714bec3ca5c061f1145e110e594431dae86e3f2c7d80bbbcea464225adf36bb3"
+      },
+      {
+        "batch_id": "batch-003",
+        "path": "input/batches/batch-003.jsonl",
+        "record_count": 13,
+        "sha256": "ec932ae60b11062a78053f9e8a7be0de6dcd7768a741d4fd2e66c15878c9d8bd"
+      },
+      {
+        "batch_id": "batch-004",
+        "path": "input/batches/batch-004.jsonl",
+        "record_count": 12,
+        "sha256": "89527f78da4fda6b159da02273b3a9d32670625c846a6a7981002aec9e9eb823"
+      }
+    ]
+  },
+  "expected_outputs": {
+    "file_pattern": "results/batch-###.json",
+    "one_result_per_batch": true,
+    "schema_version": "2.0-rc1"
+  },
+  "rules": [
+    "Exactly one decision is required for every discovery record and no extra discovery_id is allowed.",
+    "Core Screening uses free-form scope_tags; Weekly why_now and fixed A-L topic lanes are not result fields.",
+    "Discovery provenance is not evidence of materiality; uncertain records remain INSPECT/MAYBE until verified."
+  ]
+}

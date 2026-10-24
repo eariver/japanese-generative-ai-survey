@@ -55,6 +55,7 @@ This is the current human-readable navigation record for the edition. Machine li
 - `sessions/muse-w43-discovery-acceptance-r5-20261025.md` (r5 two-fix canonical acceptance, bounded to SOL_CANONICAL_DISCOVERY_ACCEPTANCE_READY_R5)
 - `sessions/muse-w43-screening-r1-blocked-20261025.md` (screening r1 attempt BLOCKED on shared-Core state-basis defect; 0 decisions; preserved as legacy-path incompatibility evidence)
 - `sessions/muse-w43-screening-native-r2-20261025.md` (screening r2 native-compat retry via frozen `survey_agent_tool_v2`; 51/51 accepted; bounded to `SOL_SCREENING_REVIEW_READY_R2`)
+- `sessions/muse-w43-screening-chronology-r3-20261025.md` (screening r3 single-reason repair; 1-row diff; bounded to `SOL_SCREENING_REVIEW_READY_R3`)
 
 ## Discovery (proposed, not accepted)
 
@@ -139,7 +140,18 @@ This is the current human-readable navigation record for the edition. Machine li
 
 ## Final disposition
 
-`IN_PROGRESS` (screening r2 native-compat complete, 51/51 accepted, awaiting Sol r2 screening review; no ADVANCE_STAGE, no Evidence/Selection/Architecture)
+`IN_PROGRESS` (screening r3 single-reason repair complete, new acceptance materialized, awaiting Sol r3 readback; no ADVANCE_STAGE, no Evidence/Selection/Architecture)
+
+## Screening r3 (one-reason correction; r1 BLOCKED + r2 preserved as history)
+
+- Package r3-equivalent: `screening/v2/packages/r2/package.json` (SHA-256 identical to r1 package — same Discovery/state inputs)
+- Results `screening/v2/packages/r2/results/batch-001..004.json` (51 reproduced by ID; exactly 1 object differs: Kimi `reason` `45min inside cutoff` → `4h44m36s before Oct 23 22:00Z cutoff`)
+- Accepted `screening/v2/accepted/75dd95db5c40b28cc2d9a665dab8a46294e010096095c2bf92aba36d5ed9817d/screening-accepted.json` (SHA-256 `566cde3bd287dffb38d705c4b6c3fec71a98f67dea96016a009bd929923be48a`, 51 decisions, Core `accept` PASS via native adapter; old `18525774…` untouched)
+- Erratum: `execution/source-intake/w43-screening-kimi-erratum-r3.md` (before/after, 51-to-51 identity proof)
+- Distribution unchanged: KEEP 17 / MAYBE 11 / INSPECT 4 / DROP 19
+- Sol handoff r3: `execution/SOL_SCREENING_REVIEW_HANDOFF-r3.md` (`SOL_SCREENING_REVIEW_READY_R3`)
+- Validators: schema/graph/raw/Grok-binding, X require_complete, acceptance validate (51), stage precheck (`/tmp`, state untouched), profile/state, execution-record — all PASS
+- Canonical stage: `DISCOVERY_COLLECTED` (new acceptance materialized; advancement awaits Sol + trusted operator bridge)
 
 ## Screening r2 (native agent-first; r1 BLOCKED preserved as incompatibility evidence)
 
