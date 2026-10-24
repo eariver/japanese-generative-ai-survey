@@ -50,6 +50,7 @@ This is the current human-readable navigation record for the edition. Machine li
 - `sessions/sol-w43-init-20261024.md`
 - `sessions/muse-w43-discovery-20261024.md` (r1 Source Intake/Discovery, bounded to SOL_DISCOVERY_COMPLETENESS_REVIEW_READY)
 - `sessions/muse-w43-discovery-r2-20261024.md` (r2 coverage gap-fill + chronology, bounded to SOL_DISCOVERY_COMPLETENESS_REVIEW_READY_R2)
+- `sessions/muse-w43-discovery-r3-20261024.md` (r3 identity/provenance/chronology normalization, bounded to SOL_DISCOVERY_COMPLETENESS_REVIEW_READY_R3)
 
 ## Discovery (proposed, not accepted)
 
@@ -81,7 +82,16 @@ This is the current human-readable navigation record for the edition. Machine li
 
 ## Final disposition
 
-`IN_PROGRESS` (Sol r1 REQUEST_CHANGES; Muse r2 gap-fill complete, awaiting Sol r2 review; no Screening/Evidence/Selection/Architecture)
+`IN_PROGRESS` (Sol r2 LIMITED_REQUEST_CHANGES; Muse r3 normalization complete, awaiting Sol r3 ruling; no Screening/Evidence/Selection/Architecture)
+
+## Discovery r3 (coherent active canonical; r1/r2 preserved as history)
+
+- Proposal r3: `discovery/discovery-v2-proposal-r3.jsonl` (SHA-256 `fa66e01bb16d7169694887b245da8b2f2b0d54670bd2a8d9e8d458674ccfcfef`, 49 rows = 51 r2 − 3 excluded + 1 added, 2 amended in place, 49/49 schema PASS, Core graph PASS, PROPOSED_NOT_ACCEPTED)
+- Reconciliation: `execution/source-intake/w43-discovery-identity-reconciliation-r3.md` (51→49 map; 44 families = 41 singleton + 3 multi-row)
+- Errata: `execution/source-intake/w43-provenance-time-errata-r3.md` (r1 12Z INVALID; r2 run-ID OPAQUE; GitHub JSONs PROJECTION; X HTML raw OK)
+- All r3 `observed_at` = measured `2026-10-24T12:36:18Z` re-verification (no backfill)
+- Sol handoff r3: `execution/SOL_DISCOVERY_COMPLETENESS_REVIEW_HANDOFF-r3.md` (`SOL_DISCOVERY_COMPLETENESS_REVIEW_READY_R3`)
+- Canonical stage: `ISSUE_INITIALIZED` (DISCOVERY_COLLECTED NOT claimed; X incomplete fail-closed preserved)
 
 ## Discovery r2 (proposed, not accepted; appends r1)
 
