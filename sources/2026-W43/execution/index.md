@@ -2,6 +2,15 @@
 
 This is the current human-readable navigation record for the edition. Machine lifecycle authority remains `sources/2026-W43/production-state.json`.
 
+## Core-free r3.4 — bounded row-join proof + FAQ rewording, UNVALIDATED (2026-10-26, no Stage)
+
+**Current status: `MUSE_W43_R34_BOUNDED_ROW_JOIN_FAQ_REPAIR_READY_FOR_SOL_EDITORIAL_RECHECK / NATIVE_STILL_BLOCKED / NO_STATE_CHANGE`.**
+- Guard + sync in own environment: remote 6-way PASS (work `881a5169…`/`d69b4bfe…`, main/frozen unchanged); contract parent == `4f89fba23…`, diff = contract file only; local clean → fetch + ff-only → `881a5169…`.
+- R32-FULL-003 (P1): strict edition-local proof, r3.3 33/33 smoke explicitly NOT promoted. 20 fenced 表 blocks parsed (no global substring lookup); 80 physical ｜-rows hash-bound in manifest (49 EXACT / 18 RSTRIP / 13 SANCTIONED_ALIAS, 2 NOTE separate, 3 figure rows out of scope); 80↔80 bijection exact; 29 claims own-block DATA with variant/unit/comparator/source honesty (5 RAW_PRIMARY / 24 QUALIFIED_UNAVAILABLE / 0 OTHER); pinned anchors (MemT storage, 1.86x, parametric scope, classifier, TTS Speech 3, Controlled Voice); 9/9 negatives detected incl. same-block NOTE (C2). Verdict `EDITION_LOCAL_ROW_JOIN_PASS`, exit 0. Genuine defect found+fixed: p8-f3 free-till→02 / bench→03 (+ recall qualifier canonicalization); 96/80/29 counts unchanged. SHAs: reader `9dcd7a79…`, ledger `db3590cc…`.
+- R32-FULL-006 (P2): 6 prose lines reworded (intro/§4.1/subsection/注意/recap); no confirmed contradiction; PR claim vs unattributed `Two at launch` unverified; keyframes UNKNOWN; arithmetic + limitations preserved. Reader table rows byte-identical (0 ｜-line diff).
+- New r3.4 assets only (reader, ledger, manifest, strict checker + result, crosswalk delta, QA, handoff, session + this entry); r1–r3.3 untouched. State/Gates/Architecture/Selection/Evidence/main/Frozen Core/shared roots untouched. No TeX/PDF/Stage/Gate/Freeze/Release. Env note: /tmp quota-exceeded; artifacts written to repo paths.
+- Next: Sol editorial recheck, then one independent 10-item r3.2→r3.4 limited closure audit at fixed HEAD/Tree.
+
 ## Core-free r3.3 — comprehensive 10-issue one-batch repair complete, UNVALIDATED (2026-10-26, no Stage)
 
 **Current status: `SOL_W43_CORE_FREE_EDITORIAL_R3_3_BATCHED_REPAIR_READY_FOR_INDEPENDENT_CLOSURE / NATIVE_STILL_BLOCKED / NO_STATE_CHANGE`.**
