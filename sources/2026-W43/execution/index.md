@@ -2,6 +2,14 @@
 
 This is the current human-readable navigation record for the edition. Machine lifecycle authority remains `sources/2026-W43/production-state.json`.
 
+## Core-free r3 — 11-finding binding repair complete, UNVALIDATED (2026-10-25, no Stage)
+
+**Current status: `SOL_W43_CORE_FREE_EDITORIAL_R3_POST_INDEPENDENT_AUDIT_REVIEW_READY / NATIVE_STILL_BLOCKED / NO_STATE_CHANGE`.**
+- Guard + sync in own environment: remote 6-way PASS (work `ec27e522a…`/`8334caa5…`, main/frozen unchanged); local clean `a74e0e953…` → fetch + ff-only → `ec27e522a…` (3 Sol commits). Original `20261025212008_SolReview.md` unread in-session (disclosed limitation); adjudication + receipt + 11-matrix as binding basis.
+- Direct primary reads: Flint card (2.5B/2.2B/262144/Apache-2.0/1.0-0.95-20) + announce HTML (512k/256k原文), MemT README 208–219 (4.0/1.0.0/MIT/除外), DeepInfer README 24–28 + environ.py 129–132/197, Voxtral/Low-resource/Decisions full claims, changelog bytes (v1/decisions・input_json・400/200).
+- r3 outputs (noncanonical, UNVALIDATED, r1/r2 preserved): reader preview `editorial-bypass/w43-r3-reader-preview-UNVALIDATED-20261025.md` (~32.1k chars, 20 tables + 3 figures + 2 code + 5-para recap, editor notes moved to QA); ledger `w43-r3-citation-confidence-ledger.json` (96 rows, `f0a60745…`, table_rows[] on all 15 + 10 artifact rows); QA `w43-r3-editorial-qa.md` (31 truth-values 28/3/0/0/0, artifact inventory, depth +9.9k chars, recap excerpt, residuals); crosswalk `w43-r3-source-crosswalk.md` (31 keys); handoff `SOL_W43_CORE_FREE_EDITORIAL_R3_POST_INDEPENDENT_AUDIT_HANDOFF.md` (11-row closure: all FIXED or grounded UNRESOLVED/PARTIAL, no SOURCE_BLOCKED).
+- Invariants: State `ARCHITECTURE_ESTABLISHED`, Gate approval, Architecture/Selection/Evidence, main/Frozen Core, shared roots untouched. No native Draft/Synthesis/receipt/`DRAFT_COMPLETE`/`ADVANCE_STAGE`/TeX/PDF/Preview. Native-only stop NOT claimed.
+
 ## Core-free editorial audit r2 — P1–P8 + recap reviewed, UNVALIDATED (2026-10-25, no Stage)
 
 **Current status: `SOL_W43_CORE_FREE_EDITORIAL_DRAFT_AUDIT_READY / NATIVE_DRAFT_STILL_BLOCKED / NO_STATE_CHANGE`.**
