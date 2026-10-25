@@ -2,7 +2,15 @@
 
 This is the current human-readable navigation record for the edition. Machine lifecycle authority remains `sources/2026-W43/production-state.json`.
 
-## Editorial handoff — Evidence r4 post-cutoff ready (2026-10-25, forward-only, no Stage)
+## Editorial handoff — Selection + proposed Architecture ready r1 (2026-10-25, no Stage)
+
+**Current status: `SOL_W43_SELECTION_AND_ARCHITECTURE_PROPOSAL_REVIEW_READY_R1 / AWAITING_INDEPENDENT_SOL_AUDIT / NO_STAGE_ADVANCE`.**
+- Native Selection r1 + proposed deep Architecture (frozen Core unchanged): matrix 32 rows; selection ESTABLISHED (19 SELECTED / 1 HOLD moss-trainer with GPU/VRAM gate / 12 REJECT = 10 CONTEXT + Metrics/Grok NON_MATERIAL; Metrics POST_CUTOFF exclusion + Grok NEVER story; anti-padding REJECTs); architecture PROPOSED (8 packages P1 open-weights → P8 devtooling, target 30 / max 34 est 29.0, Japanese thesis/titles, must-cover + boundaries, no empty placeholder); summary READY_FOR_ARCHITECTURE_REVIEW; attention.
+- Exact outputs: matrix (SHA `16a6bbfe…`), selection (`50decd86…`), architecture (`89391d1b…`), summary (`7bf44371…`), attention (`1dc4ebe8…`); archived input (`20394528…`, runner `2026-10-25T05:30:00Z`) + audit. Stage scratch precheck `EVIDENCE_REVIEWED→SELECTION_COMPLETE` PASS (no writes); `SELECTION_COMPLETE→ARCHITECTURE_ESTABLISHED` NOT run (static validator only, not second bridge).
+- Depth review `execution/reviews/muse-w43-selection-architecture-depth-r1.md` (32-row table + 8-package depth + claim→source + residuals); crosswalk `execution/source-intake/w43-selection-claim-source-crosswalk-r1.md`; handoff `execution/SOL_W43_SELECTION_AND_ARCHITECTURE_PROPOSAL_REVIEW_HANDOFF-r1.md`; session `sessions/muse-w43-selection-proposed-architecture-r1-20261025.md`. P1 corrections intact; fused URLs never cited; 5 LIMITED + missing bodies/clocks carried.
+- State still `EVIDENCE_REVIEWED`, selection/architecture pending, Gates pending. r4 + prior authority, Discovery/Screening, State/Checkpoints, Core/main/Gates immutable. Await independent Sol audit; then (only if PASS) two separate trusted bridges; stop at pending Human Architecture Review for the real owner.
+
+## Prior handoff — Evidence r4 post-cutoff ready (2026-10-25, forward-only, no Stage)
 
 **Current status: `SOL_EVIDENCE_MATERIALITY_COMPLETENESS_REVIEW_READY_R4_POSTCUTOFF / AWAITING_INDEPENDENT_SOL_POST_R4_AUDIT / NO_STAGE_ADVANCE`.**
 - Sol ruling: Screening MAYBE is provisional; forward-only POST_CUTOFF/NON_MATERIAL + MAYBE→NON_MATERIAL lawful (Grok precedent); no rewind/invalidation. STEP A isolated rehearsal PASS (worktree @ `e2fa8e935…`, 32/32, ledger 20/10/2/19, stage PASS, negatives: schema-gap demonstrated + byte_count/lost-task/forged FAIL_CLOSED) with zero canonical writes.
@@ -137,6 +145,7 @@ This is the current human-readable navigation record for the edition. Machine li
 - `sessions/muse-w43-evidence-integrated-r3-20261025.md` (evidence r3 integrated 15-finding repair; 32/32 re-accepted + 51/3; bounded to `SOL_EVIDENCE_MATERIALITY_COMPLETENESS_REVIEW_READY_R3_INTEGRATED`; no ADVANCE_STAGE)
 - `sessions/muse-w43-cutoff-authority-feasibility-r1-20261025.md` (cutoff/authority feasibility r1; read-only clocks + A/B/C; bounded to `SOL_W43_CUTOFF_AND_AUTHORITY_DECISION_READY_R1`; no Core/Stage change)
 - `sessions/muse-w43-postcutoff-evidence-r4-20261025.md` (post-cutoff r4 forward-only; 32/32 + 51/3, Metrics OUT excluded; bounded to `SOL_EVIDENCE_MATERIALITY_COMPLETENESS_REVIEW_READY_R4_POSTCUTOFF`; no ADVANCE)
+- `sessions/muse-w43-selection-proposed-architecture-r1-20261025.md` (Selection r1 + proposed deep Architecture; 19/1/12 + 8 packages; bounded to `SOL_W43_SELECTION_AND_ARCHITECTURE_PROPOSAL_REVIEW_READY_R1`; no Stage/Human approval)
 
 ## Discovery (proposed, not accepted)
 
@@ -255,7 +264,7 @@ This is the current human-readable navigation record for the edition. Machine li
 
 ## Final disposition
 
-`SOL_EVIDENCE_MATERIALITY_COMPLETENESS_REVIEW_READY_R4_POSTCUTOFF` (r4 forward-only post-cutoff correction complete; Metrics OUT excluded as POST_CUTOFF/NON_MATERIAL with supersession, Oct23 clocks + DATE_ONLY nulls + IA-017/018 bounded; 32/32 + 51/3 via frozen Core; awaiting independent Sol post-r4 audit; no ADVANCE_STAGE, no Selection/Architecture/Draft)
+`SOL_W43_SELECTION_AND_ARCHITECTURE_PROPOSAL_REVIEW_READY_R1` (Selection r1 + proposed deep Architecture complete; 19/1/12 + 8 packages P1–P8, target 30/max 34 est 29.0; Metrics/Grok excluded; P1 corrections intact; frozen Core validated; awaiting independent Sol audit; no ADVANCE_STAGE, no Human approval, no Draft/PDF)
 
 ## Evidence r3 integrated (15-finding independent-audit repair; r1/r2 preserved as history)
 
