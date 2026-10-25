@@ -2,6 +2,12 @@
 
 This is the current human-readable navigation record for the edition. Machine lifecycle authority remains `sources/2026-W43/production-state.json`.
 
+## Editorial execution hold — independent audit first (2026-10-25)
+
+**Effective status: `INDEPENDENT_AUDIT_PENDING / MUSE_EVIDENCE_R3_ON_HOLD / NO_STAGE_ADVANCE`.** The earlier narrow Muse repair instruction `execution/instructions/sol-w43-evidence-r3-patch-memt-source-integrity-20261025.md` is **NOT authorized for execution until independent Sol findings are returned and editorial Sol issues a revised integrated instruction**. Preserve the earlier instruction as historical, not the active command.
+
+Independent read-only comprehensive audit contract: `execution/audits/independent-sol-w43-evidence-comprehensive-audit-request-20261025.md`. Audit requires all 32 current Evidence Cards and Edition Views, the 51-row lineage, actual raw/paper provenance and externally cross-checked technical claims. Do not restrict findings to the known Patch model and MemT license defects. Independent Sol session reports findings **in chat only**; no repository writes or machine Gate decisions. Stage stays `CANDIDATES_NORMALIZED`, Evidence/Materiality/Completeness checkpoints `pending`, both Human Gates `pending`. Once review is delivered, editorial Sol will consolidate findings and prepare ONE new bounded Muse remediation contract, then separately audit before any trusted Stage advance.
+
 ## Current authority
 
 - Issue / edition: `2026-W43`
