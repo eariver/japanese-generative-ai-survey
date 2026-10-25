@@ -2,11 +2,14 @@
 
 This is the current human-readable navigation record for the edition. Machine lifecycle authority remains `sources/2026-W43/production-state.json`.
 
-## Editorial execution hold — independent audit first (2026-10-25)
+## Editorial handoff — independent audit integrated (2026-10-25)
 
-**Effective status: `INDEPENDENT_AUDIT_PENDING / MUSE_EVIDENCE_R3_ON_HOLD / NO_STAGE_ADVANCE`.** The earlier narrow Muse repair instruction `execution/instructions/sol-w43-evidence-r3-patch-memt-source-integrity-20261025.md` is **NOT authorized for execution until independent Sol findings are returned and editorial Sol issues a revised integrated instruction**. Preserve the earlier instruction as historical, not the active command.
-
-Independent read-only comprehensive audit contract: `execution/audits/independent-sol-w43-evidence-comprehensive-audit-request-20261025.md`. Audit requires all 32 current Evidence Cards and Edition Views, the 51-row lineage, actual raw/paper provenance and externally cross-checked technical claims. Do not restrict findings to the known Patch model and MemT license defects. Independent Sol session reports findings **in chat only**; no repository writes or machine Gate decisions. Stage stays `CANDIDATES_NORMALIZED`, Evidence/Materiality/Completeness checkpoints `pending`, both Human Gates `pending`. Once review is delivered, editorial Sol will consolidate findings and prepare ONE new bounded Muse remediation contract, then separately audit before any trusted Stage advance.
+**Current status: `INDEPENDENT_AUDIT_REQUEST_CHANGES_ADJUDICATED / INTEGRATED_MUSE_R3_AUTHORIZED_FOR_DISPATCH / NO_STAGE_ADVANCE`.**
+- Source independent report: original `20261025125414_SolReview.md` 44,914B SHA256 `8e3218ec5eef385764935d4790e0b333ac93e211285ab889ea6ff6910bbcda63`, captured in GitHub as text-normalized `execution/audits/independent-sol-w43-evidence-comprehensive-report-transcription-20261025.md`. Audit checked all 32 Evidence Cards + 32 Views and 51 decisions, severity P1 8 / P2 7; 0 independent reproductions, detailed raw SHA/Core dynamic tests not all run.
+- Binding editorial adjudication: `execution/reviews/sol-w43-independent-audit-consolidated-adjudication-20261025.md` = `REQUEST_CHANGES` / trusted `EVIDENCE_REVIEWED` stage **NOT permitted**. Independently corroborated official dates/vars/enums FLUX math alongside audit. No Human Gate decisions.
+- **SOLE ACTIVE Muse r3 contract**: `execution/instructions/sol-w43-evidence-r3-integrated-independent-audit-20261025.md` covering all W43-IA-001…015, 32-card source-to-claim repair, genuine primary lineage and independent evaluation wording, 51-row Materiality/Completeness, native frozen Core reacceptance and strict stop `SOL_EVIDENCE_MATERIALITY_COMPLETENESS_REVIEW_READY_R3_INTEGRATED` WITHOUT `ADVANCE_STAGE`.
+- Previous narrow `execution/instructions/sol-w43-evidence-r3-patch-memt-source-integrity-20261025.md` and earlier audit hold are **SUPERSEDED AS EXECUTION AUTHORITY**, retained untouched as history; do NOT run both contracts or start from their old SHA. Await new Sol-dispatched exact work Starting SHA/root Tree; main/Frozen Core preflight remains required.
+- Formal State `CANDIDATES_NORMALIZED`, Evidence/Materiality/Completeness machine checkpoints pending, Human Architecture/Publication Gates pending. r1/r2 accepted Evidence/Views and r2 original raw/Discovery/Screening immutable; no Bridge request, Selection or manuscript.
 
 ## Current authority
 
