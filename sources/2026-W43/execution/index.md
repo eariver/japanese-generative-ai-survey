@@ -2,7 +2,15 @@
 
 This is the current human-readable navigation record for the edition. Machine lifecycle authority remains `sources/2026-W43/production-state.json`.
 
-## Editorial handoff — Architecture r2 substantive ready (2026-10-25, no Stage)
+## Editorial handoff — Architecture r3 arithmetic ready (2026-10-25, formula fix only, no Stage)
+
+**Current status: `SOL_W43_ARCHITECTURE_R3_ARITHMETIC_REVIEW_READY / AWAITING_INDEPENDENT_SOL_R3_AUDIT / NO_STAGE_ADVANCE`.**
+- Sol r2 audit: Selection PASS_WITH_LIMITATIONS, r2 REQUEST_CHANGES solely SA-007 (P4 inverted fractions `10.95/277.80`, `12.45/277.80`). R3 fixes ONLY P4 §4.2 → `277.80/10.95≈25.37x`, `277.80/12.45≈22.31x`, `(277.80-12.45)/277.80×100≈95.52%` (`t_baseline/t_candidate`); vendor 26.5x/96.2% still disputed; 10.95 PR-origin unverified retained.
+- 32 assignments byte-identical (19/1/12 + roles); Matrix/Selection/Attention byte-identical (`16a6bbfe…` / `50decd86…` / `7c3e4deb…` 68/68); Architecture `53f049d0…→529ce4b3…`, Summary `6bc27840…→26817906…`, input/audit NEW (P4 only). Stage scratch `EVIDENCE_REVIEWED→SELECTION_COMPLETE` PASS (no writes); `SELECTION_COMPLETE→ARCHITECTURE_ESTABLISHED` NOT run.
+- Proof `execution/reviews/muse-w43-architecture-r3-flux-arithmetic-proof-20261025.md` (old vs new, independent checks, PR uncertainty, SHA old→new, 32/19/68, negatives); handoff; session; input-r3; history `selection-architecture-r2/` (r2 5 JSON + input + audit). Evidence r4/Views/ledger/completeness, Discovery/Screening, raw, State/Checkpoints, Core/main/Gates untouched.
+- State still `EVIDENCE_REVIEWED`, selection/architecture pending, Gates pending. Await independent Sol r3 audit; then (only if PASS) two separate trusted bridges; stop at pending Human Architecture Review for the real owner.
+
+## Prior handoff — Architecture r2 substantive ready (2026-10-25, no Stage)
 
 **Current status: `SOL_W43_ARCHITECTURE_R2_SUBSTANTIVE_REVIEW_READY / AWAITING_INDEPENDENT_SOL_R2_AUDIT / NO_STAGE_ADVANCE`.**
 - Sol r1: Selection PASS_WITH_LIMITATIONS, Architecture REQUEST_CHANGES (SA-001..006). R2 retains exact 19/1/12 + roles (matrix/selection byte-identical) and deepens 8 packages (P1 Kimi API-vs-weights headline, consistent 38/44 budget est 37.0, numbered subsections + tables/figures + MUST-NOT lists, JA fixes, DEPTH_LIMITED rule).
@@ -171,6 +179,7 @@ This is the current human-readable navigation record for the edition. Machine li
 - `sessions/muse-w43-postcutoff-evidence-r4-20261025.md` (post-cutoff r4 forward-only; 32/32 + 51/3, Metrics OUT excluded; bounded to `SOL_EVIDENCE_MATERIALITY_COMPLETENESS_REVIEW_READY_R4_POSTCUTOFF`; no ADVANCE)
 - `sessions/muse-w43-selection-proposed-architecture-r1-20261025.md` (Selection r1 + proposed deep Architecture; 19/1/12 + 8 packages; bounded to `SOL_W43_SELECTION_AND_ARCHITECTURE_PROPOSAL_REVIEW_READY_R1`; no Stage/Human approval)
 - `sessions/muse-w43-proposed-architecture-r2-20261025.md` (Architecture r2 depth/terminology repair; 19 kept, 8 packages deepened, 68/68; bounded to `SOL_W43_ARCHITECTURE_R2_SUBSTANTIVE_REVIEW_READY`; no Stage/Human approval)
+- `sessions/muse-w43-architecture-r3-20261025.md` (Architecture r3 FLUX arithmetic fix only; P4 §4.2 corrected, 32/19/68 invariant; bounded to `SOL_W43_ARCHITECTURE_R3_ARITHMETIC_REVIEW_READY`; no Stage/Human approval)
 
 ## Discovery (proposed, not accepted)
 
@@ -289,7 +298,7 @@ This is the current human-readable navigation record for the edition. Machine li
 
 ## Final disposition
 
-`SOL_W43_ARCHITECTURE_R2_SUBSTANTIVE_REVIEW_READY` (Architecture r2 depth/terminology repair complete; 19 kept, 8 packages 38/44 est 37.0, 68/68 attention; SA-001..006 closed; frozen Core validated in isolated scratch; awaiting independent Sol r2 audit; no ADVANCE_STAGE, no Human approval, no Draft/PDF)
+`SOL_W43_ARCHITECTURE_R3_ARITHMETIC_REVIEW_READY` (Architecture r3 FLUX arithmetic fix complete; P4 §4.2 corrected with t_baseline/t_candidate, 32/19/68 invariant, vendor inconsistency + PR uncertainty retained; frozen Core validated in isolated scratch; awaiting independent Sol r3 audit; no ADVANCE_STAGE, no Human approval, no Draft/PDF)
 
 ## Evidence r3 integrated (15-finding independent-audit repair; r1/r2 preserved as history)
 
