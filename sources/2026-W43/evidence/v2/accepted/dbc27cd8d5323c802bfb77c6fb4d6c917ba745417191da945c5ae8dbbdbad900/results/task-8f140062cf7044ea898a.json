@@ -1,0 +1,195 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W43",
+  "evidence_task_id": "evidence:2026-W43:a5013a51058f975a",
+  "basis": {
+    "task_sha256": "2cff85249d541aaac20b4f691a9165c3e81b0fc88c23e315d738d325e2610df6",
+    "screening_acceptance_sha256": "566cde3bd287dffb38d705c4b6c3fec71a98f67dea96016a009bd929923be48a",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "nemotron-bolt-e4b",
+      "canonical_name": "NVIDIA Nemotron 3.5 Bolt E4B 4GB",
+      "entity_type": "MODEL",
+      "organization": "NVIDIA",
+      "canonical_url": "https://research.nvidia.com/labs/nemotron/Nemotron-3.5-Bolt-E4B-4GB/"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "nemotron-bolt-e4b",
+    "artifact_type": "OPEN_WEIGHT",
+    "canonical_name": "NVIDIA Nemotron 3.5 Bolt E4B 4GB",
+    "canonical_url": "https://research.nvidia.com/labs/nemotron/Nemotron-3.5-Bolt-E4B-4GB/"
+  },
+  "temporal": {
+    "observed_at": "2026-10-25T04:57:50Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-10-23",
+        "subject_id": "nemotron-bolt-e4b",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "event_id": "event-2",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-10-23T00:00:00Z",
+        "subject_id": "nemotron-bolt-e4b",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "supplement-src-9e10348cb212038f"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "primary:research.nvidia.com/labs/nemotron/Nemotron-3.5-Bolt-E4B-4GB",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "NVIDIA Nemotron 3.5 Bolt E4B 4GB (Oct 23)",
+      "published_at": "2026-10-23",
+      "accessed_at": "2026-10-25T04:57:50Z",
+      "role": "Discovery-bounded source used for factual verification"
+    },
+    {
+      "source_id": "supplement-src-9e10348cb212038f",
+      "url": "https://huggingface.co/nvidia/Nemotron-3.5-Bolt-E4B-4GB",
+      "source_class": "PRIMARY_REPOSITORY",
+      "title": "Nemotron 3.5 Bolt E4B HF card (OpenMDW-1.1; 64K; Gemma-4 Apache-2.0 base)",
+      "published_at": "2026-10-23T00:00:00Z",
+      "accessed_at": "2026-10-25T04:41:00Z",
+      "role": "Post-Screening exact authority supplement: Post-Screening exact card authority: license other/OpenMDW-1.1 (OSI status UNVERIFIED, no recognition claim); 64K; Gemma-4 Apache-2.0 base; commercial-use terms per OpenMDW text only."
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Nemotron 3.5 Bolt E4B 4GB (Oct23): MoE 4B-class, 64K context (HF card config; OSI status of OpenMDW-1.1 UNVERIFIED — no recognition claim); Gemma-4 base Apache-2.0; post-training filters (license-compliant/verifiable samples, n-gram/repetition + political/nationalistic filters). Commercial-use terms per OpenMDW text only; categorical commercial/OSI claims withheld.",
+      "subject_id": "nemotron-bolt-e4b",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1",
+        "supplement-src-9e10348cb212038f"
+      ],
+      "context": "HF card 59009B; license other/OpenMDW-1.1 + Gemma Apache-2.0"
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Benchmarks/vendor tables (if any) vendor-measured; tech-report PDF provenance bounded; independent eval absent.",
+      "subject_id": "nemotron-bolt-e4b",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1",
+        "supplement-src-9e10348cb212038f"
+      ],
+      "context": "Card/report sections"
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "OpenMDW-1.1 OSI approval must NOT be assumed; license text read, OSI registry unchecked — UNVERIFIED",
+      "subject_id": "nemotron-bolt-e4b",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1",
+        "supplement-src-9e10348cb212038f"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "Weight/config bytes KYC: card read, raw weight hash not re-hashed",
+      "subject_id": "nemotron-bolt-e4b",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1",
+        "supplement-src-9e10348cb212038f"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-3",
+      "text": "Benchmarks vendor-measured; independent run absent",
+      "subject_id": "nemotron-bolt-e4b",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1",
+        "supplement-src-9e10348cb212038f"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "hf-license-file",
+        "status": "VERIFIED",
+        "finding": "Card 59009B read: license other/OpenMDW-1.1 + link + Gemma Apache-2.0; bytes bound.",
+        "subject_ids": [
+          "nemotron-bolt-e4b"
+        ],
+        "source_ids": [
+          "src-1",
+          "supplement-src-9e10348cb212038f"
+        ]
+      },
+      {
+        "target": "tech-report-pdf",
+        "status": "UNRESOLVED",
+        "finding": "Report provenance bounded; full equations not line-reviewed.",
+        "subject_ids": [
+          "nemotron-bolt-e4b"
+        ],
+        "source_ids": [
+          "src-1",
+          "supplement-src-9e10348cb212038f"
+        ]
+      },
+      {
+        "target": "benchmark-table-provenance",
+        "status": "UNRESOLVED",
+        "finding": "Tables vendor-measured; independent check absent.",
+        "subject_ids": [
+          "nemotron-bolt-e4b"
+        ],
+        "source_ids": [
+          "src-1",
+          "supplement-src-9e10348cb212038f"
+        ]
+      },
+      {
+        "target": "openmdw-osi-status",
+        "status": "UNRESOLVED",
+        "finding": "OSI recognition UNVERIFIED by design; no categorical claim; URL attempted card only.",
+        "subject_ids": [
+          "nemotron-bolt-e4b"
+        ],
+        "source_ids": [
+          "src-1",
+          "supplement-src-9e10348cb212038f"
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      "tech-report-pdf: Report provenance bounded; full equations not line-reviewed.",
+      "benchmark-table-provenance: Tables vendor-measured; independent check absent.",
+      "openmdw-osi-status: OSI recognition UNVERIFIED by design; no categorical claim; URL attempted card only."
+    ],
+    "contradictions": []
+  }
+}

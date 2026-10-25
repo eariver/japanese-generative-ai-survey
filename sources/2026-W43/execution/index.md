@@ -2,7 +2,15 @@
 
 This is the current human-readable navigation record for the edition. Machine lifecycle authority remains `sources/2026-W43/production-state.json`.
 
-## Editorial handoff — independent audit integrated (2026-10-25)
+## Editorial handoff — independent audit integrated r3 complete (2026-10-25)
+
+**Current status: `SOL_EVIDENCE_MATERIALITY_COMPLETENESS_REVIEW_READY_R3_INTEGRATED / AWAITING_INDEPENDENT_SOL_RE-AUDIT / NO_STAGE_ADVANCE`.**
+- Integrated r3 executed sole contract `execution/instructions/sol-w43-evidence-r3-integrated-independent-audit-20261025.md` (W43-IA-001…015). P1 8/8 FIXED, P2 7/7 disposed (RESOLVED/LIMITATION/DEFERRED, no fake closure). No `ADVANCE_STAGE`, Selection, Architecture, Draft, PDF, Human Gate action.
+- New acceptances: Evidence `dbc27cd8d5323c802bfb77c6fb4d6c917ba745417191da945c5ae8dbbdbad900` (32 PARTIAL, SHA `061c2233…`); Views `7a8120533d6f666fb744303d8f828b680b4d8b6bc386ddf6904b6dee9e88963e` (20/11/1, SHA `5c3740ec…`); Ledger `31929cf5…` (51 rows); Completeness `abd6dadf…` (LIMITED). Supplement r3 21 sources; compat r3 SHA `c2ef9064…`.
+- Closure: `execution/reviews/muse-w43-independent-audit-closure-r3.md` (15 rows + 32 diff + literal checks); crosswalk + rationale under `execution/source-intake/`; session `sessions/muse-w43-evidence-integrated-r3-20261025.md`; handoff `execution/SOL_EVIDENCE_MATERIALITY_COMPLETENESS_REVIEW_HANDOFF-r3-integrated.md`. History r2 preserves canonical r2 ledger/completeness.
+- Formal State still `CANDIDATES_NORMALIZED`, checkpoints pending, Gates pending. r1/r2 accepted dirs, Discovery/Screening/X Raw, Frozen/main, State/Checkpoints/Gates immutable. Await independent Sol content re-audit before any trusted advance.
+
+## Prior handoff — independent audit integrated (2026-10-25)
 
 **Current status: `INDEPENDENT_AUDIT_REQUEST_CHANGES_ADJUDICATED / INTEGRATED_MUSE_R3_AUTHORIZED_FOR_DISPATCH / NO_STAGE_ADVANCE`.**
 - Source independent report: original `20261025125414_SolReview.md` 44,914B SHA256 `8e3218ec5eef385764935d4790e0b333ac93e211285ab889ea6ff6910bbcda63`, captured in GitHub as text-normalized `execution/audits/independent-sol-w43-evidence-comprehensive-report-transcription-20261025.md`. Audit checked all 32 Evidence Cards + 32 Views and 51 decisions, severity P1 8 / P2 7; 0 independent reproductions, detailed raw SHA/Core dynamic tests not all run.
@@ -67,6 +75,7 @@ This is the current human-readable navigation record for the edition. Machine li
 - `sessions/muse-w43-screening-chronology-r3-20261025.md` (screening r3 single-reason repair; 1-row diff; bounded to `SOL_SCREENING_REVIEW_READY_R3`)
 - `sessions/muse-w43-evidence-authority-r1-20261025.md` (evidence authority/materiality/completeness r1; 32 cards/views + ledgers; bounded to `SOL_EVIDENCE_MATERIALITY_COMPLETENESS_REVIEW_READY_R1`)
 - `sessions/muse-w43-evidence-authority-r2-20261025.md` (evidence authority r2 deepening; 32 cards/views re-accepted; bounded to `SOL_EVIDENCE_MATERIALITY_COMPLETENESS_REVIEW_READY_R2`)
+- `sessions/muse-w43-evidence-integrated-r3-20261025.md` (evidence r3 integrated 15-finding repair; 32/32 re-accepted + 51/3; bounded to `SOL_EVIDENCE_MATERIALITY_COMPLETENESS_REVIEW_READY_R3_INTEGRATED`; no ADVANCE_STAGE)
 
 ## Discovery (proposed, not accepted)
 
@@ -185,7 +194,23 @@ This is the current human-readable navigation record for the edition. Machine li
 
 ## Final disposition
 
-`IN_PROGRESS` (evidence r2 authority/materiality/completeness materialized, 32 cards/views accepted, awaiting Sol r2 Evidence review; no ADVANCE_STAGE, no Selection/Architecture/Draft)
+`SOL_EVIDENCE_MATERIALITY_COMPLETENESS_REVIEW_READY_R3_INTEGRATED` (evidence r3 integrated 15-finding repair materialized, 32 cards/views re-accepted, awaiting independent Sol content re-audit; no ADVANCE_STAGE, no Selection/Architecture/Draft)
+
+## Evidence r3 integrated (15-finding independent-audit repair; r1/r2 preserved as history)
+
+- Compat r3 `execution/compat/evidence-source-class-projection/compat-package-r3/package.json` (SHA-256 `c2ef9064…`, 32 tasks: 25 passthrough + 7 projected SOCIAL/SECONDARY, ledger `projection-ledger-r3.json`)
+- Interactive r3 `execution/compat/evidence-source-class-projection/interactive-evidence-r3.json` (32 records, runner 2026-10-25T04:57:50Z, 15 multi-source bindings; Cards 20 changed + 12 mechanical, Views 32/32 rationale-rewritten)
+- Supplement r3 `external/evidence-supplement/evidence-authority-supplement-r3.json` (21 sources: 6 retained with GCP NULL correction + 15 new: Flint article+card, DeepInfer env/README/LICENSE, GitHub metrics, FLUX model+blog, Patch RENDERED_TEXT, MemT README, Kimi blog, Nemotron card, Ming README+LICENSE, Kohaku LICENSE)
+- Raw r3 `collectors/primary/runs/20261025T044100Z-muse-r3-evidence/raw/` (15 new bytes + prior pinned commits 9bd9cf24/e75c13d/028c1ea/da5dd97e + r4 Flint article reuse)
+- Evidence accepted (NEW) `evidence/v2/accepted/dbc27cd8d5323c802bfb77c6fb4d6c917ba745417191da945c5ae8dbbdbad900/evidence-accepted.json` (SHA-256 `061c2233…`, 32 PARTIAL)
+- Views accepted (NEW) `evidence/v2/views/accepted/7a8120533d6f666fb744303d8f828b680b4d8b6bc386ddf6904b6dee9e88963e/edition-views-accepted.json` (SHA-256 `5c3740ec…`, 20/11/1)
+- Materiality ledger `materiality-ledger-v2.json` (SHA-256 `31929cf5…`, 51 rows: 20/11/1/19; non-DROP rationale frozen tautology, editorial basis separate)
+- Completeness `profile-completeness-v2.json` (SHA-256 `abd6dadf…`, LIMITED + 6 residual limitations)
+- Editorial rationale `execution/source-intake/w43-evidence-r3-materiality-rationale.md` (32 + 51), crosswalk `execution/source-intake/w43-evidence-r3-source-claim-crosswalk.md`
+- r2 history snapshot: `execution/history/r2/` (ledger `6a5c2321…`, completeness `09e1a206…` + README/SHA256SUMS)
+- Closure `execution/reviews/muse-w43-independent-audit-closure-r3.md` (15 rows, FIXED 8 / RESOLVED 3 / LIMITATION 2 / DEFERRED 2); session `sessions/muse-w43-evidence-integrated-r3-20261025.md`; handoff `execution/SOL_EVIDENCE_MATERIALITY_COMPLETENESS_REVIEW_HANDOFF-r3-integrated.md` (`SOL_EVIDENCE_MATERIALITY_COMPLETENESS_REVIEW_READY_R3_INTEGRATED`)
+- Validators: supplement/compat/interactive/Evidence/Views/ledger/completeness PASS (frozen, agent-first override); adapter 5/5; negatives fail-closed (byte_count, binding, projection, forged acceptance, missed row, missing PDF; fused-URL split with Discovery immutability); stage precheck to `/tmp/w43-r3-stage-precheck.json` PASS (state untouched); exec-record new docs compliant (pre-existing Sol heading gaps only).
+- Canonical stage: `CANDIDATES_NORMALIZED` (acceptances materialized; advancement awaits independent Sol re-audit + trusted bridge; no ADVANCE_STAGE)
 
 ## Evidence r2 (first-party deepening + MemT archive repair; r1 preserved as history)
 

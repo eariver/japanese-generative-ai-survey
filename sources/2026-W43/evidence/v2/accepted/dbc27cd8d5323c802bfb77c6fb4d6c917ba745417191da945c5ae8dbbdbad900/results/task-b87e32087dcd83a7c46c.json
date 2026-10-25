@@ -1,0 +1,132 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W43",
+  "evidence_task_id": "evidence:2026-W43:29dd9729d8676386",
+  "basis": {
+    "task_sha256": "3e7ac01a33f1fac24b286ad0bcc95cf6243919d29f6d4dd6deb3631c1d78934e",
+    "screening_acceptance_sha256": "566cde3bd287dffb38d705c4b6c3fec71a98f67dea96016a009bd929923be48a",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "moss-report-announce",
+      "canonical_name": "MOSS-Image technical report arXiv announcement",
+      "entity_type": "PAPER",
+      "organization": "OpenMOSS",
+      "canonical_url": "https://arxiv.org/abs/2610.23374"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "moss-report-announce",
+    "artifact_type": "PAPER",
+    "canonical_name": "MOSS-Image technical report arXiv announcement",
+    "canonical_url": "https://arxiv.org/abs/2610.23374"
+  },
+  "temporal": {
+    "observed_at": "2026-10-25T04:57:50Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-10-19",
+        "subject_id": "moss-report-announce",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "primary:arxiv.org/abs/2610.23374",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "MOSS-Image technical report arXiv announcement (Oct 19 distro)",
+      "published_at": "2026-10-19",
+      "accessed_at": "2026-10-25T04:57:50Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "MOSS report announcement Oct19 IN is the announcement event only; research body Oct16 OUT (v1 submitted Oct16) is background unless new revision; Oct19 != new research discovery. README line != platform proof.",
+      "subject_id": "moss-report-announce",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Announce vs submission dates"
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Platform Web page independent view metadata-only; event_types publication vs announcement distinguished.",
+      "subject_id": "moss-report-announce",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Event-type split"
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Report body Oct16 OUT; announcement IN; substantive v1->v2 delta if any unchecked",
+      "subject_id": "moss-report-announce",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "Platform availability unproven beyond README line",
+      "subject_id": "moss-report-announce",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "report-pdf-body",
+        "status": "UNRESOLVED",
+        "finding": "Body Oct16 OUT; announcement Oct19 IN; new-research promotion prohibited.",
+        "subject_ids": [
+          "moss-report-announce"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "announcement-vs-submission-dates",
+        "status": "VERIFIED",
+        "finding": "Oct16 submission OUT vs Oct19 announce IN distinguished.",
+        "subject_ids": [
+          "moss-report-announce"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      "report-pdf-body: Body Oct16 OUT; announcement Oct19 IN; new-research promotion prohibited."
+    ],
+    "contradictions": []
+  }
+}

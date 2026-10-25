@@ -1,0 +1,143 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W43",
+  "evidence_task_id": "evidence:2026-W43:0714ceb7b0ee82be",
+  "basis": {
+    "task_sha256": "59d2b1223f7fd04c491bb619f9617e1c3f400e3dfef15cae067a664c5adae80f",
+    "screening_acceptance_sha256": "566cde3bd287dffb38d705c4b6c3fec71a98f67dea96016a009bd929923be48a",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "grok-ledger",
+      "canonical_name": "Grok X weekly intake ledger",
+      "entity_type": "OTHER",
+      "organization": "N/A (provenance)",
+      "canonical_url": "grok-task:weekly-x-2026-W43"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "grok-ledger",
+    "artifact_type": "OTHER",
+    "canonical_name": "Grok X weekly intake ledger",
+    "canonical_url": "grok-task:weekly-x-2026-W43"
+  },
+  "temporal": {
+    "observed_at": "2026-10-25T04:57:50Z",
+    "events": []
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "grok-task:weekly-x-2026-W43",
+      "source_class": "SOCIAL",
+      "title": "Grok X weekly intake ledger (Oct 24 observation)",
+      "published_at": null,
+      "accessed_at": "2026-10-25T04:57:50Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Grok X intake registration COMPLETE (contract fulfilled) but sensor PARTIAL: only 2 pinned original post IDs traceable; topic-level X signals lack exact IDs and must NOT be independently verified claims.",
+      "subject_id": "grok-ledger",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "SOCIAL_OBSERVATION",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "X raw 13425B SHA4571e0de; manifest COMPLETE/PARTIAL"
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Provenance binder for audit only; 7 derived source-type projections remain SOCIAL/SECONDARY and must NOT silently become primary; primary paper requires bound PDF supplement; binder NEVER story.",
+      "subject_id": "grok-ledger",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Projection ledger 7 mapped/25 passthrough"
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "X observation PARTIAL; most topic claims lack exact post IDs",
+      "subject_id": "grok-ledger",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "Binder NON_MATERIAL NEVER_STORY; Selection body material prohibited",
+      "subject_id": "grok-ledger",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-3",
+      "text": "Source-type inflation prohibited; no authority manipulation",
+      "subject_id": "grok-ledger",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "grok-raw-bytes-and-sha",
+        "status": "VERIFIED",
+        "finding": "Raw 13425B SHA4571e0de archived; registration COMPLETE.",
+        "subject_ids": [
+          "grok-ledger"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "pinned-post-ids",
+        "status": "VERIFIED",
+        "finding": "Only 2 pinned IDs exact; remainder topic-level without IDs.",
+        "subject_ids": [
+          "grok-ledger"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "independent-repro-status",
+        "status": "UNRESOLVED",
+        "finding": "No independent X-claim reproduction; sensor only.",
+        "subject_ids": [
+          "grok-ledger"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      "independent-repro-status: No independent X-claim reproduction; sensor only."
+    ],
+    "contradictions": []
+  }
+}
