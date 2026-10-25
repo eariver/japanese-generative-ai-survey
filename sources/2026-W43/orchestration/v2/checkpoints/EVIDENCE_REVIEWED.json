@@ -1,0 +1,66 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W43",
+  "from_state": "EVIDENCE_REVIEWED",
+  "to_state": "SELECTION_COMPLETE",
+  "checkpoints": [
+    "selection"
+  ],
+  "recorded_at": "2026-10-25T09:30:00Z",
+  "implementation": {
+    "repository_commit_sha": "f0b82346a16cac0eea091c39e1d6b8a786ca99ee",
+    "orchestrator_version": "survey-production-core-v2/0.15-postintegration-transport-thematic"
+  },
+  "contract": {
+    "pipeline_contract_version": "2.0-rc1",
+    "pipeline_contract_sha256": "ee89796245c22072cec98f34931180214a4928c24f399280793cd6420a4c8e71",
+    "quality_contract_version": "2.0-rc1",
+    "quality_contract_sha256": "b5b955d524fb438c0f1b2c9490bea1da2083e79028d67a55ca424bbfc20f2958",
+    "research_profile_version": "2.0-rc1",
+    "research_profile_sha256": "666f8a064b190ffd35216e26d6fdf2dd0fa932cac7b1b0d6448e262ded77b9a8",
+    "publication_profile_version": "2.0-rc1",
+    "publication_profile_sha256": "99adff93ff443e02bdcce639ce5fc4d4c959ee45a804da70efc4277db57fdddb"
+  },
+  "artifacts": [
+    {
+      "name": "candidate-matrix",
+      "path": "sources/2026-W43/candidate-matrix-v2.json",
+      "sha256": "16a6bbfe569b3215d05fbae7175b3ca04efc6c1846d28c48662245b68f854c3b"
+    },
+    {
+      "name": "candidate-selection",
+      "path": "sources/2026-W43/candidate-selection-v2.json",
+      "sha256": "50decd8697e1737d7adf6fe9f1ac0f4c7cc891353a7be09461b86e8b90beccea"
+    }
+  ],
+  "reviews": [
+    {
+      "check_id": "CORE_STAGE_CONTRACT",
+      "kind": "DETERMINISTIC",
+      "status": "PASS",
+      "executor": "survey_core_execution_bridge_v2",
+      "evidence": "Canonical Core stage contract validated for immutable request sol-w43-selection-r5-advance-20261025.",
+      "result": {
+        "path": "sources/2026-W43/execution/bridge-runs/sol-w43-selection-r5-advance-20261025/core-stage-contract.json",
+        "sha256": "ae7c907c4999737d2b7588332443eecb884dad580d333c07de3e564df9223e17"
+      }
+    },
+    {
+      "check_id": "SOL-W43-R5-SELECTION-EDITORIAL-CONDITIONAL",
+      "kind": "AGENT_EDITORIAL",
+      "status": "PASS",
+      "executor": "J-GAS editorial Sol",
+      "evidence": "Editorial Sol approved SELECTION Stage only under an explicitly user-authorized revised sequence: skip an additional independent post-r5 audit until after the trusted Architecture Stage. Native Selection is exact unchanged r3/r4/r5, 32 assignments SELECTED19/HOLD1/REJECT12, 19/19 one-time placements, 8 packages; independent r4 Selection review PASS_WITH_LIMITATIONS. Sol final user-workflow adjudication sources/2026-W43/execution/reviews/sol-w43-architecture-r5-stage-advance-editorial-acceptance-20261025.md. This is editorial authorization, NOT independent post-r5 verification or Human Gate approval.",
+      "result": null
+    },
+    {
+      "check_id": "MUSE-W43-R5-FROZEN-NATIVE-SELECTION",
+      "kind": "AGENT_RESEARCH",
+      "status": "PASS",
+      "executor": "Muse r5 frozen Core native runner",
+      "evidence": "Muse reports detached-worktree Frozen Core runner exit 0 19 selected / 8 packages / review readiness READY; Matrix SHA256 16a6bbfe569b3215d05fbae7175b3ca04efc6c1846d28c48662245b68f854c3b, Selection SHA256 50decd8697e1737d7adf6fe9f1ac0f4c7cc891353a7be09461b86e8b90beccea; scratch Stage precheck EVIDENCE_REVIEWED→SELECTION_COMPLETE PASS without state writes. See sources/2026-W43/execution/reviews/muse-w43-architecture-r5-postfix-3p2-closure-20261025.md. Sol independent CLI rerun NOT_EXECUTED; trusted Operator must independently validate and create actual receipt.",
+      "result": null
+    }
+  ],
+  "summary": "Trusted Selection-only advance of W43 EVIDENCE_REVIEWED→SELECTION_COMPLETE on 32/19/1/12 exact r5 Matrix+Selection. Do NOT advance Architecture in this request, leave Human Architecture/Publication Gates pending; full independent content audit scheduled after eventual real Architecture Stage."
+}
