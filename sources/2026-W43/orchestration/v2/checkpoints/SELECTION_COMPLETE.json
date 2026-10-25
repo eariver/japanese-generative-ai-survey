@@ -1,0 +1,79 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W43",
+  "from_state": "SELECTION_COMPLETE",
+  "to_state": "ARCHITECTURE_ESTABLISHED",
+  "checkpoints": [
+    "architecture"
+  ],
+  "recorded_at": "2026-10-25T09:33:04Z",
+  "implementation": {
+    "repository_commit_sha": "bf5d8d14897c14d42931de0604df64df9255643e",
+    "orchestrator_version": "survey-production-core-v2/0.15-postintegration-transport-thematic"
+  },
+  "contract": {
+    "pipeline_contract_version": "2.0-rc1",
+    "pipeline_contract_sha256": "ee89796245c22072cec98f34931180214a4928c24f399280793cd6420a4c8e71",
+    "quality_contract_version": "2.0-rc1",
+    "quality_contract_sha256": "b5b955d524fb438c0f1b2c9490bea1da2083e79028d67a55ca424bbfc20f2958",
+    "research_profile_version": "2.0-rc1",
+    "research_profile_sha256": "666f8a064b190ffd35216e26d6fdf2dd0fa932cac7b1b0d6448e262ded77b9a8",
+    "publication_profile_version": "2.0-rc1",
+    "publication_profile_sha256": "99adff93ff443e02bdcce639ce5fc4d4c959ee45a804da70efc4277db57fdddb"
+  },
+  "artifacts": [
+    {
+      "name": "architecture-review-attention",
+      "path": "sources/2026-W43/architecture-review-attention-v2.json",
+      "sha256": "7c3e4deb4a2cd077acac148c777aa2300f1f4dad45bbc4d0624a6b693528f12b"
+    },
+    {
+      "name": "architecture-review-summary",
+      "path": "sources/2026-W43/architecture-review-summary-v2.json",
+      "sha256": "ff21e7ae65ff9d48b6140787effa7f7da578f5762eadd2dd9e9bce279dc8e874"
+    },
+    {
+      "name": "issue-architecture",
+      "path": "sources/2026-W43/architecture-v2.json",
+      "sha256": "6b1b655ba70c2b161db4e3930a8901f6c791564cdb8232efb511998c12423e01"
+    }
+  ],
+  "reviews": [
+    {
+      "check_id": "CORE_STAGE_CONTRACT",
+      "kind": "DETERMINISTIC",
+      "status": "PASS",
+      "executor": "survey_core_execution_bridge_v2",
+      "evidence": "Canonical Core stage contract validated for immutable request sol-w43-architecture-r5-advance-20261025.",
+      "result": {
+        "path": "sources/2026-W43/execution/bridge-runs/sol-w43-architecture-r5-advance-20261025/core-stage-contract.json",
+        "sha256": "c1b00a4128b066713f6f3b7e9b057913db25d6e6835ae1e2f70088b2b0c06858"
+      }
+    },
+    {
+      "check_id": "SOL-W43-R5-ARCHITECTURE-EDITORIAL-CONDITIONAL",
+      "kind": "AGENT_EDITORIAL",
+      "status": "PASS",
+      "executor": "J-GAS editorial Sol",
+      "evidence": "After independently readback-checking r5 exact 8 package and 31 must-cover proposal, 32/19/1/12 Selection invariant, 19/19 placements, 68/68 Attention, and R4-010/011/012 corrected source semantics, editorial Sol conditionally authorizes the trusted Architecture Stage before a NEW independent post-establishment comprehensive audit, as explicitly directed by the Human Owner's revised review sequence. Sol editorial decision: sources/2026-W43/execution/reviews/sol-w43-architecture-r5-stage-advance-editorial-acceptance-20261025.md. This is NOT a post-r5 independent technical PASS or Human Gate approval. Unresolved publisher contradictions (Mistral TTS, FLUX endpoint/Elo), 5 LIMITED and source/bench gaps MUST be carried into that upcoming independent audit.",
+      "result": null
+    },
+    {
+      "check_id": "MUSE-W43-R5-NATIVE-ARCHITECTURE",
+      "kind": "AGENT_RESEARCH",
+      "status": "PASS",
+      "executor": "Muse frozen Core runner r5",
+      "evidence": "Muse completed unchanged frozen-native runner in isolated detached scratch: architecture 8 packages, 31 must-cover, Matrix/Selection unchanged 32 assignments with SELECTED19/REJECT12/HOLD1, selected placements 19/19, attention 68/68 limit100, architecture SHA256 6b1b655ba70c2b161db4e3930a8901f6c791564cdb8232efb511998c12423e01, summary SHA256 ff21e7ae65ff9d48b6140787effa7f7da578f5762eadd2dd9e9bce279dc8e874, attention SHA256 7c3e4deb4a2cd077acac148c777aa2300f1f4dad45bbc4d0624a6b693528f12b. R4-010 timestamp real, R4-011 Elo separated +47/+50, R4-012 keyframes GA UNRESOLVED, primary publisher PR attribution and 9 prior + 3 new semantic negatives PASS according to Muse. Proof: sources/2026-W43/execution/reviews/muse-w43-architecture-r5-postfix-3p2-closure-20261025.md. Sol did not independently rerun full Core Python tests; trusted Operator independently validates.",
+      "result": null
+    },
+    {
+      "check_id": "CORE-TRUSTED-SELECTION-RECEIPT-W43-R5",
+      "kind": "AGENT_EDITORIAL",
+      "status": "PASS",
+      "executor": "J-GAS editorial Sol (trusted receipt readback)",
+      "evidence": "Prior separate Selection Trusted Bridge request sol-w43-selection-r5-advance-20261025 completed Actions run 40180961257 SUCCESS, trusted generated commit bd381bb83d46a65eeaf92cfa8d5d9205723fd4b2, receipt PASS under sources/2026-W43/execution/bridge-runs/sol-w43-selection-r5-advance-20261025/receipt.json, stage contract PASS EVIDENCE_REVIEWED→SELECTION_COMPLETE, machine selection checkpoint passed, architecture pending, human gates both pending. This review records readback, NOT substituted Human approval.",
+      "result": null
+    }
+  ],
+  "summary": "Advance W43 SELECTION_COMPLETE→ARCHITECTURE_ESTABLISHED on full r5 8-package/31-section PROPOSED Architecture, Summary READY, 68/68 Attention. This is a **machine Stage** to establish the architecture, NOT Human Architecture approval. Preserve Human Architecture Review pending and Publication Preview pending. STOP before Draft; commission independent Sol comprehensive read-only post-establishment audit before asking the Human Owner to approve."
+}
