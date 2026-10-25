@@ -2,6 +2,13 @@
 
 This is the current human-readable navigation record for the edition. Machine lifecycle authority remains `sources/2026-W43/production-state.json`.
 
+## Architecture r6 — R5-N01/N02/N03 governed correction complete (2026-10-25, no Stage)
+
+**Current status: `SOL_W43_ARCHITECTURE_R6_CORRECTION_READY_FOR_SOL_REVIEW / AWAITING_INDEPENDENT_SOL_R6_RECHECK / NO_STAGE_ADVANCE`.**
+- Contract `execution/instructions/sol-w43-architecture-r6-post-stage-3p2-governed-regeneration-20261025.md` executed as ONE governed correction: frozen `invalidate-pending-gate` (ARCHITECTURE_REVIEW → EVIDENCE_REVIEWED, R5-N01/02/03 reason, `human_decision=false`, record `architecture-invalidation-0001.json` validated, exit 0) then narrow R5-N01 (separate ratio/percent denominators) + R5-N02 (uninverted GH 15:18:14Z/npm 15:21:49Z with independent publisher fetches) + R5-N03 (CVE qualified wording) — Architecture wording/provenance only, no Human REQUEST_CHANGES/approval generated.
+- Outputs: Matrix `16a6bbfe…` (=r3/r4/r5), Selection `50decd86…` (=, 19/1/12, 19/19 placed), Architecture `6b1b655b…→7d8f0ea5…`, Summary `ff21e7ae…→38c17ecc…`, Attention `7c3e4deb…` (=, 68/68 limit-100), input-r6 `208b526b…` (runner `2026-10-25T11:10:19Z` real `date -u`), audit-r6 `d27adb84…`. r5-established archive `execution/history/selection-architecture-r5-established/` (7 files + README/SHA256SUMS, cmp-verified); r3/r4 immutable. Frozen runner exit 0 → 19/8/READY in detached scratch (invalidated EVIDENCE_REVIEWED bytes); stage precheck EVIDENCE_REVIEWED→SELECTION_COMPLETE PASS (no writes); second bridge NOT run; 9+3 prior + 3 new negatives all PASS.
+- Invalidation record + TanStack crosswalk `execution/source-intake/w43-r6-tanstack-publisher-timestamp-crosswalk.md` (GH API `published_at` + npm `time["1.0.0"]`, fetched 2026-10-25); closure `execution/reviews/muse-w43-architecture-r6-post-audit-3p2-closure-20261025.md`; handoff `execution/SOL_W43_ARCHITECTURE_R6_POST_AUDIT_REPAIR_HANDOFF.md`; session `sessions/muse-w43-architecture-r6-post-audit-20261025.md`. Evidence/Views/ledger/completeness, Discovery/Screening, receipts, Core/main/Gates untouched (prior receipts preserved as history). State `EVIDENCE_REVIEWED` (governed), selection/architecture pending, both Human Gates pending. No ADVANCE/Bridge/Human/Draft/PDF. Next (Sol-owned): two separate trusted ADVANCE requests then first authentic Human Architecture Review.
+
 ## Architecture r5 — R4-010/011/012 postfix integrated repair complete (2026-10-25, no Stage)
 
 **Current status: `SOL_W43_ARCHITECTURE_R5_POSTFIX_INDEPENDENT_RECHECK_READY / AWAITING_INDEPENDENT_SOL_R5_RECHECK / NO_STAGE_ADVANCE`.**
