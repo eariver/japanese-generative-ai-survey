@@ -2,7 +2,16 @@
 
 This is the current human-readable navigation record for the edition. Machine lifecycle authority remains `sources/2026-W43/production-state.json`.
 
-## Editorial handoff — independent audit integrated r3 complete (2026-10-25)
+## Editorial handoff — cutoff/authority feasibility ready r1 (2026-10-25, investigation only)
+
+**Current status: `SOL_W43_CUTOFF_AND_AUTHORITY_DECISION_READY_R1 / NO_STAGE_ADVANCE / NO_CORE_CHANGE`.**
+- Independent r3 re-audit: old W43-IA-001…015 **PASS 10 / LIMITED 5 / FAIL 0**; new P1 **IA-016** GitHub Metrics OUT 23:42:03Z (+1h42m03s), P2 IA-017/018 + nine midnight placeholders; overall **REQUEST_CHANGES / NO EVIDENCE_REVIEWED**.
+- Clock audit `execution/source-intake/w43-cutoff-oct23-event-clock-audit-r1-20261025.md`: Metrics OUT; Teams IN 21:29:58Z; Kimi IN via X 17:15:24Z; Nemotron IN 07:00Z/14:11Z/15:12–19:03Z; TanStack blog UNRESOLVED (Oct22 proxies IN); Securing IN-caveat/strict-UNRESOLVED (RSS 10:00Z); Vercel/Ollama UNRESOLVED composite; nine `T00:00Z` = placeholders.
+- Feasibility `execution/reviews/muse-w43-prehuman-upstream-authority-feasibility-r1-20261025.md`: A NOT_SUPPORTED (forward-only +1, no INVALIDATE_STAGE, pending-gate only) / B insufficient (downstream label cannot cure upstream false IN) / C only-lawful-not-executed → `AUTHORITY_RESTORATION_UNSUPPORTED_UNDER_FROZEN_CORE`; IA-017 mapping + IA-018 19/13 erratum.
+- Handoff `execution/SOL_W43_UPSTREAM_AUTHORITY_DECISION_HANDOFF-r1.md`; session `sessions/muse-w43-cutoff-authority-feasibility-r1-20261025.md`. State still `CANDIDATES_NORMALIZED`, Gates pending; accepted/State/Checkpoint/Core/Human bytes unchanged; no Bridge/ADVANCE/Selection/Architecture/Draft/PDF.
+- Await Sol authority decision + genuine operator/Core-maintenance path before any canonical rerun.
+
+## Prior handoff — independent audit integrated r3 complete (2026-10-25)
 
 **Current status: `SOL_EVIDENCE_MATERIALITY_COMPLETENESS_REVIEW_READY_R3_INTEGRATED / AWAITING_INDEPENDENT_SOL_RE-AUDIT / NO_STAGE_ADVANCE`.**
 - Integrated r3 executed sole contract `execution/instructions/sol-w43-evidence-r3-integrated-independent-audit-20261025.md` (W43-IA-001…015). P1 8/8 FIXED, P2 7/7 disposed (RESOLVED/LIMITATION/DEFERRED, no fake closure). No `ADVANCE_STAGE`, Selection, Architecture, Draft, PDF, Human Gate action.
@@ -94,6 +103,7 @@ This is the current human-readable navigation record for the edition. Machine li
 - `sessions/muse-w43-evidence-authority-r1-20261025.md` (evidence authority/materiality/completeness r1; 32 cards/views + ledgers; bounded to `SOL_EVIDENCE_MATERIALITY_COMPLETENESS_REVIEW_READY_R1`)
 - `sessions/muse-w43-evidence-authority-r2-20261025.md` (evidence authority r2 deepening; 32 cards/views re-accepted; bounded to `SOL_EVIDENCE_MATERIALITY_COMPLETENESS_REVIEW_READY_R2`)
 - `sessions/muse-w43-evidence-integrated-r3-20261025.md` (evidence r3 integrated 15-finding repair; 32/32 re-accepted + 51/3; bounded to `SOL_EVIDENCE_MATERIALITY_COMPLETENESS_REVIEW_READY_R3_INTEGRATED`; no ADVANCE_STAGE)
+- `sessions/muse-w43-cutoff-authority-feasibility-r1-20261025.md` (cutoff/authority feasibility r1; read-only clocks + A/B/C; bounded to `SOL_W43_CUTOFF_AND_AUTHORITY_DECISION_READY_R1`; no Core/Stage change)
 
 ## Discovery (proposed, not accepted)
 
@@ -212,7 +222,7 @@ This is the current human-readable navigation record for the edition. Machine li
 
 ## Final disposition
 
-`SOL_EVIDENCE_MATERIALITY_COMPLETENESS_REVIEW_READY_R3_INTEGRATED` (evidence r3 integrated 15-finding repair materialized, 32 cards/views re-accepted, awaiting independent Sol content re-audit; no ADVANCE_STAGE, no Selection/Architecture/Draft)
+`SOL_W43_CUTOFF_AND_AUTHORITY_DECISION_READY_R1` (cutoff/authority feasibility r1 complete; Metrics OUT confirmed, Oct23 clocks tabled, A/B/C decided UNSUPPORTED without separate Core/operator path; no canonical repair executed; await Sol authority decision; no ADVANCE_STAGE)
 
 ## Evidence r3 integrated (15-finding independent-audit repair; r1/r2 preserved as history)
 
