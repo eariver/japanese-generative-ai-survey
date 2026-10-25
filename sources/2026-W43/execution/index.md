@@ -2,6 +2,13 @@
 
 This is the current human-readable navigation record for the edition. Machine lifecycle authority remains `sources/2026-W43/production-state.json`.
 
+## Architecture r4 — ISA-001…009 integrated repair complete (2026-10-25, no Stage)
+
+**Current status: `SOL_W43_ARCHITECTURE_R4_INDEPENDENT_ISA_REVIEW_READY / AWAITING_INDEPENDENT_SOL_R4_REAUDIT / NO_STAGE_ADVANCE`.**
+- Contract `execution/instructions/sol-w43-architecture-r4-comprehensive-isa-repair-20261025.md` executed as ONE integrated repair: P1 ISA-001 (DeepInfer排他構成) + ISA-002 (Voxtral UNRESOLVED_VENDOR_DOC_CONFLICT, no unified number) + P2 ISA-003…009 (8B/4B + 39.8B/2.5B conventions + license split; FLUX recomputation labels; Decisions per-request/write-billed/regional; 68→separate 19-risk ledger; P8 ESTIMATE plan; Japanese日英併記; availability status columns).
+- Outputs: Matrix `16a6bbfe…` (=r3), Selection `50decd86…` (=r3, 19/1/12, 19/19 placed), Architecture `529ce4b3…→9ab37dd6…`, Summary `26817906…→c8bb6e2e…`, Attention `7c3e4deb…` (=r3, 68/68 limit-100), input-r4 `67d0f39f…`, audit-r4 `ff2267e2…`. r3 archive `execution/history/selection-architecture-r3/` (7 files, cmp-verified). Frozen runner exit 0 → 19/8/READY in detached scratch @`db78839bd…`; stage precheck EVIDENCE_REVIEWED→SELECTION_COMPLETE PASS (no writes); second bridge NOT run; 9 negatives + P4 divisions + 37.0 budget verified.
+- Closure `execution/reviews/muse-w43-independent-isa-closure-architecture-r4-20261025.md`; risk ledger `execution/reviews/w43-human-selected-19-risk-register-r4.md`; crosswalk `execution/source-intake/w43-independent-isa-primary-source-conflict-crosswalk-r4.md`; handoff `execution/SOL_W43_ARCHITECTURE_R4_INDEPENDENT_ISA_REVIEW_HANDOFF.md`; session `sessions/muse-w43-architecture-independent-isa-r4-20261025.md`. Evidence r4/Views/ledger/completeness, Discovery/Screening, raw, State/Checkpoints, Core/main/Gates untouched. No ADVANCE/Bridge/Human/Draft/PDF. Both trusted bridges NO/NO, both Human Gates pending.
+
 ## Editorial hold — independent comprehensive audit resolved to Architecture r4 repair (2026-10-25)
 
 **Current status: `SOL_INDEPENDENT_9_FINDING_ADJUDICATION / SELECTION_PASS_WITH_LIMITATIONS / ARCHITECTURE_REQUEST_CHANGES / BOTH_TRUSTED_STAGE_ADVANCES_ON_HOLD`.**
