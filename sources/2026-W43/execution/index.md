@@ -2,7 +2,15 @@
 
 This is the current human-readable navigation record for the edition. Machine lifecycle authority remains `sources/2026-W43/production-state.json`.
 
-## Editorial handoff — Selection + proposed Architecture ready r1 (2026-10-25, no Stage)
+## Editorial handoff — Architecture r2 substantive ready (2026-10-25, no Stage)
+
+**Current status: `SOL_W43_ARCHITECTURE_R2_SUBSTANTIVE_REVIEW_READY / AWAITING_INDEPENDENT_SOL_R2_AUDIT / NO_STAGE_ADVANCE`.**
+- Sol r1: Selection PASS_WITH_LIMITATIONS, Architecture REQUEST_CHANGES (SA-001..006). R2 retains exact 19/1/12 + roles (matrix/selection byte-identical) and deepens 8 packages (P1 Kimi API-vs-weights headline, consistent 38/44 budget est 37.0, numbered subsections + tables/figures + MUST-NOT lists, JA fixes, DEPTH_LIMITED rule).
+- Outputs: matrix `16a6bbfe…` (=), selection `50decd86…` (=), architecture NEW (8 packages), summary READY (NEW), attention 68/68 limit-100 untruncated (`7c3e4deb…`, was 50/68); archived input NEW (32 assignments + r2 architecture) + audit reconciled. Stage scratch `EVIDENCE_REVIEWED→SELECTION_COMPLETE` PASS (no writes); `SELECTION_COMPLETE→ARCHITECTURE_ESTABLISHED` NOT run.
+- Reconciliation `execution/reviews/muse-w43-architecture-r2-depth-and-basis-reconciliation-20261025.md` (SA closure + budgets + SHA manifest + 32/19/68 + negatives); handoff-r2; session r2; crosswalk r1 retained (bindings unchanged); history `selection-architecture-r1/` (r1 5 JSON + input + audit). Evidence r4/Views/ledger/completeness, Discovery/Screening, raw, State/Checkpoints, Core/main/Gates untouched.
+- State still `EVIDENCE_REVIEWED`, selection/architecture pending, Gates pending. Await independent Sol r2 audit; then (only if PASS) two separate trusted bridges; stop at pending Human Architecture Review for the real owner.
+
+## Prior handoff — Selection + proposed Architecture ready r1 (2026-10-25, no Stage)
 
 **Current status: `SOL_W43_SELECTION_AND_ARCHITECTURE_PROPOSAL_REVIEW_READY_R1 / AWAITING_INDEPENDENT_SOL_AUDIT / NO_STAGE_ADVANCE`.**
 - Native Selection r1 + proposed deep Architecture (frozen Core unchanged): matrix 32 rows; selection ESTABLISHED (19 SELECTED / 1 HOLD moss-trainer with GPU/VRAM gate / 12 REJECT = 10 CONTEXT + Metrics/Grok NON_MATERIAL; Metrics POST_CUTOFF exclusion + Grok NEVER story; anti-padding REJECTs); architecture PROPOSED (8 packages P1 open-weights → P8 devtooling, target 30 / max 34 est 29.0, Japanese thesis/titles, must-cover + boundaries, no empty placeholder); summary READY_FOR_ARCHITECTURE_REVIEW; attention.
@@ -154,6 +162,7 @@ This is the current human-readable navigation record for the edition. Machine li
 - `sessions/muse-w43-cutoff-authority-feasibility-r1-20261025.md` (cutoff/authority feasibility r1; read-only clocks + A/B/C; bounded to `SOL_W43_CUTOFF_AND_AUTHORITY_DECISION_READY_R1`; no Core/Stage change)
 - `sessions/muse-w43-postcutoff-evidence-r4-20261025.md` (post-cutoff r4 forward-only; 32/32 + 51/3, Metrics OUT excluded; bounded to `SOL_EVIDENCE_MATERIALITY_COMPLETENESS_REVIEW_READY_R4_POSTCUTOFF`; no ADVANCE)
 - `sessions/muse-w43-selection-proposed-architecture-r1-20261025.md` (Selection r1 + proposed deep Architecture; 19/1/12 + 8 packages; bounded to `SOL_W43_SELECTION_AND_ARCHITECTURE_PROPOSAL_REVIEW_READY_R1`; no Stage/Human approval)
+- `sessions/muse-w43-proposed-architecture-r2-20261025.md` (Architecture r2 depth/terminology repair; 19 kept, 8 packages deepened, 68/68; bounded to `SOL_W43_ARCHITECTURE_R2_SUBSTANTIVE_REVIEW_READY`; no Stage/Human approval)
 
 ## Discovery (proposed, not accepted)
 
@@ -272,7 +281,7 @@ This is the current human-readable navigation record for the edition. Machine li
 
 ## Final disposition
 
-`SOL_W43_SELECTION_AND_ARCHITECTURE_PROPOSAL_REVIEW_READY_R1` (Selection r1 + proposed deep Architecture complete; 19/1/12 + 8 packages P1–P8, target 30/max 34 est 29.0; Metrics/Grok excluded; P1 corrections intact; frozen Core validated; awaiting independent Sol audit; no ADVANCE_STAGE, no Human approval, no Draft/PDF)
+`SOL_W43_ARCHITECTURE_R2_SUBSTANTIVE_REVIEW_READY` (Architecture r2 depth/terminology repair complete; 19 kept, 8 packages 38/44 est 37.0, 68/68 attention; SA-001..006 closed; frozen Core validated in isolated scratch; awaiting independent Sol r2 audit; no ADVANCE_STAGE, no Human approval, no Draft/PDF)
 
 ## Evidence r3 integrated (15-finding independent-audit repair; r1/r2 preserved as history)
 
