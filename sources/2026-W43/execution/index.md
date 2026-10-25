@@ -2,6 +2,13 @@
 
 This is the current human-readable navigation record for the edition. Machine lifecycle authority remains `sources/2026-W43/production-state.json`.
 
+## Architecture r5 — R4-010/011/012 postfix integrated repair complete (2026-10-25, no Stage)
+
+**Current status: `SOL_W43_ARCHITECTURE_R5_POSTFIX_INDEPENDENT_RECHECK_READY / AWAITING_INDEPENDENT_SOL_R5_RECHECK / NO_STAGE_ADVANCE`.**
+- Contract `execution/instructions/sol-w43-architecture-r5-independent-postfix-3p2-integrated-repair-20261025.md` executed as ONE bounded postfix: R4-010 real runner provenance (`generated_at=2026-10-25T09:22:08Z` via `date -u`, run 09:22:34Z→09:23:24Z UTC; r4 12:00Z anomaly preserved untouched in history) + R4-011 versioned Elo (+47 blog snapshot vs +50 page/PR with 1139−1089=50, unification ban) + R4-012 qualified keyframes (text/image confirmed; keyframes = Oct19 PR assertion + blog link vs Oct18 FAQ Two-at-launch → UNRESOLVED, live unverified) + ISA-004 PR publisher-first-party + RENDERED_ONLY + 22x lower-bound.
+- Outputs: Matrix `16a6bbfe…` (=r4/r3), Selection `50decd86…` (=r4/r3, 19/1/12, 19/19 placed), Architecture `9ab37dd6…→6b1b655b…`, Summary `c8bb6e2e…→ff21e7ae…`, Attention `7c3e4deb…` (=r4/r3, 68/68 limit-100), input-r5 `5b7b6c1b…`, audit-r5 `94912953…`. r4 archive `execution/history/selection-architecture-r4/` (7 files + anomaly README + SHA256SUMS, cmp-verified); r3 archive immutable. Frozen runner exit 0 → 19/8/READY in detached scratch @`fe02b29a…`; stage precheck EVIDENCE_REVIEWED→SELECTION_COMPLETE PASS (no writes); second bridge NOT run; 9 prior + 3 new negatives all PASS.
+- Closure `execution/reviews/muse-w43-architecture-r5-postfix-3p2-closure-20261025.md`; crosswalk `execution/source-intake/w43-r5-fal-official-source-conflict-crosswalk.md` (blog/product/PR rendered 2026-10-25, no new canonical raw); handoff `execution/SOL_W43_ARCHITECTURE_R5_POSTFIX_INDEPENDENT_RECHECK_HANDOFF.md`; session `sessions/muse-w43-architecture-r5-postfix-20261025.md`. Evidence r4/Views/ledger/completeness, Discovery/Screening, raw, State/Checkpoints, Core/main/Gates untouched. No ADVANCE/Bridge/Human/Draft/PDF. Both trusted bridges NO/HOLD, both Human Gates pending.
+
 ## Architecture r4 — ISA-001…009 integrated repair complete (2026-10-25, no Stage)
 
 **Current status: `SOL_W43_ARCHITECTURE_R4_INDEPENDENT_ISA_REVIEW_READY / AWAITING_INDEPENDENT_SOL_R4_REAUDIT / NO_STAGE_ADVANCE`.**

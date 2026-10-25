@@ -1,0 +1,369 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W43",
+  "research_profile": "WEEKLY",
+  "publication_profile": "WEEKLY_MAGAZINE",
+  "status": "PROPOSED",
+  "basis": {
+    "production_profile_sha256": "4447d25ea73ab76062028e63f91065f80c9b93886a542356c50ae54bfb10b5af",
+    "profile_completeness_sha256": "77841fd29e25d426a76e1c47e611c8026ff3ed5c27cfd89cb3c1307eb8e5da97",
+    "materiality_ledger_sha256": "c4953bc81774082435a3f84159bc58cbc91819709934b6d8d9f72661427aeaae",
+    "candidate_matrix_sha256": "16a6bbfe569b3215d05fbae7175b3ca04efc6c1846d28c48662245b68f854c3b",
+    "candidate_selection_sha256": "50decd8697e1737d7adf6fe9f1ac0f4c7cc891353a7be09461b86e8b90beccea"
+  },
+  "editorial_thesis": "W43は frontier 能力の到達と配備現実の交差点である:公開予定の重み(Kimi は API 先行・重み Nov4 FUTURE)と、すでに動かせるモデル(Flint/Nemotron の重み・ライセンス)を対照し、推論と記憶の基盤(DeepInfer/MemT)、働くエージェントの権限境界(Duet/1Password/auto-mode)、評価の手続き(Bio/low-resource/Patch/Securing) — 開発基盤(Decisions/TanStack/DeepSeek)と音声・映像の様式(Ming/Voxtral/Eleven/FLUX)がその両輪となる。「オープンウェイト」と「オープンソース」を混同せず、ベンダー主張と独立検証を峻別し、時刻・ライセンス・可用性の境界を明示した上で、仕組みの新規性で読む一冊とする。",
+  "architecture_goals": [
+    "仕組みの新規性で束ね、企業発表の羅列にしない（エージェントの権限境界、公開予定と利用可能な重み、推論・記憶の機構、安全の応急と訓練隔離、評価プロトコル）。",
+    "ベンダー測定と独立検証を峻別し、分母・ハーネス・装置・ライセンス・時刻を出典付きで明示する。測定器・判定器・学習器の来歴（vendor/author/third-party）を混同しない。",
+    "薄い記事を量産しない:各パッケージに機構・比較・限界の必須節と表・図を設定し、根拠の足りない候補はHOLD/REJECTに退ける。DEPTH_LIMITED 節は短縮・注記化し水増ししない。",
+    "POST_CUTOFF の Metrics と Grok 監査 binder を W43 記事から除外し、来週ポインタと監査証跡に留める。",
+    "日付のみ・midnight 仮置き・融合 URL・未取得原表を記事引用にしない（正確な supplement ID と抜粋・バイト種別で束ねる）。",
+    "日本語は自然で精密な技術用語に正す（符号化→コード生成・コーディング、辺境→先端、積上げ→安全対策の積層）。Gated DeltaNet-2・Mixture-of-Storage・context biasing・cpWER・effective parametersは初出で日英併記。ベンダー最速等の断定表現は帰属付きに限り、英語の技術識別子は原文のまま残す。"
+  ],
+  "page_plan": {
+    "target_pages": 38,
+    "max_pages": 44,
+    "notes": "8パッケージ配分見積:P1 5.0+P2 6.0+P3 4.5+P4 3.0+P5 4.5+P6 4.0+P7 4.5+P8 3.5=35.0、冒頭・方法論・出典・索引2.0で計37.0。目標38・上限44は見積であり保証ではない（PDF頁の確約ではなく編集計画）。技術密度が必要な P2/P5/P7/P8 を優先増枠し、根拠なき水増しは禁止。P8 3.5頁はESTIMATE — 決定API例1件＋安定/実験対照＋更新差分短表を優先、実測なき優劣表・PR長写し禁止、不足時は囲み縮約。r1(29.0)からの増分は必須節の細分化による。"
+  },
+  "packages": [
+    {
+      "package_id": "P1",
+      "title": "公開予定の重みと、すでに動かせるモデル:Kimi の API 先行と Flint/Nemotron の重み・ライセンス",
+      "purpose": "フロンティア級の公開予定(Kimi は API のみ先行)と手元で動くコード生成モデル(code generation、MoE Flint)と小型効率モデル(Nemotron)を、構成・文脈・学習・評価・重みとライセンスの可用性で一体として読む。「オープンウェイト」(重み公開)と「オープンソース」(OSI 承認等)を混同しない。",
+      "primary_candidate_ids": [
+        "candidate:2026-W43:98f3617da0de4365",
+        "candidate:2026-W43:4cea29268a132917"
+      ],
+      "supporting_candidate_ids": [
+        "candidate:2026-W43:8f140062cf7044ea"
+      ],
+      "must_cover_requirements": [
+        "§1.1 Kimi:API 先行の事実(17:15:24Z・4h44m36s・post ID・$2/$10)と Nov4 FUTURE の区別 — 表:公開状態×時点 [X 原文/supplement 041ec6…/blog]",
+        "§1.2 構成の対比:MoE(2.8T/104B は X のみ・blog は 3T 級 / Flint 39.8B total・~2.5B active per token[出力head含み・入力embedding除外、active body約2.2B]・49 層・256 experts・SWA-513 / Nemotron 8B total・4B effective[計数規約非一致、等価比較禁止])と語彙・打切り・64K〜1M — 表:total/effective/active/ctx[計数方法を列見出しに明記]",
+        "§1.3 文脈長の運用意味:1M / 512K 対応・256K 推奨・262144 設定・64K の区別 — 図:対応/推奨/設定の三層",
+        "§1.4 学習・量子化の手続き(Kimi のサイバー除去と RL / Flint の Eureka 探索と 4bit lm_head / Nemotron のフィルタ)とベンチ(分母・harness・温度・top-p・試行平均)の帰属 — 表:bench×harness×分母",
+        "§1.5 重み可用性とライセンス(API live、Nov4重み FUTURE[発表・weights配布・再現可能を別status]、HF 14:20/15:12–19:03、重み約款OpenMDW-1.1[OSI未検証]と基盤Gemma-4 Apache-2.0を混同禁止)と価格・API 条件 — 表:可用性×時刻×約款[発表/プレビュー/GA/重み配布/再現を別列]"
+      ],
+      "boundaries": [
+        "Kimi の重みは未公開で局所実行・hash 未検証、ベンチはベンダー harness",
+        "Flint の速度はベンダー条件(短文脈・128K 平均・prefill 除外)で独立未再現",
+        "2.8T/104B を blog の根拠にしない、OpenMDW を OSI 認定に読まない",
+        "DRAFT MUST NOT: Kimi 重みバイト・sha 検証済みと書かない／Nov4 を既公開と書かない／Flint を最速と断定しない",
+        "出典種別: Kimi X=PRIMARY_RAW+S OCIAL 観測 / blog=PRIMARY_METADATA(日付のみ) / Flint 記事・カード=PRIMARY_RAW / HF 時刻=PRIMARY_METADATA / ベンチ=VENDOR_BENCH / 重み未検証=UNVERIFIED",
+        "Nemotron 8B total/4B effective(公式モデルカード:Total 8B, effective 4B)・Flint 39.8B total/~2.5B active per token(出力head含み・入力embedding除外、active body約2.2B)は計数規約非一致 — effective/active/totalの等価比較禁止、列見出しに規約明記",
+        "Kimi X 2026-10-23T17:15:24Z IN・重みNov4 FUTURE — 発表/weights配布/再現可能を別status、Nov4を既公開と書かない",
+        "OpenMDW-1.1(重み約款)と基盤Gemma-4 Apache-2.0を混同禁止 — OSI承認の断定禁止",
+        "Weights unavailable until Nov 4: no local run or hash verification",
+        "2.8T/104B X-only; blog says 3T-class — must not cite blog for 2.8T/104B",
+        "Vendor harnesses/denominators; API pricing != weight-license terms",
+        "weights-release-by-Nov-4: Weights promised Nov 4 FUTURE; not published at observation.",
+        "independent-local-run: No local run before weights; early API/AA vendor-/third-party-reported.",
+        "cyber-removal-scope: Removal described; independent scope unconfirmed.",
+        "Vendor benchmarks/tok/s unreproduced; 128K apparatus vendor-described only",
+        "Weight SHA not independently re-hashed; HF API body from r4 reused",
+        "Eureka automation vendor-described; no training reproduction",
+        "benchmark-denominators-and-harnesses: Harnesses/temp/top-p/top-k/attempts documented; independent run absent.",
+        "independent-tokens-per-second-repro: 125+/150+ short-context 128K-avg prefill-excluded vendor-claimed; no independent measurement.",
+        "OpenMDW-1.1 OSI approval must NOT be assumed; license text read, OSI registry unchecked — UNVERIFIED",
+        "Weight/config bytes KYC: card read, raw weight hash not re-hashed",
+        "Benchmarks vendor-measured; independent run absent",
+        "tech-report-pdf: Report provenance bounded; full equations not line-reviewed.",
+        "benchmark-table-provenance: Tables vendor-measured; independent check absent.",
+        "openmdw-osi-status: OSI recognition UNVERIFIED by design; no categorical claim; URL attempted card only."
+      ],
+      "drafting_order": 1,
+      "profile_extensions": {
+        "page_allocation": "5.0",
+        "editorial_note": "巻頭。3 候補の対比表が要。SA-001 対応:API 先行と重み公開の区別を明示。"
+      },
+      "publication_extensions": {}
+    },
+    {
+      "package_id": "P2",
+      "title": "推論と記憶の基盤:DeepInfer と MemT の機構",
+      "purpose": "配備の現場(推論枠組みの切出し)と記憶の基盤(動的記憶 dynamic memory[Gated DeltaNet-2]・外部記憶 external memory[Mixture-of-Storage])を、核・並列・ライセンスの実装条件で読む。64 頁級 MemT 論文は式の精読ではなく機構・評価・限界の特定に留める。",
+      "primary_candidate_ids": [
+        "candidate:2026-W43:409f6833c40c6428",
+        "candidate:2026-W43:b09782ca929b9fa5"
+      ],
+      "supporting_candidate_ids": [],
+      "must_cover_requirements": [
+        "§2.1 DeepInfer の核:FlashMLA/DeepGEMM/DeepEP/TileKernels/DeepSelect/TileLang、注意の DP/均衡 CP、MoE の EP+EPLB、DSpark と確信度予定検証 — 表:核×役割",
+        "§2.2 推測デコード系 DSpark可変長MTP(DEEPINFER_ENABLE_MTP_VARLEN=1、DEEPINFER_USE_NEXTN_DECODE既定5・0で無効、9bd9cf24固定)と決定的サンプリング系(DEEPINFER_ENABLE_MTP_VARLEN=0＋DEEPINFER_BATCH_INVARIANT=1＋seq_seed固定・SamplingParams、NVIDIA限定)は排他的構成例 — 同時有効の記述禁止[MUST-NOT] — コード抜粋 [README・environ.py 8738B]",
+        "§2.3 実装条件:SM100+Ascend950・toolchain・1017 checkpoint・4xSM100 prefill+64 decode bench・除外(KV・VE/prefill/decode 分離・cross-DP 均衡)の明示",
+        "§2.4 MemT の記憶:Gated DeltaNet-2(ゲート付きデルタネット2、Gated DeltaNet-2)・Mixture-of-Storage(混合ストレージ記憶、Mixture-of-Storage)・34B token・二段階+事後、Nano(Qwen3.6-35B-A3B)・Flash(DeepSeek-V4-Flash)、11 bench(Flash 1st/Nano 2nd、vendorのみ)、1.86x end-to-end 128K・66x 持続 vs KV cache(分母相違) — 表:bench×分母×条件",
+        "§2.5  Paper と README の分離(paper=CC BY-NC-SA・software=PolyForm Noncommercial・第三者 MIT・重み除外、paper に条項なし)と SGLang snapshot・save/restore — 図:ライセンス対応",
+        "§2.6 限界:vendor bench のみ、独立実行・供用試験なし、65 頁の式・ablation 未精読、商用可否の断定なし — DEPTH_LIMITED 注記"
+      ],
+      "boundaries": [
+        "ベンダー bench のみで独立実行・供用試験なし、65 頁の式・ablation 未精読",
+        "paper にライセンス条項なし(README のみが典拠)、商用可否の断定なし",
+        "9bd9cf24 以降の main 追随なし、特許・商標の審査なし",
+        "DRAFT MUST NOT: 独立測定値として bench を書かない／式の再導出があると書かない／ライセンスを paper 典拠にしない",
+        "出典種別: environ.py・README・LICENSE・MemT README=PRIMARY_RAW / paper PDF=PRIMARY_RAW(条項除く) / bench=VENDOR_BENCH",
+        "DSpark可変長MTP(MTP_VARLEN=1)と決定的サンプリング(MTP_VARLEN=0＋BATCH_INVARIANT=1＋seq_seed固定・SamplingParams、NVIDIA限定)は排他的 — 同時有効と書かない",
+        "DRAFT MUST NOT: MTP_VARLEN=1とdeterministic samplingを同時有効と書かない／再現性を任意hardwareに一般化しない／batch-invariantとdeterministic samplingの前提を混同しない",
+        "Vendor lists; no worker inference execution or throughput repro",
+        "Single pinned commit 9bd9cf24; main drift after Oct 21 untracked",
+        "Apache-2.0 per LICENSE bytes; patent/trademark scope not reviewed",
+        "hardware-requirements: SM100/Ascend950 + toolchain stated; independent build not attempted.",
+        "independent-throughput-repro: No independent run; vendor benches only.",
+        "65pp equations/ablations not line-reviewed; author harnesses only",
+        "Weights/data licenses forthcoming; repo software commercial use prohibited per PolyForm",
+        "No independent mechanism repro",
+        "benchmark-denominators: 11 benches 1.86x/66x author-measured; no rerun.",
+        "sglang-serve-config: Snapshots/save-restore described; no serve test."
+      ],
+      "drafting_order": 2,
+      "profile_extensions": {
+        "page_allocation": "6.0",
+        "editorial_note": "機構図とライセンス対応表が要。SA-003 重点増枠。"
+      },
+      "publication_extensions": {}
+    },
+    {
+      "package_id": "P3",
+      "title": "働くエージェント:Duet の権限境界と 1Password・auto-mode の安全",
+      "purpose": "先回りする主体が、人の資格に触れずに働く条件(許可・権限境界、分類器、待機列と制限、安全対策の積層)を問う。",
+      "primary_candidate_ids": [
+        "candidate:2026-W43:3670fe4328b9fa32"
+      ],
+      "supporting_candidate_ids": [
+        "candidate:2026-W43:673368bcdc8bcd59",
+        "candidate:2026-W43:ac27404fe35327b7"
+      ],
+      "must_cover_requirements": [
+        "§3.1 待機列・US Pro/Max 先行・共有制限・背景消費と、朝の要点・接続監視・表・予報・web 作成・離席継続・要所確認の振舞い — 表:権限×条件",
+        "§3.2 VM・browser、6000+ 目録と実liveの区別[発表/待機/順次公開/GAを別status]、Stripe Link/Shop Pay、1Password coming soon[公開時はliveと書かない]、証券・送金の禁止 — 図:資格の流れ(見ない設計、credential never visible)",
+        "§3.3 安全対策の積層(trustworthy-agents、Managed-Agents の秘匿不保持、分類器承認、browser prompt 注入対策、red-team・外部 pen-test・bounty、CC・gov-ID 分類)と 1Password の承認注入(agent は暗証・OTP を見ない)",
+        "§3.4 auto-mode の Oct22 更新(8/7 OUT)と翌週FUTURE[完了と書かない]・分類器(classifier gating)の未検証 — 表:旧/新/未来の三段[発表/プレビュー/GAを別列]"
+      ],
+      "boundaries": [
+        "接続別 live 未検証、振舞い未再現、1Password coming soon は live に読まない、展開 FUTURE を完了に読まない",
+        "分類器の独立試験なし、料金・権限の範囲外は未検証",
+        "DRAFT MUST NOT: 全 connector live と書かない／1Password 連携済みと書かない／auto-mode 完了と書かない",
+        "出典種別: 告知・blog=PRIMARY_METADATA / 振舞い・安全=VENDOR_BENCH(未再現) / X=SECONDARY",
+        "Duet待機列・US Pro/Max先行・1Password coming soon・auto-mode翌週FUTUREは未完了 — 発表/待機/順次公開/GAを別status、完了と書かない",
+        "Independent behavioural reproduction absent; per-connector live status unvalidated; 6000+ != live",
+        "Pricing/plan limits beyond shared usage unvalidated; auto-mode default via separate X only",
+        "1Password coming soon, not live; credential-boundary behaviour unreproduced",
+        "waitlist-and-plan-limits: Waitlist + US Pro/Max first + shared limits stated; per-plan rollout unvalidated.",
+        "connector-and-payment-integration-status: 6000+ catalogue vs live inventory distinguished; per-connector live + 1Password coming-soon; independent check absent.",
+        "auto-mode-classifier-and-credential-design: Classifier + Managed-Agents (never sees secrets) described; behaviour unreproduced.",
+        "independent-behavioral-repro: No independent Duet behaviour in-window.",
+        "Per-integration live/rolling/coming-soon unvalidated beyond vendor blog",
+        "No independent approval-flow or autofill reproduction",
+        "Plan/partner exceptions partially stated",
+        "per-integration-live-status: Live vs rolling vs coming-soon by connector/plan vendor-stated; independent per-integration check absent.",
+        "platform-and-plan-scope: Platform/plan scope stated with exceptions; independent entitlement check absent.",
+        "trust-model-docs: Approval + no-password/OTP injection described; independent trust-model test absent.",
+        "Platform webpage independent view metadata-only; rollout FUTURE at cutoff",
+        "Classifier/gating behaviour vendor-described; independent test absent",
+        "classifier-gating-spec: Classifier gating described; independent test absent.",
+        "rollout-scope: Most-apps NEXT WEEK future; completed-default claim prohibited; plan/partner exceptions noted."
+      ],
+      "drafting_order": 3,
+      "profile_extensions": {
+        "page_allocation": "4.5",
+        "editorial_note": "権限図が要。"
+      },
+      "publication_extensions": {}
+    },
+    {
+      "package_id": "P4",
+      "title": "映像の速度を疑う:FLUX 3 Max の数表批判",
+      "purpose": "速さの見出しを鵜呑みにせず、分母の取違えと自己矛盾を正して読む(数表批判:ベンダー数値の検証)。単独でも方法論の教材となる。",
+      "primary_candidate_ids": [
+        "candidate:2026-W43:02df2773fd2e9fdb"
+      ],
+      "supporting_candidate_ids": [],
+      "must_cover_requirements": [
+        "§4.1 fal+BFL の post-train(RL・推論最適)と text/image/keyframes・従量、Oct19 IN(Klein Oct15 OUT)",
+        "§4.2 速度の独立再計算(独立測定ではない):277.80/10.95≈25.37x、277.80/12.45≈22.31x、(277.80-12.45)/277.80×100≈95.52%[t_baseline/t_candidate、分母=新候補秒、分子=旧基準277.80秒] — 原表10.95s PR未取得、解像度/生成尺10秒/GPU/batch/画質/cold-warm同一性UNKNOWN、blog 26.5x/96.2%は同入力で不整合 — 最速見出し禁止 — 表:分母×倍率×出典",
+        "§4.3 質 Elo 1139(暫定・4868 票、FLUX3 比+47)と価格($0.0425/$0.0725→$0.17/$0.29)・AA 未取得の VENDOR 扱い"
+      ],
+      "boundaries": [
+        "AA 原表未取得、10.95 の PR 起源は現頁にない、最速の断定なし",
+        "DRAFT MUST NOT: 最速・独立検証済みと書かない／26.5x を正として引用しない",
+        "出典種別: model 頁・blog=PRIMARY_METADATA(数値は VENDOR_BENCH) / PR 由来=SECONDARY / AA=UNVERIFIED",
+        "10.95s PR raw未取得・vendor blog 12.45s/277.80sと26.5x/96.2%は算術不整合 — 独立計測22xと書かない、解像度/GPU/batch/cold-warm UNKNOWNを明記",
+        "Speed multiples vendor-reported contradictory bases; no independent timing",
+        "10.95s PR origin not on current pages (12.45s only); 10.95 bytes not re-archived",
+        "AA Elo vendor-cited; originals unfetched",
+        "aa-arena-snapshot: Elo1139 tied#1 prelim 4868 votes vendor-cited; AA originals unfetched.",
+        "license-and-availability-terms: Pay-go stated; license beyond pricing unvalidated.",
+        "speed-discrepancy-basis: Self-contradiction: 12.45+277.80 !=26.5x/96.2%; PR10.95=25.37x not22x. Preserved."
+      ],
+      "drafting_order": 4,
+      "profile_extensions": {
+        "page_allocation": "3.0",
+        "editorial_note": "数表の再計算を明示。"
+      },
+      "publication_extensions": {}
+    },
+    {
+      "package_id": "P5",
+      "title": "声の様式:Voxtral・Ming・Eleven の合成と認識",
+      "purpose": "文字起こし(transcription)・対話(realtime)・発話(音声合成 speech synthesis)の三様式(声の様式)を、評価条件・原表・約款・SDK で横断する。開放(Ming、MIT)と製品(Voxtral/Eleven)の対照を軸にする。TTS対応言語数は一次資料間で未解決(UNRESOLVED)として単一確定数に統一しない。",
+      "primary_candidate_ids": [
+        "candidate:2026-W43:18a859ebb1ef5004"
+      ],
+      "supporting_candidate_ids": [
+        "candidate:2026-W43:4aa7ba129fdeec8b",
+        "candidate:2026-W43:4514088790849f9c"
+      ],
+      "must_cover_requirements": [
+        "§5.1 Voxtral 家族[UNRESOLVED_VENDOR_DOC_CONFLICT、単一TTS言語数に統一禁止]:STT書起こし Small Transcribe 3 50言語・Realtime 35言語超/40+言語方言・TTS Speech 3は発表35+言語/50+方言 vs モデルカード9言語 vs 言語表35言語/50+方言・プリセット18言語(発表)/22表(Docs)・voice cloning別枠・評価標本11言語は対応数ではない — 書起こし・diarization・context-biasing(用語辞書による認識誘導、context biasing)(FLEURS WER・cpWER[連結最小置換WER、concatenated minimum permutation WER]・recall・500ms 未満) — 表:機能×モデル×対応言語×出典/版/時刻",
+        "§5.2 TTS 内部評価(Voice Code Bench 300・pronunciation 300・multilingual 377[11言語標本、対応言語数ではない]・expressive 237・gemini-3.8-flash判定[ベンダー選択判定器])と価格・EU/US・自己配備・Pro Voice — 判定器の vendor 性を明示",
+        "§5.3 Ming の開放(0.5B・7.9B-A1.3B MoE Ling V3、MIT、7 言語+方言、14 tag、9 task)と AA 引用(Controlled Voice・Robustness・Provider Voice、原表未取得)・roadmap 保留・月精度 — 表:AA×原表有無",
+        "§5.4 Eleven の realtime 互換(v1 Mini/Max、90+・17k+ voice、Agents・Realtime API・OpenAI 互換・WebSocket)と AA(BBA・TTFA・Full-Duplex・Arena・tool-use、原表未取得)・Pareto・SDK 改修・指南未開封"
+      ],
+      "boundaries": [
+        "vendor 判定・AA 未取得・end-to-end 未再現、Le Chonk 非解決、移行指南未開封",
+        "DRAFT MUST NOT: AA 順位を独立検証済みに書かない／全言語で同等と書かない",
+        "出典種別: 告知・README・blog=PRIMARY_METADATA / 評価表=VENDOR_BENCH / AA=UNVERIFIED",
+        "UNRESOLVED_VENDOR_DOC_CONFLICT: TTS 35+言語(発表)/9言語(モデルカード)/35言語言語表は未解決 — 単一確定仕様に統一禁止、製品・モデル版・機能・言語・方言・プリセット音声を区別、11言語評価標本を対応数と書かない",
+        "DRAFT MUST NOT: TTS 35+を単一モデル確定仕様と書かない／9=プリセットと断定しない／全言語で同等と書かない",
+        "Vendor-run evals with vendor-chosen judge; AA pages unfetched; end-to-end agent repro absent; Le Chonk gap untouched",
+        "transcription-eval-details: Vendor FLEURS/diarization/keyphrase tables read; independent replication absent.",
+        "tts-eval-methodology: Internal-eval design read; judge and sample limits noted; no independent run.",
+        "Publisher-cited AA ranks; original AA pages unfetched; independent arena check absent",
+        "Month-only release dating; day-level unproven",
+        "Vendor benchmark splits; independent TTS eval absent",
+        "exact-first-availability-date: Month-only News vs Oct19 creation; day unproven; creation is IN anchor.",
+        "tech-report: Roadmap pending; no report.",
+        "tts-eval-methodology: README tables + AA ranks read; AA pages unfetched; publisher citation, not independent verification.",
+        "AA pages unfetched (scores via vendor blog); migration guide unopened; no independent run; protocol compat implies SDK rework",
+        "aa-benchmark-pages: AA numbers via vendor blog only; AA pages unfetched.",
+        "protocol-compat-scope: OpenAI-protocol compat stated; migration guide and WebSocket-only caveat unopened."
+      ],
+      "drafting_order": 5,
+      "profile_extensions": {
+        "page_allocation": "4.5",
+        "editorial_note": "評価表の帰属を明示。SA-003 増枠。"
+      },
+      "publication_extensions": {}
+    },
+    {
+      "package_id": "P6",
+      "title": "安全の両相:見つけて直す協調開示と先端モデルの学習環境の隔離",
+      "purpose": "脆弱性の協調開示(coordinated disclosure、応答)と先端モデル学習環境の隔離(frontier training containment、事前)を、工程と証拠でつなぐ。",
+      "primary_candidate_ids": [
+        "candidate:2026-W43:5d21d93e7679f544",
+        "candidate:2026-W43:eb7312062a02d1c3"
+      ],
+      "supporting_candidate_ids": [],
+      "must_cover_requirements": [
+        "§6.1 Patch(Oct21 RENDERED_TEXT、bot-wall 9946B のみ):Calif GPT-5.6 Sol、Wiz 独立双方、maintainer 主導、Wiz/Cloudflare、5 段階 validate+fix/advance-notice/政府 SIF-ONCD-CISA+国際/prepare/publish、$1B Daybreak、Codex PHP checker、CVE ゼロ(報告≠証明) — 工程図",
+        "§6.2 Securing(offline・defense in depth[多層防御]、9/20 DNS、数百B red-team、Kata/gVisor/Moby/kernel CVE、10/1 RL 再開、safety gating、頁日付のみ+RSS 10:00Z secondary)と攻撃者有利の留保",
+        "§6.3 Oct23 囲い・W42 申立てとの区別と、来歴の保存"
+      ],
+      "boundaries": [
+        "原 HTML bot-wall(RENDERED のみ)、脆弱・patch の独立検証なし、red-team ベンダー記述、RSS は頁時計の証明ではない",
+        "DRAFT MUST NOT: CVE 確定・独立再現・原 HTML 閲覧済みと書かない",
+        "出典種別: Patch=OFFICIAL_RENDERED_TEXT / Securing 頁=PRIMARY_METADATA(日付のみ)・RSS=PRIMARY_METADATA(secondary) / 対応=VENDOR_BENCH",
+        "Rendered extraction, not original HTML (bot-wall); labeled RENDERED_TEXT",
+        "Vendor narrative; no independent vuln/patch verification",
+        "CVE absent; must not infer CVE",
+        "coordination-scope: Coordination vendor-described; independent confirmation absent.",
+        "disclosed-cve-proof: Zero CVE- strings; report != CVE proof.",
+        "Page clock day-only (no metadata time); 10:00Z rests on official RSS (secondary, not page proof)",
+        "Vendor-described containment/red-team; independent verification absent",
+        "cve-patch-provenance: Patch/CVE scope vendor-described; independent confirmation absent.",
+        "incident-scope: Sep 20 DNS + RL resume vendor-described; third-party corroboration absent.",
+        "red-team-conditions: Red-team scale/conditions vendor-described; independent reproduction absent.",
+        "monitoring-and-stopping-controls: Controls vendor-stated; independent test absent."
+      ],
+      "drafting_order": 6,
+      "profile_extensions": {
+        "page_allocation": "4.0",
+        "editorial_note": "工程図が要。"
+      },
+      "publication_extensions": {}
+    },
+    {
+      "package_id": "P7",
+      "title": "科学の手続き:生体と低資源言語の評価",
+      "purpose": "共同研究の手順・盲検・hidden 試験・公開 suite を、独立再現と取り違えずに読む。",
+      "primary_candidate_ids": [
+        "candidate:2026-W43:6c420e98c87871e4",
+        "candidate:2026-W43:160489b77720f40b"
+      ],
+      "supporting_candidate_ids": [],
+      "must_cover_requirements": [
+        "§7.1 Bio(GPT-Rosalind 数千 agent・全脳 CRISPR 数百万細胞 32 分、摂動報告→ atlas、Tsc1/Tsc2・DCTN1、700+ vs 11、盲検 75% 分散選好、bioRxiv/HF/GitHub 来歴、in-loop、wet-lab 未・ZERO 再現) — 表:手順×来歴×限界",
+        "§7.2 Low-resource(MultiLangBench SQLite 自作 20 言語・DB 共有・参照 SQLite 照合 Astra 87.4 vs Sol 26.8・COBOL 10.9→72.1 等 19/20≧83%、COBOL hidden byte-parity・Sol 86.6% low・97.9% high、suite 公開≠再現、専門家審査、COBOL 40%・Luna $0.77 vs $3.48、we/our 手続き)と費用・hidden の vendor 保持 — 表:bench×分母×条件",
+        "§7.3 盲検(blinded evaluation)・標本・請求の限界と、来歴の保存"
+      ],
+      "boundaries": [
+        "研究班内・盲検・vendor 測定、wet-lab 未、標本 bias、hidden 外部未証、請求独立未証",
+        "DRAFT MUST NOT: 独立再現・独立評価と書かない／wet-lab 確認済みと書かない",
+        "出典種別: 研究頁・bioRxiv・HF・GitHub・suite=PRIMARY_RAW / 選好・費用=VENDOR_BENCH / wet-lab=UNVERIFIED",
+        "Research-team/internal evaluation + blinded preference; no independent reproduction",
+        "Wet-lab validation pending; none reported",
+        "Dataset/code team-provided; sample/selection bias unassessed",
+        "expert-preference-protocol: 75% blinded preference is coauthored protocol with team-estimated comparator; independent expert replication absent.",
+        "follow-up-experiment-status: Wet-lab required; none reported.",
+        "First-party protocol + vendor tables; no independent harness rerun",
+        "Hidden-test design vendor-described; external generalisation unproven",
+        "Cost vendor-measured; billing independently unverified",
+        "per-language-tables: 20-lang table read; vendor-measured, independent check absent.",
+        "migration-hidden-tests: Byte-parity design + 86.6/97.9 read; hidden tests vendor-held.",
+        "cost-basis: $0.77 vs $3.48 vendor-measured; independent billing absent."
+      ],
+      "drafting_order": 7,
+      "profile_extensions": {
+        "page_allocation": "4.5",
+        "editorial_note": "手順と分母の表が要。SA-003 増枠。"
+      },
+      "publication_extensions": {}
+    },
+    {
+      "package_id": "P8",
+      "title": "作る道具:Decisions API と AI toolkit・配布",
+      "purpose": "判断の API 化(GA)と道具一式(安定核と実験 harness)・配布(重み・registry)を、評価・移行・約款で読む。",
+      "primary_candidate_ids": [
+        "candidate:2026-W43:d278dfe78685d601"
+      ],
+      "supporting_candidate_ids": [
+        "candidate:2026-W43:20a36d83656e2a4b",
+        "candidate:2026-W43:d5bceca2dab4af9d"
+      ],
+      "must_cover_requirements": [
+        "§8.1 Decisions GA Oct22 v1/Luna(beta Oct6 区別、3 型 predicate/choice/score、text/image/JSON、400問 per request[総呼出上限ではない]・2x beta、cache[読取$0.01/書込別課金]、GPT-Live avatar triggers、$0.10/M uncached入力・cache $0.01読取・出力トークン課金なし[≠総無料、地域上乗せ・長文脈乗数あり]、US/EU・ZDR、10x vendor[独立未測定]、証言 Box/Datadog/Ramp/Sierra/SpeakBox の選択bias、製品頁未 archive) — 表:料金×条件×版",
+        "§8.2 TanStack(76 pkgs・23 adapters・8 UI・143 人、harness 0.x 実験[安定核 vs 実験harness対照表]、codemod threadId、非 sandbox、製品Oct22 IN[registry 15:18:14Z/release 15:21:49Z]・blog Oct23日付のみ UNRESOLVED分離[製品時刻に読まない])",
+        "§8.3 DeepSeek 1017(V4.1-Flash Sep10、強 bench・高速・短出力、web/app/API、RL 自己feedback demo、MIT HF/ModelScope・GreenBitAI/Baekpica、Harness v0.2.1-rc.1、CodeBuddy/WorkBuddy、Search/Fetch $0.75/1k・Oct31 16:00 UTC 迄無料[移行・約款表]、DeepSWE 77 vs 74.2・HLE) — 表:API×移行×約款[発表/配布/無料期限を別status]"
+      ],
+      "boundaries": [
+        "遅延・証言 bias、製品頁未 archive、harness 実験、SHA・課金未験、blog 時計 gap",
+        "DRAFT MUST NOT: 10x を独立測定と書かない／証言を無作為と書かない／blog を製品時刻に読まない",
+        "出典種別: changelog・registry・GH release=PRIMARY_METADATA / 製品頁・demo=VENDOR_BENCH / SHA・課金=UNVERIFIED",
+        "出力トークン課金なし≠総無料 — cache書込別課金・地域処理上乗せ・長文脈乗数を明記、$0.10/$0.01を総運用固定単価と書かない、400問はper request",
+        "P8 3.5頁はESTIMATE — 決定API例＋安定/実験対照＋更新差分短表を優先、実測なき優劣表・PR長写し禁止",
+        "GitHub Metrics 23:42:03ZはPOST_CUTOFF/OUTでW43非選択、Grok binderはNEVER_STORY — W43記事に昇格させない",
+        "10x latency claim vendor-measured, not independently tested; testimonial selection bias unassessed; main product page original HTML not archived (bot-wall; changelog archived instead)",
+        "Blog publication clock UNRESOLVED (day-only); product 1.0 availability Oct22 IN via registry/release (separate event)",
+        "Harness experimental boundary; version pins per registry/release",
+        "repo-tag: Blog tag clock unresolved; GH release @tanstack/ai@1.0.0 published 2026-10-22T15:18:14Z IN as product proxy (not blog clock).",
+        "upgrade-guide: Guide vendor-stated; independent migration test absent.",
+        "HF weight SHA and availability unhashed; no independent local run; vendor harness footnotes; billing transition untested",
+        "weight-sha-and-availability: HF repo named but weight bytes/SHA not captured.",
+        "independent-local-run: No independent run in this pass."
+      ],
+      "drafting_order": 8,
+      "profile_extensions": {
+        "page_allocation": "3.5",
+        "editorial_note": "API と移行の表が要。P8 3.5頁は見積(ESTIMATE) — 決定API例1件＋安定/実験対照＋更新差分短表を優先、実測なき優劣表・PR長写し禁止、不足時は囲み縮約。"
+      },
+      "publication_extensions": {}
+    }
+  ],
+  "selected_exceptions": [],
+  "profile_extensions": {},
+  "publication_extensions": {},
+  "human_review": {
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "review_reference": null
+  }
+}
