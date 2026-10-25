@@ -2,7 +2,15 @@
 
 This is the current human-readable navigation record for the edition. Machine lifecycle authority remains `sources/2026-W43/production-state.json`.
 
-## Editorial handoff — cutoff/authority feasibility ready r1 (2026-10-25, investigation only)
+## Editorial handoff — Evidence r4 post-cutoff ready (2026-10-25, forward-only, no Stage)
+
+**Current status: `SOL_EVIDENCE_MATERIALITY_COMPLETENESS_REVIEW_READY_R4_POSTCUTOFF / AWAITING_INDEPENDENT_SOL_POST_R4_AUDIT / NO_STAGE_ADVANCE`.**
+- Sol ruling: Screening MAYBE is provisional; forward-only POST_CUTOFF/NON_MATERIAL + MAYBE→NON_MATERIAL lawful (Grok precedent); no rewind/invalidation. STEP A isolated rehearsal PASS (worktree @ `e2fa8e935…`, 32/32, ledger 20/10/2/19, stage PASS, negatives: schema-gap demonstrated + byte_count/lost-task/forged FAIL_CLOSED) with zero canonical writes.
+- STEP B canonical r4 (frozen Core unchanged): Evidence `fb6e5900b09ee77453aeaaf904d76fb56091fc977d61f82e4154e6f3787cf72b` (32 PARTIAL, SHA `7b732c15…`); Views `482a084e172d20450afe45c84933f69a0074a8244f823ae8b2589279d7d3858e` (20/10/2, SHA `00e24555…`); ledger (51: 20/19/10/2, Metrics MAYBE→NON_MATERIAL); completeness LIMITED. Supplement-r4 25 (21 retained with 11 NULL incl. nine DATE_ONLY, 0 `T00:00Z`; + Teams 21:29:58Z / Nemotron 15:12–19:03Z / TanStack Oct22 15:18:14Z / Securing RSS 10:00Z); compat-r4 `8c5bebb5…` (7/25).
+- Oct23 clocks: Metrics OUT 23:42:03Z (POST_CUTOFF/NON_MATERIAL, W44-pointer-only); Teams IN 21:29:58Z; Kimi X IN 17:15:24Z (blog DATE_ONLY); Nemotron IN 07:00Z/15:12–19:03Z; TanStack product Oct22 IN/blog UNRESOLVED; Securing RSS 10:00Z caveat; Vercel/Ollama split (no unified date). IA-017 per-claim IDs (no fused URLs); IA-018 r2→r3 19/13 erratum + r3→r4 7/25 diff.
+- Proof `execution/reviews/muse-w43-forward-only-postcutoff-proof-r4.md`; crosswalk `execution/source-intake/w43-cutoff-evidence-r4-precision-and-citation.md`; diff `execution/source-intake/w43-evidence-r3-r4-diff-32.md`; handoff `execution/SOL_EVIDENCE_MATERIALITY_COMPLETENESS_REVIEW_HANDOFF-r4.md`; session `sessions/muse-w43-postcutoff-evidence-r4-20261025.md`; history `execution/history/r3/` (r3 ledger `31929cf5…` + completeness `abd6dadf…`). r1/r2/r3, Discovery/Screening, State/Checkpoints, Core/main/Gates immutable. Await independent Sol post-r4 audit; no trusted advance.
+
+## Prior handoff — cutoff/authority feasibility ready r1 (2026-10-25, investigation only)
 
 **Current status: `SOL_W43_CUTOFF_AND_AUTHORITY_DECISION_READY_R1 / NO_STAGE_ADVANCE / NO_CORE_CHANGE`.**
 - Independent r3 re-audit: old W43-IA-001…015 **PASS 10 / LIMITED 5 / FAIL 0**; new P1 **IA-016** GitHub Metrics OUT 23:42:03Z (+1h42m03s), P2 IA-017/018 + nine midnight placeholders; overall **REQUEST_CHANGES / NO EVIDENCE_REVIEWED**.
@@ -113,6 +121,7 @@ This is the current human-readable navigation record for the edition. Machine li
 - `sessions/muse-w43-evidence-authority-r2-20261025.md` (evidence authority r2 deepening; 32 cards/views re-accepted; bounded to `SOL_EVIDENCE_MATERIALITY_COMPLETENESS_REVIEW_READY_R2`)
 - `sessions/muse-w43-evidence-integrated-r3-20261025.md` (evidence r3 integrated 15-finding repair; 32/32 re-accepted + 51/3; bounded to `SOL_EVIDENCE_MATERIALITY_COMPLETENESS_REVIEW_READY_R3_INTEGRATED`; no ADVANCE_STAGE)
 - `sessions/muse-w43-cutoff-authority-feasibility-r1-20261025.md` (cutoff/authority feasibility r1; read-only clocks + A/B/C; bounded to `SOL_W43_CUTOFF_AND_AUTHORITY_DECISION_READY_R1`; no Core/Stage change)
+- `sessions/muse-w43-postcutoff-evidence-r4-20261025.md` (post-cutoff r4 forward-only; 32/32 + 51/3, Metrics OUT excluded; bounded to `SOL_EVIDENCE_MATERIALITY_COMPLETENESS_REVIEW_READY_R4_POSTCUTOFF`; no ADVANCE)
 
 ## Discovery (proposed, not accepted)
 
@@ -231,7 +240,7 @@ This is the current human-readable navigation record for the edition. Machine li
 
 ## Final disposition
 
-`SOL_W43_CUTOFF_AND_AUTHORITY_DECISION_READY_R1` (cutoff/authority feasibility r1 complete; Metrics OUT confirmed, Oct23 clocks tabled, A/B/C decided UNSUPPORTED without separate Core/operator path; no canonical repair executed; await Sol authority decision; no ADVANCE_STAGE)
+`SOL_EVIDENCE_MATERIALITY_COMPLETENESS_REVIEW_READY_R4_POSTCUTOFF` (r4 forward-only post-cutoff correction complete; Metrics OUT excluded as POST_CUTOFF/NON_MATERIAL with supersession, Oct23 clocks + DATE_ONLY nulls + IA-017/018 bounded; 32/32 + 51/3 via frozen Core; awaiting independent Sol post-r4 audit; no ADVANCE_STAGE, no Selection/Architecture/Draft)
 
 ## Evidence r3 integrated (15-finding independent-audit repair; r1/r2 preserved as history)
 

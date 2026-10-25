@@ -1,0 +1,215 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W43",
+  "evidence_task_id": "evidence:2026-W43:81d172340376c7d1",
+  "basis": {
+    "task_sha256": "92aeb091f98d234b0ab491472f30e74aa68990466678be0bb3eced7cb0f2c518",
+    "screening_acceptance_sha256": "566cde3bd287dffb38d705c4b6c3fec71a98f67dea96016a009bd929923be48a",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "flint",
+      "canonical_name": "Recursive Flint",
+      "entity_type": "MODEL",
+      "organization": "Recursive",
+      "canonical_url": "https://huggingface.co/RecursiveSI/flint"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "flint",
+    "artifact_type": "OPEN_WEIGHT",
+    "canonical_name": "Recursive Flint",
+    "canonical_url": "https://huggingface.co/RecursiveSI/flint"
+  },
+  "temporal": {
+    "observed_at": "2026-10-25T05:00:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-10-21",
+        "subject_id": "flint",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "primary:recursive.com/updates/introducing-recursive-flint + primary:huggingface.co/RecursiveSI/flint",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "Recursive Flint open-weight coding model (Oct 21)",
+      "published_at": "2026-10-21",
+      "accessed_at": "2026-10-25T05:00:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    },
+    {
+      "source_id": "supplement-src-d2d2f48e181fb4dd",
+      "url": "https://recursive.com/updates/introducing-recursive-flint",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "Recursive Flint official announcement (supports up to 512K; 256K recommended; 125+/150+ tok/s vendor-claimed)",
+      "published_at": null,
+      "accessed_at": "2026-10-24T13:29:00Z",
+      "role": "Post-Screening exact authority supplement: DATE_ONLY_PRECISION r4 (was fabricated midnight): publisher gives 2026-10-21 (day precision; announce + weights 14:20:58Z event). No observed clock; must not be read as T00:00:00Z event. Original r3 bytes/SHA retained. Post-Screening exact official article: 512K max vs 256K recommended; 125+ M4 Pro /150+ RTX Spark short-context prefill-excluded 128K-session vendor claim; Apache-2.0 weights; config 262144 distinct from capability."
+    },
+    {
+      "source_id": "supplement-src-e1fe975d225aaa88",
+      "url": "https://huggingface.co/RecursiveSI/flint",
+      "source_class": "PRIMARY_REPOSITORY",
+      "title": "Recursive Flint HF model card (39.8B/2.5B MoE; SWA-513; 262144 ctx config; Apache-2.0)",
+      "published_at": null,
+      "accessed_at": "2026-10-25T04:41:00Z",
+      "role": "Post-Screening exact authority supplement: DATE_ONLY_PRECISION r4 (was fabricated midnight): publisher gives 2026-10-21 (day precision; weights 14:20:58Z event, config 262144). No observed clock; must not be read as T00:00:00Z event. Original r3 bytes/SHA retained. Post-Screening exact model-card authority: 39.8B/2.5B, 49 layers, 256 routed experts, SWA-513, 262144 config, Apache-2.0; capability 512K/256K lives in official article, not card."
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Open-weight coding model Oct 21 (announce + HF weights 14:20:58Z, 733 likes): 39.8B total/2.5B active MoE, 49 layers (2 dense + 47 MoE), 256 routed experts 6/token + shared, SWA-513, vocab 150144, cutoff June 2026; Eureka Machine searched recipes + 4-bit lm_head quantization; train from scratch.",
+      "subject_id": "flint",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1",
+        "supplement-src-d2d2f48e181fb4dd",
+        "supplement-src-e1fe975d225aaa88"
+      ],
+      "context": "Official article 366583B + HF card 6250B; card Apache-2.0"
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Capability: supports up to 512K tokens; recommends staying within 256K. Config 262144 (prompt+output) is NOT publisher max — conflation prohibited. Speed vendor-claimed: 125+ tok/s M4 Pro MacBook Pro, 150+ 64GB RTX Spark short contexts; avg throughout 128K session (*Muse 124K, prefill excluded); up to 2x faster than comparables.",
+      "subject_id": "flint",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1",
+        "supplement-src-d2d2f48e181fb4dd",
+        "supplement-src-e1fe975d225aaa88"
+      ],
+      "context": "Article 512K/256K + speed apparatus; card 262144 distinct"
+    },
+    {
+      "statement_id": "claim-3",
+      "text": "Apache-2.0 weights; hosted API terms separate; WIRED Oct 21 hands-on corroborates same-day; Grok Flint+M4 Pro chatter (no post IDs) corroboration only; Term-Bench 2.1 54.9 / SWE-bench Pro v2 89.7 / Verified 74.2 (Terminus2/mini-swe-agent, temp1.0/top-p0.95/top-k20, avg pass@1 5+ attempts, web-retrieval-as-failure).",
+      "subject_id": "flint",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1",
+        "supplement-src-d2d2f48e181fb4dd",
+        "supplement-src-e1fe975d225aaa88"
+      ],
+      "context": "Card license + eval sections; WIRED; Grok topic mention"
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Vendor benchmarks/tok/s unreproduced; 128K apparatus vendor-described only",
+      "subject_id": "flint",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1",
+        "supplement-src-d2d2f48e181fb4dd",
+        "supplement-src-e1fe975d225aaa88"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "Weight SHA not independently re-hashed; HF API body from r4 reused",
+      "subject_id": "flint",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1",
+        "supplement-src-d2d2f48e181fb4dd",
+        "supplement-src-e1fe975d225aaa88"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-3",
+      "text": "Eureka automation vendor-described; no training reproduction",
+      "subject_id": "flint",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1",
+        "supplement-src-d2d2f48e181fb4dd",
+        "supplement-src-e1fe975d225aaa88"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "hf-weight-sha-and-license-file",
+        "status": "VERIFIED",
+        "finding": "HF card 6250B read; Apache-2.0 verified; weights 14:20:58Z per r4 API JSON; byte SHA re-hash not executed.",
+        "subject_ids": [
+          "flint"
+        ],
+        "source_ids": [
+          "src-1",
+          "supplement-src-d2d2f48e181fb4dd",
+          "supplement-src-e1fe975d225aaa88"
+        ]
+      },
+      {
+        "target": "release-tag",
+        "status": "VERIFIED",
+        "finding": "Oct 21 announce + weights same-day corroborated by WIRED; 512K/256K vs 262144 distinguished.",
+        "subject_ids": [
+          "flint"
+        ],
+        "source_ids": [
+          "src-1",
+          "supplement-src-d2d2f48e181fb4dd",
+          "supplement-src-e1fe975d225aaa88"
+        ]
+      },
+      {
+        "target": "benchmark-denominators-and-harnesses",
+        "status": "UNRESOLVED",
+        "finding": "Harnesses/temp/top-p/top-k/attempts documented; independent run absent.",
+        "subject_ids": [
+          "flint"
+        ],
+        "source_ids": [
+          "src-1",
+          "supplement-src-d2d2f48e181fb4dd",
+          "supplement-src-e1fe975d225aaa88"
+        ]
+      },
+      {
+        "target": "independent-tokens-per-second-repro",
+        "status": "UNRESOLVED",
+        "finding": "125+/150+ short-context 128K-avg prefill-excluded vendor-claimed; no independent measurement.",
+        "subject_ids": [
+          "flint"
+        ],
+        "source_ids": [
+          "src-1",
+          "supplement-src-d2d2f48e181fb4dd",
+          "supplement-src-e1fe975d225aaa88"
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      "benchmark-denominators-and-harnesses: Harnesses/temp/top-p/top-k/attempts documented; independent run absent.",
+      "independent-tokens-per-second-repro: 125+/150+ short-context 128K-avg prefill-excluded vendor-claimed; no independent measurement."
+    ],
+    "contradictions": []
+  }
+}

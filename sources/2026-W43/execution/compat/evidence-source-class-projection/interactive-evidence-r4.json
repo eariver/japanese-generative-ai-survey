@@ -1,0 +1,1955 @@
+{
+ "schema_version": "2.0-rc1",
+ "issue_id": "2026-W43",
+ "runner": {
+  "provider": "muse",
+  "model": "muse-spark",
+  "invocation": "r4 post-cutoff forward-only correction (Metrics POST_CUTOFF/NON_MATERIAL; Oct23 clocks; nine DATE_ONLY nulls; IA-017/018; frozen native)",
+  "generated_at": "2026-10-25T05:00:00Z"
+ },
+ "records": [
+  {
+   "discovery_id": "w43-carry-7151fcdc6c3ee392",
+   "status": "PARTIAL",
+   "entity": {
+    "entity_id": "claude-code-perf",
+    "canonical_name": "Claude Code gzip and startup performance",
+    "entity_type": "PRODUCT",
+    "organization": "Anthropic",
+    "canonical_url": null
+   },
+   "artifact_type": "PRODUCT",
+   "claims": [
+    {
+     "text": "Official @ClaudeDevs post 2026-10-16: gzip conversation each turn plus cloud-session startup as you type; faster first response; causal performance claim is vendor post, not an independent benchmark.",
+     "evidence_class": "SOCIAL_OBSERVATION",
+     "context": "x:ClaudeDevs/status/2111209208012210409 (official post; no X-HTML capture)"
+    },
+    {
+     "text": "W42 INSPECT recheck: no new causal benchmark; W43 GitHub perf-adjacent changelogs keep the lane warm; supporting mention at most, never a standalone headline.",
+     "evidence_class": "INFERENCE",
+     "context": "Carry-over recheck (r1 bundle-06 + r2 carry table)"
+    }
+   ],
+   "limitations": [
+    "No causal benchmark; X-HTML unauthenticated; changelog bodies partially read"
+   ],
+   "verification": [
+    {
+     "target": "independent-causal-benchmark",
+     "status": "UNRESOLVED",
+     "finding": "No causal benchmark located."
+    },
+    {
+     "target": "official-changelog-measurement-spec",
+     "status": "UNRESOLVED",
+     "finding": "Measurement spec unvalidated."
+    }
+   ],
+   "materiality": "CONTEXT",
+   "materiality_rationale": "X-only gzip carry, no causal measurement: CONTEXT support signal only. [r3 carry.]",
+   "scope_dimensions": [
+    "current relevance",
+    "carry-over obligations"
+   ],
+   "window_relation": "CARRY_OVER",
+   "carry_over": true
+  },
+  {
+   "discovery_id": "w43-lead-muse-10m-20261021",
+   "status": "PARTIAL",
+   "entity": {
+    "entity_id": "muse-adoption",
+    "canonical_name": "Meta Muse adoption and shopping activity",
+    "entity_type": "PRODUCT",
+    "organization": "Meta",
+    "canonical_url": null
+   },
+   "artifact_type": "PRODUCT",
+   "claims": [
+    {
+     "text": "Q3 earnings call: 10M+ Muse adoption with shopping as top activity; Zuckerberg agentic-purchase framing (business-agent checkout); Sensor Tower estimate corroboration cited by press.",
+     "evidence_class": "AUTHOR_CLAIM",
+     "context": "TechCrunch Oct 21 via poweredbyai (secondary press of earnings call)"
+    },
+    {
+     "text": "Industry signal, not a technical release; citable as deployment context with sample/bias disclosure at most, never a standalone package.",
+     "evidence_class": "INFERENCE",
+     "context": "Editorial scope judgment (no conflation with model releases)"
+    }
+   ],
+   "limitations": [
+    "Earnings transcript unread; Sensor Tower methodology unvalidated; spend figures uncorroborated"
+   ],
+   "verification": [
+    {
+     "target": "earnings-transcript",
+     "status": "UNRESOLVED",
+     "finding": "Transcript not fetched; press summary only."
+    },
+    {
+     "target": "sensor-tower-methodology",
+     "status": "UNRESOLVED",
+     "finding": "Estimate cited secondhand; methodology unvalidated."
+    },
+    {
+     "target": "spend-figure-basis",
+     "status": "UNRESOLVED",
+     "finding": "No spend figures established."
+    }
+   ],
+   "materiality": "CONTEXT",
+   "materiality_rationale": "Secondary-reported 10M users + shopping activity (secondary-only, no primary books): CONTEXT adoption signal with population/method limits; primary books requested. [r3 carry.]",
+   "scope_dimensions": [
+    "current relevance"
+   ],
+   "window_relation": "MAIN_EVENT",
+   "carry_over": false
+  },
+  {
+   "discovery_id": "w43-lead-oracle-revision-20261021",
+   "status": "PARTIAL",
+   "entity": {
+    "entity_id": "oracle-eval-audit",
+    "canonical_name": "Agent-eval oracle integrity audit (2610.16067v2)",
+    "entity_type": "PAPER",
+    "organization": "Nanjing University of Science and Technology",
+    "canonical_url": "https://arxiv.org/abs/2610.16067"
+   },
+   "artifact_type": "PAPER",
+   "claims": [
+    {
+     "text": "Oracle-integrity audit method: five state-integrity invariants plus three known-answer controls; seven injected defect classes detected; 54 of 57 separable variant-target combos; repaired oracle yields no false positive.",
+     "evidence_class": "AUTHOR_CLAIM",
+     "context": "arXiv 2610.16067v2 abs+intro (PDF archived 261750B; v1 Oct 12 OUT, v2 Oct 21 04:47:46Z IN)"
+    },
+    {
+     "text": "Worked example: reward function resets DB to build ground-truth hash and never restores; harness scores reference solution state: recorded 4194/4320 labels vs replay 2883, success 94.3% to 65.5%; correction removes 24-34 points per agent and changes the strongest agent.",
+     "evidence_class": "AUTHOR_CLAIM",
+     "context": "arXiv 2610.16067v2 abs (worked example)"
+    },
+    {
+     "text": "3240-episode ablation localizes apparatus effects without ordering them; second domain reverses language effect; method did not transfer to a second independent benchmark (contract named); replication package runs offline with no model calls.",
+     "evidence_class": "AUTHOR_CLAIM",
+     "context": "arXiv 2610.16067v2 abs (ablation + non-transfer + replication)"
+    }
+   ],
+   "limitations": [
+    "Full 29pp body beyond abs+intro unread; v1-to-v2 delta unchecked; paper claims unreproduced here"
+   ],
+   "verification": [
+    {
+     "target": "v1-v2-substantive-delta",
+     "status": "UNRESOLVED",
+     "finding": "v2 revision verified as event; substantive delta vs v1 unchecked."
+    },
+    {
+     "target": "affected-benchmark-scope",
+     "status": "VERIFIED",
+     "finding": "Affected matrix numbers (4194/2883, 94.3/65.5, 24-34pt) read in abs."
+    }
+   ],
+   "materiality": "CONTEXT",
+   "materiality_rationale": "Oracle v1 Oct12 OUT vs v2 Oct21 04:47:46Z IN (261750B): revision event only; 5 invariants + 3 controls + 7 defect classes + 54/57 combos + 4194/2883 + 94.3->65.5% + 24-34pt + 3240-episode ablation read at abs/intro level; full v1->v2 diff (38pp + eval/ablation) NOT line-reviewed; must not promote OUT v1 as W43 discovery. CONTEXT bibliography. [r3 IA-010 UNRESOLVED_DEFERRED_WITH_RATIONALE; no selection implied.]",
+   "scope_dimensions": [
+    "technical significance"
+   ],
+   "window_relation": "MAIN_EVENT",
+   "carry_over": false,
+   "source_bindings": [
+    "src-1",
+    "supplement-src-0226e32d4252d42c"
+   ]
+  },
+  {
+   "discovery_id": "w43-primary-automode-20261021",
+   "status": "PARTIAL",
+   "entity": {
+    "entity_id": "claude-auto-mode",
+    "canonical_name": "Anthropic auto-mode default",
+    "entity_type": "PRODUCT",
+    "organization": "Anthropic",
+    "canonical_url": null
+   },
+   "artifact_type": "PRODUCT",
+   "claims": [
+    {
+     "text": "Anthropic auto-mode: original article OUT Aug 7 2026 vs Oct 22 2026 update IN (599884B); update makes auto default in Claude Code for Pro/Max/Team with plan/partner exceptions; prior Claude Code availability separate.",
+     "evidence_class": "VENDOR_CLAIM",
+     "context": "Changelog/docs Oct22 update vs Aug7 original"
+    },
+    {
+     "text": "Rollout: default in most apps NEXT WEEK at cutoff (FUTURE) — Oct22 completed-action prohibited; X vendor statement is SOCIAL observation, Oct22 official article is separate supplement. Classifier gating spec vendor-described.",
+     "evidence_class": "VENDOR_CLAIM",
+     "context": "Rollout FUTURE language; X vs article split"
+    }
+   ],
+   "limitations": [
+    "Platform webpage independent view metadata-only; rollout FUTURE at cutoff",
+    "Classifier/gating behaviour vendor-described; independent test absent"
+   ],
+   "verification": [
+    {
+     "target": "official-changelog-or-docs",
+     "status": "VERIFIED",
+     "finding": "Oct22 update vs Aug7 original distinguished from 599884B raw; IN is update, OUT is original."
+    },
+    {
+     "target": "classifier-gating-spec",
+     "status": "UNRESOLVED",
+     "finding": "Classifier gating described; independent test absent."
+    },
+    {
+     "target": "rollout-scope",
+     "status": "UNRESOLVED",
+     "finding": "Most-apps NEXT WEEK future; completed-default claim prohibited; plan/partner exceptions noted."
+    }
+   ],
+   "materiality": "MATERIAL",
+   "materiality_rationale": "In-window update (Aug7 OUT -> Oct22 IN) with future default rollout: process/rollout relevance with FUTURE vs completed distinction. [r3 IA-013 fix; no selection implied.]",
+   "scope_dimensions": [
+    "current relevance",
+    "technical significance"
+   ],
+   "window_relation": "MAIN_EVENT",
+   "carry_over": false,
+   "source_bindings": [
+    "src-1",
+    "supplement-src-6f18c05b01b43f45"
+   ]
+  },
+  {
+   "discovery_id": "w43-primary-decisions-api-20261022",
+   "status": "PARTIAL",
+   "entity": {
+    "entity_id": "openai-decisions-api",
+    "canonical_name": "OpenAI Decisions API",
+    "entity_type": "API",
+    "organization": "OpenAI",
+    "canonical_url": "https://openai.com/index/decisions-api"
+   },
+   "artifact_type": "API",
+   "claims": [
+    {
+     "text": "Generally available Oct 22, 2026 with GPT-6 Luna (v1/decisions); distinct from Oct 6 beta; 3 answer types (predicate probability, choice with probabilities, score as weighted average); text/image/JSON inputs; up to 400 questions per request (2x beta); caching; native GPT-Live integration (avatar reaction demo with session.triggers JSON).",
+     "evidence_class": "VENDOR_CLAIM",
+     "context": "OpenAI Decisions API page (rendered read Oct 24; changelog entry archived as raw HTML)"
+    },
+    {
+     "text": "Pricing $0.10/M input tokens, $0.01/M cached, no output-token charge; US/EU residency; ZDR eligible; 10x faster than Responses API is vendor-claimed.",
+     "evidence_class": "VENDOR_CLAIM",
+     "context": "Decisions API pricing section (rendered read)"
+    },
+    {
+     "text": "Customer testimonials (Box 5x route selection, Datadog 40x p95, Ramp 4x/30%, Sierra sub-280ms p95, SpeakBox -90% time-to-action) are vendor-selected anecdotes, not independent measurement.",
+     "evidence_class": "AUTHOR_CLAIM",
+     "context": "Decisions API page testimonials (attributed quotes, vendor page)"
+    }
+   ],
+   "limitations": [
+    "10x latency claim vendor-measured, not independently tested; testimonial selection bias unassessed; main product page original HTML not archived (bot-wall; changelog archived instead)"
+   ],
+   "verification": [
+    {
+     "target": "api-docs-specs",
+     "status": "VERIFIED",
+     "finding": "Changelog GA entry plus answer-type/caching/GPT-Live sections read; samples present."
+    },
+    {
+     "target": "pricing-limits",
+     "status": "VERIFIED",
+     "finding": "$0.10/$0.01/no-output-charge plus US/EU/ZDR terms read on page."
+    },
+    {
+     "target": "endpoint-behavior",
+     "status": "VERIFIED",
+     "finding": "v1/decisions endpoint plus 400-question limit and JSON inputs read in changelog."
+    }
+   ],
+   "materiality": "MATERIAL",
+   "materiality_rationale": "GA API with 400-question eval + response-type/GA-limit footnotes: high dev-tooling relevance with vendor-measured eval limits. [r3 carry; no selection implied.]",
+   "scope_dimensions": [
+    "current relevance",
+    "technical significance"
+   ],
+   "window_relation": "MAIN_EVENT",
+   "carry_over": false,
+   "source_bindings": [
+    "src-1",
+    "supplement-src-2a49a7d4f6f2ae5a"
+   ]
+  },
+  {
+   "discovery_id": "w43-primary-deepinfer-20261020",
+   "status": "PARTIAL",
+   "entity": {
+    "entity_id": "deepinfer",
+    "canonical_name": "DeepSeek DeepInfer",
+    "entity_type": "FRAMEWORK",
+    "organization": "DeepSeek",
+    "canonical_url": "https://github.com/deepseek-ai/DeepInfer"
+   },
+   "artifact_type": "FRAMEWORK",
+   "claims": [
+    {
+     "text": "Apache-2.0 offline-only OSS cut for V4.1-Flash (single-model); 21.5k stars/2.4k forks/4 commits; repo shell OUT Oct 16 07:47:23Z, first content IN Oct 20, pinned 9bd9cf24 Oct 21.",
+     "evidence_class": "VENDOR_CLAIM",
+     "context": "README 4660B + LICENSE 11357B at 9bd9cf243fc53ef9afbf8f04d391d989117d6ab9"
+    },
+    {
+     "text": "Kernels FlashMLA/DeepGEMM/DeepEP/TileKernels/DeepSelect/TileLang; Attention DP/balanced CP, MoE EP+EPLB; DSpark + confidence-scheduled verification DEEPINFER_ENABLE_MTP_VARLEN=1, DEEPINFER_USE_NEXTN_DECODE default 5 (0 disables); SWA bounded replay (YOCO compact KEEP140); async default; batch-invariant/deterministic sampling (NVIDIA); structured outputs. Corrects r2 misnamed vars.",
+     "evidence_class": "VENDOR_CLAIM",
+     "context": "environ.py 8738B exact literals + README SET lines"
+    },
+    {
+     "text": "Hardware SM100 + Ascend 950; build GCC>=13 Python3.12 CUDA13 CANN9.2; default ckpt 1017; benches 4xSM100 prefill + 64 decode; vLLM-derived SGLang/TRT-LLM credit.",
+     "evidence_class": "VENDOR_CLAIM",
+     "context": "README hardware/build/bench"
+    },
+    {
+     "text": "Non-inclusions: KV cache system, VE/prefill/decode disaggregation, cross-DP load balancing (most engine work implemented).",
+     "evidence_class": "VENDOR_CLAIM",
+     "context": "README required-but-missing"
+    }
+   ],
+   "limitations": [
+    "Vendor lists; no worker inference execution or throughput repro",
+    "Single pinned commit 9bd9cf24; main drift after Oct 21 untracked",
+    "Apache-2.0 per LICENSE bytes; patent/trademark scope not reviewed"
+   ],
+   "verification": [
+    {
+     "target": "repo-release-tag",
+     "status": "VERIFIED",
+     "finding": "Commit 9bd9cf24 Oct 21 via API; repo OUT Oct16 vs content IN Oct20; environ.py+README bound."
+    },
+    {
+     "target": "hardware-requirements",
+     "status": "UNRESOLVED",
+     "finding": "SM100/Ascend950 + toolchain stated; independent build not attempted."
+    },
+    {
+     "target": "license-file",
+     "status": "VERIFIED",
+     "finding": "LICENSE 11357B Apache-2.0 verified; README cross-checked."
+    },
+    {
+     "target": "independent-throughput-repro",
+     "status": "UNRESOLVED",
+     "finding": "No independent run; vendor benches only."
+    }
+   ],
+   "materiality": "MATERIAL",
+   "materiality_rationale": "Production inference OSS with exact env-var correction (prefix + default5 + 0-disable) pinned to commit: high operational value; vendor benches unreproduced. [r3 IA-003+IA-012 fix; no selection implied.]",
+   "scope_dimensions": [
+    "current relevance",
+    "technical significance"
+   ],
+   "window_relation": "MAIN_EVENT",
+   "carry_over": false,
+   "source_bindings": [
+    "src-1",
+    "supplement-src-e20f1cffc1444d3a",
+    "supplement-src-d0805b13331ce793",
+    "supplement-src-d818147e4521ac7a"
+   ]
+  },
+  {
+   "discovery_id": "w43-primary-deepseek-1017-20261017",
+   "status": "PARTIAL",
+   "entity": {
+    "entity_id": "deepseek-v41-flash-1017",
+    "canonical_name": "DeepSeek V4.1-Flash-1017",
+    "entity_type": "MODEL",
+    "organization": "DeepSeek",
+    "canonical_url": "https://api-docs.deepseek.com/news/news261017"
+   },
+   "artifact_type": "MODEL_UPDATE",
+   "claims": [
+    {
+     "text": "Dated 1017 snapshot minor update to V4.1-Flash (Sep 10): stronger benchmarks, faster task completion, shorter outputs; live web, app and API; wish-driven programming with RL self-feedback; Forbidden City 3D, racing game, Portal 2 Godot, Valley of Ages demos.",
+     "evidence_class": "VENDOR_CLAIM",
+     "context": "DeepSeek API docs release page 2026/10/17"
+    },
+    {
+     "text": "MIT weights on Hugging Face and ModelScope; community GreenBitAI 4bit-paged and Baekpica VQ GGUF same-day converts; DeepSeek Harness v0.2.1-rc.1 recommended; CodeBuddy/WorkBuddy optimized.",
+     "evidence_class": "VENDOR_CLAIM",
+     "context": "DeepSeek API docs release page + community converts (secondary)"
+    },
+    {
+     "text": "Search and Fetch APIs opened at $0.75 per 1k calls; free via server-side Harness/Claude Code/Codex integrations until Oct 31 16:00 UTC; DeepSWE v1.1 77% vs 74.2% prior; HLE 36.8-42.6 vs 36.8-39.1.",
+     "evidence_class": "VENDOR_CLAIM",
+     "context": "DeepSeek API docs release page (footnotes: mini-swe-v2, Claude-Code harness)"
+    }
+   ],
+   "limitations": [
+    "HF weight SHA and availability unhashed; no independent local run; vendor harness footnotes; billing transition untested"
+   ],
+   "verification": [
+    {
+     "target": "weight-sha-and-availability",
+     "status": "UNRESOLVED",
+     "finding": "HF repo named but weight bytes/SHA not captured."
+    },
+    {
+     "target": "independent-local-run",
+     "status": "UNRESOLVED",
+     "finding": "No independent run in this pass."
+    },
+    {
+     "target": "cyber-data-removal-scope",
+     "status": "NOT_APPLICABLE",
+     "finding": "Release makes no cyber-data-removal claim; out of scope for this snapshot."
+    },
+    {
+     "target": "benchmark-denominators-and-harnesses",
+     "status": "VERIFIED",
+     "finding": "Harness and denominator footnotes documented (mini-swe-v2, Claude-Code)."
+    }
+   ],
+   "materiality": "MATERIAL",
+   "materiality_rationale": "1017 API/model/tooling identity with real API identifiers + weight SHA to be checked: moderate infra relevance with weight-hash verification pending. [r3 carry; no selection implied.]",
+   "scope_dimensions": [
+    "current relevance",
+    "technical significance"
+   ],
+   "window_relation": "MAIN_EVENT",
+   "carry_over": false
+  },
+  {
+   "discovery_id": "w43-primary-duet-20261021",
+   "status": "PARTIAL",
+   "entity": {
+    "entity_id": "duet",
+    "canonical_name": "Anthropic Claude Duet",
+    "entity_type": "AGENT",
+    "organization": "Anthropic",
+    "canonical_url": "https://claude.com/resources/articles/claude-duet"
+   },
+   "artifact_type": "AGENT",
+   "claims": [
+    {
+     "text": "Research preview by waitlist, US Pro/Max subscribers first, sharing existing plan limits; background checks consume plan limits, larger tasks cost more turns. Rolling/waitlist status vendor-stated; per-plan rollout unvalidated.",
+     "evidence_class": "VENDOR_CLAIM",
+     "context": "Announcement Oct21; waitlist + plan-limits sections"
+    },
+    {
+     "text": "Proactive agent on Opus 5.5: morning brief, monitors connected apps, scheduling/dashboard/forecast/web-app tasks, keeps working when away, checks before key actions. Behaviour vendor-described; independent repro absent.",
+     "evidence_class": "VENDOR_CLAIM",
+     "context": "Announcement agent section"
+    },
+    {
+     "text": "Runs in VM with own browser; 6000+ Marketplace connectors (Gmail/Slack, QuickBooks/Stripe, Gusto, LinkedIn, Docusign, HubSpot, Canva, Shopify) is CATALOGUE count, NOT individually live inventory — live per-connector status unvalidated; Stripe Link virtual card + Shop Pay; 1Password sign-in coming soon (NOT live); securities trading + money movement off-limits even with approval.",
+     "evidence_class": "VENDOR_CLAIM",
+     "context": "Marketplace + payment + 1Password sections; catalogue vs live distinguished per IA-011"
+    },
+    {
+     "text": "Safety stack: trustworthy-agents framework, Managed-Agents credential design (never sees passwords/tokens), auto-mode classifier approval, browser-use prompt-injection defences, red-team + external pen-test + bug bounty, dedicated CC/gov-ID blocking classifier. Vendor-described; behaviour unreproduced.",
+     "evidence_class": "VENDOR_CLAIM",
+     "context": "Safety sections"
+    },
+    {
+     "text": "Work-first limits: personal errands weaker, cannot show browser yet; standalone app separate from main Claude app.",
+     "evidence_class": "VENDOR_CLAIM",
+     "context": "Limits section"
+    }
+   ],
+   "limitations": [
+    "Independent behavioural reproduction absent; per-connector live status unvalidated; 6000+ != live",
+    "Pricing/plan limits beyond shared usage unvalidated; auto-mode default via separate X only",
+    "1Password coming soon, not live; credential-boundary behaviour unreproduced"
+   ],
+   "verification": [
+    {
+     "target": "waitlist-and-plan-limits",
+     "status": "UNRESOLVED",
+     "finding": "Waitlist + US Pro/Max first + shared limits stated; per-plan rollout unvalidated."
+    },
+    {
+     "target": "connector-and-payment-integration-status",
+     "status": "UNRESOLVED",
+     "finding": "6000+ catalogue vs live inventory distinguished; per-connector live + 1Password coming-soon; independent check absent."
+    },
+    {
+     "target": "auto-mode-classifier-and-credential-design",
+     "status": "UNRESOLVED",
+     "finding": "Classifier + Managed-Agents (never sees secrets) described; behaviour unreproduced."
+    },
+    {
+     "target": "independent-behavioral-repro",
+     "status": "UNRESOLVED",
+     "finding": "No independent Duet behaviour in-window."
+    }
+   ],
+   "materiality": "MATERIAL",
+   "materiality_rationale": "First proactive-agent product with explicit permission/credential architecture (Managed-Agents never sees secrets, auto-mode approval) + marketplace distribution: high product novelty with catalogue-vs-live and coming-soon limits bounded. [r3 IA-011 fix; no selection implied.]",
+   "scope_dimensions": [
+    "current relevance",
+    "technical significance"
+   ],
+   "window_relation": "MAIN_EVENT",
+   "carry_over": false
+  },
+  {
+   "discovery_id": "w43-primary-eleven-20261020",
+   "status": "PARTIAL",
+   "entity": {
+    "entity_id": "eleven-realtime",
+    "canonical_name": "ElevenLabs Eleven Realtime v1",
+    "entity_type": "MODEL",
+    "organization": "ElevenLabs",
+    "canonical_url": "https://elevenlabs.io/blog/realtime"
+   },
+   "artifact_type": "PRODUCT",
+   "claims": [
+    {
+     "text": "v1 Mini (natural/low-cost) plus v1 Max (reasoning/tool-use) single speech-to-speech voice-agent models, Oct 20 (Min Kim); 90+ languages, 17k+ voices; ElevenAgents plus Realtime API with OpenAI realtime-protocol compat (endpoint plus model swap; WebSocket only).",
+     "evidence_class": "VENDOR_CLAIM",
+     "context": "ElevenLabs blog (Oct 20)"
+    },
+    {
+     "text": "Independent Artificial Analysis as reported: BBA spoken reasoning Max 98.8 / Mini 75.9; TTFA 0.57s / 0.62s; Full-Duplex Mini 95.8 / Max 94.1; Arena Max 998 / Mini 988; tool-use Max 87.1 / Mini 60.3.",
+     "evidence_class": "AUTHOR_CLAIM",
+     "context": "ElevenLabs blog reporting independent AA evaluation (AA pages unfetched)"
+    },
+    {
+     "text": "Pareto accuracy-vs-speed framing is the vendor's; speed claims (570-620ms) are vendor-measured time-to-first-audio.",
+     "evidence_class": "INFERENCE",
+     "context": "Blog charts read; vendor vs independent attribution separated"
+    }
+   ],
+   "limitations": [
+    "AA pages unfetched (scores via vendor blog); migration guide unopened; no independent run; protocol compat implies SDK rework"
+   ],
+   "verification": [
+    {
+     "target": "announcement-and-docs-bodies",
+     "status": "VERIFIED",
+     "finding": "Blog body read Oct 24 (rendered); original HTML not archived."
+    },
+    {
+     "target": "aa-benchmark-pages",
+     "status": "UNRESOLVED",
+     "finding": "AA numbers via vendor blog only; AA pages unfetched."
+    },
+    {
+     "target": "protocol-compat-scope",
+     "status": "UNRESOLVED",
+     "finding": "OpenAI-protocol compat stated; migration guide and WebSocket-only caveat unopened."
+    },
+    {
+     "target": "license-and-pricing",
+     "status": "VERIFIED",
+     "finding": "Platform pricing model stated; exact license terms unopened."
+    }
+   ],
+   "materiality": "MATERIAL",
+   "materiality_rationale": "Voice realtime with AA original + protocol/TTFA conditions requested: moderate speech relevance with AA-original gap. [r3 carry; no selection implied.]",
+   "scope_dimensions": [
+    "current relevance",
+    "technical significance"
+   ],
+   "window_relation": "MAIN_EVENT",
+   "carry_over": false
+  },
+  {
+   "discovery_id": "w43-primary-flux-max-20261019",
+   "status": "PARTIAL",
+   "entity": {
+    "entity_id": "flux-3-max",
+    "canonical_name": "fal FLUX 3 Max",
+    "entity_type": "MODEL",
+    "organization": "fal",
+    "canonical_url": "https://fal.ai/models/blackforestlabs/flux-3-max/text-to-video"
+   },
+   "artifact_type": "PRODUCT",
+   "claims": [
+    {
+     "text": "Post-trained by fal Research with BFL on FLUX 3 (RL + inference opt); text/image/keyframes-to-video via fal platform pay-go; Oct 19 platform IN (Klein weights Oct15 OUT separate).",
+     "evidence_class": "VENDOR_CLAIM",
+     "context": "Model page + blog + PR Oct19 3:46pm ET"
+    },
+    {
+     "text": "Speed contradiction preserved: PR 10.95s vs 277.80s Seedance 2.5 = 25.37x; model/blog 12.45s avg (10s 720p) vs 277.80s = 22.31x, page ~22x (correct); blog claims 26.5x/96.2% on same 12.45/277.80 — inconsistent (true 95.52%; 26.5x needs ~10.48s). No fastest headline, no independent validation.",
+     "evidence_class": "VENDOR_CLAIM",
+     "context": "Model 326207B + blog 225919B; 277.80/10.95=25.37 /12.45=22.31"
+    },
+    {
+     "text": "Quality: Elo 1139 (1138 Oct20 board) tied #1 image-to-video preliminary 4868 votes; +47 over FLUX3; pricing $0.0425/s 720p/$0.0725/s 1080p Oct15-Nov7 then $0.17/$0.29. AA original unfetched — VENDOR_CLAIM + LIMITATION.",
+     "evidence_class": "VENDOR_CLAIM",
+     "context": "Model Elo/pricing; AA unfetched"
+    }
+   ],
+   "limitations": [
+    "Speed multiples vendor-reported contradictory bases; no independent timing",
+    "10.95s PR origin not on current pages (12.45s only); 10.95 bytes not re-archived",
+    "AA Elo vendor-cited; originals unfetched"
+   ],
+   "verification": [
+    {
+     "target": "fal-post-and-model-page",
+     "status": "VERIFIED",
+     "finding": "Model+blog read; 12.45/277.80 both, 22x page, 26.5x/96.2% blog verified."
+    },
+    {
+     "target": "aa-arena-snapshot",
+     "status": "UNRESOLVED",
+     "finding": "Elo1139 tied#1 prelim 4868 votes vendor-cited; AA originals unfetched."
+    },
+    {
+     "target": "speed-discrepancy-basis",
+     "status": "CONTRADICTED",
+     "finding": "Self-contradiction: 12.45+277.80 !=26.5x/96.2%; PR10.95=25.37x not22x. Preserved."
+    },
+    {
+     "target": "license-and-availability-terms",
+     "status": "UNRESOLVED",
+     "finding": "Pay-go stated; license beyond pricing unvalidated."
+    }
+   ],
+   "materiality": "MATERIAL",
+   "materiality_rationale": "High-interest video release with publisher arithmetic contradiction (22x vs 26.5x same inputs): MATERIAL as reader-relevant but fastest-headline prohibited. [r3 IA-005 fix; no selection implied.]",
+   "scope_dimensions": [
+    "current relevance",
+    "technical significance"
+   ],
+   "window_relation": "MAIN_EVENT",
+   "carry_over": false,
+   "source_bindings": [
+    "src-1",
+    "supplement-src-1ae0efcded48b6e4",
+    "supplement-src-32e30026645a68d3"
+   ]
+  },
+  {
+   "discovery_id": "w43-primary-github-deprecation-20261019",
+   "status": "PARTIAL",
+   "entity": {
+    "entity_id": "github-copilot-models",
+    "canonical_name": "GitHub Copilot model deprecations",
+    "entity_type": "PRODUCT",
+    "organization": "GitHub",
+    "canonical_url": "https://github.blog/changelog/2026-10-19-github-copilot-models-deprecated-on-october-19-2026"
+   },
+   "artifact_type": "PRODUCT",
+   "claims": [
+    {
+     "text": "Oct 19 model deprecations across Chat, inline edit, ask/agent modes and completions; availability boundary for Copilot experiences.",
+     "evidence_class": "VENDOR_CLAIM",
+     "context": "GitHub Changelog Oct 19 (title-level; body locator-only)"
+    },
+    {
+     "text": "Metering/availability context only; not a model release or capability claim.",
+     "evidence_class": "INFERENCE",
+     "context": "Scope judgment (no conflation)"
+    }
+   ],
+   "limitations": [
+    "Deprecated model list unpinned; docs/migration bodies unfetched"
+   ],
+   "verification": [
+    {
+     "target": "deprecated-model-list",
+     "status": "UNRESOLVED",
+     "finding": "List not captured; changelog body unfetched."
+    },
+    {
+     "target": "docs-and-migration-path",
+     "status": "UNRESOLVED",
+     "finding": "Docs and migration path unvalidated."
+    }
+   ],
+   "materiality": "CONTEXT",
+   "materiality_rationale": "Model deprecation + migration path (廃止対象 + alternatives): CONTEXT ops hygiene with model-list completion needed. [r3 carry.]",
+   "scope_dimensions": [
+    "current relevance"
+   ],
+   "window_relation": "MAIN_EVENT",
+   "carry_over": false
+  },
+  {
+   "discovery_id": "w43-primary-github-metrics-20261023",
+   "status": "PARTIAL",
+   "entity": {
+    "entity_id": "github-copilot-metrics",
+    "canonical_name": "GitHub Copilot usage metrics API",
+    "entity_type": "API",
+    "organization": "GitHub",
+    "canonical_url": "https://github.blog/changelog/2026-10-23-usage-metrics-api-adds-usage-from-tools-like-opencode"
+   },
+   "artifact_type": "API",
+   "claims": [
+    {
+     "text": "Usage metrics API technical description (preserved facts): totals_by_client (opencode/claude_code/codex/zed/copilot_cli/github_app/cloud_agent/code_review/vscode/jetbrains/other); request/session/token/totals_by_model + model_selection_mode literals user_selected/auto/product_selected/other/unknown; server-side metering; enterprise/organization/enterprise-user/organization-user 1-day/28-day; additive. Publisher clock JSON-LD datePublished 2026-10-23T16:42:03-07:00 = 2026-10-23T23:42:03Z (archived 107700B).",
+     "evidence_class": "VENDOR_CLAIM",
+     "context": "Changelog 107700B; literals + clock verified"
+    },
+    {
+     "text": "Cutoff supersession (provisional hypothesis corrected): accepted Discovery preliminary reason 'Fresh in-window lead' (day-precision 2026-10-23) was factually incorrect as an in-window premise; official publication 23:42:03Z is 1h42m03s AFTER exclusive cutoff 22:00:00Z (dateModified 23:43:37Z is distinct, not the event). No authenticated separate pre-22:00Z first-party API availability proved. OUT_OF_WINDOW primary publication; meter counts model requests NOT prompts; client = best-effort integration ID, not verified identity.",
+     "evidence_class": "INFERENCE",
+     "context": "Supersession: provisional IN hypothesis vs verified OUT clock; no pre-cutoff event proved"
+    }
+   ],
+   "limitations": [
+    "Official publication OUT by 1h42m03s; W43 in-window story prohibited; W44 pointer only (no W44 branch created)",
+    "Provisional Discovery 'Fresh in-window lead' superseded downstream; historical Screening MAYBE/low retained immutable, not rewritten",
+    "Vendor API description; no independent API call; client misattribution unknown"
+   ],
+   "verification": [
+    {
+     "target": "metrics-api-docs",
+     "status": "VERIFIED",
+     "finding": "Changelog 107700B read; enum + scopes verified; publisher clock 23:42:03Z verified OUT (distinct from 23:43:37Z modified)."
+    },
+    {
+     "target": "client-identification-limits",
+     "status": "UNRESOLVED",
+     "finding": "Best-effort integration-ID stated; verified identity withheld; no spoof test; OUT status unrelated to client logic."
+    },
+    {
+     "target": "report-scope",
+     "status": "UNRESOLVED",
+     "finding": "Scopes stated but event is post-cutoff; in-window scope claim withdrawn; W44 reuse requires new authority."
+    }
+   ],
+   "materiality": "NON_MATERIAL",
+   "materiality_rationale": "Post-cutoff metering publication (23:42:03Z, +1h42m03s after exclusive cutoff): technical facts preserved as PARTIAL Evidence, but excluded from W43 new-event/story; potential next-W44 signal only, not carried as W43 in-window release. Historical provisional IN hypothesis explicitly superseded; immutable Screening MAYBE retained as provenance, not approval. [STEP A forward-only correction; no selection implied.]",
+   "scope_dimensions": [
+    "current relevance"
+   ],
+   "window_relation": "POST_CUTOFF",
+   "carry_over": false,
+   "source_bindings": [
+    "src-1",
+    "supplement-src-1a8d33ae41ab22ad"
+   ]
+  },
+  {
+   "discovery_id": "w43-primary-github-teams-20261023",
+   "status": "PARTIAL",
+   "entity": {
+    "entity_id": "github-copilot-teams",
+    "canonical_name": "GitHub Copilot in Teams notifications-to-code",
+    "entity_type": "PRODUCT",
+    "organization": "GitHub",
+    "canonical_url": "https://github.blog/changelog/2026-10-23-turn-notifications-into-code-with-github-copilot-in-teams"
+   },
+   "artifact_type": "PRODUCT",
+   "claims": [
+    {
+     "text": "Teams notifications-to-code with Copilot issue-to-PR flow (reproduce, test, fix, PR); changelog-level only; legacy app retires Nov 16; product flow, not a model. Publisher clock JSON-LD datePublished 2026-10-23T14:29:58-07:00 = 21:29:58Z (Yoast 21:29:58+00:00); dateModified 23:46:48Z is distinct, not the event. IN 30m02s before exclusive cutoff. Distinct from Metrics lateness.",
+     "evidence_class": "VENDOR_CLAIM",
+     "context": "Changelog live JSON-LD 21:29:58Z vs modified 23:46:48Z; displayed Oct 23 day-only"
+    },
+    {
+     "text": "Plan/permission scope and Teams-app manifest conditions vendor-stated; per-plan rollout unvalidated; no unified date with Metrics.",
+     "evidence_class": "VENDOR_CLAIM",
+     "context": "Plan/permission sections"
+    }
+   ],
+   "limitations": [
+    "Changelog-level only; per-plan rollout unvalidated",
+    "Clock from live JSON-LD diagnostic (21:29:58Z); byte-level supplement binding deferred to r4 supplement (existing src-1 only in rehearsal)"
+   ],
+   "verification": [
+    {
+     "target": "changelog-and-docs-bodies",
+     "status": "VERIFIED",
+     "finding": "Live changelog read; publication 21:29:58Z vs modified 23:46:48Z distinguished; displayed Oct 23."
+    },
+    {
+     "target": "plan-and-permission-scope",
+     "status": "UNRESOLVED",
+     "finding": "Plan/permission vendor-stated; independent entitlement check absent."
+    }
+   ],
+   "materiality": "CONTEXT",
+   "materiality_rationale": "Teams integration IN 21:29:58Z (30m02s inside cutoff; modified 23:46Z distinct): CONTEXT integration with permission/rollout limits; Metrics lateness not imputed. [CLOCK note; no selection implied.]",
+   "scope_dimensions": [
+    "current relevance"
+   ],
+   "window_relation": "MAIN_EVENT",
+   "carry_over": false,
+   "source_bindings": [
+    "src-1",
+    "supplement-src-52dba048e55beefa"
+   ]
+  },
+  {
+   "discovery_id": "w43-primary-kimi-20261023",
+   "status": "PARTIAL",
+   "entity": {
+    "entity_id": "kimi-k3-1-pro",
+    "canonical_name": "Moonshot Kimi K3.1 Pro",
+    "entity_type": "MODEL",
+    "organization": "Moonshot AI",
+    "canonical_url": "https://www.kimi.ai/blog/kimi-k3-1-pro"
+   },
+   "artifact_type": "MODEL",
+   "claims": [
+    {
+     "text": "Announcement and API live Oct 23 17:15:24Z (13:15 EDT), 4h44m36s inside exclusive 22:00Z cutoff; X post 2113680701770068067 raw 208731B (17:15:24.000Z) is the IN event (SEPARATE social observation); tech blog is SEPARATE primary official source with day-only date (no clock) — blog T00:00Z is DATE_ONLY placeholder, not observation; weights Nov 4 FUTURE, NOT currently available.",
+     "evidence_class": "PRIMARY_FACT",
+     "context": "X raw + blog 390347B; 17:15:24Z vs 22:00Z; blog day-only"
+    },
+    {
+     "text": "Blog: 1M-token multimodal context (3T-class; 2.8T total/104B active is X-only, NOT blog — attribution split); Highspeed 2-3x faster at 2x price cache-hit unchanged; $2 input/$10 output per 1M (pricing table/X, not blog body). API live; full weights by Nov 4 FUTURE, NOT currently available.",
+     "evidence_class": "VENDOR_CLAIM",
+     "context": "Blog 1M ctx + Highspeed + availability; X 2.8T/104B; pricing $2/$10"
+    },
+    {
+     "text": "Vendor benches: Terminal-Bench 4.0 65.7% vs Astra58.2 vs Opus5.5 66.4; Kimi Code Bench 3.0 Long-horizon 61.2% vs K3 55.95%; BenchCAD 92.7% tools; OfficeQA Pro v2 64.4; hallucination 23.4%->8.3% Hard. Harnesses footnoted Claude-Code temp1.0 top-p0.95 max effort; denominators vendor-reported.",
+     "evidence_class": "VENDOR_CLAIM",
+     "context": "Blog footnotes; harness/denominator limits"
+    },
+    {
+     "text": "Targeted cyber-data removal at mid-training + RL; checkpoint without controls 90.5% xdev-bench-hard vs 81.0% final; still behind frontier proprietary. Mechanism vendor-described; independent scope unconfirmed.",
+     "evidence_class": "VENDOR_CLAIM",
+     "context": "Cybersecurity section"
+    }
+   ],
+   "limitations": [
+    "Weights unavailable until Nov 4: no local run or hash verification",
+    "2.8T/104B X-only; blog says 3T-class — must not cite blog for 2.8T/104B",
+    "Vendor harnesses/denominators; API pricing != weight-license terms"
+   ],
+   "verification": [
+    {
+     "target": "weights-release-by-Nov-4",
+     "status": "UNRESOLVED",
+     "finding": "Weights promised Nov 4 FUTURE; not published at observation."
+    },
+    {
+     "target": "independent-local-run",
+     "status": "UNRESOLVED",
+     "finding": "No local run before weights; early API/AA vendor-/third-party-reported."
+    },
+    {
+     "target": "cyber-removal-scope",
+     "status": "UNRESOLVED",
+     "finding": "Removal described; independent scope unconfirmed."
+    },
+    {
+     "target": "benchmark-denominators-and-harnesses",
+     "status": "VERIFIED",
+     "finding": "Denominators/harnesses in blog footnotes (Claude-Code, temp1.0/top-p/max)."
+    }
+   ],
+   "materiality": "MATERIAL",
+   "materiality_rationale": "Late-window open-weight frontier (X 17:15:24Z IN; blog day-only, weights Nov 4 FUTURE): novelty high with weight-unavailable and harness limits; W43 membership rests on X event, not blog midnight. [CLOCK note; no selection implied.]",
+   "scope_dimensions": [
+    "current relevance",
+    "technical significance"
+   ],
+   "window_relation": "MAIN_EVENT",
+   "carry_over": false,
+   "source_bindings": [
+    "src-1",
+    "supplement-src-041ec6c5600beb4d"
+   ]
+  },
+  {
+   "discovery_id": "w43-primary-nemotron-e4b-20261023",
+   "status": "PARTIAL",
+   "entity": {
+    "entity_id": "nemotron-bolt-e4b",
+    "canonical_name": "NVIDIA Nemotron 3.5 Bolt E4B 4GB",
+    "entity_type": "MODEL",
+    "organization": "NVIDIA",
+    "canonical_url": "https://research.nvidia.com/labs/nemotron/Nemotron-3.5-Bolt-E4B-4GB/"
+   },
+   "artifact_type": "OPEN_WEIGHT",
+   "claims": [
+    {
+     "text": "Nemotron 3.5 Bolt E4B 4GB: research page article:published_time 2026-10-23T00:00:00-07:00 = 07:00Z IN; S3 last-modified 14:11:55Z IN; HF NVIDIA-Nemotron-3.5-Bolt-E4B-4GB commits 15:12:12Z (initial) → 19:03:57Z (GGUF 65536) all <22Z IN (createdAt Oct05 = staging, not availability). Card supplement midnight T00:00Z is DATE_ONLY placeholder; IN rests on 07:00Z page TZ + 15:12–19:03Z commits. OpenMDW-1.1 (OSI UNVERIFIED); Gemma-4 Apache-2.0 base.",
+     "evidence_class": "VENDOR_CLAIM",
+     "context": "Page TZ + S3 + HF commits 15:12–19:03Z; card 59009B"
+    },
+    {
+     "text": "Benchmarks/vendor tables (if any) vendor-measured; tech-report PDF provenance bounded; independent eval absent.",
+     "evidence_class": "VENDOR_CLAIM",
+     "context": "Card/report sections"
+    }
+   ],
+   "limitations": [
+    "OpenMDW-1.1 OSI approval must NOT be assumed; license text read, OSI registry unchecked — UNVERIFIED",
+    "Weight/config bytes KYC: card read, raw weight hash not re-hashed",
+    "Benchmarks vendor-measured; independent run absent"
+   ],
+   "verification": [
+    {
+     "target": "hf-license-file",
+     "status": "VERIFIED",
+     "finding": "Card 59009B read: license other/OpenMDW-1.1 + link + Gemma Apache-2.0; bytes bound."
+    },
+    {
+     "target": "tech-report-pdf",
+     "status": "UNRESOLVED",
+     "finding": "Report provenance bounded; full equations not line-reviewed."
+    },
+    {
+     "target": "benchmark-table-provenance",
+     "status": "UNRESOLVED",
+     "finding": "Tables vendor-measured; independent check absent."
+    },
+    {
+     "target": "openmdw-osi-status",
+     "status": "UNRESOLVED",
+     "finding": "OSI recognition UNVERIFIED by design; no categorical claim; URL attempted card only."
+    }
+   ],
+   "materiality": "MATERIAL",
+   "materiality_rationale": "Compact MoE IN via page 07:00Z + HF 15:12–19:03Z (not midnight): moderate efficiency relevance with commercial/OSI withheld. [CLOCK note; no selection implied.]",
+   "scope_dimensions": [
+    "current relevance",
+    "technical significance"
+   ],
+   "window_relation": "MAIN_EVENT",
+   "carry_over": false,
+   "source_bindings": [
+    "src-1",
+    "supplement-src-9e10348cb212038f",
+    "supplement-src-deae3d33c374f4eb"
+   ]
+  },
+  {
+   "discovery_id": "w43-primary-openai-cloud-20261021",
+   "status": "PARTIAL",
+   "entity": {
+    "entity_id": "openai-google-cloud",
+    "canonical_name": "OpenAI models on Google Cloud",
+    "entity_type": "PRODUCT",
+    "organization": "OpenAI",
+    "canonical_url": "https://openai.com/index/openai-models-google-cloud"
+   },
+   "artifact_type": "INTEGRATION",
+   "claims": [
+    {
+     "text": "Google Cloud official article (JSON-LD datePublished 2026-10-21; rendered header October 22, 2026; first_published 2026-10-22T04:10): GPT-6 Astra, GPT-6.1 Sol, GPT-6 Luna via Model Garden/Marketplace with single invoice, commitments/FSP; data perimeters with prompts never used for training.",
+     "evidence_class": "VENDOR_CLAIM",
+     "context": "Blog raw 224991B SHA d77a6291; JSON-LD Oct 21 vs displayed Oct 22"
+    },
+    {
+     "text": "Rolling private preview to select enterprise customers (interest form), NOT general availability; Zero Data Retention and Confidential Compute are coming soon, not live. Prior r2 fabricated midnight T00:00Z; r3 uses date precision with null timestamp.",
+     "evidence_class": "VENDOR_CLAIM",
+     "context": "Preview language + coming-soon for ZDR/Confidential Compute"
+    },
+    {
+     "text": "Distribution event, not a new base model; OpenAI-side corroboration page unopened; RSS observed Oct 21 vs publication Oct 21/22 distinguished.",
+     "evidence_class": "INFERENCE",
+     "context": "Scope reading; source date vs RSS observed_at separate"
+    }
+   ],
+   "limitations": [
+    "Vendor distribution claims; no independent GA verification; OpenAI-side page unopened",
+    "Date precision calendar-date only (JSON-LD Oct 21 vs displayed Oct 22); no midnight timestamp asserted",
+    "Enterprise rollout scope and rate limits partially stated; per-region terms unvalidated"
+   ],
+   "verification": [
+    {
+     "target": "page-bodies",
+     "status": "VERIFIED",
+     "finding": "JSON-LD datePublished 2026-10-21, rendered Oct 22, first_published 2026-10-22T04:10 read from 224991B raw; preview + coming-soon verified."
+    },
+    {
+     "target": "model-and-rate-limits",
+     "status": "UNRESOLVED",
+     "finding": "Astra/Sol/Luna preview via Model Garden stated; rate limits/billing partially stated, per-plan rollout unvalidated."
+    },
+    {
+     "target": "data-residency-terms",
+     "status": "UNRESOLVED",
+     "finding": "Perimeters/prompts-never-training stated; ZDR/Confidential Compute coming soon, not live; independent audit absent."
+    }
+   ],
+   "materiality": "CONTEXT",
+   "materiality_rationale": "In-window distribution of frontier OpenAI models via Google Cloud private preview (not a new model): enterprise availability signal with preview/coming-soon limits explicitly bounded; CONTEXT because capability novelty is distribution, not model. [r3 IA-001 fix; no selection implied.]",
+   "scope_dimensions": [
+    "current relevance"
+   ],
+   "window_relation": "MAIN_EVENT",
+   "carry_over": false,
+   "source_bindings": [
+    "src-1",
+    "supplement-src-ea58a61c3678ad4a"
+   ]
+  },
+  {
+   "discovery_id": "w43-primary-patch-planet-20261021",
+   "status": "PARTIAL",
+   "entity": {
+    "entity_id": "patch-the-planet",
+    "canonical_name": "OpenAI Patch the Planet",
+    "entity_type": "PRODUCT",
+    "organization": "OpenAI",
+    "canonical_url": "https://openai.com/index/patch-the-planet"
+   },
+   "artifact_type": "INTEGRATION",
+   "claims": [
+    {
+     "text": "Oct 21 article (RENDERED_TEXT bot-wall fallback): PHP critical vulns found by Calif via GPT-5.6 Sol (fixes r2 GPT-6 Sol) under Patch the Planet; Wiz independently found both; maintainers led fixes; Wiz/Cloudflare coordination; NO CVE IDs.",
+     "evidence_class": "VENDOR_CLAIM",
+     "context": "Rendered 3210B RENDERED_TEXT; GPT-5.6 Sol verbatim; curl 9946B spinner only"
+    },
+    {
+     "text": "5-stage framework (validate+fix, advance notice, gov coordination SIF/ONCD/CISA+intl, prepare updates, publish guidance); $1B Daybreak; Codex PHP checker skill; mitigations. Publisher report, NOT proven incident; CVE inference prohibited.",
+     "evidence_class": "VENDOR_CLAIM",
+     "context": "5-stage + Daybreak + checker sections"
+    },
+    {
+     "text": "Distinct from Oct23 containment research and unverified W42 allegation; no conflation.",
+     "evidence_class": "INFERENCE",
+     "context": "Separate IDs"
+    }
+   ],
+   "limitations": [
+    "Rendered extraction, not original HTML (bot-wall); labeled RENDERED_TEXT",
+    "Vendor narrative; no independent vuln/patch verification",
+    "CVE absent; must not infer CVE"
+   ],
+   "verification": [
+    {
+     "target": "page-body",
+     "status": "VERIFIED",
+     "finding": "Rendered read; GPT-5.6 Sol, Wiz/maintainer/Cloudflare, 5 stages, $1B verified. Original bot-walled."
+    },
+    {
+     "target": "disclosed-cve-proof",
+     "status": "CONTRADICTED",
+     "finding": "Zero CVE- strings; report != CVE proof."
+    },
+    {
+     "target": "coordination-scope",
+     "status": "UNRESOLVED",
+     "finding": "Coordination vendor-described; independent confirmation absent."
+    }
+   ],
+   "materiality": "MATERIAL",
+   "materiality_rationale": "Coordinated-disclosure case (model-found vuln, maintainer-led fix, 5-stage): high security-process significance with attribution limits and CVE-proof withheld. [r3 IA-006 fix; no selection implied.]",
+   "scope_dimensions": [
+    "current relevance",
+    "technical significance"
+   ],
+   "window_relation": "MAIN_EVENT",
+   "carry_over": false,
+   "source_bindings": [
+    "src-1",
+    "supplement-src-fe148ca1b75a67dd"
+   ]
+  },
+  {
+   "discovery_id": "w43-primary-tanstack-20261023",
+   "status": "PARTIAL",
+   "entity": {
+    "entity_id": "tanstack-ai-1-0",
+    "canonical_name": "TanStack AI 1.0",
+    "entity_type": "FRAMEWORK",
+    "organization": "TanStack",
+    "canonical_url": "https://tanstack.com/blog/tanstack-ai-1-0"
+   },
+   "artifact_type": "FRAMEWORK",
+   "claims": [
+    {
+     "text": "TanStack AI 1.0 stable toolkit (76 pkgs, 23 adapters, 8 UI frameworks, 143 contributors); harness explicitly experimental 0.x; upgrade codemod with threadId; non-sandbox permissions. Blog clock day-only 2026-10-23 (no TZ/clock) = UNRESOLVED as blog event; product availability IN via npm 1.0.0 2026-10-22T15:21:49Z + GH release published_at 2026-10-22T15:18:14Z (distinct events, not blog clock).",
+     "evidence_class": "VENDOR_CLAIM",
+     "context": "Blog day-only vs npm/GH Oct22 product availability"
+    },
+    {
+     "text": "API claims preserved (no overhaul for missing posting clock); posting-clock gap explicitly bounded.",
+     "evidence_class": "INFERENCE",
+     "context": "Scope reading"
+    }
+   ],
+   "limitations": [
+    "Blog publication clock UNRESOLVED (day-only); product 1.0 availability Oct22 IN via registry/release (separate event)",
+    "Harness experimental boundary; version pins per registry/release"
+   ],
+   "verification": [
+    {
+     "target": "repo-tag",
+     "status": "UNRESOLVED",
+     "finding": "Blog tag clock unresolved; GH release @tanstack/ai@1.0.0 published 2026-10-22T15:18:14Z IN as product proxy (not blog clock)."
+    },
+    {
+     "target": "upgrade-guide",
+     "status": "UNRESOLVED",
+     "finding": "Guide vendor-stated; independent migration test absent."
+    },
+    {
+     "target": "harness-experimental-boundary",
+     "status": "VERIFIED",
+     "finding": "Harness explicitly experimental 0.x per blog; core stable vs harness boundary read."
+    }
+   ],
+   "materiality": "MATERIAL",
+   "materiality_rationale": "Stable toolkit with product Oct22 IN but blog clock UNRESOLVED (two distinct events, not conflated): moderate framework relevance with clock gap bounded. [CLOCK note; no selection implied.]",
+   "scope_dimensions": [
+    "current relevance",
+    "technical significance"
+   ],
+   "window_relation": "MAIN_EVENT",
+   "carry_over": false,
+   "source_bindings": [
+    "src-1",
+    "supplement-src-22fcccb239a19447"
+   ]
+  },
+  {
+   "discovery_id": "w43-primary-voxtral-20261020",
+   "status": "PARTIAL",
+   "entity": {
+    "entity_id": "voxtral-3",
+    "canonical_name": "Mistral Voxtral 3",
+    "entity_type": "MODEL",
+    "organization": "Mistral AI",
+    "canonical_url": "https://mistral.ai/news/voxtral-3"
+   },
+   "artifact_type": "PRODUCT",
+   "claims": [
+    {
+     "text": "Family Oct 20 12:00 UTC: Small Transcribe 3 (flagship batch + diarization), Mini 4B, Realtime, Speech 3 TTS, plus LiveKit voice-agent SDK (listen/reason/speak single pipeline, turn under 1s, barge-in); 50+ transcription langs, 35+ langs and 50+ dialects speech.",
+     "evidence_class": "VENDOR_CLAIM",
+     "context": "Mistral announcement + model docs (Oct 20)"
+    },
+    {
+     "text": "Small SOTA transcription/diarization/context-biasing: FLEURS 45 WER Small 4.1/4.0; diarization cpWER 18.4/18.6 vs Pyannote 19.0; keyphrase recall 94.6/81.4; realtime sub-500ms across 40+ langs; TTS internal evals (Voice Code Bench 300 prompts, pronunciation 300 sentences, multilingual 377 prompts, expressive 237; judge gemini-3.8-flash; generated 2026-10-20).",
+     "evidence_class": "VENDOR_CLAIM",
+     "context": "Mistral announcement eval charts + docs"
+    },
+    {
+     "text": "Pricing Mini $0.0035/min, Small $0.004, Realtime $0.008, Speech $13/M chars; agent API $0.04/$0.08; EU/US/global endpoints plus self-deploy (sovereignty); Pro Voice 30min adaptation.",
+     "evidence_class": "VENDOR_CLAIM",
+     "context": "Mistral announcement pricing + docs"
+    },
+    {
+     "text": "Distinct from W42 INSPECT Le Chonk grounding: Voxtral is speech/TTS/SDK, resolves nothing about grounding weights.",
+     "evidence_class": "INFERENCE",
+     "context": "Family comparison from consumed announcements (no conflation)"
+    }
+   ],
+   "limitations": [
+    "Vendor-run evals with vendor-chosen judge; AA pages unfetched; end-to-end agent repro absent; Le Chonk gap untouched"
+   ],
+   "verification": [
+    {
+     "target": "announcement-and-docs-bodies",
+     "status": "VERIFIED",
+     "finding": "Announcement plus model docs read Oct 24 (rendered); original HTML not archived."
+    },
+    {
+     "target": "transcription-eval-details",
+     "status": "UNRESOLVED",
+     "finding": "Vendor FLEURS/diarization/keyphrase tables read; independent replication absent."
+    },
+    {
+     "target": "tts-eval-methodology",
+     "status": "UNRESOLVED",
+     "finding": "Internal-eval design read; judge and sample limits noted; no independent run."
+    },
+    {
+     "target": "pricing-and-endpoints",
+     "status": "VERIFIED",
+     "finding": "Rate card and endpoint scope stated on announcement page."
+    }
+   ],
+   "materiality": "MATERIAL",
+   "materiality_rationale": "STT/TTS with eval conditions + CJK metrics: moderate speech relevance with condition gaps. [r3 carry.]",
+   "scope_dimensions": [
+    "current relevance",
+    "technical significance"
+   ],
+   "window_relation": "MAIN_EVENT",
+   "carry_over": false
+  },
+  {
+   "discovery_id": "w43-r2-1password-20261022",
+   "status": "PARTIAL",
+   "entity": {
+    "entity_id": "onepassword-for-agents",
+    "canonical_name": "1Password for Agents",
+    "entity_type": "PRODUCT",
+    "organization": "1Password",
+    "canonical_url": "https://1password.com/blog/1password-for-ai-agents"
+   },
+   "artifact_type": "PRODUCT",
+   "claims": [
+    {
+     "text": "1Password for AI agents: approval-gated credential handoff + autofill promises; agent sees no password/OTP (vaulted injection). Exact per-integration live vs rolling vs coming-soon must be distinguished; all-connectors-live must NOT be inferred. Plan/integration scope vendor-stated.",
+     "evidence_class": "VENDOR_CLAIM",
+     "context": "1Password blog Oct22; approval + no-secrets sections"
+    },
+    {
+     "text": "Platform/plan scope: Pro/Max/Team availability with partner exceptions; credential injection boundary vs agent-visible secrets; independent functional test absent.",
+     "evidence_class": "VENDOR_CLAIM",
+     "context": "Platform/plan sections"
+    },
+    {
+     "text": "Complements Duet Managed-Agents plane (Duet 1Password coming soon); cross-story live-status conflation prohibited.",
+     "evidence_class": "INFERENCE",
+     "context": "Duet + 1Password cross-read"
+    }
+   ],
+   "limitations": [
+    "Per-integration live/rolling/coming-soon unvalidated beyond vendor blog",
+    "No independent approval-flow or autofill reproduction",
+    "Plan/partner exceptions partially stated"
+   ],
+   "verification": [
+    {
+     "target": "per-integration-live-status",
+     "status": "UNRESOLVED",
+     "finding": "Live vs rolling vs coming-soon by connector/plan vendor-stated; independent per-integration check absent."
+    },
+    {
+     "target": "platform-and-plan-scope",
+     "status": "UNRESOLVED",
+     "finding": "Platform/plan scope stated with exceptions; independent entitlement check absent."
+    },
+    {
+     "target": "trust-model-docs",
+     "status": "UNRESOLVED",
+     "finding": "Approval + no-password/OTP injection described; independent trust-model test absent."
+    }
+   ],
+   "materiality": "MATERIAL",
+   "materiality_rationale": "Agent credential plane (approval-gated injection, agent never sees secrets) intersecting Duet distribution: high safety-architecture relevance with live-vs-coming-soon and no-independent-test limits. [r3 IA-011 fix; no selection implied.]",
+   "scope_dimensions": [
+    "current relevance",
+    "technical significance"
+   ],
+   "window_relation": "MAIN_EVENT",
+   "carry_over": false
+  },
+  {
+   "discovery_id": "w43-r2-ambench-v2-20261020",
+   "status": "PARTIAL",
+   "entity": {
+    "entity_id": "am-bench-v2",
+    "canonical_name": "AM-Bench v2 revision",
+    "entity_type": "PAPER",
+    "organization": "Jinesis Lab / EuroSafeAI",
+    "canonical_url": "https://arxiv.org/abs/2610.24264"
+   },
+   "artifact_type": "PAPER",
+   "claims": [
+    {
+     "text": "Unified taxonomy plus 35-scenario suite across 7 industries grounded in fraud triangle (perceived threat/opportunity/reasoning); 5 threat categories (instrumental convergence), 7 opportunity (ESRR), novel 4-question reasoning framework.",
+     "evidence_class": "AUTHOR_CLAIM",
+     "context": "arXiv 2610.24264v2 abs+intro (PDF archived 2.38MB; v1 Oct 16 OUT, v2 Oct 20 15:40:19Z IN)"
+    },
+    {
+     "text": "10 frontier models: 62-point misalignment spread; Gemini Flash / 3.1 Pro highest, Claude Sonnet 4.6 near-zero; models may act harmfully without explicit situational awareness; code at github.com/AI4Collaboration/Agentic-Misalignment-Bench.",
+     "evidence_class": "AUTHOR_CLAIM",
+     "context": "arXiv 2610.24264v2 abs (evaluation results)"
+    },
+    {
+     "text": "v2 is a revision event pending substantive delta check; must not promote v1 OUT original into a W43 research claim.",
+     "evidence_class": "INFERENCE",
+     "context": "Version chronology (v1 OUT vs v2 IN)"
+    }
+   ],
+   "limitations": [
+    "Full 38pp body beyond abs+intro unread; v1-to-v2 delta unchecked; findings unreproduced"
+   ],
+   "verification": [
+    {
+     "target": "v1-v2-substantive-delta",
+     "status": "UNRESOLVED",
+     "finding": "Delta unchecked; v2 treated as revision event only."
+    },
+    {
+     "target": "evaluation-impact",
+     "status": "VERIFIED",
+     "finding": "62pp spread and model ordering read in abs."
+    }
+   ],
+   "materiality": "CONTEXT",
+   "materiality_rationale": "AM-Bench v1 Oct16 21:46:19Z OUT (13m41s before window) vs v2 Oct20 15:40:19Z IN (2379235B): revision event only; taxonomy + 35 scenarios + 7 industries + fraud triangle + 5 threat/7 opportunity + 4Q framework + 10 models 62pp spread read at abs/intro; full v1->v2 diff (29pp + benchmarks/ablation) NOT line-reviewed; must not promote OUT v1. CONTEXT bibliography. [r3 IA-010 UNRESOLVED_DEFERRED_WITH_RATIONALE; no selection implied.]",
+   "scope_dimensions": [
+    "technical significance"
+   ],
+   "window_relation": "MAIN_EVENT",
+   "carry_over": false,
+   "source_bindings": [
+    "src-1",
+    "supplement-src-b06a31536a4f162a"
+   ]
+  },
+  {
+   "discovery_id": "w43-r2-memt-20261019",
+   "status": "PARTIAL",
+   "entity": {
+    "entity_id": "memt-1-0",
+    "canonical_name": "MemTensor MemT-1.0",
+    "entity_type": "MODEL",
+    "organization": "MemTensor",
+    "canonical_url": "https://github.com/MemTensor/MemT-1.0"
+   },
+   "artifact_type": "MODEL",
+   "claims": [
+    {
+     "text": "Memory foundation IN (paper v1 Oct19; repo Oct19 03:29:30Z 382*/17/2): Gated DeltaNet-2 + MoS; 34B tokens; two-stage continued-pretrain + post-train.",
+     "evidence_class": "AUTHOR_CLAIM",
+     "context": "Paper 7096280B + repo meta; author provenance"
+    },
+    {
+     "text": "Nano Qwen3.6-35B-A3B (36B/3B mem451M/10M) + Flash DeepSeek-V4-Flash (288B/17B mem3.61B/336M); 11 benches Flash1st/Nano2nd parametric; 1.86x end-to-end 128K + 66x storage vs KV cache. Baselines vendor-selected; no independent repro.",
+     "evidence_class": "AUTHOR_CLAIM",
+     "context": "Paper benches; attribution bounded"
+    },
+    {
+     "text": "Experience-guided agentic coding (native memory, no bloat); SGLang snapshots/save-restore; licenses ONLY README (paper CC BY-NC-SA4.0, software PolyForm Noncommercial1.0.0, SGLang flash-attention MIT, weights/datasets/benchmarks/trademarks NOT covered) — paper has no license terms (fixes r2).",
+     "evidence_class": "AUTHOR_CLAIM",
+     "context": "README 10170B e75c13d license section"
+    }
+   ],
+   "limitations": [
+    "65pp equations/ablations not line-reviewed; author harnesses only",
+    "Weights/data licenses forthcoming; repo software commercial use prohibited per PolyForm",
+    "No independent mechanism repro"
+   ],
+   "verification": [
+    {
+     "target": "tech-report-pdf",
+     "status": "VERIFIED",
+     "finding": "Paper 7096280B has NO license terms — authority is README only (r2 corrected)."
+    },
+    {
+     "target": "weight-and-license-files",
+     "status": "VERIFIED",
+     "finding": "README e75c13d: paper CC BY-NC-SA4.0, software PolyForm1.0.0, MIT third-party, weights/data excluded."
+    },
+    {
+     "target": "benchmark-denominators",
+     "status": "UNRESOLVED",
+     "finding": "11 benches 1.86x/66x author-measured; no rerun."
+    },
+    {
+     "target": "sglang-serve-config",
+     "status": "UNRESOLVED",
+     "finding": "Snapshots/save-restore described; no serve test."
+    }
+   ],
+   "materiality": "MATERIAL",
+   "materiality_rationale": "Memory-native foundation (MoS, 34B, 1.86x/66x) with license split corrected (paper vs software vs excluded): high novelty with author-measurement limits. [r3 IA-007 fix; no selection implied.]",
+   "scope_dimensions": [
+    "current relevance",
+    "technical significance"
+   ],
+   "window_relation": "MAIN_EVENT",
+   "carry_over": false,
+   "source_bindings": [
+    "src-1",
+    "supplement-src-927931f4a303eaa6",
+    "supplement-src-baee90a6382ccdbd"
+   ]
+  },
+  {
+   "discovery_id": "w43-r2-ming-20261019",
+   "status": "PARTIAL",
+   "entity": {
+    "entity_id": "ming-3-0-tts",
+    "canonical_name": "InclusionAI Ming-3.0-tts",
+    "entity_type": "MODEL",
+    "organization": "InclusionAI",
+    "canonical_url": "https://github.com/inclusionAI/Ming-3.0-tts"
+   },
+   "artifact_type": "MODEL",
+   "claims": [
+    {
+     "text": "TTS family (repo Oct19 IN; News month-only [2026.10] day unproven): 0.5B dense + 7.9B-A1.3B MoE tiny (LingV3); MIT license per LICENSE bytes; 7 langs + Sichuanese/Cantonese; 14 tags; tasks seed/multilingual/paralinguistic/podcast/basic/emotion/dialect/freeform/voice_design/ip.",
+     "evidence_class": "VENDOR_CLAIM",
+     "context": "README 74543B + repo meta Oct19 197*"
+    },
+    {
+     "text": "Publisher reporting third-party leaderboard (NOT independent #1 robustness): AA Controlled Voice 1069 1st open-weights 13th overall; Pronunciation Robustness 93.2% 1st overall (shorthand96.5 exact-seq90.6); Provider Voice 1188 3rd open-weights 17th overall. AA pages unfetched — VENDOR_CLAIM + LIMITATION.",
+     "evidence_class": "AUTHOR_CLAIM",
+     "context": "README AA ranks; AA unfetched"
+    },
+    {
+     "text": "Roadmap pending (vLLM-Omni, tech report); release-day month-only; repo creation IN anchor. License MIT per LICENSE bytes; weight terms per repo; OSI/commercial claims withheld beyond MIT text.",
+     "evidence_class": "INFERENCE",
+     "context": "News vs created_at; LICENSE 1067B"
+    }
+   ],
+   "limitations": [
+    "Publisher-cited AA ranks; original AA pages unfetched; independent arena check absent",
+    "Month-only release dating; day-level unproven",
+    "Vendor benchmark splits; independent TTS eval absent"
+   ],
+   "verification": [
+    {
+     "target": "exact-first-availability-date",
+     "status": "UNRESOLVED",
+     "finding": "Month-only News vs Oct19 creation; day unproven; creation is IN anchor."
+    },
+    {
+     "target": "tech-report",
+     "status": "UNRESOLVED",
+     "finding": "Roadmap pending; no report."
+    },
+    {
+     "target": "weight-sha-and-license-file",
+     "status": "VERIFIED",
+     "finding": "HF links listed; bytes unhashed; MIT 1067B verified at 028c1ea; OSI/commercial beyond MIT withheld."
+    },
+    {
+     "target": "tts-eval-methodology",
+     "status": "UNRESOLVED",
+     "finding": "README tables + AA ranks read; AA pages unfetched; publisher citation, not independent verification."
+    }
+   ],
+   "materiality": "MATERIAL",
+   "materiality_rationale": "Open TTS with publisher-cited AA ranks (Controlled Voice open-weights #1, Robustness overall #1, Provider Voice open-weights #3), not verified independent #1; full task taxonomy disclosed. MATERIAL with AA-original limitation. [r3 IA-008+IA-012 fix; no selection implied.]",
+   "scope_dimensions": [
+    "current relevance",
+    "technical significance"
+   ],
+   "window_relation": "MAIN_EVENT",
+   "carry_over": false,
+   "source_bindings": [
+    "src-1",
+    "supplement-src-1d329e6cfb492783",
+    "supplement-src-5bb55c72ae60d4a2"
+   ]
+  },
+  {
+   "discovery_id": "w43-r2-moss-api-20261020",
+   "status": "PARTIAL",
+   "entity": {
+    "entity_id": "moss-api",
+    "canonical_name": "MOSS-Image MOSI API availability",
+    "entity_type": "API",
+    "organization": "OpenMOSS",
+    "canonical_url": "https://platform.mosi.cn/"
+   },
+   "artifact_type": "API",
+   "claims": [
+    {
+     "text": "MOSS API Oct20 README News line is the IN mention event; active platform API deployment proof unknown — README line != live API proof.",
+     "evidence_class": "VENDOR_CLAIM",
+     "context": "README News 2026-10-20 line"
+    },
+    {
+     "text": "API terms/coverage vendor-stated; availability scope unvalidated.",
+     "evidence_class": "VENDOR_CLAIM",
+     "context": "API docs section"
+    }
+   ],
+   "limitations": [
+    "README line vs live deployment distinguished; independent API call absent",
+    "Terms vendor-stated"
+   ],
+   "verification": [
+    {
+     "target": "api-terms-and-coverage",
+     "status": "UNRESOLVED",
+     "finding": "Terms stated; independent coverage check absent."
+    },
+    {
+     "target": "platform-availability-proof",
+     "status": "UNRESOLVED",
+     "finding": "README line only; live deployment UNVERIFIED."
+    }
+   ],
+   "materiality": "CONTEXT",
+   "materiality_rationale": "API mention (README line) without deployment proof: CONTEXT with live-vs-mention bound. [r3 IA-013 fix; no selection implied.]",
+   "scope_dimensions": [
+    "current relevance"
+   ],
+   "window_relation": "MAIN_EVENT",
+   "carry_over": false
+  },
+  {
+   "discovery_id": "w43-r2-moss-report-announce-20261019",
+   "status": "PARTIAL",
+   "entity": {
+    "entity_id": "moss-report-announce",
+    "canonical_name": "MOSS-Image technical report arXiv announcement",
+    "entity_type": "PAPER",
+    "organization": "OpenMOSS",
+    "canonical_url": "https://arxiv.org/abs/2610.23374"
+   },
+   "artifact_type": "PAPER",
+   "claims": [
+    {
+     "text": "MOSS report announcement Oct19 IN is the announcement event only; research body Oct16 OUT (v1 submitted Oct16) is background unless new revision; Oct19 != new research discovery. README line != platform proof.",
+     "evidence_class": "VENDOR_CLAIM",
+     "context": "Announce vs submission dates"
+    },
+    {
+     "text": "Platform Web page independent view metadata-only; event_types publication vs announcement distinguished.",
+     "evidence_class": "INFERENCE",
+     "context": "Event-type split"
+    }
+   ],
+   "limitations": [
+    "Report body Oct16 OUT; announcement IN; substantive v1->v2 delta if any unchecked",
+    "Platform availability unproven beyond README line"
+   ],
+   "verification": [
+    {
+     "target": "report-pdf-body",
+     "status": "UNRESOLVED",
+     "finding": "Body Oct16 OUT; announcement Oct19 IN; new-research promotion prohibited."
+    },
+    {
+     "target": "announcement-vs-submission-dates",
+     "status": "VERIFIED",
+     "finding": "Oct16 submission OUT vs Oct19 announce IN distinguished."
+    }
+   ],
+   "materiality": "CONTEXT",
+   "materiality_rationale": "Bibliographic announcement (Oct16 body OUT, Oct19 announce IN): CONTEXT bibliography, never story; event-type split preserved. [r3 IA-013 fix; no selection implied.]",
+   "scope_dimensions": [
+    "current relevance"
+   ],
+   "window_relation": "MAIN_EVENT",
+   "carry_over": false
+  },
+  {
+   "discovery_id": "w43-r2-moss-trainer-20261018",
+   "status": "PARTIAL",
+   "entity": {
+    "entity_id": "kohaku-moss-trainer",
+    "canonical_name": "KohakuMossTrainer",
+    "entity_type": "FRAMEWORK",
+    "organization": "KohakuBlueleaf",
+    "canonical_url": "https://github.com/KohakuBlueleaf/KohakuMossTrainer"
+   },
+   "artifact_type": "FRAMEWORK",
+   "claims": [
+    {
+     "text": "Third-party KohakuMossTrainer (Oct18 IN; Base/SFT code+weights Oct16 01:18Z OUT distinct): streamed full finetune on RTX5090 36864xGRAD_ACC8 (294912 tok/step) 117.7s/step vs 8.8s micro-batch; HostAccumulator 4M-element chunk fp32 scratch ~68s/step ~8.5s micro-batch; py-spy gradient-worker analysis. Vendor-/author-measured, NOT independent Core measurement.",
+     "evidence_class": "PROJECT_CLAIM",
+     "context": "Trainer repo commits; GRAD_ACC/VRAM figures author-reported"
+    },
+    {
+     "text": "License: KohakuMoss License 1.0 custom (LICENSE 12141B at da5dd97e Oct20) — NOT OSI/MIT/Apache; commercial/OSI claims withheld. GPU/VRAM unreproduced.",
+     "evidence_class": "PROJECT_CLAIM",
+     "context": "LICENSE bytes; commit da5dd97e15492e4"
+    }
+   ],
+   "limitations": [
+    "Third-party implementation; no independent GPU/VRAM rerun",
+    "Custom license; commercial/redistribution terms per license text only",
+    "MOSS Base Oct16 OUT vs trainer Oct18 IN distinguished; API/report events separate"
+   ],
+   "verification": [
+    {
+     "target": "release-tag",
+     "status": "VERIFIED",
+     "finding": "Oct18 trainer IN vs Oct16 base OUT distinguished; commit da5dd97e Oct20 verified."
+    },
+    {
+     "target": "license-file",
+     "status": "VERIFIED",
+     "finding": "LICENSE 12141B custom KohakuMoss 1.0 verified; OSI/MIT/Apache claims withheld."
+    },
+    {
+     "target": "kernel-and-vram-claims",
+     "status": "UNRESOLVED",
+     "finding": "GRAD_ACC/VRAM/scratch figures author-measured; independent measurement absent."
+    }
+   ],
+   "materiality": "MATERIAL",
+   "materiality_rationale": "Third-party training efficiency report (host-accumulator VRAM path) with custom-license boundary: moderate tooling relevance with author-measurement and license limits. [r3 IA-012 fix; no selection implied.]",
+   "scope_dimensions": [
+    "current relevance",
+    "technical significance"
+   ],
+   "window_relation": "MAIN_EVENT",
+   "carry_over": false,
+   "source_bindings": [
+    "src-1",
+    "supplement-src-b751c2c90f23c12a"
+   ]
+  },
+  {
+   "discovery_id": "w43-r2-openai-bio-20261021",
+   "status": "PARTIAL",
+   "entity": {
+    "entity_id": "openai-distributed-bio-agents",
+    "canonical_name": "OpenAI distributed biological reasoning",
+    "entity_type": "AGENT",
+    "organization": "OpenAI",
+    "canonical_url": "https://openai.com/index/scaling-ai-research-for-complex-biological-data/"
+   },
+   "artifact_type": "AGENT",
+   "claims": [
+    {
+     "text": "Research-team protocol (OpenAI+PerturbAI+Scripps, GPT-Rosalind agents over whole-brain CRISPR atlas, millions of mouse cells, 32 min): per-perturbation reports into reasoning atlas (genes x effects x papers x mechanisms). Team evaluation, NOT independent reproduction.",
+     "evidence_class": "VENDOR_CLAIM",
+     "context": "OpenAI page Oct21; team-authored protocol"
+    },
+    {
+     "text": "Case leads Tsc1/Tsc2 cerebellar divergence + DCTN1-cholesterol hypothesis as testable leads; team-estimated human months-year compressed. Coauthored findings, not third-party validation.",
+     "evidence_class": "VENDOR_CLAIM",
+     "context": "Case studies; team estimate"
+    },
+    {
+     "text": "Coauthored/blinded expert preference (700+ vs 11 refs distributed vs single; blinded experts preferred distributed 75%); bioRxiv 2026.10.15.759436v1, HF perturbai/wholebrain_crispr_atlas, GitHub distributed_agent; scientists in loop, wet-lab follow-up required and NONE reported. Independent reproduction ZERO.",
+     "evidence_class": "VENDOR_CLAIM",
+     "context": "Evaluation + provenance links; wet-lab pending"
+    }
+   ],
+   "limitations": [
+    "Research-team/internal evaluation + blinded preference; no independent reproduction",
+    "Wet-lab validation pending; none reported",
+    "Dataset/code team-provided; sample/selection bias unassessed"
+   ],
+   "verification": [
+    {
+     "target": "paper-and-dataset-and-code",
+     "status": "VERIFIED",
+     "finding": "bioRxiv/HF/GitHub links captured; team provenance."
+    },
+    {
+     "target": "expert-preference-protocol",
+     "status": "UNRESOLVED",
+     "finding": "75% blinded preference is coauthored protocol with team-estimated comparator; independent expert replication absent."
+    },
+    {
+     "target": "follow-up-experiment-status",
+     "status": "UNRESOLVED",
+     "finding": "Wet-lab required; none reported."
+    }
+   ],
+   "materiality": "MATERIAL",
+   "materiality_rationale": "Coauthored research-team evaluation protocol with blinded expert preference (75% distributed), not independent technical evaluation or reproduction; wet-lab unvalidated. MATERIAL as science-agents method with attribution bounded. [r3 IA-008 fix; independent repro ZERO; no selection implied.]",
+   "scope_dimensions": [
+    "current relevance",
+    "technical significance"
+   ],
+   "window_relation": "MAIN_EVENT",
+   "carry_over": false
+  },
+  {
+   "discovery_id": "w43-r2-openai-lowresource-20261019",
+   "status": "PARTIAL",
+   "entity": {
+    "entity_id": "openai-lowresource-coding-evals",
+    "canonical_name": "OpenAI low-resource language coding evaluations",
+    "entity_type": "BENCHMARK",
+    "organization": "OpenAI",
+    "canonical_url": "https://openai.com/index/low-resource-programming-languages/"
+   },
+   "artifact_type": "BENCHMARK",
+   "claims": [
+    {
+     "text": "Published evaluation protocol (first-party we/our): MultiLangBench SQLite-compatible engine from scratch, 20 langs, DB-file interface, reference-SQLite check; Astra 87.4% avg vs Sol 26.8%; COBOL 10.9->72.1, OCaml 25.6->85.8, Fortran 21.4->83.5, VB 27.5->89.4; 19/20 >=83%. Vendor-measured, not independent eval.",
+     "evidence_class": "VENDOR_CLAIM",
+     "context": "OpenAI page Oct19; we/our protocol language"
+    },
+    {
+     "text": "COBOL migration: hidden byte-parity tests (fixed-point trap); GPT-6.1 Sol 86.6% low effort at 61% Sol5.6 cost vs 5.4% baseline; 97.9% high effort; suite open on GitHub; expert review still required. Suite release != independent reproduction.",
+     "evidence_class": "VENDOR_CLAIM",
+     "context": "Both evals; hidden-test design"
+    },
+    {
+     "text": "Enterprise feedback context (COBOL 40%+ banking, Fortran weather/nuclear); Luna 40.3% at $0.77 vs $3.48 Sol. Cost vendor-measured.",
+     "evidence_class": "VENDOR_CLAIM",
+     "context": "Context + cost"
+    }
+   ],
+   "limitations": [
+    "First-party protocol + vendor tables; no independent harness rerun",
+    "Hidden-test design vendor-described; external generalisation unproven",
+    "Cost vendor-measured; billing independently unverified"
+   ],
+   "verification": [
+    {
+     "target": "eval-repo-and-suite",
+     "status": "VERIFIED",
+     "finding": "GitHub suite linked/open; protocol read; independent rerun absent — suite release is not reproduction."
+    },
+    {
+     "target": "per-language-tables",
+     "status": "UNRESOLVED",
+     "finding": "20-lang table read; vendor-measured, independent check absent."
+    },
+    {
+     "target": "migration-hidden-tests",
+     "status": "UNRESOLVED",
+     "finding": "Byte-parity design + 86.6/97.9 read; hidden tests vendor-held."
+    },
+    {
+     "target": "cost-basis",
+     "status": "UNRESOLVED",
+     "finding": "$0.77 vs $3.48 vendor-measured; independent billing absent."
+    }
+   ],
+   "materiality": "MATERIAL",
+   "materiality_rationale": "Published first-party evaluation methodology with open suite (MultiLangBench + COBOL parity), not independent eval methodology with hidden-test proof; vendor-measured tables with expert-review caveat. MATERIAL as low-resource evidence with attribution bounded. [r3 IA-008 fix; no selection implied.]",
+   "scope_dimensions": [
+    "current relevance",
+    "technical significance"
+   ],
+   "window_relation": "MAIN_EVENT",
+   "carry_over": false
+  },
+  {
+   "discovery_id": "w43-r2-openai-securing-20261023",
+   "status": "PARTIAL",
+   "entity": {
+    "entity_id": "openai-training-containment",
+    "canonical_name": "OpenAI frontier training containment and red-teaming",
+    "entity_type": "ORGANIZATION",
+    "organization": "OpenAI",
+    "canonical_url": "https://openai.com/index/securing-our-frontier-model-training-environment/"
+   },
+   "artifact_type": "SECURITY_EVENT",
+   "claims": [
+    {
+     "text": "Frontier training containment (offline world, defense in depth, Sep 20 DNS incident, hundreds of billions tokens red-team, Kata/gVisor/Moby/kernel CVEs, Oct 1 RL resume, safety-case gating); attacker-favorable conditions caveat; separate from Patch execution. Page displayed October 23, 2026 (day-only; static HTML has no article:published_time/datePublished/ld+json); hour evidence from official-domain RSS pubDate Fri, 23 Oct 2026 10:00:00 GMT = 10:00Z (secondary provenance, not independent page clock).",
+     "evidence_class": "VENDOR_CLAIM",
+     "context": "Page day-only + official RSS 10:00Z (secondary)"
+    },
+    {
+     "text": "CVE/patch/incident scope and red-team conditions vendor-described; monitoring/stopping controls vendor-stated.",
+     "evidence_class": "VENDOR_CLAIM",
+     "context": "Research sections"
+    }
+   ],
+   "limitations": [
+    "Page clock day-only (no metadata time); 10:00Z rests on official RSS (secondary, not page proof)",
+    "Vendor-described containment/red-team; independent verification absent"
+   ],
+   "verification": [
+    {
+     "target": "cve-patch-provenance",
+     "status": "UNRESOLVED",
+     "finding": "Patch/CVE scope vendor-described; independent confirmation absent."
+    },
+    {
+     "target": "incident-scope",
+     "status": "UNRESOLVED",
+     "finding": "Sep 20 DNS + RL resume vendor-described; third-party corroboration absent."
+    },
+    {
+     "target": "red-team-conditions",
+     "status": "UNRESOLVED",
+     "finding": "Red-team scale/conditions vendor-described; independent reproduction absent."
+    },
+    {
+     "target": "monitoring-and-stopping-controls",
+     "status": "UNRESOLVED",
+     "finding": "Controls vendor-stated; independent test absent."
+    }
+   ],
+   "materiality": "MATERIAL",
+   "materiality_rationale": "Frontier containment with page day-only + RSS 10:00Z IN-caveat (strict page-primary rule = UNRESOLVED): high safety relevance with hour-provenance explicitly sourced, not blind page-clock. [CLOCK note; no selection implied.]",
+   "scope_dimensions": [
+    "current relevance",
+    "technical significance"
+   ],
+   "window_relation": "MAIN_EVENT",
+   "carry_over": false,
+   "source_bindings": [
+    "src-1",
+    "supplement-src-7648a293320fac45"
+   ]
+  },
+  {
+   "discovery_id": "w43-r4-flint-20261021",
+   "status": "PARTIAL",
+   "entity": {
+    "entity_id": "flint",
+    "canonical_name": "Recursive Flint",
+    "entity_type": "MODEL",
+    "organization": "Recursive",
+    "canonical_url": "https://huggingface.co/RecursiveSI/flint"
+   },
+   "artifact_type": "OPEN_WEIGHT",
+   "claims": [
+    {
+     "text": "Open-weight coding model Oct 21 (announce + HF weights 14:20:58Z, 733 likes): 39.8B total/2.5B active MoE, 49 layers (2 dense + 47 MoE), 256 routed experts 6/token + shared, SWA-513, vocab 150144, cutoff June 2026; Eureka Machine searched recipes + 4-bit lm_head quantization; train from scratch.",
+     "evidence_class": "VENDOR_CLAIM",
+     "context": "Official article 366583B + HF card 6250B; card Apache-2.0"
+    },
+    {
+     "text": "Capability: supports up to 512K tokens; recommends staying within 256K. Config 262144 (prompt+output) is NOT publisher max — conflation prohibited. Speed vendor-claimed: 125+ tok/s M4 Pro MacBook Pro, 150+ 64GB RTX Spark short contexts; avg throughout 128K session (*Muse 124K, prefill excluded); up to 2x faster than comparables.",
+     "evidence_class": "VENDOR_CLAIM",
+     "context": "Article 512K/256K + speed apparatus; card 262144 distinct"
+    },
+    {
+     "text": "Apache-2.0 weights; hosted API terms separate; WIRED Oct 21 hands-on corroborates same-day; Grok Flint+M4 Pro chatter (no post IDs) corroboration only; Term-Bench 2.1 54.9 / SWE-bench Pro v2 89.7 / Verified 74.2 (Terminus2/mini-swe-agent, temp1.0/top-p0.95/top-k20, avg pass@1 5+ attempts, web-retrieval-as-failure).",
+     "evidence_class": "VENDOR_CLAIM",
+     "context": "Card license + eval sections; WIRED; Grok topic mention"
+    }
+   ],
+   "limitations": [
+    "Vendor benchmarks/tok/s unreproduced; 128K apparatus vendor-described only",
+    "Weight SHA not independently re-hashed; HF API body from r4 reused",
+    "Eureka automation vendor-described; no training reproduction"
+   ],
+   "verification": [
+    {
+     "target": "hf-weight-sha-and-license-file",
+     "status": "VERIFIED",
+     "finding": "HF card 6250B read; Apache-2.0 verified; weights 14:20:58Z per r4 API JSON; byte SHA re-hash not executed."
+    },
+    {
+     "target": "release-tag",
+     "status": "VERIFIED",
+     "finding": "Oct 21 announce + weights same-day corroborated by WIRED; 512K/256K vs 262144 distinguished."
+    },
+    {
+     "target": "benchmark-denominators-and-harnesses",
+     "status": "UNRESOLVED",
+     "finding": "Harnesses/temp/top-p/top-k/attempts documented; independent run absent."
+    },
+    {
+     "target": "independent-tokens-per-second-repro",
+     "status": "UNRESOLVED",
+     "finding": "125+/150+ short-context 128K-avg prefill-excluded vendor-claimed; no independent measurement."
+    }
+   ],
+   "materiality": "MATERIAL",
+   "materiality_rationale": "Strongest local-coding open-weight release (MoE 39.8B/2.5B, 512K capability with 256K guidance, Apple/RTX speed with stated apparatus): high novelty with vendor-measurement limits bounded. [r3 IA-002+IA-009 fix; no selection implied.]",
+   "scope_dimensions": [
+    "current relevance",
+    "technical significance"
+   ],
+   "window_relation": "MAIN_EVENT",
+   "carry_over": false,
+   "source_bindings": [
+    "src-1",
+    "supplement-src-d2d2f48e181fb4dd",
+    "supplement-src-e1fe975d225aaa88"
+   ]
+  },
+  {
+   "discovery_id": "w43-r4-grok-x-ledger-20261024",
+   "status": "PARTIAL",
+   "entity": {
+    "entity_id": "grok-ledger",
+    "canonical_name": "Grok X weekly intake ledger",
+    "entity_type": "OTHER",
+    "organization": "N/A (provenance)",
+    "canonical_url": null
+   },
+   "artifact_type": "OTHER",
+   "claims": [
+    {
+     "text": "Grok X intake registration COMPLETE (contract fulfilled) but sensor PARTIAL: only 2 pinned original post IDs traceable; topic-level X signals lack exact IDs and must NOT be independently verified claims.",
+     "evidence_class": "SOCIAL_OBSERVATION",
+     "context": "X raw 13425B SHA4571e0de; manifest COMPLETE/PARTIAL"
+    },
+    {
+     "text": "Provenance binder for audit only; 7 derived source-type projections remain SOCIAL/SECONDARY and must NOT silently become primary; primary paper requires bound PDF supplement; binder NEVER story.",
+     "evidence_class": "INFERENCE",
+     "context": "Projection ledger 7 mapped/25 passthrough"
+    }
+   ],
+   "limitations": [
+    "X observation PARTIAL; most topic claims lack exact post IDs",
+    "Binder NON_MATERIAL NEVER_STORY; Selection body material prohibited",
+    "Source-type inflation prohibited; no authority manipulation"
+   ],
+   "verification": [
+    {
+     "target": "grok-raw-bytes-and-sha",
+     "status": "VERIFIED",
+     "finding": "Raw 13425B SHA4571e0de archived; registration COMPLETE."
+    },
+    {
+     "target": "pinned-post-ids",
+     "status": "VERIFIED",
+     "finding": "Only 2 pinned IDs exact; remainder topic-level without IDs."
+    },
+    {
+     "target": "independent-repro-status",
+     "status": "UNRESOLVED",
+     "finding": "No independent X-claim reproduction; sensor only."
+    }
+   ],
+   "materiality": "NON_MATERIAL",
+   "materiality_rationale": "Audit sensor binder (COMPLETE registration, PARTIAL observation, 2 pinned IDs): NON_MATERIAL NEVER_STORY; projection inflation prohibited. [r3 IA-014 fix; no selection implied.]",
+   "scope_dimensions": [
+    "current relevance"
+   ],
+   "window_relation": "OTHER",
+   "carry_over": false
+  },
+  {
+   "discovery_id": "w43-support-vercel-ollama-20261017",
+   "status": "PARTIAL",
+   "entity": {
+    "entity_id": "vercel-ollama-distro",
+    "canonical_name": "Vercel/Ollama/Unsloth distribution",
+    "entity_type": "PRODUCT",
+    "organization": "Vercel",
+    "canonical_url": "https://ollama.com/library/nemotron-3.5-bolt:e4b"
+   },
+   "artifact_type": "PRODUCT",
+   "claims": [
+    {
+     "text": "Distribution proof only (no standalone model event): Vercel leg = DeepSeek V4.1-Flash-1017 live on AI Gateway (Oct 17 snapshot; vercel changelog Published Oct 17; X Oct17 9:02AM; upstream news261017) — SEPARATE event family.",
+     "evidence_class": "VENDOR_CLAIM",
+     "context": "Vercel Oct17 primary"
+    },
+    {
+     "text": "Bolt/Ollama/Unsloth leg = Oct 23 signals (research page Published Oct 23; HF/Build Oct 23; ollama:e4b blobs e4b/7.2-7.9GB + tags, page 'Updated yesterday' no hard date; Unsloth v0.1.910-beta Published 2026-10-23T15:26:53Z with Flint/MOSS-Image/Bolt 4B). No synthetic shared 2026-10-23 event_date; two families, attribution split.",
+     "evidence_class": "VENDOR_CLAIM",
+     "context": "Oct23 leg primaries; Unsloth 15:26:53Z"
+    }
+   ],
+   "limitations": [
+    "Composite ID vs two event families; single 2026-10-23 event_date insufficient — split legs required",
+    "Version pins (fe4af3f5/69f2be39, 0.1.910-beta), gateway terms, quant provenance unvalidated"
+   ],
+   "verification": [
+    {
+     "target": "version-pins",
+     "status": "UNRESOLVED",
+     "finding": "Bolb blobs + Unsloth tag stated; full pin matrix unvalidated."
+    },
+    {
+     "target": "gateway-changelog",
+     "status": "UNRESOLVED",
+     "finding": "Vercel Oct17 vs Ollama/Unsloth Oct23 changelogs distinct; unified coverage absent."
+    },
+    {
+     "target": "quant-build-provenance",
+     "status": "UNRESOLVED",
+     "finding": "Quant builds vendor-listed; independent build absent."
+    }
+   ],
+   "materiality": "CONTEXT",
+   "materiality_rationale": "Distribution trace split Oct17 (Vercel/DeepSeek) vs Oct23 (Bolt/Ollama/Unsloth 15:26:53Z), no unified timestamp: CONTEXT with composite-identity limit. [CLOCK split; no selection implied.]",
+   "scope_dimensions": [
+    "current relevance"
+   ],
+   "window_relation": "MAIN_EVENT",
+   "carry_over": false
+  }
+ ],
+ "completeness": {
+  "obligations": [
+   {
+    "obligation_id": "weekly:current-relevance",
+    "status": "LIMITATION",
+    "rationale": "32 rebuilt (Metrics OUT excluded from W43 story as POST_CUTOFF/NON_MATERIAL with supersession; Teams 21:29:58Z IN, Kimi X 17:15:24Z IN, Nemotron 15:12-19:03Z IN, TanStack product Oct22 IN/blog UNRESOLVED, Securing RSS 10:00Z caveat, Vercel/Ollama split). Vendor numbers unreproduced; some AA/license/weight bodies partial."
+   },
+   {
+    "obligation_id": "weekly:technical-significance",
+    "status": "LIMITATION",
+    "rationale": "Mechanisms/benchmarks/licenses at claim level with 25 bound supplements (21 retained with nine DATE_ONLY nulls + 4 exact: Teams/Nemotron-commits/TanStack-release/Securing-RSS); vendor benches unreproduced; Oracle/AMBench deltas UNRESOLVED; independent evaluation ZERO by design."
+   },
+   {
+    "obligation_id": "weekly:carry-over",
+    "status": "SATISFIED",
+    "rationale": "12 W42 explicit (11 DROP + 1 MAYBE->CONTEXT); 19 DROP retained; quarantines hold; Grok + Metrics NON_MATERIAL distinct reasons (binder vs post-cutoff); no redating."
+   }
+  ],
+  "residual_limitations": [
+   "Metrics OUT: W43 story prohibited; W44 pointer only (no W44 branch)",
+   "TanStack blog clock UNRESOLVED (product Oct22 IN, blog day-only); Securing page-primary UNRESOLVED (RSS 10:00Z secondary); Vercel/Ollama composite UNRESOLVED (split, no unified date)",
+   "Nine supplement published_at NULL (DATE_ONLY placeholders, not clocks); exact IN rests on Teams 21:29:58Z / Nemotron 15:12-19:03Z / Kimi X 17:15:24Z / TanStack product Oct22 / RSS 10:00Z, not midnight",
+   "Zero independent reproductions of vendor benchmarks/speeds; AA originals unfetched; Oracle/AMBench v1-v2 deltas UNRESOLVED",
+   "Patch rendered-only (bot-wall); weight blobs unhashed; per-connector live unverified"
+  ],
+  "closure": null
+ }
+}

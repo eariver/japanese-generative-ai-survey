@@ -1,0 +1,278 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W43",
+  "evidence_task_id": "evidence:2026-W43:76da1b3274338d00",
+  "basis": {
+    "task_sha256": "8c64a01ae69a6caff5ced7edf97b2ba42bdd8ef490e186861e42283e0590f97a",
+    "screening_acceptance_sha256": "566cde3bd287dffb38d705c4b6c3fec71a98f67dea96016a009bd929923be48a",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "deepinfer",
+      "canonical_name": "DeepSeek DeepInfer",
+      "entity_type": "FRAMEWORK",
+      "organization": "DeepSeek",
+      "canonical_url": "https://github.com/deepseek-ai/DeepInfer"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "deepinfer",
+    "artifact_type": "FRAMEWORK",
+    "canonical_name": "DeepSeek DeepInfer",
+    "canonical_url": "https://github.com/deepseek-ai/DeepInfer"
+  },
+  "temporal": {
+    "observed_at": "2026-10-25T05:00:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-10-20",
+        "subject_id": "deepinfer",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "event_id": "event-2",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-10-21T04:55:43Z",
+        "subject_id": "deepinfer",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "supplement-src-e20f1cffc1444d3a"
+        ]
+      },
+      {
+        "event_id": "event-3",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-10-21T04:55:43Z",
+        "subject_id": "deepinfer",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "supplement-src-d0805b13331ce793"
+        ]
+      },
+      {
+        "event_id": "event-4",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-10-21T04:55:43Z",
+        "subject_id": "deepinfer",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "supplement-src-d818147e4521ac7a"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "primary:github.com/deepseek-ai/DeepInfer",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "DeepSeek DeepInfer OSS inference (Oct 20)",
+      "published_at": "2026-10-20",
+      "accessed_at": "2026-10-25T05:00:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    },
+    {
+      "source_id": "supplement-src-e20f1cffc1444d3a",
+      "url": "https://github.com/deepseek-ai/DeepInfer/blob/main/deepinfer/environ.py",
+      "source_class": "PRIMARY_REPOSITORY",
+      "title": "DeepInfer environ.py at 9bd9cf24 (DEEPINFER_ENABLE_MTP_VARLEN; DEEPINFER_USE_NEXTN_DECODE default 5)",
+      "published_at": "2026-10-21T04:55:43Z",
+      "accessed_at": "2026-10-25T04:41:00Z",
+      "role": "Post-Screening exact authority supplement: Post-Screening exact code authority r3: commit 9bd9cf243fc53ef9afbf8f04d391d989117d6ab9 (Oct 21). Corrects r2 misnamed ENABLE_MTP_VARLEN/NEXTN_DECODE; 0 disables speculative decode."
+    },
+    {
+      "source_id": "supplement-src-d0805b13331ce793",
+      "url": "https://github.com/deepseek-ai/DeepInfer/blob/main/README.md",
+      "source_class": "PRIMARY_REPOSITORY",
+      "title": "DeepInfer README at 9bd9cf24 (SET DEEPINFER_ENABLE_MTP_VARLEN=1; default 5)",
+      "published_at": "2026-10-21T04:55:43Z",
+      "accessed_at": "2026-10-25T04:41:00Z",
+      "role": "Post-Screening exact authority supplement: Post-Screening exact README authority: SET DEEPINFER_ENABLE_MTP_VARLEN=1; DEEPINFER_USE_NEXTN_DECODE max draft length default 5. Repo created OUT Oct 16, content IN Oct 20."
+    },
+    {
+      "source_id": "supplement-src-d818147e4521ac7a",
+      "url": "https://github.com/deepseek-ai/DeepInfer/blob/main/LICENSE",
+      "source_class": "PRIMARY_REPOSITORY",
+      "title": "DeepInfer LICENSE at 9bd9cf24 (Apache-2.0)",
+      "published_at": "2026-10-21T04:55:43Z",
+      "accessed_at": "2026-10-25T04:41:00Z",
+      "role": "Post-Screening exact authority supplement: Post-Screening exact license bytes: Apache-2.0; supports IA-012 licensing verification."
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Apache-2.0 offline-only OSS cut for V4.1-Flash (single-model); 21.5k stars/2.4k forks/4 commits; repo shell OUT Oct 16 07:47:23Z, first content IN Oct 20, pinned 9bd9cf24 Oct 21.",
+      "subject_id": "deepinfer",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1",
+        "supplement-src-e20f1cffc1444d3a",
+        "supplement-src-d0805b13331ce793",
+        "supplement-src-d818147e4521ac7a"
+      ],
+      "context": "README 4660B + LICENSE 11357B at 9bd9cf243fc53ef9afbf8f04d391d989117d6ab9"
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Kernels FlashMLA/DeepGEMM/DeepEP/TileKernels/DeepSelect/TileLang; Attention DP/balanced CP, MoE EP+EPLB; DSpark + confidence-scheduled verification DEEPINFER_ENABLE_MTP_VARLEN=1, DEEPINFER_USE_NEXTN_DECODE default 5 (0 disables); SWA bounded replay (YOCO compact KEEP140); async default; batch-invariant/deterministic sampling (NVIDIA); structured outputs. Corrects r2 misnamed vars.",
+      "subject_id": "deepinfer",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1",
+        "supplement-src-e20f1cffc1444d3a",
+        "supplement-src-d0805b13331ce793",
+        "supplement-src-d818147e4521ac7a"
+      ],
+      "context": "environ.py 8738B exact literals + README SET lines"
+    },
+    {
+      "statement_id": "claim-3",
+      "text": "Hardware SM100 + Ascend 950; build GCC>=13 Python3.12 CUDA13 CANN9.2; default ckpt 1017; benches 4xSM100 prefill + 64 decode; vLLM-derived SGLang/TRT-LLM credit.",
+      "subject_id": "deepinfer",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1",
+        "supplement-src-e20f1cffc1444d3a",
+        "supplement-src-d0805b13331ce793",
+        "supplement-src-d818147e4521ac7a"
+      ],
+      "context": "README hardware/build/bench"
+    },
+    {
+      "statement_id": "claim-4",
+      "text": "Non-inclusions: KV cache system, VE/prefill/decode disaggregation, cross-DP load balancing (most engine work implemented).",
+      "subject_id": "deepinfer",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1",
+        "supplement-src-e20f1cffc1444d3a",
+        "supplement-src-d0805b13331ce793",
+        "supplement-src-d818147e4521ac7a"
+      ],
+      "context": "README required-but-missing"
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Vendor lists; no worker inference execution or throughput repro",
+      "subject_id": "deepinfer",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1",
+        "supplement-src-e20f1cffc1444d3a",
+        "supplement-src-d0805b13331ce793",
+        "supplement-src-d818147e4521ac7a"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "Single pinned commit 9bd9cf24; main drift after Oct 21 untracked",
+      "subject_id": "deepinfer",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1",
+        "supplement-src-e20f1cffc1444d3a",
+        "supplement-src-d0805b13331ce793",
+        "supplement-src-d818147e4521ac7a"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-3",
+      "text": "Apache-2.0 per LICENSE bytes; patent/trademark scope not reviewed",
+      "subject_id": "deepinfer",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1",
+        "supplement-src-e20f1cffc1444d3a",
+        "supplement-src-d0805b13331ce793",
+        "supplement-src-d818147e4521ac7a"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "repo-release-tag",
+        "status": "VERIFIED",
+        "finding": "Commit 9bd9cf24 Oct 21 via API; repo OUT Oct16 vs content IN Oct20; environ.py+README bound.",
+        "subject_ids": [
+          "deepinfer"
+        ],
+        "source_ids": [
+          "src-1",
+          "supplement-src-e20f1cffc1444d3a",
+          "supplement-src-d0805b13331ce793",
+          "supplement-src-d818147e4521ac7a"
+        ]
+      },
+      {
+        "target": "hardware-requirements",
+        "status": "UNRESOLVED",
+        "finding": "SM100/Ascend950 + toolchain stated; independent build not attempted.",
+        "subject_ids": [
+          "deepinfer"
+        ],
+        "source_ids": [
+          "src-1",
+          "supplement-src-e20f1cffc1444d3a",
+          "supplement-src-d0805b13331ce793",
+          "supplement-src-d818147e4521ac7a"
+        ]
+      },
+      {
+        "target": "license-file",
+        "status": "VERIFIED",
+        "finding": "LICENSE 11357B Apache-2.0 verified; README cross-checked.",
+        "subject_ids": [
+          "deepinfer"
+        ],
+        "source_ids": [
+          "src-1",
+          "supplement-src-e20f1cffc1444d3a",
+          "supplement-src-d0805b13331ce793",
+          "supplement-src-d818147e4521ac7a"
+        ]
+      },
+      {
+        "target": "independent-throughput-repro",
+        "status": "UNRESOLVED",
+        "finding": "No independent run; vendor benches only.",
+        "subject_ids": [
+          "deepinfer"
+        ],
+        "source_ids": [
+          "src-1",
+          "supplement-src-e20f1cffc1444d3a",
+          "supplement-src-d0805b13331ce793",
+          "supplement-src-d818147e4521ac7a"
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      "hardware-requirements: SM100/Ascend950 + toolchain stated; independent build not attempted.",
+      "independent-throughput-repro: No independent run; vendor benches only."
+    ],
+    "contradictions": []
+  }
+}

@@ -1,0 +1,155 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W43",
+  "evidence_task_id": "evidence:2026-W43:5ad9cc05a9516cd6",
+  "basis": {
+    "task_sha256": "05b3a28db68235bfd3178e4f99b686eee94dccf16e663decddf016098195e820",
+    "screening_acceptance_sha256": "566cde3bd287dffb38d705c4b6c3fec71a98f67dea96016a009bd929923be48a",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "eleven-realtime",
+      "canonical_name": "ElevenLabs Eleven Realtime v1",
+      "entity_type": "MODEL",
+      "organization": "ElevenLabs",
+      "canonical_url": "https://elevenlabs.io/blog/realtime"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "eleven-realtime",
+    "artifact_type": "PRODUCT",
+    "canonical_name": "ElevenLabs Eleven Realtime v1",
+    "canonical_url": "https://elevenlabs.io/blog/realtime"
+  },
+  "temporal": {
+    "observed_at": "2026-10-25T05:00:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-10-20",
+        "subject_id": "eleven-realtime",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "primary:elevenlabs.io/blog/realtime",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "ElevenLabs Eleven Realtime v1 Mini/Max (Oct 20)",
+      "published_at": "2026-10-20",
+      "accessed_at": "2026-10-25T05:00:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "v1 Mini (natural/low-cost) plus v1 Max (reasoning/tool-use) single speech-to-speech voice-agent models, Oct 20 (Min Kim); 90+ languages, 17k+ voices; ElevenAgents plus Realtime API with OpenAI realtime-protocol compat (endpoint plus model swap; WebSocket only).",
+      "subject_id": "eleven-realtime",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "ElevenLabs blog (Oct 20)"
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Independent Artificial Analysis as reported: BBA spoken reasoning Max 98.8 / Mini 75.9; TTFA 0.57s / 0.62s; Full-Duplex Mini 95.8 / Max 94.1; Arena Max 998 / Mini 988; tool-use Max 87.1 / Mini 60.3.",
+      "subject_id": "eleven-realtime",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "ElevenLabs blog reporting independent AA evaluation (AA pages unfetched)"
+    },
+    {
+      "statement_id": "claim-3",
+      "text": "Pareto accuracy-vs-speed framing is the vendor's; speed claims (570-620ms) are vendor-measured time-to-first-audio.",
+      "subject_id": "eleven-realtime",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Blog charts read; vendor vs independent attribution separated"
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "AA pages unfetched (scores via vendor blog); migration guide unopened; no independent run; protocol compat implies SDK rework",
+      "subject_id": "eleven-realtime",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "announcement-and-docs-bodies",
+        "status": "VERIFIED",
+        "finding": "Blog body read Oct 24 (rendered); original HTML not archived.",
+        "subject_ids": [
+          "eleven-realtime"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "aa-benchmark-pages",
+        "status": "UNRESOLVED",
+        "finding": "AA numbers via vendor blog only; AA pages unfetched.",
+        "subject_ids": [
+          "eleven-realtime"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "protocol-compat-scope",
+        "status": "UNRESOLVED",
+        "finding": "OpenAI-protocol compat stated; migration guide and WebSocket-only caveat unopened.",
+        "subject_ids": [
+          "eleven-realtime"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "license-and-pricing",
+        "status": "VERIFIED",
+        "finding": "Platform pricing model stated; exact license terms unopened.",
+        "subject_ids": [
+          "eleven-realtime"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      "aa-benchmark-pages: AA numbers via vendor blog only; AA pages unfetched.",
+      "protocol-compat-scope: OpenAI-protocol compat stated; migration guide and WebSocket-only caveat unopened."
+    ],
+    "contradictions": []
+  }
+}

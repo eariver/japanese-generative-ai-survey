@@ -1,0 +1,134 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W43",
+  "evidence_task_id": "evidence:2026-W43:e79cd46ed4df7c56",
+  "basis": {
+    "task_sha256": "0f55fc85ee51dab950676f370f9a626039259d653224f205f4a0850a964ec209",
+    "screening_acceptance_sha256": "566cde3bd287dffb38d705c4b6c3fec71a98f67dea96016a009bd929923be48a",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "muse-adoption",
+      "canonical_name": "Meta Muse adoption and shopping activity",
+      "entity_type": "PRODUCT",
+      "organization": "Meta",
+      "canonical_url": "secondary:techcrunch.com/2026/10/21/meta-says-muse-has-over-10m-users-with-shopping-a-top-activity"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "muse-adoption",
+    "artifact_type": "PRODUCT",
+    "canonical_name": "Meta Muse adoption and shopping activity",
+    "canonical_url": "secondary:techcrunch.com/2026/10/21/meta-says-muse-has-over-10m-users-with-shopping-a-top-activity"
+  },
+  "temporal": {
+    "observed_at": "2026-10-25T05:00:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-10-21",
+        "subject_id": "muse-adoption",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "secondary:techcrunch.com/2026/10/21/meta-says-muse-has-over-10m-users-with-shopping-a-top-activity",
+      "source_class": "SECONDARY",
+      "title": "Meta Muse 10M users, shopping top activity (Oct 21 earnings)",
+      "published_at": "2026-10-21",
+      "accessed_at": "2026-10-25T05:00:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Q3 earnings call: 10M+ Muse adoption with shopping as top activity; Zuckerberg agentic-purchase framing (business-agent checkout); Sensor Tower estimate corroboration cited by press.",
+      "subject_id": "muse-adoption",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "TechCrunch Oct 21 via poweredbyai (secondary press of earnings call)"
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Industry signal, not a technical release; citable as deployment context with sample/bias disclosure at most, never a standalone package.",
+      "subject_id": "muse-adoption",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Editorial scope judgment (no conflation with model releases)"
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Earnings transcript unread; Sensor Tower methodology unvalidated; spend figures uncorroborated",
+      "subject_id": "muse-adoption",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "earnings-transcript",
+        "status": "UNRESOLVED",
+        "finding": "Transcript not fetched; press summary only.",
+        "subject_ids": [
+          "muse-adoption"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "sensor-tower-methodology",
+        "status": "UNRESOLVED",
+        "finding": "Estimate cited secondhand; methodology unvalidated.",
+        "subject_ids": [
+          "muse-adoption"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "spend-figure-basis",
+        "status": "UNRESOLVED",
+        "finding": "No spend figures established.",
+        "subject_ids": [
+          "muse-adoption"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      "earnings-transcript: Transcript not fetched; press summary only.",
+      "sensor-tower-methodology: Estimate cited secondhand; methodology unvalidated.",
+      "spend-figure-basis: No spend figures established."
+    ],
+    "contradictions": []
+  }
+}

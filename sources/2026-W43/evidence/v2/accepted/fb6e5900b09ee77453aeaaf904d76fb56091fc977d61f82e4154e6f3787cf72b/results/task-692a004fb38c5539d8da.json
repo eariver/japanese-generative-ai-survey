@@ -1,0 +1,111 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W43",
+  "evidence_task_id": "evidence:2026-W43:3ef7317714013eb9",
+  "basis": {
+    "task_sha256": "209d92ac6b4f083ad0edfdec798d7c92df7f93becd0cb1d1c0046c6f15e5063b",
+    "screening_acceptance_sha256": "566cde3bd287dffb38d705c4b6c3fec71a98f67dea96016a009bd929923be48a",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "claude-code-perf",
+      "canonical_name": "Claude Code gzip and startup performance",
+      "entity_type": "PRODUCT",
+      "organization": "Anthropic",
+      "canonical_url": "x-official:ClaudeDevs/status/2111209208012210409"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "claude-code-perf",
+    "artifact_type": "PRODUCT",
+    "canonical_name": "Claude Code gzip and startup performance",
+    "canonical_url": "x-official:ClaudeDevs/status/2111209208012210409"
+  },
+  "temporal": {
+    "observed_at": "2026-10-25T05:00:00Z",
+    "events": []
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "x-official:ClaudeDevs/status/2111209208012210409",
+      "source_class": "SOCIAL",
+      "title": "W42 INSPECT recheck: Claude Code perf (7151fcdc)",
+      "published_at": null,
+      "accessed_at": "2026-10-25T05:00:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Official @ClaudeDevs post 2026-10-16: gzip conversation each turn plus cloud-session startup as you type; faster first response; causal performance claim is vendor post, not an independent benchmark.",
+      "subject_id": "claude-code-perf",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "SOCIAL_OBSERVATION",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "x:ClaudeDevs/status/2111209208012210409 (official post; no X-HTML capture)"
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "W42 INSPECT recheck: no new causal benchmark; W43 GitHub perf-adjacent changelogs keep the lane warm; supporting mention at most, never a standalone headline.",
+      "subject_id": "claude-code-perf",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Carry-over recheck (r1 bundle-06 + r2 carry table)"
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "No causal benchmark; X-HTML unauthenticated; changelog bodies partially read",
+      "subject_id": "claude-code-perf",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "independent-causal-benchmark",
+        "status": "UNRESOLVED",
+        "finding": "No causal benchmark located.",
+        "subject_ids": [
+          "claude-code-perf"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "official-changelog-measurement-spec",
+        "status": "UNRESOLVED",
+        "finding": "Measurement spec unvalidated.",
+        "subject_ids": [
+          "claude-code-perf"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      "independent-causal-benchmark: No causal benchmark located.",
+      "official-changelog-measurement-spec: Measurement spec unvalidated."
+    ],
+    "contradictions": []
+  }
+}
