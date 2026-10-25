@@ -1,0 +1,42 @@
+# W43 Sol → Muse Architecture r3 — P4 FLUX speedup arithmetic correction only
+
+Status: `BOUND_ARCHITECTURE_R3_FORMULA_REPAIR / NO_STAGE_ADVANCE / STOP_AT_SOL_CONTENT_REVIEW`
+Date: 2026-10-25 JST
+Repository: `eariver/japanese-generative-ai-survey`
+Work branch: existing `weekly/2026-W43-v2-work` ONLY.
+Exact Starting remote work HEAD/Root Tree will be supplied in Sol dispatch after this contract and index commit.
+Mandatory 6-way read-only preflight before ANY write: work branch HEAD/root Tree exact dispatch, reviewed main `041a08dfef3112643cbf85b4a86a7b6f9128aed6`/Tree `a134dc36a407d08ab1de416324229b3955e0325a`; Frozen Core `production/survey-core-v2` HEAD `774dd39a951c9ac3818e83dfffd4c7666efb0a20`/Tree `cd46a6f7a6dcc4031e76220cea4c52c7dd1fc481`. Any discrepancy → ZERO WRITES and STOP with expected/actual. No new/fallback/review/repair branch, no rebase/reset/force/history rewrite.
+
+## 1. Binding editorial finding and strictly narrow mission
+
+First read `sources/2026-W43/execution/reviews/sol-w43-architecture-r2-arithmetic-independent-review-20261025.md`, then r2 Muse handoff `execution/SOL_W43_SELECTION_AND_ARCHITECTURE_PROPOSAL_REVIEW_HANDOFF-r2.md`, exact current `architecture-v2.json`, `architecture-review-summary-v2.json`, `architecture-review-attention-v2.json`, actual selection/matrix, current input/audit, and original `execution/reviews/sol-w43-selection-r1-architecture-editorial-review-20261025.md`.
+
+Sol verdict: **Selection PASS_WITH_LIMITATIONS, Architecture r2 REQUEST_CHANGES ONLY on new W43-SA-007 P1 formula reversal**. Earlier SA-001..006 repaired to substantive editorial sufficiency: Kimi API vs Nov4 FUTURE weights, consistent 35pp sections + 2pp front/reference, planned 37pp/target 38/max 44, idiomatic technical Japanese, all 68 reviewer attention entries, source and non-reproduction limitations. Do NOT reopen selection or redraw article scope.
+
+In current r2 `architecture-v2.json.packages[P4].must_cover_requirements[1]` the fractions are **incorrect**:
+- Old `10.95/277.80=25.37x` is false: the left side is 0.0394168.
+- Old `12.45/277.80=22.31x` is false: the left side is 0.0448164.
+- Correct `277.80/10.95 ≈25.37x` and `277.80/12.45≈22.31x`, denominator is **new candidate video processing seconds**, numerator is **old/reference baseline 277.80 seconds**. Explain `t_baseline/t_candidate`, not vice versa.
+- Savings `(277.80-12.45)/277.80×100≈95.52%`. fal publisher's 26.5x/96.2% claims are numerically inconsistent with 12.45s/277.80s and must remain marked disputed vendor marketing; not independently reproduced. 10.95s figure is PR-origin and its original raw bytes not archived, so label unverified PR basis rather than confirmed official first-party benchmark.
+- Correct exact r3 proposed Architecture §4.2 and its authored interactive input; search any newly drafted r3 review/source page for reversed equations, ensure none survive as endorsed factual equations. Preserve old r1 and r2 reports/architecture as historical review artifacts untouched; an r3 erratum may quote them labeled **INCORRECT HISTORICAL TEXT**. Do not silently rewrite earlier report.
+- Independently unit-check all other enumerated division/multipliers within the eight Architecture packages; record actual tested expressions and results rather than blanket claims. No new experimental work and no modifications to publisher source bytes.
+
+## 2. Immutable Selection and frozen Core regeneration route
+
+Current Production State `EVIDENCE_REVIEWED`; trusted r4 Evidence and Views unchanged, 32 non-DROP Screening tasks, 51 Materiality and LIMITED Completeness. Current canonical Matrix 32 and Selection 32 assignments **19 SELECTED /1 HOLD /12 REJECT** and eight packages are editorially reviewed and must remain **exactly same bytes for candidate-matrix-v2.json and candidate-selection-v2.json** (SHA256 `16a6bbfe569b3215d05fbae7175b3ca04efc6c1846d28c48662245b68f854c3b` and `50decd8697e1737d7adf6fe9f1ac0f4c7cc891353a7be09461b86e8b90beccea`). No newly selected Metrics/Grok; 19 selected once each. Do NOT change other Architecture package titles, purpose, must-covers, boundary, body-depth or page allocations except if a truly dependent disclosure phrase contains incorrect math. Source-bound details and 5 known LIMITED retained.
+
+Before any replacement of *unadvanced proposal* surfaces, snapshot r2 canonical Matrix, Selection, Architecture, Review Summary, 68/68 Review Attention and archived interactive input/audit **byte-for-byte** under new `sources/2026-W43/execution/history/selection-architecture-r2/`, manifest each true SHA-256, status unadvanced. r1 archival `execution/history/selection-architecture-r1/` preserved immutable. Existing Core runner `scripts/run_selection_architecture_v2_interactive.py` refuses overwriting canonical files, so:
+1. Derive r3 full input from r2 changing ONLY erroneous P4 §4.2 formula and dependent editorial line(s); preserve all other 32 assignments and exact raw Evidence basis, write new edition-local `execution/compat/selection-architecture-input-r3.json`.
+2. In isolated scratch detached copy/checkout pinned exact Starting HEAD (NO branch), retain r2 snapshots; remove old unadvanced proposal files ONLY within isolated scratch; run unchanged frozen runner to make new Matrix/Selection/Architecture/Review Summary/default 50 Attention; confirm Stage scratch precheck `EVIDENCE_REVIEWED→SELECTION_COMPLETE` PASS, still NO Bridge.
+3. Rebuild **scratch-only** native Attention via unchanged `survey_review_attention_v2.build_attention(limit=100)` after removing scratch default 50 result, and Core `validate_attention`: 68/68, overflow0, truncated false; recompute edition-local runner audit output hashes to reflect actual exact five canonical outputs. Since r3 Selection equals r2 byte-for-byte, Attention should equal r2 bytes and SHA `7c3e4deb4a2cd077acac148c777aa2300f1f4dad45bbc4d0624a6b693528f12b`; report any unexpected drift and do not force.
+4. Validate entire native Core Matrix, Selection, proposed Architecture, derived Review Summary equality, Attention, Profile/State before+after unchanged, all 19 selected placements and 0 non-selected placements. Negative tests fail-closed: tampered actual architecture sha/summary, missing selected, selected Metrics/Grok, incorrect `10.95/277.80=25.37x`, incorrect `12.45/277.80=22.31x`, missing full Attention or truncated review view. The two arithmetic cases are **edition-local semantic negative tests**, NOT falsely attributed as built-in frozen schema rejects. Show real command/exit code and exact status.
+5. After FULL scratch PASS, commit only exact tested r3 proposal artifacts to existing branch, replacing unadvanced canonical Architecture/Review Summary/input/audit and, ONLY if necessary for fully consistent regeneration, Matrix/Selection/Attention **with identical bytes**. Preserve all historical r1/r2 and their sha manifests, accepted Evidence/Views, Materiality/Completeness, Discovery/Screening, Source Raw, State/Checkpoint/Human Gates and Frozen Core/main unchanged. If any provenance or isolated/native test fails, STOP `BLOCKED_ARCHITECTURE_R3_PROOF` with non-destructive diagnostic only.
+
+## 3. Deliverables and stop
+
+- `execution/history/selection-architecture-r2/` containing original seven proposal JSONs, SHA256SUMS and README documenting exact r2 unadvanced Stage state.
+- `execution/reviews/muse-w43-architecture-r3-flux-arithmetic-proof-20261025.md`: explicit old wrong vs new correct numerical equations, independent math checks, 10.95 PR citation uncertainty, vendor inconsistency, SHA old→new, other eight packages unaffected, 32 Selection/19 placements invariant, 68/68 reviewer attention and genuine validator results.
+- `execution/SOL_W43_ARCHITECTURE_R3_ARITHMETIC_REVIEW_HANDOFF.md`, `execution/sessions/muse-w43-architecture-r3-20261025.md`, new r3 input and archived runner audit, execution index updated.
+- Normal commit and non-force push SAME branch; final remote HEAD/Root Tree readback; exact frozen Core/main authority unchanged. NO `ADVANCE_STAGE`, Bridge Issue #448 comment, Human Gate approval, Selection/Architecture State transition, Draft, TeX, PDF, Freeze, Release.
+
+Terminal stop `SOL_W43_ARCHITECTURE_R3_ARITHMETIC_REVIEW_READY`. After Sol independent re-audit and only if PASS, two separate trusted Bridge stage advances may be attempted (Selection then Architecture) with receipt readbacks; stop at REAL pending Human Architecture Review for user decision.
