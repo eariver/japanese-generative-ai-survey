@@ -1,0 +1,26 @@
+# W43 — Sol editorial acceptance of governed Architecture r6 corrections
+
+Status: `PASS_WITH_LIMITATIONS / STAGED_REBRIDGING_AUTHORIZED / HUMAN_GATE_NOT_APPROVED`
+Date: 2026-10-25 JST.
+Repository `eariver/japanese-generative-ai-survey`; only existing `weekly/2026-W43-v2-work`.
+Reviewed Muse r6 exact work commit `3c8f91161a254646e860df1aab9b66d9d691cb4c`, Tree `e24421091d402b602cb62ac01abe60a829d5a5d3`; direct FF parent `b7445700dd852024ac27f1feaed58a61de9a9a42`.
+Read-only six-way guard PASS prewrite: reviewed main `041a08dfef3112643cbf85b4a86a7b6f9128aed6` / Tree `a134dc36a407d08ab1de416324229b3955e0325a`, Frozen `production/survey-core-v2` `774dd39a951c9ac3818e83dfffd4c7666efb0a20` / Tree `cd46a6f7a6dcc4031e76220cea4c52c7dd1fc481`. Shared Core/main protected.
+Previous comprehensive independent Sol audit originally Drive `https://drive.google.com/file/d/1mYjruB6L4gHdkEFh001VGXPOqwnFNgCW/view`; established-r5 frozen fixed target `6f961295c6743248c2bccb34e15cb84116bf4de7`. It found 0 P0, 0 P1, 3 P2 (R5-N01/02/03); Selection PASS_WITH_LIMITATIONS. R6 is a **targeted correction**; no independent end-to-end re-audit of all original sources is claimed.
+
+## Exact post-r6 adjudication
+
+- **R5-N01 FIXED** `architecture-v2.json#/packages/3/must_cover_requirements/1`: equation for **speed ratio** `T_old/T_new` yields 25.37x (277.80/10.95) and 22.31x (277.80/12.45); distinct **time reduction percentage** `(T_old-T_new)/T_old *100` yields 95.52% (old denominator 277.80s). Publisher values remain vendor bench, not independent latency.
+- **R5-N02 FIXED** `architecture-v2.json#/packages/7/must_cover_requirements/1`: GitHub release `published_at=2026-10-22T15:18:14Z`, npm registry `time["1.0.0"]=2026-10-22T15:21:49.491Z` (second precision 15:21:49Z) now attributed correctly. Original TanStack selected-candidate rationale unmodified. Sol corroborated GitHub release publisher API; npm publisher time verified by Muse raw key fetch, not separately fetched by this Sol.
+- **R5-N03 FIXED** `architecture-v2.json#/packages/5/must_cover_requirements/0`: CVE zero-count assertion removed; qualified as no identifier identified in inspected publisher page, CVE registration unverified.
+- Native operator pending-Gate invalidation `execution/operator-invalidations/architecture-invalidation-0001.json` has `human_decision=false`, `regeneration_boundary=EVIDENCE_REVIEWED`, immutable old prior checkpoint/Gate references, exact locked subject HEAD, prior gate provenance null. Old r5 seven canonical JSON archived; original bridge receipts remain unchanged. Current genuine State `EVIDENCE_REVIEWED`, machine Selection & Architecture PENDING, both Human Gates PENDING/null. This is **not** a Human REQUEST_CHANGES decision.
+- r6 interactive runner `generated_at=2026-10-25T11:10:19Z` before final commit timestamp `2026-10-25T11:13:53Z`. Native interactive run/scratch Selection precheck PASS **reported by Muse**, not independently rerun by this Sol.
+- File readbacks independently compared with archived r5: Candidate Matrix identical, Candidate Selection identical, Review Attention identical; interactive input matches compat input. 32 candidates 19 SELECTED/1 HOLD/12 REJECT; 19 unique placement, zero missing or ineligible, eight P1-P8 packages, 31 requirements (5+6+4+3+4+3+3+3), 68/68 native Attention untruncated limit100, Architecture status PROPOSED and Summary READY_FOR_ARCHITECTURE_REVIEW.
+- Canonical audit links Matrix `16a6bbfe569b3215d05fbae7175b3ca04efc6c1846d28c48662245b68f854c3b`, Selection `50decd8697e1737d7adf6fe9f1ac0f4c7cc891353a7be09461b86e8b90beccea`, r6 Architecture `7d8f0ea5c8600acab5f19c36ed578011fe2af861ea3a445324fc2f081928c302`, Summary `38c17eccff14e96e16596fc928152d18e67810572cd5e1cd466407def9100b74`, Attention `7c3e4deb4a2cd077acac148c777aa2300f1f4dad45bbc4d0624a6b693528f12b`. Actual Core-stage hash/provenance validation by trusted Operator still pending.
+- Residual 5 LIMITED, Voxtral official contradictions, FLUX keyframes/Elo/vendor-latency conflicts, original AA/data/raw/reproduction gaps, Memory paper depth, 35pp body+2pp prelim estimate remain explicitly carried to Human Review. These are not silently upgraded to proof.
+
+## Binding next actions
+
+Sol conditionally authorizes **two SEPARATE request-only Trusted Operator Bridge stages**:
+1. `EVIDENCE_REVIEWED→SELECTION_COMPLETE` on byte-identical r6 Candidate Matrix and Selection; verify real trusted Actions success, contract receipt PASS, checkpoint and remote State and exact new HEAD/Tree.
+2. Only then `SELECTION_COMPLETE→ARCHITECTURE_ESTABLISHED` on r6 Architecture/Summary/Attention; verify real trusted Actions success, contract receipt PASS, checkpoint and State `HUMAN_GATE_REACHED`, both Human Gates PENDING, immutable source/artifact references, exact new HEAD/Tree.
+Each needs independently rechecked 6-way remote guard and unique edition-local request-only commit, Issue #448 `/survey-core-execute <request commit SHA>`. No combined request, no forge PASS, no Human review operation. Once both trusted stages pass, Sol presents the Human Owner with 8-package editorial scope, 19 selected placements, planned page depths, residual limitations and one explicit approve/request changes decision. Human Gate remains pending until actual explicit Owner instruction; no Draft/TeX/PDF/Freeze/Release now.
