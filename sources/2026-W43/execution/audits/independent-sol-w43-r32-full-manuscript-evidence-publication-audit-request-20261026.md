@@ -13,7 +13,7 @@ Act as **independent Sol in a separate session** from W43 editorial direction an
 
 Audit in two stages: (A) **blind-first independent full reading/technical and evidence challenge** of the r3.2 manuscript, accepted Evidence and primary archive, then (B) compare against historic audit chains, Muse QA, and recent editorial Sol three known regressions. Resist rubber-stamp checking; find genuinely new problems. If source original is unavailable, mark `UNVERIFIABLE` precisely, not fictitious corroboration.
 
-Original W43 time window `[2026-10-16T22:00:00Z,2026-10-23T22:00:00Z)`, JST Friday→Friday. A vendor document viewed on Oct25 is NOT automatically a dated Oct22 source snapshot. Future weight releases and after-cutoff metrics are not W43 observed current releases.
+Original W43 time window `[2026-10-16T22:00:00Z,2026-10-23T22:00:00Z)`, JST Saturday→Saturday. A vendor document viewed on Oct25 is NOT automatically a dated Oct22 source snapshot. Future weight releases and after-cutoff metrics are not W43 observed current releases.
 
 ## 1. Fixed corpus: read all, not just QA summaries
 
