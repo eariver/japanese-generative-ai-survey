@@ -2,6 +2,14 @@
 
 This is the current human-readable navigation record for the edition. Machine lifecycle authority remains `sources/2026-W43/production-state.json`.
 
+## Core-free r3.2 — independent 4-point repair complete, UNVALIDATED (2026-10-26, no Stage)
+
+**Current status: `SOL_W43_CORE_FREE_EDITORIAL_R3_2_READY_FOR_SOL_SPOTCHECK / NATIVE_STILL_BLOCKED / NO_STATE_CHANGE`.**
+- Guard + sync in own environment: remote 6-way PASS (work `6a97bacf…`/`23203470…`, main/frozen unchanged); local clean `9d3a3de06…` → fetch + ff-only → `6a97bacf…` (2 Sol commits). Original `20261026005634_SolReview.md` unread in-session (standing limitation); adjudication + receipt binding.
+- P1-A01: 5 new tables gain table_rows[] (23 sub-rows) + claims[] (29 value-claims); 20/20 row-matched (orthography aligned); quality counted separately. P2-A02: FAQ → UNRESOLVED_FAQ_ATTRIBUTION in prose/ledger/crosswalk, Architecture legacy-held. P2-A03: p5-f1 per-value units (COMPARATOR_UNVERIFIED ×2, UNIT_UNVERIFIED ×3, explicit confirmations); §5.1/§5.2 stay PARTIAL. P2-A04: code labeled 抜粋／疑似使用例・NOT_EXECUTED・IMPORT_UNVERIFIED; body operator-meta grep-clean; 2 micro-trims.
+- 31-matrix on independent 26/5 baseline: 5 PARTIAL stand with grounds (§1.4・§2.2・§4.1・§5.1・§5.2), none coerced. 96 IDs preserved. Recap 5 paras intact. No SOURCE_BLOCKED needed.
+- New r3.2 assets only (preview 33,557/prose 21,495, ledger `2ea2b70b…`, crosswalk 36 keys, QA, handoff, session + this entry); r1–r3.1 untouched. State/Gates/Architecture/Selection/Evidence/main/Frozen Core/shared roots untouched. No Stage/TeX/PDF/Preview/Release.
+
 ## Core-free r3.1 — P8 official JSON + recount + cleanup, UNVALIDATED (2026-10-25, no Stage)
 
 **Current status: `SOL_W43_CORE_FREE_EDITORIAL_R3_1_READY_FOR_SOL_SPOTCHECK / NATIVE_STILL_BLOCKED / NO_STATE_CHANGE`.**
