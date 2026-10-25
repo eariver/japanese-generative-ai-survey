@@ -2,6 +2,16 @@
 
 This is the current human-readable navigation record for the edition. Machine lifecycle authority remains `sources/2026-W43/production-state.json`.
 
+## Core-free r3.3 — comprehensive 10-issue one-batch repair complete, UNVALIDATED (2026-10-26, no Stage)
+
+**Current status: `SOL_W43_CORE_FREE_EDITORIAL_R3_3_BATCHED_REPAIR_READY_FOR_INDEPENDENT_CLOSURE / NATIVE_STILL_BLOCKED / NO_STATE_CHANGE`.**
+- Guard + sync in own environment: remote 6-way PASS (work `1dc4e1e8…`/`b299e4ed…`, reviewed main `041a08df…`/`a134dc36…`, frozen `774dd39a…`/`cd46a6f7a…`); local clean `8cb1e48…` → fetch + ff-only → `1dc4e1e8…` (1 Sol contract commit). Original `20261026022400_SolReview.md` (45,043B, `78a61517…`) unread in-session — disclosed per contract §1; receipt + consolidated adjudication + sole r3.3 contract binding. Fixed audit subject r3.2 `efac8324…`/`61e33ad8…`.
+- P1×3: 001 MemT 66x → 保存容量約66倍削減 (README 24行) + parametric scope + textual caveat + 1.86x SOURCE_UNVERIFIED (保存README記載なし・論文派生AUTHOR_CLAIM); 002 開示五段階 → 原資料17-22行どおり (更新準備/公開後支援) + Daybreak・checker工程外 + 役割分離 + CVE未特定≠不存在証明; 003 全20表 → row_id 83 unique + claims 29 linked (orphan 0) + NOTE 2 + p3-t2分類器補完 + 名称/scope 6修正 + join script STRUCT_PASS 33/33.
+- P2×7: 004 npm scoped `@tanstack/ai` + RAW_NOT_ARCHIVED (GH 15:18:14Z vs npm 15:21:49.491Z別典拠); 005 冒頭運用情報→QA §0へ移動 (recap 5段落同一); 006 FAQ qualified; 007 Duet経路A/B分離 (B=NOT_LIVE_VERIFIED); 008 Voxtral qualified; 009 COBOL例外・hidden別・cost≠quality・MIT artifact別 qualified; 010 PSEUDOCODE/NONRUNNABLE + 程序修正.
+- 31-matrix on independent 20/11 baseline: 20 COMPLETE / 11 PARTIAL (grounded, none coerced). 96 IDs preserved; 19 placements / 8 packages / 5 LIMITED / 68 Attention inherited (not re-verified, not claimed).
+- New r3.3 assets only (preview full 71,499B/prose 52,872B, ledger 96 blocks/80+3 rows/29 claims, crosswalk 37 keys, QA, join script + STRUCT_PASS result, handoff, session + this entry); r1–r3.2 untouched. State/Gates/Architecture r6/Selection/Evidence/main/Frozen Core/shared roots untouched. No Stage/TeX/PDF/Preview/Freeze/Release; noncanonical PDF preview NOT built.
+- Next: editorial Sol check + one limited independent closure audit on fixed SHA diff.
+
 ## Core-free r3.2 — independent 4-point repair complete, UNVALIDATED (2026-10-26, no Stage)
 
 **Current status: `SOL_W43_CORE_FREE_EDITORIAL_R3_2_READY_FOR_SOL_SPOTCHECK / NATIVE_STILL_BLOCKED / NO_STATE_CHANGE`.**
