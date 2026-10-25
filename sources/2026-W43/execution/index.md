@@ -2,6 +2,14 @@
 
 This is the current human-readable navigation record for the edition. Machine lifecycle authority remains `sources/2026-W43/production-state.json`.
 
+## Draft r1 — fast-forward sync done, native validation BLOCKED on shared-Core basis drift (2026-10-25, no Stage)
+
+**Current status: `BLOCKED_DRAFT_NATIVE_VALIDATION / SHARED_CORE_DEFECT / NO_DRAFT_ARTIFACTS`.**
+- Permitted local sync executed: read-only remote 6-way PASS (work `5f925ac9e…`/`d901ef1f…`, main `041a08df…`/`a134dc36…`, frozen `774dd39a…`/`cd46a6f7a…`); local branch `weekly/2026-W43-v2-work` clean at reported `3c8f91161…`; `git fetch` + `merge-base --is-ancestor` YES + `git merge --ff-only` → `5f925ac9e…`/`d901ef1f…` (10 commits, no reset/rebase/force-push/new-branch/merge-commit).
+- Draft preflight PASS (ARCHITECTURE_ESTABLISHED, r1 APPROVED, approval receipt PASS); substantive input built (8 pkgs/113 blocks/22185 chars).
+- Frozen `run_drafting_synthesis_v2_interactive.py` failed at P1 derive: `Screening package basis drift: state_sha256` — both screening packages bind pre-advancement State `885927bd…` vs current `b0450d25…` (profile/discovery match). Sibling of `defects/w43-screening-prepare-state-basis-20261025.md`: bridge-advanced States rejected by frozen direct-local validators. Zero artifacts written; all bypasses refused.
+- Evidence: `execution/defects/w43-drafting-screening-basis-drift-20261025.md`; unvalidated input `execution/defects/w43-draft-r1-interactive-input-UNVALIDATED-20261025.json` (`d1cb5277…`, NOT authority); session `sessions/muse-w43-japanese-draft-r1-blocked-20261025.md`. Recap「今週の総括」OPEN pending clean rerun after reviewed Core repair. State/Gates/main/Core untouched; no bridge request, TeX/PDF, or Publication Preview.
+
 ## Architecture r6 — R5-N01/N02/N03 governed correction complete (2026-10-25, no Stage)
 
 **Current status: `SOL_W43_ARCHITECTURE_R6_CORRECTION_READY_FOR_SOL_REVIEW / AWAITING_INDEPENDENT_SOL_R6_RECHECK / NO_STAGE_ADVANCE`.**
