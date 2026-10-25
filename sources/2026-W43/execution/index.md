@@ -2,6 +2,14 @@
 
 This is the current human-readable navigation record for the edition. Machine lifecycle authority remains `sources/2026-W43/production-state.json`.
 
+## Core-free editorial audit r2 — P1–P8 + recap reviewed, UNVALIDATED (2026-10-25, no Stage)
+
+**Current status: `SOL_W43_CORE_FREE_EDITORIAL_DRAFT_AUDIT_READY / NATIVE_DRAFT_STILL_BLOCKED / NO_STATE_CHANGE`.**
+- Guard + sync: remote 6-way PASS (work `79f26a8bf…`/`be4d644e…`, main/frozen unchanged); local clean `8d46be258…` → fetch + ff-only → `79f26a8bf…` (Sol preview/recap + audit contract commits). Frozen runner never rerun/patched/wrapped (Core repair forbidden by Owner).
+- 4 parallel per-claim audits over r1 preview + closing + block index + UNVALIDATED input + Architecture/Evidence/screening/collector raws: P0×0, P1×7, P2×6, 1 decline (MemT version). FLUX 25.37x/22.31x/95.52% recomputed VERIFIED; GH 15:18:14Z/npm 15:21:49Z rechecked.
+- r2 outputs (noncanonical, UNVALIDATED, r1 preserved): revised reader preview `editorial-bypass/w43-r2-reader-preview-UNVALIDATED-20261025.md` (13 wording fixes; recap unchanged, 5 paras after P8, not P9); citation-confidence ledger `w43-r2-citation-confidence-ledger.json` (86 rows 62P+15T+8N+1 recap, `aa420996…`); QA `w43-r2-editorial-qa.md` (31/31 must-cover Y, 19/19 placements, 5 LIMITED + 68 Attention inherited, no-padding depth note, recap excerpt, residuals).
+- Invariants: State `ARCHITECTURE_ESTABLISHED`, Gate approval, Architecture/Selection/Evidence, main/Frozen Core, shared Core roots all untouched. No native Draft/Synthesis/receipt/`DRAFT_COMPLETE`/`ADVANCE_STAGE`/TeX/PDF/Preview. Native-only stop `SOL_W43_JAPANESE_DRAFT_R1_WITH_RECAP_EDITORIAL_AUDIT_READY` is NOT claimed.
+
 ## Draft r1 — fast-forward sync done, native validation BLOCKED on shared-Core basis drift (2026-10-25, no Stage)
 
 **Current status: `BLOCKED_DRAFT_NATIVE_VALIDATION / SHARED_CORE_DEFECT / NO_DRAFT_ARTIFACTS`.**
