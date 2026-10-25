@@ -2,6 +2,16 @@
 
 This is the current human-readable navigation record for the edition. Machine lifecycle authority remains `sources/2026-W43/production-state.json`.
 
+## Core-free r3.1 — P8 official JSON + recount + cleanup, UNVALIDATED (2026-10-25, no Stage)
+
+**Current status: `SOL_W43_CORE_FREE_EDITORIAL_R3_1_READY_FOR_SOL_SPOTCHECK / NATIVE_STILL_BLOCKED / NO_STATE_CHANGE`.**
+- Guard + sync in own environment: remote 6-way PASS (work `25cae0a11…`/`cdb742a1…`, main/frozen unchanged); local clean `696f0d83…` → fetch + ff-only → `25cae0a11…` (1 Sol verdict+contract commit).
+- R3-SOL-01: official Decisions guide self-fetched+read 2026-10-25 (37,326B, `70f106a9…`, snapshot `source-intake/w43-r31-decisions-guide-snapshot-20261025.md`, Oct25-observation labeled NOT Oct22); TS reference read (TTL/usage as observation detail); plain reference 404 → ARCHIVE_UNAVAILABLE. p8-f1 → verbatim guide choice request JSON (parse-validated, paired) + official illustrative response (labeled not-a-run, NOT_RUN). No invented values, no post-cutoff promotion, no SOURCE_CONFLICT. §8.1 → SUBSTANTIVE_COMPLETE; matrix 29/2.
+- R3-SOL-02: same-method recount r2 26,678 / r3 32,065 (+5,387) / r3.1 33,155 (+1,090); prose-only 20,207→20,803→21,431. r3 "+9,900" corrected via QA note, r3 history untouched.
+- R3-SOL-03: reader-end meta line removed (evidence in r3.1 QA); recap 5 paras intact; banned-term grep clean.
+- R3-SOL-04: 34-key crosswalk with full `sources/2026-W43/...` paths; 17 archive files existence-verified. Ledger 96 rows carried, p8-f1 row updated (`e418a877…`).
+- Invariants: r1/r2/r3 untouched; State/Gates/Architecture/Selection/Evidence/main/Frozen Core/shared roots untouched. No Stage/TeX/PDF/Preview/Release.
+
 ## Core-free r3 — 11-finding binding repair complete, UNVALIDATED (2026-10-25, no Stage)
 
 **Current status: `SOL_W43_CORE_FREE_EDITORIAL_R3_POST_INDEPENDENT_AUDIT_REVIEW_READY / NATIVE_STILL_BLOCKED / NO_STATE_CHANGE`.**
