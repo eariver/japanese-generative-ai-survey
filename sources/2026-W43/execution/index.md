@@ -2,6 +2,14 @@
 
 This is the current human-readable navigation record for the edition. Machine lifecycle authority remains `sources/2026-W43/production-state.json`.
 
+## Core-free Preview r5 — TeX row fidelity + hash guard QA, UNVALIDATED (2026-10-27, no Stage)
+
+**Current status: `MUSE_W43_R5_PRINT_FIDELITY_QA_READY_FOR_INDEPENDENT_AUDIT / NATIVE_STILL_BLOCKED / NO_STATE_CHANGE`.**
+- Guard + sync: dispatch `6f79350a…`/`a6ac634a…` parent `52224fa2…` (contract only); pre-parent `52224fa2…`/`970d348c…`; main `041a08df…`/`a134dc36…`; frozen `774dd39a…`/`cd46a6f7a…` — 6-way PASS; local `52224fa2…` → ff-only → `6f79350a…`.
+- Validator: TeX `tabularx` parsed to ordered rows+cells (unescaped `&`/escapes/braces/URLs); per-cell normalized src/proj/TeX join + DATA/NOTE + uniqueness; 29 claims in ONE target TeX row/cell (value+variant+quals+provider/unit/comparator+bib URL). Real SHA256 of 6 inputs (6/6 match); hash mutant → HASH_MISMATCH; text mutants via common entrypoint. Clean `PRINT_SEMANTIC_PASS` (exit 0); negatives `NEGATIVES_PASS` 23/23 with specific causes (single-side API, TeX swap/alter/shift, count-held dup/swap, header/NOTE/model/metric/drop, bib URL, JP-URL, qualifiers, hash), exit 0.
+- Key audit programmatic 19/1/13/2/1/0 with span evidence (natural+further CURATED_REVIEW_REQUIRED); binding per-table/per-row/per-claim; r3 print bytes FIXED (PDF `d0fa8b56…` blob `4e016ab1…`, TeX blob `79a90d40…`); local SHA256 + pdftotext protected strings pass; log/blob/text ≠ visual QA.
+- New r5 namespace only (validator + results, classifier copy, row-cell-claim binding, input-identity, span audit, readback/boundaries, visual request, manifest, build notes) + handoff `SOL_W43_CORE_FREE_PREVIEW_R5_QA_HANDOFF.md` + session `muse-w43-core-free-preview-r5-20261027.md` + this entry. r1–r4/r3.5 immutable. State/Core/Architecture/Selection/Evidence/Gates untouched. No Stage/Freeze/Release. Next: independent semantic + all-page visual audit (media failure → PDF_VISUAL_AUDIT_BLOCKED).
+
 ## Core-free Preview r4 — print-checker integrity (validator + key accounting), UNVALIDATED (2026-10-27, no Stage)
 
 **Current status: `MUSE_W43_R4_PRINT_QA_INTEGRITY_READY_FOR_SOL_RECHECK / NATIVE_STILL_BLOCKED / NO_STATE_CHANGE`.**
