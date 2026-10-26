@@ -2,6 +2,14 @@
 
 This is the current human-readable navigation record for the edition. Machine lifecycle authority remains `sources/2026-W43/production-state.json`.
 
+## Core-free Preview r3 — print semantic repair (POST/URL/citations/allowlist), UNVALIDATED (2026-10-26/27, no Stage)
+
+**Current status: `MUSE_W43_CORE_FREE_PREVIEW_R3_READY_FOR_SOL_RECHECK / NATIVE_STILL_BLOCKED / NO_STATE_CHANGE`.**
+- Guard + sync: dispatch `36bb0eb2…`/`398db9a3…` parent `f29e77eb…` (contract only); pre-parent `f29e77eb…`/`22371300…`; main `041a08df…`/`a134dc36…`; frozen `774dd39a…`/`cd46a6f7a…` — 6-way PASS; local `f29e77eb…` → ff-only → `36bb0eb2…`.
+- F-R3-01 POST `POST /v1/decisions` restored (SAFE path rule; p-18 300dpi verified). F-R3-02 URL regex excludes JP punct (34 http URLs 0 malformed; SHA via nolinkurl). F-R3-03 18/15/2/1/0 key audit (false 0-unused corrected; TanStack exact-key 典拠 line added to p8-f2). F-R3-04 allowlist (35 modified + title + 1 added) + validator `PRINT_SEMANTIC_PASS` (10 pos + 4 neg, exit 0).
+- TeX `bb0e7e1d…` (20/3/36, bib from r2 complete block), PDF `d0fa8b56…` 483305B 22p 0 warnings, 22 PNGs + 3 sheets inspected. Coverage carryover 20/11, 22p honest, no padding.
+- New r3 namespace only + handoff `SOL_W43_CORE_FREE_PDF_PREVIEW_R3_HANDOFF.md` + session `muse-w43-core-free-preview-r3-20261026.md` + this entry. r1/r2/r3.5 immutable. State/Core/Architecture/Selection/Evidence/Gates untouched. No Stage/Freeze/Release. Next: Sol recheck + separate independent semantic/visual audit.
+
 ## Core-free Preview r2 — bibliography repair + volume/coverage diagnosis, UNVALIDATED (2026-10-26, no Stage)
 
 **Current status: `MUSE_W43_CORE_FREE_PREVIEW_R2_READY_FOR_SOL_RECHECK / NATIVE_STILL_BLOCKED / NO_STATE_CHANGE`.**
