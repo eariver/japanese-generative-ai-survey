@@ -2,6 +2,14 @@
 
 This is the current human-readable navigation record for the edition. Machine lifecycle authority remains `sources/2026-W43/production-state.json`.
 
+## Core-free Preview r2 — bibliography repair + volume/coverage diagnosis, UNVALIDATED (2026-10-26, no Stage)
+
+**Current status: `MUSE_W43_CORE_FREE_PREVIEW_R2_READY_FOR_SOL_RECHECK / NATIVE_STILL_BLOCKED / NO_STATE_CHANGE`.**
+- Guard + sync: dispatch `192fbb14…`/`466ffc98…` parent `071016d0…` (contract only); pre-parent `071016d0…`/`b5b26917…`; main `041a08df…`/`a134dc36…`; frozen `774dd39a…`/`cd46a6f7a…` — 6-way PASS; local `071016d0…` → ff-only → `192fbb14…`.
+- r1 truncation fixed: 36 bibitems rebuilt as complete sentences (MEMT/Voxtral/DeepInfer/Patch/TanStack/decisions; GH≠npm; post-cutoff guards). Body identical to r1 (projection `e1a49da9…`). TeX `1430f2e1…`, PDF `922fa1d5…` 483473B 22p 0 warnings, 22 PNGs + 3 sheets inspected (p21 300dpi confirms).
+- Coverage: 31 must-cover mapped to reader + r2 PDF pages (20 SUBSTANTIVE/11 PARTIAL/0 NOT_VISIBLE observed, prior baseline preserved, no new 31/31 claim); 22p honest (1/1/18/2) vs 38/44; W42 21p precedent; no padding; no material missing requirement.
+- New r2 namespace only + handoff `SOL_W43_CORE_FREE_PDF_PREVIEW_R2_HANDOFF.md` + session `muse-w43-core-free-preview-r2-20261026.md` + this entry. r1/r3.5 immutable. State/Core/Architecture/Selection/Evidence/Gates untouched. No Stage/Freeze/Release. Next: Sol recheck (volume adjudication).
+
 ## Core-free Preview r1 — noncanonical TeX/PDF proof from fixed r3.5, UNVALIDATED (2026-10-26, no Stage)
 
 **Current status: `MUSE_W43_CORE_FREE_PDF_PREVIEW_R1_READY_FOR_SOL_VISUAL_REVIEW / NATIVE_STILL_BLOCKED / NO_STATE_CHANGE`.**
