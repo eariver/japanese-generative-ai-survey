@@ -2,6 +2,14 @@
 
 This is the current human-readable navigation record for the edition. Machine lifecycle authority remains `sources/2026-W43/production-state.json`.
 
+## Core-free Preview r4 — print-checker integrity (validator + key accounting), UNVALIDATED (2026-10-27, no Stage)
+
+**Current status: `MUSE_W43_R4_PRINT_QA_INTEGRITY_READY_FOR_SOL_RECHECK / NATIVE_STILL_BLOCKED / NO_STATE_CHANGE`.**
+- Guard + sync: dispatch `e707379f…`/`08d6cfd0…` parent `3cdf2a01…` (contract only); pre-parent `3cdf2a01…`/`17b0525f…`; main `041a08df…`/`a134dc36…`; frozen `774dd39a…`/`cd46a6f7a…` — 6-way PASS; local `3cdf2a01…` → ff-only → `e707379f…`.
+- Validator rebuilt: `or True` removed; real 80-row ordered join (TOKEN_SUBS allowlist + TeX caption/row identity + DATA/NOTE + uniqueness); per-claim own-row value+variant+quals in proj AND correct TeX span + per-claim bib URL; clean `PRINT_SEMANTIC_PASS` (22 checks, exit 0); 17 true negatives via same entrypoint with specific causes (single-side API, count-held swap/dup, NOTE, model/metric/drop, bib URL), `NEGATIVES_PASS` 17/17 exit 0.
+- Key audit recomputed programmatically 19/1/13/2/1/0 (visible/machine/natural/further/unavailable/orphan 0); corrects r3 18/15/2/1/0 (tanstack-gh/npm now EXACT, recap MACHINE_ONLY). r3 PDF/TeX bytes FIXED (no rebuild); local SHA256 + pdftotext protected-string checks pass; log/blob ≠ visual QA.
+- New r4 namespace only (validator + results, classifier + audit, claim-table binding, readback/boundaries, visual-request, manifest, build notes) + handoff `SOL_W43_CORE_FREE_PREVIEW_R4_QA_HANDOFF.md` + session `muse-w43-core-free-preview-r4-20261027.md` + this entry. r1/r2/r3/r3.5 immutable. State/Core/Architecture/Selection/Evidence/Gates untouched. No Stage/Freeze/Release. Next: Sol recheck + separate independent semantic/visual audit.
+
 ## Core-free Preview r3 — print semantic repair (POST/URL/citations/allowlist), UNVALIDATED (2026-10-26/27, no Stage)
 
 **Current status: `MUSE_W43_CORE_FREE_PREVIEW_R3_READY_FOR_SOL_RECHECK / NATIVE_STILL_BLOCKED / NO_STATE_CHANGE`.**
