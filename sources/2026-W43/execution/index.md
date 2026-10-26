@@ -2,6 +2,15 @@
 
 This is the current human-readable navigation record for the edition. Machine lifecycle authority remains `sources/2026-W43/production-state.json`.
 
+## Core-free r3.5 — single-P1 semantic claim closure (COBOL 40%+ + npm clock), UNVALIDATED (2026-10-26, no Stage)
+
+**Current status: `MUSE_W43_R35_SINGLE_P1_SEMANTIC_CLAIM_REPAIR_READY_FOR_SOL_RECHECK / NATIVE_STILL_BLOCKED / NO_STATE_CHANGE`.**
+- Guard + sync in own environment: remote 6-way PASS (work `2ec0202b…`/`1fb36c82…` == dispatch; main `041a08df…`/`a134dc36…`; frozen `774dd39a…`/`cd46a6f7a…`); contract parent `2ec0202b^` == `b6101733…`, diff = contract file only; local clean `1a4cfed…` → fetch + ff-only → `2ec0202b…`. No new branch/reset/rebase/force.
+- R32-FULL-003 (P1, sole open from independent r3.4 REQUEST_CHANGES at `1a4cfedb…`): 2 physical-row semantic fixes, count 29 preserved. `p7-f1-01` now prints `企業現場40%超（オンラインバンキング言及、精度とは別）` (enterprise share, never accuracy); `p8-f2-03` now prints `npm 2026-10-22T15:21:49Z、GH 15:18:14Zとは別典拠` (GH vs npm separate, scoped + RAW_NOT_ARCHIVED). 20 headers exact, 80↔80 bijection (78 DATA/2 NOTE, 13 aliases pinned), 29 claims own-block DATA with physical-value proof (lexical map documented), 5 RAW_PRIMARY (content-checked) / 24 QUALIFIED_UNAVAILABLE. Verdict `EDITION_LOCAL_ROW_JOIN_PASS`, exit 0; 24/24 negatives for specific semantic reasons incl. actual physical mutations + both pre-fix counterexamples. Pre-fix r3.4 through r3.5 checker → `P1_OPEN` (COBOL + npm `C-VALUE-MISSING`). SHAs (exact file bytes): reader `6f07cb49…`, ledger `6fd9d6fe…` (canonical `49c1e650…` separate), manifest `85d94d74…`.
+- R32-FULL-001/002, P2 004–010 preserved as r3.4 FIXED/QUALIFIED (no reopen, no self-claim of independent closure). 8 packages, 31-baseline 20/11, 5-para recap, 96 IDs, r1–r3.4 bytes intact.
+- New r3.5 assets only (reader, ledger, manifest, semantic checker + result, crosswalk delta, QA, handoff, session + this entry); State/Gates/Architecture r6/Selection/Evidence/main/Frozen Core/shared roots untouched. No TeX/PDF/Stage/Gate/Freeze/Release. No Preview/Freeze/Release.
+- Next: Sol editorial r3.5 recheck, then one separate read-only independent single-finding closure audit of R32-FULL-003 at fixed r3.5 HEAD/Tree; only no-P0/P1 permits NONCANONICAL Core-free PDF preview prep (with reader-visible QA + explicit Human review).
+
 ## Core-free r3.4 — bounded row-join proof + FAQ rewording, UNVALIDATED (2026-10-26, no Stage)
 
 **Current status: `MUSE_W43_R34_BOUNDED_ROW_JOIN_FAQ_REPAIR_READY_FOR_SOL_EDITORIAL_RECHECK / NATIVE_STILL_BLOCKED / NO_STATE_CHANGE`.**

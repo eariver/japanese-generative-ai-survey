@@ -1,0 +1,976 @@
+{
+ "tool": "w43-r3-5-strict-semantic-claim-join-check.py",
+ "scope": "edition-local join only; not source originality, not native Stage, not independent Sol sign-off",
+ "lexical_map": "40%超≡40%+ (core 40%); 500ms未満≡sub-500ms (core 500ms); 対象外≡excluded; npm seconds display normalizes .491Z millis (ledger clock retains millis)",
+ "reader": "w43-r3-5-reader-preview-UNVALIDATED-20261026.md",
+ "reader_sha256": "6f07cb494938f0ea9db7f41b32fdd46f22ac0549bd7846b130f00b1cc5da46d6",
+ "ledger": "w43-r3-5-citation-confidence-ledger.json",
+ "ledger_sha256": "6fd9d6fe75713376e108a094e03335571bfb248293d00c7ac713d1b0d382e6d4",
+ "ledger_canonical_json_sha256": "49c1e650a30f3439ad08532a5815d9615dad204be0fe485cb382e1b7f7591ece",
+ "manifest": "w43-r3-5-physical-row-manifest.json",
+ "manifest_sha256": "85d94d74f3cf3e9546a8acaf6ed775701817beaaa908b4999f8501a26a3cf111",
+ "manifest_canonical_json_sha256": "e7a98ac49d071826272eca641be3e5a055cbd2539ca8f6240119482a648c111c",
+ "verdict": "EDITION_LOCAL_ROW_JOIN_PASS",
+ "positive_exit_code_would_be": 0,
+ "tables_expected": 20,
+ "headers": [
+  {
+   "table_id": "p1-t1",
+   "header": "【表：公開状態×時点（Kimi）】"
+  },
+  {
+   "table_id": "p1-t2",
+   "header": "【表：total／effective／active と文脈（計数規約を見出しに明記）】"
+  },
+  {
+   "table_id": "p1-t3",
+   "header": "【表：bench×harness×分母（帰属明示）】"
+  },
+  {
+   "table_id": "p1-t4",
+   "header": "【表：可用性×時刻×約款（発表／プレビュー／GA／重み配布／再現を別列）】"
+  },
+  {
+   "table_id": "p2-t1",
+   "header": "【表：核×役割（DeepInfer）】"
+  },
+  {
+   "table_id": "p2-t2",
+   "header": "【表：bench×分母×条件（MemT）】"
+  },
+  {
+   "table_id": "p2-f2",
+   "header": "【表：MemT権利対応（p2-f2、§2.5実物）】"
+  },
+  {
+   "table_id": "p3-t1",
+   "header": "【表：権限×条件（Duet）】"
+  },
+  {
+   "table_id": "p3-t2",
+   "header": "【表：旧／新／未来の三段（auto-mode）】"
+  },
+  {
+   "table_id": "p4-t1",
+   "header": "【表：倍率×削減率×出典／版／時刻】"
+  },
+  {
+   "table_id": "p5-t1",
+   "header": "【表：機能×モデル×対応言語×出典／版／時刻】"
+  },
+  {
+   "table_id": "p5-t2",
+   "header": "【表：AA×原表有無（Ming）】"
+  },
+  {
+   "table_id": "p5-f1",
+   "header": "【表：様式×評価・料金の実数行列（p5-f1、§5.1–5.2実物。数値は全て発行元公表・独立再現なし。比較対象・単位は行内でqualified）】"
+  },
+  {
+   "table_id": "p7-t1",
+   "header": "【表：手順×来歴×限界（Bio）】"
+  },
+  {
+   "table_id": "p7-f1",
+   "header": "【表：言語別デルタと労力・費用の注記（p7-f1、§7.2実物。数値は全て発行元測定）】"
+  },
+  {
+   "table_id": "p7-t2",
+   "header": "【表：bench×分母×条件（Low-resource）】"
+  },
+  {
+   "table_id": "p8-t1",
+   "header": "【表：料金×条件×版（Decisions）】"
+  },
+  {
+   "table_id": "p8-f2",
+   "header": "【表：安定核 vs 実験harness（p8-f2、§8.2実物）】"
+  },
+  {
+   "table_id": "p8-t2",
+   "header": "【表：API×移行×約款（発表／配布／無料期限を別status）】"
+  },
+  {
+   "table_id": "p8-f3",
+   "header": "【表：重み vs API vs 追加物（p8-f3、§8.3実物）】"
+  }
+ ],
+ "rows_expected": 80,
+ "rows": [
+  {
+   "row_id": "p1-t1-01",
+   "row_type": "DATA",
+   "sha256": "5216ab2ba9aa…",
+   "ledger_label": "告知・API提供"
+  },
+  {
+   "row_id": "p1-t1-02",
+   "row_type": "DATA",
+   "sha256": "9406478be443…",
+   "ledger_label": "重み配布"
+  },
+  {
+   "row_id": "p1-t1-03",
+   "row_type": "DATA",
+   "sha256": "c09ffa2b9ed7…",
+   "ledger_label": "ブログ"
+  },
+  {
+   "row_id": "p1-t1-04",
+   "row_type": "DATA",
+   "sha256": "5500615b7fac…",
+   "ledger_label": "料金"
+  },
+  {
+   "row_id": "p1-t2-01",
+   "row_type": "DATA",
+   "sha256": "52f5fe0ba840…",
+   "ledger_label": "Kimi行"
+  },
+  {
+   "row_id": "p1-t2-02",
+   "row_type": "DATA",
+   "sha256": "1df76f2defb5…",
+   "ledger_label": "Flint行"
+  },
+  {
+   "row_id": "p1-t2-03",
+   "row_type": "DATA",
+   "sha256": "392357150746…",
+   "ledger_label": "Nemotron行"
+  },
+  {
+   "row_id": "p1-t2-04",
+   "row_type": "NOTE",
+   "sha256": "3502f4b60750…",
+   "ledger_label": "注意"
+  },
+  {
+   "row_id": "p1-t3-01",
+   "row_type": "DATA",
+   "sha256": "80cd413f16a7…",
+   "ledger_label": "Kimi系"
+  },
+  {
+   "row_id": "p1-t3-02",
+   "row_type": "DATA",
+   "sha256": "8fefb047007f…",
+   "ledger_label": "Flint系"
+  },
+  {
+   "row_id": "p1-t3-03",
+   "row_type": "DATA",
+   "sha256": "3a34905af8cc…",
+   "ledger_label": "Nemotron系"
+  },
+  {
+   "row_id": "p1-t4-01",
+   "row_type": "DATA",
+   "sha256": "47753c15ef9a…",
+   "ledger_label": "Kimi行"
+  },
+  {
+   "row_id": "p1-t4-02",
+   "row_type": "DATA",
+   "sha256": "61fdf66d8cb2…",
+   "ledger_label": "Flint行"
+  },
+  {
+   "row_id": "p1-t4-03",
+   "row_type": "DATA",
+   "sha256": "648e83090562…",
+   "ledger_label": "Nemotron行"
+  },
+  {
+   "row_id": "p2-t1-01",
+   "row_type": "DATA",
+   "sha256": "353271451565…",
+   "ledger_label": "FlashMLA"
+  },
+  {
+   "row_id": "p2-t1-02",
+   "row_type": "DATA",
+   "sha256": "24726ec121eb…",
+   "ledger_label": "DeepGEMM"
+  },
+  {
+   "row_id": "p2-t1-03",
+   "row_type": "DATA",
+   "sha256": "ec4596dc87c6…",
+   "ledger_label": "DeepEP＋EPLB"
+  },
+  {
+   "row_id": "p2-t1-04",
+   "row_type": "DATA",
+   "sha256": "9e3871c6440c…",
+   "ledger_label": "TileKernels／TileLang"
+  },
+  {
+   "row_id": "p2-t1-05",
+   "row_type": "DATA",
+   "sha256": "5021c7e90f7f…",
+   "ledger_label": "DeepSelect・DSpark"
+  },
+  {
+   "row_id": "p2-t2-01",
+   "row_type": "DATA",
+   "sha256": "1a2dc3de5716…",
+   "ledger_label": "11bench（評価対象parametric-memory方式内）"
+  },
+  {
+   "row_id": "p2-t2-02",
+   "row_type": "DATA",
+   "sha256": "f9ecafd105ba…",
+   "ledger_label": "1.86x（SOURCE_UNVERIFIED）"
+  },
+  {
+   "row_id": "p2-t2-03",
+   "row_type": "DATA",
+   "sha256": "982ece451ffc…",
+   "ledger_label": "66x（保存容量約66倍削減）"
+  },
+  {
+   "row_id": "p2-t2-04",
+   "row_type": "DATA",
+   "sha256": "bcd68d416d9a…",
+   "ledger_label": "34B tokens"
+  },
+  {
+   "row_id": "p2-f2-01",
+   "row_type": "DATA",
+   "sha256": "12fce3b764f8…",
+   "ledger_label": "論文・原資料"
+  },
+  {
+   "row_id": "p2-f2-02",
+   "row_type": "DATA",
+   "sha256": "5a4c689d24ba…",
+   "ledger_label": "原ソフトウェア"
+  },
+  {
+   "row_id": "p2-f2-03",
+   "row_type": "DATA",
+   "sha256": "590a408868e8…",
+   "ledger_label": "第三者"
+  },
+  {
+   "row_id": "p2-f2-04",
+   "row_type": "DATA",
+   "sha256": "22e687a46f24…",
+   "ledger_label": "重み・データセット・商標"
+  },
+  {
+   "row_id": "p3-t1-01",
+   "row_type": "DATA",
+   "sha256": "074ae3261cab…",
+   "ledger_label": "振舞い"
+  },
+  {
+   "row_id": "p3-t1-02",
+   "row_type": "DATA",
+   "sha256": "01addbdf047c…",
+   "ledger_label": "提供"
+  },
+  {
+   "row_id": "p3-t1-03",
+   "row_type": "DATA",
+   "sha256": "4023627707b2…",
+   "ledger_label": "接続"
+  },
+  {
+   "row_id": "p3-t1-04",
+   "row_type": "DATA",
+   "sha256": "78285abc8676…",
+   "ledger_label": "消費"
+  },
+  {
+   "row_id": "p3-t2-01",
+   "row_type": "DATA",
+   "sha256": "8d45f196a9eb…",
+   "ledger_label": "旧（8/7）"
+  },
+  {
+   "row_id": "p3-t2-02",
+   "row_type": "DATA",
+   "sha256": "47a4983235e4…",
+   "ledger_label": "新（10/22）"
+  },
+  {
+   "row_id": "p3-t2-03",
+   "row_type": "DATA",
+   "sha256": "b2b8b31f7ad6…",
+   "ledger_label": "未来（翌週）"
+  },
+  {
+   "row_id": "p3-t2-04",
+   "row_type": "DATA",
+   "sha256": "fdc1962c974d…",
+   "ledger_label": "分類器"
+  },
+  {
+   "row_id": "p4-t1-01",
+   "row_type": "DATA",
+   "sha256": "e6fa3f206762…",
+   "ledger_label": "25.37x"
+  },
+  {
+   "row_id": "p4-t1-02",
+   "row_type": "DATA",
+   "sha256": "0a79277f07f5…",
+   "ledger_label": "22.31x"
+  },
+  {
+   "row_id": "p4-t1-03",
+   "row_type": "DATA",
+   "sha256": "fae10c271823…",
+   "ledger_label": "95.52%"
+  },
+  {
+   "row_id": "p4-t1-04",
+   "row_type": "DATA",
+   "sha256": "1dfa0243a239…",
+   "ledger_label": "26.5x／96.2%"
+  },
+  {
+   "row_id": "p4-t1-05",
+   "row_type": "NOTE",
+   "sha256": "432804985a00…",
+   "ledger_label": "22x"
+  },
+  {
+   "row_id": "p5-t1-01",
+   "row_type": "DATA",
+   "sha256": "68c32d106163…",
+   "ledger_label": "STT Small Transcribe 3"
+  },
+  {
+   "row_id": "p5-t1-02",
+   "row_type": "DATA",
+   "sha256": "7e7e9cf0a9f5…",
+   "ledger_label": "Realtime"
+  },
+  {
+   "row_id": "p5-t1-03",
+   "row_type": "DATA",
+   "sha256": "52cc378c3d3d…",
+   "ledger_label": "TTS"
+  },
+  {
+   "row_id": "p5-t1-04",
+   "row_type": "DATA",
+   "sha256": "b41c7afc4630…",
+   "ledger_label": "評価標本"
+  },
+  {
+   "row_id": "p5-t2-01",
+   "row_type": "DATA",
+   "sha256": "135e47a47386…",
+   "ledger_label": "Controlled Voice"
+  },
+  {
+   "row_id": "p5-t2-02",
+   "row_type": "DATA",
+   "sha256": "c47fc7e547c0…",
+   "ledger_label": "Robustness"
+  },
+  {
+   "row_id": "p5-t2-03",
+   "row_type": "DATA",
+   "sha256": "d6ab4373cec2…",
+   "ledger_label": "Provider Voice"
+  },
+  {
+   "row_id": "p5-t2-04",
+   "row_type": "DATA",
+   "sha256": "669c0d526e65…",
+   "ledger_label": "開放条件"
+  },
+  {
+   "row_id": "p5-f1-01",
+   "row_type": "DATA",
+   "sha256": "ff5b38b6f0c7…",
+   "ledger_label": "STT Small Transcribe 3"
+  },
+  {
+   "row_id": "p5-f1-02",
+   "row_type": "DATA",
+   "sha256": "efd49641a62a…",
+   "ledger_label": "Realtime"
+  },
+  {
+   "row_id": "p5-f1-03",
+   "row_type": "DATA",
+   "sha256": "b58e1f64d33d…",
+   "ledger_label": "TTS Speech 3"
+  },
+  {
+   "row_id": "p5-f1-04",
+   "row_type": "DATA",
+   "sha256": "c724f6246e5e…",
+   "ledger_label": "LiveKit音声エージェントSDK"
+  },
+  {
+   "row_id": "p7-t1-01",
+   "row_type": "DATA",
+   "sha256": "143b295d1e60…",
+   "ledger_label": "エージェント"
+  },
+  {
+   "row_id": "p7-t1-02",
+   "row_type": "DATA",
+   "sha256": "dbc774733761…",
+   "ledger_label": "操作"
+  },
+  {
+   "row_id": "p7-t1-03",
+   "row_type": "DATA",
+   "sha256": "14d0d97e5eb7…",
+   "ledger_label": "評価"
+  },
+  {
+   "row_id": "p7-t1-04",
+   "row_type": "DATA",
+   "sha256": "aee185e16114…",
+   "ledger_label": "遺伝子"
+  },
+  {
+   "row_id": "p7-f1-01",
+   "row_type": "DATA",
+   "sha256": "8da9acb801b8…",
+   "ledger_label": "COBOL"
+  },
+  {
+   "row_id": "p7-f1-02",
+   "row_type": "DATA",
+   "sha256": "1af0c3768506…",
+   "ledger_label": "OCaml"
+  },
+  {
+   "row_id": "p7-f1-03",
+   "row_type": "DATA",
+   "sha256": "813f44ce9ce9…",
+   "ledger_label": "Fortran"
+  },
+  {
+   "row_id": "p7-f1-04",
+   "row_type": "DATA",
+   "sha256": "00a27e310c88…",
+   "ledger_label": "VB"
+  },
+  {
+   "row_id": "p7-f1-05",
+   "row_type": "DATA",
+   "sha256": "927a6c3ed555…",
+   "ledger_label": "労力"
+  },
+  {
+   "row_id": "p7-f1-06",
+   "row_type": "DATA",
+   "sha256": "c66ffd2ff1ba…",
+   "ledger_label": "費用"
+  },
+  {
+   "row_id": "p7-t2-01",
+   "row_type": "DATA",
+   "sha256": "d06da1e74f91…",
+   "ledger_label": "SQLite自作"
+  },
+  {
+   "row_id": "p7-t2-02",
+   "row_type": "DATA",
+   "sha256": "ec0c0df1940f…",
+   "ledger_label": "COBOL hidden"
+  },
+  {
+   "row_id": "p7-t2-03",
+   "row_type": "DATA",
+   "sha256": "61e7a525e165…",
+   "ledger_label": "費用"
+  },
+  {
+   "row_id": "p7-t2-04",
+   "row_type": "DATA",
+   "sha256": "acc796e4c2b9…",
+   "ledger_label": "手順"
+  },
+  {
+   "row_id": "p8-t1-01",
+   "row_type": "DATA",
+   "sha256": "7d4a94cef575…",
+   "ledger_label": "入力"
+  },
+  {
+   "row_id": "p8-t1-02",
+   "row_type": "DATA",
+   "sha256": "9a7342f1745d…",
+   "ledger_label": "上限"
+  },
+  {
+   "row_id": "p8-t1-03",
+   "row_type": "DATA",
+   "sha256": "e48fb571798d…",
+   "ledger_label": "版"
+  },
+  {
+   "row_id": "p8-t1-04",
+   "row_type": "DATA",
+   "sha256": "300ecf8757d3…",
+   "ledger_label": "条件"
+  },
+  {
+   "row_id": "p8-f2-01",
+   "row_type": "DATA",
+   "sha256": "55b3ce43a4e2…",
+   "ledger_label": "安定核"
+  },
+  {
+   "row_id": "p8-f2-02",
+   "row_type": "DATA",
+   "sha256": "0adcf533f05e…",
+   "ledger_label": "実験harness"
+  },
+  {
+   "row_id": "p8-f2-03",
+   "row_type": "DATA",
+   "sha256": "58514cbe4118…",
+   "ledger_label": "版固定"
+  },
+  {
+   "row_id": "p8-t2-01",
+   "row_type": "DATA",
+   "sha256": "793a4a44f250…",
+   "ledger_label": "配布"
+  },
+  {
+   "row_id": "p8-t2-02",
+   "row_type": "DATA",
+   "sha256": "9a83f1d5e921…",
+   "ledger_label": "移行"
+  },
+  {
+   "row_id": "p8-t2-03",
+   "row_type": "DATA",
+   "sha256": "974a14b23708…",
+   "ledger_label": "bench"
+  },
+  {
+   "row_id": "p8-t2-04",
+   "row_type": "DATA",
+   "sha256": "708954ea7d1a…",
+   "ledger_label": "demo"
+  },
+  {
+   "row_id": "p8-f3-01",
+   "row_type": "DATA",
+   "sha256": "76a6f5601bb6…",
+   "ledger_label": "重み"
+  },
+  {
+   "row_id": "p8-f3-02",
+   "row_type": "DATA",
+   "sha256": "53691b0a9a60…",
+   "ledger_label": "API"
+  },
+  {
+   "row_id": "p8-f3-03",
+   "row_type": "DATA",
+   "sha256": "2e82ecc7d47f…",
+   "ledger_label": "追加物"
+  }
+ ],
+ "claims_expected": 29,
+ "claims": [
+  {
+   "key": "p2-f2-01/CC",
+   "block": "p2-f2",
+   "row": "p2-f2-01",
+   "value": "CC BY-NC-SA 4.0",
+   "metric": "license",
+   "variant": "paper-related materials"
+  },
+  {
+   "key": "p2-f2-02/PolyForm",
+   "block": "p2-f2",
+   "row": "p2-f2-02",
+   "value": "PolyForm Noncommercial 1.0.0",
+   "metric": "license",
+   "variant": "repo original software"
+  },
+  {
+   "key": "p2-f2-03/MIT-flash",
+   "block": "p2-f2",
+   "row": "p2-f2-03",
+   "value": "MIT",
+   "metric": "license",
+   "variant": "third-party flash-linear-attention"
+  },
+  {
+   "key": "p2-f2-04/excluded",
+   "block": "p2-f2",
+   "row": "p2-f2-04",
+   "value": "excluded",
+   "metric": "license-scope",
+   "variant": "weights/datasets/trademarks"
+  },
+  {
+   "key": "p5-f1-01/WER",
+   "block": "p5-f1",
+   "row": "p5-f1-01",
+   "value": "4.1/4.0",
+   "metric": "WER",
+   "variant": "Small Transcribe 3"
+  },
+  {
+   "key": "p5-f1-01/cpWER",
+   "block": "p5-f1",
+   "row": "p5-f1-01",
+   "value": "18.4/18.6",
+   "metric": "cpWER",
+   "variant": "Small diarization"
+  },
+  {
+   "key": "p5-f1-01/recall",
+   "block": "p5-f1",
+   "row": "p5-f1-01",
+   "value": "94.6/81.4",
+   "metric": "keyphrase recall",
+   "variant": "Small"
+  },
+  {
+   "key": "p5-f1-02/latency",
+   "block": "p5-f1",
+   "row": "p5-f1-02",
+   "value": "sub-500ms",
+   "metric": "latency",
+   "variant": "Realtime"
+  },
+  {
+   "key": "p5-f1-01/price-mini",
+   "block": "p5-f1",
+   "row": "p5-f1-01",
+   "value": "$0.0035/min",
+   "metric": "price",
+   "variant": "Mini"
+  },
+  {
+   "key": "p5-f1-01/price-small",
+   "block": "p5-f1",
+   "row": "p5-f1-01",
+   "value": "$0.004",
+   "metric": "price",
+   "variant": "Small"
+  },
+  {
+   "key": "p5-f1-02/price-rt",
+   "block": "p5-f1",
+   "row": "p5-f1-02",
+   "value": "$0.008",
+   "metric": "price",
+   "variant": "Realtime"
+  },
+  {
+   "key": "p5-f1-03/price-tts",
+   "block": "p5-f1",
+   "row": "p5-f1-03",
+   "value": "$13/M chars",
+   "metric": "price",
+   "variant": "Speech TTS"
+  },
+  {
+   "key": "p5-f1-04/price-agent",
+   "block": "p5-f1",
+   "row": "p5-f1-04",
+   "value": "$0.04/$0.08",
+   "metric": "price",
+   "variant": "agent API"
+  },
+  {
+   "key": "p7-f1-01/acc-cobol",
+   "block": "p7-f1",
+   "row": "p7-f1-01",
+   "value": "10.9→72.1",
+   "metric": "accuracy",
+   "variant": "COBOL"
+  },
+  {
+   "key": "p7-f1-02/acc-ocaml",
+   "block": "p7-f1",
+   "row": "p7-f1-02",
+   "value": "25.6→85.8",
+   "metric": "accuracy",
+   "variant": "OCaml"
+  },
+  {
+   "key": "p7-f1-03/acc-fortran",
+   "block": "p7-f1",
+   "row": "p7-f1-03",
+   "value": "21.4→83.5",
+   "metric": "accuracy",
+   "variant": "Fortran"
+  },
+  {
+   "key": "p7-f1-04/acc-vb",
+   "block": "p7-f1",
+   "row": "p7-f1-04",
+   "value": "27.5→89.4",
+   "metric": "accuracy",
+   "variant": "VB"
+  },
+  {
+   "key": "p7-f1-05/acc-low",
+   "block": "p7-f1",
+   "row": "p7-f1-05",
+   "value": "86.6%",
+   "metric": "accuracy",
+   "variant": "GPT-6.1 Sol"
+  },
+  {
+   "key": "p7-f1-05/acc-high",
+   "block": "p7-f1",
+   "row": "p7-f1-05",
+   "value": "97.9%",
+   "metric": "accuracy",
+   "variant": "GPT-6.1 Sol"
+  },
+  {
+   "key": "p7-f1-06/cost",
+   "block": "p7-f1",
+   "row": "p7-f1-06",
+   "value": "$0.77 vs $3.48",
+   "metric": "cost",
+   "variant": "Luna vs Sol"
+  },
+  {
+   "key": "p7-f1-01/enterprise-40p",
+   "block": "p7-f1",
+   "row": "p7-f1-01",
+   "value": "40%+",
+   "metric": "enterprise share",
+   "variant": "COBOL (field)"
+  },
+  {
+   "key": "p8-f2-01/gh-clock",
+   "block": "p8-f2",
+   "row": "p8-f2-01",
+   "value": "2026-10-22T15:18:14Z",
+   "metric": "release clock",
+   "variant": "TanStack AI 1.0.0 GH"
+  },
+  {
+   "key": "p8-f2-03/npm-clock",
+   "block": "p8-f2",
+   "row": "p8-f2-03",
+   "value": "2026-10-22T15:21:49Z",
+   "metric": "registry clock",
+   "variant": "TanStack AI 1.0.0 npm"
+  },
+  {
+   "key": "p8-f2-01/scale",
+   "block": "p8-f2",
+   "row": "p8-f2-01",
+   "value": "76/23/8/143",
+   "metric": "package scale",
+   "variant": "TanStack AI 1.0 stable"
+  },
+  {
+   "key": "p8-f2-03/metrics-out",
+   "block": "p8-f2",
+   "row": "p8-f2-03",
+   "value": "23:42:03Z OUT",
+   "metric": "cutoff clock",
+   "variant": "GitHub Metrics"
+  },
+  {
+   "key": "p8-f3-01/mit",
+   "block": "p8-f3",
+   "row": "p8-f3-01",
+   "value": "MIT",
+   "metric": "license",
+   "variant": "V4.1-Flash"
+  },
+  {
+   "key": "p8-f3-02/price",
+   "block": "p8-f3",
+   "row": "p8-f3-02",
+   "value": "$0.75/1k",
+   "metric": "price",
+   "variant": "Search/Fetch API"
+  },
+  {
+   "key": "p8-f3-02/free",
+   "block": "p8-f3",
+   "row": "p8-f3-02",
+   "value": "free till Oct31 16:00 UTC",
+   "metric": "free period",
+   "variant": "Search/Fetch"
+  },
+  {
+   "key": "p8-f3-03/bench",
+   "block": "p8-f3",
+   "row": "p8-f3-03",
+   "value": "77 vs 74.2",
+   "metric": "benchmark",
+   "variant": "DeepSWE"
+  }
+ ],
+ "tiers": {
+  "RAW_PRIMARY": 5,
+  "QUALIFIED_UNAVAILABLE": 24,
+  "OTHER": 0
+ },
+ "positive_failures": [],
+ "negative_tests": [
+  {
+   "id": "NEG-drop-row-manifest",
+   "result": "PASS",
+   "detail": "fails as required [T2]: T2-COUNT: manifest rows 79 != 80"
+  },
+  {
+   "id": "NEG-dup-row-manifest",
+   "result": "PASS",
+   "detail": "fails as required [T2]: T2-DUP: duplicate row_id p1-t1-01"
+  },
+  {
+   "id": "NEG-swap-rows-manifest",
+   "result": "PASS",
+   "detail": "fails as required [T2-HASH]: T2-HASH: p4-t1-01 text/hash mismatch (swap/mutation/extra)"
+  },
+  {
+   "id": "NEG-mutate-text-manifest",
+   "result": "PASS",
+   "detail": "fails as required [T2-HASH]: T2-HASH: p1-t1-01 text/hash mismatch (swap/mutation/extra)"
+  },
+  {
+   "id": "NEG-claim-to-NOTE-xblock",
+   "result": "PASS",
+   "detail": "fails as required [C-CROSS-BLOCK]: C-CROSS-BLOCK: p8-f2/2026-10-22T15:18:14Z cross-block p8-f2->p1-t2"
+  },
+  {
+   "id": "NEG-claim-xblock",
+   "result": "PASS",
+   "detail": "fails as required [C-CROSS-BLOCK]: C-CROSS-BLOCK: p8-f2/2026-10-22T15:18:14Z cross-block p8-f2->p8-f3"
+  },
+  {
+   "id": "NEG-npm-unscoped",
+   "result": "PASS",
+   "detail": "fails as required [C-URL]: C-URL: p8-f2-03/npm-clock row URL 'https://registry.npmjs.org/ai' missing 'registry.npmjs.org/@tanstack'"
+  },
+  {
+   "id": "NEG-unit-false-confirm",
+   "result": "PASS",
+   "detail": "fails as required [C-UNIT]: C-UNIT: p5-f1-01/price-small unit '$/min (confirmed)' missing 'UNIT_UNVERIFIED'"
+  },
+  {
+   "id": "NEG-note-sameblock-synth",
+   "result": "PASS",
+   "detail": "fails as required [C-NOTE]: C-NOTE-TARGET: p1-t2/SYNTH points to NOTE row p1-t2-04"
+  },
+  {
+   "id": "NEG-phys-del-row",
+   "result": "PASS",
+   "detail": "fails as required [T2]: T2-LINE: p1-t1 reader lines != manifest lines"
+  },
+  {
+   "id": "NEG-phys-dup-row",
+   "result": "PASS",
+   "detail": "fails as required [T2]: T2-LINE: p1-t1 reader lines != manifest lines"
+  },
+  {
+   "id": "NEG-phys-swap-rows",
+   "result": "PASS",
+   "detail": "fails as required [T2-HASH]: T2-HASH: p4-t1-01 text/hash mismatch (swap/mutation/extra)"
+  },
+  {
+   "id": "NEG-phys-mutate-value",
+   "result": "PASS",
+   "detail": "fails as required [T2-HASH]: T2-HASH: p7-f1-01 text/hash mismatch (swap/mutation/extra)"
+  },
+  {
+   "id": "NEG-phys-header-mutate",
+   "result": "PASS",
+   "detail": "fails as required [T1-HEADER]: T1-HEADER-MISMATCH: p1-t1 header mismatch: got '【表：公開状態×時点（Kimi改）】' != expected '【表：公開状態×時点（Kimi）】'"
+  },
+  {
+   "id": "NEG-claim-remove-29-28",
+   "result": "PASS",
+   "detail": "fails as required [C0-COUNT]: C0-COUNT: claims 28 != 29"
+  },
+  {
+   "id": "NEG-claim-value-change-no-row",
+   "result": "PASS",
+   "detail": "fails as required [C-BASELINE-MISSING]: C-BASELINE-MISSING: p7-f1-01/acc-cobol expected claim not found in ledger (block/row/value drift)"
+  },
+  {
+   "id": "NEG-variant-change",
+   "result": "PASS",
+   "detail": "fails as required [C-VARIANT]: C-VARIANT-BASELINE: p7-f1-01/acc-cobol ledger variant 'Fortran' != expected 'COBOL'"
+  },
+  {
+   "id": "NEG-metric-change",
+   "result": "PASS",
+   "detail": "fails as required [C-METRIC]: C-METRIC-BASELINE: p7-f1-01/acc-cobol ledger metric 'cost' != 'accuracy'"
+  },
+  {
+   "id": "NEG-url-wrong-source",
+   "result": "PASS",
+   "detail": "fails as required [C-URL]: C-URL: p7-f1-01/acc-cobol row URL 'https://example.com/unrelated' missing 'openai.com/index/low-resource'"
+  },
+  {
+   "id": "NEG-provenance-false-path",
+   "result": "PASS",
+   "detail": "fails as required [C-PROVENANCE]: C-PROVENANCE-QUALIFIED: p7-f1-01/acc-cobol expected QUALIFIED marker, got 'sources/nonexistent/missing.md'"
+  },
+  {
+   "id": "NEG-rowtype-DATA-NOTE-flip",
+   "result": "PASS",
+   "detail": "fails as required [T2-ROWTYPE]: T2-ROWTYPE-MISMATCH: p7-f1-01 manifest DATA != ledger NOTE"
+  },
+  {
+   "id": "NEG-comparator-unqualified",
+   "result": "PASS",
+   "detail": "fails as required [C-COMPARATOR]: C-COMPARATOR: p5-f1-01/WER denominator missing 'COMPARATOR_UNVERIFIED'"
+  },
+  {
+   "id": "NEG-COBOL-prefixed-missing-40p",
+   "result": "PASS",
+   "detail": "fails as required [p7-f1-01/enterprise-40p]: C-VALUE-MISSING-IN-PHYSICAL: p7-f1-01/enterprise-40p physical row p7-f1-01 missing value substring '40%'"
+  },
+  {
+   "id": "NEG-npm-prefixed-missing-clock",
+   "result": "PASS",
+   "detail": "fails as required [p8-f2-03/npm-clock]: C-VALUE-MISSING-IN-PHYSICAL: p8-f2-03/npm-clock physical row p8-f2-03 missing value substring '15:21:49'"
+  }
+ ],
+ "checks": [
+  {
+   "id": "T1-table-identity-20-headers",
+   "result": "PASS",
+   "detail": "20 table headers exact, order pinned"
+  },
+  {
+   "id": "T2-row-bijection-80",
+   "result": "PASS",
+   "detail": "80 physical <-> 80 ledger, SHA/line/ordinal/row_type, 13 aliases pinned, 78 DATA/2 NOTE"
+  },
+  {
+   "id": "C-claims-29-semantic",
+   "result": "PASS",
+   "detail": "29 claims own-block DATA, physical-value proof, variant/metric/unit/comparator/URL/provenance"
+  },
+  {
+   "id": "T5-anchors-incl-COBOL-npm",
+   "result": "PASS",
+   "detail": "MemT/classifier/TTS/Controlled-Voice + COBOL 40%+ prevalence + npm full timestamp anchors hold"
+  },
+  {
+   "id": "NEG-all-detected-specific-reason",
+   "result": "PASS",
+   "detail": "24/24 mutations detected for specific semantic reason"
+  },
+  {
+   "id": "TIER-report",
+   "result": "PASS",
+   "detail": "{\"RAW_PRIMARY\": 5, \"QUALIFIED_UNAVAILABLE\": 24, \"OTHER\": 0}"
+  }
+ ]
+}
