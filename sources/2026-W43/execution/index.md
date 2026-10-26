@@ -2,6 +2,14 @@
 
 This is the current human-readable navigation record for the edition. Machine lifecycle authority remains `sources/2026-W43/production-state.json`.
 
+## Core-free Preview r1 — noncanonical TeX/PDF proof from fixed r3.5, UNVALIDATED (2026-10-26, no Stage)
+
+**Current status: `MUSE_W43_CORE_FREE_PDF_PREVIEW_R1_READY_FOR_SOL_VISUAL_REVIEW / NATIVE_STILL_BLOCKED / NO_STATE_CHANGE`.**
+- Guard + sync: remote 6-way PASS (dispatch work `fa4235…`/`bf5582b2…` parent `8c61ecd…`, pre-parent `8c61ecd…`/`845f6cb…`, main `041a08df…`/`a134dc36…`, frozen `774dd39a…`/`cd46a6f7a…`); local `bc6b1c…` → fetch + ff-only → `fa4235…`. No new branch/reset/rebase/force.
+- r3.5 inputs pinned exact (`6f07cb49…`/`6fd9d6fe…`/`85d94d74…`); checker rerun `EDITION_LOCAL_ROW_JOIN_PASS` exit 0 (20/80/29, 24/24 negatives).
+- New edition-local only: `execution/core-free-preview-r1/` (projection `e1a49da9…`, TeX `0d8a8a09…` 20 tables/3 figures/36 bib, PDF `fd88cb7c…` 22 pages/480229B LuaLaTeX, log, 22 PNGs + 3 contact sheets, manifest/fidelity/QA/visual-request), handoff `SOL_W43_CORE_FREE_PDF_PREVIEW_R1_HANDOFF.md`, session `muse-w43-core-free-preview-r1-20261026.md` + this entry. P1–P8 + 5-para recap, 19 selected, tiers 5/24/0 preserved; metadata `NONCANONICAL_CORE_FREE_UNVALIDATED_PDF_PROOF`; 22 pages honest (cover1/TOC1/body18/bib2) vs 38 target (W42 final 21 precedent, no padding).
+- State/Core/Architecture/Selection/Evidence/Gates untouched. No Stage/Freeze/Release. Next: independent Sol visual review (PROPOSED, no PASS claimed).
+
 ## Core-free r3.5 — single-P1 semantic claim closure (COBOL 40%+ + npm clock), UNVALIDATED (2026-10-26, no Stage)
 
 **Current status: `MUSE_W43_R35_SINGLE_P1_SEMANTIC_CLAIM_REPAIR_READY_FOR_SOL_RECHECK / NATIVE_STILL_BLOCKED / NO_STATE_CHANGE`.**
