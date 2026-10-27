@@ -1,0 +1,61 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W43",
+  "production_profile": {
+    "path": "sources/2026-W43/production-profile.json",
+    "sha256": "4447d25ea73ab76062028e63f91065f80c9b93886a542356c50ae54bfb10b5af"
+  },
+  "research_profile": "WEEKLY",
+  "publication_profile": "WEEKLY_MAGAZINE",
+  "source": {
+    "path": "surveys/weekly/2026-W43/main.tex",
+    "sha256": "3fa6ca3b4c610cd12fecd3e6ce449e0d9cffd9e7edc67efb1b85f5bd0e758784"
+  },
+  "pdf": {
+    "storage": "REPOSITORY_FILE",
+    "path": "surveys/weekly/2026-W43/main.pdf",
+    "sha256": "b09fd1813a9095b2efa03a43f993c1b95b4e8bb304b0df33062f7895239f9165",
+    "byte_count": 486967,
+    "actions_artifact": null
+  },
+  "checks": [
+    {
+      "check_id": "IDENTIFIER_PRESERVATION",
+      "kind": "DETERMINISTIC",
+      "status": "PASS",
+      "executor": "muse-spark-integrated-20261028 (execution worker; evidence independently re-derived from exact bytes)",
+      "evidence": "Native draft headlines == canonical sections 8/8 in order; Selection 19 SELECTED/12 REJECT/1 HOLD mapped P1-P8 (mapping doc).",
+      "recorded_at": "2026-10-27T16:25:08Z",
+      "result": {
+        "path": "sources/2026-W43/publication/v2/deterministic/identifier-preservation.json",
+        "sha256": "31a53016be21407c8273bb94020540a3506183188252d7cab2fa526d31d22c10"
+      }
+    },
+    {
+      "check_id": "PDF_PREFLIGHT",
+      "kind": "DETERMINISTIC",
+      "status": "PASS",
+      "executor": "muse-spark-integrated-20261028 (execution worker; evidence independently re-derived from exact bytes)",
+      "evidence": "LuaHBTeX 1.24.0 x3 epoch-pinned (runs 2-3 identical), 22 A4 pages, 0 errors, 0 missing chars, 2 benign vbox p14-15 (r8 locus); ledger pdf-page-ledger-w43.json.",
+      "recorded_at": "2026-10-27T16:25:08Z",
+      "result": {
+        "path": "sources/2026-W43/publication/v2/deterministic/pdf-preflight.json",
+        "sha256": "a43ae53af7d7260d576fdfc89aa1d30cf3276d10cb8678296de59d9f35af9b0d"
+      }
+    },
+    {
+      "check_id": "SUBJECT_ENTITY_PROPERTY_BINDING",
+      "kind": "DETERMINISTIC",
+      "status": "PASS",
+      "executor": "muse-spark-integrated-20261028 (execution worker; evidence independently re-derived from exact bytes)",
+      "evidence": "Canonical TeX census 36/36 bibitems+keys (3 URL-less: tanstack-blog, flux-keyframes-conflict, recap); PDF annot census 75 actions/28 targets, 0 malformed; ledger pdf-links-fonts-w43.json.",
+      "recorded_at": "2026-10-27T16:25:08Z",
+      "result": {
+        "path": "sources/2026-W43/publication/v2/deterministic/subject-entity-property-binding.json",
+        "sha256": "6c246f076b814ed17023e698d582e0ec742ebb6dcbba3fb9456c72ae28843d9e"
+      }
+    }
+  ],
+  "status": "PASS",
+  "bundle_sha256": "f7716322ffadc211af9ec4d496482642f6e4d57ef60b622943c6ea89e0bca8b8"
+}

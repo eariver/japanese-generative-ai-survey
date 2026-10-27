@@ -1,0 +1,131 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W43",
+  "research_profile": "WEEKLY",
+  "publication_profile": "WEEKLY_MAGAZINE",
+  "review_kind": "SEMANTIC_EDITORIAL",
+  "status": "PASSED",
+  "production_profile": {
+    "path": "sources/2026-W43/production-profile.json",
+    "sha256": "4447d25ea73ab76062028e63f91065f80c9b93886a542356c50ae54bfb10b5af"
+  },
+  "reader_manuscript": {
+    "path": "sources/2026-W43/publication/v2/reader-manuscript-v2.json",
+    "sha256": "c24e0fe6be1a82112411035999311c2753228f0fa54366f116d70bc677f08032"
+  },
+  "source": {
+    "path": "surveys/weekly/2026-W43/main.tex",
+    "sha256": "3fa6ca3b4c610cd12fecd3e6ce449e0d9cffd9e7edc67efb1b85f5bd0e758784",
+    "byte_count": 97156
+  },
+  "pdf": {
+    "path": "surveys/weekly/2026-W43/main.pdf",
+    "sha256": "b09fd1813a9095b2efa03a43f993c1b95b4e8bb304b0df33062f7895239f9165",
+    "byte_count": 486967
+  },
+  "page_count": 22,
+  "checks": [
+    {
+      "check_id": "ARCHITECTURE_CONTENT_FIDELITY",
+      "status": "PASS",
+      "detail": "Native draft basis (121 blocks P1-P8 ESTABLISHED v1.0 + synthesis ESTABLISHED) maps 8/8 headlines to canonical sections (pp3/6/9/11/12/14/15/17); 31/31 must-cover rows mapped in manifest dbaee99a; stale 20/11 versioned grades carried without transplant (reconciliation doc).",
+      "evidence_locations": [
+        "sources/2026-W43/execution/reader-to-r8-content-mapping-w43-20261028.md",
+        "sources/2026-W43/execution/core-free-preview-r7/architecture-31-versioned-reconciliation-r7.md"
+      ]
+    },
+    {
+      "check_id": "BIBLIOGRAPHY_METADATA",
+      "status": "PASS",
+      "detail": "36 bibkeys in canonical order; 13+2 CURATED_REVIEW_REQUIRED (incl. recap-derived); 33 URL items + 3 URL-less (tanstack-blog, flux-keyframes-conflict, recap); tiers/qualifiers inline per item; keyframes unreconciled note intact.",
+      "evidence_locations": [
+        "surveys/weekly/2026-W43/main.tex L948-989",
+        "sources/2026-W43/execution/publication-build-w43/pdf-links-fonts-w43.json"
+      ]
+    },
+    {
+      "check_id": "FINAL_SYNTHESIS_QUALITY",
+      "status": "PASS",
+      "detail": "Recap 今週の総括 5 paragraphs pp20-21 after P8 before bib; derived synthesis keyed [recap] with no new first-hand claims; future-dated weights/features not pre-claimed as current.",
+      "evidence_locations": [
+        "surveys/weekly/2026-W43/main.tex L926-945",
+        "sources/2026-W43/execution/publication-build-w43/pages/p-20.png"
+      ]
+    },
+    {
+      "check_id": "PUBLICATION_BOUNDARY",
+      "status": "PASS",
+      "detail": "Canonical TeX/PDF carry no pipeline/diagnostic tokens: frozen surface scan 0 findings/0 blocking; cover neutral (issue/descriptor/cutoff only); pdfsubject canonical; no NONCANONICAL/UNVALIDATED/PROOF strings in source or extracted PDF text.",
+      "evidence_locations": [
+        "surveys/weekly/2026-W43/main.tex L1-23",
+        "sources/2026-W43/execution/publication-build-w43/pages/p-01.png"
+      ]
+    },
+    {
+      "check_id": "POST_TRANSFORM_SEMANTIC_REVALIDATION",
+      "status": "PASS",
+      "detail": "Canonical TeX == approved r8 TeX 4ed553e5 with exactly 4 proof-mark line changes (header comment, hypersetup subject, cover mark removed, footer mark removed); rendered delta vs r8 proof is proof-banner removal only; A/B/C caveats verbatim; 20T/307C/36bib/5recap/77prose/29anchors preserved; 22 A4 pages.",
+      "evidence_locations": [
+        "sources/2026-W43/execution/reader-to-r8-content-mapping-w43-20261028.md",
+        "surveys/weekly/2026-W43/main.pdf"
+      ]
+    },
+    {
+      "check_id": "SOURCE_SPECIFIC_FAIL_CLOSED_NOTES",
+      "status": "PASS",
+      "detail": "Decisions long-JSON + 400/HTTP-path notes present (P8 prose + bib decisions-ref-create 404 + guide/ts-ref 1025 post-cutoff notes); FLUX 26.5x inconsistency + 22x floor note; keyframes PR/FAQ unobtained; 1pw guide unopened; bio/lowres limits; vendor benchmarks not independently reproduced.",
+      "evidence_locations": [
+        "surveys/weekly/2026-W43/main.tex L841-856",
+        "surveys/weekly/2026-W43/main.tex L968-988"
+      ]
+    },
+    {
+      "check_id": "WEEKLY_CARRY_OVER_DISPOSITION",
+      "status": "PASS",
+      "detail": "No carry-over beyond stated cutoff (2026-10-16 22:00Z--10-23 22:00Z); post-cutoff Oct25 Decisions guide bytes labeled as post-cutoff supplement, not W43 facts; Kimi Nov-4 weights kept FUTURE; auto-mode next-week rollout not claimed complete.",
+      "evidence_locations": [
+        "surveys/weekly/2026-W43/main.tex L10",
+        "surveys/weekly/2026-W43/main.tex L986-988"
+      ]
+    },
+    {
+      "check_id": "WEEKLY_COMMUNITY_MOVEMENT",
+      "status": "PASS",
+      "detail": "X/HF/GH/npm community signals read as announcement/distribution-time evidence only: Kimi X post 17:15:24Z exact (API-live evidence, not weight evidence); Flint/Nemotron HF commits as distribution-time evidence; GH-public != npm-published separated (TanStack).",
+      "evidence_locations": [
+        "surveys/weekly/2026-W43/main.tex L34-70",
+        "surveys/weekly/2026-W43/main.tex L981-983"
+      ]
+    },
+    {
+      "check_id": "WEEKLY_LATE_BREAKING_SINGLE_HOME",
+      "status": "PASS",
+      "detail": "Single home for late-breaking posture: cover story + editorial-cutoff line; no scattered late boxes; Kimi end-of-window API-first framing stays in P1 with 4h44m36s note, not inflated elsewhere.",
+      "evidence_locations": [
+        "surveys/weekly/2026-W43/main.tex L10-13",
+        "surveys/weekly/2026-W43/main.tex L40"
+      ]
+    },
+    {
+      "check_id": "WEEKLY_WATCHLIST_READER_SEMANTICS",
+      "status": "PASS",
+      "detail": "Status vocabulary kept disjoint across tables: IN/FUTURE/live/GA/preview/配布確認/再現なし as separate columns; total/effective/active-per-token never equated;対応/推奨/設定 kept as three context claims.",
+      "evidence_locations": [
+        "surveys/weekly/2026-W43/main.tex L49-132",
+        "surveys/weekly/2026-W43/main.tex L76-87"
+      ]
+    },
+    {
+      "check_id": "WEEKLY_WHY_THIS_ISSUE",
+      "status": "PASS",
+      "detail": "Cover story binds the issue thesis (conditions/authority/speed/voice/disclosure/evaluation/judgment with denominators) to P1-P8 sections; recap closes the loop on availability/license/reproducibility/authority-boundary concretization.",
+      "evidence_locations": [
+        "surveys/weekly/2026-W43/main.tex L13",
+        "surveys/weekly/2026-W43/main.tex L931-943"
+      ]
+    }
+  ],
+  "reviewed_by": "muse-spark-integrated-20261028 (execution worker; evidence independently re-derived from exact bytes)",
+  "recorded_at": "2026-10-27T16:27:24Z",
+  "review_sha256": "9bf11015c4f54d19b101d2ff6cfb7df3ca488e9f7385c3c94268f869585583a2"
+}
