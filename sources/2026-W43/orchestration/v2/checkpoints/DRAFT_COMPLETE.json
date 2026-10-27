@@ -1,0 +1,91 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W43",
+  "from_state": "DRAFT_COMPLETE",
+  "to_state": "VALIDATED_DRAFT",
+  "checkpoints": [
+    "validation"
+  ],
+  "recorded_at": "2026-10-27T16:35:40Z",
+  "implementation": {
+    "repository_commit_sha": "643352d1a518bcc8c1182997544ef6352719821d",
+    "orchestrator_version": "survey-production-core-v2/0.15-postintegration-transport-thematic"
+  },
+  "contract": {
+    "pipeline_contract_version": "2.0-rc1",
+    "pipeline_contract_sha256": "ee89796245c22072cec98f34931180214a4928c24f399280793cd6420a4c8e71",
+    "quality_contract_version": "2.0-rc1",
+    "quality_contract_sha256": "b5b955d524fb438c0f1b2c9490bea1da2083e79028d67a55ca424bbfc20f2958",
+    "research_profile_version": "2.0-rc1",
+    "research_profile_sha256": "666f8a064b190ffd35216e26d6fdf2dd0fa932cac7b1b0d6448e262ded77b9a8",
+    "publication_profile_version": "2.0-rc1",
+    "publication_profile_sha256": "99adff93ff443e02bdcce639ce5fc4d4c959ee45a804da70efc4277db57fdddb"
+  },
+  "artifacts": [
+    {
+      "name": "publication-pdf",
+      "path": "surveys/weekly/2026-W43/main.pdf",
+      "sha256": "b09fd1813a9095b2efa03a43f993c1b95b4e8bb304b0df33062f7895239f9165"
+    },
+    {
+      "name": "quality-regression-bundle",
+      "path": "sources/2026-W43/publication/v2/quality-regression-bundle-v2.json",
+      "sha256": "b46531e2d41c2dfe6b3a9de7cebec61421604b2fc71af76193fee1eee29107fc"
+    },
+    {
+      "name": "reader-manuscript",
+      "path": "sources/2026-W43/publication/v2/reader-manuscript-v2.json",
+      "sha256": "c24e0fe6be1a82112411035999311c2753228f0fa54366f116d70bc677f08032"
+    },
+    {
+      "name": "reader-surface-gate",
+      "path": "sources/2026-W43/publication/v2/reader-surface-gate-v2.json",
+      "sha256": "6567dfb0551d3b2a046b5b1a57a4d90854e3c3aafecdfa7b01c0b3bcc118c2bb"
+    },
+    {
+      "name": "semantic-review",
+      "path": "sources/2026-W43/publication/v2/semantic-editorial-review-v2.json",
+      "sha256": "faa4f74fa9fcaeb1b77fc2998999c24b6203dc19618e4ffc6125342020be6787"
+    },
+    {
+      "name": "validated-source",
+      "path": "surveys/weekly/2026-W43/main.tex",
+      "sha256": "3fa6ca3b4c610cd12fecd3e6ce449e0d9cffd9e7edc67efb1b85f5bd0e758784"
+    },
+    {
+      "name": "visual-review",
+      "path": "sources/2026-W43/publication/v2/visual-review-v2.json",
+      "sha256": "845555178f1ac2a63140f1f858b66d35df86457407947e7de32c96dade87e2f1"
+    }
+  ],
+  "reviews": [
+    {
+      "check_id": "CORE_STAGE_CONTRACT",
+      "kind": "DETERMINISTIC",
+      "status": "PASS",
+      "executor": "survey_core_execution_bridge_v2",
+      "evidence": "Canonical Core stage contract validated for immutable request muse-w43-validate-20261028.",
+      "result": {
+        "path": "sources/2026-W43/execution/bridge-runs/muse-w43-validate-20261028/core-stage-contract.json",
+        "sha256": "874596b95154300293e5d0bd99cae84a237555886f3a58da1f1ca3383498cea6"
+      }
+    },
+    {
+      "check_id": "MUSE-W43-SEVEN-AUTHORITIES",
+      "kind": "AGENT_RESEARCH",
+      "status": "PASS",
+      "executor": "muse-spark-integrated-20261028",
+      "evidence": "Manuscript 079e07ce (31/31 rows), TeX 3fa6ca3b, PDF b09fd181 (486967B/22p), quality PASS, semantic 11/11, visual 2/2, gate PASSED; all frozen builders/validators PASS.",
+      "result": null
+    },
+    {
+      "check_id": "GENERAL-W43-INDEPENDENT",
+      "kind": "AGENT_EDITORIAL",
+      "status": "PASS",
+      "executor": "General (independent Muse CoWorker)",
+      "evidence": "GENERAL_W43_EQUIVALENCE_PASS verbatim at execution/audits/general-w43-r8-to-candidate-20261028.md: P0 0/P1 0/P2 6 bounded; binds exact PDF b09fd181.",
+      "result": null
+    }
+  ],
+  "summary": "Advance DRAFT_COMPLETE to VALIDATED_DRAFT with seven genuine publication authorities on canonical PDF b09fd181; General independent PASS bound; stop before candidate."
+}
