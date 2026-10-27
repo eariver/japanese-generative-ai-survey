@@ -619,3 +619,9 @@ This is the current human-readable navigation record for the edition. Machine li
 - Trusted ADVANCE DRAFT_COMPLETE→VALIDATED_DRAFT: bridge run 40542474497 SUCCESS, bot `b97ae5930`; checkpoint `orchestration/v2/checkpoints/DRAFT_COMPLETE.json`; State VALIDATED_DRAFT, validation passed, next stage:publication-candidate.
 - Publication Candidate `publication/v2/publication-candidate-v2.json`: status READY_FOR_PUBLICATION_PREVIEW, SHA `b006f6df…`, binds manuscript `079e07ce…`, TeX `3fa6ca3b…`, PDF `b09fd181…` (486967B, 22p), quality/semantic/visual (frozen build+validate PASS). PDF bytes unchanged since General PASS — PASS still binds.
 - Next: commit candidate, trusted ADVANCE VALIDATED_DRAFT→RELEASE_CANDIDATE (1 artifact), then final Human-GO handoff. No Preview approval/Freeze/merge/Release.
+
+## Integrated Publication-Ready run, phase 5 — RELEASE_CANDIDATE terminal (2026-10-28)
+
+- Publication Candidate `b006f6df…` (READY_FOR_PUBLICATION_PREVIEW) still binds current PDF bytes `b09fd181…` — General PASS remains bound, no rebuild after PASS.
+- Trusted ADVANCE VALIDATED_DRAFT→RELEASE_CANDIDATE: bridge run 40542944795 SUCCESS, bot `319549499`; checkpoint `orchestration/v2/checkpoints/VALIDATED_DRAFT.json`; State RELEASE_CANDIDATE, publication_preview pending, terminal HUMAN_GATE_REACHED (stop, not approval), exception inactive.
+- Terminal: `MUSE_W43_EXACT_PDF_READY_FOR_HUMAN_PUBLICATION_PREVIEW_GO`. No Preview approval recorded, no Freeze/merge/Release/tag. Final session: `execution/sessions/muse-w43-integrated-final-handoff-20261028.md`.
