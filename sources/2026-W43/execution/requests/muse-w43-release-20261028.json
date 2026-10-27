@@ -1,0 +1,35 @@
+{
+  "schema_version": "2.0-rc1",
+  "request_id": "muse-w43-release-20261028",
+  "issue_id": "2026-W43",
+  "source_root": "sources/2026-W43",
+  "work_branch": "weekly/2026-W43-v2-work",
+  "reviewed_main_sha": "041a08dfef3112643cbf85b4a86a7b6f9128aed6",
+  "recorded_at": "2026-10-27T16:38:39Z",
+  "operation": {
+    "kind": "ADVANCE_STAGE",
+    "expected_from_state": "VALIDATED_DRAFT",
+    "state_path": "sources/2026-W43/production-state.json",
+    "artifacts": [
+      {
+        "name": "publication-candidate",
+        "path": "sources/2026-W43/publication/v2/publication-candidate-v2.json"
+      }
+    ],
+    "agent_reviews": [
+      {
+        "check_id": "MUSE-W43-CANDIDATE",
+        "kind": "AGENT_RESEARCH",
+        "executor": "muse-spark-integrated-20261028",
+        "evidence": "Frozen build_candidate/validate_candidate PASS: candidate b006f6df READY_FOR_PUBLICATION_PREVIEW binds manuscript 079e07ce, TeX 3fa6ca3b, PDF b09fd181 (486967B/22p), quality/semantic/visual."
+      },
+      {
+        "check_id": "GENERAL-W43-INDEPENDENT",
+        "kind": "AGENT_EDITORIAL",
+        "executor": "General (independent Muse CoWorker)",
+        "evidence": "GENERAL_W43_EQUIVALENCE_PASS verbatim (P0 0/P1 0); Candidate PDF bytes identical to audited b09fd181."
+      }
+    ],
+    "summary": "Advance VALIDATED_DRAFT to RELEASE_CANDIDATE with exact Candidate b006f6df bound to immutable PDF b09fd181; stop at Human Publication Preview pending."
+  }
+}
