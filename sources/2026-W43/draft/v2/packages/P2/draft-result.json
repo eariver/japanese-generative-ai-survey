@@ -1,0 +1,938 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W43",
+  "research_profile": "WEEKLY",
+  "publication_profile": "WEEKLY_MAGAZINE",
+  "package_id": "P2",
+  "draft_version": "v1.0",
+  "status": "ESTABLISHED",
+  "basis": {
+    "draft_package_sha256": "b62731216ba6572beabcca2d7b58fdbd785eb852edac795886f56731ac107e8d",
+    "prompt_id": "article-drafting-v2",
+    "prompt_sha256": "b687313312a23025228c16c3f10cb68f669b910cd7215e41886d4dd91f44fe11"
+  },
+  "runner": {
+    "provider": "muse-spark",
+    "model": "muse-spark-1.3",
+    "invocation": "muse-w43-r1-japanese-draft-with-closing-recap",
+    "generated_at": "2026-10-25T14:00:00Z",
+    "run_reference": null
+  },
+  "headline": "推論を切り出し記憶を持たせる――DeepInferとMemTの実装条件",
+  "deck": "DeepSeekのDeepInferは推論実行の核部品を切り出した公開であり、MemTensorのMemT-1.0は記憶機構を中核に据えた基盤モデルである。どちらも実装条件と評価の分母を離れて語れない。設定の排他性とライセンスの分離が本章の要点である。",
+  "deck_attribution_mode": "ATTRIBUTED",
+  "deck_evidence_refs": [
+    {
+      "evidence_task_id": "evidence:2026-W43:76da1b3274338d00",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1",
+      "subject_id": "deepinfer",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:2026-W43:76da1b3274338d00",
+      "kind": "CLAIM",
+      "evidence_id": "claim-2",
+      "subject_id": "deepinfer",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:2026-W43:76da1b3274338d00",
+      "kind": "CLAIM",
+      "evidence_id": "claim-3",
+      "subject_id": "deepinfer",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:2026-W43:76da1b3274338d00",
+      "kind": "CLAIM",
+      "evidence_id": "claim-4",
+      "subject_id": "deepinfer",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:2026-W43:8c735edcfc5e51f3",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1",
+      "subject_id": "memt-1-0",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:2026-W43:8c735edcfc5e51f3",
+      "kind": "CLAIM",
+      "evidence_id": "claim-2",
+      "subject_id": "memt-1-0",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:2026-W43:8c735edcfc5e51f3",
+      "kind": "CLAIM",
+      "evidence_id": "claim-3",
+      "subject_id": "memt-1-0",
+      "subject_role": "PRIMARY_SUBJECT"
+    }
+  ],
+  "blocks": [
+    {
+      "block_id": "p2-h1",
+      "block_type": "HEADING",
+      "text": "推論の核部品と並列の設計",
+      "attribution_mode": "NONE",
+      "evidence_refs": []
+    },
+    {
+      "block_id": "p2-p1",
+      "block_type": "PARAGRAPH",
+      "text": "DeepInferは大規模混合専門家（MoE）モデルの推論を支える構成要素を束ねた枠組みである。FlashMLA（注意機構の高速化）、DeepGEMM（行列積）、DeepEP（専門家並列の通信）、TileKernels／TileLang（カーネル記述）、DeepSelect といった核が役割分担する。注意（attention）はデータ並列（DP）と均衡化された文脈並列（CP）でさばき、MoEは専門家並列（EP）と負荷均衡（EPLB）で分散させる。DSpark（推測デコード）と確信度に基づく予定検証（speculative decoding with confidence）が速度の鍵として説明される。いずれも発行元の README とコードが一次資料であり、独立のスループット再現は行われていない。",
+      "attribution_mode": "ATTRIBUTED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W43:76da1b3274338d00",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "deepinfer",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:76da1b3274338d00",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "deepinfer",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:76da1b3274338d00",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "deepinfer",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:76da1b3274338d00",
+          "kind": "CLAIM",
+          "evidence_id": "claim-4",
+          "subject_id": "deepinfer",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p2-t1",
+      "block_type": "TABLE",
+      "text": "【表：核×役割（DeepInfer）】\nFlashMLA｜注意の高速化｜DP／均衡CPと協調\nDeepGEMM｜行列積の最適化｜学習・推論の基盤\nDeepEP＋EPLB｜専門家並列と負荷均衡｜MoE分散の要\nTileKernels／TileLang｜カーネル生成・最適化｜実装の生産性\nDeepSelect・DSpark｜選択と推測デコード｜確信度つき予定検証",
+      "attribution_mode": "ATTRIBUTED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W43:76da1b3274338d00",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "deepinfer",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:76da1b3274338d00",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "deepinfer",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:76da1b3274338d00",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "deepinfer",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:76da1b3274338d00",
+          "kind": "CLAIM",
+          "evidence_id": "claim-4",
+          "subject_id": "deepinfer",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p2-h2",
+      "block_type": "HEADING",
+      "text": "同時に有効にできない二つの構成例",
+      "attribution_mode": "NONE",
+      "evidence_refs": []
+    },
+    {
+      "block_id": "p2-p2",
+      "block_type": "PARAGRAPH",
+      "text": "本章でもっとも誤解されやすいのが、DSparkの可変長MTPと決定的サンプリングの関係である。前者は環境変数 DEEPINFER_ENABLE_MTP_VARLEN=1、DEEPINFER_USE_NEXTN_DECODE（既定5、0で無効）という設定で有効化する推測デコード系であり、固定コミット 9bd9cf24 の README と environ.py（8738バイト）が典拠である。後者は DEEPINFER_ENABLE_MTP_VARLEN=0 に加え DEEPINFER_BATCH_INVARIANT=1 と seq_seed の固定、SamplingParams の指定を組み合わせた決定的サンプリング系であり、NVIDIA限定の条件つきである。両者は排他的な構成例であり、同時に有効であるかのように書いてはならない。再現性を任意の hardware に一般化することも禁じられる。",
+      "attribution_mode": "ATTRIBUTED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W43:76da1b3274338d00",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "deepinfer",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:76da1b3274338d00",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "deepinfer",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:76da1b3274338d00",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "deepinfer",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:76da1b3274338d00",
+          "kind": "CLAIM",
+          "evidence_id": "claim-4",
+          "subject_id": "deepinfer",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p2-p3",
+      "block_type": "PARAGRAPH",
+      "text": "コード抜粋の扱いにも注意が要る。README と environ.py は一次資料（PRIMARY_RAW）として正確に引用できるが、それを読んだことが推論性能の再現を意味しない。ベンチ条件（4×SM100 の prefill＋64 decode など）は発行元の測定装置の記述であり、読者が同じ装置を持たなければ同じ数値は出ない。KVキャッシュや各種エンジン（VE）の分離、prefill／decode の分離、cross-DP の均衡といった除外・前提も明示されている。本号は「設定例の正確な読み方」を主題とし、性能の優劣表を作らない。",
+      "attribution_mode": "ATTRIBUTED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W43:76da1b3274338d00",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "deepinfer",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:76da1b3274338d00",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "deepinfer",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:76da1b3274338d00",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "deepinfer",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:76da1b3274338d00",
+          "kind": "CLAIM",
+          "evidence_id": "claim-4",
+          "subject_id": "deepinfer",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p2-h3",
+      "block_type": "HEADING",
+      "text": "動かすための実装条件",
+      "attribution_mode": "NONE",
+      "evidence_refs": []
+    },
+    {
+      "block_id": "p2-p4",
+      "block_type": "PARAGRAPH",
+      "text": "DeepInferを動かす条件は重い。SM100以上のGPUや Ascend 950 といった加速器、対応 toolchain、1017 checkpoint などが前提として記される。測定は特定構成（4×SM100 の prefill＋64 decode など）で行われ、KV・VE の扱いや prefill／decode 分離、cross-DP 均衡などの除外がつく。9bd9cf24 以降の main 追随はなく、10月21日以降の変化は追跡していない。LICENSE は Apache-2.0 のバイトが確認できるが、特許・商標の範囲は審査していない。独立のビルドや実行は試みておらず、ベンダーの記述として読む。",
+      "attribution_mode": "ATTRIBUTED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W43:76da1b3274338d00",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "deepinfer",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:76da1b3274338d00",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "deepinfer",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:76da1b3274338d00",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "deepinfer",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:76da1b3274338d00",
+          "kind": "CLAIM",
+          "evidence_id": "claim-4",
+          "subject_id": "deepinfer",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p2-h4",
+      "block_type": "HEADING",
+      "text": "記憶を機構にするMemT",
+      "attribution_mode": "NONE",
+      "evidence_refs": []
+    },
+    {
+      "block_id": "p2-p5",
+      "block_type": "PARAGRAPH",
+      "text": "MemTensorのMemT-1.0は記憶機構を中核に据えた基盤モデルである。動的記憶（dynamic memory）としての Gated DeltaNet-2（ゲート付きデルタネット2）と、外部記憶（external memory）としての Mixture-of-Storage（混合ストレージ記憶、Mixture-of-Storage）が核である。学習は34Bトークン、二段階＋事後の工程と説明され、Nano（Qwen3.6-35B-A3B 基盤）と Flash（DeepSeek-V4-Flash 基盤）の二形態が用意される。11ベンチで Flash が1位・Nano が2位とされるが、いずれも発行元測定（vendorのみ）である。end-to-end で128K時に1.86倍、KVキャッシュ対比の持続で66倍という二つの倍率は分母が異なるため、単一の「高速化率」に丸めてはならない。",
+      "attribution_mode": "ATTRIBUTED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W43:8c735edcfc5e51f3",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "memt-1-0",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:8c735edcfc5e51f3",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "memt-1-0",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:8c735edcfc5e51f3",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "memt-1-0",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p2-t2",
+      "block_type": "TABLE",
+      "text": "【表：bench×分母×条件（MemT）】\n11 bench｜Flash 1st／Nano 2nd（発行元のみ）｜分母・harnessは発行元条件｜独立再現なし\n1.86x｜end-to-end・128K｜KV系との比較（分母A）｜装置・条件つき\n66x｜持続（sustained）vs KV cache｜分母B（Aと相違）｜単一値に統合禁止\n34B tokens｜二段階＋事後｜Nano／Flashで基盤相違｜式・ablation未精読",
+      "attribution_mode": "ATTRIBUTED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W43:8c735edcfc5e51f3",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "memt-1-0",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:8c735edcfc5e51f3",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "memt-1-0",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:8c735edcfc5e51f3",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "memt-1-0",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p2-h5",
+      "block_type": "HEADING",
+      "text": "論文とソフトウェアの権利を分ける",
+      "attribution_mode": "NONE",
+      "evidence_refs": []
+    },
+    {
+      "block_id": "p2-p6",
+      "block_type": "PARAGRAPH",
+      "text": "MemTの権利関係は子細な分離が要る。論文（paper）は CC BY-NC-SA、ソフトウェアは PolyForm Noncommercial、第三者部分は MIT、重みは除外、という対応が README 側の記述である。論文自体にライセンス条項はなく、論文を典拠に商用可否を断じてはならない。SGLang の snapshot や save／restore の記述はあるが、実際に serve して確かめたわけではない。65ページ級の論文の式や ablation は精読しておらず、機構・評価・限界の特定にとどまることを明示する。商用利用の可否について断定はしない。",
+      "attribution_mode": "ATTRIBUTED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W43:8c735edcfc5e51f3",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "memt-1-0",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:8c735edcfc5e51f3",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "memt-1-0",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:8c735edcfc5e51f3",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "memt-1-0",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p2-p7",
+      "block_type": "PARAGRAPH",
+      "text": "二つの公開に共通するのは「配布されたのは検証の出発点であって到達点ではない」という点である。DeepInferは特定コミットに固定して読むべきであり、main の漂流を追っていない。MemTは発行元の表を正確に写すことはできても、独立の harness 再実行はない。本章はベンダーの bench を独立測定値として書かず、式の再導出があるとも書かず、ライセンスを論文典拠にもしない。DEPTH_LIMITED の注記として、独立実行・供用試験なし、65ページの式・ablation 未精読、商用可否の断定なしを残す。",
+      "attribution_mode": "ATTRIBUTED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W43:76da1b3274338d00",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "deepinfer",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:76da1b3274338d00",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "deepinfer",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:76da1b3274338d00",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "deepinfer",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:76da1b3274338d00",
+          "kind": "CLAIM",
+          "evidence_id": "claim-4",
+          "subject_id": "deepinfer",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:8c735edcfc5e51f3",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "memt-1-0",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:8c735edcfc5e51f3",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "memt-1-0",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:8c735edcfc5e51f3",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "memt-1-0",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p2-p8",
+      "block_type": "PARAGRAPH",
+      "text": "FlashMLAとDeepGEMMの分担をもう一段具体化する。FlashMLAは注意計算のメモリ往復を抑える実装であり、DP（データ並列）と均衡CP（文脈並列）の下で注意をさばく。DeepGEMMは行列積の最適化であり、学習・推論の基盤演算を担う。DeepEPは専門家（expert）間の通信であり、EPLBが負荷の偏りを均す。TileKernels／TileLangはカーネル生成の生産性であり、DeepSelectは選択の機構である。いずれも発行元の記述であり、独立の作用検証はないが、役割分担の理解が設定の読みに直結する。",
+      "attribution_mode": "ATTRIBUTED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W43:76da1b3274338d00",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "deepinfer",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:76da1b3274338d00",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "deepinfer",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:76da1b3274338d00",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "deepinfer",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:76da1b3274338d00",
+          "kind": "CLAIM",
+          "evidence_id": "claim-4",
+          "subject_id": "deepinfer",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p2-p9",
+      "block_type": "PARAGRAPH",
+      "text": "二つの構成例の違いは環境変数と前提の束で決まる。可変長MTP系は MTP_VARLEN=1 と NEXTN_DECODE（既定5、0で無効）の組み合わせであり、決定的サンプリング系は MTP_VARLEN=0＋BATCH_INVARIANT=1＋seq_seed固定＋SamplingParams の組み合わせである。後者はNVIDIA限定という hardware 前提がつく。batch-invariant と deterministic sampling の前提を混同せず、再現性の主張を任意 hardware に一般化しない。コード抜粋の引用は設定の正確さのためであり、性能の証拠ではない。",
+      "attribution_mode": "ATTRIBUTED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W43:76da1b3274338d00",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "deepinfer",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:76da1b3274338d00",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "deepinfer",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:76da1b3274338d00",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "deepinfer",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:76da1b3274338d00",
+          "kind": "CLAIM",
+          "evidence_id": "claim-4",
+          "subject_id": "deepinfer",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p2-p10",
+      "block_type": "PARAGRAPH",
+      "text": "MemTの二段階＋事後の学習と二形態の違いも要点である。34Bトークンの二段階学習＋事後工程という記述は発行元の工程説明であり、Nano（Qwen3.6-35B-A3B基盤）と Flash（DeepSeek-V4-Flash基盤）では基盤が異なる。11ベンチの順位（Flash 1位・Nano 2位）は同一 harness 内の発行元順位であり、外部 harness との横断優劣ではない。1.86倍と66倍の分母相違は、end-to-end と持続（sustained）という測定対象の違いに由来し、単一の高速化率に統合できない。",
+      "attribution_mode": "ATTRIBUTED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W43:8c735edcfc5e51f3",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "memt-1-0",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:8c735edcfc5e51f3",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "memt-1-0",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:8c735edcfc5e51f3",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "memt-1-0",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p2-p11",
+      "block_type": "PARAGRAPH",
+      "text": "SGLang の snapshot・save／restore の記述は、記憶の持ち越し（persistence）の運用可能性を示唆するが、実際に serve して確かめたわけではない。設定の記述を読んだことと、運用の再現は別の事実である。重み・データのライセンスは将来の扱いとされ、リポジトリのソフトウェアは PolyForm により商用利用が禁じられる。商用可否の断定を避け、ライセンス対応図で paper・software・第三者・重みの四者を分けて示す。",
+      "attribution_mode": "ATTRIBUTED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W43:8c735edcfc5e51f3",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "memt-1-0",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:8c735edcfc5e51f3",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "memt-1-0",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:8c735edcfc5e51f3",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "memt-1-0",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p2-n1",
+      "block_type": "NOTE",
+      "text": "【読み方の注意】本章のベンチはすべて発行元測定であり独立実行・供用試験はない。65ページの式・ablation は未精読。論文にライセンス条項はなく README のみが典拠。MTP可変長と決定的サンプリングの同時有効は誤り。9bd9cf24以降の追随なし。",
+      "attribution_mode": "ATTRIBUTED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W43:76da1b3274338d00",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "deepinfer",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:76da1b3274338d00",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "deepinfer",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:76da1b3274338d00",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "deepinfer",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:76da1b3274338d00",
+          "kind": "CLAIM",
+          "evidence_id": "claim-4",
+          "subject_id": "deepinfer",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:8c735edcfc5e51f3",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "memt-1-0",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:8c735edcfc5e51f3",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "memt-1-0",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:8c735edcfc5e51f3",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "memt-1-0",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "P2-boundaries",
+      "block_type": "CLAIM_BOUNDARY",
+      "text": "この節の読解上の境界: ベンダー bench のみで独立実行・供用試験なし、65 頁の式・ablation 未精読 / paper にライセンス条項なし(README のみが典拠)、商用可否の断定なし / 9bd9cf24 以降の main 追随なし、特許・商標の審査なし / DRAFT MUST NOT: 独立測定値として bench を書かない／式の再導出があると書かない／ライセンスを paper 典拠にしない / 出典種別: environ.py・README・LICENSE・MemT README=PRIMARY_RAW / paper PDF=PRIMARY_RAW(条項除く) / bench=VENDOR_BENCH / DSpark可変長MTP(MTP_VARLEN=1)と決定的サンプリング(MTP_VARLEN=0＋BATCH_INVARIANT=1＋seq_seed固定・SamplingParams、NVIDIA限定)は排他的 — 同時有効と書かない / DRAFT MUST NOT: MTP_VARLEN=1とdeterministic samplingを同時有効と書かない／再現性を任意hardwareに一般化しない／batch-invariantとdeterministic samplingの前提を混同しない / Vendor lists; no worker inference execution or throughput repro / Single pinned commit 9bd9cf24; main drift after Oct 21 untracked / Apache-2.0 per LICENSE bytes; patent/trademark scope not reviewed / hardware-requirements: SM100/Ascend950 + toolchain stated; independent build not attempted. / independent-throughput-repro: No independent run; vendor benches only. / 65pp equations/ablations not line-reviewed; author harnesses only / Weights/data licenses forthcoming; repo software commercial use prohibited per PolyForm / No independent mechanism repro / benchmark-denominators: 11 benches 1.86x/66x author-measured; no rerun. / sglang-serve-config: Snapshots/save-restore described; no serve test.",
+      "attribution_mode": "INFERENCE",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W43:76da1b3274338d00",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "deepinfer",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:76da1b3274338d00",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "deepinfer",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:76da1b3274338d00",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-3",
+          "subject_id": "deepinfer",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:8c735edcfc5e51f3",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "memt-1-0",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:8c735edcfc5e51f3",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "memt-1-0",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:8c735edcfc5e51f3",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-3",
+          "subject_id": "memt-1-0",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    }
+  ],
+  "must_cover_coverage": [
+    {
+      "requirement": "§2.1 DeepInfer の核:FlashMLA/DeepGEMM/DeepEP/TileKernels/DeepSelect/TileLang、注意の DP/均衡 CP、MoE の EP+EPLB、DSpark と確信度予定検証 — 表:核×役割",
+      "block_ids": [
+        "p2-p1",
+        "p2-t1",
+        "p2-p2",
+        "p2-p3",
+        "p2-p4",
+        "p2-p5",
+        "p2-t2",
+        "p2-p6",
+        "p2-p7",
+        "p2-p8",
+        "p2-p9",
+        "p2-p10",
+        "p2-p11",
+        "p2-n1",
+        "P2-boundaries"
+      ]
+    },
+    {
+      "requirement": "§2.2 推測デコード系 DSpark可変長MTP(DEEPINFER_ENABLE_MTP_VARLEN=1、DEEPINFER_USE_NEXTN_DECODE既定5・0で無効、9bd9cf24固定)と決定的サンプリング系(DEEPINFER_ENABLE_MTP_VARLEN=0＋DEEPINFER_BATCH_INVARIANT=1＋seq_seed固定・SamplingParams、NVIDIA限定)は排他的構成例 — 同時有効の記述禁止[MUST-NOT] — コード抜粋 [README・environ.py 8738B]",
+      "block_ids": [
+        "p2-p1",
+        "p2-t1",
+        "p2-p2",
+        "p2-p3",
+        "p2-p4",
+        "p2-p5",
+        "p2-t2",
+        "p2-p6",
+        "p2-p7",
+        "p2-p8",
+        "p2-p9",
+        "p2-p10",
+        "p2-p11",
+        "p2-n1",
+        "P2-boundaries"
+      ]
+    },
+    {
+      "requirement": "§2.3 実装条件:SM100+Ascend950・toolchain・1017 checkpoint・4xSM100 prefill+64 decode bench・除外(KV・VE/prefill/decode 分離・cross-DP 均衡)の明示",
+      "block_ids": [
+        "p2-p1",
+        "p2-t1",
+        "p2-p2",
+        "p2-p3",
+        "p2-p4",
+        "p2-p5",
+        "p2-t2",
+        "p2-p6",
+        "p2-p7",
+        "p2-p8",
+        "p2-p9",
+        "p2-p10",
+        "p2-p11",
+        "p2-n1",
+        "P2-boundaries"
+      ]
+    },
+    {
+      "requirement": "§2.4 MemT の記憶:Gated DeltaNet-2(ゲート付きデルタネット2、Gated DeltaNet-2)・Mixture-of-Storage(混合ストレージ記憶、Mixture-of-Storage)・34B token・二段階+事後、Nano(Qwen3.6-35B-A3B)・Flash(DeepSeek-V4-Flash)、11 bench(Flash 1st/Nano 2nd、vendorのみ)、1.86x end-to-end 128K・66x 持続 vs KV cache(分母相違) — 表:bench×分母×条件",
+      "block_ids": [
+        "p2-p1",
+        "p2-t1",
+        "p2-p2",
+        "p2-p3",
+        "p2-p4",
+        "p2-p5",
+        "p2-t2",
+        "p2-p6",
+        "p2-p7",
+        "p2-p8",
+        "p2-p9",
+        "p2-p10",
+        "p2-p11",
+        "p2-n1",
+        "P2-boundaries"
+      ]
+    },
+    {
+      "requirement": "§2.5  Paper と README の分離(paper=CC BY-NC-SA・software=PolyForm Noncommercial・第三者 MIT・重み除外、paper に条項なし)と SGLang snapshot・save/restore — 図:ライセンス対応",
+      "block_ids": [
+        "p2-p1",
+        "p2-t1",
+        "p2-p2",
+        "p2-p3",
+        "p2-p4",
+        "p2-p5",
+        "p2-t2",
+        "p2-p6",
+        "p2-p7",
+        "p2-p8",
+        "p2-p9",
+        "p2-p10",
+        "p2-p11",
+        "p2-n1",
+        "P2-boundaries"
+      ]
+    },
+    {
+      "requirement": "§2.6 限界:vendor bench のみ、独立実行・供用試験なし、65 頁の式・ablation 未精読、商用可否の断定なし — DEPTH_LIMITED 注記",
+      "block_ids": [
+        "p2-p1",
+        "p2-t1",
+        "p2-p2",
+        "p2-p3",
+        "p2-p4",
+        "p2-p5",
+        "p2-t2",
+        "p2-p6",
+        "p2-p7",
+        "p2-p8",
+        "p2-p9",
+        "p2-p10",
+        "p2-p11",
+        "p2-n1",
+        "P2-boundaries"
+      ]
+    }
+  ],
+  "boundary_dispositions": [
+    {
+      "boundary": "ベンダー bench のみで独立実行・供用試験なし、65 頁の式・ablation 未精読",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P2-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "paper にライセンス条項なし(README のみが典拠)、商用可否の断定なし",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P2-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "9bd9cf24 以降の main 追随なし、特許・商標の審査なし",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P2-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "DRAFT MUST NOT: 独立測定値として bench を書かない／式の再導出があると書かない／ライセンスを paper 典拠にしない",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P2-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "出典種別: environ.py・README・LICENSE・MemT README=PRIMARY_RAW / paper PDF=PRIMARY_RAW(条項除く) / bench=VENDOR_BENCH",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P2-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "DSpark可変長MTP(MTP_VARLEN=1)と決定的サンプリング(MTP_VARLEN=0＋BATCH_INVARIANT=1＋seq_seed固定・SamplingParams、NVIDIA限定)は排他的 — 同時有効と書かない",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P2-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "DRAFT MUST NOT: MTP_VARLEN=1とdeterministic samplingを同時有効と書かない／再現性を任意hardwareに一般化しない／batch-invariantとdeterministic samplingの前提を混同しない",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P2-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Vendor lists; no worker inference execution or throughput repro",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P2-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Single pinned commit 9bd9cf24; main drift after Oct 21 untracked",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P2-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Apache-2.0 per LICENSE bytes; patent/trademark scope not reviewed",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P2-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "hardware-requirements: SM100/Ascend950 + toolchain stated; independent build not attempted.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P2-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "independent-throughput-repro: No independent run; vendor benches only.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P2-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "65pp equations/ablations not line-reviewed; author harnesses only",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P2-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Weights/data licenses forthcoming; repo software commercial use prohibited per PolyForm",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P2-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "No independent mechanism repro",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P2-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "benchmark-denominators: 11 benches 1.86x/66x author-measured; no rerun.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P2-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "sglang-serve-config: Snapshots/save-restore described; no serve test.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P2-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    }
+  ],
+  "profile_extensions": {
+    "page_allocation": "6.0",
+    "editorial_note": "機構図とライセンス対応表が要。SA-003 重点増枠。"
+  },
+  "publication_extensions": {}
+}

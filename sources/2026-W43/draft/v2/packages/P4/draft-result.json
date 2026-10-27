@@ -1,0 +1,486 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W43",
+  "research_profile": "WEEKLY",
+  "publication_profile": "WEEKLY_MAGAZINE",
+  "package_id": "P4",
+  "draft_version": "v1.0",
+  "status": "ESTABLISHED",
+  "basis": {
+    "draft_package_sha256": "dc845e52b7c85776f21a8cc01237ff9e943a9a130d8c5ac04b3ee2d80f21701f",
+    "prompt_id": "article-drafting-v2",
+    "prompt_sha256": "b687313312a23025228c16c3f10cb68f669b910cd7215e41886d4dd91f44fe11"
+  },
+  "runner": {
+    "provider": "muse-spark",
+    "model": "muse-spark-1.3",
+    "invocation": "muse-w43-r1-japanese-draft-with-closing-recap",
+    "generated_at": "2026-10-25T14:00:00Z",
+    "run_reference": null
+  },
+  "headline": "速さの見出しを割り算から読む――FLUX 3 Maxの数表検証",
+  "deck": "falとBlack Forest LabsのFLUX 3 Maxは速度の見出しが躍るが、分母の取り違えと資料間の矛盾を正して読む必要がある。本章は独立の性能測定ではなく、ベンダー数値の算術検証（数表批判）である。",
+  "deck_attribution_mode": "ATTRIBUTED",
+  "deck_evidence_refs": [
+    {
+      "evidence_task_id": "evidence:2026-W43:7b57cbc37d685ab4",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1",
+      "subject_id": "flux-3-max",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:2026-W43:7b57cbc37d685ab4",
+      "kind": "CLAIM",
+      "evidence_id": "claim-2",
+      "subject_id": "flux-3-max",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:2026-W43:7b57cbc37d685ab4",
+      "kind": "CLAIM",
+      "evidence_id": "claim-3",
+      "subject_id": "flux-3-max",
+      "subject_role": "PRIMARY_SUBJECT"
+    }
+  ],
+  "blocks": [
+    {
+      "block_id": "p4-h1",
+      "block_type": "HEADING",
+      "text": "何が配布され何が未検証か",
+      "attribution_mode": "NONE",
+      "evidence_refs": []
+    },
+    {
+      "block_id": "p4-p2",
+      "block_type": "PARAGRAPH",
+      "text": "FLUX 3 Max は fal と BFL による post-train（強化学習 RL・推論最適）の成果として提示され、text・image・keyframes-to-video の三様式が語られる。text／image は発売時の公式確認がある一方、keyframes の扱いは資料間で矛盾する。10月19日のプレスリリース（PR）は可用を主張しブログも導線を置くが、10月18日の FAQ は「Two at launch（二様式で開始）」と記す。この不一致は UNRESOLVED_VENDOR_DOC_CONFLICT（発行者資料間の未解決矛盾）として残し、W43時点の live／schema／GA を確定として書かない。従量課金などの条件は記されるが、解像度・GPU・batch・cold／warm といった装置条件は不明（UNKNOWN）のままである。",
+      "attribution_mode": "ATTRIBUTED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W43:7b57cbc37d685ab4",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "flux-3-max",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:7b57cbc37d685ab4",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "flux-3-max",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:7b57cbc37d685ab4",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "flux-3-max",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p4-p3",
+      "block_type": "PARAGRAPH",
+      "text": "Klein（10月15日）は範囲外（OUT）、10月19日の PR が当週内（IN）という時間軸も要点である。PR は PRNewswire 経由の発行者一次声明であり、第三者のベンチではない。原文バイト（raw）は RENDERED_ONLY（描画抽出のみ）であり、原本 HTML の閲覧済みとして書いてはならない。ブログ・製品頁の12.45秒・277.80秒といった数値も、一次メタデータ上のベンダー数値（VENDOR_BENCH）として扱う。",
+      "attribution_mode": "ATTRIBUTED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W43:7b57cbc37d685ab4",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "flux-3-max",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:7b57cbc37d685ab4",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "flux-3-max",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:7b57cbc37d685ab4",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "flux-3-max",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p4-h2",
+      "block_type": "HEADING",
+      "text": "割り算を正して読む（独立測定ではない）",
+      "attribution_mode": "NONE",
+      "evidence_refs": []
+    },
+    {
+      "block_id": "p4-p4",
+      "block_type": "PARAGRAPH",
+      "text": "速度の核心は二つの割り算である。速度倍率は旧基準時間÷新候補時間で求める。277.80秒÷10.95秒≒25.37倍（10月19日発行者PR、10.95秒・277.80秒）と、277.80秒÷12.45秒≒22.31倍（ブログ・製品頁、12.45秒・277.80秒）がそれである。所要時間の削減率は（旧基準時間−新候補時間）÷旧基準時間×100で求め、（277.80−12.45）÷277.80×100≒95.52％となる。分母は旧基準277.80秒であり、新候補12.45秒ではない。ブログの26.5倍・96.2％は同じ入力では整合せず、不整合として残す。見出しの「22x」は下限表現であり、見出しだけで数学的誤りと断じない。最速の見出しは禁じられる。",
+      "attribution_mode": "ATTRIBUTED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W43:7b57cbc37d685ab4",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "flux-3-max",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:7b57cbc37d685ab4",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "flux-3-max",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:7b57cbc37d685ab4",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "flux-3-max",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p4-t1",
+      "block_type": "TABLE",
+      "text": "【表：倍率×削減率×出典／版／時刻】\n25.37x｜277.80／10.95｜Oct19発行者PR（一次声明、raw RENDERED_ONLY）｜IN\n22.31x｜277.80／12.45｜blog／製品頁｜IN\n95.52%｜(277.80−12.45)／277.80｜分母＝旧基準277.80秒｜候補分母にしない\n26.5x／96.2%｜同入力で不整合｜blog値｜正として引用しない\n22x見出し｜下限表現｜数学的誤りと断じない",
+      "attribution_mode": "ATTRIBUTED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W43:7b57cbc37d685ab4",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "flux-3-max",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:7b57cbc37d685ab4",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "flux-3-max",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:7b57cbc37d685ab4",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "flux-3-max",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p4-h3",
+      "block_type": "HEADING",
+      "text": "質の数と価格の読み分け",
+      "attribution_mode": "NONE",
+      "evidence_refs": []
+    },
+    {
+      "block_id": "p4-p5",
+      "block_type": "PARAGRAPH",
+      "text": "質の指標として語られる Elo 1139 は暫定値・4868票という条件つきであり、Artificial Analysis（AA）の原表は未取得のため VENDOR 扱いである。ブログ時点では FLUX3 比＋47、製品頁・PR（10月19日15時46分 ET）では1139−1089＝＋50とされる。比較対象・版・snapshot の相違があり、背後のAA変動は UNKNOWN である。＋47 と＋50 のいずれかを単一の確定改善幅に統一してはならない。価格は100万画素あたり通常0.0425ドル・高速0.0725ドルから、将来的に0.17ドル・0.29ドルといった条件が記されるが、ライセンスの範囲を超えた検証はない。従量の条件として読む。",
+      "attribution_mode": "ATTRIBUTED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W43:7b57cbc37d685ab4",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "flux-3-max",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:7b57cbc37d685ab4",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "flux-3-max",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:7b57cbc37d685ab4",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "flux-3-max",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p4-p6",
+      "block_type": "PARAGRAPH",
+      "text": "資料の版と時刻の扱いも要点である。10月19日のPRは15時46分（ET）という時刻つきの発行者声明であり、ブログ・製品頁は版・snapshot の異なる数値を載せる。Elo の＋47（ブログ snapshot）と＋50（製品頁・PR、1139−1089＝50）は比較対象・版・snapshot の相違であり、背後のAA変動は UNKNOWN である。単一の確定改善幅に統一せず、版・snapshot・票数（4868票・暫定）を添えて読む。AA原表の未取得は繰り返し明示する。",
+      "attribution_mode": "ATTRIBUTED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W43:7b57cbc37d685ab4",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "flux-3-max",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:7b57cbc37d685ab4",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "flux-3-max",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:7b57cbc37d685ab4",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "flux-3-max",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p4-p7",
+      "block_type": "PARAGRAPH",
+      "text": "keyframes の矛盾は提供の確定を禁じる。text／image は発売時の公式確認があるが、keyframes は10月19日PRの可用主張・ブログ導線と10月18日FAQ「Two at launch」の矛盾として UNRESOLVED のままである。W43の live／schema／GA は未検証であり、提供確定と書かない。従量の条件（pay-go）は記されるが、ライセンスの範囲を超えた検証はない。解像度・GPU・batch・cold／warm の UNKNOWN を明記し、装置を仮定した再計算をしない。",
+      "attribution_mode": "ATTRIBUTED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W43:7b57cbc37d685ab4",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "flux-3-max",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:7b57cbc37d685ab4",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "flux-3-max",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:7b57cbc37d685ab4",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "flux-3-max",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p4-n1",
+      "block_type": "NOTE",
+      "text": "【読み方の注意】速度倍率は発行元報告で矛盾した分母つき、独立計測ではない。10.95秒のPR原文は現行頁になくバイト未再取得。AA原表未取得。keyframes提供確定と書かない。＋47／＋50のいずれかを単一真値と書かない。26.5倍を正として引用しない。",
+      "attribution_mode": "ATTRIBUTED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W43:7b57cbc37d685ab4",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "flux-3-max",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:7b57cbc37d685ab4",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "flux-3-max",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:7b57cbc37d685ab4",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "flux-3-max",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "P4-boundaries",
+      "block_type": "CLAIM_BOUNDARY",
+      "text": "この節の読解上の境界: DRAFT MUST NOT: 最速・独立検証済みと書かない／26.5x を正として引用しない / 10.95s PR raw未取得・vendor blog 12.45s/277.80sと26.5x/96.2%は算術不整合 — 独立計測22xと書かない、解像度/GPU/batch/cold-warm UNKNOWNを明記 / AA 原表未取得、10.95sはOct19発行者PR(一次声明、rawはRENDERED_ONLY)・12.45sはblog/製品頁、最速の断定なし / 出典種別: model 頁・blog=PRIMARY_METADATA(数値は VENDOR_BENCH) / Oct19 PR=発行者一次声明(PRNewswire配信、rawはRENDERED_ONLY、第三者benchではない) / AA=UNVERIFIED / UNRESOLVED_VENDOR_DOC_CONFLICT(keyframes): text/imageは発売時確認、keyframesはOct19 PRが可用主張・blog導線 vs Oct18 FAQ「Two at launch」 — W43 live/schema/GA未検証、提供確定と書かない / Elo +47(blog snapshot)と+50(製品頁/PR、1139-1089=50)は版/snapshot相違 — 単一確定改善幅に統一禁止、AA変動UNKNOWN / DRAFT MUST NOT: keyframes提供確定と書かない／+47/+50のいずれかを単一真値と書かない／22xを見出しだけで数学的誤りと断じない / Speed multiples vendor-reported contradictory bases; no independent timing / 10.95s PR origin not on current pages (12.45s only); 10.95 bytes not re-archived / AA Elo vendor-cited; originals unfetched / aa-arena-snapshot: Elo1139 tied#1 prelim 4868 votes vendor-cited; AA originals unfetched. / license-and-availability-terms: Pay-go stated; license beyond pricing unvalidated. / speed-discrepancy-basis: Self-contradiction: 12.45+277.80 !=26.5x/96.2%; PR10.95=25.37x not22x. Preserved.",
+      "attribution_mode": "INFERENCE",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W43:7b57cbc37d685ab4",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "flux-3-max",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:7b57cbc37d685ab4",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "flux-3-max",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:7b57cbc37d685ab4",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-3",
+          "subject_id": "flux-3-max",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    }
+  ],
+  "must_cover_coverage": [
+    {
+      "requirement": "§4.1 fal+BFL の post-train(RL・推論最適)と text/image[発売時公式確認]・keyframes[Oct19 PRが可用と主張・blogが導線、Oct18 FAQ「Two at launch」と矛盾→UNRESOLVED_VENDOR_DOC_CONFLICT、W43 live未検証]・従量、Oct19 IN(Klein Oct15 OUT)",
+      "block_ids": [
+        "p4-p2",
+        "p4-p3",
+        "p4-p4",
+        "p4-t1",
+        "p4-p5",
+        "p4-p6",
+        "p4-p7",
+        "p4-n1",
+        "P4-boundaries"
+      ]
+    },
+    {
+      "requirement": "§4.2 速度の独立再計算(独立測定ではない):速度倍率＝旧基準時間/新候補時間 — 277.80/10.95≈25.37x[Oct19発行者PR、10.95s/277.80s、rawはRENDERED_ONLY]、277.80/12.45≈22.31x[blog/製品頁、12.45s/277.80s]；所要時間削減率＝(旧基準時間−新候補時間)/旧基準時間×100 — (277.80−12.45)/277.80×100≈95.52%(分母=旧基準277.80秒) — PRはPRNewswire経由の発行者一次声明(第三者benchではない)、blog 26.5x/96.2%は同入力で不整合、見出し「22x」は下限表現で数学的誤りと断じない — 最速見出し禁止 — 表:倍率×削減率×出典/版/時刻",
+      "block_ids": [
+        "p4-p2",
+        "p4-p3",
+        "p4-p4",
+        "p4-t1",
+        "p4-p5",
+        "p4-p6",
+        "p4-p7",
+        "p4-n1",
+        "P4-boundaries"
+      ]
+    },
+    {
+      "requirement": "§4.3 質 Elo 1139(暫定・4868 票、AA原表未取得・VENDOR扱い):blog時点ではFLUX3比+47、製品頁/PR(Oct19 15:46 ET)では1139-1089=+50[比較対象/版/snapshot相違、背後のAA変動UNKNOWN] — 単一確定改善幅に統一禁止 — と価格($0.0425/$0.0725→$0.17/$0.29)",
+      "block_ids": [
+        "p4-p2",
+        "p4-p3",
+        "p4-p4",
+        "p4-t1",
+        "p4-p5",
+        "p4-p6",
+        "p4-p7",
+        "p4-n1",
+        "P4-boundaries"
+      ]
+    }
+  ],
+  "boundary_dispositions": [
+    {
+      "boundary": "DRAFT MUST NOT: 最速・独立検証済みと書かない／26.5x を正として引用しない",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P4-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "10.95s PR raw未取得・vendor blog 12.45s/277.80sと26.5x/96.2%は算術不整合 — 独立計測22xと書かない、解像度/GPU/batch/cold-warm UNKNOWNを明記",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P4-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "AA 原表未取得、10.95sはOct19発行者PR(一次声明、rawはRENDERED_ONLY)・12.45sはblog/製品頁、最速の断定なし",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P4-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "出典種別: model 頁・blog=PRIMARY_METADATA(数値は VENDOR_BENCH) / Oct19 PR=発行者一次声明(PRNewswire配信、rawはRENDERED_ONLY、第三者benchではない) / AA=UNVERIFIED",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P4-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "UNRESOLVED_VENDOR_DOC_CONFLICT(keyframes): text/imageは発売時確認、keyframesはOct19 PRが可用主張・blog導線 vs Oct18 FAQ「Two at launch」 — W43 live/schema/GA未検証、提供確定と書かない",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P4-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Elo +47(blog snapshot)と+50(製品頁/PR、1139-1089=50)は版/snapshot相違 — 単一確定改善幅に統一禁止、AA変動UNKNOWN",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P4-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "DRAFT MUST NOT: keyframes提供確定と書かない／+47/+50のいずれかを単一真値と書かない／22xを見出しだけで数学的誤りと断じない",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P4-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Speed multiples vendor-reported contradictory bases; no independent timing",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P4-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "10.95s PR origin not on current pages (12.45s only); 10.95 bytes not re-archived",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P4-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "AA Elo vendor-cited; originals unfetched",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P4-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "aa-arena-snapshot: Elo1139 tied#1 prelim 4868 votes vendor-cited; AA originals unfetched.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P4-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "license-and-availability-terms: Pay-go stated; license beyond pricing unvalidated.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P4-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "speed-discrepancy-basis: Self-contradiction: 12.45+277.80 !=26.5x/96.2%; PR10.95=25.37x not22x. Preserved.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P4-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    }
+  ],
+  "profile_extensions": {
+    "page_allocation": "3.0",
+    "editorial_note": "数表の再計算を明示。"
+  },
+  "publication_extensions": {}
+}
