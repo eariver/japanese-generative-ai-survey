@@ -606,3 +606,10 @@ This is the current human-readable navigation record for the edition. Machine li
 - Canonical `main.pdf` (`b09fd181…`, 486967B, 22 A4): epoch-pinned LuaHBTeX x3 (runs 2-3 identical), 0 errors, 2 benign vbox pp14-15 (r8 locus). Evidence `execution/publication-build-w43/`: logs, 22 PNGs + 3 sheets, ledger, links/fonts (75/28/14/0).
 - Seven authorities frozen-PASS: manuscript `079e07ce…` (31/31 FULFILLED, no grade transplant), 3 deterministic results, quality PASS, semantic 11/11, visual 2/2, surface review `0a584f2e…` (separate re-read pass), gate PASSED 0 blocking.
 - Session: `execution/sessions/muse-w43-integrated-publication-build-20261028.md`. Next: General independent audit on exact PDF `b09fd181…`, then trusted ADVANCE DRAFT_COMPLETE→VALIDATED_DRAFT. No Gate/Freeze/Release/merge.
+
+## Integrated Publication-Ready run, phase 3 — independent General audit PASS (2026-10-28)
+
+- General CoWorker (separate fresh instance) adversarial r8→candidate audit on exact bytes: `execution/audits/general-w43-r8-to-candidate-20261028.md` committed VERBATIM (unedited).
+- Verdict `GENERAL_W43_EQUIVALENCE_PASS`: P0 0 / P1 0 / P2 6 bounded nonblocking (L1 comment reword, metadata canonicalization, epoch timestamps, 1 font subset-tag rename, 2 carried benign vbox p14-15, census-convention note with exact sub-count agreement).
+- General independently measured: r8 PDF `abd5b99b…`/TeX `4ed553e5…`; candidate PDF `b09fd181…` (486967B, 22 A4, exact match); TeX diff exactly 4 proof-mark hunks; rendered-text diff banner-only (pp1/p22); 22/22 pages visually clean; 8 sections/20T/3fig/5code/36bib/75URI/28targets/14fonts; 7 records + 3 deterministic artifacts bind exact bytes, no mismatch.
+- PASS binds final PDF SHA `b09fd181…`; bytes unchanged since. No worker fixes, no re-audit required. Next: trusted ADVANCE DRAFT_COMPLETE→VALIDATED_DRAFT (7 artifacts). No Gate/Freeze/Release/merge.
