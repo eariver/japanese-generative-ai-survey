@@ -613,3 +613,9 @@ This is the current human-readable navigation record for the edition. Machine li
 - Verdict `GENERAL_W43_EQUIVALENCE_PASS`: P0 0 / P1 0 / P2 6 bounded nonblocking (L1 comment reword, metadata canonicalization, epoch timestamps, 1 font subset-tag rename, 2 carried benign vbox p14-15, census-convention note with exact sub-count agreement).
 - General independently measured: r8 PDF `abd5b99b…`/TeX `4ed553e5…`; candidate PDF `b09fd181…` (486967B, 22 A4, exact match); TeX diff exactly 4 proof-mark hunks; rendered-text diff banner-only (pp1/p22); 22/22 pages visually clean; 8 sections/20T/3fig/5code/36bib/75URI/28targets/14fonts; 7 records + 3 deterministic artifacts bind exact bytes, no mismatch.
 - PASS binds final PDF SHA `b09fd181…`; bytes unchanged since. No worker fixes, no re-audit required. Next: trusted ADVANCE DRAFT_COMPLETE→VALIDATED_DRAFT (7 artifacts). No Gate/Freeze/Release/merge.
+
+## Integrated Publication-Ready run, phase 4 — VALIDATED_DRAFT + Candidate (2026-10-28)
+
+- Trusted ADVANCE DRAFT_COMPLETE→VALIDATED_DRAFT: bridge run 40542474497 SUCCESS, bot `b97ae5930`; checkpoint `orchestration/v2/checkpoints/DRAFT_COMPLETE.json`; State VALIDATED_DRAFT, validation passed, next stage:publication-candidate.
+- Publication Candidate `publication/v2/publication-candidate-v2.json`: status READY_FOR_PUBLICATION_PREVIEW, SHA `b006f6df…`, binds manuscript `079e07ce…`, TeX `3fa6ca3b…`, PDF `b09fd181…` (486967B, 22p), quality/semantic/visual (frozen build+validate PASS). PDF bytes unchanged since General PASS — PASS still binds.
+- Next: commit candidate, trusted ADVANCE VALIDATED_DRAFT→RELEASE_CANDIDATE (1 artifact), then final Human-GO handoff. No Preview approval/Freeze/merge/Release.
