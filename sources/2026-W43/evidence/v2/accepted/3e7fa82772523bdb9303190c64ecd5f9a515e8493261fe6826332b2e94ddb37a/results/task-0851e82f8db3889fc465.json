@@ -1,0 +1,155 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W43",
+  "evidence_task_id": "evidence:2026-W43:f6f8199fe5ebe98f",
+  "basis": {
+    "task_sha256": "7e93de672369d933e41d4985397ae0c7413bcffbd017528ddd03f9781bf8658d",
+    "screening_acceptance_sha256": "566cde3bd287dffb38d705c4b6c3fec71a98f67dea96016a009bd929923be48a",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "openai-google-cloud",
+      "canonical_name": "OpenAI models on Google Cloud",
+      "entity_type": "PRODUCT",
+      "organization": "OpenAI",
+      "canonical_url": "https://openai.com/index/openai-models-google-cloud"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "openai-google-cloud",
+    "artifact_type": "INTEGRATION",
+    "canonical_name": "OpenAI models on Google Cloud",
+    "canonical_url": "https://openai.com/index/openai-models-google-cloud"
+  },
+  "temporal": {
+    "observed_at": "2026-10-24T19:30:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-10-21",
+        "subject_id": "openai-google-cloud",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "event_id": "event-2",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-10-22T00:00:00Z",
+        "subject_id": "openai-google-cloud",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "supplement-src-ea58a61c3678ad4a"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "primary:openai.com/index/openai-models-google-cloud",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "OpenAI models on Google Cloud Model Garden (Oct 21)",
+      "published_at": "2026-10-21",
+      "accessed_at": "2026-10-24T19:30:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    },
+    {
+      "source_id": "supplement-src-ea58a61c3678ad4a",
+      "url": "https://cloud.google.com/blog/products/ai-machine-learning/google-cloud-brings-openai-models-to-customers",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "Google Cloud brings OpenAI models to customers (Oct 22, 2026; Astra/Sol/Luna via Model Garden/Marketplace)",
+      "published_at": "2026-10-22T00:00:00Z",
+      "accessed_at": "2026-10-24T19:17:19Z",
+      "role": "Post-Screening exact authority supplement: Post-Screening exact first-party authority: page dated Oct 22 (RSS observed Oct 21); Astra/Sol/Luna distribution with Marketplace billing and perimeters. Day precision."
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Google Cloud blog dated Oct 22, 2026 (RSS observed Oct 21): GPT-6 Astra, GPT-6.1 Sol, GPT-6 Luna via Model Garden; single invoice, commitments/FSP; data perimeters with prompts never used for training; ZDR coming soon.",
+      "subject_id": "openai-google-cloud",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1",
+        "supplement-src-ea58a61c3678ad4a"
+      ],
+      "context": "Google Cloud blog (raw HTML archived 224,991B)"
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Distribution, not a new base model; region/enterprise terms partially stated; OpenAI-side corroboration page unopened.",
+      "subject_id": "openai-google-cloud",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1",
+        "supplement-src-ea58a61c3678ad4a"
+      ],
+      "context": "Scope reading (distribution vs capability)"
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "OpenAI-side corroboration page unopened; full region/rate-limit matrix not established",
+      "subject_id": "openai-google-cloud",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1",
+        "supplement-src-ea58a61c3678ad4a"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "page-bodies",
+        "status": "VERIFIED",
+        "finding": "GCP blog archived and read; OpenAI news page unopened.",
+        "subject_ids": [
+          "openai-google-cloud"
+        ],
+        "source_ids": [
+          "src-1",
+          "supplement-src-ea58a61c3678ad4a"
+        ]
+      },
+      {
+        "target": "model-and-rate-limits",
+        "status": "VERIFIED",
+        "finding": "Three models plus billing/commitment terms read.",
+        "subject_ids": [
+          "openai-google-cloud"
+        ],
+        "source_ids": [
+          "src-1",
+          "supplement-src-ea58a61c3678ad4a"
+        ]
+      },
+      {
+        "target": "data-residency-terms",
+        "status": "VERIFIED",
+        "finding": "Perimeter/no-training/ZDR-coming-soon terms read.",
+        "subject_ids": [
+          "openai-google-cloud"
+        ],
+        "source_ids": [
+          "src-1",
+          "supplement-src-ea58a61c3678ad4a"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

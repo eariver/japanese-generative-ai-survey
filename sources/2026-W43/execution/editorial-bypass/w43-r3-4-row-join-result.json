@@ -1,0 +1,85 @@
+{
+ "tool": "w43-r3-4-strict-row-join-check.py",
+ "scope": "edition-local join proof only; not source originality, not native Stage",
+ "reader": "w43-r3-4-reader-preview-UNVALIDATED-20261026.md",
+ "reader_sha256": "9dcd7a79ab4689fa1ec88829112582688a61011e0559889f544e081cf4d89af6",
+ "ledger": "w43-r3-4-citation-confidence-ledger.json",
+ "ledger_sha256": "db3590cca05adf4afb4c3a0abbebf998a61861822180b3f3943982564001ee33",
+ "manifest": "w43-r3-4-physical-row-manifest.json",
+ "verdict": "EDITION_LOCAL_ROW_JOIN_PASS",
+ "positive_failures": [],
+ "negative_tests": [
+  {
+   "id": "NEG-drop-row",
+   "result": "PASS",
+   "detail": "fails as required: T2: p2-t2 reader lines != manifest lines"
+  },
+  {
+   "id": "NEG-dup-row",
+   "result": "PASS",
+   "detail": "fails as required: T2: p1-t1 reader lines != manifest lines"
+  },
+  {
+   "id": "NEG-swap-rows",
+   "result": "PASS",
+   "detail": "fails as required: T2: p4-t1-01 text/hash mismatch (swap/mutation/extra)"
+  },
+  {
+   "id": "NEG-mutate-text",
+   "result": "PASS",
+   "detail": "fails as required: T2: p1-t1-01 text/hash mismatch (swap/mutation/extra)"
+  },
+  {
+   "id": "NEG-claim-to-NOTE",
+   "result": "PASS",
+   "detail": "fails as required: C3: p8-f2/2026-10-22T15:18:14Z cross-block p8-f2->p1-t2"
+  },
+  {
+   "id": "NEG-claim-xblock",
+   "result": "PASS",
+   "detail": "fails as required: C3: p8-f2/2026-10-22T15:18:14Z cross-block p8-f2->p8-f3"
+  },
+  {
+   "id": "NEG-npm-unscoped",
+   "result": "PASS",
+   "detail": "fails as required: C8: p8-f2-03 unscoped npm URL https://registry.npmjs.org/ai"
+  },
+  {
+   "id": "NEG-unit-false-confirm",
+   "result": "PASS",
+   "detail": "fails as required: C7: p5-f1/$0.004 asserts confirmed unit without evidence basis"
+  },
+  {
+   "id": "NEG-note-sameblock",
+   "result": "PASS",
+   "detail": "fails as required: C2: p1-t2/SYNTH points to NOTE row p1-t2-04"
+  }
+ ],
+ "checks": [
+  {
+   "id": "JOIN-bijection-80",
+   "result": "PASS",
+   "detail": "20 tables, 80 physical <-> 80 ledger, hashes exact"
+  },
+  {
+   "id": "JOIN-claims-29",
+   "result": "PASS",
+   "detail": "29 claims own-block DATA, bound, honest archive"
+  },
+  {
+   "id": "JOIN-anchors",
+   "result": "PASS",
+   "detail": "MemT/npm/Voxtral/classifier/TTS/Controlled-Voice anchors hold"
+  },
+  {
+   "id": "NEG-all-detected",
+   "result": "PASS",
+   "detail": "9/9 mutations detected"
+  },
+  {
+   "id": "TIER-report",
+   "result": "PASS",
+   "detail": "{\"RAW_PRIMARY\": 5, \"QUALIFIED_UNAVAILABLE\": 24, \"OTHER\": 0}"
+  }
+ ]
+}

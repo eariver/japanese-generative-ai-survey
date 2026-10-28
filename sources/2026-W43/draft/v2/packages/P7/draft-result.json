@@ -1,0 +1,610 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W43",
+  "research_profile": "WEEKLY",
+  "publication_profile": "WEEKLY_MAGAZINE",
+  "package_id": "P7",
+  "draft_version": "v1.0",
+  "status": "ESTABLISHED",
+  "basis": {
+    "draft_package_sha256": "0dda680c12c1531962cd61aa91d0dc826133b54606ae46e2073ecdccbf4146d2",
+    "prompt_id": "article-drafting-v2",
+    "prompt_sha256": "b687313312a23025228c16c3f10cb68f669b910cd7215e41886d4dd91f44fe11"
+  },
+  "runner": {
+    "provider": "muse-spark",
+    "model": "muse-spark-1.3",
+    "invocation": "muse-w43-r1-japanese-draft-with-closing-recap",
+    "generated_at": "2026-10-25T14:00:00Z",
+    "run_reference": null
+  },
+  "headline": "手順が結果を決める――生体摂動と低資源言語の評価設計",
+  "deck": "OpenAIらの生物学研究と低資源言語の符号評価は、手順・盲検・hidden試験の設計が結果の意味を決める。独立再現と取り違えず、公開された手順（suite）と保持された試験（hidden）を分けて読む。",
+  "deck_attribution_mode": "ATTRIBUTED",
+  "deck_evidence_refs": [
+    {
+      "evidence_task_id": "evidence:2026-W43:64a0ea7f8bf66edc",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1",
+      "subject_id": "openai-distributed-bio-agents",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:2026-W43:64a0ea7f8bf66edc",
+      "kind": "CLAIM",
+      "evidence_id": "claim-2",
+      "subject_id": "openai-distributed-bio-agents",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:2026-W43:64a0ea7f8bf66edc",
+      "kind": "CLAIM",
+      "evidence_id": "claim-3",
+      "subject_id": "openai-distributed-bio-agents",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:2026-W43:6125808e31e3fd0e",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1",
+      "subject_id": "openai-lowresource-coding-evals",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:2026-W43:6125808e31e3fd0e",
+      "kind": "CLAIM",
+      "evidence_id": "claim-2",
+      "subject_id": "openai-lowresource-coding-evals",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:2026-W43:6125808e31e3fd0e",
+      "kind": "CLAIM",
+      "evidence_id": "claim-3",
+      "subject_id": "openai-lowresource-coding-evals",
+      "subject_role": "PRIMARY_SUBJECT"
+    }
+  ],
+  "blocks": [
+    {
+      "block_id": "p7-h1",
+      "block_type": "HEADING",
+      "text": "数千主体の摂動報告と盲検の選好",
+      "attribution_mode": "NONE",
+      "evidence_refs": []
+    },
+    {
+      "block_id": "p7-p2",
+      "block_type": "PARAGRAPH",
+      "text": "生物学側は OpenAI・PerturbAI・Scripps の共同研究班の手順（protocol）として提示される。GPT-Rosalind という数千の主体（agents）が全脳 CRISPR で数百万細胞を32分で扱い、摂動の報告から atlas を編む、という構造である。Tsc1／Tsc2・DCTN1 といった遺伝子、700超 vs 11 といった対比、盲検（blinded evaluation）で75％の分散選好といった数値が記される。bioRxiv・Hugging Face・GitHub の来歴、in-loop の位置づけが示される一方、wet-lab（生実験）の確認はなく、再現ゼロ（ZERO再現）であることを明示する。75％の選好は共同研究班内の手順＋班推定の比較対象であり、独立の専門家再現はない。",
+      "attribution_mode": "ATTRIBUTED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W43:64a0ea7f8bf66edc",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "openai-distributed-bio-agents",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:64a0ea7f8bf66edc",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "openai-distributed-bio-agents",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:64a0ea7f8bf66edc",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "openai-distributed-bio-agents",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p7-t1",
+      "block_type": "TABLE",
+      "text": "【表：手順×来歴×限界（Bio）】\n主体｜数千 agents（GPT-Rosalind）｜来歴：研究頁・bioRxiv・HF・GitHub｜独立再現なし\n操作｜全脳CRISPR・数百万細胞・32分｜摂動報告→atlas｜wet-lab未\n評価｜盲検75%分散選好｜班内手順＋班推定比較｜独立専門家再現なし\n遺伝子｜Tsc1/Tsc2・DCTN1｜700+ vs 11｜標本bias未評価",
+      "attribution_mode": "ATTRIBUTED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W43:64a0ea7f8bf66edc",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "openai-distributed-bio-agents",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:64a0ea7f8bf66edc",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "openai-distributed-bio-agents",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:64a0ea7f8bf66edc",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "openai-distributed-bio-agents",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p7-h2",
+      "block_type": "HEADING",
+      "text": "SQLite自作とCOBOL hiddenの二層",
+      "attribution_mode": "NONE",
+      "evidence_refs": []
+    },
+    {
+      "block_id": "p7-p3",
+      "block_type": "PARAGRAPH",
+      "text": "低資源言語側は MultiLangBench という SQLite 自作の公開 suite が中核である。20言語・DB共有・参照 SQLite 照合という設計で、Astra 87.4 vs Sol 26.8、COBOL 10.9→72.1 など19／20言語で83％超といった数値がベンダー測定として記される。一方 COBOL の hidden 試験は byte-parity の設計で、Sol 86.6％ low・97.9％ high といった数値が記される。suite の公開と再現は別であり、専門家審査の記述はあるが hidden 試験はベンダー保持（vendor-held）である。外部への一般化は証明されていない。",
+      "attribution_mode": "ATTRIBUTED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W43:6125808e31e3fd0e",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "openai-lowresource-coding-evals",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:6125808e31e3fd0e",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "openai-lowresource-coding-evals",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:6125808e31e3fd0e",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "openai-lowresource-coding-evals",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p7-p4",
+      "block_type": "PARAGRAPH",
+      "text": "費用の扱いも条件つきである。COBOL 40％、Luna 0.77ドル vs 3.48ドルといった費用はベンダー測定であり、課金の独立検証はない。we／our という一人称の手順記述は第一者（first-party）の手順として読めるが、それを読んだことが独立 harness 再実行を意味しない。20言語表は読んだが独立確認はなく、byte-parity の設計＋86.6／97.9 は読んだが hidden 試験は保持されたままである。公開 suite と保持試験の二層を表に分けた。",
+      "attribution_mode": "ATTRIBUTED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W43:6125808e31e3fd0e",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "openai-lowresource-coding-evals",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:6125808e31e3fd0e",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "openai-lowresource-coding-evals",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:6125808e31e3fd0e",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "openai-lowresource-coding-evals",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p7-t2",
+      "block_type": "TABLE",
+      "text": "【表：bench×分母×条件（Low-resource）】\nSQLite自作｜20言語・DB共有・参照照合｜Astra87.4 vs Sol26.8・19/20≧83%｜ベンダー測定\nCOBOL hidden｜byte-parity・vendor保持｜Sol86.6%low・97.9%high｜外部一般化なし\n費用｜$0.77 vs $3.48・COBOL40%｜ベンダー測定｜課金未検証\n手順｜we/our第一者｜専門家審査記述｜独立harnessなし",
+      "attribution_mode": "ATTRIBUTED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W43:6125808e31e3fd0e",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "openai-lowresource-coding-evals",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:6125808e31e3fd0e",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "openai-lowresource-coding-evals",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:6125808e31e3fd0e",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "openai-lowresource-coding-evals",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p7-h3",
+      "block_type": "HEADING",
+      "text": "盲検・標本・請求の限界",
+      "attribution_mode": "NONE",
+      "evidence_refs": []
+    },
+    {
+      "block_id": "p7-p5",
+      "block_type": "PARAGRAPH",
+      "text": "二章に共通する限界は、研究班内・盲検・ベンダー測定という三点である。wet-lab 未、標本 bias、hidden 外部未証、請求の独立未証を残す。独立再現・独立評価と書かず、wet-lab 確認済みと書かない。研究頁・bioRxiv・HF・GitHub・suite は一次資料（PRIMARY_RAW）、選好・費用はベンダー測定（VENDOR_BENCH）、wet-lab は未検証（UNVERIFIED）として区別する。来歴の保存として、手順の公開と試験の保持を分けて記した。",
+      "attribution_mode": "ATTRIBUTED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W43:64a0ea7f8bf66edc",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "openai-distributed-bio-agents",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:64a0ea7f8bf66edc",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "openai-distributed-bio-agents",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:64a0ea7f8bf66edc",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "openai-distributed-bio-agents",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:6125808e31e3fd0e",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "openai-lowresource-coding-evals",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:6125808e31e3fd0e",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "openai-lowresource-coding-evals",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:6125808e31e3fd0e",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "openai-lowresource-coding-evals",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p7-p6",
+      "block_type": "PARAGRAPH",
+      "text": "摂動 atlas の読み方を具体化する。摂動の報告から atlas を編むという構造は、数百万細胞・32分という規模の記述と一体である。Tsc1／Tsc2・DCTN1 といった遺伝子の言及、700超 vs 11 という対比は班内の測定であり、標本・選択の bias は未評価である。追試（follow-up）の実験は wet-lab を要するが報告はなく、来歴（bioRxiv・HF・GitHub）の公開をもって検証済みにしない。in-loop の位置づけも班内の手順として読む。",
+      "attribution_mode": "ATTRIBUTED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W43:64a0ea7f8bf66edc",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "openai-distributed-bio-agents",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:64a0ea7f8bf66edc",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "openai-distributed-bio-agents",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:64a0ea7f8bf66edc",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "openai-distributed-bio-agents",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p7-p7",
+      "block_type": "PARAGRAPH",
+      "text": "言語別の表の読み方も条件つきである。20言語表は読んだがベンダー測定であり独立確認はない。COBOL の byte-parity 設計＋86.6／97.9 は読んだが hidden 試験は保持されたままである。言語別の表（per-language-tables）と移行 hidden 試験（migration-hidden-tests）、費用の根拠（cost-basis：0.77ドル vs 3.48ドル、独立課金なし）を分けて記し、公開 suite の存在をもって再現の存在としない。we／our の手順記述は第一者の手順として読む。",
+      "attribution_mode": "ATTRIBUTED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W43:6125808e31e3fd0e",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "openai-lowresource-coding-evals",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:6125808e31e3fd0e",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "openai-lowresource-coding-evals",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:6125808e31e3fd0e",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "openai-lowresource-coding-evals",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p7-n1",
+      "block_type": "NOTE",
+      "text": "【読み方の注意】研究班内・盲検・ベンダー測定であり独立再現なし。wet-lab未、標本bias、hidden外部未証。独立評価・wet-lab確認済みと書かない。",
+      "attribution_mode": "ATTRIBUTED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W43:64a0ea7f8bf66edc",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "openai-distributed-bio-agents",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:64a0ea7f8bf66edc",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "openai-distributed-bio-agents",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:64a0ea7f8bf66edc",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "openai-distributed-bio-agents",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:6125808e31e3fd0e",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "openai-lowresource-coding-evals",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:6125808e31e3fd0e",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "openai-lowresource-coding-evals",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:6125808e31e3fd0e",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "openai-lowresource-coding-evals",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "P7-boundaries",
+      "block_type": "CLAIM_BOUNDARY",
+      "text": "この節の読解上の境界: 研究班内・盲検・vendor 測定、wet-lab 未、標本 bias、hidden 外部未証、請求独立未証 / DRAFT MUST NOT: 独立再現・独立評価と書かない／wet-lab 確認済みと書かない / 出典種別: 研究頁・bioRxiv・HF・GitHub・suite=PRIMARY_RAW / 選好・費用=VENDOR_BENCH / wet-lab=UNVERIFIED / Research-team/internal evaluation + blinded preference; no independent reproduction / Wet-lab validation pending; none reported / Dataset/code team-provided; sample/selection bias unassessed / expert-preference-protocol: 75% blinded preference is coauthored protocol with team-estimated comparator; independent expert replication absent. / follow-up-experiment-status: Wet-lab required; none reported. / First-party protocol + vendor tables; no independent harness rerun / Hidden-test design vendor-described; external generalisation unproven / Cost vendor-measured; billing independently unverified / per-language-tables: 20-lang table read; vendor-measured, independent check absent. / migration-hidden-tests: Byte-parity design + 86.6/97.9 read; hidden tests vendor-held. / cost-basis: $0.77 vs $3.48 vendor-measured; independent billing absent.",
+      "attribution_mode": "INFERENCE",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W43:64a0ea7f8bf66edc",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "openai-distributed-bio-agents",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:64a0ea7f8bf66edc",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "openai-distributed-bio-agents",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:64a0ea7f8bf66edc",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-3",
+          "subject_id": "openai-distributed-bio-agents",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:6125808e31e3fd0e",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "openai-lowresource-coding-evals",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:6125808e31e3fd0e",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "openai-lowresource-coding-evals",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:6125808e31e3fd0e",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-3",
+          "subject_id": "openai-lowresource-coding-evals",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    }
+  ],
+  "must_cover_coverage": [
+    {
+      "requirement": "§7.1 Bio(GPT-Rosalind 数千 agent・全脳 CRISPR 数百万細胞 32 分、摂動報告→ atlas、Tsc1/Tsc2・DCTN1、700+ vs 11、盲検 75% 分散選好、bioRxiv/HF/GitHub 来歴、in-loop、wet-lab 未・ZERO 再現) — 表:手順×来歴×限界",
+      "block_ids": [
+        "p7-p2",
+        "p7-t1",
+        "p7-p3",
+        "p7-p4",
+        "p7-t2",
+        "p7-p5",
+        "p7-p6",
+        "p7-p7",
+        "p7-n1",
+        "P7-boundaries"
+      ]
+    },
+    {
+      "requirement": "§7.2 Low-resource(MultiLangBench SQLite 自作 20 言語・DB 共有・参照 SQLite 照合 Astra 87.4 vs Sol 26.8・COBOL 10.9→72.1 等 19/20≧83%、COBOL hidden byte-parity・Sol 86.6% low・97.9% high、suite 公開≠再現、専門家審査、COBOL 40%・Luna $0.77 vs $3.48、we/our 手続き)と費用・hidden の vendor 保持 — 表:bench×分母×条件",
+      "block_ids": [
+        "p7-p2",
+        "p7-t1",
+        "p7-p3",
+        "p7-p4",
+        "p7-t2",
+        "p7-p5",
+        "p7-p6",
+        "p7-p7",
+        "p7-n1",
+        "P7-boundaries"
+      ]
+    },
+    {
+      "requirement": "§7.3 盲検(blinded evaluation)・標本・請求の限界と、来歴の保存",
+      "block_ids": [
+        "p7-p2",
+        "p7-t1",
+        "p7-p3",
+        "p7-p4",
+        "p7-t2",
+        "p7-p5",
+        "p7-p6",
+        "p7-p7",
+        "p7-n1",
+        "P7-boundaries"
+      ]
+    }
+  ],
+  "boundary_dispositions": [
+    {
+      "boundary": "研究班内・盲検・vendor 測定、wet-lab 未、標本 bias、hidden 外部未証、請求独立未証",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P7-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "DRAFT MUST NOT: 独立再現・独立評価と書かない／wet-lab 確認済みと書かない",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P7-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "出典種別: 研究頁・bioRxiv・HF・GitHub・suite=PRIMARY_RAW / 選好・費用=VENDOR_BENCH / wet-lab=UNVERIFIED",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P7-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Research-team/internal evaluation + blinded preference; no independent reproduction",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P7-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Wet-lab validation pending; none reported",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P7-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Dataset/code team-provided; sample/selection bias unassessed",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P7-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "expert-preference-protocol: 75% blinded preference is coauthored protocol with team-estimated comparator; independent expert replication absent.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P7-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "follow-up-experiment-status: Wet-lab required; none reported.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P7-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "First-party protocol + vendor tables; no independent harness rerun",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P7-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Hidden-test design vendor-described; external generalisation unproven",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P7-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Cost vendor-measured; billing independently unverified",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P7-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "per-language-tables: 20-lang table read; vendor-measured, independent check absent.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P7-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "migration-hidden-tests: Byte-parity design + 86.6/97.9 read; hidden tests vendor-held.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P7-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "cost-basis: $0.77 vs $3.48 vendor-measured; independent billing absent.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P7-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    }
+  ],
+  "profile_extensions": {
+    "page_allocation": "4.5",
+    "editorial_note": "手順と分母の表が要。SA-003 増枠。"
+  },
+  "publication_extensions": {}
+}

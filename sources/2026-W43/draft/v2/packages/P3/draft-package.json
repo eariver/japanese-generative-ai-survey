@@ -1,0 +1,2125 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W43",
+  "research_profile": "WEEKLY",
+  "publication_profile": "WEEKLY_MAGAZINE",
+  "package_id": "P3",
+  "basis": {
+    "production_profile_sha256": "4447d25ea73ab76062028e63f91065f80c9b93886a542356c50ae54bfb10b5af",
+    "architecture_sha256": "7d8f0ea5c8600acab5f19c36ed578011fe2af861ea3a445324fc2f081928c302",
+    "architecture_review_summary_sha256": "38c17eccff14e96e16596fc928152d18e67810572cd5e1cd466407def9100b74",
+    "architecture_approval_sha256": "58fbe7a75fbbc48e692d6d318c871c6db2d41ad1fbfc63c024f949e11b16f041",
+    "candidate_matrix_sha256": "16a6bbfe569b3215d05fbae7175b3ca04efc6c1846d28c48662245b68f854c3b",
+    "candidate_selection_sha256": "50decd8697e1737d7adf6fe9f1ac0f4c7cc891353a7be09461b86e8b90beccea",
+    "evidence_acceptance_sha256": "4a5a3feda1a1d3d960684a954550100376b1fda8393b6bb4c262a03ca1b1fcdd"
+  },
+  "package": {
+    "title": "働くエージェント:Duet の権限境界と 1Password・auto-mode の安全",
+    "purpose": "先回りする主体が、人の資格に触れずに働く条件(許可・権限境界、分類器、待機列と制限、安全対策の積層)を問う。",
+    "drafting_order": 3,
+    "primary_candidate_ids": [
+      "candidate:2026-W43:3670fe4328b9fa32"
+    ],
+    "supporting_candidate_ids": [
+      "candidate:2026-W43:673368bcdc8bcd59",
+      "candidate:2026-W43:ac27404fe35327b7"
+    ],
+    "must_cover_requirements": [
+      "§3.1 待機列・US Pro/Max 先行・共有制限・背景消費と、朝の要点・接続監視・表・予報・web 作成・離席継続・要所確認の振舞い — 表:権限×条件",
+      "§3.2 VM・browser、6000+ 目録と実liveの区別[発表/待機/順次公開/GAを別status]、Stripe Link/Shop Pay、1Password coming soon[公開時はliveと書かない]、証券・送金の禁止 — 図:資格の流れ(見ない設計、credential never visible)",
+      "§3.3 安全対策の積層(trustworthy-agents、Managed-Agents の秘匿不保持、分類器承認、browser prompt 注入対策、red-team・外部 pen-test・bounty、CC・gov-ID 分類)と 1Password の承認注入(agent は暗証・OTP を見ない)",
+      "§3.4 auto-mode の Oct22 更新(8/7 OUT)と翌週FUTURE[完了と書かない]・分類器(classifier gating)の未検証 — 表:旧/新/未来の三段[発表/プレビュー/GAを別列]"
+    ],
+    "boundaries": [
+      "接続別 live 未検証、振舞い未再現、1Password coming soon は live に読まない、展開 FUTURE を完了に読まない",
+      "分類器の独立試験なし、料金・権限の範囲外は未検証",
+      "DRAFT MUST NOT: 全 connector live と書かない／1Password 連携済みと書かない／auto-mode 完了と書かない",
+      "出典種別: 告知・blog=PRIMARY_METADATA / 振舞い・安全=VENDOR_BENCH(未再現) / X=SECONDARY",
+      "Duet待機列・US Pro/Max先行・1Password coming soon・auto-mode翌週FUTUREは未完了 — 発表/待機/順次公開/GAを別status、完了と書かない",
+      "Independent behavioural reproduction absent; per-connector live status unvalidated; 6000+ != live",
+      "Pricing/plan limits beyond shared usage unvalidated; auto-mode default via separate X only",
+      "1Password coming soon, not live; credential-boundary behaviour unreproduced",
+      "waitlist-and-plan-limits: Waitlist + US Pro/Max first + shared limits stated; per-plan rollout unvalidated.",
+      "connector-and-payment-integration-status: 6000+ catalogue vs live inventory distinguished; per-connector live + 1Password coming-soon; independent check absent.",
+      "auto-mode-classifier-and-credential-design: Classifier + Managed-Agents (never sees secrets) described; behaviour unreproduced.",
+      "independent-behavioral-repro: No independent Duet behaviour in-window.",
+      "Per-integration live/rolling/coming-soon unvalidated beyond vendor blog",
+      "No independent approval-flow or autofill reproduction",
+      "Plan/partner exceptions partially stated",
+      "per-integration-live-status: Live vs rolling vs coming-soon by connector/plan vendor-stated; independent per-integration check absent.",
+      "platform-and-plan-scope: Platform/plan scope stated with exceptions; independent entitlement check absent.",
+      "trust-model-docs: Approval + no-password/OTP injection described; independent trust-model test absent.",
+      "Platform webpage independent view metadata-only; rollout FUTURE at cutoff",
+      "Classifier/gating behaviour vendor-described; independent test absent",
+      "classifier-gating-spec: Classifier gating described; independent test absent.",
+      "rollout-scope: Most-apps NEXT WEEK future; completed-default claim prohibited; plan/partner exceptions noted."
+    ]
+  },
+  "candidate_matrix": {
+    "schema_version": "2.0-rc1",
+    "issue_id": "2026-W43",
+    "research_profile": "WEEKLY",
+    "basis": {
+      "production_profile_sha256": "4447d25ea73ab76062028e63f91065f80c9b93886a542356c50ae54bfb10b5af",
+      "profile_completeness_sha256": "77841fd29e25d426a76e1c47e611c8026ff3ed5c27cfd89cb3c1307eb8e5da97",
+      "materiality_ledger_sha256": "c4953bc81774082435a3f84159bc58cbc91819709934b6d8d9f72661427aeaae",
+      "evidence_acceptance_sha256": "4a5a3feda1a1d3d960684a954550100376b1fda8393b6bb4c262a03ca1b1fcdd",
+      "edition_views_acceptance_sha256": "5526e06a5b8310db37d9926c81a6776e09b86c7d85e84b4df4524edf9634831b"
+    },
+    "rows": [
+      {
+        "candidate_id": "candidate:2026-W43:98f3617da0de4365",
+        "evidence_task_id": "evidence:2026-W43:0186d12abaa2b682",
+        "discovery_ids": [
+          "w43-primary-kimi-20261023"
+        ],
+        "evidence_sha256": "e791d9cb44603d057b2dc3bb0b8705cd80d65f7e8a93a445f8bf0bb5e2d60eb8",
+        "edition_view_sha256": "1dcc6a24751ecdba784914d7b8958aaf41cec397c45fdf69663a075307325636",
+        "title": "Moonshot Kimi K3.1 Pro",
+        "artifact_type": "MODEL",
+        "evidence_status": "PARTIAL",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 2,
+          "claim_count": 4,
+          "metric_count": 0,
+          "limitation_count": 3,
+          "unresolved_question_count": 3,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Weights unavailable until Nov 4: no local run or hash verification",
+          "2.8T/104B X-only; blog says 3T-class — must not cite blog for 2.8T/104B",
+          "Vendor harnesses/denominators; API pricing != weight-license terms",
+          "weights-release-by-Nov-4: Weights promised Nov 4 FUTURE; not published at observation.",
+          "independent-local-run: No local run before weights; early API/AA vendor-/third-party-reported.",
+          "cyber-removal-scope: Removal described; independent scope unconfirmed."
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Late-window open-weight frontier (X 17:15:24Z IN; blog day-only, weights Nov 4 FUTURE): novelty high with weight-unavailable and harness limits; W43 membership rests on X event, not blog midnight. [CLOCK note; no selection implied.]",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W43:1d7d93a70eeabd2b",
+        "evidence_task_id": "evidence:2026-W43:0574663ab3a2123e",
+        "discovery_ids": [
+          "w43-lead-oracle-revision-20261021"
+        ],
+        "evidence_sha256": "c27f1bda18fddcb0351b550846048119c2fb446bb124e1ca34a070d6b5fe059f",
+        "edition_view_sha256": "597e96a6f3e6e687d1558f822476731c8dd2406b332912eee2ad0217f7495001",
+        "title": "Agent-eval oracle integrity audit (2610.16067v2)",
+        "artifact_type": "PAPER",
+        "evidence_status": "PARTIAL",
+        "materiality": "CONTEXT",
+        "scope_dimensions": [
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 2,
+          "claim_count": 3,
+          "metric_count": 0,
+          "limitation_count": 1,
+          "unresolved_question_count": 1,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Full 29pp body beyond abs+intro unread; v1-to-v2 delta unchecked; paper claims unreproduced here",
+          "v1-v2-substantive-delta: v2 revision verified as event; substantive delta vs v1 unchecked."
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Oracle v1 Oct12 OUT vs v2 Oct21 04:47:46Z IN (261750B): revision event only; 5 invariants + 3 controls + 7 defect classes + 54/57 combos + 4194/2883 + 94.3->65.5% + 24-34pt + 3240-episode ablation read at abs/intro level; full v1->v2 diff (38pp + eval/ablation) NOT line-reviewed; must not promote OUT v1 as W43 discovery. CONTEXT bibliography. [r3 IA-010 UNRESOLVED_DEFERRED_WITH_RATIONALE; no selection implied.]",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W43:55f087dd70eb920c",
+        "evidence_task_id": "evidence:2026-W43:0714ceb7b0ee82be",
+        "discovery_ids": [
+          "w43-r4-grok-x-ledger-20261024"
+        ],
+        "evidence_sha256": "bc1c31b4c086cbafd0e9e5140d3cd7adb21ece642debc40da85249466bb5bccb",
+        "edition_view_sha256": "c1069fd0863030b550e59a66ff0b6f4385f04b609599b13a692baa2dc68817dd",
+        "title": "Grok X weekly intake ledger",
+        "artifact_type": "OTHER",
+        "evidence_status": "PARTIAL",
+        "materiality": "NON_MATERIAL",
+        "scope_dimensions": [
+          "current relevance"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 2,
+          "metric_count": 0,
+          "limitation_count": 3,
+          "unresolved_question_count": 1,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "X observation PARTIAL; most topic claims lack exact post IDs",
+          "Binder NON_MATERIAL NEVER_STORY; Selection body material prohibited",
+          "Source-type inflation prohibited; no authority manipulation",
+          "independent-repro-status: No independent X-claim reproduction; sensor only."
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Audit sensor binder (COMPLETE registration, PARTIAL observation, 2 pinned IDs): NON_MATERIAL NEVER_STORY; projection inflation prohibited. [r3 IA-014 fix; no selection implied.]",
+          "window_relation": "OTHER",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W43:b26dfd2c2e5ac943",
+        "evidence_task_id": "evidence:2026-W43:2223bd7df5bb3a3b",
+        "discovery_ids": [
+          "w43-r2-moss-trainer-20261018"
+        ],
+        "evidence_sha256": "931ad39ed01b47dad35aab0cf41d9d150312515bbd9005559269fdfbfcfd5842",
+        "edition_view_sha256": "cb184ea2ba5a50b9ea87642be59059e16d2a1180a8279965aa878400a987ec05",
+        "title": "KohakuMossTrainer",
+        "artifact_type": "FRAMEWORK",
+        "evidence_status": "PARTIAL",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 2,
+          "claim_count": 2,
+          "metric_count": 0,
+          "limitation_count": 3,
+          "unresolved_question_count": 1,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Third-party implementation; no independent GPU/VRAM rerun",
+          "Custom license; commercial/redistribution terms per license text only",
+          "MOSS Base Oct16 OUT vs trainer Oct18 IN distinguished; API/report events separate",
+          "kernel-and-vram-claims: GRAD_ACC/VRAM/scratch figures author-measured; independent measurement absent."
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Third-party training efficiency report (host-accumulator VRAM path) with custom-license boundary: moderate tooling relevance with author-measurement and license limits. [r3 IA-012 fix; no selection implied.]",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W43:b87e32087dcd83a7",
+        "evidence_task_id": "evidence:2026-W43:29dd9729d8676386",
+        "discovery_ids": [
+          "w43-r2-moss-report-announce-20261019"
+        ],
+        "evidence_sha256": "1c87b4d279661edcd22896f35139554f650efeb1c996a34cb2eba91c8956b052",
+        "edition_view_sha256": "734c3989fd682f8989ce94748c0bf46dceb787c84c4a9ab070e216d408c711b6",
+        "title": "MOSS-Image technical report arXiv announcement",
+        "artifact_type": "PAPER",
+        "evidence_status": "PARTIAL",
+        "materiality": "CONTEXT",
+        "scope_dimensions": [
+          "current relevance"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 2,
+          "metric_count": 0,
+          "limitation_count": 2,
+          "unresolved_question_count": 1,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Report body Oct16 OUT; announcement IN; substantive v1->v2 delta if any unchecked",
+          "Platform availability unproven beyond README line",
+          "report-pdf-body: Body Oct16 OUT; announcement Oct19 IN; new-research promotion prohibited."
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Bibliographic announcement (Oct16 body OUT, Oct19 announce IN): CONTEXT bibliography, never story; event-type split preserved. [r3 IA-013 fix; no selection implied.]",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W43:e4b1869996b82b4a",
+        "evidence_task_id": "evidence:2026-W43:35f6d2e0ae45482d",
+        "discovery_ids": [
+          "w43-primary-github-teams-20261023"
+        ],
+        "evidence_sha256": "764f2e114ddfda40f88abe3e12c052208c1ed8d53f4964b8d63fa0fe8034e864",
+        "edition_view_sha256": "02f2644bf4a74ae62b25129d0b2cd1a8b4bb7f543984098a21b201cf13978d03",
+        "title": "GitHub Copilot in Teams notifications-to-code",
+        "artifact_type": "PRODUCT",
+        "evidence_status": "PARTIAL",
+        "materiality": "CONTEXT",
+        "scope_dimensions": [
+          "current relevance"
+        ],
+        "comparison": {
+          "source_count": 2,
+          "claim_count": 2,
+          "metric_count": 0,
+          "limitation_count": 2,
+          "unresolved_question_count": 1,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Changelog-level only; per-plan rollout unvalidated",
+          "Clock from live JSON-LD diagnostic (21:29:58Z); byte-level supplement binding deferred to r4 supplement (existing src-1 only in rehearsal)",
+          "plan-and-permission-scope: Plan/permission vendor-stated; independent entitlement check absent."
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Teams integration IN 21:29:58Z (30m02s inside cutoff; modified 23:46Z distinct): CONTEXT integration with permission/rollout limits; Metrics lateness not imputed. [CLOCK note; no selection implied.]",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W43:692a004fb38c5539",
+        "evidence_task_id": "evidence:2026-W43:3ef7317714013eb9",
+        "discovery_ids": [
+          "w43-carry-7151fcdc6c3ee392"
+        ],
+        "evidence_sha256": "e21dd226304868290f333fb7dce8fbacad4f5ae08d74e64ebd42446097315277",
+        "edition_view_sha256": "69e874ca52809da828130d6fb5da993392d7e361d4a8f64924b49b637a9e361e",
+        "title": "Claude Code gzip and startup performance",
+        "artifact_type": "PRODUCT",
+        "evidence_status": "PARTIAL",
+        "materiality": "CONTEXT",
+        "scope_dimensions": [
+          "current relevance",
+          "carry-over obligations"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 2,
+          "metric_count": 0,
+          "limitation_count": 1,
+          "unresolved_question_count": 2,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "No causal benchmark; X-HTML unauthenticated; changelog bodies partially read",
+          "independent-causal-benchmark: No causal benchmark located.",
+          "official-changelog-measurement-spec: Measurement spec unvalidated."
+        ],
+        "profile_extensions": {
+          "why_this_issue": "X-only gzip carry, no causal measurement: CONTEXT support signal only. [r3 carry.]",
+          "window_relation": "CARRY_OVER",
+          "carry_over": true
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W43:1fc486ce9ce010e3",
+        "evidence_task_id": "evidence:2026-W43:4502b183faa5cf60",
+        "discovery_ids": [
+          "w43-r2-ambench-v2-20261020"
+        ],
+        "evidence_sha256": "110de8ed2aeb67d46ea3583ab1ee2543f75d8798113e6034e219669bdae2402a",
+        "edition_view_sha256": "ee56e48fd42d3a1c651effc4213dba6d00ad0e3c35863c5eb201dcb8ca383099",
+        "title": "AM-Bench v2 revision",
+        "artifact_type": "PAPER",
+        "evidence_status": "PARTIAL",
+        "materiality": "CONTEXT",
+        "scope_dimensions": [
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 2,
+          "claim_count": 3,
+          "metric_count": 0,
+          "limitation_count": 1,
+          "unresolved_question_count": 1,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Full 38pp body beyond abs+intro unread; v1-to-v2 delta unchecked; findings unreproduced",
+          "v1-v2-substantive-delta: Delta unchecked; v2 treated as revision event only."
+        ],
+        "profile_extensions": {
+          "why_this_issue": "AM-Bench v1 Oct16 21:46:19Z OUT (13m41s before window) vs v2 Oct20 15:40:19Z IN (2379235B): revision event only; taxonomy + 35 scenarios + 7 industries + fraud triangle + 5 threat/7 opportunity + 4Q framework + 10 models 62pp spread read at abs/intro; full v1->v2 diff (29pp + benchmarks/ablation) NOT line-reviewed; must not promote OUT v1. CONTEXT bibliography. [r3 IA-010 UNRESOLVED_DEFERRED_WITH_RATIONALE; no selection implied.]",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W43:d5bceca2dab4af9d",
+        "evidence_task_id": "evidence:2026-W43:46d725d80f715ede",
+        "discovery_ids": [
+          "w43-primary-deepseek-1017-20261017"
+        ],
+        "evidence_sha256": "fc029660efd6e32f5a4048e630752242f6447c3f5c85f1544b0c91984b5cfa10",
+        "edition_view_sha256": "41ac488e5ecd75de7b7b7097820ba6647b015f49ac973e4591c1ec8d52f7fb11",
+        "title": "DeepSeek V4.1-Flash-1017",
+        "artifact_type": "MODEL_UPDATE",
+        "evidence_status": "PARTIAL",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 3,
+          "metric_count": 0,
+          "limitation_count": 1,
+          "unresolved_question_count": 2,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "HF weight SHA and availability unhashed; no independent local run; vendor harness footnotes; billing transition untested",
+          "weight-sha-and-availability: HF repo named but weight bytes/SHA not captured.",
+          "independent-local-run: No independent run in this pass."
+        ],
+        "profile_extensions": {
+          "why_this_issue": "1017 API/model/tooling identity with real API identifiers + weight SHA to be checked: moderate infra relevance with weight-hash verification pending. [r3 carry; no selection implied.]",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W43:4514088790849f9c",
+        "evidence_task_id": "evidence:2026-W43:5ad9cc05a9516cd6",
+        "discovery_ids": [
+          "w43-primary-eleven-20261020"
+        ],
+        "evidence_sha256": "52e5dc3806cbffcbd87dd472743021a0d15f3dd7145112ecf58fab98643b6acf",
+        "edition_view_sha256": "2dd8cf2bad22df6af38b969a2004e8021c639ec120320bcebe8fc44631a2fe16",
+        "title": "ElevenLabs Eleven Realtime v1",
+        "artifact_type": "PRODUCT",
+        "evidence_status": "PARTIAL",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 3,
+          "metric_count": 0,
+          "limitation_count": 1,
+          "unresolved_question_count": 2,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "AA pages unfetched (scores via vendor blog); migration guide unopened; no independent run; protocol compat implies SDK rework",
+          "aa-benchmark-pages: AA numbers via vendor blog only; AA pages unfetched.",
+          "protocol-compat-scope: OpenAI-protocol compat stated; migration guide and WebSocket-only caveat unopened."
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Voice realtime with AA original + protocol/TTFA conditions requested: moderate speech relevance with AA-original gap. [r3 carry; no selection implied.]",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W43:160489b77720f40b",
+        "evidence_task_id": "evidence:2026-W43:6125808e31e3fd0e",
+        "discovery_ids": [
+          "w43-r2-openai-lowresource-20261019"
+        ],
+        "evidence_sha256": "27ed75868ec27c162ef18f80286c2d2d7e32285b21cc0f49ea7677873bd7cf3e",
+        "edition_view_sha256": "2a2ee9f12c2d4729cfbab8e062858907e50849fd07463c39d75228f6cdd9c944",
+        "title": "OpenAI low-resource language coding evaluations",
+        "artifact_type": "BENCHMARK",
+        "evidence_status": "PARTIAL",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 3,
+          "metric_count": 0,
+          "limitation_count": 3,
+          "unresolved_question_count": 3,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "First-party protocol + vendor tables; no independent harness rerun",
+          "Hidden-test design vendor-described; external generalisation unproven",
+          "Cost vendor-measured; billing independently unverified",
+          "per-language-tables: 20-lang table read; vendor-measured, independent check absent.",
+          "migration-hidden-tests: Byte-parity design + 86.6/97.9 read; hidden tests vendor-held.",
+          "cost-basis: $0.77 vs $3.48 vendor-measured; independent billing absent."
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Published first-party evaluation methodology with open suite (MultiLangBench + COBOL parity), not independent eval methodology with hidden-test proof; vendor-measured tables with expert-review caveat. MATERIAL as low-resource evidence with attribution bounded. [r3 IA-008 fix; no selection implied.]",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W43:6c420e98c87871e4",
+        "evidence_task_id": "evidence:2026-W43:64a0ea7f8bf66edc",
+        "discovery_ids": [
+          "w43-r2-openai-bio-20261021"
+        ],
+        "evidence_sha256": "64dc6a2f665acc0da1de53b01c9ea0258a8ffd86b015a0bbdd51baba45ecfae7",
+        "edition_view_sha256": "5acf05ec259d366c3465f3e73bfc6e3c7ecd765cbe7ed755ddf01b7f7aed81de",
+        "title": "OpenAI distributed biological reasoning",
+        "artifact_type": "AGENT",
+        "evidence_status": "PARTIAL",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 3,
+          "metric_count": 0,
+          "limitation_count": 3,
+          "unresolved_question_count": 2,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Research-team/internal evaluation + blinded preference; no independent reproduction",
+          "Wet-lab validation pending; none reported",
+          "Dataset/code team-provided; sample/selection bias unassessed",
+          "expert-preference-protocol: 75% blinded preference is coauthored protocol with team-estimated comparator; independent expert replication absent.",
+          "follow-up-experiment-status: Wet-lab required; none reported."
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Coauthored research-team evaluation protocol with blinded expert preference (75% distributed), not independent technical evaluation or reproduction; wet-lab unvalidated. MATERIAL as science-agents method with attribution bounded. [r3 IA-008 fix; independent repro ZERO; no selection implied.]",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W43:18a859ebb1ef5004",
+        "evidence_task_id": "evidence:2026-W43:67a30ffa2455924c",
+        "discovery_ids": [
+          "w43-primary-voxtral-20261020"
+        ],
+        "evidence_sha256": "6097f256ce94b7288e5a87eebfc657d5a2c1303db493209d9293fd3de8fa4e47",
+        "edition_view_sha256": "a7c26943690f800821b35e5fb700544b02e12c6425d054040b0c3c00433857a5",
+        "title": "Mistral Voxtral 3",
+        "artifact_type": "PRODUCT",
+        "evidence_status": "PARTIAL",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 4,
+          "metric_count": 0,
+          "limitation_count": 1,
+          "unresolved_question_count": 2,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Vendor-run evals with vendor-chosen judge; AA pages unfetched; end-to-end agent repro absent; Le Chonk gap untouched",
+          "transcription-eval-details: Vendor FLEURS/diarization/keyphrase tables read; independent replication absent.",
+          "tts-eval-methodology: Internal-eval design read; judge and sample limits noted; no independent run."
+        ],
+        "profile_extensions": {
+          "why_this_issue": "STT/TTS with eval conditions + CJK metrics: moderate speech relevance with condition gaps. [r3 carry.]",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W43:409f6833c40c6428",
+        "evidence_task_id": "evidence:2026-W43:76da1b3274338d00",
+        "discovery_ids": [
+          "w43-primary-deepinfer-20261020"
+        ],
+        "evidence_sha256": "6e66f7378329892aed7c7a7e22f2bbc7a6f46ec1396c2d6af192e2575de4de53",
+        "edition_view_sha256": "14b0025e2c23db75ac471dc7106018836577c9002a040aaeb87e2199234cf961",
+        "title": "DeepSeek DeepInfer",
+        "artifact_type": "FRAMEWORK",
+        "evidence_status": "PARTIAL",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 4,
+          "claim_count": 4,
+          "metric_count": 0,
+          "limitation_count": 3,
+          "unresolved_question_count": 2,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Vendor lists; no worker inference execution or throughput repro",
+          "Single pinned commit 9bd9cf24; main drift after Oct 21 untracked",
+          "Apache-2.0 per LICENSE bytes; patent/trademark scope not reviewed",
+          "hardware-requirements: SM100/Ascend950 + toolchain stated; independent build not attempted.",
+          "independent-throughput-repro: No independent run; vendor benches only."
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Production inference OSS with exact env-var correction (prefix + default5 + 0-disable) pinned to commit: high operational value; vendor benches unreproduced. [r3 IA-003+IA-012 fix; no selection implied.]",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W43:d278dfe78685d601",
+        "evidence_task_id": "evidence:2026-W43:77109787dd13a833",
+        "discovery_ids": [
+          "w43-primary-decisions-api-20261022"
+        ],
+        "evidence_sha256": "84017e55d0382692f418220cc0a6c1fc4b3bfdaccfd2087d5fd7d3aa50fdc1ed",
+        "edition_view_sha256": "86bb331a0cce6f4cdf22c78a5c0b0b2a009ce5af4a81b0732d8fb34ee2b8f824",
+        "title": "OpenAI Decisions API",
+        "artifact_type": "API",
+        "evidence_status": "PARTIAL",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 2,
+          "claim_count": 3,
+          "metric_count": 0,
+          "limitation_count": 1,
+          "unresolved_question_count": 0,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "10x latency claim vendor-measured, not independently tested; testimonial selection bias unassessed; main product page original HTML not archived (bot-wall; changelog archived instead)"
+        ],
+        "profile_extensions": {
+          "why_this_issue": "GA API with 400-question eval + response-type/GA-limit footnotes: high dev-tooling relevance with vendor-measured eval limits. [r3 carry; no selection implied.]",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W43:02df2773fd2e9fdb",
+        "evidence_task_id": "evidence:2026-W43:7b57cbc37d685ab4",
+        "discovery_ids": [
+          "w43-primary-flux-max-20261019"
+        ],
+        "evidence_sha256": "c9580268955d31e120c8cc1752f9564f02512d9e4d6c444210d013580f8c374e",
+        "edition_view_sha256": "531277636406b2ed77afab829ff392dca5d464f77804392dc6543cdbad8882f6",
+        "title": "fal FLUX 3 Max",
+        "artifact_type": "PRODUCT",
+        "evidence_status": "PARTIAL",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 3,
+          "claim_count": 3,
+          "metric_count": 0,
+          "limitation_count": 3,
+          "unresolved_question_count": 2,
+          "contradiction_count": 1,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Speed multiples vendor-reported contradictory bases; no independent timing",
+          "10.95s PR origin not on current pages (12.45s only); 10.95 bytes not re-archived",
+          "AA Elo vendor-cited; originals unfetched",
+          "aa-arena-snapshot: Elo1139 tied#1 prelim 4868 votes vendor-cited; AA originals unfetched.",
+          "license-and-availability-terms: Pay-go stated; license beyond pricing unvalidated.",
+          "speed-discrepancy-basis: Self-contradiction: 12.45+277.80 !=26.5x/96.2%; PR10.95=25.37x not22x. Preserved."
+        ],
+        "profile_extensions": {
+          "why_this_issue": "High-interest video release with publisher arithmetic contradiction (22x vs 26.5x same inputs): MATERIAL as reader-relevant but fastest-headline prohibited. [r3 IA-005 fix; no selection implied.]",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W43:4cea29268a132917",
+        "evidence_task_id": "evidence:2026-W43:81d172340376c7d1",
+        "discovery_ids": [
+          "w43-r4-flint-20261021"
+        ],
+        "evidence_sha256": "7d652bb40e8a5a5a7deff93a52705a23ea81ef4bf7b296427e9fc416018480c0",
+        "edition_view_sha256": "3bf49b3752c47ff716a065238a090e5cc949ed912310ccdd1392ab16a58f2e70",
+        "title": "Recursive Flint",
+        "artifact_type": "OPEN_WEIGHT",
+        "evidence_status": "PARTIAL",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 3,
+          "claim_count": 3,
+          "metric_count": 0,
+          "limitation_count": 3,
+          "unresolved_question_count": 2,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Vendor benchmarks/tok/s unreproduced; 128K apparatus vendor-described only",
+          "Weight SHA not independently re-hashed; HF API body from r4 reused",
+          "Eureka automation vendor-described; no training reproduction",
+          "benchmark-denominators-and-harnesses: Harnesses/temp/top-p/top-k/attempts documented; independent run absent.",
+          "independent-tokens-per-second-repro: 125+/150+ short-context 128K-avg prefill-excluded vendor-claimed; no independent measurement."
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Strongest local-coding open-weight release (MoE 39.8B/2.5B, 512K capability with 256K guidance, Apple/RTX speed with stated apparatus): high novelty with vendor-measurement limits bounded. [r3 IA-002+IA-009 fix; no selection implied.]",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W43:3670fe4328b9fa32",
+        "evidence_task_id": "evidence:2026-W43:88b6116628d87dd1",
+        "discovery_ids": [
+          "w43-primary-duet-20261021"
+        ],
+        "evidence_sha256": "1e4b1edb6e7a1b429058035c633ffbc2e8341ddde733504583686951535afd8c",
+        "edition_view_sha256": "0501c04ecc123121dcce39f4b4a446a83790201dc2fb56c145496c735501acd9",
+        "title": "Anthropic Claude Duet",
+        "artifact_type": "AGENT",
+        "evidence_status": "PARTIAL",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 5,
+          "metric_count": 0,
+          "limitation_count": 3,
+          "unresolved_question_count": 4,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Independent behavioural reproduction absent; per-connector live status unvalidated; 6000+ != live",
+          "Pricing/plan limits beyond shared usage unvalidated; auto-mode default via separate X only",
+          "1Password coming soon, not live; credential-boundary behaviour unreproduced",
+          "waitlist-and-plan-limits: Waitlist + US Pro/Max first + shared limits stated; per-plan rollout unvalidated.",
+          "connector-and-payment-integration-status: 6000+ catalogue vs live inventory distinguished; per-connector live + 1Password coming-soon; independent check absent.",
+          "auto-mode-classifier-and-credential-design: Classifier + Managed-Agents (never sees secrets) described; behaviour unreproduced.",
+          "independent-behavioral-repro: No independent Duet behaviour in-window."
+        ],
+        "profile_extensions": {
+          "why_this_issue": "First proactive-agent product with explicit permission/credential architecture (Managed-Agents never sees secrets, auto-mode approval) + marketplace distribution: high product novelty with catalogue-vs-live and coming-soon limits bounded. [r3 IA-011 fix; no selection implied.]",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W43:6dea52dc41201570",
+        "evidence_task_id": "evidence:2026-W43:8b3185b608af1c84",
+        "discovery_ids": [
+          "w43-support-vercel-ollama-20261017"
+        ],
+        "evidence_sha256": "d92911df7a1e3e1105e3876a3fa31102a682864749a9fb3dc18b06411bcf81a2",
+        "edition_view_sha256": "debda6642308490ca7f7ddab2bd6985dd4835dc24bc2af92017d629cbcf49199",
+        "title": "Vercel/Ollama/Unsloth distribution",
+        "artifact_type": "PRODUCT",
+        "evidence_status": "PARTIAL",
+        "materiality": "CONTEXT",
+        "scope_dimensions": [
+          "current relevance"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 2,
+          "metric_count": 0,
+          "limitation_count": 2,
+          "unresolved_question_count": 3,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Composite ID vs two event families; single 2026-10-23 event_date insufficient — split legs required",
+          "Version pins (fe4af3f5/69f2be39, 0.1.910-beta), gateway terms, quant provenance unvalidated",
+          "version-pins: Bolb blobs + Unsloth tag stated; full pin matrix unvalidated.",
+          "gateway-changelog: Vercel Oct17 vs Ollama/Unsloth Oct23 changelogs distinct; unified coverage absent.",
+          "quant-build-provenance: Quant builds vendor-listed; independent build absent."
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Distribution trace split Oct17 (Vercel/DeepSeek) vs Oct23 (Bolt/Ollama/Unsloth 15:26:53Z), no unified timestamp: CONTEXT with composite-identity limit. [CLOCK split; no selection implied.]",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W43:b09782ca929b9fa5",
+        "evidence_task_id": "evidence:2026-W43:8c735edcfc5e51f3",
+        "discovery_ids": [
+          "w43-r2-memt-20261019"
+        ],
+        "evidence_sha256": "da89cb38a7bc73f9340f6737b185f4c2f995997ca9b872c41aa9549e9c2683d9",
+        "edition_view_sha256": "585d165f06fd7724cbeec17105a6b37d357881fe54f802eee178f62d5481264d",
+        "title": "MemTensor MemT-1.0",
+        "artifact_type": "MODEL",
+        "evidence_status": "PARTIAL",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 3,
+          "claim_count": 3,
+          "metric_count": 0,
+          "limitation_count": 3,
+          "unresolved_question_count": 2,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "65pp equations/ablations not line-reviewed; author harnesses only",
+          "Weights/data licenses forthcoming; repo software commercial use prohibited per PolyForm",
+          "No independent mechanism repro",
+          "benchmark-denominators: 11 benches 1.86x/66x author-measured; no rerun.",
+          "sglang-serve-config: Snapshots/save-restore described; no serve test."
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Memory-native foundation (MoS, 34B, 1.86x/66x) with license split corrected (paper vs software vs excluded): high novelty with author-measurement limits. [r3 IA-007 fix; no selection implied.]",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W43:ff78deda46feb19e",
+        "evidence_task_id": "evidence:2026-W43:8f41546b23a773ab",
+        "discovery_ids": [
+          "w43-primary-github-deprecation-20261019"
+        ],
+        "evidence_sha256": "e82aa1064f1eb0baab9f467c3d2d5e39fa7edaa86393b9cf84d9c035c17b5c2f",
+        "edition_view_sha256": "cfa8961aa28e29be8b0adb380cf4ee70dc6e63962525ae9b0db247bd82371931",
+        "title": "GitHub Copilot model deprecations",
+        "artifact_type": "PRODUCT",
+        "evidence_status": "PARTIAL",
+        "materiality": "CONTEXT",
+        "scope_dimensions": [
+          "current relevance"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 2,
+          "metric_count": 0,
+          "limitation_count": 1,
+          "unresolved_question_count": 2,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Deprecated model list unpinned; docs/migration bodies unfetched",
+          "deprecated-model-list: List not captured; changelog body unfetched.",
+          "docs-and-migration-path: Docs and migration path unvalidated."
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Model deprecation + migration path (廃止対象 + alternatives): CONTEXT ops hygiene with model-list completion needed. [r3 carry.]",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W43:642c261d5e82c786",
+        "evidence_task_id": "evidence:2026-W43:951626f8f98cc50d",
+        "discovery_ids": [
+          "w43-primary-github-metrics-20261023"
+        ],
+        "evidence_sha256": "44a57ac9dfad98c78506245a509d560220776b9d5c705bd4bf905fa7e333353c",
+        "edition_view_sha256": "3073b9f061bd01654881bf0469c9880347420128247b4f9414434121dc97aa3a",
+        "title": "GitHub Copilot usage metrics API",
+        "artifact_type": "API",
+        "evidence_status": "PARTIAL",
+        "materiality": "NON_MATERIAL",
+        "scope_dimensions": [
+          "current relevance"
+        ],
+        "comparison": {
+          "source_count": 2,
+          "claim_count": 2,
+          "metric_count": 0,
+          "limitation_count": 3,
+          "unresolved_question_count": 2,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Official publication OUT by 1h42m03s; W43 in-window story prohibited; W44 pointer only (no W44 branch created)",
+          "Provisional Discovery 'Fresh in-window lead' superseded downstream; historical Screening MAYBE/low retained immutable, not rewritten",
+          "Vendor API description; no independent API call; client misattribution unknown",
+          "client-identification-limits: Best-effort integration-ID stated; verified identity withheld; no spoof test; OUT status unrelated to client logic.",
+          "report-scope: Scopes stated but event is post-cutoff; in-window scope claim withdrawn; W44 reuse requires new authority."
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Post-cutoff metering publication (23:42:03Z, +1h42m03s after exclusive cutoff): technical facts preserved as PARTIAL Evidence, but excluded from W43 new-event/story; potential next-W44 signal only, not carried as W43 in-window release. Historical provisional IN hypothesis explicitly superseded; immutable Screening MAYBE retained as provenance, not approval. [STEP A forward-only correction; no selection implied.]",
+          "window_relation": "POST_CUTOFF",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W43:ac27404fe35327b7",
+        "evidence_task_id": "evidence:2026-W43:956202d0dbd04246",
+        "discovery_ids": [
+          "w43-primary-automode-20261021"
+        ],
+        "evidence_sha256": "a6559b8ad41d7a9f78615f5bf71c00110024ee1254ac7deb839113962c33a054",
+        "edition_view_sha256": "19542ce9f9fe70a3e3cf60fbad1b7012c0f2db64682fb307eec6d1f2d69ed8a2",
+        "title": "Anthropic auto-mode default",
+        "artifact_type": "PRODUCT",
+        "evidence_status": "PARTIAL",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 2,
+          "claim_count": 2,
+          "metric_count": 0,
+          "limitation_count": 2,
+          "unresolved_question_count": 2,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Platform webpage independent view metadata-only; rollout FUTURE at cutoff",
+          "Classifier/gating behaviour vendor-described; independent test absent",
+          "classifier-gating-spec: Classifier gating described; independent test absent.",
+          "rollout-scope: Most-apps NEXT WEEK future; completed-default claim prohibited; plan/partner exceptions noted."
+        ],
+        "profile_extensions": {
+          "why_this_issue": "In-window update (Aug7 OUT -> Oct22 IN) with future default rollout: process/rollout relevance with FUTURE vs completed distinction. [r3 IA-013 fix; no selection implied.]",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W43:673368bcdc8bcd59",
+        "evidence_task_id": "evidence:2026-W43:972ae1540f70e008",
+        "discovery_ids": [
+          "w43-r2-1password-20261022"
+        ],
+        "evidence_sha256": "d108aa9bb70bf7b79003b09e6c7742b22feb958c9d3f91f79b92a01cd0c95c93",
+        "edition_view_sha256": "2471340a598255d0ab017d3b4a2a6a5a1724566398ef5d6f26f16b9040480051",
+        "title": "1Password for Agents",
+        "artifact_type": "PRODUCT",
+        "evidence_status": "PARTIAL",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 3,
+          "metric_count": 0,
+          "limitation_count": 3,
+          "unresolved_question_count": 3,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Per-integration live/rolling/coming-soon unvalidated beyond vendor blog",
+          "No independent approval-flow or autofill reproduction",
+          "Plan/partner exceptions partially stated",
+          "per-integration-live-status: Live vs rolling vs coming-soon by connector/plan vendor-stated; independent per-integration check absent.",
+          "platform-and-plan-scope: Platform/plan scope stated with exceptions; independent entitlement check absent.",
+          "trust-model-docs: Approval + no-password/OTP injection described; independent trust-model test absent."
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Agent credential plane (approval-gated injection, agent never sees secrets) intersecting Duet distribution: high safety-architecture relevance with live-vs-coming-soon and no-independent-test limits. [r3 IA-011 fix; no selection implied.]",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W43:8f140062cf7044ea",
+        "evidence_task_id": "evidence:2026-W43:a5013a51058f975a",
+        "discovery_ids": [
+          "w43-primary-nemotron-e4b-20261023"
+        ],
+        "evidence_sha256": "ff6f1ac968ddc7c7849adcae740ed44426a553435f20af4b5cd9a7449b5d0278",
+        "edition_view_sha256": "a67db7adb4545ba0973e43bc271efb6792af85af4838f5464f225bf83da23a8d",
+        "title": "NVIDIA Nemotron 3.5 Bolt E4B 4GB",
+        "artifact_type": "OPEN_WEIGHT",
+        "evidence_status": "PARTIAL",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 3,
+          "claim_count": 2,
+          "metric_count": 0,
+          "limitation_count": 3,
+          "unresolved_question_count": 3,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "OpenMDW-1.1 OSI approval must NOT be assumed; license text read, OSI registry unchecked — UNVERIFIED",
+          "Weight/config bytes KYC: card read, raw weight hash not re-hashed",
+          "Benchmarks vendor-measured; independent run absent",
+          "tech-report-pdf: Report provenance bounded; full equations not line-reviewed.",
+          "benchmark-table-provenance: Tables vendor-measured; independent check absent.",
+          "openmdw-osi-status: OSI recognition UNVERIFIED by design; no categorical claim; URL attempted card only."
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Compact MoE IN via page 07:00Z + HF 15:12–19:03Z (not midnight): moderate efficiency relevance with commercial/OSI withheld. [CLOCK note; no selection implied.]",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W43:4aa7ba129fdeec8b",
+        "evidence_task_id": "evidence:2026-W43:aecfbb1186d2a6ec",
+        "discovery_ids": [
+          "w43-r2-ming-20261019"
+        ],
+        "evidence_sha256": "d515548fe002ff0c8456d5f4f80d6f238bcdd4331e3036f51f652fe00e8ff7e3",
+        "edition_view_sha256": "7090b3952c70e6df377b9e289d465e4cd3ba43cc13c3d9ea43b7360c2e2e3c17",
+        "title": "InclusionAI Ming-3.0-tts",
+        "artifact_type": "MODEL",
+        "evidence_status": "PARTIAL",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 3,
+          "claim_count": 3,
+          "metric_count": 0,
+          "limitation_count": 3,
+          "unresolved_question_count": 3,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Publisher-cited AA ranks; original AA pages unfetched; independent arena check absent",
+          "Month-only release dating; day-level unproven",
+          "Vendor benchmark splits; independent TTS eval absent",
+          "exact-first-availability-date: Month-only News vs Oct19 creation; day unproven; creation is IN anchor.",
+          "tech-report: Roadmap pending; no report.",
+          "tts-eval-methodology: README tables + AA ranks read; AA pages unfetched; publisher citation, not independent verification."
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Open TTS with publisher-cited AA ranks (Controlled Voice open-weights #1, Robustness overall #1, Provider Voice open-weights #3), not verified independent #1; full task taxonomy disclosed. MATERIAL with AA-original limitation. [r3 IA-008+IA-012 fix; no selection implied.]",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W43:5d21d93e7679f544",
+        "evidence_task_id": "evidence:2026-W43:bc5b384e48b50605",
+        "discovery_ids": [
+          "w43-primary-patch-planet-20261021"
+        ],
+        "evidence_sha256": "30086caf40af905dec38c675c9cedad8424c8d2153fc1dc0bf50d3920fc2881f",
+        "edition_view_sha256": "3fe7b01e784a4e65ea32903939e2c5094f7c8db2cc560d8c31a7915f0fc5459e",
+        "title": "OpenAI Patch the Planet",
+        "artifact_type": "INTEGRATION",
+        "evidence_status": "PARTIAL",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 2,
+          "claim_count": 3,
+          "metric_count": 0,
+          "limitation_count": 3,
+          "unresolved_question_count": 1,
+          "contradiction_count": 1,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Rendered extraction, not original HTML (bot-wall); labeled RENDERED_TEXT",
+          "Vendor narrative; no independent vuln/patch verification",
+          "CVE absent; must not infer CVE",
+          "coordination-scope: Coordination vendor-described; independent confirmation absent.",
+          "disclosed-cve-proof: Zero CVE- strings; report != CVE proof."
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Coordinated-disclosure case (model-found vuln, maintainer-led fix, 5-stage): high security-process significance with attribution limits and CVE-proof withheld. [r3 IA-006 fix; no selection implied.]",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W43:11123030a87c7b84",
+        "evidence_task_id": "evidence:2026-W43:cea4e497dda757d2",
+        "discovery_ids": [
+          "w43-r2-moss-api-20261020"
+        ],
+        "evidence_sha256": "b8e28115d23da0fcef6763d663414b1e1e75a1ca96aa0ea3896afd207d93ee20",
+        "edition_view_sha256": "5f17058ce55724a32f35a7c4a77fe6133d2a00860e6cc68efb9c55d9348184ce",
+        "title": "MOSS-Image MOSI API availability",
+        "artifact_type": "API",
+        "evidence_status": "PARTIAL",
+        "materiality": "CONTEXT",
+        "scope_dimensions": [
+          "current relevance"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 2,
+          "metric_count": 0,
+          "limitation_count": 2,
+          "unresolved_question_count": 2,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "README line vs live deployment distinguished; independent API call absent",
+          "Terms vendor-stated",
+          "api-terms-and-coverage: Terms stated; independent coverage check absent.",
+          "platform-availability-proof: README line only; live deployment UNVERIFIED."
+        ],
+        "profile_extensions": {
+          "why_this_issue": "API mention (README line) without deployment proof: CONTEXT with live-vs-mention bound. [r3 IA-013 fix; no selection implied.]",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W43:9281a9c6770f46d5",
+        "evidence_task_id": "evidence:2026-W43:e79cd46ed4df7c56",
+        "discovery_ids": [
+          "w43-lead-muse-10m-20261021"
+        ],
+        "evidence_sha256": "390d323f4b980d8ff88783ec78d66e62af92dc9a3d239c70ed6cb4d3c83ce2a6",
+        "edition_view_sha256": "b30ad9f172c58fa65218ae5d1d87a5f98af9653b19751e91086336f7802403af",
+        "title": "Meta Muse adoption and shopping activity",
+        "artifact_type": "PRODUCT",
+        "evidence_status": "PARTIAL",
+        "materiality": "CONTEXT",
+        "scope_dimensions": [
+          "current relevance"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 2,
+          "metric_count": 0,
+          "limitation_count": 1,
+          "unresolved_question_count": 3,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Earnings transcript unread; Sensor Tower methodology unvalidated; spend figures uncorroborated",
+          "earnings-transcript: Transcript not fetched; press summary only.",
+          "sensor-tower-methodology: Estimate cited secondhand; methodology unvalidated.",
+          "spend-figure-basis: No spend figures established."
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Secondary-reported 10M users + shopping activity (secondary-only, no primary books): CONTEXT adoption signal with population/method limits; primary books requested. [r3 carry.]",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W43:20a36d83656e2a4b",
+        "evidence_task_id": "evidence:2026-W43:f35c6ce039a8d355",
+        "discovery_ids": [
+          "w43-primary-tanstack-20261023"
+        ],
+        "evidence_sha256": "8b148cd00f4e2ac1ddfb21fee0e53234c6ab14749d395d3bebcb9298464e0392",
+        "edition_view_sha256": "9a885bf82f62cbb6d04a7843b423d45c74dc4a66792733cab6efd6b50ddf1397",
+        "title": "TanStack AI 1.0",
+        "artifact_type": "FRAMEWORK",
+        "evidence_status": "PARTIAL",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 2,
+          "claim_count": 2,
+          "metric_count": 0,
+          "limitation_count": 2,
+          "unresolved_question_count": 2,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Blog publication clock UNRESOLVED (day-only); product 1.0 availability Oct22 IN via registry/release (separate event)",
+          "Harness experimental boundary; version pins per registry/release",
+          "repo-tag: Blog tag clock unresolved; GH release @tanstack/ai@1.0.0 published 2026-10-22T15:18:14Z IN as product proxy (not blog clock).",
+          "upgrade-guide: Guide vendor-stated; independent migration test absent."
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Stable toolkit with product Oct22 IN but blog clock UNRESOLVED (two distinct events, not conflated): moderate framework relevance with clock gap bounded. [CLOCK note; no selection implied.]",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W43:0851e82f8db3889f",
+        "evidence_task_id": "evidence:2026-W43:f6f8199fe5ebe98f",
+        "discovery_ids": [
+          "w43-primary-openai-cloud-20261021"
+        ],
+        "evidence_sha256": "56585e4248f8b0e3cdc3d232866383a2d8ef76465c82f171d65885c670430fc9",
+        "edition_view_sha256": "921728833ebbbfe8b63826bd38032826e12f17c30c94d7269ffeecba6eae4c15",
+        "title": "OpenAI models on Google Cloud",
+        "artifact_type": "INTEGRATION",
+        "evidence_status": "PARTIAL",
+        "materiality": "CONTEXT",
+        "scope_dimensions": [
+          "current relevance"
+        ],
+        "comparison": {
+          "source_count": 2,
+          "claim_count": 3,
+          "metric_count": 0,
+          "limitation_count": 3,
+          "unresolved_question_count": 2,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Vendor distribution claims; no independent GA verification; OpenAI-side page unopened",
+          "Date precision calendar-date only (JSON-LD Oct 21 vs displayed Oct 22); no midnight timestamp asserted",
+          "Enterprise rollout scope and rate limits partially stated; per-region terms unvalidated",
+          "model-and-rate-limits: Astra/Sol/Luna preview via Model Garden stated; rate limits/billing partially stated, per-plan rollout unvalidated.",
+          "data-residency-terms: Perimeters/prompts-never-training stated; ZDR/Confidential Compute coming soon, not live; independent audit absent."
+        ],
+        "profile_extensions": {
+          "why_this_issue": "In-window distribution of frontier OpenAI models via Google Cloud private preview (not a new model): enterprise availability signal with preview/coming-soon limits explicitly bounded; CONTEXT because capability novelty is distribution, not model. [r3 IA-001 fix; no selection implied.]",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W43:eb7312062a02d1c3",
+        "evidence_task_id": "evidence:2026-W43:ffb39177c31de9ea",
+        "discovery_ids": [
+          "w43-r2-openai-securing-20261023"
+        ],
+        "evidence_sha256": "3e5d0d224bde184986e50b63e668e06a67301be56d9d11675fe5711e7b6efa40",
+        "edition_view_sha256": "8fa943b8511e3e0ad2dc691288cc0530a13345009883c94bf30826381f6124c2",
+        "title": "OpenAI frontier training containment and red-teaming",
+        "artifact_type": "SECURITY_EVENT",
+        "evidence_status": "PARTIAL",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 2,
+          "claim_count": 2,
+          "metric_count": 0,
+          "limitation_count": 2,
+          "unresolved_question_count": 4,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Page clock day-only (no metadata time); 10:00Z rests on official RSS (secondary, not page proof)",
+          "Vendor-described containment/red-team; independent verification absent",
+          "cve-patch-provenance: Patch/CVE scope vendor-described; independent confirmation absent.",
+          "incident-scope: Sep 20 DNS + RL resume vendor-described; third-party corroboration absent.",
+          "red-team-conditions: Red-team scale/conditions vendor-described; independent reproduction absent.",
+          "monitoring-and-stopping-controls: Controls vendor-stated; independent test absent."
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Frontier containment with page day-only + RSS 10:00Z IN-caveat (strict page-primary rule = UNRESOLVED): high safety relevance with hour-provenance explicitly sourced, not blind page-clock. [CLOCK note; no selection implied.]",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      }
+    ],
+    "summary": {
+      "candidate_count": 32,
+      "materiality_counts": {
+        "CONTEXT": 10,
+        "MATERIAL": 20,
+        "NON_MATERIAL": 2
+      },
+      "evidence_status_counts": {
+        "PARTIAL": 32
+      }
+    }
+  },
+  "evidence_acceptance": {
+    "schema_version": "2.0-rc1",
+    "issue_id": "2026-W43",
+    "research_profile": "WEEKLY",
+    "result_set_sha256": "fb6e5900b09ee77453aeaaf904d76fb56091fc977d61f82e4154e6f3787cf72b",
+    "package_sha256": "8c5bebb5730218165ce2572627116ef08dc68689c315f11e3eeae0437c321b6f",
+    "screening_acceptance_sha256": "566cde3bd287dffb38d705c4b6c3fec71a98f67dea96016a009bd929923be48a",
+    "result_count": 32,
+    "results": [
+      {
+        "evidence_task_id": "evidence:2026-W43:0186d12abaa2b682",
+        "discovery_ids": [
+          "w43-primary-kimi-20261023"
+        ],
+        "sha256": "e791d9cb44603d057b2dc3bb0b8705cd80d65f7e8a93a445f8bf0bb5e2d60eb8",
+        "status": "PARTIAL",
+        "filename": "task-98f3617da0de43652fcd.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W43:0574663ab3a2123e",
+        "discovery_ids": [
+          "w43-lead-oracle-revision-20261021"
+        ],
+        "sha256": "c27f1bda18fddcb0351b550846048119c2fb446bb124e1ca34a070d6b5fe059f",
+        "status": "PARTIAL",
+        "filename": "task-1d7d93a70eeabd2b1c4e.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W43:0714ceb7b0ee82be",
+        "discovery_ids": [
+          "w43-r4-grok-x-ledger-20261024"
+        ],
+        "sha256": "bc1c31b4c086cbafd0e9e5140d3cd7adb21ece642debc40da85249466bb5bccb",
+        "status": "PARTIAL",
+        "filename": "task-55f087dd70eb920ce6d4.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W43:2223bd7df5bb3a3b",
+        "discovery_ids": [
+          "w43-r2-moss-trainer-20261018"
+        ],
+        "sha256": "931ad39ed01b47dad35aab0cf41d9d150312515bbd9005559269fdfbfcfd5842",
+        "status": "PARTIAL",
+        "filename": "task-b26dfd2c2e5ac943e476.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W43:29dd9729d8676386",
+        "discovery_ids": [
+          "w43-r2-moss-report-announce-20261019"
+        ],
+        "sha256": "1c87b4d279661edcd22896f35139554f650efeb1c996a34cb2eba91c8956b052",
+        "status": "PARTIAL",
+        "filename": "task-b87e32087dcd83a7c46c.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W43:35f6d2e0ae45482d",
+        "discovery_ids": [
+          "w43-primary-github-teams-20261023"
+        ],
+        "sha256": "764f2e114ddfda40f88abe3e12c052208c1ed8d53f4964b8d63fa0fe8034e864",
+        "status": "PARTIAL",
+        "filename": "task-e4b1869996b82b4aac60.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W43:3ef7317714013eb9",
+        "discovery_ids": [
+          "w43-carry-7151fcdc6c3ee392"
+        ],
+        "sha256": "e21dd226304868290f333fb7dce8fbacad4f5ae08d74e64ebd42446097315277",
+        "status": "PARTIAL",
+        "filename": "task-692a004fb38c5539d8da.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W43:4502b183faa5cf60",
+        "discovery_ids": [
+          "w43-r2-ambench-v2-20261020"
+        ],
+        "sha256": "110de8ed2aeb67d46ea3583ab1ee2543f75d8798113e6034e219669bdae2402a",
+        "status": "PARTIAL",
+        "filename": "task-1fc486ce9ce010e398e9.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W43:46d725d80f715ede",
+        "discovery_ids": [
+          "w43-primary-deepseek-1017-20261017"
+        ],
+        "sha256": "fc029660efd6e32f5a4048e630752242f6447c3f5c85f1544b0c91984b5cfa10",
+        "status": "PARTIAL",
+        "filename": "task-d5bceca2dab4af9d685b.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W43:5ad9cc05a9516cd6",
+        "discovery_ids": [
+          "w43-primary-eleven-20261020"
+        ],
+        "sha256": "52e5dc3806cbffcbd87dd472743021a0d15f3dd7145112ecf58fab98643b6acf",
+        "status": "PARTIAL",
+        "filename": "task-4514088790849f9ca699.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W43:6125808e31e3fd0e",
+        "discovery_ids": [
+          "w43-r2-openai-lowresource-20261019"
+        ],
+        "sha256": "27ed75868ec27c162ef18f80286c2d2d7e32285b21cc0f49ea7677873bd7cf3e",
+        "status": "PARTIAL",
+        "filename": "task-160489b77720f40bd1e1.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W43:64a0ea7f8bf66edc",
+        "discovery_ids": [
+          "w43-r2-openai-bio-20261021"
+        ],
+        "sha256": "64dc6a2f665acc0da1de53b01c9ea0258a8ffd86b015a0bbdd51baba45ecfae7",
+        "status": "PARTIAL",
+        "filename": "task-6c420e98c87871e4a2a0.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W43:67a30ffa2455924c",
+        "discovery_ids": [
+          "w43-primary-voxtral-20261020"
+        ],
+        "sha256": "6097f256ce94b7288e5a87eebfc657d5a2c1303db493209d9293fd3de8fa4e47",
+        "status": "PARTIAL",
+        "filename": "task-18a859ebb1ef50040078.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W43:76da1b3274338d00",
+        "discovery_ids": [
+          "w43-primary-deepinfer-20261020"
+        ],
+        "sha256": "6e66f7378329892aed7c7a7e22f2bbc7a6f46ec1396c2d6af192e2575de4de53",
+        "status": "PARTIAL",
+        "filename": "task-409f6833c40c6428a43e.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W43:77109787dd13a833",
+        "discovery_ids": [
+          "w43-primary-decisions-api-20261022"
+        ],
+        "sha256": "84017e55d0382692f418220cc0a6c1fc4b3bfdaccfd2087d5fd7d3aa50fdc1ed",
+        "status": "PARTIAL",
+        "filename": "task-d278dfe78685d601d67a.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W43:7b57cbc37d685ab4",
+        "discovery_ids": [
+          "w43-primary-flux-max-20261019"
+        ],
+        "sha256": "c9580268955d31e120c8cc1752f9564f02512d9e4d6c444210d013580f8c374e",
+        "status": "PARTIAL",
+        "filename": "task-02df2773fd2e9fdb1cd5.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W43:81d172340376c7d1",
+        "discovery_ids": [
+          "w43-r4-flint-20261021"
+        ],
+        "sha256": "7d652bb40e8a5a5a7deff93a52705a23ea81ef4bf7b296427e9fc416018480c0",
+        "status": "PARTIAL",
+        "filename": "task-4cea29268a1329179dac.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W43:88b6116628d87dd1",
+        "discovery_ids": [
+          "w43-primary-duet-20261021"
+        ],
+        "sha256": "1e4b1edb6e7a1b429058035c633ffbc2e8341ddde733504583686951535afd8c",
+        "status": "PARTIAL",
+        "filename": "task-3670fe4328b9fa322a0b.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W43:8b3185b608af1c84",
+        "discovery_ids": [
+          "w43-support-vercel-ollama-20261017"
+        ],
+        "sha256": "d92911df7a1e3e1105e3876a3fa31102a682864749a9fb3dc18b06411bcf81a2",
+        "status": "PARTIAL",
+        "filename": "task-6dea52dc4120157072fb.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W43:8c735edcfc5e51f3",
+        "discovery_ids": [
+          "w43-r2-memt-20261019"
+        ],
+        "sha256": "da89cb38a7bc73f9340f6737b185f4c2f995997ca9b872c41aa9549e9c2683d9",
+        "status": "PARTIAL",
+        "filename": "task-b09782ca929b9fa55af1.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W43:8f41546b23a773ab",
+        "discovery_ids": [
+          "w43-primary-github-deprecation-20261019"
+        ],
+        "sha256": "e82aa1064f1eb0baab9f467c3d2d5e39fa7edaa86393b9cf84d9c035c17b5c2f",
+        "status": "PARTIAL",
+        "filename": "task-ff78deda46feb19e843c.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W43:951626f8f98cc50d",
+        "discovery_ids": [
+          "w43-primary-github-metrics-20261023"
+        ],
+        "sha256": "44a57ac9dfad98c78506245a509d560220776b9d5c705bd4bf905fa7e333353c",
+        "status": "PARTIAL",
+        "filename": "task-642c261d5e82c786ecf6.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W43:956202d0dbd04246",
+        "discovery_ids": [
+          "w43-primary-automode-20261021"
+        ],
+        "sha256": "a6559b8ad41d7a9f78615f5bf71c00110024ee1254ac7deb839113962c33a054",
+        "status": "PARTIAL",
+        "filename": "task-ac27404fe35327b74df9.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W43:972ae1540f70e008",
+        "discovery_ids": [
+          "w43-r2-1password-20261022"
+        ],
+        "sha256": "d108aa9bb70bf7b79003b09e6c7742b22feb958c9d3f91f79b92a01cd0c95c93",
+        "status": "PARTIAL",
+        "filename": "task-673368bcdc8bcd59d611.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W43:a5013a51058f975a",
+        "discovery_ids": [
+          "w43-primary-nemotron-e4b-20261023"
+        ],
+        "sha256": "ff6f1ac968ddc7c7849adcae740ed44426a553435f20af4b5cd9a7449b5d0278",
+        "status": "PARTIAL",
+        "filename": "task-8f140062cf7044ea898a.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W43:aecfbb1186d2a6ec",
+        "discovery_ids": [
+          "w43-r2-ming-20261019"
+        ],
+        "sha256": "d515548fe002ff0c8456d5f4f80d6f238bcdd4331e3036f51f652fe00e8ff7e3",
+        "status": "PARTIAL",
+        "filename": "task-4aa7ba129fdeec8b2555.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W43:bc5b384e48b50605",
+        "discovery_ids": [
+          "w43-primary-patch-planet-20261021"
+        ],
+        "sha256": "30086caf40af905dec38c675c9cedad8424c8d2153fc1dc0bf50d3920fc2881f",
+        "status": "PARTIAL",
+        "filename": "task-5d21d93e7679f5441b8a.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W43:cea4e497dda757d2",
+        "discovery_ids": [
+          "w43-r2-moss-api-20261020"
+        ],
+        "sha256": "b8e28115d23da0fcef6763d663414b1e1e75a1ca96aa0ea3896afd207d93ee20",
+        "status": "PARTIAL",
+        "filename": "task-11123030a87c7b84c6d2.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W43:e79cd46ed4df7c56",
+        "discovery_ids": [
+          "w43-lead-muse-10m-20261021"
+        ],
+        "sha256": "390d323f4b980d8ff88783ec78d66e62af92dc9a3d239c70ed6cb4d3c83ce2a6",
+        "status": "PARTIAL",
+        "filename": "task-9281a9c6770f46d57c0f.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W43:f35c6ce039a8d355",
+        "discovery_ids": [
+          "w43-primary-tanstack-20261023"
+        ],
+        "sha256": "8b148cd00f4e2ac1ddfb21fee0e53234c6ab14749d395d3bebcb9298464e0392",
+        "status": "PARTIAL",
+        "filename": "task-20a36d83656e2a4bc1b4.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W43:f6f8199fe5ebe98f",
+        "discovery_ids": [
+          "w43-primary-openai-cloud-20261021"
+        ],
+        "sha256": "56585e4248f8b0e3cdc3d232866383a2d8ef76465c82f171d65885c670430fc9",
+        "status": "PARTIAL",
+        "filename": "task-0851e82f8db3889fc465.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W43:ffb39177c31de9ea",
+        "discovery_ids": [
+          "w43-r2-openai-securing-20261023"
+        ],
+        "sha256": "3e5d0d224bde184986e50b63e668e06a67301be56d9d11675fe5711e7b6efa40",
+        "status": "PARTIAL",
+        "filename": "task-eb7312062a02d1c37826.json"
+      }
+    ]
+  },
+  "evidence_inputs": [
+    {
+      "candidate_id": "candidate:2026-W43:3670fe4328b9fa32",
+      "architecture_usage": "PRIMARY",
+      "evidence_task_id": "evidence:2026-W43:88b6116628d87dd1",
+      "evidence_sha256": "1e4b1edb6e7a1b429058035c633ffbc2e8341ddde733504583686951535afd8c",
+      "evidence_card": {
+        "schema_version": "2.0-rc1",
+        "issue_id": "2026-W43",
+        "evidence_task_id": "evidence:2026-W43:88b6116628d87dd1",
+        "basis": {
+          "task_sha256": "ff00054144a9274e1f7b70e793ab4462158bc09b03996bdf12b9846a75e43738",
+          "screening_acceptance_sha256": "566cde3bd287dffb38d705c4b6c3fec71a98f67dea96016a009bd929923be48a",
+          "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+          "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+        },
+        "status": "PARTIAL",
+        "entities": [
+          {
+            "entity_id": "duet",
+            "canonical_name": "Anthropic Claude Duet",
+            "entity_type": "AGENT",
+            "organization": "Anthropic",
+            "canonical_url": "https://claude.com/resources/articles/claude-duet"
+          }
+        ],
+        "artifact": {
+          "primary_subject_id": "duet",
+          "artifact_type": "AGENT",
+          "canonical_name": "Anthropic Claude Duet",
+          "canonical_url": "https://claude.com/resources/articles/claude-duet"
+        },
+        "temporal": {
+          "observed_at": "2026-10-25T05:00:00Z",
+          "events": [
+            {
+              "event_id": "event-1",
+              "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+              "event_date": "2026-10-21",
+              "subject_id": "duet",
+              "subject_role": "PRIMARY_SUBJECT",
+              "source_ids": [
+                "src-1"
+              ]
+            }
+          ]
+        },
+        "sources": [
+          {
+            "source_id": "src-1",
+            "url": "primary:claude.com/resources/articles/claude-duet",
+            "source_class": "PRIMARY_OFFICIAL",
+            "title": "Anthropic Claude Duet proactive agent (Oct 21)",
+            "published_at": "2026-10-21",
+            "accessed_at": "2026-10-25T05:00:00Z",
+            "role": "Discovery-bounded source used for factual verification"
+          }
+        ],
+        "claims": [
+          {
+            "statement_id": "claim-1",
+            "text": "Research preview by waitlist, US Pro/Max subscribers first, sharing existing plan limits; background checks consume plan limits, larger tasks cost more turns. Rolling/waitlist status vendor-stated; per-plan rollout unvalidated.",
+            "subject_id": "duet",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "VENDOR_CLAIM",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": "Announcement Oct21; waitlist + plan-limits sections"
+          },
+          {
+            "statement_id": "claim-2",
+            "text": "Proactive agent on Opus 5.5: morning brief, monitors connected apps, scheduling/dashboard/forecast/web-app tasks, keeps working when away, checks before key actions. Behaviour vendor-described; independent repro absent.",
+            "subject_id": "duet",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "VENDOR_CLAIM",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": "Announcement agent section"
+          },
+          {
+            "statement_id": "claim-3",
+            "text": "Runs in VM with own browser; 6000+ Marketplace connectors (Gmail/Slack, QuickBooks/Stripe, Gusto, LinkedIn, Docusign, HubSpot, Canva, Shopify) is CATALOGUE count, NOT individually live inventory — live per-connector status unvalidated; Stripe Link virtual card + Shop Pay; 1Password sign-in coming soon (NOT live); securities trading + money movement off-limits even with approval.",
+            "subject_id": "duet",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "VENDOR_CLAIM",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": "Marketplace + payment + 1Password sections; catalogue vs live distinguished per IA-011"
+          },
+          {
+            "statement_id": "claim-4",
+            "text": "Safety stack: trustworthy-agents framework, Managed-Agents credential design (never sees passwords/tokens), auto-mode classifier approval, browser-use prompt-injection defences, red-team + external pen-test + bug bounty, dedicated CC/gov-ID blocking classifier. Vendor-described; behaviour unreproduced.",
+            "subject_id": "duet",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "VENDOR_CLAIM",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": "Safety sections"
+          },
+          {
+            "statement_id": "claim-5",
+            "text": "Work-first limits: personal errands weaker, cannot show browser yet; standalone app separate from main Claude app.",
+            "subject_id": "duet",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "VENDOR_CLAIM",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": "Limits section"
+          }
+        ],
+        "metrics": [],
+        "limitations": [
+          {
+            "statement_id": "limitation-1",
+            "text": "Independent behavioural reproduction absent; per-connector live status unvalidated; 6000+ != live",
+            "subject_id": "duet",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": "Evidence boundary retained for downstream editorial use."
+          },
+          {
+            "statement_id": "limitation-2",
+            "text": "Pricing/plan limits beyond shared usage unvalidated; auto-mode default via separate X only",
+            "subject_id": "duet",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": "Evidence boundary retained for downstream editorial use."
+          },
+          {
+            "statement_id": "limitation-3",
+            "text": "1Password coming soon, not live; credential-boundary behaviour unreproduced",
+            "subject_id": "duet",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": "Evidence boundary retained for downstream editorial use."
+          }
+        ],
+        "verification": {
+          "targets": [
+            {
+              "target": "waitlist-and-plan-limits",
+              "status": "UNRESOLVED",
+              "finding": "Waitlist + US Pro/Max first + shared limits stated; per-plan rollout unvalidated.",
+              "subject_ids": [
+                "duet"
+              ],
+              "source_ids": [
+                "src-1"
+              ]
+            },
+            {
+              "target": "connector-and-payment-integration-status",
+              "status": "UNRESOLVED",
+              "finding": "6000+ catalogue vs live inventory distinguished; per-connector live + 1Password coming-soon; independent check absent.",
+              "subject_ids": [
+                "duet"
+              ],
+              "source_ids": [
+                "src-1"
+              ]
+            },
+            {
+              "target": "auto-mode-classifier-and-credential-design",
+              "status": "UNRESOLVED",
+              "finding": "Classifier + Managed-Agents (never sees secrets) described; behaviour unreproduced.",
+              "subject_ids": [
+                "duet"
+              ],
+              "source_ids": [
+                "src-1"
+              ]
+            },
+            {
+              "target": "independent-behavioral-repro",
+              "status": "UNRESOLVED",
+              "finding": "No independent Duet behaviour in-window.",
+              "subject_ids": [
+                "duet"
+              ],
+              "source_ids": [
+                "src-1"
+              ]
+            }
+          ],
+          "unresolved_questions": [
+            "waitlist-and-plan-limits: Waitlist + US Pro/Max first + shared limits stated; per-plan rollout unvalidated.",
+            "connector-and-payment-integration-status: 6000+ catalogue vs live inventory distinguished; per-connector live + 1Password coming-soon; independent check absent.",
+            "auto-mode-classifier-and-credential-design: Classifier + Managed-Agents (never sees secrets) described; behaviour unreproduced.",
+            "independent-behavioral-repro: No independent Duet behaviour in-window."
+          ],
+          "contradictions": []
+        }
+      }
+    },
+    {
+      "candidate_id": "candidate:2026-W43:673368bcdc8bcd59",
+      "architecture_usage": "SUPPORTING",
+      "evidence_task_id": "evidence:2026-W43:972ae1540f70e008",
+      "evidence_sha256": "d108aa9bb70bf7b79003b09e6c7742b22feb958c9d3f91f79b92a01cd0c95c93",
+      "evidence_card": {
+        "schema_version": "2.0-rc1",
+        "issue_id": "2026-W43",
+        "evidence_task_id": "evidence:2026-W43:972ae1540f70e008",
+        "basis": {
+          "task_sha256": "b9e5d6783d883cd8edb3d4ead4395e459a9ecd9573716a073273ade490d06ae7",
+          "screening_acceptance_sha256": "566cde3bd287dffb38d705c4b6c3fec71a98f67dea96016a009bd929923be48a",
+          "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+          "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+        },
+        "status": "PARTIAL",
+        "entities": [
+          {
+            "entity_id": "onepassword-for-agents",
+            "canonical_name": "1Password for Agents",
+            "entity_type": "PRODUCT",
+            "organization": "1Password",
+            "canonical_url": "https://1password.com/blog/1password-for-ai-agents"
+          }
+        ],
+        "artifact": {
+          "primary_subject_id": "onepassword-for-agents",
+          "artifact_type": "PRODUCT",
+          "canonical_name": "1Password for Agents",
+          "canonical_url": "https://1password.com/blog/1password-for-ai-agents"
+        },
+        "temporal": {
+          "observed_at": "2026-10-25T05:00:00Z",
+          "events": [
+            {
+              "event_id": "event-1",
+              "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+              "event_date": "2026-10-22",
+              "subject_id": "onepassword-for-agents",
+              "subject_role": "PRIMARY_SUBJECT",
+              "source_ids": [
+                "src-1"
+              ]
+            }
+          ]
+        },
+        "sources": [
+          {
+            "source_id": "src-1",
+            "url": "primary:1password.com/blog/1password-for-ai-agents",
+            "source_class": "PRIMARY_OFFICIAL",
+            "title": "1Password for Agents trust layer (Oct 22)",
+            "published_at": "2026-10-22",
+            "accessed_at": "2026-10-25T05:00:00Z",
+            "role": "Discovery-bounded source used for factual verification"
+          }
+        ],
+        "claims": [
+          {
+            "statement_id": "claim-1",
+            "text": "1Password for AI agents: approval-gated credential handoff + autofill promises; agent sees no password/OTP (vaulted injection). Exact per-integration live vs rolling vs coming-soon must be distinguished; all-connectors-live must NOT be inferred. Plan/integration scope vendor-stated.",
+            "subject_id": "onepassword-for-agents",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "VENDOR_CLAIM",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": "1Password blog Oct22; approval + no-secrets sections"
+          },
+          {
+            "statement_id": "claim-2",
+            "text": "Platform/plan scope: Pro/Max/Team availability with partner exceptions; credential injection boundary vs agent-visible secrets; independent functional test absent.",
+            "subject_id": "onepassword-for-agents",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "VENDOR_CLAIM",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": "Platform/plan sections"
+          },
+          {
+            "statement_id": "claim-3",
+            "text": "Complements Duet Managed-Agents plane (Duet 1Password coming soon); cross-story live-status conflation prohibited.",
+            "subject_id": "onepassword-for-agents",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": "Duet + 1Password cross-read"
+          }
+        ],
+        "metrics": [],
+        "limitations": [
+          {
+            "statement_id": "limitation-1",
+            "text": "Per-integration live/rolling/coming-soon unvalidated beyond vendor blog",
+            "subject_id": "onepassword-for-agents",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": "Evidence boundary retained for downstream editorial use."
+          },
+          {
+            "statement_id": "limitation-2",
+            "text": "No independent approval-flow or autofill reproduction",
+            "subject_id": "onepassword-for-agents",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": "Evidence boundary retained for downstream editorial use."
+          },
+          {
+            "statement_id": "limitation-3",
+            "text": "Plan/partner exceptions partially stated",
+            "subject_id": "onepassword-for-agents",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": "Evidence boundary retained for downstream editorial use."
+          }
+        ],
+        "verification": {
+          "targets": [
+            {
+              "target": "per-integration-live-status",
+              "status": "UNRESOLVED",
+              "finding": "Live vs rolling vs coming-soon by connector/plan vendor-stated; independent per-integration check absent.",
+              "subject_ids": [
+                "onepassword-for-agents"
+              ],
+              "source_ids": [
+                "src-1"
+              ]
+            },
+            {
+              "target": "platform-and-plan-scope",
+              "status": "UNRESOLVED",
+              "finding": "Platform/plan scope stated with exceptions; independent entitlement check absent.",
+              "subject_ids": [
+                "onepassword-for-agents"
+              ],
+              "source_ids": [
+                "src-1"
+              ]
+            },
+            {
+              "target": "trust-model-docs",
+              "status": "UNRESOLVED",
+              "finding": "Approval + no-password/OTP injection described; independent trust-model test absent.",
+              "subject_ids": [
+                "onepassword-for-agents"
+              ],
+              "source_ids": [
+                "src-1"
+              ]
+            }
+          ],
+          "unresolved_questions": [
+            "per-integration-live-status: Live vs rolling vs coming-soon by connector/plan vendor-stated; independent per-integration check absent.",
+            "platform-and-plan-scope: Platform/plan scope stated with exceptions; independent entitlement check absent.",
+            "trust-model-docs: Approval + no-password/OTP injection described; independent trust-model test absent."
+          ],
+          "contradictions": []
+        }
+      }
+    },
+    {
+      "candidate_id": "candidate:2026-W43:ac27404fe35327b7",
+      "architecture_usage": "SUPPORTING",
+      "evidence_task_id": "evidence:2026-W43:956202d0dbd04246",
+      "evidence_sha256": "a6559b8ad41d7a9f78615f5bf71c00110024ee1254ac7deb839113962c33a054",
+      "evidence_card": {
+        "schema_version": "2.0-rc1",
+        "issue_id": "2026-W43",
+        "evidence_task_id": "evidence:2026-W43:956202d0dbd04246",
+        "basis": {
+          "task_sha256": "db16cfde1f73178b36f0f539d03b0dcfe9181b1223442ae594a9e5f2bb7ed9a2",
+          "screening_acceptance_sha256": "566cde3bd287dffb38d705c4b6c3fec71a98f67dea96016a009bd929923be48a",
+          "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+          "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+        },
+        "status": "PARTIAL",
+        "entities": [
+          {
+            "entity_id": "claude-auto-mode",
+            "canonical_name": "Anthropic auto-mode default",
+            "entity_type": "PRODUCT",
+            "organization": "Anthropic",
+            "canonical_url": "x-official:claudeai/status/2113360845409583307"
+          }
+        ],
+        "artifact": {
+          "primary_subject_id": "claude-auto-mode",
+          "artifact_type": "PRODUCT",
+          "canonical_name": "Anthropic auto-mode default",
+          "canonical_url": "x-official:claudeai/status/2113360845409583307"
+        },
+        "temporal": {
+          "observed_at": "2026-10-25T05:00:00Z",
+          "events": [
+            {
+              "event_id": "event-1",
+              "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+              "event_date": "2026-10-21",
+              "subject_id": "claude-auto-mode",
+              "subject_role": "PRIMARY_SUBJECT",
+              "source_ids": [
+                "src-1"
+              ]
+            }
+          ]
+        },
+        "sources": [
+          {
+            "source_id": "src-1",
+            "url": "x-official:claudeai/status/2113360845409583307",
+            "source_class": "SOCIAL",
+            "title": "Anthropic auto-mode default next week (Oct 21 X)",
+            "published_at": "2026-10-21",
+            "accessed_at": "2026-10-25T05:00:00Z",
+            "role": "Discovery-bounded source used for factual verification"
+          },
+          {
+            "source_id": "supplement-src-6f18c05b01b43f45",
+            "url": "https://claude.com/resources/articles/auto-mode-default-in-claude-code",
+            "source_class": "PRIMARY_OFFICIAL",
+            "title": "Auto mode is now the default in Claude Code for Pro, Max, and Team plans (Oct 22, 2026 update; original Aug 7, 2026)",
+            "published_at": null,
+            "accessed_at": "2026-10-24T19:17:20Z",
+            "role": "Post-Screening exact authority supplement: DATE_ONLY_PRECISION r4 (was fabricated midnight): publisher gives 2026-10-22 (day precision; update IN, original Aug7 OUT). No observed clock; must not be read as T00:00:00Z event. Original r3 bytes/SHA retained. Post-Screening exact first-party authority: Oct 22 update is the IN revision event (future rollout next week); original Aug 7 OUT. Day precision for update date."
+          }
+        ],
+        "claims": [
+          {
+            "statement_id": "claim-1",
+            "text": "Anthropic auto-mode: original article OUT Aug 7 2026 vs Oct 22 2026 update IN (599884B); update makes auto default in Claude Code for Pro/Max/Team with plan/partner exceptions; prior Claude Code availability separate.",
+            "subject_id": "claude-auto-mode",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "VENDOR_CLAIM",
+            "source_ids": [
+              "src-1",
+              "supplement-src-6f18c05b01b43f45"
+            ],
+            "context": "Changelog/docs Oct22 update vs Aug7 original"
+          },
+          {
+            "statement_id": "claim-2",
+            "text": "Rollout: default in most apps NEXT WEEK at cutoff (FUTURE) — Oct22 completed-action prohibited; X vendor statement is SOCIAL observation, Oct22 official article is separate supplement. Classifier gating spec vendor-described.",
+            "subject_id": "claude-auto-mode",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "VENDOR_CLAIM",
+            "source_ids": [
+              "src-1",
+              "supplement-src-6f18c05b01b43f45"
+            ],
+            "context": "Rollout FUTURE language; X vs article split"
+          }
+        ],
+        "metrics": [],
+        "limitations": [
+          {
+            "statement_id": "limitation-1",
+            "text": "Platform webpage independent view metadata-only; rollout FUTURE at cutoff",
+            "subject_id": "claude-auto-mode",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1",
+              "supplement-src-6f18c05b01b43f45"
+            ],
+            "context": "Evidence boundary retained for downstream editorial use."
+          },
+          {
+            "statement_id": "limitation-2",
+            "text": "Classifier/gating behaviour vendor-described; independent test absent",
+            "subject_id": "claude-auto-mode",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1",
+              "supplement-src-6f18c05b01b43f45"
+            ],
+            "context": "Evidence boundary retained for downstream editorial use."
+          }
+        ],
+        "verification": {
+          "targets": [
+            {
+              "target": "official-changelog-or-docs",
+              "status": "VERIFIED",
+              "finding": "Oct22 update vs Aug7 original distinguished from 599884B raw; IN is update, OUT is original.",
+              "subject_ids": [
+                "claude-auto-mode"
+              ],
+              "source_ids": [
+                "src-1",
+                "supplement-src-6f18c05b01b43f45"
+              ]
+            },
+            {
+              "target": "classifier-gating-spec",
+              "status": "UNRESOLVED",
+              "finding": "Classifier gating described; independent test absent.",
+              "subject_ids": [
+                "claude-auto-mode"
+              ],
+              "source_ids": [
+                "src-1",
+                "supplement-src-6f18c05b01b43f45"
+              ]
+            },
+            {
+              "target": "rollout-scope",
+              "status": "UNRESOLVED",
+              "finding": "Most-apps NEXT WEEK future; completed-default claim prohibited; plan/partner exceptions noted.",
+              "subject_ids": [
+                "claude-auto-mode"
+              ],
+              "source_ids": [
+                "src-1",
+                "supplement-src-6f18c05b01b43f45"
+              ]
+            }
+          ],
+          "unresolved_questions": [
+            "classifier-gating-spec: Classifier gating described; independent test absent.",
+            "rollout-scope: Most-apps NEXT WEEK future; completed-default claim prohibited; plan/partner exceptions noted."
+          ],
+          "contradictions": []
+        }
+      }
+    }
+  ],
+  "drafting_constraints": {
+    "language": "ja",
+    "raw_sources_forbidden": true,
+    "unknowns_remain_unknown": true,
+    "citation_granularity": "EVENT_CLAIM_METRIC_LIMITATION"
+  },
+  "profile_extensions": {
+    "page_allocation": "4.5",
+    "editorial_note": "権限図が要。"
+  },
+  "publication_extensions": {}
+}

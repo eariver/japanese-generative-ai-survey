@@ -1,0 +1,160 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W43",
+  "evidence_task_id": "evidence:2026-W43:956202d0dbd04246",
+  "basis": {
+    "task_sha256": "db16cfde1f73178b36f0f539d03b0dcfe9181b1223442ae594a9e5f2bb7ed9a2",
+    "screening_acceptance_sha256": "566cde3bd287dffb38d705c4b6c3fec71a98f67dea96016a009bd929923be48a",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "claude-auto-mode",
+      "canonical_name": "Anthropic auto-mode default",
+      "entity_type": "PRODUCT",
+      "organization": "Anthropic",
+      "canonical_url": "x-official:claudeai/status/2113360845409583307"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "claude-auto-mode",
+    "artifact_type": "PRODUCT",
+    "canonical_name": "Anthropic auto-mode default",
+    "canonical_url": "x-official:claudeai/status/2113360845409583307"
+  },
+  "temporal": {
+    "observed_at": "2026-10-25T05:00:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-10-21",
+        "subject_id": "claude-auto-mode",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "x-official:claudeai/status/2113360845409583307",
+      "source_class": "SOCIAL",
+      "title": "Anthropic auto-mode default next week (Oct 21 X)",
+      "published_at": "2026-10-21",
+      "accessed_at": "2026-10-25T05:00:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    },
+    {
+      "source_id": "supplement-src-6f18c05b01b43f45",
+      "url": "https://claude.com/resources/articles/auto-mode-default-in-claude-code",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "Auto mode is now the default in Claude Code for Pro, Max, and Team plans (Oct 22, 2026 update; original Aug 7, 2026)",
+      "published_at": null,
+      "accessed_at": "2026-10-24T19:17:20Z",
+      "role": "Post-Screening exact authority supplement: DATE_ONLY_PRECISION r4 (was fabricated midnight): publisher gives 2026-10-22 (day precision; update IN, original Aug7 OUT). No observed clock; must not be read as T00:00:00Z event. Original r3 bytes/SHA retained. Post-Screening exact first-party authority: Oct 22 update is the IN revision event (future rollout next week); original Aug 7 OUT. Day precision for update date."
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Anthropic auto-mode: original article OUT Aug 7 2026 vs Oct 22 2026 update IN (599884B); update makes auto default in Claude Code for Pro/Max/Team with plan/partner exceptions; prior Claude Code availability separate.",
+      "subject_id": "claude-auto-mode",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1",
+        "supplement-src-6f18c05b01b43f45"
+      ],
+      "context": "Changelog/docs Oct22 update vs Aug7 original"
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Rollout: default in most apps NEXT WEEK at cutoff (FUTURE) — Oct22 completed-action prohibited; X vendor statement is SOCIAL observation, Oct22 official article is separate supplement. Classifier gating spec vendor-described.",
+      "subject_id": "claude-auto-mode",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1",
+        "supplement-src-6f18c05b01b43f45"
+      ],
+      "context": "Rollout FUTURE language; X vs article split"
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Platform webpage independent view metadata-only; rollout FUTURE at cutoff",
+      "subject_id": "claude-auto-mode",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1",
+        "supplement-src-6f18c05b01b43f45"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "Classifier/gating behaviour vendor-described; independent test absent",
+      "subject_id": "claude-auto-mode",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1",
+        "supplement-src-6f18c05b01b43f45"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "official-changelog-or-docs",
+        "status": "VERIFIED",
+        "finding": "Oct22 update vs Aug7 original distinguished from 599884B raw; IN is update, OUT is original.",
+        "subject_ids": [
+          "claude-auto-mode"
+        ],
+        "source_ids": [
+          "src-1",
+          "supplement-src-6f18c05b01b43f45"
+        ]
+      },
+      {
+        "target": "classifier-gating-spec",
+        "status": "UNRESOLVED",
+        "finding": "Classifier gating described; independent test absent.",
+        "subject_ids": [
+          "claude-auto-mode"
+        ],
+        "source_ids": [
+          "src-1",
+          "supplement-src-6f18c05b01b43f45"
+        ]
+      },
+      {
+        "target": "rollout-scope",
+        "status": "UNRESOLVED",
+        "finding": "Most-apps NEXT WEEK future; completed-default claim prohibited; plan/partner exceptions noted.",
+        "subject_ids": [
+          "claude-auto-mode"
+        ],
+        "source_ids": [
+          "src-1",
+          "supplement-src-6f18c05b01b43f45"
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      "classifier-gating-spec: Classifier gating described; independent test absent.",
+      "rollout-scope: Most-apps NEXT WEEK future; completed-default claim prohibited; plan/partner exceptions noted."
+    ],
+    "contradictions": []
+  }
+}

@@ -1,0 +1,181 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W43",
+  "evidence_task_id": "evidence:2026-W43:2223bd7df5bb3a3b",
+  "basis": {
+    "task_sha256": "f08d7ac8be1f75daad3600ed1faae62d9b800b2edb9b6f54f6a83f4d8f1c8244",
+    "screening_acceptance_sha256": "566cde3bd287dffb38d705c4b6c3fec71a98f67dea96016a009bd929923be48a",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "kohaku-moss-trainer",
+      "canonical_name": "KohakuMossTrainer",
+      "entity_type": "FRAMEWORK",
+      "organization": "KohakuBlueleaf",
+      "canonical_url": "https://github.com/KohakuBlueleaf/KohakuMossTrainer"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "kohaku-moss-trainer",
+    "artifact_type": "FRAMEWORK",
+    "canonical_name": "KohakuMossTrainer",
+    "canonical_url": "https://github.com/KohakuBlueleaf/KohakuMossTrainer"
+  },
+  "temporal": {
+    "observed_at": "2026-10-25T05:00:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-10-18",
+        "subject_id": "kohaku-moss-trainer",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "event_id": "event-2",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-10-20T18:30:30Z",
+        "subject_id": "kohaku-moss-trainer",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "supplement-src-b751c2c90f23c12a"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "primary:github.com/KohakuBlueleaf/KohakuMossTrainer",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "KohakuMossTrainer for MOSS-Image (Oct 18)",
+      "published_at": "2026-10-18",
+      "accessed_at": "2026-10-25T05:00:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    },
+    {
+      "source_id": "supplement-src-b751c2c90f23c12a",
+      "url": "https://github.com/KohakuBlueleaf/KohakuMossTrainer/blob/main/LICENSE",
+      "source_class": "PRIMARY_REPOSITORY",
+      "title": "KohakuMossTrainer LICENSE at da5dd97e (KohakuMoss License 1.0)",
+      "published_at": "2026-10-20T18:30:30Z",
+      "accessed_at": "2026-10-25T04:41:00Z",
+      "role": "Post-Screening exact authority supplement: Post-Screening exact license bytes: custom KohakuMoss License 1.0; third-party implementation, GPU/VRAM unreproduced; commercial/OSI claims withheld per IA-012."
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Third-party KohakuMossTrainer (Oct18 IN; Base/SFT code+weights Oct16 01:18Z OUT distinct): streamed full finetune on RTX5090 36864xGRAD_ACC8 (294912 tok/step) 117.7s/step vs 8.8s micro-batch; HostAccumulator 4M-element chunk fp32 scratch ~68s/step ~8.5s micro-batch; py-spy gradient-worker analysis. Vendor-/author-measured, NOT independent Core measurement.",
+      "subject_id": "kohaku-moss-trainer",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PROJECT_CLAIM",
+      "source_ids": [
+        "src-1",
+        "supplement-src-b751c2c90f23c12a"
+      ],
+      "context": "Trainer repo commits; GRAD_ACC/VRAM figures author-reported"
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "License: KohakuMoss License 1.0 custom (LICENSE 12141B at da5dd97e Oct20) — NOT OSI/MIT/Apache; commercial/OSI claims withheld. GPU/VRAM unreproduced.",
+      "subject_id": "kohaku-moss-trainer",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PROJECT_CLAIM",
+      "source_ids": [
+        "src-1",
+        "supplement-src-b751c2c90f23c12a"
+      ],
+      "context": "LICENSE bytes; commit da5dd97e15492e4"
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Third-party implementation; no independent GPU/VRAM rerun",
+      "subject_id": "kohaku-moss-trainer",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1",
+        "supplement-src-b751c2c90f23c12a"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "Custom license; commercial/redistribution terms per license text only",
+      "subject_id": "kohaku-moss-trainer",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1",
+        "supplement-src-b751c2c90f23c12a"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-3",
+      "text": "MOSS Base Oct16 OUT vs trainer Oct18 IN distinguished; API/report events separate",
+      "subject_id": "kohaku-moss-trainer",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1",
+        "supplement-src-b751c2c90f23c12a"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "release-tag",
+        "status": "VERIFIED",
+        "finding": "Oct18 trainer IN vs Oct16 base OUT distinguished; commit da5dd97e Oct20 verified.",
+        "subject_ids": [
+          "kohaku-moss-trainer"
+        ],
+        "source_ids": [
+          "src-1",
+          "supplement-src-b751c2c90f23c12a"
+        ]
+      },
+      {
+        "target": "license-file",
+        "status": "VERIFIED",
+        "finding": "LICENSE 12141B custom KohakuMoss 1.0 verified; OSI/MIT/Apache claims withheld.",
+        "subject_ids": [
+          "kohaku-moss-trainer"
+        ],
+        "source_ids": [
+          "src-1",
+          "supplement-src-b751c2c90f23c12a"
+        ]
+      },
+      {
+        "target": "kernel-and-vram-claims",
+        "status": "UNRESOLVED",
+        "finding": "GRAD_ACC/VRAM/scratch figures author-measured; independent measurement absent.",
+        "subject_ids": [
+          "kohaku-moss-trainer"
+        ],
+        "source_ids": [
+          "src-1",
+          "supplement-src-b751c2c90f23c12a"
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      "kernel-and-vram-claims: GRAD_ACC/VRAM/scratch figures author-measured; independent measurement absent."
+    ],
+    "contradictions": []
+  }
+}

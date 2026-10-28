@@ -1,0 +1,61 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W43",
+  "from_state": "DISCOVERY_COLLECTED",
+  "to_state": "CANDIDATES_NORMALIZED",
+  "checkpoints": [
+    "screening"
+  ],
+  "recorded_at": "2026-10-24T18:10:46Z",
+  "implementation": {
+    "repository_commit_sha": "0e6ecaa5996b4770c729b3b2b462e67c9c7399ce",
+    "orchestrator_version": "survey-production-core-v2/0.15-postintegration-transport-thematic"
+  },
+  "contract": {
+    "pipeline_contract_version": "2.0-rc1",
+    "pipeline_contract_sha256": "ee89796245c22072cec98f34931180214a4928c24f399280793cd6420a4c8e71",
+    "quality_contract_version": "2.0-rc1",
+    "quality_contract_sha256": "b5b955d524fb438c0f1b2c9490bea1da2083e79028d67a55ca424bbfc20f2958",
+    "research_profile_version": "2.0-rc1",
+    "research_profile_sha256": "666f8a064b190ffd35216e26d6fdf2dd0fa932cac7b1b0d6448e262ded77b9a8",
+    "publication_profile_version": "2.0-rc1",
+    "publication_profile_sha256": "99adff93ff443e02bdcce639ce5fc4d4c959ee45a804da70efc4277db57fdddb"
+  },
+  "artifacts": [
+    {
+      "name": "screening-acceptance",
+      "path": "sources/2026-W43/screening/v2/accepted/75dd95db5c40b28cc2d9a665dab8a46294e010096095c2bf92aba36d5ed9817d/screening-accepted.json",
+      "sha256": "566cde3bd287dffb38d705c4b6c3fec71a98f67dea96016a009bd929923be48a"
+    }
+  ],
+  "reviews": [
+    {
+      "check_id": "CORE_STAGE_CONTRACT",
+      "kind": "DETERMINISTIC",
+      "status": "PASS",
+      "executor": "survey_core_execution_bridge_v2",
+      "evidence": "Canonical Core stage contract validated for immutable request sol-w43-screening-advance-20261025.",
+      "result": {
+        "path": "sources/2026-W43/execution/bridge-runs/sol-w43-screening-advance-20261025/core-stage-contract.json",
+        "sha256": "1357dd5113ab1d62e6c28711376d91115fc759c3d794de171a5f8dba876dc9b0"
+      }
+    },
+    {
+      "check_id": "SOL-W43-SCREENING-R3-FINAL-EDITORIAL",
+      "kind": "AGENT_EDITORIAL",
+      "status": "PASS",
+      "executor": "Sol independent supervisory reviewer",
+      "evidence": "Sol reviewed 51/51 accepted Screening decisions, including full r2-to-r3 one-field Kimi cutoff correction (4h44m36s), unchanged 17 KEEP/11 MAYBE/4 INSPECT/19 DROP, direct accepted package identity and X/OUT/carry-over treatment. Sol review: sources/2026-W43/execution/reviews/sol-w43-screening-r3-accepted-20261025.md. NOT a Human Gate.",
+      "result": null
+    },
+    {
+      "check_id": "MUSE-W43-SCREENING-R3-FROZEN-CORE",
+      "kind": "AGENT_RESEARCH",
+      "status": "PASS",
+      "executor": "Muse r3 with frozen survey_agent_tool_v2",
+      "evidence": "Core native agent-first prepare+accept PASS; 51 Screening decisions; content-addressed result set 75dd95db5c40b28cc2d9a665dab8a46294e010096095c2bf92aba36d5ed9817d; 4 Core batches, stage precheck PASS, execution record PASS. Legacy direct CLI remains known FAIL, Core defect Issue #568 open. Session: sources/2026-W43/execution/sessions/muse-w43-screening-chronology-r3-20261025.md.",
+      "result": null
+    }
+  ],
+  "summary": "Accept corrected 51-record W43 Screening r3, advance DISCOVERY_COLLECTED to CANDIDATES_NORMALIZED through trusted Core v2. Screening decisions do not yet prove Evidence claims, select article items, or satisfy Human Gates."
+}

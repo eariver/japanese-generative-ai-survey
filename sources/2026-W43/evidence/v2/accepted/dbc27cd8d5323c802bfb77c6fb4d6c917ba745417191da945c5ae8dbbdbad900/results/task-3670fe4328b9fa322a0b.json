@@ -1,0 +1,201 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W43",
+  "evidence_task_id": "evidence:2026-W43:88b6116628d87dd1",
+  "basis": {
+    "task_sha256": "ff00054144a9274e1f7b70e793ab4462158bc09b03996bdf12b9846a75e43738",
+    "screening_acceptance_sha256": "566cde3bd287dffb38d705c4b6c3fec71a98f67dea96016a009bd929923be48a",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "duet",
+      "canonical_name": "Anthropic Claude Duet",
+      "entity_type": "AGENT",
+      "organization": "Anthropic",
+      "canonical_url": "https://claude.com/resources/articles/claude-duet"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "duet",
+    "artifact_type": "AGENT",
+    "canonical_name": "Anthropic Claude Duet",
+    "canonical_url": "https://claude.com/resources/articles/claude-duet"
+  },
+  "temporal": {
+    "observed_at": "2026-10-25T04:57:50Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-10-21",
+        "subject_id": "duet",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "primary:claude.com/resources/articles/claude-duet",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "Anthropic Claude Duet proactive agent (Oct 21)",
+      "published_at": "2026-10-21",
+      "accessed_at": "2026-10-25T04:57:50Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Research preview by waitlist, US Pro/Max subscribers first, sharing existing plan limits; background checks consume plan limits, larger tasks cost more turns. Rolling/waitlist status vendor-stated; per-plan rollout unvalidated.",
+      "subject_id": "duet",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Announcement Oct21; waitlist + plan-limits sections"
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Proactive agent on Opus 5.5: morning brief, monitors connected apps, scheduling/dashboard/forecast/web-app tasks, keeps working when away, checks before key actions. Behaviour vendor-described; independent repro absent.",
+      "subject_id": "duet",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Announcement agent section"
+    },
+    {
+      "statement_id": "claim-3",
+      "text": "Runs in VM with own browser; 6000+ Marketplace connectors (Gmail/Slack, QuickBooks/Stripe, Gusto, LinkedIn, Docusign, HubSpot, Canva, Shopify) is CATALOGUE count, NOT individually live inventory — live per-connector status unvalidated; Stripe Link virtual card + Shop Pay; 1Password sign-in coming soon (NOT live); securities trading + money movement off-limits even with approval.",
+      "subject_id": "duet",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Marketplace + payment + 1Password sections; catalogue vs live distinguished per IA-011"
+    },
+    {
+      "statement_id": "claim-4",
+      "text": "Safety stack: trustworthy-agents framework, Managed-Agents credential design (never sees passwords/tokens), auto-mode classifier approval, browser-use prompt-injection defences, red-team + external pen-test + bug bounty, dedicated CC/gov-ID blocking classifier. Vendor-described; behaviour unreproduced.",
+      "subject_id": "duet",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Safety sections"
+    },
+    {
+      "statement_id": "claim-5",
+      "text": "Work-first limits: personal errands weaker, cannot show browser yet; standalone app separate from main Claude app.",
+      "subject_id": "duet",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Limits section"
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Independent behavioural reproduction absent; per-connector live status unvalidated; 6000+ != live",
+      "subject_id": "duet",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "Pricing/plan limits beyond shared usage unvalidated; auto-mode default via separate X only",
+      "subject_id": "duet",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-3",
+      "text": "1Password coming soon, not live; credential-boundary behaviour unreproduced",
+      "subject_id": "duet",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "waitlist-and-plan-limits",
+        "status": "UNRESOLVED",
+        "finding": "Waitlist + US Pro/Max first + shared limits stated; per-plan rollout unvalidated.",
+        "subject_ids": [
+          "duet"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "connector-and-payment-integration-status",
+        "status": "UNRESOLVED",
+        "finding": "6000+ catalogue vs live inventory distinguished; per-connector live + 1Password coming-soon; independent check absent.",
+        "subject_ids": [
+          "duet"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "auto-mode-classifier-and-credential-design",
+        "status": "UNRESOLVED",
+        "finding": "Classifier + Managed-Agents (never sees secrets) described; behaviour unreproduced.",
+        "subject_ids": [
+          "duet"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "independent-behavioral-repro",
+        "status": "UNRESOLVED",
+        "finding": "No independent Duet behaviour in-window.",
+        "subject_ids": [
+          "duet"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      "waitlist-and-plan-limits: Waitlist + US Pro/Max first + shared limits stated; per-plan rollout unvalidated.",
+      "connector-and-payment-integration-status: 6000+ catalogue vs live inventory distinguished; per-connector live + 1Password coming-soon; independent check absent.",
+      "auto-mode-classifier-and-credential-design: Classifier + Managed-Agents (never sees secrets) described; behaviour unreproduced.",
+      "independent-behavioral-repro: No independent Duet behaviour in-window."
+    ],
+    "contradictions": []
+  }
+}

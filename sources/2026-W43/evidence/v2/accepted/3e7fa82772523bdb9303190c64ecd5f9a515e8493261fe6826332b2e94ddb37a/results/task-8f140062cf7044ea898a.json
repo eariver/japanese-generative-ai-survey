@@ -1,0 +1,167 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W43",
+  "evidence_task_id": "evidence:2026-W43:a5013a51058f975a",
+  "basis": {
+    "task_sha256": "9bb5517f9b921bd82a94f94430bfaf962aad87b179864508a2a291e8bdd16348",
+    "screening_acceptance_sha256": "566cde3bd287dffb38d705c4b6c3fec71a98f67dea96016a009bd929923be48a",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "nemotron-bolt-e4b",
+      "canonical_name": "NVIDIA Nemotron 3.5 Bolt E4B 4GB",
+      "entity_type": "MODEL",
+      "organization": "NVIDIA",
+      "canonical_url": "https://research.nvidia.com/labs/nemotron/Nemotron-3.5-Bolt-E4B-4GB/"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "nemotron-bolt-e4b",
+    "artifact_type": "OPEN_WEIGHT",
+    "canonical_name": "NVIDIA Nemotron 3.5 Bolt E4B 4GB",
+    "canonical_url": "https://research.nvidia.com/labs/nemotron/Nemotron-3.5-Bolt-E4B-4GB/"
+  },
+  "temporal": {
+    "observed_at": "2026-10-24T19:30:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-10-23",
+        "subject_id": "nemotron-bolt-e4b",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "primary:research.nvidia.com/labs/nemotron/Nemotron-3.5-Bolt-E4B-4GB",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "NVIDIA Nemotron 3.5 Bolt E4B 4GB (Oct 23)",
+      "published_at": "2026-10-23",
+      "accessed_at": "2026-10-24T19:30:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "8B total / 4B effective MoE from Gemma 4 E4B plus Nemotron post-training; 64K context (corrected from r1 1M misattribution); 35 languages building on 140+ base; conversational plus multi-turn agentic use.",
+      "subject_id": "nemotron-bolt-e4b",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "NVIDIA Nemotron research page (Published Oct 23 + technical report)"
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Quality: ~40% higher average than prior Nano 4B, ~10% above peers; up to 80% fewer output tokens in reasoning-enabled comparisons; Tau2-Bench 55.1 vs Gemma 38.5; RULER 64K 87.0; Brevity 82.5; AgentIF 25.8; GaRAGe 42.6; RelyTool 63.2.",
+      "subject_id": "nemotron-bolt-e4b",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "NVIDIA Nemotron research page benchmark tables (BF16, per-benchmark reasoning mode)"
+    },
+    {
+      "statement_id": "claim-3",
+      "text": "Training: RLVR plus RLHF via NeMo-RL/Gym, 2:1 non-reasoning sampling; DFlash parallel drafter up to 21% higher throughput vs Gemma MTP; checkpoints GGUF/DFlash/BF16/NVFP4; deploy via HF/Ollama/LM Studio/Unsloth/Canonical/Jetson AI/In-Game SDK.",
+      "subject_id": "nemotron-bolt-e4b",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "NVIDIA Nemotron research page (methodology + checkpoints)"
+    },
+    {
+      "statement_id": "claim-4",
+      "text": "Open weights, data and recipes; OpenMDW-1.1 license (OSI approval NOT established); Jetson Orin Nano 8GB local demo with Cosmos 3 Edge vision.",
+      "subject_id": "nemotron-bolt-e4b",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "NVIDIA Nemotron research page (availability + Reachy Mini demo)"
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "All benchmarks vendor-reported with vendor-chosen reasoning modes; OpenMDW-1.1 OSI status unproven; HF license file and technical report PDF unopened; no independent run",
+      "subject_id": "nemotron-bolt-e4b",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "hf-license-file",
+        "status": "UNRESOLVED",
+        "finding": "Card metadata states OpenMDW-1.1; license file bytes unopened.",
+        "subject_ids": [
+          "nemotron-bolt-e4b"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "tech-report-pdf",
+        "status": "UNRESOLVED",
+        "finding": "Report exists; PDF body unopened.",
+        "subject_ids": [
+          "nemotron-bolt-e4b"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "benchmark-table-provenance",
+        "status": "VERIFIED",
+        "finding": "Full five-capability tables read on research page (Tau2 55.1, RULER 87.0, etc.).",
+        "subject_ids": [
+          "nemotron-bolt-e4b"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "openmdw-osi-status",
+        "status": "UNRESOLVED",
+        "finding": "OSI approval not established; do not call OSI-open.",
+        "subject_ids": [
+          "nemotron-bolt-e4b"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      "hf-license-file: Card metadata states OpenMDW-1.1; license file bytes unopened.",
+      "tech-report-pdf: Report exists; PDF body unopened.",
+      "openmdw-osi-status: OSI approval not established; do not call OSI-open."
+    ],
+    "contradictions": []
+  }
+}

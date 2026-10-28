@@ -1,0 +1,225 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W43",
+  "evidence_task_id": "evidence:2026-W43:8c735edcfc5e51f3",
+  "basis": {
+    "task_sha256": "fb1df9eda3cbf2049a719a755656676726147a359e771efafaff15a84b8fb91d",
+    "screening_acceptance_sha256": "566cde3bd287dffb38d705c4b6c3fec71a98f67dea96016a009bd929923be48a",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "memt-1-0",
+      "canonical_name": "MemTensor MemT-1.0",
+      "entity_type": "MODEL",
+      "organization": "MemTensor",
+      "canonical_url": "https://github.com/MemTensor/MemT-1.0"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "memt-1-0",
+    "artifact_type": "MODEL",
+    "canonical_name": "MemTensor MemT-1.0",
+    "canonical_url": "https://github.com/MemTensor/MemT-1.0"
+  },
+  "temporal": {
+    "observed_at": "2026-10-25T04:57:50Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-10-19",
+        "subject_id": "memt-1-0",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "event_id": "event-3",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-10-20T08:42:18Z",
+        "subject_id": "memt-1-0",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "supplement-src-baee90a6382ccdbd"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "primary:arxiv.org/abs/2610.26825",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "MemTensor MemT-1.0 memory foundation (Oct 19)",
+      "published_at": "2026-10-19",
+      "accessed_at": "2026-10-25T04:57:50Z",
+      "role": "Discovery-bounded source used for factual verification"
+    },
+    {
+      "source_id": "supplement-src-927931f4a303eaa6",
+      "url": "paper:arxiv.org/abs/2610.26825",
+      "source_class": "PRIMARY_PAPER",
+      "title": "MemT-1.0: Towards Memory-Native Evolution (arXiv 2610.26825v1, Oct 19 2026; 65pp)",
+      "published_at": null,
+      "accessed_at": "2026-10-24T19:18:19Z",
+      "role": "Post-Screening exact authority supplement: Post-Screening exact paper authority (real MemT PDF; supersedes r1 abs-only reading). v1 submission Oct 19 day precision per abs page. Licenses live in repo README, not paper text."
+    },
+    {
+      "source_id": "supplement-src-baee90a6382ccdbd",
+      "url": "https://github.com/MemTensor/MemT-1.0/blob/main/README.md",
+      "source_class": "PRIMARY_REPOSITORY",
+      "title": "MemT-1.0 README at e75c13d (Paper CC BY-NC-SA 4.0; software PolyForm Noncommercial 1.0.0)",
+      "published_at": "2026-10-20T08:42:18Z",
+      "accessed_at": "2026-10-25T04:41:00Z",
+      "role": "Post-Screening exact authority supplement: Post-Screening exact README authority r3: commit e75c13d090a6a9d34b29146d901bd84323185f24. Paper CC BY-NC-SA 4.0, repo software PolyForm Noncommercial 1.0.0, third-party MIT, weights/data excluded. Paper PDF has no license terms."
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Memory foundation IN (paper v1 Oct19; repo Oct19 03:29:30Z 382*/17/2): Gated DeltaNet-2 + MoS; 34B tokens; two-stage continued-pretrain + post-train.",
+      "subject_id": "memt-1-0",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1",
+        "supplement-src-927931f4a303eaa6",
+        "supplement-src-baee90a6382ccdbd"
+      ],
+      "context": "Paper 7096280B + repo meta; author provenance"
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Nano Qwen3.6-35B-A3B (36B/3B mem451M/10M) + Flash DeepSeek-V4-Flash (288B/17B mem3.61B/336M); 11 benches Flash1st/Nano2nd parametric; 1.86x end-to-end 128K + 66x storage vs KV cache. Baselines vendor-selected; no independent repro.",
+      "subject_id": "memt-1-0",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1",
+        "supplement-src-927931f4a303eaa6",
+        "supplement-src-baee90a6382ccdbd"
+      ],
+      "context": "Paper benches; attribution bounded"
+    },
+    {
+      "statement_id": "claim-3",
+      "text": "Experience-guided agentic coding (native memory, no bloat); SGLang snapshots/save-restore; licenses ONLY README (paper CC BY-NC-SA4.0, software PolyForm Noncommercial1.0.0, SGLang flash-attention MIT, weights/datasets/benchmarks/trademarks NOT covered) — paper has no license terms (fixes r2).",
+      "subject_id": "memt-1-0",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1",
+        "supplement-src-927931f4a303eaa6",
+        "supplement-src-baee90a6382ccdbd"
+      ],
+      "context": "README 10170B e75c13d license section"
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "65pp equations/ablations not line-reviewed; author harnesses only",
+      "subject_id": "memt-1-0",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1",
+        "supplement-src-927931f4a303eaa6",
+        "supplement-src-baee90a6382ccdbd"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "Weights/data licenses forthcoming; repo software commercial use prohibited per PolyForm",
+      "subject_id": "memt-1-0",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1",
+        "supplement-src-927931f4a303eaa6",
+        "supplement-src-baee90a6382ccdbd"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-3",
+      "text": "No independent mechanism repro",
+      "subject_id": "memt-1-0",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1",
+        "supplement-src-927931f4a303eaa6",
+        "supplement-src-baee90a6382ccdbd"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "tech-report-pdf",
+        "status": "VERIFIED",
+        "finding": "Paper 7096280B has NO license terms — authority is README only (r2 corrected).",
+        "subject_ids": [
+          "memt-1-0"
+        ],
+        "source_ids": [
+          "src-1",
+          "supplement-src-927931f4a303eaa6",
+          "supplement-src-baee90a6382ccdbd"
+        ]
+      },
+      {
+        "target": "weight-and-license-files",
+        "status": "VERIFIED",
+        "finding": "README e75c13d: paper CC BY-NC-SA4.0, software PolyForm1.0.0, MIT third-party, weights/data excluded.",
+        "subject_ids": [
+          "memt-1-0"
+        ],
+        "source_ids": [
+          "src-1",
+          "supplement-src-927931f4a303eaa6",
+          "supplement-src-baee90a6382ccdbd"
+        ]
+      },
+      {
+        "target": "benchmark-denominators",
+        "status": "UNRESOLVED",
+        "finding": "11 benches 1.86x/66x author-measured; no rerun.",
+        "subject_ids": [
+          "memt-1-0"
+        ],
+        "source_ids": [
+          "src-1",
+          "supplement-src-927931f4a303eaa6",
+          "supplement-src-baee90a6382ccdbd"
+        ]
+      },
+      {
+        "target": "sglang-serve-config",
+        "status": "UNRESOLVED",
+        "finding": "Snapshots/save-restore described; no serve test.",
+        "subject_ids": [
+          "memt-1-0"
+        ],
+        "source_ids": [
+          "src-1",
+          "supplement-src-927931f4a303eaa6",
+          "supplement-src-baee90a6382ccdbd"
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      "benchmark-denominators: 11 benches 1.86x/66x author-measured; no rerun.",
+      "sglang-serve-config: Snapshots/save-restore described; no serve test."
+    ],
+    "contradictions": []
+  }
+}

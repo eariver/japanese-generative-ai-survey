@@ -1,0 +1,57 @@
+{
+ "schema_version": "2.0-rc1",
+ "issue_id": "2026-W43",
+ "publication_profile": "WEEKLY_MAGAZINE",
+ "review_kind": "SEMANTIC_EDITORIAL",
+ "reviewed_surface": {
+  "path": "surveys/weekly/2026-W43/main.tex",
+  "sha256": "3fa6ca3b4c610cd12fecd3e6ce449e0d9cffd9e7edc67efb1b85f5bd0e758784"
+ },
+ "checks": [
+  {
+   "check_id": "R8_DELTA_EQUIVALENCE",
+   "status": "PASS",
+   "detail": "Canonical TeX differs from approved r8 TeX (4ed553e5) by exactly 4 proof-mark lines (verified diff); rendered delta is proof-banner removal only. A/B/C caveats verbatim; 20 tables/307 cells/3 figures/5 code/36 keys/5-paragraph recap/77 prose paras/29 anchors carried; 22 A4 pages.",
+   "evidence_locations": [
+    "surveys/weekly/2026-W43/main.tex",
+    "sources/2026-W43/execution/reader-to-r8-content-mapping-w43-20261028.md",
+    "sources/2026-W43/execution/publication-build-w43/pdf-page-ledger-w43.json"
+   ]
+  },
+  {
+   "check_id": "READER_PIPELINE_INDEPENDENCE",
+   "status": "PASS",
+   "detail": "Reader prose contains no production machinery/stage/gate/reviewer references; frozen TeX surface scan 0 findings/0 blocking; TeX % comments are source-only layout provenance, not rendered; cover/headers neutral.",
+   "evidence_locations": [
+    "surveys/weekly/2026-W43/main.tex L1-23",
+    "surveys/weekly/2026-W43/main.pdf p1 cover text"
+   ]
+  },
+  {
+   "check_id": "SURFACE_METADATA_CANONICAL",
+   "status": "PASS",
+   "detail": "PDF subject/keywords canonical (issue identity, no proof tokens); full-PDF text extraction has no NONCANONICAL/UNVALIDATED/PROOF/PREVIEW-approval strings; fonts embedded (14 subsets), links annotated (75/28, 0 malformed).",
+   "evidence_locations": [
+    "surveys/weekly/2026-W43/main.tex L15",
+    "sources/2026-W43/execution/publication-build-w43/pdf-links-fonts-w43.json"
+   ]
+  },
+  {
+   "check_id": "FACTUAL_PIN_SPOT",
+   "status": "PASS",
+   "detail": "Spot pins present in canonical bytes: Kimi X 17:15:24Z post URL; Flint 39.8B/2.5B + Apache-2.0 + 512k/256k/262144 split; Nemotron 8B/4B + OpenMDW-1.1; Decisions guide URL + 404/ts-ref post-cutoff notes; FLUX 25.37x/22.31x/95.52% + 26.5x inconsistency note.",
+   "evidence_locations": [
+    "surveys/weekly/2026-W43/main.tex L34-70",
+    "surveys/weekly/2026-W43/main.tex L953-988"
+   ]
+  }
+ ],
+ "decision": "PASS",
+ "reviewed_by": "muse-spark-integrated-20261028 (execution worker; evidence independently re-derived from exact bytes); separate surface re-read pass over final canonical bytes (not the TeX authoring pass)",
+ "reviewed_at": "2026-10-27T16:27:24Z",
+ "recorded_at": "2026-10-27T16:27:24Z",
+ "status": "PASSED",
+ "findings": [],
+ "summary": "Separate worker surface re-read of final canonical TeX/PDF (TeX SHA 3fa6ca3b4c61, PDF b09fd1813a90, 22p): 4/4 checks PASS, 0 blocking findings.",
+ "review_sha256": "0a584f2e08c517a3758451a1261c4450b869b9c76370c652b3ee4c94dd912667"
+}

@@ -1,0 +1,134 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W43",
+  "evidence_task_id": "evidence:2026-W43:8b3185b608af1c84",
+  "basis": {
+    "task_sha256": "19c97ffda14a08a430ce648a730c1683415b37a6558c905def8d1d871c8e8887",
+    "screening_acceptance_sha256": "566cde3bd287dffb38d705c4b6c3fec71a98f67dea96016a009bd929923be48a",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "vercel-ollama-distro",
+      "canonical_name": "Vercel/Ollama/Unsloth distribution",
+      "entity_type": "PRODUCT",
+      "organization": "Vercel",
+      "canonical_url": "https://ollama.com/library/nemotron-3.5-bolt:e4b"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "vercel-ollama-distro",
+    "artifact_type": "PRODUCT",
+    "canonical_name": "Vercel/Ollama/Unsloth distribution",
+    "canonical_url": "https://ollama.com/library/nemotron-3.5-bolt:e4b"
+  },
+  "temporal": {
+    "observed_at": "2026-10-24T19:30:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-10-23",
+        "subject_id": "vercel-ollama-distro",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "primary:ollama.com/library/nemotron-3.5-bolt:e4b",
+      "source_class": "SECONDARY",
+      "title": "Vercel/Ollama/Unsloth distribution (Oct 17-23)",
+      "published_at": "2026-10-23",
+      "accessed_at": "2026-10-24T19:30:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "V4.1-Flash-1017 live on Vercel AI Gateway (Oct 17 snapshot); Bolt E4B Ollama blobs (DFlash, Qwen3 arch note, tool/vision); Unsloth 0.1.910-beta same-day support (Flint/MOSS-Image/Bolt 4B, desktop chat-only option).",
+      "subject_id": "vercel-ollama-distro",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PROJECT_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Gateway changelog + Ollama library + Unsloth release (locator-level)"
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Distribution proof only; versions need pinning; no standalone model event.",
+      "subject_id": "vercel-ollama-distro",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Scope judgment (no conflation)"
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Locator-level only; version pins, gateway terms and quant provenance unvalidated",
+      "subject_id": "vercel-ollama-distro",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "version-pins",
+        "status": "UNRESOLVED",
+        "finding": "Snapshot/blob versions not pinned.",
+        "subject_ids": [
+          "vercel-ollama-distro"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "gateway-changelog",
+        "status": "UNRESOLVED",
+        "finding": "Gateway changelog body unfetched.",
+        "subject_ids": [
+          "vercel-ollama-distro"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "quant-build-provenance",
+        "status": "UNRESOLVED",
+        "finding": "Unsloth build provenance unvalidated.",
+        "subject_ids": [
+          "vercel-ollama-distro"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      "version-pins: Snapshot/blob versions not pinned.",
+      "gateway-changelog: Gateway changelog body unfetched.",
+      "quant-build-provenance: Unsloth build provenance unvalidated."
+    ],
+    "contradictions": []
+  }
+}

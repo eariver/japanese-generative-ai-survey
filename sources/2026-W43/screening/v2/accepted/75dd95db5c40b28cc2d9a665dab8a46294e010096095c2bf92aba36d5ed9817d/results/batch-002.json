@@ -1,0 +1,220 @@
+{
+ "schema_version": "2.0-rc1",
+ "issue_id": "2026-W43",
+ "batch_id": "batch-002",
+ "basis": {
+  "package_sha256": "b7e9a6d4b138ef3c9ceb06f76537d9bf23ba26796475b9c2933e9ad36b718aa0",
+  "batch_sha256": "714bec3ca5c061f1145e110e594431dae86e3f2c7d80bbbcea464225adf36bb3",
+  "profile_sha256": "4447d25ea73ab76062028e63f91065f80c9b93886a542356c50ae54bfb10b5af",
+  "state_sha256": "885927bd98e1ade491bc88e666aa0f39233ba7f0fb93f8ed87c9d2760ac22596",
+  "prompt_sha256": "3e45900ead73688eab8734036e6e476c1ec4f1a7ce38da42d5ca52a68ef0a862",
+  "result_contract_sha256": "a05b65b41efbcaf654df5c3c5944254a76d93d8a28cab961f2c06f6d580da5a2"
+ },
+ "decisions": [
+  {
+   "discovery_id": "w43-carry-c3439ff42a96e600",
+   "decision": "DROP",
+   "reason": "DROP: Le Chonk grounding weights/methods still not open; Voxtral 3 is a different speech/TTS/SDK family and resolves nothing.",
+   "scope_tags": [
+    "carry-over"
+   ],
+   "duplicate_group": null,
+   "verification_targets": [
+    "le-chonk-weights-methods-release"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "discovery_id": "w43-lead-gemini-safety-202610",
+   "decision": "DROP",
+   "reason": "DROP: safety-report lead with locator-level body and unproven exact date; no consumed mechanism or dated in-window event.",
+   "scope_tags": [
+    "chronology-guard",
+    "out-of-window-background"
+   ],
+   "duplicate_group": null,
+   "verification_targets": [
+    "exact-publication-date",
+    "full-report-body"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "discovery_id": "w43-lead-muse-10m-20261021",
+   "decision": "MAYBE",
+   "reason": "MAYBE: Q3 earnings 10M Muse plus shopping-top-activity is industry signal, not a technical release; context with sample/bias disclosure at most.",
+   "scope_tags": [
+    "current-relevance",
+    "industry-context"
+   ],
+   "duplicate_group": null,
+   "verification_targets": [
+    "earnings-transcript",
+    "sensor-tower-methodology",
+    "spend-figure-basis"
+   ],
+   "confidence": "low"
+  },
+  {
+   "discovery_id": "w43-lead-oracle-revision-20261021",
+   "decision": "MAYBE",
+   "reason": "MAYBE: v2 corrects oracle failures (4194 to 2883 replay, 94.3 to 65.5 percent) as methodology caution; v1 Oct 12 OUT; v2 is a correction signal, not a new capability.",
+   "scope_tags": [
+    "technical-significance",
+    "method-caution"
+   ],
+   "duplicate_group": null,
+   "verification_targets": [
+    "v1-v2-substantive-delta",
+    "affected-benchmark-scope"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "discovery_id": "w43-primary-automode-20261021",
+   "decision": "INSPECT",
+   "reason": "INSPECT: X-level locator only for auto-mode default on Pro/Max/Team; no official changelog or docs body pinned; classifier-gating claim unverified.",
+   "scope_tags": [
+    "current-relevance"
+   ],
+   "duplicate_group": null,
+   "verification_targets": [
+    "official-changelog-or-docs",
+    "classifier-gating-spec",
+    "rollout-scope"
+   ],
+   "confidence": "low"
+  },
+  {
+   "discovery_id": "w43-primary-decisions-api-20261022",
+   "decision": "INSPECT",
+   "reason": "INSPECT: RSS-title-level product signal only; speed/cost claims with no specs, pricing, limits or docs body consumed.",
+   "scope_tags": [
+    "current-relevance"
+   ],
+   "duplicate_group": null,
+   "verification_targets": [
+    "api-docs-specs",
+    "pricing-limits",
+    "endpoint-behavior"
+   ],
+   "confidence": "low"
+  },
+  {
+   "discovery_id": "w43-primary-deepinfer-20261020",
+   "decision": "KEEP",
+   "reason": "KEEP: Apache 2.0 offline OSS inference for V4.1-Flash; kernels, parallelism, DSpark, SWA, async, batch-invariant, deterministic, structured outputs consumed; SM100 plus Ascend 950; KV-cache and disagg explicitly absent; vendor speed unreproduced.",
+   "scope_tags": [
+    "current-relevance",
+    "technical-significance"
+   ],
+   "duplicate_group": null,
+   "verification_targets": [
+    "repo-release-tag",
+    "hardware-requirements",
+    "license-file",
+    "independent-throughput-repro"
+   ],
+   "confidence": "high"
+  },
+  {
+   "discovery_id": "w43-primary-deepseek-1017-20261017",
+   "decision": "KEEP",
+   "reason": "KEEP: wish-driven RL update Oct 17; MIT HF weights; live web, app and API; harness integrations; free-use window to Oct 31 16Z; vendor benches with harness footnotes.",
+   "scope_tags": [
+    "current-relevance",
+    "technical-significance"
+   ],
+   "duplicate_group": null,
+   "verification_targets": [
+    "weight-sha-and-availability",
+    "independent-local-run",
+    "cyber-data-removal-scope",
+    "benchmark-denominators-and-harnesses"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "discovery_id": "w43-primary-duet-20261021",
+   "decision": "KEEP",
+   "reason": "KEEP: proactive agent research preview Oct 21 on Opus 5.5; waitlist US Pro/Max; VM background browser; checks every few hours; approval gates with securities and money-movement off-limits; 6000+ Marketplace connectors; Link and Shop Pay; 1Password coming soon; work-first limits.",
+   "scope_tags": [
+    "current-relevance",
+    "technical-significance"
+   ],
+   "duplicate_group": null,
+   "verification_targets": [
+    "waitlist-and-plan-limits",
+    "connector-and-payment-integration-status",
+    "auto-mode-classifier-and-credential-design",
+    "independent-behavioral-repro"
+   ],
+   "confidence": "high"
+  },
+  {
+   "discovery_id": "w43-primary-eleven-20261020",
+   "decision": "KEEP",
+   "reason": "KEEP: Mini and Max speech-to-speech voice agents Oct 20; 90+ langs, 17k+ voices; AA independent BBA 98.8 and 75.9, TTFA 0.57 and 0.62s, Full-Duplex 95.8 and 94.1, Arena 998 and 988, tool-use 87.1 and 60.3; OpenAI realtime-protocol compat.",
+   "scope_tags": [
+    "current-relevance",
+    "technical-significance"
+   ],
+   "duplicate_group": null,
+   "verification_targets": [
+    "announcement-and-docs-bodies",
+    "aa-benchmark-pages",
+    "protocol-compat-scope",
+    "license-and-pricing"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "discovery_id": "w43-primary-flux-max-20261019",
+   "decision": "KEEP",
+   "reason": "KEEP: fal platform availability Oct 19 with BFL on FLUX 3 foundation; vendor-reported 10.95s PR vs 12.45s page discrepancy preserved; Elo 1139 tied number-1 image-to-video only; 11.5x vs FLUX 3; pay-go pricing.",
+   "scope_tags": [
+    "current-relevance",
+    "technical-significance"
+   ],
+   "duplicate_group": null,
+   "verification_targets": [
+    "fal-post-and-model-page",
+    "aa-arena-snapshot",
+    "speed-discrepancy-basis",
+    "license-and-availability-terms"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "discovery_id": "w43-primary-github-deprecation-20261019",
+   "decision": "MAYBE",
+   "reason": "MAYBE: Oct 19 model deprecations across Chat/inline/agent/completions; availability boundary with unpinned model list; metering context at most.",
+   "scope_tags": [
+    "current-relevance",
+    "availability-boundary"
+   ],
+   "duplicate_group": null,
+   "verification_targets": [
+    "deprecated-model-list",
+    "docs-and-migration-path"
+   ],
+   "confidence": "low"
+  },
+  {
+   "discovery_id": "w43-primary-github-metrics-20261023",
+   "decision": "MAYBE",
+   "reason": "MAYBE: usage metrics API now captures OpenCode and others via totals_by_client; metering change, not a model; additive scope.",
+   "scope_tags": [
+    "current-relevance",
+    "metering-change"
+   ],
+   "duplicate_group": null,
+   "verification_targets": [
+    "metrics-api-docs",
+    "client-identification-limits",
+    "report-scope"
+   ],
+   "confidence": "low"
+  }
+ ]
+}

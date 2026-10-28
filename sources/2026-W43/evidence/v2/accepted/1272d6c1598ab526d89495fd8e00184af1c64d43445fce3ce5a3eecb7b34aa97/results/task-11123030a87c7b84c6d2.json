@@ -1,0 +1,111 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W43",
+  "evidence_task_id": "evidence:2026-W43:cea4e497dda757d2",
+  "basis": {
+    "task_sha256": "f533ed269506f87b66055ab1a5d2c521cf1fbd8343bc29bbbda918df67f89057",
+    "screening_acceptance_sha256": "566cde3bd287dffb38d705c4b6c3fec71a98f67dea96016a009bd929923be48a",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "moss-api",
+      "canonical_name": "MOSS-Image MOSI API availability",
+      "entity_type": "API",
+      "organization": "OpenMOSS",
+      "canonical_url": "https://platform.mosi.cn/"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "moss-api",
+    "artifact_type": "API",
+    "canonical_name": "MOSS-Image MOSI API availability",
+    "canonical_url": "https://platform.mosi.cn/"
+  },
+  "temporal": {
+    "observed_at": "2026-10-24T18:32:48Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-10-20",
+        "subject_id": "moss-api",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "primary:platform.mosi.cn (via OpenMOSS README News 2026-10-20)",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "MOSS-Image MOSI API availability (Oct 20)",
+      "published_at": "2026-10-20",
+      "accessed_at": "2026-10-24T18:32:48Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "MOSI API Platform plus Playground/API availability per README News Oct 20; availability event distinct from Oct 16 OUT code/weights.",
+      "subject_id": "moss-api",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "MOSS-Image README News 2026-10-20 (via consumed README)"
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "README news line only; API terms, coverage and SLAs unvalidated",
+      "subject_id": "moss-api",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "api-terms-and-coverage",
+        "status": "UNRESOLVED",
+        "finding": "Terms and coverage unvalidated beyond news line.",
+        "subject_ids": [
+          "moss-api"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "platform-availability-proof",
+        "status": "UNRESOLVED",
+        "finding": "Platform page not independently opened.",
+        "subject_ids": [
+          "moss-api"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      "api-terms-and-coverage: Terms and coverage unvalidated beyond news line.",
+      "platform-availability-proof: Platform page not independently opened."
+    ],
+    "contradictions": []
+  }
+}

@@ -1,0 +1,167 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W43",
+  "evidence_task_id": "evidence:2026-W43:972ae1540f70e008",
+  "basis": {
+    "task_sha256": "b9e5d6783d883cd8edb3d4ead4395e459a9ecd9573716a073273ade490d06ae7",
+    "screening_acceptance_sha256": "566cde3bd287dffb38d705c4b6c3fec71a98f67dea96016a009bd929923be48a",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "onepassword-for-agents",
+      "canonical_name": "1Password for Agents",
+      "entity_type": "PRODUCT",
+      "organization": "1Password",
+      "canonical_url": "https://1password.com/blog/1password-for-ai-agents"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "onepassword-for-agents",
+    "artifact_type": "PRODUCT",
+    "canonical_name": "1Password for Agents",
+    "canonical_url": "https://1password.com/blog/1password-for-ai-agents"
+  },
+  "temporal": {
+    "observed_at": "2026-10-25T04:57:50Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-10-22",
+        "subject_id": "onepassword-for-agents",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "primary:1password.com/blog/1password-for-ai-agents",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "1Password for Agents trust layer (Oct 22)",
+      "published_at": "2026-10-22",
+      "accessed_at": "2026-10-25T04:57:50Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "1Password for AI agents: approval-gated credential handoff + autofill promises; agent sees no password/OTP (vaulted injection). Exact per-integration live vs rolling vs coming-soon must be distinguished; all-connectors-live must NOT be inferred. Plan/integration scope vendor-stated.",
+      "subject_id": "onepassword-for-agents",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "1Password blog Oct22; approval + no-secrets sections"
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Platform/plan scope: Pro/Max/Team availability with partner exceptions; credential injection boundary vs agent-visible secrets; independent functional test absent.",
+      "subject_id": "onepassword-for-agents",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Platform/plan sections"
+    },
+    {
+      "statement_id": "claim-3",
+      "text": "Complements Duet Managed-Agents plane (Duet 1Password coming soon); cross-story live-status conflation prohibited.",
+      "subject_id": "onepassword-for-agents",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Duet + 1Password cross-read"
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Per-integration live/rolling/coming-soon unvalidated beyond vendor blog",
+      "subject_id": "onepassword-for-agents",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "No independent approval-flow or autofill reproduction",
+      "subject_id": "onepassword-for-agents",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-3",
+      "text": "Plan/partner exceptions partially stated",
+      "subject_id": "onepassword-for-agents",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "per-integration-live-status",
+        "status": "UNRESOLVED",
+        "finding": "Live vs rolling vs coming-soon by connector/plan vendor-stated; independent per-integration check absent.",
+        "subject_ids": [
+          "onepassword-for-agents"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "platform-and-plan-scope",
+        "status": "UNRESOLVED",
+        "finding": "Platform/plan scope stated with exceptions; independent entitlement check absent.",
+        "subject_ids": [
+          "onepassword-for-agents"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "trust-model-docs",
+        "status": "UNRESOLVED",
+        "finding": "Approval + no-password/OTP injection described; independent trust-model test absent.",
+        "subject_ids": [
+          "onepassword-for-agents"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      "per-integration-live-status: Live vs rolling vs coming-soon by connector/plan vendor-stated; independent per-integration check absent.",
+      "platform-and-plan-scope: Platform/plan scope stated with exceptions; independent entitlement check absent.",
+      "trust-model-docs: Approval + no-password/OTP injection described; independent trust-model test absent."
+    ],
+    "contradictions": []
+  }
+}

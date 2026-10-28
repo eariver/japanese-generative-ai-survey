@@ -1,0 +1,529 @@
+# W43 日本語本文プレビュー r3.3（非正規編集資産）
+
+## P1 — 公開前の巨大さと手元の重み――KimiのAPI先行とFlint・Nemotronの対照
+
+MoonshotのKimi K3.1 Proは10月23日の告知とAPI提供が先行し、重み配布は11月4日の将来予定である。一方でRecursive FlintとNVIDIA Nemotron Boltは重みとライセンス条件が手元で確認できる。今週の巻頭は「発表された能力」と「動かせる実物」を切り分けて読む。
+
+### 発表・配布・再現を別の状態として読む
+
+今週もっとも注意を要するのは、Moonshot AIのKimi K3.1 Proである。一次情報の範囲で確定しているのは、2026年10月23日17時15分24秒（協定世界時）にXの公式投稿が公開され、APIとしての提供が始まったという事実である。投稿IDと時刻、料金条件（入力100万トークンあたり2ドル、出力10ドル）はXの原文と関連資料で確認できる。締切（10月23日22時00分00秒）まで4時間44分36秒しかなく、週次報道としての位置づけは「期末ぎりぎりのAPI先行公開」である。重みの配布は11月4日と予告されているだけで、観測時点では未公開の将来予定（FUTURE）であり、局所実行やハッシュ検証は存在しない。
+
+Kimiの規模をめぐる数字の扱いには慎重さが要る。2.8T（総パラメータ2.8兆）・104B（アクティブ1040億）という数値はXの投稿だけが根拠であり、公式ブログは「3T級」という等級表現にとどまる。ブログを2.8T・104Bの根拠として引用してはならない。文脈長は1M対応がうたわれる一方、運用上の推奨や設定値が別に存在し、単一の「1Mで動く」という理解は正確でない。ベンチマーク値はベンダーの harness（評価枠組み）による測定であり、温度・top-p・試行平均などの条件つきである。独立した第三者の再現測定は本号には存在しない。
+
+```text
+【表：公開状態×時点（Kimi）】
+告知・API提供｜2026-10-23T17:15:24Z（X原文、post ID確認）｜状態：IN（当週）｜根拠：X HTML原文＋supplement 041ec6系
+重み配布｜2026-11-04予定｜状態：FUTURE（未公開）｜根拠：発表のみ、バイト・SHA未取得
+ブログ｜日付のみ（時刻なし）｜状態：PRIMARY_METADATA｜根拠：日次粒度、時刻の証拠にしない
+料金｜入力$2・出力$10／100万トークン｜状態：API条件｜根拠：発表資料、重み約款とは別
+典拠キー: KIMI-X（X原文17:15:24Z・秒確定）／KIMI-BLOG（日付のみ）
+```
+
+### 数え方が違う三つのMoEを並べない
+
+対照群として置かれた二つのモデルは、Kimiとは逆に「手元で確かめられる」側にある。RecursiveのFlintはコード生成向けの混合専門家（MoE）で、保存済みHFモデルカード（`flint-card-README.md`、一次資料バイト保存済み）が総パラメータ39.8B・トークンあたり約2.5Bアクティブ（出力head含み、脚注で入力embedding除外・内部body単体は約2.2Bと明記）と記す。カードはさらに文書化された文脈設定262,144トークン、49層（dense 2＋MoE 47）、256 experts（トークンあたり6＋共有）、SWA-513、語彙150144、知識期限2026年6月、約款Apache-2.0を載せる。保存済み発表HTML（`recursive-flint-announce-20261024T132900Z.html`）は「Flint supports context windows of up to 512k tokens. For the best results ... recommend staying within 256k tokens.」と対応と推奨を分けて記す。三層（対応512k・推奨256k・設定262,144）は別の主張であり、独立に512kの品質を実測したものではない。速度の主張（短文脈で125トークン毎秒超・150超など）は、短文脈・128K平均・prefill除外というベンダー条件つきであり、独立測定ではない。
+
+NVIDIAのNemotron 3.5 Bolt E4Bは小型効率モデルで、公式モデルカードが総パラメータ8B・有効（effective）4Bと明示する。Flintの total／active per token とは計数規約が一致しないため、8B・4B・39.8B・2.5Bを等価に比較して優劣表を作ってはならない。本号の表は列見出しに規約を明記し、「total」「effective」「active per token」を別の物差しとして扱う。Hugging Face上のコミット時刻（15時12分～19時03分など）は配布時刻の証拠（PRIMARY_METADATA）であり、性能の証拠ではない。文脈長も64Kと1Mクラスでは運用意味が異なり、対応・推奨・設定の三層を区別する。
+
+```text
+【表：total／effective／active と文脈（計数規約を見出しに明記）】
+Kimi K3.1 Pro｜Xのみ2.8T total級／104B active（blogは3T級、根拠にしない）｜文脈1M対応｜重みFUTURE
+Flint｜39.8B total／約2.5B active per token（計数規約は承認済みArchitecture境界注記）｜49層・256 experts・SWA-513・文脈512K対応／256K推奨／262144設定｜重み確認可（Apache-2.0）
+Nemotron Bolt E4B｜8B total／4B effective（公式カード）｜64K級｜重み・時刻確認可
+注意｜effective・active・totalの等価比較禁止｜文脈は対応／推奨／設定を別列
+典拠キー（行別）: Kimi行=KIMI-X（Xのみ2.8T/104B）／Flint行=FLINT-CARD（2.5B・262,144・Apache-2.0）＋FLINT-ART（512k対応・256k推奨）／Nemotron行=NEMO-CARD（8B/4B・64K）＋NEMO-COMMITS（15:12–19:03Z）
+```
+
+### 学習の手続きとベンチの帰属
+
+学習・調整の手続きも三者で来歴が異なる。Kimiはサイバー関連の除去と強化学習（RL）が説明されているが、除去の範囲について独立の確認はない。FlintはEurekaという探索枠組みと4bit量子化の lm_head などがベンダー説明の範囲であり、学習の再現は行われていない。保存済みカードが明記する評価条件は温度1.0・top-p 0.95・top-k 20、平均pass@1（5回以上試行）、web検索経由の解は失敗扱い、比較表の†印は発行元測定である。Nemotronはフィルタ工程が説明される。いずれのベンチマーク表もベンダー計測であり、harness・温度・top-p・top-k・試行回数などの条件つきである。本号は bench×harness×分母の表で帰属を明示し、ベンダー表を独立検証済みのように書かない。
+
+```text
+【表：bench×harness×分母（帰属明示）】
+Kimi系｜ベンダー harness・温度・top-p・試行平均つき｜分母・条件は発表資料｜独立再現なし
+Flint系｜短文脈・128K平均・prefill除外の装置記述｜分母はベンダー条件｜独立測定なし
+Nemotron系｜公式カード・HF時刻は確認、性能表はベンダー測定｜分母つきで読む｜SHA再ハッシュなし
+典拠キー（行別）: Kimi系=KIMI-BLOG／Flint系=FLINT-CARD（温度1.0・top-p0.95・top-k20・pass@1 5試行・web検索失敗扱い）／Nemotron系=NEMO-CARD
+```
+
+### 重み・約款・価格を混ぜない
+
+読者が誤りやすいのは権利と価格の対応である。KimiのAPI料金と将来の重み約款は別の条件であり、API価格を重みライセンスの条件として読んではならない。Flintの重み約款はApache-2.0（モデルカード明記）、Nemotronの重み約款はOpenMDW-1.1であり、OSI承認の有無は未検証（UNVERIFIED）である。基盤に用いられた Gemma-4 の Apache-2.0 と混同してはならない。Hugging Faceの時刻（14時20分、15時12分～19時03分など）は配布・更新の時刻証拠であり、性能や権利の証拠ではない。発表・プレビュー・一般提供（GA）・重み配布・再現可能性は別の状態（status）として表に分けた。
+
+```text
+【表：可用性×時刻×約款（発表／プレビュー／GA／重み配布／再現を別列）】
+Kimi API｜live（10月23日）｜料金$2/$10｜重みFUTURE（11月4日）｜再現なし
+Flint重み｜配布確認（HF時刻）｜約款Apache-2.0（カード明記）｜SHA再検証なし｜速度は条件つき
+Nemotron重み｜配布確認（HF時刻）｜OpenMDW-1.1（OSI未検証）｜基盤Apache-2.0と区別｜性能はベンダー表
+典拠キー（行別）: Kimi行=KIMI-X（API live・料金$2/$10）／Flint行=FLINT-CARD（Apache-2.0）／Nemotron行=NEMO-CARD（OpenMDW-1.1）＋NEMO-COMMITS
+```
+
+時刻の確定度は三層に分かれる。Xの投稿は秒単位の協定世界時（17時15分24秒）がHTML原文で確認できる一次資料であり、当週内（IN）の根拠として強い。一方ブログは日付のみで時刻の証拠にならず、Hugging Faceのコミット時刻も配布の時刻証拠にとどまる。締切まで4時間44分36秒という余裕のなさは、週次誌の「期末速報」として位置づける理由であり、速報の強さを盛らない理由でもある。時刻・日付・予定を同じ確度で書かない。
+
+Flintの学習・量子化の記述も条件つきで読む。Eurekaという自動探索の枠組み、4bit量子化の lm_head、語彙・打切り（カットオフ）の扱いなどは発行元の説明であり、学習の再現や量子化前後の比較測定は行われていない。125超・150超といったトークン毎秒の主張は、短文脈・128K平均・prefill除外という装置記述と一体であり、装置を離れて「高速モデル」と書いてはならない。Eurekaの自動化を独立の技術検証済みとして書かない。
+
+Nemotron側のフィルタ工程やHFコミットの扱いも同様である。15時12分～19時03分のコミット群は配布の更新時刻として確認できるが、重みバイトのSHA再ハッシュは行っておらず、設定・重みバイトのKYC（既知確認）はカード読解の段階である。ベンチ表の来歴（harness・温度・top-p・top-k・試行）も発行元条件つきであり、独立実行はない。技術報告PDFの来歴は限定され、全式の精読は行っていないことを明示する。
+
+文脈長の三層（対応・推奨・設定）は運用の読み分けに直結する。Kimiの1M対応と、Flintの512K対応・256K推奨・262144設定は別の主張であり、最大対応を常用条件として書いてはならない。64K級の小型モデルと1M級の frontier では、長い文脈を一度に扱う用途と短い文脈を回す用途で運用が変わる。本号の図は三層を分けて描き、対応の大きさをそのまま実用性の大きさとしない。推奨・設定の値を運用計画の起点として読む。
+
+```text
+【図：文脈長の三層（p1-f1、§1.3実物）】
+Kimi K3.1 Pro ｜対応: 1M ｜推奨: — ｜設定: — ｜重みFUTUREのため局所検証なし
+Flint ｜対応: 512k（発表HTML原文） ｜推奨: 256k（同） ｜設定: 262,144（モデルカード文書化設定） ｜独立実測なし
+Nemotron Bolt E4B ｜対応: 64K（公式カード） ｜推奨: — ｜設定: — ｜小型効率・別規約
+読み方: 対応≠推奨≠設定。最大対応を常用条件にしない。effective/active/totalの等価比較禁止。
+典拠: flint-card-README.md（262,144・Apache-2.0）／recursive-flint-announce-20261024T132900Z.html（512k対応・256k推奨の原文）／Nemotron公式カード（64K・8B/4B）
+```
+
+> 【読み方の注意】Kimiの重みは未公開で局所実行・ハッシュ検証なし、ベンチはベンダーの harness による。Flintの速度は短文脈・128K平均・prefill除外の条件つきで独立未再現。2.8T・104BはXのみが根拠でブログを根拠にしない。OpenMDWをOSI認定と読まない。11月4日を既公開と書かない。
+
+---
+
+## P2 — 推論を切り出し記憶を持たせる――DeepInferとMemTの実装条件
+
+DeepSeekのDeepInferは推論実行の核部品を切り出した公開であり、MemTensorのMemT-1.0は記憶機構を中核に据えた基盤モデルである。どちらも実装条件と評価の分母を離れて語れない。設定の排他性とライセンスの分離が本章の要点である。
+
+### 推論の核部品と並列の設計
+
+DeepInferは大規模混合専門家（MoE）モデルの推論を支える構成要素を束ねた枠組みである。FlashMLA（注意機構の高速化）、DeepGEMM（行列積）、DeepEP（専門家並列の通信）、TileKernels／TileLang（カーネル記述）、DeepSelect といった核が役割分担する。注意（attention）はデータ並列（DP）と均衡化された文脈並列（CP）でさばき、MoEは専門家並列（EP）と負荷均衡（EPLB）で分散させる。DSpark（推測デコード）と確信度スケジュール検証（confidence-scheduled verification）が速度の鍵として説明される。いずれも発行元の README とコードが一次資料であり、独立のスループット再現は行われていない。
+
+```text
+【表：核×役割（DeepInfer）】
+FlashMLA｜注意の高速化｜DP／均衡CPと協調
+DeepGEMM｜行列積の最適化｜学習・推論の基盤
+DeepEP＋EPLB｜専門家並列と負荷均衡｜MoE分散の要
+TileKernels／TileLang｜カーネル生成・最適化｜実装の生産性
+DeepSelect・DSpark｜選択と推測デコード｜確信度スケジュール検証つき
+典拠キー: DI-README（9bd9cf24固定・README 24-28行・environ.py 8738B）
+```
+
+### 同時に有効にできない二つの構成例
+
+本章でもっとも誤解されやすいのが、DSparkの可変長MTPと決定的サンプリングの関係である。前者は環境変数 DEEPINFER_ENABLE_MTP_VARLEN=1、DEEPINFER_USE_NEXTN_DECODE（既定5、0で無効）という設定で有効化する推測デコード系であり、固定コミット 9bd9cf24 の README と environ.py（8738バイト）が典拠である。後者は DEEPINFER_ENABLE_MTP_VARLEN=0 に加え DEEPINFER_BATCH_INVARIANT=1 と seq_seed の固定、SamplingParams の指定を組み合わせた決定的サンプリング系として発行元が説明するものであり、NVIDIA限定の条件つきである。両者は排他的な構成例であり、同時に有効であるかのように書いてはならない。再現性を任意の hardware に一般化することも禁じられる。
+
+コード抜粋の扱いにも注意が要る。README と environ.py は一次資料（PRIMARY_RAW）として正確に引用できるが、それを読んだことが推論性能の再現を意味しない。ベンチ条件（4×SM100 の prefill＋64 decode など）は発行元の測定装置の記述であり、読者が同じ装置を持たなければ同じ数値は出ない。KVキャッシュや各種エンジン（VE）の分離、prefill／decode の分離、cross-DP の均衡といった除外・前提も明示されている。本号は「設定例の正確な読み方」を主題とし、性能の優劣表を作らない。
+
+### 動かすための実装条件
+
+DeepInferを動かす条件は重い。SM100以上のGPUや Ascend 950 といった加速器、対応 toolchain、1017 checkpoint などが前提として記される。測定は特定構成（4×SM100 の prefill＋64 decode など）で行われ、KV・VE の扱いや prefill／decode 分離、cross-DP 均衡などの除外がつく。9bd9cf24 以降の main 追随はなく、10月21日以降の変化は追跡していない。LICENSE は Apache-2.0 のバイトが確認できるが、特許・商標の範囲は審査していない。独立のビルドや実行は試みておらず、ベンダーの記述として読む。
+
+### 記憶を機構にするMemT
+
+MemTensorのMemT-1.0は記憶機構を中核に据えた基盤モデルである。動的記憶（dynamic memory）としての Gated DeltaNet-2（ゲート付きデルタネット2）と、外部記憶（external memory）としての Mixture-of-Storage（混合ストレージ記憶、Mixture-of-Storage）が核である。学習は34Bトークン、二段階＋事後の工程と説明され、Nano（Qwen3.6-35B-A3B 基盤）と Flash（DeepSeek-V4-Flash 基盤）の二形態が用意される。11ベンチで Flash が1位・Nano が2位とされるのは評価対象の parametric-memory 方式内での順位であり（発行元測定・vendorのみ）、textual-memory 方式が全体では上位に残る可能性がある。保存容量は128K履歴における full-context KV cache 比で約66倍削減という発行元主張であり（速度・スループット・レイテンシ・持続性能の66倍ではない）、end-to-end 128K時1.86倍は保存済みREADMEに記載がなく論文派生の AUTHOR_CLAIM で比較対象・測定条件が未確認のため SOURCE_UNVERIFIED とする。いずれも単一の「高速化率」に丸めてはならない。
+
+```text
+【表：bench×分母×条件（MemT）】
+11 bench｜Flash 1st／Nano 2nd（評価対象parametric-memory方式内・発行元のみ。textual-memory方式が全体で上位の可能性あり）｜分母・harnessは発行元条件｜独立再現なし
+1.86x｜end-to-end・128K（保存済みREADMEに記載なし・論文派生AUTHOR_CLAIM・比較対象/測定条件未確認=SOURCE_UNVERIFIED）｜本文から除外または限定読のみ｜単一値に統合禁止
+66x｜保存容量約66倍削減（128K履歴・full-context KV cache比。速度/スループット/持続性能ではない）｜原README 24行｜単一値に統合禁止
+34B tokens｜二段階＋事後｜Nano／Flashで基盤相違｜式・ablation未精読
+典拠キー（行別）: 11bench=MEMT-README 55行（parametric-memory方式内・textual-memory上位の可能性あり）／1.86x=SOURCE_UNVERIFIED（保存READMEに記載なし・論文派生AUTHOR_CLAIM）／66x=MEMT-README 24行（保存容量・full-context KV cache比・128K）
+```
+
+### 論文とソフトウェアの権利を分ける
+
+MemTの権利関係は子細な分離が要る。保存済みREADME（`memt-readme-e75c13d.md` 208–219行）の明記によれば、論文・原資料は Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International、リポジトリ原ソフトウェア（SGLang統合含む）は PolyForm Noncommercial License 1.0.0、同梱の第三者 flash-linear-attention は MIT、重み・データセット・商標は上記いずれの対象外である。論文PDF自体に条項があるとは書かず、典拠はREADME側の記述であることを明示する。SGLang の snapshot や save／restore の記述はあるが、実際に serve して確かめたわけではない。65ページ級の論文の式や ablation は精読しておらず、機構・評価・限界の特定にとどまることを明示する。商用利用の可否について断定はしない。
+
+```text
+【表：MemT権利対応（p2-f2、§2.5実物）】
+論文・原資料 ｜CC BY-NC-SA 4.0 ｜memt-readme-e75c13d.md:208-219 ｜商用不可（README宣言、PDF自体に条項なし）
+原ソフトウェア（SGLang統合含む） ｜PolyForm Noncommercial 1.0.0 ｜同上 ｜商用不可、問合せは著者
+第三者 flash-linear-attention ｜MIT ｜inference/README.md#licensing ｜同梱物の独自約款
+重み・データセット・商標 ｜対象外 ｜同上（別途提供予定） ｜再現・商用いずれも未確定
+```
+
+二つの公開に共通するのは「配布されたのは検証の出発点であって到達点ではない」という点である。DeepInferは特定コミットに固定して読むべきであり、main の漂流を追っていない。MemTは発行元の表を正確に写すことはできても、独立の harness 再実行はない。本章はベンダーの bench を独立測定値として書かず、式の再導出があるとも書かず、ライセンスを論文典拠にもしない。DEPTH_LIMITED の注記として、独立実行・供用試験なし、65ページの式・ablation 未精読、商用可否の断定なしを残す。
+
+FlashMLAとDeepGEMMの分担をもう一段具体化する。FlashMLAは注意計算のメモリ往復を抑える実装であり、DP（データ並列）と均衡CP（文脈並列）の下で注意をさばく。DeepGEMMは行列積の最適化であり、学習・推論の基盤演算を担う。DeepEPは専門家（expert）間の通信であり、EPLBが負荷の偏りを均す。TileKernels／TileLangはカーネル生成の生産性であり、DeepSelectは選択の機構である。いずれも発行元の記述であり、独立の作用検証はないが、役割分担の理解が設定の読みに直結する。
+
+二つの構成例で変わるのはデコード経路と結果の再現性である。可変長MTP系はドラフトトークンによる推測デコードを有効化し、確信度推定で検証を予定するため、スループット優先で出力は試行ごとに変動しうる。決定的サンプリング系は推測デコードを無効化し、バッチ組成が変わっても同一入力・同一パラメータで同一出力にする代わりに、投機の高速化を放棄する。batch-invariant と deterministic sampling の前提を混同せず、再現性の主張を任意 hardware に一般化しない。以下は保存済みREADME・environ.pyの逐語設定であり、実行したものではない（NOT_EXECUTED）。
+
+```bash
+# 設定例A: DSpark可変長MTP（構成の抜粋・NOT_EXECUTED。推測デコード有効、既定5・0で無効）
+# 典拠: deepinfer-readme-9bd9cf24.md 24-28行、environ.py 129-132行
+export DEEPINFER_ENABLE_MTP_VARLEN=1
+export DEEPINFER_USE_NEXTN_DECODE=5   # 最大ドラフト長、既定5
+# MTP_VARLEN=1 と BATCH_INVARIANT 系の同時有効は不可（排他）
+```
+
+```python
+# 設定例B: 決定的サンプリング（疑似使用例・PSEUDOCODE・NONRUNNABLE・NOT_EXECUTED・IMPORT_UNVERIFIED。NVIDIA限定、同一入力・同一条件で同一出力）
+# 典拠: deepinfer-readme-9bd9cf24.md 24-28行、environ.py 197行付近
+# 注意: SamplingParams の import 経路は保存一次資料で未確認のため記載しない。断片でありコピペ完全なプログラムではない（PSEUDOCODE・NONRUNNABLE）。
+import os
+os.environ["DEEPINFER_ENABLE_MTP_VARLEN"] = "0"
+os.environ["DEEPINFER_BATCH_INVARIANT"] = "1"  # NVIDIA only
+params = SamplingParams(seq_seed=1234)  # 固定シード（README記載の固定 seq_seed；数値は例示で推奨値ではない）
+# 実行していない（NOT_EXECUTED）。SamplingParams の呼出し形はREADME記述の範囲であり、実走は未実施。
+```
+
+MemTの二段階＋事後の学習と二形態の違いも要点である。34Bトークンの二段階学習＋事後工程という記述は発行元の工程説明であり、Nano（Qwen3.6-35B-A3B基盤）と Flash（DeepSeek-V4-Flash基盤）では基盤が異なる。11ベンチの順位（Flash 1位・Nano 2位）は評価対象parametric-memory方式内の同一 harness 内発行元順位であり、外部 harness との横断優劣ではなく、textual-memory方式全体を上回るとは言えない。66倍は保存容量の削減（128K・full-context KV cache比）であり速度・持続性能ではない。1.86倍は保存済みREADMEに記載がなく比較対象・測定条件未確認の SOURCE_UNVERIFIED であり、単一の高速化率に統合できない。
+
+SGLang の snapshot・save／restore の記述は、記憶の持ち越し（persistence）の運用可能性を示唆するが、実際に serve して確かめたわけではない。設定の記述を読んだことと、運用の再現は別の事実である。重み・データのライセンスは将来の扱いとされ、リポジトリのソフトウェアは PolyForm により商用利用が禁じられる。商用可否の断定を避け、ライセンス対応図で paper・software・第三者・重みの四者を分けて示す。
+
+> 【読み方の注意】本章のベンチはすべて発行元測定であり独立実行・供用試験はない。65ページの式・ablation は未精読。論文にライセンス条項はなく README のみが典拠。MTP可変長と決定的サンプリングの同時有効は誤り。9bd9cf24以降の追随なし。
+
+---
+
+## P3 — 働く前に権限を決める――Duetと1Password・auto-modeの境界
+
+AnthropicのClaude Duetは先回りして働くエージェントとして提示されたが、待機列・提供範囲・権限境界が要点である。1Password for Agentsの承認注入と、Claude Codeのauto-mode既定化の扱いをあわせ、来た機能と来る予定を分けて読む。
+
+### 先回りする振舞いと提供の段階
+
+Claude Duetは朝の要点整理、接続の監視、表や予報の作成、ウェブの作成、離席中の継続、要所での確認といった振舞いが説明される。技術的に新しいのは振舞いの列挙ではなく、それがどの権限と条件で動くかである。提供は待機列（waitlist）つきで、米国 Pro／Max が先行し、共有制限や背景消費（background consumption）の条件がつく。6000超の接続先一覧（catalogue）と実際に live な接続は別の数であり、接続先一覧の大きさを稼働の証拠として読んではならない。発表・待機・順次公開・一般提供（GA）は別の状態（status）として区別する。
+
+```text
+【表：権限×条件（Duet）】
+振舞い｜要点・監視・表・予報・web作成・離席継続・要所確認｜条件：権限と承認つき
+提供｜待機列＋US Pro/Max先行＋共有制限｜状態：発表／待機／順次公開／GAを別列
+接続｜6000+接続先一覧 vs 実live｜liveは接続別に未検証
+消費｜背景消費の条件あり｜料金・範囲外は未検証
+典拠キー: duet-blog-1021（待機列・US Pro/Max先行・6000+接続先一覧vs実live区別、日付のみ2026-10-21）
+```
+
+### 資格に触れずに働く設計
+
+権限境界の中核は、資格情報（credential）にエージェントが触れない設計である。Anthropic側は trustworthy-agents、Managed-Agents（秘匿を保持しない）、分類器（classifier）による承認、browser の prompt 注入対策、red-team・外部 pen-test・bounty、CC や gov-ID の分類といった安全対策の積層（defense in depth 的な層別）を説明する。1Password for Agents は承認を契機に資格を注入し、エージェント（agent）は暗証・OTP を見ない設計とされる。ただし現時点では coming soon（提供予定）であり、連携済み・live として書いてはならない。承認フローや自動入力の独立再現は行われていない。
+
+決済や証券の扱いは境界の試金石である。Stripe Link や Shop Pay といった接続が語られる一方、証券・送金のような資金移動は禁止の側に置かれる。製品・運用者だけの安全主張（product-operator-only）を独立保証のように書いてはならない。VM・browser の実行環境、6000超の接続先一覧と実 live の区別、coming soon と live の区別を図に整理した。資格の流れは「見ない設計（credential never visible）」として描き、エージェントが秘密を見ないことを強調するが、その振舞いの独立試験はないことを併記する。
+
+### 安全対策の積層と未検証の明示
+
+安全の説明は層の数で安心を作らない読み方が要る。分類器による gating、Managed-Agents の秘匿不保持、browser の注入対策、red-team と外部試験、bounty、分類といった各層は発行元の説明であり、分類器の独立試験はない。料金やプラン制限の範囲外は未検証である。接続別の live／順次公開／coming soon はベンダー blog の記述を超えて検証されておらず、すべての connector が live であるかのように書いてはならない。本号はベンダーの安全主張をベンダー報告（VENDOR_BENCH相当、未再現）として扱い、Xの投稿は二次情報にとどめる。
+
+### auto-modeの既定化は完了ではない
+
+Claude Code の auto-mode をめぐっては、10月22日の更新が当週内（IN）であり、8月7日の旧情報は範囲外（OUT）である。更新内容は Pro／Max／Team での既定化（default化）とされ、plan や partner の例外つき、多くのアプリでの既定化は翌週の将来（NEXT WEEK FUTURE）である。完了した既定化として書いてはならない。分類器（classifier gating）の詳細はベンダー記述であり独立試験はない。旧・新・未来の三段表で発表／プレビュー／GA を別列にし、Xのみが根拠の部分はその旨を明示する。
+
+```text
+【表：旧／新／未来の三段（auto-mode）】
+旧（8/7）｜OUT｜当週の根拠にしない
+新（10/22）｜IN｜Pro/Max/Teamで既定化、例外つき
+未来（翌週）｜FUTURE｜多くのアプリで既定化予定、完了と書かない
+分類器｜gatingの説明あり｜独立試験なし
+典拠キー: automode-art-1022（10/22 IN・8/7 OUT・翌週FUTURE）／X告知は存在裏づけのみ
+```
+
+待機列とプラン制限の扱いは読者の導入計画に直結する。waitlist＋米国 Pro／Max 先行＋共有制限という三条件は発行元の記述であり、プラン別・提携別の展開は部分的にしか記されない。権限の範囲外（料金の詳細や上限の全容）は未検証であり、導入の可否を断じない。プラットフォーム・プランの適用範囲は例外つきで記し、独立の entitlement 確認はないことを明示する。
+
+6000超の接続先一覧と実 live の区別は本章の反復主題である。接続先一覧（catalogue）の大きさは接続の可能性であり、稼働（live）の証拠ではない。接続別・プラン別の live／順次公開／coming soon はベンダー blog の記述を超えて検証されておらず、独立の接続確認はない。承認注入の信頼モデル（trust-model）は記述として読み、独立試験はない。
+
+分類器（classifier）の gating は権限境界の要であるが、仕様の記述と動作の検証は別である。分類器が承認を gate するという設計は発行元の説明であり、独立の動作試験はない。Managed-Agents が秘密を見ない（never sees secrets）という設計も同様に記述として読む。browser の prompt 注入対策、red-team・外部 pen-test・bounty といった層も発行元の安全主張であり、第三者保証の引用は検証まではベンダー報告扱いとする。
+
+```text
+【図：資格・承認フロー（p3-f1、§3.2実物）】
+経路A（発表済み・live側）: 利用者 → [承認ゲート: 分類器gating・要所確認] → VM/browser権限境界（Duet発表2026-10-21の設計。発行元説明、独立試験なし）
+経路B（coming soon・NOT_LIVE_VERIFIED）: 利用者 → [承認ゲート] → 1Password vault → 資格注入（承認時のみ。1Password発表2026-10-22は提供予定であり連携済み・liveとして書かない。発行者設計の主張）
+エージェント作業域: 暗証・OTPを保持しない（Managed-Agents never sees secrets。両経路共通の設計主張、独立試験なし）
+browser/VM: prompt注入対策・red-team・外部pen-test・bounty（発行元説明、独立試験なし）
+提供状態: 待機列 → US Pro/Max先行 → 順次公開 → GA（経路Bは coming soon、liveに読まない）
+典拠: Duet発表（2026-10-21、日付のみ）／1Password発表（2026-10-22、coming soon）／auto-mode更新（2026-10-22 IN、8/7 OUT、翌週FUTURE）
+```
+
+> 【読み方の注意】接続別の live は未検証で振舞いの再現なし。1Password は coming soon であり連携済みと書かない。auto-mode の翌週展開を完了と書かない。全 connector live と書かない。料金・権限の範囲外は未検証。
+
+---
+
+## P4 — 速さの見出しを割り算から読む――FLUX 3 Maxの数表検証
+
+falとBlack Forest LabsのFLUX 3 Maxは速度の見出しが躍るが、分母の取り違えと資料間の矛盾を正して読む必要がある。本章は独立の性能測定ではなく、ベンダー数値の算術検証（数表批判）である。
+
+### 何が配布され何が未検証か
+
+FLUX 3 Max は fal と BFL による post-train（強化学習 RL・推論最適）の成果として提示され、text・image・keyframes-to-video の三様式が語られる。text／image は発売時の公式確認がある一方、keyframes の扱いは資料間で矛盾する。10月19日のプレスリリース（PR）は可用を主張しブログも導線を置くが、「Two at launch（二様式で開始）」というFAQに由来するとされる未照合の記述との食い違いがある（原文の出典・版・観測時刻は未特定）。この不一致は UNRESOLVED_FAQ_ATTRIBUTION（FAQに由来するとされる未照合の記述との食い違い。原文の出典・版・観測時刻は未特定のため、確定した発行者間の矛盾に格上げしない。承認済みArchitectureの旧ラベルはraw検証待ちの legacy として保持）として残し、W43時点の live／schema／GA を確定として書かない。従量課金などの条件は記されるが、解像度・GPU・batch・cold／warm といった装置条件は不明（UNKNOWN）のままである。
+
+Klein（10月15日）は範囲外（OUT）、10月19日の PR が当週内（IN）という時間軸も要点である。PR は PRNewswire 経由の発行者一次声明であり、第三者のベンチではない。原文バイト（raw）は RENDERED_ONLY（描画抽出のみ）であり、原本 HTML の閲覧済みとして書いてはならない。ブログ・製品頁の12.45秒・277.80秒といった数値も、一次メタデータ上のベンダー数値（VENDOR_BENCH）として扱う。
+
+### 割り算を正して読む（独立測定ではない）
+
+速度の核心は二つの割り算である。速度倍率は旧基準時間÷新候補時間で求める。277.80秒÷10.95秒≒25.37倍（10月19日発行者PR、10.95秒・277.80秒）と、277.80秒÷12.45秒≒22.31倍（ブログ・製品頁、12.45秒・277.80秒）がそれである。所要時間の削減率は（旧基準時間−新候補時間）÷旧基準時間×100で求め、（277.80−12.45）÷277.80×100≒95.52％となる。分母は旧基準277.80秒であり、新候補12.45秒ではない。ブログの26.5倍・96.2％は同じ入力では整合せず、不整合として残す。見出しの「22x」は下限表現であり、見出しだけで数学的誤りと断じない。最速の見出しは禁じられる。
+
+```text
+【表：倍率×削減率×出典／版／時刻】
+25.37x｜277.80／10.95｜Oct19発行者PR（一次声明、raw RENDERED_ONLY）｜IN
+22.31x｜277.80／12.45｜blog／製品頁｜IN
+95.52%｜(277.80−12.45)／277.80｜分母＝旧基準277.80秒｜候補分母にしない
+26.5x／96.2%｜同入力で不整合｜blog値｜正として引用しない
+22x見出し｜下限表現｜数学的誤りと断じない
+典拠キー: flux-page-1019（再計算25.37x/22.31x/95.52% VERIFIED・26.5x不整合・22x下限）
+```
+
+### 質の数と価格の読み分け
+
+質の指標として語られる Elo 1139 は暫定値・4868票という条件つきであり、Artificial Analysis（AA）の原表は未取得のため VENDOR 扱いである。ブログ時点では FLUX3 比＋47、製品頁・PR（10月19日15時46分 ET）では1139−1089＝＋50とされる（1089は導出値で出典要確認）。比較対象・版・snapshot の相違があり、背後のAA変動は UNKNOWN である。＋47 と＋50 のいずれかを単一の確定改善幅に統一してはならない。価格は100万画素あたり通常0.0425ドル・高速0.0725ドルから、将来的に0.17ドル・0.29ドルといった条件が記されるが、ライセンスの範囲を超えた検証はない。従量の条件として読む。
+
+資料の版と時刻の扱いも要点である。10月19日のPRは15時46分（ET）という時刻つきの発行者声明であり、ブログ・製品頁は版・snapshot の異なる数値を載せる。Elo の＋47（ブログ snapshot）と＋50（製品頁・PR、1139−1089＝50）は比較対象・版・snapshot の相違であり、背後のAA変動は UNKNOWN である。単一の確定改善幅に統一せず、版・snapshot・票数（4868票・暫定）を添えて読む。
+
+keyframes の矛盾は提供の確定を禁じる。text／image は発売時の公式確認があるが、keyframes は10月19日PRの可用主張・ブログ導線と、FAQ由来とされる未照合の記述「Two at launch」との矛盾として UNRESOLVED_FAQ_ATTRIBUTION のままである。W43の live／schema／GA は未検証であり、提供確定と書かない。従量の条件（pay-go）は記されるが、ライセンスの範囲を超えた検証はない。解像度・GPU・batch・cold／warm の UNKNOWN を明記し、装置を仮定した再計算をしない。
+
+> 【読み方の注意】速度倍率は発行元報告で矛盾した分母つき、独立計測ではない。10.95秒のPR原文は現行頁になくバイト未再取得。AA原表未取得。keyframes提供確定と書かない。＋47／＋50のいずれかを単一真値と書かない。26.5倍を正として引用しない。
+
+---
+
+## P5 — 声の三様式を読む――VoxtralとMing・Elevenの条件と原表
+
+MistralのVoxtral 3を主軸に、InclusionAIのMing-3.0-ttsとElevenLabsのEleven Realtime v1を対照する。文字起こし・リアルタイム・音声合成の三様式で、対応言語・評価標本・原表の有無を混ぜない読み方が要る。
+
+### Voxtral家族の言語数は単一値にしない
+
+Voxtral 家族は Small Transcribe 3（バッチ文字起こし＋話者分離 diarization）、Mini 4B、Realtime といった構成で10月20日（日付のみ）に示された。STT（書起こし）は50超言語、Realtime は35言語超・40超の言語方言とされる。一方 TTS（Speech 3）は発表で35超言語・50超方言、モデルカードで9言語、言語表で35言語・50超方言、プリセット音声で発表18言語・Docs表22と資料間で一致しない。この不一致は UNRESOLVED_VENDOR_DOC_CONFLICT であり、単一のTTS言語数に統一してはならない。製品・モデル版・機能・言語・方言・プリセット音声を区別し、11言語の評価標本を対応数として書かない。voice cloning は別枠である。
+
+認識の機構として context biasing（用語辞書による認識誘導）が説明され、FLEURS の WER、cpWER（連結最小置換WER、concatenated minimum permutation WER）、recall、500ms 未満といった条件が付される。いずれもベンダーの表（VENDOR_BENCH）であり、独立再現はない。書起こし・diarization・keyphrase の表は読んだが、再現測定は行っていない。
+
+```text
+【表：機能×モデル×対応言語×出典／版／時刻】
+STT Small Transcribe 3｜50超言語・diarization・context biasing｜出典：発表資料｜評価標本と区別
+Realtime｜35言語超／40+方言｜出典：発表資料｜対応数の確定にしない
+TTS Speech 3｜35+言語（発表）／9言語（カード）／35言語表／プリセット18（発表）・22（Docs）｜UNRESOLVED、統一禁止
+評価標本｜11言語｜対応数ではない｜混同禁止
+典拠キー（行別）: STT/Realtime/TTS=voxtral-announce（日付のみ2026-10-20、TTS言語数未解決）
+```
+
+### 内部評価の判定器はベンダー選択
+
+TTS の内部評価は Voice Code Bench 300、pronunciation 300、multilingual 377（11言語標本、対応言語数ではない）、expressive 237 といった規模で記され、判定に gemini-3.8-flash が用いられたとされる。判定器がベンダー選択であることを明示し、独立評価のように書かない。価格・EU／US・自己配備・Pro Voice といった条件は記されるが、end-to-end のエージェント動作再現はない。評価の設計を読んだという事実と、評価を再現したという事実を区別する。
+
+### Mingの開放とAA引用の距離
+
+InclusionAI の Ming-3.0-tts は開放側の対照群である。0.5B dense と 7.9B-A1.3B MoE（Ling V3）の二形態、MITライセンス（LICENSE バイト確認）、7言語＋方言、14 tag、9 task といった条件が README の範囲で確認できる。AA（Artificial Analysis）の引用として Controlled Voice・Robustness・Provider Voice などが語られるが、原表は未取得であり、発行元引用として扱う。roadmap は保留、月精度の日付は日付確定にしない。AA×原表有無の表で距離を明示し、順位を独立検証済みに書かない。
+
+```text
+【表：AA×原表有無（Ming）】
+Controlled Voice｜ベンダー引用｜原表未取得｜独立検証にしない
+Robustness｜ベンダー引用｜原表未取得｜同上
+Provider Voice｜ベンダー引用｜原表未取得｜同上
+開放条件｜MIT・tag・task｜README確認｜roadmap保留
+典拠キー（行別）: AA三行=発行元引用（原表未取得）／開放条件=ming-readme-license（MIT・LICENSEバイト確認）
+```
+
+### Elevenの互換と未開封の指南
+
+ElevenLabs の Eleven Realtime v1 は realtime 互換の側にある。v1 Mini／Max の単一 speech-to-speech、90超・17k超の voice、Agents・Realtime API・OpenAI 互換・WebSocket といった条件が記される。AA として BBA・TTFA・Full-Duplex・Arena・tool-use などが語られるが、原表は未取得でありベンダー blog 経由の引用である。Pareto や SDK 改修の記述はあるが、移行指南は未開封であり、互換の記述から移行の容易さを断じない。プロトコル互換は SDK の作り直しを含意しうることを注記する。
+
+書起こしの評価詳細も条件つきで読む。ベンダーの FLEURS・diarization・keyphrase の表は読んだが、独立再現はない。WER・cpWER・recall・500ms未満といった条件は評価の設計であり、評価の再現ではない。STT の50超言語という対応数と11言語という評価標本は別の数であり、標本の大きさを対応の証拠にしない。context biasing（用語辞書による認識誘導）の初出では日英併記とし、専門用語の定義を添える。
+
+Ming の roadmap と公開日の扱いを補う。roadmap は保留（pending）であり、月精度の公開日は日付確定にしない。Oct19作成というリポジトリ起点（IN）と、News の月精度表記は別の確度である。
+
+Eleven のプロトコル互換は移行の作り直しを含意する。OpenAI互換・WebSocket・Realtime API といった記述は互換の主張であり、移行指南は未開封である。互換があることと移行が容易であることは別の主張であり、SDK改修の記述とあわせて読む。AA の BBA・TTFA・Full-Duplex・Arena・tool-use は blog 経由の引用であり、原表未取得のまま優劣にしない。Pareto の記述もベンダー報告として扱う。
+
+```text
+【表：様式×評価・料金の実数行列（p5-f1、§5.1–5.2実物。数値は全て発行元公表・独立再現なし。比較対象・単位は行内でqualified）】
+STT Small Transcribe 3 ｜FLEURS WER Small 4.1/4.0（二値の内訳・比較対象は受理証拠に特定なし=COMPARATOR_UNVERIFIED）・diarization cpWER 18.4/18.6（対照 Pyannote 19.0=明示）・keyphrase recall 94.6/81.4（二条件の内訳未特定） ｜料金Mini $0.0035/分（確認）・Small $0.004（/分の明記はMiniのみ=UNIT_UNVERIFIED） ｜対応50超言語（書起こし。標本11言語と区別）
+Realtime ｜500ms未満（40超言語標本での測定条件） ｜料金 $0.008（単位未確認=UNIT_UNVERIFIED） ｜対応35言語超・40+方言（発表。40超は標本規模であって対応数に非ず）
+TTS Speech 3 ｜Voice Code Bench 300・発音300・多言語377（11言語標本）・表現力237・判定gemini-3.8-flash（ベンダー選択） ｜料金 $13/100万字（確認） ｜35+発表／9カード／35表／preset18発表・22Docs（未解決、統一禁止）
+LiveKit音声エージェントSDK ｜聴取・推論・発話の単一管・1秒未満ターン・barge-in ｜料金agent API $0.04/$0.08（請求単位未確認=UNIT_UNVERIFIED） ｜EU/US/global＋自己配備・Pro Voice 30分適応
+典拠: Voxtral証拠task-18a859ebb1ef50040078（claim-1/2/3、日付のみ2026-10-20）／AA原表未取得
+```
+
+> 【読み方の注意】ベンダー判定・AA未取得・end-to-end未再現。TTS言語数は未解決で単一確定にしない。AA順位を独立検証済みに書かない。全言語で同等と書かない。11言語標本を対応数と書かない。
+
+---
+
+## P6 — 見つけて直し隔離して学ぶ――協調開示と学習環境の安全
+
+OpenAIのPatch the Planetは協調開示の工程であり、frontier training containmentは学習環境の隔離の説明である。見つけて直す応答と、事前に隔離する備えを、証拠の段階でつなげて読む。
+
+### 協調開示の五段階とCVEの留保
+
+Patch the Planet は10月21日の RENDERED_TEXT（bot-wall 越し9946バイトの描画抽出のみ）が典拠であり、原本 HTML の閲覧済みとして書いてはならない。内容は Calif を GPT-5.6 Sol で見つけ、Wiz が独立に双方確認し、maintainer 主導で直す協調開示（coordinated disclosure）である。工程は1) upstream の検証と修正（validate and fix the upstream vulnerability）、2) 影響組織への時間確保（give affected organizations time to act）、3) 政府パートナーとの調整（coordinate with government partners）、4) 影響製品の更新準備（prepare updates across affected products）、5) パッチ利用可能後の案内公表と展開支援（once a patch is available, publish guidance and support deployment）の五段階と説明される。10億ドルの Daybreak と Codex の PHP checker は工程外の関連施策であり段階4には入れない。Wiz は双方の脆弱性を独立に発見・報告、Cloudflare 等は準備の貢献者、修正の主導は maintainer である。当該発行者ページの確認範囲で CVE 識別子は特定できず、CVE 付与の有無は未検証である。「CVEゼロ」とは書かず、独立の脆弱・patch 検証もないことを明示する。
+
+来歴の保存が要点である。10月23日の囲い込み記事と W42 の申立ては別の出来事であり、混ぜてはならない。開示の範囲はベンダー記述であり、独立確認はない。報告書に CVE 文字列がないことをもって CVE の不存在証明としない。工程図として五段階を残し、各段階の担い手と証拠段階を分けて記す。
+
+### 学習環境の隔離と攻撃者有利の留保
+
+Securing 側は offline（隔離）、defense in depth（多層防御）といった隔離の語彙で語られる。9月20日の DNS 出来事、数百B規模の red-team、Kata／gVisor／Moby／kernel CVE、10月1日の RL 再開、safety gating などがベンダー記述の範囲である。頁の日付は日付のみで時刻の証拠にならず、10時00分（Z）は公式 RSS（secondary）に基づく。攻撃者が有利という留保がつき、隔離の説明をもって安全の保証としない。red-team の規模・条件はベンダー記述であり独立再現はない。
+
+二つの位相は対照的である。Patch が「見つけて直す」応答の工程であるのに対し、Securing は「学ぶ前に隔離する」事前の備えである。いずれもベンダーの物語であり、監視・停止の制御はベンダー記述として読む。頁時計と RSS 時計を混ぜず、頁の日付のみを製品時刻の証拠にしない。脆弱・patch の独立検証なし、red-team ベンダー記述、RSS は頁時計の証明ではない、という境界を残す。
+
+工程図の読み方を具体化する。1) upstream validate+fix（Calif が GPT-5.6 Sol で発見 → Wiz が独立に双方確認 → maintainer 主導で修正）、2) advance-notice（関係者へ事前通知）、3) 政府 SIF-ONCD-CISA＋国際調整（coordination）、4) prepare（影響製品の更新準備）、5) publish（パッチ利用可能後の案内公表と展開支援）の五段階は、maintainer 主導という条件つきである。Wiz の独立双方確認、Cloudflare の関与は発行元の記述であり独立確認はない。Daybreak の規模と Codex の checker は工程外の関連施策であり段階4には入れない。調整の範囲（coordination-scope）はベンダー記述として読み、確認済みとして書かない。
+
+Securing の頁時計とRSS時計の区別も要点である。頁の日付は日付のみで時刻の証拠にならず、10時00分（Z）は公式RSS（secondary）に基づく。頁時計の証明としてRSSを書かず、RSSを頁の証拠にしない。Sep20 DNS＋RL再開といった出来事の範囲（incident-scope）、red-team の規模・条件（red-team-conditions）、監視・停止の制御（monitoring-and-stopping-controls）はいずれもベンダー記述であり、第三者の裏づけはない。
+
+```text
+【図：協調開示の五段階（p6-f1、§6.1実物）】
+[1 validate+fix] upstream の検証と修正：Calif が GPT-5.6 Sol で発見 → Wiz が独立に双方確認 → maintainer 主導で修正
+[2 advance-notice] 影響組織へ時間確保：関係者へ事前通知
+[3 coordination] 政府パートナー（SIF-ONCD-CISA）＋国際調整で重要系を保護
+[4 prepare] 影響製品の更新準備（updates across affected products）
+[5 publish] パッチ利用可能後の案内公表と展開支援（公開10月21日、日付のみ）
+工程外の関連施策: $1B Daybreak（subsidized access）・Codex PHP checker（version checker skill）—段階4には入れない
+役割: 発見=Calif／独立双方確認=Wiz／修正主導=maintainer／貢献=Wiz・Cloudflare等。混同しない
+CVE: 当該頁の確認範囲で識別子未特定であり、付与の有無は未検証（不存在証明ではない。「CVEゼロ」と書かない）
+典拠: Patch証拠task-5d21d93e7679f5441b8a／保存済み描画抽出 openai-patch-planet-rendered-20261025.md 17-22行（原本HTMLはbot-wallでRENDERED_ONLY・RENDERED_TEXT）
+```
+
+> 【読み方の注意】原HTMLはbot-wallでRENDEREDのみ。脆弱・patchの独立検証なし。red-teamはベンダー記述。RSSは頁時計の証明ではない。CVE確定・独立再現・原本閲覧済みと書かない。
+
+---
+
+## P7 — 手順が結果を決める――生体摂動と低資源言語の評価設計
+
+OpenAIらの生物学研究と低資源言語の符号評価は、手順・盲検・hidden試験の設計が結果の意味を決める。独立再現と取り違えず、公開された手順（suite）と保持された試験（hidden）を分けて読む。
+
+### 数千エージェントの摂動報告と盲検の選好
+
+生物学側は OpenAI・PerturbAI・Scripps の共同研究班の手順（protocol）として提示される。GPT-Rosalind という数千のエージェント（agents）が全脳 CRISPR で数百万細胞を32分で扱い、摂動の報告から atlas を編む、という構造である。Tsc1／Tsc2・DCTN1 といった遺伝子、700超 vs 11 といった対比、盲検（blinded evaluation）で75％の分散選好といった数値が記される。bioRxiv・Hugging Face・GitHub の来歴、in-loop の位置づけが示される一方、wet-lab（生実験）の確認はなく、再現ゼロ（ZERO再現）であることを明示する。75％の選好は共同研究班内の手順＋班推定の比較対象であり、独立の専門家再現はない。
+
+```text
+【表：手順×来歴×限界（Bio）】
+エージェント｜数千 agents（GPT-Rosalind）｜来歴：研究頁・bioRxiv・HF・GitHub｜独立再現なし
+操作｜全脳CRISPR・数百万細胞・32分｜摂動報告→atlas｜wet-lab未
+評価｜盲検75%分散選好｜班内手順＋班推定比較｜独立専門家再現なし
+遺伝子｜Tsc1/Tsc2・DCTN1｜700+ vs 11｜標本bias未評価
+典拠キー: bio-page（日付のみ2026-10-21、班内手順・盲検75%・wet-lab未）
+```
+
+### SQLite自作とCOBOL hiddenの二層
+
+低資源言語側は MultiLangBench という SQLite 自作の公開 suite が中核である。20言語・DB共有・参照 SQLite 照合という設計で、Astra 87.4 vs Sol 26.8、COBOL 10.9→72.1 など19／20言語で83%以上（COBOL 72.1%は唯一83%未満の例外・最難関）といった数値がベンダー測定として記される。一方 COBOL の hidden 試験は byte-parity の設計で、GPT-6.1 Sol 86.6％ low・97.9％ high といった数値が記される。suite の公開と再現は別であり、専門家審査の記述はあるが hidden 試験はベンダー保持（vendor-held）である。外部への一般化は証明されていない。
+
+費用と現場の扱いも条件つきである。企業現場の言及としてCOBOL 40％超のオンラインバンキング・Fortranの気象／原子力が挙げられる。費用はLuna（40.3％）0.77ドル vs Sol 3.48ドル（−78％、ベンダー測定）であり、課金の独立検証はなく、費用差は品質同等を意味しない。低労力条件はSol 5.6比61％（対照5.4％起点）、高労力97.9％は飽和近傍とされる。we／our という一人称の手順記述は第一者（first-party）の手順として読めるが、それを読んだことが独立 harness 再実行を意味しない。20言語表は読んだが独立確認はなく、byte-parity の設計＋86.6／97.9 は読んだが hidden 試験は保持されたままである。公開 suite と保持試験の二層を表に分けた。
+
+```text
+【表：言語別デルタと労力・費用の注記（p7-f1、§7.2実物。数値は全て発行元測定）】
+COBOL ｜10.9→72.1 ｜19/20言語83%以上の例外（唯一83%未満・最難関） ｜hidden byte-parity（固定小数トランケーションの罠。公開suiteとは別試験）
+OCaml ｜25.6→85.8 ｜公開suite・参照SQLite照合 ｜—
+Fortran ｜21.4→83.5 ｜同上 ｜現場言及：気象／原子力
+VB ｜27.5→89.4 ｜同上 ｜—
+労力 ｜GPT-6.1 Sol 86.6% low（Sol 5.6比61%、対照5.4%起点）・97.9% high（飽和近傍。hidden別試験86.6/97.9で公開suiteと別） ｜hidden保持 ｜専門家審査は依然必要
+費用 ｜Luna(40.3%) $0.77 vs Sol $3.48（−78%。費用差は品質同等を意味しない） ｜ベンダー測定 ｜課金未検証
+典拠: 低資源証拠task-160489b77720f40bd1e1（claim-1/2/3、日付のみ2026-10-19）
+```
+
+```text
+【表：bench×分母×条件（Low-resource）】
+SQLite自作｜20言語・DB共有・参照照合｜Astra87.4 vs Sol26.8・19/20≧83%（COBOL72.1%は例外）｜ベンダー測定
+COBOL hidden｜byte-parity・vendor保持（公開suiteとは別試験）｜GPT-6.1 Sol86.6%low・97.9%high｜外部一般化なし
+費用｜$0.77 vs $3.48・COBOL40%｜ベンダー測定｜課金未検証
+手順｜we/our第一者｜専門家審査記述｜独立harnessなし
+典拠キー（行別）: SQLite自作/low/high/hidden=lowres-page（日付のみ2026-10-19、ベンダー測定・hidden保持）
+```
+
+### 盲検・標本・請求の限界
+
+二章に共通する限界は、研究班内・盲検・ベンダー測定という三点である。wet-lab 未、標本 bias、hidden 外部未証、請求の独立未証を残す。独立再現・独立評価と書かず、wet-lab 確認済みと書かない。研究頁・bioRxiv・HF・GitHub・suite は一次資料（PRIMARY_RAW）、選好・費用はベンダー測定（VENDOR_BENCH）、wet-lab は未検証（UNVERIFIED）として区別する。来歴の保存として、手順の公開と試験の保持を分けて記した。
+
+摂動 atlas の読み方を具体化する。摂動の報告から atlas を編むという構造は、数百万細胞・32分という規模の記述と一体である。Tsc1／Tsc2・DCTN1 といった遺伝子の言及、700超 vs 11 という対比は班内の測定であり、標本・選択の bias は未評価である。追試（follow-up）の実験は wet-lab を要するが報告はなく、来歴（bioRxiv・HF・GitHub）の公開をもって検証済みにしない。in-loop の位置づけも班内の手順として読む。
+
+言語別の表の読み方も条件つきである。20言語表は読んだがベンダー測定であり独立確認はない。COBOL の byte-parity 設計＋86.6／97.9 は読んだが hidden 試験は保持されたままである。言語別の表（per-language-tables）と移行 hidden 試験（migration-hidden-tests）、費用の根拠（cost-basis：0.77ドル vs 3.48ドル、独立課金なし）を分けて記し、公開 suite の存在をもって再現の存在としない。we／our の手順記述は第一者の手順として読む。
+
+> 【読み方の注意】研究班内・盲検・ベンダー測定であり独立再現なし。wet-lab未、標本bias、hidden外部未証。独立評価・wet-lab確認済みと書かない。
+
+---
+
+## P8 — 判断をAPIに道具を束ねる――DecisionsとTanStack・DeepSeek配布
+
+OpenAIのDecisions APIは判断のAPI化の一般提供であり、TanStack AI 1.0は安定核と実験 harness の対照、DeepSeek V4.1-Flash-1017は配布と移行の条件が要点である。料金・時刻・約款を混ぜない読み方が要る。
+
+### 400問は毎回の上限であり総量ではない
+
+Decisions API は10月22日の v1／Luna（beta の10月6日と区別）として一般提供（GA）に置かれた。3型（predicate／choice／score）、text／image／JSON、400問 per request（毎回の上限であり総呼出上限ではない）、2x beta、cache（読取0.01ドル・書込別課金）、GPT-Live の avatar triggers といった条件が記される。料金は未 cache 入力0.10ドル／100万、cache 読取0.01ドル、出力トークン課金なしという条件だが、総無料と同義ではない。地域上乗せ・長文脈乗数があり、0.10／0.01 を総運用の固定単価として書いてはならない。米国／欧州・ZDR、10x というベンダー倍率（独立未測定）、Box／Datadog／Ramp／Sierra／SpeakBox といった証言の選択 bias、製品頁の未 archive といった境界も残す。
+
+```text
+【表：料金×条件×版（Decisions）】
+入力｜$0.10／M（uncached）｜cache読取$0.01・書込別課金｜出力課金なし≠総無料
+上限｜400問 per request｜総呼出上限ではない｜2x betaと区別
+版｜v1 GA（10/22）／Luna（beta 10/6区別）｜3型・text/image/JSON｜avatar triggers
+条件｜US/EU・ZDR・地域上乗せ・長文脈乗数｜10x vendor（独立未測定）｜証言は選択bias
+典拠キー（行別）: 料金・上限・版=decisions-page（日付のみ2026-10-22、GA/beta区別・400毎回）
+```
+
+```text
+【例：Decisions要求・応答（p8-f1、§8.1実物。公式ガイド転載・NOT_RUN）】
+要求は公式開発ガイド（2026-10-25観測、W43締切後の二次観測時点）のchoice顧客苦情例の原文である。
+応答は同ガイド同節の公式 illustrative 抜粋であり、この要求の実行結果ではない（別掲・未実行）。
+```
+
+```json
+{
+  "model": "gpt-6-luna",
+  "input": "I was charged twice for my order.",
+  "questions": [{
+    "type": "choice",
+    "name": "department",
+    "instructions": "Which department should handle this complaint?",
+    "choices": [
+      {"value": "billing", "description": "Payments, invoices, and refunds."},
+      {"value": "technical", "description": "Problems using the product."},
+      {"value": "shipping", "description": "Delivery and tracking."},
+      {"value": "other", "description": "Requests outside these categories."}
+    ]
+  }]
+}
+```
+
+```json
+{
+  "answers": [{
+    "type": "choice",
+    "name": "department",
+    "choice": "billing",
+    "probabilities": [
+      {"value": "billing", "probability": 0.95},
+      {"value": "technical", "probability": 0.02},
+      {"value": "shipping", "probability": 0.01},
+      {"value": "other", "probability": 0.02}
+    ],
+    "confidence": 0.93
+  }]
+}
+```
+
+読み方：`POST /v1/decisions` に `model`・`input`（共有証拠）・`questions`（1–400問、型・指示・選択肢/水準つき）を送り、応答の `answers` 配列を `name` で照合する。確率は分布、choice/score には別途 `confidence` がつき、任意の設問は `refusal` を返しうる。料金・上限・版の条件は本文・料金表のとおり。beta 200問→400問、input_json 直渡し、session.triggers 連動、cache 書込別課金は受理証拠の範囲。TTL 等の値は W43 時点未公表（Oct25観測のTSリファレンスには 30m との記載があるが、W43事実にしない）。実 API 呼出しは行っていない（NOT_RUN）。
+典拠: 公式ガイド https://developers.openai.com/api/docs/guides/decisions（観測2026-10-25、snapshot `sources/2026-W43/execution/source-intake/w43-r31-decisions-guide-snapshot-20261025.md` SHA256 `70f106a9a7f1ed57bb80bf209603bf2270c405d3467e4e44a4aa962b6c5fa1fa`）／Oct22 GA・beta区別は changelog 原文＋受理証拠 claim-1。
+
+### 安定核と実験harnessの対照
+
+TanStack AI 1.0 は76 pkgs・23 adapters・8 UI・143人という規模で示されるが、本章の要点は規模ではなく安定核と実験 harness の対照である。harness 0.x は実験と明示し、安定核 vs 実験 harness の対照表で読む。codemod の threadId、非 sandbox といった条件が記される。製品時刻は10月22日 IN であり、GitHub release の published_at 15時18分14秒（GitHub API、確認10月25日）と npm registry の time["1.0.0"] 15時21分49秒（registry、確認10月25日）が典拠である。ブログは10月23日の日付のみで製品時刻の証拠にしない（UNRESOLVED分離）。blog を製品時刻に読まない。
+
+移行の指南はベンダー記述であり独立試験はない。harness の実験境界、版固定は registry／release による。GitHub の Metrics 23時42分03秒は POST_CUTOFF／OUT であり当週非選択、Grok binder は NEVER_STORY であり当週記事に昇格させない。本章は実測なき優劣表・PR長写しを禁じ、決定API例1件＋安定／実験対照＋更新差分短表を優先する。不足時は囲み縮約とする。
+
+```text
+【表：安定核 vs 実験harness（p8-f2、§8.2実物）】
+安定核 ｜TanStack AI 1.0（76 pkgs・23 adapters・8 UI・143人） ｜製品時刻10月22日IN（GH 15:18:14Z／npm 15:21:49Z） ｜blog10月23日は日付のみ
+実験harness ｜0.x（実験明示） ｜codemod threadId・非sandbox ｜移行指南はベンダー記述・独立試験なし
+版固定 ｜registry／releaseの時刻 ｜Metrics 23:42:03ZはOUT ｜GrokはNEVER_STORY
+```
+
+### 配布と移行と約款の三状態
+
+DeepSeek V4.1-Flash-1017 は9月10日基盤の snapshot として、強 bench・高速・短出力という条件で語られる。web／app／API、RL の自己 feedback demo、MIT の HF／ModelScope・GreenBitAI／Baekpica、Harness v0.2.1-rc.1、CodeBuddy／WorkBuddy といった条件が記される。Search／Fetch 0.75ドル／1k・10月31日16時00分 UTC 迄無料という移行・約款の条件は、発表／配布／無料期限を別 status として表に分ける。DeepSWE 77 vs 74.2・HLE といった bench はベンダー harness つきであり、重み SHA・可用性は未取得、課金移行は未試験である。HF の重みバイト・SHA を取得していないことを明示し、独立局所実行なしとする。
+
+```text
+【表：API×移行×約款（発表／配布／無料期限を別status）】
+配布｜V4.1-Flash Sep10 snapshot｜MITはベンダー公表（HF/ModelScope。各artifactのLICENSE実バイト/SHA未確認）｜SHA未取得・実行なし
+移行｜Search/Fetch $0.75/1k｜10/31 16:00 UTC迄無料｜約款表で別列
+bench｜DeepSWE77 vs 74.2・HLE｜ベンダーharness｜独立なし
+demo｜RL自己feedback｜web/app/API｜CodeBuddy/WorkBuddy
+典拠キー（行別）: 配布=MIT HF/ModelScope（SHA未取得）／移行=$0.75/1k・10/31迄無料（未試験）／bench=deepseek-1017（ベンダーharness）
+```
+
+```text
+【表：重み vs API vs 追加物（p8-f3、§8.3実物）】
+重み ｜V4.1-Flash Sep10 snapshot・MITはベンダー公表（HF/ModelScope。各artifactのLICENSE実バイト/SHA未確認。API/harnessの許諾と混同しない） ｜SHA未取得・局所実行なし ｜配布経路GreenBitAI/Baekpica
+API ｜Search/Fetch $0.75/1k・10/31 16:00 UTC迄無料 ｜課金移行は未試験 ｜発表／配布／無料期限を別status
+追加物 ｜Harness v0.2.1-rc.1・CodeBuddy/WorkBuddy・RL自己feedback demo ｜bench DeepSWE77 vs 74.2・HLE（ベンダーharness） ｜独立なし
+```
+
+判断の3型と適用の例を具体化する。predicate（述語判定）・choice（選択）・score（得点）の3型は、text／image／JSON の入力と組み合わさる。400問 per request という上限は毎回の上限であり、総呼出の上限ではない。2x beta との区別、GPT-Live の avatar triggers といった条件も添える。証言（Box・Datadog・Ramp・Sierra・SpeakBox）は選択 bias の可能性があり、無作為の導入事例として書かない。遅延の主張（10x）はベンダー測定であり独立試験はない。
+
+TanStack の版・時刻の二重証拠は本章の模範事例である。GitHub release の published_at（15時18分14秒）と npm registry の time["1.0.0"]（15時21分49秒）は別の登録時刻であり、両者を突き合わせて製品の10月22日 IN を支える。ブログの10月23日は日付のみで製品時刻の証拠にならない。repo-tag・upgrade-guide といった要素はベンダー記述であり、独立の移行試験はない。安定核と実験 harness の対照表で、harness 0.x の実験境界を明示する。
+
+DeepSeek の配布・重み・課金の三者は別に読む。HF・ModelScope の MIT 配布、GreenBitAI・Baekpica といった配布経路、Harness v0.2.1-rc.1、CodeBuddy／WorkBuddy といった適用は記されるが、重みバイト・SHA は未取得であり局所実行はない。Search／Fetch の0.75ドル／1k、10月31日16時00分 UTC 迄無料という課金移行は未試験であり、約款表で発表／配布／無料期限を別 status とする。DeepSWE・HLE の bench はベンダー harness つきである。
+
+> 【読み方の注意】10xは独立測定にしない。証言を無作為と書かない。blogを製品時刻に読まない。出力課金なしを総無料と書かない。400問はper request。Metrics OUT・Grok非物語を昇格させない。
+
+---
+
+# 今週の総括
+
+今週の生成AI関連の発表を貫くのは、モデルの性能・能力向上が報告されたこと自体ではなく、その能力を**どの時点で、どの条件で、実際に利用できるのか**という問題である。KimiではAPI提供と将来の重み配布を区別する必要がある。一方、FlintやNemotronのように重みを入手できる場合でも、総パラメータ数と稼働パラメータ数、文脈長、実行条件、重みに適用されるライセンスまで確かめなければ、導入可能性は判断できない。DeepInferの高速化も、設定の排他性や実行環境を無視して評価できず、MemTの記憶機構も論文中の比較条件から切り離して優劣を語れない。
+
+エージェントの進歩では、「先回りして働く」機能と、実際に行使できる権限を分けて見ることが重要になった。Duet、1Password連携、auto-modeで示される自律性は、資格情報の扱い、利用者による承認、接続先ごとの提供状況など、運用上の境界と一体である。開発用のDecisions APIやTanStack AIにも同じ原則が当てはまる。発表、一般提供、試験的な機能、移行段階を混同せず、要求ごとの上限や課金条件まで読んで初めて、道具を業務に組み込む判断ができる。
+
+性能を比較する場面では、**数値を確かめることと、性能を独立に測ることは別**だと改めて分かった。FLUX 3 Maxの公表秒数から速度倍率と削減率を再計算することはできる。しかし、発行者資料間で測定値や評価差分、提供機能の記述が異なり、同じ機器・条件で追試した結果ではない。Voxtralの対応言語や音声プリセットの記載にも資料間の不一致がある。こうした場合、ひとつの数字に丸めるより、出典、モデル版、評価標本、未解決の範囲を並べて示す方が読者の判断に役立つ。
+
+安全性と科学的評価についても、結論を支える手続きが重要である。脆弱性の発見から修正・事前通知・公表に至る協調開示は、問題を見つけたという発表だけでは完結しない。学習環境の隔離も、設計された防御と独立に検証された成果を区別して読む必要がある。生物学研究の盲検評価や低資源言語向けの公開試験も、研究班内の比較、非公開の追加試験、外部による再現では証拠の強さが異なる。
+
+来週以降も注目したいのは、新しいモデルやサービスの件数そのものより、**利用可能な成果物、適用ライセンス、再現できる評価条件、運用中に守られる権限境界**がどこまで具体化したかである。将来予定の重みや機能、今週の集計対象期間を外れた発表は、現在利用できる技術として先取りしない。発表された能力が実際の技術選択に結び付くまでの隔たりを、一つずつ検証する姿勢が必要だ。

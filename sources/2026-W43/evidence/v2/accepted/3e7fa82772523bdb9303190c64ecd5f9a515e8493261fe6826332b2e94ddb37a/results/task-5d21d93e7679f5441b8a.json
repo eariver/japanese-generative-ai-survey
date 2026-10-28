@@ -1,0 +1,143 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W43",
+  "evidence_task_id": "evidence:2026-W43:bc5b384e48b50605",
+  "basis": {
+    "task_sha256": "dbcb9dca0afd2272da96c1a0edbf6fcaee918cff0ab77a28bcd405f8d2075bc8",
+    "screening_acceptance_sha256": "566cde3bd287dffb38d705c4b6c3fec71a98f67dea96016a009bd929923be48a",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "patch-the-planet",
+      "canonical_name": "OpenAI Patch the Planet",
+      "entity_type": "PRODUCT",
+      "organization": "OpenAI",
+      "canonical_url": "https://openai.com/index/patch-the-planet"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "patch-the-planet",
+    "artifact_type": "INTEGRATION",
+    "canonical_name": "OpenAI Patch the Planet",
+    "canonical_url": "https://openai.com/index/patch-the-planet"
+  },
+  "temporal": {
+    "observed_at": "2026-10-24T19:30:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-10-21",
+        "subject_id": "patch-the-planet",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "primary:openai.com/index/patch-the-planet",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "OpenAI Patch the Planet vuln coordination (Oct 21)",
+      "published_at": "2026-10-21",
+      "accessed_at": "2026-10-24T19:30:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Oct 21 page: PHP critical vulnerabilities found by Calif via GPT-6 Sol under Patch the Planet; Wiz independently found and reported both; maintainers led fixes/patches; Wiz/Cloudflare coordination; NO specific CVE identifiers on the page.",
+      "subject_id": "patch-the-planet",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "OpenAI page (rendered read Oct 24; no byte archive — curl 403)"
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "5-stage response framework (validate+fix, advance notice, government coordination incl. White House SIF/ONCD/CISA plus intl partners, prepare updates, publish guidance); $1B Daybreak access; Codex skill PHP version checker; disclosure mitigations.",
+      "subject_id": "patch-the-planet",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "OpenAI page framework section (rendered read)"
+    },
+    {
+      "statement_id": "claim-3",
+      "text": "Distinct from Oct 23 training-containment research and from the unverified W42 allegation; no conflation.",
+      "subject_id": "patch-the-planet",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Scope separation (incident vs research vs allegation)"
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "No CVE identifiers on the page — do not invent any; page HTML not byte-archived (rendered read only); scope of vulnerabilities unverified beyond page claims",
+      "subject_id": "patch-the-planet",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "page-body",
+        "status": "VERIFIED",
+        "finding": "Full page body read via rendered fetch Oct 24.",
+        "subject_ids": [
+          "patch-the-planet"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "disclosed-cve-proof",
+        "status": "UNRESOLVED",
+        "finding": "Page names no CVE identifiers; none asserted.",
+        "subject_ids": [
+          "patch-the-planet"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "coordination-scope",
+        "status": "VERIFIED",
+        "finding": "5-stage framework, named parties (Wiz/Cloudflare/maintainers/gov), $1B Daybreak read.",
+        "subject_ids": [
+          "patch-the-planet"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      "disclosed-cve-proof: Page names no CVE identifiers; none asserted."
+    ],
+    "contradictions": []
+  }
+}

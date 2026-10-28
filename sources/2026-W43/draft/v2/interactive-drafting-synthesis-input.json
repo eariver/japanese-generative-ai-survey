@@ -1,0 +1,1079 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W43",
+  "draft_version": "v1.0",
+  "runner": {
+    "provider": "muse-spark",
+    "model": "muse-spark-1.3",
+    "invocation": "muse-w43-r1-japanese-draft-with-closing-recap",
+    "generated_at": "2026-10-25T14:00:00Z",
+    "run_reference": null
+  },
+  "packages": [
+    {
+      "package_id": "P1",
+      "headline": "公開前の巨大さと手元の重み――KimiのAPI先行とFlint・Nemotronの対照",
+      "deck": "MoonshotのKimi K3.1 Proは10月23日の告知とAPI提供が先行し、重み配布は11月4日の将来予定である。一方でRecursive FlintとNVIDIA Nemotron Boltは重みとライセンス条件が手元で確認できる。今週の巻頭は「発表された能力」と「動かせる実物」を切り分けて読む。",
+      "deck_discovery_ids": [
+        "w43-primary-kimi-20261023",
+        "w43-r4-flint-20261021",
+        "w43-primary-nemotron-e4b-20261023"
+      ],
+      "blocks": [
+        {
+          "block_id": "p1-h1",
+          "block_type": "HEADING",
+          "text": "発表・配布・再現を別の状態として読む",
+          "ref_mode": "NONE"
+        },
+        {
+          "block_id": "p1-p1",
+          "block_type": "PARAGRAPH",
+          "text": "今週もっとも注意を要するのは、Moonshot AIのKimi K3.1 Proである。一次情報の範囲で確定しているのは、2026年10月23日17時15分24秒（協定世界時）にXの公式投稿が公開され、APIとしての提供が始まったという事実である。投稿IDと時刻、料金条件（入力100万トークンあたり2ドル、出力10ドル）はXの原文と関連資料で確認できる。締切（10月23日22時00分00秒）まで4時間44分36秒しかなく、週次報道としての位置づけは「期末ぎりぎりのAPI先行公開」である。重みの配布は11月4日と予告されているだけで、観測時点では未公開の将来予定（FUTURE）であり、局所実行やハッシュ検証は存在しない。",
+          "discovery_ids": [
+            "w43-primary-kimi-20261023"
+          ],
+          "ref_mode": "CLAIMS"
+        },
+        {
+          "block_id": "p1-p2",
+          "block_type": "PARAGRAPH",
+          "text": "Kimiの規模をめぐる数字の扱いには慎重さが要る。2.8T（総パラメータ2.8兆）・104B（アクティブ1040億）という数値はXの投稿だけが根拠であり、公式ブログは「3T級」という等級表現にとどまる。ブログを2.8T・104Bの根拠として引用してはならない。文脈長は1M対応がうたわれる一方、運用上の推奨や設定値が別に存在し、単一の「1Mで動く」という理解は正確でない。ベンチマーク値はベンダーの harness（評価枠組み）による測定であり、温度・top-p・試行平均などの条件つきである。独立した第三者の再現測定は本号には存在しない。",
+          "discovery_ids": [
+            "w43-primary-kimi-20261023"
+          ],
+          "ref_mode": "CLAIMS"
+        },
+        {
+          "block_id": "p1-t1",
+          "block_type": "TABLE",
+          "text": "【表：公開状態×時点（Kimi）】\n告知・API提供｜2026-10-23T17:15:24Z（X原文、post ID確認）｜状態：IN（当週）｜根拠：X HTML原文＋supplement 041ec6系\n重み配布｜2026-11-04予定｜状態：FUTURE（未公開）｜根拠：発表のみ、バイト・SHA未取得\nブログ｜日付のみ（時刻なし）｜状態：PRIMARY_METADATA｜根拠：日次粒度、時刻の証拠にしない\n料金｜入力$2・出力$10／100万トークン｜状態：API条件｜根拠：発表資料、重み約款とは別",
+          "discovery_ids": [
+            "w43-primary-kimi-20261023"
+          ],
+          "ref_mode": "CLAIMS"
+        },
+        {
+          "block_id": "p1-h2",
+          "block_type": "HEADING",
+          "text": "数え方が違う三つのMoEを並べない",
+          "ref_mode": "NONE"
+        },
+        {
+          "block_id": "p1-p3",
+          "block_type": "PARAGRAPH",
+          "text": "対照群として置かれた二つのモデルは、Kimiとは逆に「手元で確かめられる」側にある。RecursiveのFlintはコード生成向けの混合専門家（MoE）で、総パラメータ39.8B・トークンあたり約2.5Bアクティブという構成が一次資料（発表記事・モデルカード）で確認できる。ただし約2.5Bには出力headを含み入力埋め込み（embedding）を除くなど計数規約があり、内部 body は約2.2B相当とされる。49層・256 experts（トークンあたり6＋共有）・SWA-513・語彙150144といった実装値も同資料の範囲である。速度の主張（短文脈で125トークン毎秒超・150超など）は、短文脈・128K平均・prefill除外というベンダー条件つきであり、独立測定ではない。",
+          "discovery_ids": [
+            "w43-r4-flint-20261021"
+          ],
+          "ref_mode": "CLAIMS"
+        },
+        {
+          "block_id": "p1-p4",
+          "block_type": "PARAGRAPH",
+          "text": "NVIDIAのNemotron 3.5 Bolt E4Bは小型効率モデルで、公式モデルカードが総パラメータ8B・有効（effective）4Bと明示する。Flintの total／active per token とは計数規約が一致しないため、8B・4B・39.8B・2.5Bを等価に比較して優劣表を作ってはならない。本号の表は列見出しに規約を明記し、「total」「effective」「active per token」を別の物差しとして扱う。Hugging Face上のコミット時刻（15時12分～19時03分など）は配布時刻の証拠（PRIMARY_METADATA）であり、性能の証拠ではない。文脈長も64Kと1Mクラスでは運用意味が異なり、対応・推奨・設定の三層を区別する。",
+          "discovery_ids": [
+            "w43-r4-flint-20261021",
+            "w43-primary-nemotron-e4b-20261023"
+          ],
+          "ref_mode": "CLAIMS"
+        },
+        {
+          "block_id": "p1-t2",
+          "block_type": "TABLE",
+          "text": "【表：total／effective／active と文脈（計数規約を見出しに明記）】\nKimi K3.1 Pro｜Xのみ2.8T total級／104B active（blogは3T級、根拠にしない）｜文脈1M対応・256K推奨・262144設定の区別｜重みFUTURE\nFlint｜39.8B total／約2.5B active per token（出力head含み・入力embedding除外、body約2.2B）｜49層・256 experts・SWA-513｜重み確認可\nNemotron Bolt E4B｜8B total／4B effective（公式カード）｜64K級｜重み・時刻確認可\n注意｜effective・active・totalの等価比較禁止｜文脈は対応／推奨／設定を別列",
+          "discovery_ids": [
+            "w43-primary-kimi-20261023",
+            "w43-r4-flint-20261021",
+            "w43-primary-nemotron-e4b-20261023"
+          ],
+          "ref_mode": "CLAIMS"
+        },
+        {
+          "block_id": "p1-h3",
+          "block_type": "HEADING",
+          "text": "学習の手続きとベンチの帰属",
+          "ref_mode": "NONE"
+        },
+        {
+          "block_id": "p1-p5",
+          "block_type": "PARAGRAPH",
+          "text": "学習・調整の手続きも三者で来歴が異なる。Kimiはサイバー関連の除去と強化学習（RL）が説明されているが、除去の範囲について独立の確認はない。FlintはEurekaという探索枠組みと4bit量子化の lm_head などがベンダー説明の範囲であり、学習の再現は行われていない。Nemotronはフィルタ工程が説明される。いずれのベンチマーク表もベンダー計測であり、harness・温度・top-p・top-k・試行回数などの条件つきである。本号は bench×harness×分母の表で帰属を明示し、ベンダー表を独立検証済みのように書かない。",
+          "discovery_ids": [
+            "w43-primary-kimi-20261023",
+            "w43-r4-flint-20261021",
+            "w43-primary-nemotron-e4b-20261023"
+          ],
+          "ref_mode": "CLAIMS"
+        },
+        {
+          "block_id": "p1-t3",
+          "block_type": "TABLE",
+          "text": "【表：bench×harness×分母（帰属明示）】\nKimi系｜ベンダー harness・温度・top-p・試行平均つき｜分母・条件は発表資料｜独立再現なし\nFlint系｜短文脈・128K平均・prefill除外の装置記述｜分母はベンダー条件｜独立測定なし\nNemotron系｜公式カード・HF時刻は確認、性能表はベンダー測定｜分母つきで読む｜SHA再ハッシュなし",
+          "discovery_ids": [
+            "w43-primary-kimi-20261023",
+            "w43-r4-flint-20261021",
+            "w43-primary-nemotron-e4b-20261023"
+          ],
+          "ref_mode": "CLAIMS"
+        },
+        {
+          "block_id": "p1-h4",
+          "block_type": "HEADING",
+          "text": "重み・約款・価格を混ぜない",
+          "ref_mode": "NONE"
+        },
+        {
+          "block_id": "p1-p6",
+          "block_type": "PARAGRAPH",
+          "text": "読者が誤りやすいのは権利と価格の対応である。KimiのAPI料金と将来の重み約款は別の条件であり、API価格を重みライセンスの条件として読んではならない。Flint・Nemotron側の重み約款 OpenMDW-1.1 は重み配布の約款であり、OSI承認の有無は未検証（UNVERIFIED）である。基盤に用いられた Gemma-4 の Apache-2.0 と混同してはならない。Hugging Faceの時刻（14時20分、15時12分～19時03分など）は配布・更新の時刻証拠であり、性能や権利の証拠ではない。発表・プレビュー・一般提供（GA）・重み配布・再現可能性は別の状態（status）として表に分けた。",
+          "discovery_ids": [
+            "w43-primary-kimi-20261023",
+            "w43-r4-flint-20261021",
+            "w43-primary-nemotron-e4b-20261023"
+          ],
+          "ref_mode": "CLAIMS"
+        },
+        {
+          "block_id": "p1-t4",
+          "block_type": "TABLE",
+          "text": "【表：可用性×時刻×約款（発表／プレビュー／GA／重み配布／再現を別列）】\nKimi API｜live（10月23日）｜料金$2/$10｜重みFUTURE（11月4日）｜再現なし\nFlint重み｜配布確認（HF時刻）｜約款は重み約款｜SHA再検証なし｜速度は条件つき\nNemotron重み｜配布確認（HF時刻）｜OpenMDW-1.1（OSI未検証）｜基盤Apache-2.0と区別｜性能はベンダー表",
+          "discovery_ids": [
+            "w43-primary-kimi-20261023",
+            "w43-r4-flint-20261021",
+            "w43-primary-nemotron-e4b-20261023"
+          ],
+          "ref_mode": "CLAIMS"
+        },
+        {
+          "block_id": "p1-p7",
+          "block_type": "PARAGRAPH",
+          "text": "時刻の確定度は三層に分かれる。Xの投稿は秒単位の協定世界時（17時15分24秒）がHTML原文で確認できる一次資料であり、当週内（IN）の根拠として強い。一方ブログは日付のみで時刻の証拠にならず、Hugging Faceのコミット時刻も配布の時刻証拠にとどまる。締切まで4時間44分36秒という余裕のなさは、週次誌の「期末速報」として位置づける理由であり、速報の強さを盛らない理由でもある。時刻・日付・予定を同じ確度で書かない。",
+          "discovery_ids": [
+            "w43-primary-kimi-20261023"
+          ],
+          "ref_mode": "CLAIMS"
+        },
+        {
+          "block_id": "p1-p8",
+          "block_type": "PARAGRAPH",
+          "text": "Flintの学習・量子化の記述も条件つきで読む。Eurekaという自動探索の枠組み、4bit量子化の lm_head、語彙・打切り（カットオフ）の扱いなどは発行元の説明であり、学習の再現や量子化前後の比較測定は行われていない。125超・150超といったトークン毎秒の主張は、短文脈・128K平均・prefill除外という装置記述と一体であり、装置を離れて「高速モデル」と書いてはならない。Eurekaの自動化を独立の技術検証済みとして書かない。",
+          "discovery_ids": [
+            "w43-r4-flint-20261021"
+          ],
+          "ref_mode": "CLAIMS"
+        },
+        {
+          "block_id": "p1-p9",
+          "block_type": "PARAGRAPH",
+          "text": "Nemotron側のフィルタ工程やHFコミットの扱いも同様である。15時12分～19時03分のコミット群は配布の更新時刻として確認できるが、重みバイトのSHA再ハッシュは行っておらず、設定・重みバイトのKYC（既知確認）はカード読解の段階である。ベンチ表の来歴（harness・温度・top-p・top-k・試行）も発行元条件つきであり、独立実行はない。技術報告PDFの来歴は限定され、全式の精読は行っていないことを明示する。",
+          "discovery_ids": [
+            "w43-primary-nemotron-e4b-20261023"
+          ],
+          "ref_mode": "CLAIMS"
+        },
+        {
+          "block_id": "p1-p10",
+          "block_type": "PARAGRAPH",
+          "text": "文脈長の三層（対応・推奨・設定）は運用の読み分けに直結する。1M対応と256K推奨と262144設定は別の主張であり、最大対応を常用条件として書いてはならない。64K級の小型モデルと1M級の frontier では、長い文脈を一度に扱う用途と短い文脈を回す用途で運用が変わる。本号の図は三層を分けて描き、対応の大きさをそのまま実用性の大きさとしない。推奨・設定の値を運用計画の起点として読む。",
+          "discovery_ids": [
+            "w43-primary-kimi-20261023",
+            "w43-r4-flint-20261021",
+            "w43-primary-nemotron-e4b-20261023"
+          ],
+          "ref_mode": "CLAIMS"
+        },
+        {
+          "block_id": "p1-n1",
+          "block_type": "NOTE",
+          "text": "【読み方の注意】Kimiの重みは未公開で局所実行・ハッシュ検証なし、ベンチはベンダーの harness による。Flintの速度は短文脈・128K平均・prefill除外の条件つきで独立未再現。2.8T・104BはXのみが根拠でブログを根拠にしない。OpenMDWをOSI認定と読まない。11月4日を既公開と書かない。",
+          "discovery_ids": [
+            "w43-primary-kimi-20261023",
+            "w43-r4-flint-20261021",
+            "w43-primary-nemotron-e4b-20261023"
+          ],
+          "ref_mode": "CLAIMS"
+        }
+      ]
+    },
+    {
+      "package_id": "P2",
+      "headline": "推論を切り出し記憶を持たせる――DeepInferとMemTの実装条件",
+      "deck": "DeepSeekのDeepInferは推論実行の核部品を切り出した公開であり、MemTensorのMemT-1.0は記憶機構を中核に据えた基盤モデルである。どちらも実装条件と評価の分母を離れて語れない。設定の排他性とライセンスの分離が本章の要点である。",
+      "deck_discovery_ids": [
+        "w43-primary-deepinfer-20261020",
+        "w43-r2-memt-20261019"
+      ],
+      "blocks": [
+        {
+          "block_id": "p2-h1",
+          "block_type": "HEADING",
+          "text": "推論の核部品と並列の設計",
+          "ref_mode": "NONE"
+        },
+        {
+          "block_id": "p2-p1",
+          "block_type": "PARAGRAPH",
+          "text": "DeepInferは大規模混合専門家（MoE）モデルの推論を支える構成要素を束ねた枠組みである。FlashMLA（注意機構の高速化）、DeepGEMM（行列積）、DeepEP（専門家並列の通信）、TileKernels／TileLang（カーネル記述）、DeepSelect といった核が役割分担する。注意（attention）はデータ並列（DP）と均衡化された文脈並列（CP）でさばき、MoEは専門家並列（EP）と負荷均衡（EPLB）で分散させる。DSpark（推測デコード）と確信度に基づく予定検証（speculative decoding with confidence）が速度の鍵として説明される。いずれも発行元の README とコードが一次資料であり、独立のスループット再現は行われていない。",
+          "discovery_ids": [
+            "w43-primary-deepinfer-20261020"
+          ],
+          "ref_mode": "CLAIMS"
+        },
+        {
+          "block_id": "p2-t1",
+          "block_type": "TABLE",
+          "text": "【表：核×役割（DeepInfer）】\nFlashMLA｜注意の高速化｜DP／均衡CPと協調\nDeepGEMM｜行列積の最適化｜学習・推論の基盤\nDeepEP＋EPLB｜専門家並列と負荷均衡｜MoE分散の要\nTileKernels／TileLang｜カーネル生成・最適化｜実装の生産性\nDeepSelect・DSpark｜選択と推測デコード｜確信度つき予定検証",
+          "discovery_ids": [
+            "w43-primary-deepinfer-20261020"
+          ],
+          "ref_mode": "CLAIMS"
+        },
+        {
+          "block_id": "p2-h2",
+          "block_type": "HEADING",
+          "text": "同時に有効にできない二つの構成例",
+          "ref_mode": "NONE"
+        },
+        {
+          "block_id": "p2-p2",
+          "block_type": "PARAGRAPH",
+          "text": "本章でもっとも誤解されやすいのが、DSparkの可変長MTPと決定的サンプリングの関係である。前者は環境変数 DEEPINFER_ENABLE_MTP_VARLEN=1、DEEPINFER_USE_NEXTN_DECODE（既定5、0で無効）という設定で有効化する推測デコード系であり、固定コミット 9bd9cf24 の README と environ.py（8738バイト）が典拠である。後者は DEEPINFER_ENABLE_MTP_VARLEN=0 に加え DEEPINFER_BATCH_INVARIANT=1 と seq_seed の固定、SamplingParams の指定を組み合わせた決定的サンプリング系であり、NVIDIA限定の条件つきである。両者は排他的な構成例であり、同時に有効であるかのように書いてはならない。再現性を任意の hardware に一般化することも禁じられる。",
+          "discovery_ids": [
+            "w43-primary-deepinfer-20261020"
+          ],
+          "ref_mode": "CLAIMS"
+        },
+        {
+          "block_id": "p2-p3",
+          "block_type": "PARAGRAPH",
+          "text": "コード抜粋の扱いにも注意が要る。README と environ.py は一次資料（PRIMARY_RAW）として正確に引用できるが、それを読んだことが推論性能の再現を意味しない。ベンチ条件（4×SM100 の prefill＋64 decode など）は発行元の測定装置の記述であり、読者が同じ装置を持たなければ同じ数値は出ない。KVキャッシュや各種エンジン（VE）の分離、prefill／decode の分離、cross-DP の均衡といった除外・前提も明示されている。本号は「設定例の正確な読み方」を主題とし、性能の優劣表を作らない。",
+          "discovery_ids": [
+            "w43-primary-deepinfer-20261020"
+          ],
+          "ref_mode": "CLAIMS"
+        },
+        {
+          "block_id": "p2-h3",
+          "block_type": "HEADING",
+          "text": "動かすための実装条件",
+          "ref_mode": "NONE"
+        },
+        {
+          "block_id": "p2-p4",
+          "block_type": "PARAGRAPH",
+          "text": "DeepInferを動かす条件は重い。SM100以上のGPUや Ascend 950 といった加速器、対応 toolchain、1017 checkpoint などが前提として記される。測定は特定構成（4×SM100 の prefill＋64 decode など）で行われ、KV・VE の扱いや prefill／decode 分離、cross-DP 均衡などの除外がつく。9bd9cf24 以降の main 追随はなく、10月21日以降の変化は追跡していない。LICENSE は Apache-2.0 のバイトが確認できるが、特許・商標の範囲は審査していない。独立のビルドや実行は試みておらず、ベンダーの記述として読む。",
+          "discovery_ids": [
+            "w43-primary-deepinfer-20261020"
+          ],
+          "ref_mode": "CLAIMS"
+        },
+        {
+          "block_id": "p2-h4",
+          "block_type": "HEADING",
+          "text": "記憶を機構にするMemT",
+          "ref_mode": "NONE"
+        },
+        {
+          "block_id": "p2-p5",
+          "block_type": "PARAGRAPH",
+          "text": "MemTensorのMemT-1.0は記憶機構を中核に据えた基盤モデルである。動的記憶（dynamic memory）としての Gated DeltaNet-2（ゲート付きデルタネット2）と、外部記憶（external memory）としての Mixture-of-Storage（混合ストレージ記憶、Mixture-of-Storage）が核である。学習は34Bトークン、二段階＋事後の工程と説明され、Nano（Qwen3.6-35B-A3B 基盤）と Flash（DeepSeek-V4-Flash 基盤）の二形態が用意される。11ベンチで Flash が1位・Nano が2位とされるが、いずれも発行元測定（vendorのみ）である。end-to-end で128K時に1.86倍、KVキャッシュ対比の持続で66倍という二つの倍率は分母が異なるため、単一の「高速化率」に丸めてはならない。",
+          "discovery_ids": [
+            "w43-r2-memt-20261019"
+          ],
+          "ref_mode": "CLAIMS"
+        },
+        {
+          "block_id": "p2-t2",
+          "block_type": "TABLE",
+          "text": "【表：bench×分母×条件（MemT）】\n11 bench｜Flash 1st／Nano 2nd（発行元のみ）｜分母・harnessは発行元条件｜独立再現なし\n1.86x｜end-to-end・128K｜KV系との比較（分母A）｜装置・条件つき\n66x｜持続（sustained）vs KV cache｜分母B（Aと相違）｜単一値に統合禁止\n34B tokens｜二段階＋事後｜Nano／Flashで基盤相違｜式・ablation未精読",
+          "discovery_ids": [
+            "w43-r2-memt-20261019"
+          ],
+          "ref_mode": "CLAIMS"
+        },
+        {
+          "block_id": "p2-h5",
+          "block_type": "HEADING",
+          "text": "論文とソフトウェアの権利を分ける",
+          "ref_mode": "NONE"
+        },
+        {
+          "block_id": "p2-p6",
+          "block_type": "PARAGRAPH",
+          "text": "MemTの権利関係は子細な分離が要る。論文（paper）は CC BY-NC-SA、ソフトウェアは PolyForm Noncommercial、第三者部分は MIT、重みは除外、という対応が README 側の記述である。論文自体にライセンス条項はなく、論文を典拠に商用可否を断じてはならない。SGLang の snapshot や save／restore の記述はあるが、実際に serve して確かめたわけではない。65ページ級の論文の式や ablation は精読しておらず、機構・評価・限界の特定にとどまることを明示する。商用利用の可否について断定はしない。",
+          "discovery_ids": [
+            "w43-r2-memt-20261019"
+          ],
+          "ref_mode": "CLAIMS"
+        },
+        {
+          "block_id": "p2-p7",
+          "block_type": "PARAGRAPH",
+          "text": "二つの公開に共通するのは「配布されたのは検証の出発点であって到達点ではない」という点である。DeepInferは特定コミットに固定して読むべきであり、main の漂流を追っていない。MemTは発行元の表を正確に写すことはできても、独立の harness 再実行はない。本章はベンダーの bench を独立測定値として書かず、式の再導出があるとも書かず、ライセンスを論文典拠にもしない。DEPTH_LIMITED の注記として、独立実行・供用試験なし、65ページの式・ablation 未精読、商用可否の断定なしを残す。",
+          "discovery_ids": [
+            "w43-primary-deepinfer-20261020",
+            "w43-r2-memt-20261019"
+          ],
+          "ref_mode": "CLAIMS"
+        },
+        {
+          "block_id": "p2-p8",
+          "block_type": "PARAGRAPH",
+          "text": "FlashMLAとDeepGEMMの分担をもう一段具体化する。FlashMLAは注意計算のメモリ往復を抑える実装であり、DP（データ並列）と均衡CP（文脈並列）の下で注意をさばく。DeepGEMMは行列積の最適化であり、学習・推論の基盤演算を担う。DeepEPは専門家（expert）間の通信であり、EPLBが負荷の偏りを均す。TileKernels／TileLangはカーネル生成の生産性であり、DeepSelectは選択の機構である。いずれも発行元の記述であり、独立の作用検証はないが、役割分担の理解が設定の読みに直結する。",
+          "discovery_ids": [
+            "w43-primary-deepinfer-20261020"
+          ],
+          "ref_mode": "CLAIMS"
+        },
+        {
+          "block_id": "p2-p9",
+          "block_type": "PARAGRAPH",
+          "text": "二つの構成例の違いは環境変数と前提の束で決まる。可変長MTP系は MTP_VARLEN=1 と NEXTN_DECODE（既定5、0で無効）の組み合わせであり、決定的サンプリング系は MTP_VARLEN=0＋BATCH_INVARIANT=1＋seq_seed固定＋SamplingParams の組み合わせである。後者はNVIDIA限定という hardware 前提がつく。batch-invariant と deterministic sampling の前提を混同せず、再現性の主張を任意 hardware に一般化しない。コード抜粋の引用は設定の正確さのためであり、性能の証拠ではない。",
+          "discovery_ids": [
+            "w43-primary-deepinfer-20261020"
+          ],
+          "ref_mode": "CLAIMS"
+        },
+        {
+          "block_id": "p2-p10",
+          "block_type": "PARAGRAPH",
+          "text": "MemTの二段階＋事後の学習と二形態の違いも要点である。34Bトークンの二段階学習＋事後工程という記述は発行元の工程説明であり、Nano（Qwen3.6-35B-A3B基盤）と Flash（DeepSeek-V4-Flash基盤）では基盤が異なる。11ベンチの順位（Flash 1位・Nano 2位）は同一 harness 内の発行元順位であり、外部 harness との横断優劣ではない。1.86倍と66倍の分母相違は、end-to-end と持続（sustained）という測定対象の違いに由来し、単一の高速化率に統合できない。",
+          "discovery_ids": [
+            "w43-r2-memt-20261019"
+          ],
+          "ref_mode": "CLAIMS"
+        },
+        {
+          "block_id": "p2-p11",
+          "block_type": "PARAGRAPH",
+          "text": "SGLang の snapshot・save／restore の記述は、記憶の持ち越し（persistence）の運用可能性を示唆するが、実際に serve して確かめたわけではない。設定の記述を読んだことと、運用の再現は別の事実である。重み・データのライセンスは将来の扱いとされ、リポジトリのソフトウェアは PolyForm により商用利用が禁じられる。商用可否の断定を避け、ライセンス対応図で paper・software・第三者・重みの四者を分けて示す。",
+          "discovery_ids": [
+            "w43-r2-memt-20261019"
+          ],
+          "ref_mode": "CLAIMS"
+        },
+        {
+          "block_id": "p2-n1",
+          "block_type": "NOTE",
+          "text": "【読み方の注意】本章のベンチはすべて発行元測定であり独立実行・供用試験はない。65ページの式・ablation は未精読。論文にライセンス条項はなく README のみが典拠。MTP可変長と決定的サンプリングの同時有効は誤り。9bd9cf24以降の追随なし。",
+          "discovery_ids": [
+            "w43-primary-deepinfer-20261020",
+            "w43-r2-memt-20261019"
+          ],
+          "ref_mode": "CLAIMS"
+        }
+      ]
+    },
+    {
+      "package_id": "P3",
+      "headline": "働く前に権限を決める――Duetと1Password・auto-modeの境界",
+      "deck": "AnthropicのClaude Duetは先回りして働く主体として提示されたが、待機列・提供範囲・権限境界が要点である。1Password for Agentsの承認注入と、Claude Codeのauto-mode既定化の扱いをあわせ、来た機能と来る予定を分けて読む。",
+      "deck_discovery_ids": [
+        "w43-primary-duet-20261021",
+        "w43-r2-1password-20261022",
+        "w43-primary-automode-20261021"
+      ],
+      "blocks": [
+        {
+          "block_id": "p3-h1",
+          "block_type": "HEADING",
+          "text": "先回りする振舞いと提供の段階",
+          "ref_mode": "NONE"
+        },
+        {
+          "block_id": "p3-p2",
+          "block_type": "PARAGRAPH",
+          "text": "Claude Duetは朝の要点整理、接続の監視、表や予報の作成、ウェブの作成、離席中の継続、要所での確認といった振舞いが説明される。技術的に新しいのは振舞いの列挙ではなく、それがどの権限と条件で動くかである。提供は待機列（waitlist）つきで、米国 Pro／Max が先行し、共有制限や背景消費（background consumption）の条件がつく。6000超の目録（catalogue）と実際に live な接続は別の数であり、目録の大きさを稼働の証拠として読んではならない。発表・待機・順次公開・一般提供（GA）は別の状態（status）として区別する。",
+          "discovery_ids": [
+            "w43-primary-duet-20261021"
+          ],
+          "ref_mode": "CLAIMS"
+        },
+        {
+          "block_id": "p3-t1",
+          "block_type": "TABLE",
+          "text": "【表：権限×条件（Duet）】\n振舞い｜要点・監視・表・予報・web作成・離席継続・要所確認｜条件：権限と承認つき\n提供｜待機列＋US Pro/Max先行＋共有制限｜状態：発表／待機／順次公開／GAを別列\n接続｜6000+目録 vs 実live｜liveは接続別に未検証\n消費｜背景消費の条件あり｜料金・範囲外は未検証",
+          "discovery_ids": [
+            "w43-primary-duet-20261021"
+          ],
+          "ref_mode": "CLAIMS"
+        },
+        {
+          "block_id": "p3-h2",
+          "block_type": "HEADING",
+          "text": "資格に触れずに働く設計",
+          "ref_mode": "NONE"
+        },
+        {
+          "block_id": "p3-p3",
+          "block_type": "PARAGRAPH",
+          "text": "権限境界の中核は、資格情報（credential）に主体が触れない設計である。Anthropic側は trustworthy-agents、Managed-Agents（秘匿を保持しない）、分類器（classifier）による承認、browser の prompt 注入対策、red-team・外部 pen-test・bounty、CC や gov-ID の分類といった安全対策の積層（defense in depth 的な層別）を説明する。1Password for Agents は承認を契機に資格を注入し、主体（agent）は暗証・OTP を見ない設計とされる。ただし現時点では coming soon（提供予定）であり、連携済み・live として書いてはならない。承認フローや自動入力の独立再現は行われていない。",
+          "discovery_ids": [
+            "w43-primary-duet-20261021",
+            "w43-r2-1password-20261022"
+          ],
+          "ref_mode": "CLAIMS"
+        },
+        {
+          "block_id": "p3-p4",
+          "block_type": "PARAGRAPH",
+          "text": "決済や証券の扱いは境界の試金石である。Stripe Link や Shop Pay といった接続が語られる一方、証券・送金のような資金移動は禁止の側に置かれる。製品・運用者だけの安全主張（product-operator-only）を独立保証のように書いてはならない。VM・browser の実行環境、6000超の目録と実 live の区別、coming soon と live の区別を図に整理した。資格の流れは「見ない設計（credential never visible）」として描き、主体が秘密を見ないことを強調するが、その振舞いの独立試験はないことを併記する。",
+          "discovery_ids": [
+            "w43-primary-duet-20261021",
+            "w43-r2-1password-20261022"
+          ],
+          "ref_mode": "CLAIMS"
+        },
+        {
+          "block_id": "p3-h3",
+          "block_type": "HEADING",
+          "text": "安全対策の積層と未検証の明示",
+          "ref_mode": "NONE"
+        },
+        {
+          "block_id": "p3-p5",
+          "block_type": "PARAGRAPH",
+          "text": "安全の説明は層の数で安心を作らない読み方が要る。分類器による gating、Managed-Agents の秘匿不保持、browser の注入対策、red-team と外部試験、bounty、分類といった各層は発行元の説明であり、分類器の独立試験はない。料金やプラン制限の範囲外は未検証である。接続別の live／順次公開／coming soon はベンダー blog の記述を超えて検証されておらず、すべての connector が live であるかのように書いてはならない。本号はベンダーの安全主張をベンダー報告（VENDOR_BENCH相当、未再現）として扱い、Xの投稿は二次情報にとどめる。",
+          "discovery_ids": [
+            "w43-primary-duet-20261021",
+            "w43-r2-1password-20261022"
+          ],
+          "ref_mode": "CLAIMS"
+        },
+        {
+          "block_id": "p3-h4",
+          "block_type": "HEADING",
+          "text": "auto-modeの既定化は完了ではない",
+          "ref_mode": "NONE"
+        },
+        {
+          "block_id": "p3-p6",
+          "block_type": "PARAGRAPH",
+          "text": "Claude Code の auto-mode をめぐっては、10月22日の更新が当週内（IN）であり、8月7日の旧情報は範囲外（OUT）である。更新内容は Pro／Max／Team での既定化（default化）とされ、plan や partner の例外つき、多くのアプリでの既定化は翌週の将来（NEXT WEEK FUTURE）である。完了した既定化として書いてはならない。分類器（classifier gating）の詳細はベンダー記述であり独立試験はない。旧・新・未来の三段表で発表／プレビュー／GA を別列にし、Xのみが根拠の部分はその旨を明示する。",
+          "discovery_ids": [
+            "w43-primary-automode-20261021"
+          ],
+          "ref_mode": "CLAIMS"
+        },
+        {
+          "block_id": "p3-t2",
+          "block_type": "TABLE",
+          "text": "【表：旧／新／未来の三段（auto-mode）】\n旧（8/7）｜OUT｜当週の根拠にしない\n新（10/22）｜IN｜Pro/Max/Teamで既定化、例外つき\n未来（翌週）｜FUTURE｜多くのアプリで既定化予定、完了と書かない\n分類器｜gatingの説明あり｜独立試験なし",
+          "discovery_ids": [
+            "w43-primary-automode-20261021"
+          ],
+          "ref_mode": "CLAIMS"
+        },
+        {
+          "block_id": "p3-p7",
+          "block_type": "PARAGRAPH",
+          "text": "待機列とプラン制限の扱いは読者の導入計画に直結する。waitlist＋米国 Pro／Max 先行＋共有制限という三条件は発行元の記述であり、プラン別・提携別の展開は部分的にしか記されない。権限の範囲外（料金の詳細や上限の全容）は未検証であり、導入の可否を断じない。プラットフォーム・プランの適用範囲は例外つきで記し、独立の entitlement 確認はないことを明示する。",
+          "discovery_ids": [
+            "w43-primary-duet-20261021"
+          ],
+          "ref_mode": "CLAIMS"
+        },
+        {
+          "block_id": "p3-p8",
+          "block_type": "PARAGRAPH",
+          "text": "6000超の目録と実 live の区別は本章の反復主題である。目録（catalogue）の大きさは接続の可能性であり、稼働（live）の証拠ではない。接続別・プラン別の live／順次公開／coming soon はベンダー blog の記述を超えて検証されておらず、独立の接続確認はない。1Password の coming soon はその典型であり、公開時を live と書かない。承認注入の信頼モデル（trust-model）は記述として読み、独立試験はない。",
+          "discovery_ids": [
+            "w43-primary-duet-20261021",
+            "w43-r2-1password-20261022"
+          ],
+          "ref_mode": "CLAIMS"
+        },
+        {
+          "block_id": "p3-p9",
+          "block_type": "PARAGRAPH",
+          "text": "分類器（classifier）の gating は権限境界の要であるが、仕様の記述と動作の検証は別である。分類器が承認を gate するという設計は発行元の説明であり、独立の動作試験はない。Managed-Agents が秘密を見ない（never sees secrets）という設計も同様に記述として読む。browser の prompt 注入対策、red-team・外部 pen-test・bounty といった層も発行元の安全主張であり、第三者保証の引用は検証まではベンダー報告扱いとする。",
+          "discovery_ids": [
+            "w43-primary-duet-20261021",
+            "w43-r2-1password-20261022",
+            "w43-primary-automode-20261021"
+          ],
+          "ref_mode": "CLAIMS"
+        },
+        {
+          "block_id": "p3-n1",
+          "block_type": "NOTE",
+          "text": "【読み方の注意】接続別の live は未検証で振舞いの再現なし。1Password は coming soon であり連携済みと書かない。auto-mode の翌週展開を完了と書かない。全 connector live と書かない。料金・権限の範囲外は未検証。",
+          "discovery_ids": [
+            "w43-primary-duet-20261021",
+            "w43-r2-1password-20261022",
+            "w43-primary-automode-20261021"
+          ],
+          "ref_mode": "CLAIMS"
+        }
+      ]
+    },
+    {
+      "package_id": "P4",
+      "headline": "速さの見出しを割り算から読む――FLUX 3 Maxの数表検証",
+      "deck": "falとBlack Forest LabsのFLUX 3 Maxは速度の見出しが躍るが、分母の取り違えと資料間の矛盾を正して読む必要がある。本章は独立の性能測定ではなく、ベンダー数値の算術検証（数表批判）である。",
+      "deck_discovery_ids": [
+        "w43-primary-flux-max-20261019"
+      ],
+      "blocks": [
+        {
+          "block_id": "p4-h1",
+          "block_type": "HEADING",
+          "text": "何が配布され何が未検証か",
+          "ref_mode": "NONE"
+        },
+        {
+          "block_id": "p4-p2",
+          "block_type": "PARAGRAPH",
+          "text": "FLUX 3 Max は fal と BFL による post-train（強化学習 RL・推論最適）の成果として提示され、text・image・keyframes-to-video の三様式が語られる。text／image は発売時の公式確認がある一方、keyframes の扱いは資料間で矛盾する。10月19日のプレスリリース（PR）は可用を主張しブログも導線を置くが、10月18日の FAQ は「Two at launch（二様式で開始）」と記す。この不一致は UNRESOLVED_VENDOR_DOC_CONFLICT（発行者資料間の未解決矛盾）として残し、W43時点の live／schema／GA を確定として書かない。従量課金などの条件は記されるが、解像度・GPU・batch・cold／warm といった装置条件は不明（UNKNOWN）のままである。",
+          "discovery_ids": [
+            "w43-primary-flux-max-20261019"
+          ],
+          "ref_mode": "CLAIMS"
+        },
+        {
+          "block_id": "p4-p3",
+          "block_type": "PARAGRAPH",
+          "text": "Klein（10月15日）は範囲外（OUT）、10月19日の PR が当週内（IN）という時間軸も要点である。PR は PRNewswire 経由の発行者一次声明であり、第三者のベンチではない。原文バイト（raw）は RENDERED_ONLY（描画抽出のみ）であり、原本 HTML の閲覧済みとして書いてはならない。ブログ・製品頁の12.45秒・277.80秒といった数値も、一次メタデータ上のベンダー数値（VENDOR_BENCH）として扱う。",
+          "discovery_ids": [
+            "w43-primary-flux-max-20261019"
+          ],
+          "ref_mode": "CLAIMS"
+        },
+        {
+          "block_id": "p4-h2",
+          "block_type": "HEADING",
+          "text": "割り算を正して読む（独立測定ではない）",
+          "ref_mode": "NONE"
+        },
+        {
+          "block_id": "p4-p4",
+          "block_type": "PARAGRAPH",
+          "text": "速度の核心は二つの割り算である。速度倍率は旧基準時間÷新候補時間で求める。277.80秒÷10.95秒≒25.37倍（10月19日発行者PR、10.95秒・277.80秒）と、277.80秒÷12.45秒≒22.31倍（ブログ・製品頁、12.45秒・277.80秒）がそれである。所要時間の削減率は（旧基準時間−新候補時間）÷旧基準時間×100で求め、（277.80−12.45）÷277.80×100≒95.52％となる。分母は旧基準277.80秒であり、新候補12.45秒ではない。ブログの26.5倍・96.2％は同じ入力では整合せず、不整合として残す。見出しの「22x」は下限表現であり、見出しだけで数学的誤りと断じない。最速の見出しは禁じられる。",
+          "discovery_ids": [
+            "w43-primary-flux-max-20261019"
+          ],
+          "ref_mode": "CLAIMS"
+        },
+        {
+          "block_id": "p4-t1",
+          "block_type": "TABLE",
+          "text": "【表：倍率×削減率×出典／版／時刻】\n25.37x｜277.80／10.95｜Oct19発行者PR（一次声明、raw RENDERED_ONLY）｜IN\n22.31x｜277.80／12.45｜blog／製品頁｜IN\n95.52%｜(277.80−12.45)／277.80｜分母＝旧基準277.80秒｜候補分母にしない\n26.5x／96.2%｜同入力で不整合｜blog値｜正として引用しない\n22x見出し｜下限表現｜数学的誤りと断じない",
+          "discovery_ids": [
+            "w43-primary-flux-max-20261019"
+          ],
+          "ref_mode": "CLAIMS"
+        },
+        {
+          "block_id": "p4-h3",
+          "block_type": "HEADING",
+          "text": "質の数と価格の読み分け",
+          "ref_mode": "NONE"
+        },
+        {
+          "block_id": "p4-p5",
+          "block_type": "PARAGRAPH",
+          "text": "質の指標として語られる Elo 1139 は暫定値・4868票という条件つきであり、Artificial Analysis（AA）の原表は未取得のため VENDOR 扱いである。ブログ時点では FLUX3 比＋47、製品頁・PR（10月19日15時46分 ET）では1139−1089＝＋50とされる。比較対象・版・snapshot の相違があり、背後のAA変動は UNKNOWN である。＋47 と＋50 のいずれかを単一の確定改善幅に統一してはならない。価格は100万画素あたり通常0.0425ドル・高速0.0725ドルから、将来的に0.17ドル・0.29ドルといった条件が記されるが、ライセンスの範囲を超えた検証はない。従量の条件として読む。",
+          "discovery_ids": [
+            "w43-primary-flux-max-20261019"
+          ],
+          "ref_mode": "CLAIMS"
+        },
+        {
+          "block_id": "p4-p6",
+          "block_type": "PARAGRAPH",
+          "text": "資料の版と時刻の扱いも要点である。10月19日のPRは15時46分（ET）という時刻つきの発行者声明であり、ブログ・製品頁は版・snapshot の異なる数値を載せる。Elo の＋47（ブログ snapshot）と＋50（製品頁・PR、1139−1089＝50）は比較対象・版・snapshot の相違であり、背後のAA変動は UNKNOWN である。単一の確定改善幅に統一せず、版・snapshot・票数（4868票・暫定）を添えて読む。AA原表の未取得は繰り返し明示する。",
+          "discovery_ids": [
+            "w43-primary-flux-max-20261019"
+          ],
+          "ref_mode": "CLAIMS"
+        },
+        {
+          "block_id": "p4-p7",
+          "block_type": "PARAGRAPH",
+          "text": "keyframes の矛盾は提供の確定を禁じる。text／image は発売時の公式確認があるが、keyframes は10月19日PRの可用主張・ブログ導線と10月18日FAQ「Two at launch」の矛盾として UNRESOLVED のままである。W43の live／schema／GA は未検証であり、提供確定と書かない。従量の条件（pay-go）は記されるが、ライセンスの範囲を超えた検証はない。解像度・GPU・batch・cold／warm の UNKNOWN を明記し、装置を仮定した再計算をしない。",
+          "discovery_ids": [
+            "w43-primary-flux-max-20261019"
+          ],
+          "ref_mode": "CLAIMS"
+        },
+        {
+          "block_id": "p4-n1",
+          "block_type": "NOTE",
+          "text": "【読み方の注意】速度倍率は発行元報告で矛盾した分母つき、独立計測ではない。10.95秒のPR原文は現行頁になくバイト未再取得。AA原表未取得。keyframes提供確定と書かない。＋47／＋50のいずれかを単一真値と書かない。26.5倍を正として引用しない。",
+          "discovery_ids": [
+            "w43-primary-flux-max-20261019"
+          ],
+          "ref_mode": "CLAIMS"
+        }
+      ]
+    },
+    {
+      "package_id": "P5",
+      "headline": "声の三様式を読む――VoxtralとMing・Elevenの条件と原表",
+      "deck": "MistralのVoxtral 3を主軸に、InclusionAIのMing-3.0-ttsとElevenLabsのEleven Realtime v1を対照する。文字起こし・リアルタイム・音声合成の三様式で、対応言語・評価標本・原表の有無を混ぜない読み方が要る。",
+      "deck_discovery_ids": [
+        "w43-primary-voxtral-20261020",
+        "w43-r2-ming-20261019",
+        "w43-primary-eleven-20261020"
+      ],
+      "blocks": [
+        {
+          "block_id": "p5-h1",
+          "block_type": "HEADING",
+          "text": "Voxtral家族の言語数は単一値にしない",
+          "ref_mode": "NONE"
+        },
+        {
+          "block_id": "p5-p2",
+          "block_type": "PARAGRAPH",
+          "text": "Voxtral 家族は Small Transcribe 3（バッチ文字起こし＋話者分離 diarization）、Mini 4B、Realtime といった構成で10月20日12時00分（UTC）に示された。STT（書起こし）は50言語、Realtime は35言語超・40超の言語方言とされる。一方 TTS（Speech 3）は発表で35超言語・50超方言、モデルカードで9言語、言語表で35言語・50超方言、プリセット音声で発表18言語・Docs表22と資料間で一致しない。この不一致は UNRESOLVED_VENDOR_DOC_CONFLICT であり、単一のTTS言語数に統一してはならない。製品・モデル版・機能・言語・方言・プリセット音声を区別し、11言語の評価標本を対応数として書かない。voice cloning は別枠である。",
+          "discovery_ids": [
+            "w43-primary-voxtral-20261020"
+          ],
+          "ref_mode": "CLAIMS"
+        },
+        {
+          "block_id": "p5-p3",
+          "block_type": "PARAGRAPH",
+          "text": "認識の機構として context biasing（用語辞書による認識誘導）が説明され、FLEURS の WER、cpWER（連結最小置換WER、concatenated minimum permutation WER）、recall、500ms 未満といった条件が付される。いずれもベンダーの表（VENDOR_BENCH）であり、独立再現はない。書起こし・diarization・keyphrase の表は読んだが、再現測定は行っていない。",
+          "discovery_ids": [
+            "w43-primary-voxtral-20261020"
+          ],
+          "ref_mode": "CLAIMS"
+        },
+        {
+          "block_id": "p5-t1",
+          "block_type": "TABLE",
+          "text": "【表：機能×モデル×対応言語×出典／版／時刻】\nSTT Small Transcribe 3｜50言語・diarization・context biasing｜出典：発表資料｜評価標本と区別\nRealtime｜35言語超／40+方言｜出典：発表資料｜対応数の確定にしない\nTTS Speech 3｜35+言語（発表）／9言語（カード）／35言語表／プリセット18（発表）・22（Docs）｜UNRESOLVED、統一禁止\n評価標本｜11言語｜対応数ではない｜混同禁止",
+          "discovery_ids": [
+            "w43-primary-voxtral-20261020"
+          ],
+          "ref_mode": "CLAIMS"
+        },
+        {
+          "block_id": "p5-h2",
+          "block_type": "HEADING",
+          "text": "内部評価の判定器はベンダー選択",
+          "ref_mode": "NONE"
+        },
+        {
+          "block_id": "p5-p4",
+          "block_type": "PARAGRAPH",
+          "text": "TTS の内部評価は Voice Code Bench 300、pronunciation 300、multilingual 377（11言語標本、対応言語数ではない）、expressive 237 といった規模で記され、判定に gemini-3.8-flash が用いられたとされる。判定器がベンダー選択であることを明示し、独立評価のように書かない。価格・EU／US・自己配備・Pro Voice といった条件は記されるが、end-to-end の主体再現はない。評価の設計を読んだという事実と、評価を再現したという事実を区別する。",
+          "discovery_ids": [
+            "w43-primary-voxtral-20261020"
+          ],
+          "ref_mode": "CLAIMS"
+        },
+        {
+          "block_id": "p5-h3",
+          "block_type": "HEADING",
+          "text": "Mingの開放とAA引用の距離",
+          "ref_mode": "NONE"
+        },
+        {
+          "block_id": "p5-p5",
+          "block_type": "PARAGRAPH",
+          "text": "InclusionAI の Ming-3.0-tts は開放側の対照群である。0.5B dense と 7.9B-A1.3B MoE（Ling V3）の二形態、MITライセンス（LICENSE バイト確認）、7言語＋方言、14 tag、9 task といった条件が README の範囲で確認できる。AA（Artificial Analysis）の引用として Controlled Voice・Robustness・Provider Voice などが語られるが、原表は未取得であり、発行元引用として扱う。roadmap は保留、月精度の日付は日付確定にしない。AA×原表有無の表で距離を明示し、順位を独立検証済みに書かない。",
+          "discovery_ids": [
+            "w43-r2-ming-20261019"
+          ],
+          "ref_mode": "CLAIMS"
+        },
+        {
+          "block_id": "p5-t2",
+          "block_type": "TABLE",
+          "text": "【表：AA×原表有無（Ming）】\nControlled Voice｜ベンダー引用｜原表未取得｜独立検証にしない\nRobustness｜ベンダー引用｜原表未取得｜同上\nProvider Voice｜ベンダー引用｜原表未取得｜同上\n開放条件｜MIT・tag・task｜README確認｜roadmap保留",
+          "discovery_ids": [
+            "w43-r2-ming-20261019"
+          ],
+          "ref_mode": "CLAIMS"
+        },
+        {
+          "block_id": "p5-h4",
+          "block_type": "HEADING",
+          "text": "Elevenの互換と未開封の指南",
+          "ref_mode": "NONE"
+        },
+        {
+          "block_id": "p5-p6",
+          "block_type": "PARAGRAPH",
+          "text": "ElevenLabs の Eleven Realtime v1 は realtime 互換の側にある。v1 Mini／Max の単一 speech-to-speech、90超・17k超の voice、Agents・Realtime API・OpenAI 互換・WebSocket といった条件が記される。AA として BBA・TTFA・Full-Duplex・Arena・tool-use などが語られるが、原表は未取得でありベンダー blog 経由の引用である。Pareto や SDK 改修の記述はあるが、移行指南は未開封であり、互換の記述から移行の容易さを断じない。プロトコル互換は SDK の作り直しを含意しうることを注記する。",
+          "discovery_ids": [
+            "w43-primary-eleven-20261020"
+          ],
+          "ref_mode": "CLAIMS"
+        },
+        {
+          "block_id": "p5-p7",
+          "block_type": "PARAGRAPH",
+          "text": "書起こしの評価詳細も条件つきで読む。ベンダーの FLEURS・diarization・keyphrase の表は読んだが、独立再現はない。WER・cpWER・recall・500ms未満といった条件は評価の設計であり、評価の再現ではない。STT の50言語という対応数と11言語という評価標本は別の数であり、標本の大きさを対応の証拠にしない。context biasing（用語辞書による認識誘導）の初出では日英併記とし、専門用語の定義を添える。",
+          "discovery_ids": [
+            "w43-primary-voxtral-20261020"
+          ],
+          "ref_mode": "CLAIMS"
+        },
+        {
+          "block_id": "p5-p8",
+          "block_type": "PARAGRAPH",
+          "text": "Ming の tag・task と roadmap の扱いも要点である。14 tag・9 task という条件は README の範囲であり、roadmap は保留（pending）である。月精度の公開日は日付確定にせず、Oct19作成といった IN の起点と区別する。AA の引用（Controlled・Robustness・Provider Voice）は発行元引用であり、原表未取得のまま順位を確定にしない。開放（MIT）の事実と性能の主張は別の事柄として読む。",
+          "discovery_ids": [
+            "w43-r2-ming-20261019"
+          ],
+          "ref_mode": "CLAIMS"
+        },
+        {
+          "block_id": "p5-p9",
+          "block_type": "PARAGRAPH",
+          "text": "Eleven のプロトコル互換は移行の作り直しを含意する。OpenAI互換・WebSocket・Realtime API といった記述は互換の主張であり、移行指南は未開封である。互換があることと移行が容易であることは別の主張であり、SDK改修の記述とあわせて読む。AA の BBA・TTFA・Full-Duplex・Arena・tool-use は blog 経由の引用であり、原表未取得のまま優劣にしない。Pareto の記述もベンダー報告として扱う。",
+          "discovery_ids": [
+            "w43-primary-eleven-20261020"
+          ],
+          "ref_mode": "CLAIMS"
+        },
+        {
+          "block_id": "p5-n1",
+          "block_type": "NOTE",
+          "text": "【読み方の注意】ベンダー判定・AA未取得・end-to-end未再現。TTS言語数は未解決で単一確定にしない。AA順位を独立検証済みに書かない。全言語で同等と書かない。11言語標本を対応数と書かない。",
+          "discovery_ids": [
+            "w43-primary-voxtral-20261020",
+            "w43-r2-ming-20261019",
+            "w43-primary-eleven-20261020"
+          ],
+          "ref_mode": "CLAIMS"
+        }
+      ]
+    },
+    {
+      "package_id": "P6",
+      "headline": "見つけて直し隔離して学ぶ――協調開示と学習環境の安全",
+      "deck": "OpenAIのPatch the Planetは協調開示の工程であり、frontier training containmentは学習環境の隔離の説明である。見つけて直す応答と、事前に隔離する備えを、証拠の段階でつなげて読む。",
+      "deck_discovery_ids": [
+        "w43-primary-patch-planet-20261021",
+        "w43-r2-openai-securing-20261023"
+      ],
+      "blocks": [
+        {
+          "block_id": "p6-h1",
+          "block_type": "HEADING",
+          "text": "協調開示の五段階とCVEの留保",
+          "ref_mode": "NONE"
+        },
+        {
+          "block_id": "p6-p2",
+          "block_type": "PARAGRAPH",
+          "text": "Patch the Planet は10月21日の RENDERED_TEXT（bot-wall 越し9946バイトの描画抽出のみ）が典拠であり、原本 HTML の閲覧済みとして書いてはならない。内容は Calif を GPT-5.6 Sol で見つけ、Wiz が独立に双方確認し、maintainer 主導で直す協調開示（coordinated disclosure）である。工程は validate＋fix、advance-notice、政府（SIF-ONCD-CISA）＋国際、prepare、publish の五段階と説明され、Wiz／Cloudflare、10億ドルの Daybreak、Codex の PHP checker などが記される。当該発行者ページの確認範囲で CVE 識別子は特定できず、CVE 付与の有無は未検証である。「CVEゼロ」とは書かず、独立の脆弱・patch 検証もないことを明示する。",
+          "discovery_ids": [
+            "w43-primary-patch-planet-20261021"
+          ],
+          "ref_mode": "CLAIMS"
+        },
+        {
+          "block_id": "p6-p3",
+          "block_type": "PARAGRAPH",
+          "text": "来歴の保存が要点である。10月23日の囲い込み記事と W42 の申立ては別の出来事であり、混ぜてはならない。開示の範囲はベンダー記述であり、独立確認はない。報告書に CVE 文字列がないことをもって CVE の不存在証明としない。工程図として五段階を残し、各段階の主体と証拠段階を分けて記す。",
+          "discovery_ids": [
+            "w43-primary-patch-planet-20261021"
+          ],
+          "ref_mode": "CLAIMS"
+        },
+        {
+          "block_id": "p6-h2",
+          "block_type": "HEADING",
+          "text": "学習環境の隔離と攻撃者有利の留保",
+          "ref_mode": "NONE"
+        },
+        {
+          "block_id": "p6-p4",
+          "block_type": "PARAGRAPH",
+          "text": "Securing 側は offline（隔離）、defense in depth（多層防御）といった隔離の語彙で語られる。9月20日の DNS 出来事、数百B規模の red-team、Kata／gVisor／Moby／kernel CVE、10月1日の RL 再開、safety gating などがベンダー記述の範囲である。頁の日付は日付のみで時刻の証拠にならず、10時00分（Z）は公式 RSS（secondary）に基づく。攻撃者が有利という留保がつき、隔離の説明をもって安全の保証としない。red-team の規模・条件はベンダー記述であり独立再現はない。",
+          "discovery_ids": [
+            "w43-r2-openai-securing-20261023"
+          ],
+          "ref_mode": "CLAIMS"
+        },
+        {
+          "block_id": "p6-p5",
+          "block_type": "PARAGRAPH",
+          "text": "二つの位相は対照的である。Patch が「見つけて直す」応答の工程であるのに対し、Securing は「学ぶ前に隔離する」事前の備えである。いずれもベンダーの物語であり、監視・停止の制御はベンダー記述として読む。頁時計と RSS 時計を混ぜず、頁の日付のみを製品時刻の証拠にしない。脆弱・patch の独立検証なし、red-team ベンダー記述、RSS は頁時計の証明ではない、という境界を残す。",
+          "discovery_ids": [
+            "w43-primary-patch-planet-20261021",
+            "w43-r2-openai-securing-20261023"
+          ],
+          "ref_mode": "CLAIMS"
+        },
+        {
+          "block_id": "p6-p6",
+          "block_type": "PARAGRAPH",
+          "text": "工程図の読み方を具体化する。validate＋fix（検証と修正）、advance-notice（事前通知）、政府（SIF-ONCD-CISA）＋国際（ coordination）、prepare（準備）、publish（公開）の五段階は、maintainer 主導という条件つきである。Wiz の独立双方確認、Cloudflare の関与、Daybreak の規模、Codex の checker といった要素は発行元の記述であり、独立確認はない。調整の範囲（coordination-scope）はベンダー記述として読み、確認済みとして書かない。",
+          "discovery_ids": [
+            "w43-primary-patch-planet-20261021"
+          ],
+          "ref_mode": "CLAIMS"
+        },
+        {
+          "block_id": "p6-p7",
+          "block_type": "PARAGRAPH",
+          "text": "Securing の頁時計とRSS時計の区別も要点である。頁の日付は日付のみで時刻の証拠にならず、10時00分（Z）は公式RSS（secondary）に基づく。頁時計の証明としてRSSを書かず、RSSを頁の証拠にしない。Sep20 DNS＋RL再開といった出来事の範囲（incident-scope）、red-team の規模・条件（red-team-conditions）、監視・停止の制御（monitoring-and-stopping-controls）はいずれもベンダー記述であり、第三者の裏づけはない。",
+          "discovery_ids": [
+            "w43-r2-openai-securing-20261023"
+          ],
+          "ref_mode": "CLAIMS"
+        },
+        {
+          "block_id": "p6-n1",
+          "block_type": "NOTE",
+          "text": "【読み方の注意】原HTMLはbot-wallでRENDEREDのみ。脆弱・patchの独立検証なし。red-teamはベンダー記述。RSSは頁時計の証明ではない。CVE確定・独立再現・原本閲覧済みと書かない。",
+          "discovery_ids": [
+            "w43-primary-patch-planet-20261021",
+            "w43-r2-openai-securing-20261023"
+          ],
+          "ref_mode": "CLAIMS"
+        }
+      ]
+    },
+    {
+      "package_id": "P7",
+      "headline": "手順が結果を決める――生体摂動と低資源言語の評価設計",
+      "deck": "OpenAIらの生物学研究と低資源言語の符号評価は、手順・盲検・hidden試験の設計が結果の意味を決める。独立再現と取り違えず、公開された手順（suite）と保持された試験（hidden）を分けて読む。",
+      "deck_discovery_ids": [
+        "w43-r2-openai-bio-20261021",
+        "w43-r2-openai-lowresource-20261019"
+      ],
+      "blocks": [
+        {
+          "block_id": "p7-h1",
+          "block_type": "HEADING",
+          "text": "数千主体の摂動報告と盲検の選好",
+          "ref_mode": "NONE"
+        },
+        {
+          "block_id": "p7-p2",
+          "block_type": "PARAGRAPH",
+          "text": "生物学側は OpenAI・PerturbAI・Scripps の共同研究班の手順（protocol）として提示される。GPT-Rosalind という数千の主体（agents）が全脳 CRISPR で数百万細胞を32分で扱い、摂動の報告から atlas を編む、という構造である。Tsc1／Tsc2・DCTN1 といった遺伝子、700超 vs 11 といった対比、盲検（blinded evaluation）で75％の分散選好といった数値が記される。bioRxiv・Hugging Face・GitHub の来歴、in-loop の位置づけが示される一方、wet-lab（生実験）の確認はなく、再現ゼロ（ZERO再現）であることを明示する。75％の選好は共同研究班内の手順＋班推定の比較対象であり、独立の専門家再現はない。",
+          "discovery_ids": [
+            "w43-r2-openai-bio-20261021"
+          ],
+          "ref_mode": "CLAIMS"
+        },
+        {
+          "block_id": "p7-t1",
+          "block_type": "TABLE",
+          "text": "【表：手順×来歴×限界（Bio）】\n主体｜数千 agents（GPT-Rosalind）｜来歴：研究頁・bioRxiv・HF・GitHub｜独立再現なし\n操作｜全脳CRISPR・数百万細胞・32分｜摂動報告→atlas｜wet-lab未\n評価｜盲検75%分散選好｜班内手順＋班推定比較｜独立専門家再現なし\n遺伝子｜Tsc1/Tsc2・DCTN1｜700+ vs 11｜標本bias未評価",
+          "discovery_ids": [
+            "w43-r2-openai-bio-20261021"
+          ],
+          "ref_mode": "CLAIMS"
+        },
+        {
+          "block_id": "p7-h2",
+          "block_type": "HEADING",
+          "text": "SQLite自作とCOBOL hiddenの二層",
+          "ref_mode": "NONE"
+        },
+        {
+          "block_id": "p7-p3",
+          "block_type": "PARAGRAPH",
+          "text": "低資源言語側は MultiLangBench という SQLite 自作の公開 suite が中核である。20言語・DB共有・参照 SQLite 照合という設計で、Astra 87.4 vs Sol 26.8、COBOL 10.9→72.1 など19／20言語で83％超といった数値がベンダー測定として記される。一方 COBOL の hidden 試験は byte-parity の設計で、Sol 86.6％ low・97.9％ high といった数値が記される。suite の公開と再現は別であり、専門家審査の記述はあるが hidden 試験はベンダー保持（vendor-held）である。外部への一般化は証明されていない。",
+          "discovery_ids": [
+            "w43-r2-openai-lowresource-20261019"
+          ],
+          "ref_mode": "CLAIMS"
+        },
+        {
+          "block_id": "p7-p4",
+          "block_type": "PARAGRAPH",
+          "text": "費用の扱いも条件つきである。COBOL 40％、Luna 0.77ドル vs 3.48ドルといった費用はベンダー測定であり、課金の独立検証はない。we／our という一人称の手順記述は第一者（first-party）の手順として読めるが、それを読んだことが独立 harness 再実行を意味しない。20言語表は読んだが独立確認はなく、byte-parity の設計＋86.6／97.9 は読んだが hidden 試験は保持されたままである。公開 suite と保持試験の二層を表に分けた。",
+          "discovery_ids": [
+            "w43-r2-openai-lowresource-20261019"
+          ],
+          "ref_mode": "CLAIMS"
+        },
+        {
+          "block_id": "p7-t2",
+          "block_type": "TABLE",
+          "text": "【表：bench×分母×条件（Low-resource）】\nSQLite自作｜20言語・DB共有・参照照合｜Astra87.4 vs Sol26.8・19/20≧83%｜ベンダー測定\nCOBOL hidden｜byte-parity・vendor保持｜Sol86.6%low・97.9%high｜外部一般化なし\n費用｜$0.77 vs $3.48・COBOL40%｜ベンダー測定｜課金未検証\n手順｜we/our第一者｜専門家審査記述｜独立harnessなし",
+          "discovery_ids": [
+            "w43-r2-openai-lowresource-20261019"
+          ],
+          "ref_mode": "CLAIMS"
+        },
+        {
+          "block_id": "p7-h3",
+          "block_type": "HEADING",
+          "text": "盲検・標本・請求の限界",
+          "ref_mode": "NONE"
+        },
+        {
+          "block_id": "p7-p5",
+          "block_type": "PARAGRAPH",
+          "text": "二章に共通する限界は、研究班内・盲検・ベンダー測定という三点である。wet-lab 未、標本 bias、hidden 外部未証、請求の独立未証を残す。独立再現・独立評価と書かず、wet-lab 確認済みと書かない。研究頁・bioRxiv・HF・GitHub・suite は一次資料（PRIMARY_RAW）、選好・費用はベンダー測定（VENDOR_BENCH）、wet-lab は未検証（UNVERIFIED）として区別する。来歴の保存として、手順の公開と試験の保持を分けて記した。",
+          "discovery_ids": [
+            "w43-r2-openai-bio-20261021",
+            "w43-r2-openai-lowresource-20261019"
+          ],
+          "ref_mode": "CLAIMS"
+        },
+        {
+          "block_id": "p7-p6",
+          "block_type": "PARAGRAPH",
+          "text": "摂動 atlas の読み方を具体化する。摂動の報告から atlas を編むという構造は、数百万細胞・32分という規模の記述と一体である。Tsc1／Tsc2・DCTN1 といった遺伝子の言及、700超 vs 11 という対比は班内の測定であり、標本・選択の bias は未評価である。追試（follow-up）の実験は wet-lab を要するが報告はなく、来歴（bioRxiv・HF・GitHub）の公開をもって検証済みにしない。in-loop の位置づけも班内の手順として読む。",
+          "discovery_ids": [
+            "w43-r2-openai-bio-20261021"
+          ],
+          "ref_mode": "CLAIMS"
+        },
+        {
+          "block_id": "p7-p7",
+          "block_type": "PARAGRAPH",
+          "text": "言語別の表の読み方も条件つきである。20言語表は読んだがベンダー測定であり独立確認はない。COBOL の byte-parity 設計＋86.6／97.9 は読んだが hidden 試験は保持されたままである。言語別の表（per-language-tables）と移行 hidden 試験（migration-hidden-tests）、費用の根拠（cost-basis：0.77ドル vs 3.48ドル、独立課金なし）を分けて記し、公開 suite の存在をもって再現の存在としない。we／our の手順記述は第一者の手順として読む。",
+          "discovery_ids": [
+            "w43-r2-openai-lowresource-20261019"
+          ],
+          "ref_mode": "CLAIMS"
+        },
+        {
+          "block_id": "p7-n1",
+          "block_type": "NOTE",
+          "text": "【読み方の注意】研究班内・盲検・ベンダー測定であり独立再現なし。wet-lab未、標本bias、hidden外部未証。独立評価・wet-lab確認済みと書かない。",
+          "discovery_ids": [
+            "w43-r2-openai-bio-20261021",
+            "w43-r2-openai-lowresource-20261019"
+          ],
+          "ref_mode": "CLAIMS"
+        }
+      ]
+    },
+    {
+      "package_id": "P8",
+      "headline": "判断をAPIに道具を束ねる――DecisionsとTanStack・DeepSeek配布",
+      "deck": "OpenAIのDecisions APIは判断のAPI化の一般提供であり、TanStack AI 1.0は安定核と実験 harness の対照、DeepSeek V4.1-Flash-1017は配布と移行の条件が要点である。料金・時刻・約款を混ぜない読み方が要る。",
+      "deck_discovery_ids": [
+        "w43-primary-decisions-api-20261022",
+        "w43-primary-tanstack-20261023",
+        "w43-primary-deepseek-1017-20261017"
+      ],
+      "blocks": [
+        {
+          "block_id": "p8-h1",
+          "block_type": "HEADING",
+          "text": "400問は毎回の上限であり総量ではない",
+          "ref_mode": "NONE"
+        },
+        {
+          "block_id": "p8-p2",
+          "block_type": "PARAGRAPH",
+          "text": "Decisions API は10月22日の v1／Luna（beta の10月6日と区別）として一般提供（GA）に置かれた。3型（predicate／choice／score）、text／image／JSON、400問 per request（毎回の上限であり総呼出上限ではない）、2x beta、cache（読取0.01ドル・書込別課金）、GPT-Live の avatar triggers といった条件が記される。料金は未 cache 入力0.10ドル／100万、cache 読取0.01ドル、出力トークン課金なしという条件だが、総無料と同義ではない。地域上乗せ・長文脈乗数があり、0.10／0.01 を総運用の固定単価として書いてはならない。米国／欧州・ZDR、10x というベンダー倍率（独立未測定）、Box／Datadog／Ramp／Sierra／SpeakBox といった証言の選択 bias、製品頁の未 archive といった境界も残す。",
+          "discovery_ids": [
+            "w43-primary-decisions-api-20261022"
+          ],
+          "ref_mode": "CLAIMS"
+        },
+        {
+          "block_id": "p8-t1",
+          "block_type": "TABLE",
+          "text": "【表：料金×条件×版（Decisions）】\n入力｜$0.10／M（uncached）｜cache読取$0.01・書込別課金｜出力課金なし≠総無料\n上限｜400問 per request｜総呼出上限ではない｜2x betaと区別\n版｜v1 GA（10/22）／Luna（beta 10/6区別）｜3型・text/image/JSON｜avatar triggers\n条件｜US/EU・ZDR・地域上乗せ・長文脈乗数｜10x vendor（独立未測定）｜証言は選択bias",
+          "discovery_ids": [
+            "w43-primary-decisions-api-20261022"
+          ],
+          "ref_mode": "CLAIMS"
+        },
+        {
+          "block_id": "p8-h2",
+          "block_type": "HEADING",
+          "text": "安定核と実験harnessの対照",
+          "ref_mode": "NONE"
+        },
+        {
+          "block_id": "p8-p3",
+          "block_type": "PARAGRAPH",
+          "text": "TanStack AI 1.0 は76 pkgs・23 adapters・8 UI・143人という規模で示されるが、本章の要点は規模ではなく安定核と実験 harness の対照である。harness 0.x は実験と明示し、安定核 vs 実験 harness の対照表で読む。codemod の threadId、非 sandbox といった条件が記される。製品時刻は10月22日 IN であり、GitHub release の published_at 15時18分14秒（GitHub API、確認10月25日）と npm registry の time[\"1.0.0\"] 15時21分49秒（registry、確認10月25日）が典拠である。ブログは10月23日の日付のみで製品時刻の証拠にしない（UNRESOLVED分離）。blog を製品時刻に読まない。",
+          "discovery_ids": [
+            "w43-primary-tanstack-20261023"
+          ],
+          "ref_mode": "CLAIMS"
+        },
+        {
+          "block_id": "p8-p4",
+          "block_type": "PARAGRAPH",
+          "text": "移行の指南はベンダー記述であり独立試験はない。harness の実験境界、版固定は registry／release による。GitHub の Metrics 23時42分03秒は POST_CUTOFF／OUT であり当週非選択、Grok binder は NEVER_STORY であり当週記事に昇格させない。本章は実測なき優劣表・PR長写しを禁じ、決定API例1件＋安定／実験対照＋更新差分短表を優先する。不足時は囲み縮約とする。",
+          "discovery_ids": [
+            "w43-primary-tanstack-20261023"
+          ],
+          "ref_mode": "CLAIMS"
+        },
+        {
+          "block_id": "p8-h3",
+          "block_type": "HEADING",
+          "text": "配布と移行と約款の三状態",
+          "ref_mode": "NONE"
+        },
+        {
+          "block_id": "p8-p5",
+          "block_type": "PARAGRAPH",
+          "text": "DeepSeek V4.1-Flash-1017 は9月10日基盤の snapshot として、強 bench・高速・短出力という条件で語られる。web／app／API、RL の自己 feedback demo、MIT の HF／ModelScope・GreenBitAI／Baekpica、Harness v0.2.1-rc.1、CodeBuddy／WorkBuddy といった条件が記される。Search／Fetch 0.75ドル／1k・10月31日16時00分 UTC 迄無料という移行・約款の条件は、発表／配布／無料期限を別 status として表に分ける。DeepSWE 77 vs 74.2・HLE といった bench はベンダー harness つきであり、重み SHA・可用性は未取得、課金移行は未試験である。HF の重みバイト・SHA を取得していないことを明示し、独立局所実行なしとする。",
+          "discovery_ids": [
+            "w43-primary-deepseek-1017-20261017"
+          ],
+          "ref_mode": "CLAIMS"
+        },
+        {
+          "block_id": "p8-t2",
+          "block_type": "TABLE",
+          "text": "【表：API×移行×約款（発表／配布／無料期限を別status）】\n配布｜V4.1-Flash Sep10 snapshot｜MIT HF/ModelScope｜SHA未取得・実行なし\n移行｜Search/Fetch $0.75/1k｜10/31 16:00 UTC迄無料｜約款表で別列\nbench｜DeepSWE77 vs 74.2・HLE｜ベンダーharness｜独立なし\ndemo｜RL自己feedback｜web/app/API｜CodeBuddy/WorkBuddy",
+          "discovery_ids": [
+            "w43-primary-deepseek-1017-20261017"
+          ],
+          "ref_mode": "CLAIMS"
+        },
+        {
+          "block_id": "p8-p6",
+          "block_type": "PARAGRAPH",
+          "text": "判断の3型と適用の例を具体化する。predicate（述語判定）・choice（選択）・score（得点）の3型は、text／image／JSON の入力と組み合わさる。400問 per request という上限は毎回の上限であり、総呼出の上限ではない。2x beta との区別、GPT-Live の avatar triggers といった条件も添える。証言（Box・Datadog・Ramp・Sierra・SpeakBox）は選択 bias の可能性があり、無作為の導入事例として書かない。遅延の主張（10x）はベンダー測定であり独立試験はない。",
+          "discovery_ids": [
+            "w43-primary-decisions-api-20261022"
+          ],
+          "ref_mode": "CLAIMS"
+        },
+        {
+          "block_id": "p8-p7",
+          "block_type": "PARAGRAPH",
+          "text": "TanStack の版・時刻の二重証拠は本章の模範事例である。GitHub release の published_at（15時18分14秒）と npm registry の time[\"1.0.0\"]（15時21分49秒）は別の登録時刻であり、両者を突き合わせて製品の10月22日 IN を支える。ブログの10月23日は日付のみで製品時刻の証拠にならない。repo-tag・upgrade-guide といった要素はベンダー記述であり、独立の移行試験はない。安定核と実験 harness の対照表で、harness 0.x の実験境界を明示する。",
+          "discovery_ids": [
+            "w43-primary-tanstack-20261023"
+          ],
+          "ref_mode": "CLAIMS"
+        },
+        {
+          "block_id": "p8-p8",
+          "block_type": "PARAGRAPH",
+          "text": "DeepSeek の配布・重み・課金の三者は別に読む。HF・ModelScope の MIT 配布、GreenBitAI・Baekpica といった配布経路、Harness v0.2.1-rc.1、CodeBuddy／WorkBuddy といった適用は記されるが、重みバイト・SHA は未取得であり局所実行はない。Search／Fetch の0.75ドル／1k、10月31日16時00分 UTC 迄無料という課金移行は未試験であり、約款表で発表／配布／無料期限を別 status とする。DeepSWE・HLE の bench はベンダー harness つきである。",
+          "discovery_ids": [
+            "w43-primary-deepseek-1017-20261017"
+          ],
+          "ref_mode": "CLAIMS"
+        },
+        {
+          "block_id": "p8-n1",
+          "block_type": "NOTE",
+          "text": "【読み方の注意】10xは独立測定にしない。証言を無作為と書かない。blogを製品時刻に読まない。出力課金なしを総無料と書かない。400問はper request。Metrics OUT・Grok非物語を昇格させない。",
+          "discovery_ids": [
+            "w43-primary-decisions-api-20261022",
+            "w43-primary-tanstack-20261023",
+            "w43-primary-deepseek-1017-20261017"
+          ],
+          "ref_mode": "CLAIMS"
+        }
+      ]
+    }
+  ],
+  "synthesis": {
+    "profile_payload": {
+      "signals": "W43は単発の新奇週ではなく、公開予定と配布済みの対照（Kimi API先行・重みFUTURE vs Flint・Nemotron配布確認）、計算基盤の条件明示（DeepInfer排他設定・MemT分母相違）、権限境界の段階区分（Duet待機・1Password予定・auto-mode三段）、数表の算術検証（FLUX分母正置・Elo版差）、声の様式の未解決区分（Voxtral言語数・Ming開放・Eleven互換）、安全の両相（協調開示工程・学習隔離）、科学の手順主義（盲検・hidden・suite公開≠再現）、道具の料金時刻約款分離（Decisions per request・TanStack二時刻・DeepSeek三状態）が同時に進んだ週である。各章の数値は発行元計測・報告であり、独立検証は存在しない。分母・条件・ライセンス tiers を明示した読み分けが本号の信号である。",
+      "current_interpretation": "使える能力と発表された能力の線引きが本号の解釈核である。重みの有無と約款、推論・記憶の実装条件と分母、権限の段階と承認注入、速度・言語の資料矛盾と原表距離、開示・隔離の工程と証拠段階、評価の盲検・標本・hidden、料金・時刻・約款の三状態。各章は比較表と境界注記でこの線引きを実証する。ベンダー測定と独立検証の峻別、日付のみ・midnight仮置きの排除、将来重み・予定機能の既成化禁止が通奏低音である。",
+      "carry_over_summary": "W42からの継承は、Metrics POST_CUTOFF除外とGrok NEVER_STORYの維持（いずれも当週記事に昇格させない）、 moss-trainer HOLD継続、Klein Oct15 OUTの維持、Kimi Nov4重み・auto-mode翌週・1Password coming soon等のFUTUREの次号送り、AA原表未取得・SHA未再取得・独立実行なし等のLIMITEDの持越しである。W44 Metricsは範囲外であり、将来GA・将来重みを当週確認にしない。"
+    },
+    "publication_payload": {}
+  }
+}

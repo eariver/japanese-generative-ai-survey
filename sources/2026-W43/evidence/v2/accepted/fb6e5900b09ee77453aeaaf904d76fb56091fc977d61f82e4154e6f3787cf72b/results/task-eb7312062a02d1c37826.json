@@ -1,0 +1,184 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W43",
+  "evidence_task_id": "evidence:2026-W43:ffb39177c31de9ea",
+  "basis": {
+    "task_sha256": "c78e9df9ab7cd7ed49666aac063759494f2579f87ff21291920a1d7d2089e515",
+    "screening_acceptance_sha256": "566cde3bd287dffb38d705c4b6c3fec71a98f67dea96016a009bd929923be48a",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "openai-training-containment",
+      "canonical_name": "OpenAI frontier training containment and red-teaming",
+      "entity_type": "ORGANIZATION",
+      "organization": "OpenAI",
+      "canonical_url": "https://openai.com/index/securing-our-frontier-model-training-environment/"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "openai-training-containment",
+    "artifact_type": "SECURITY_EVENT",
+    "canonical_name": "OpenAI frontier training containment and red-teaming",
+    "canonical_url": "https://openai.com/index/securing-our-frontier-model-training-environment/"
+  },
+  "temporal": {
+    "observed_at": "2026-10-25T05:00:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-10-23",
+        "subject_id": "openai-training-containment",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "event_id": "event-2",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-10-23T10:00:00Z",
+        "subject_id": "openai-training-containment",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "supplement-src-7648a293320fac45"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "primary:openai.com/index/securing-our-frontier-model-training-environment/",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "OpenAI frontier training containment + red-team (Oct 23)",
+      "published_at": "2026-10-23",
+      "accessed_at": "2026-10-25T05:00:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    },
+    {
+      "source_id": "supplement-src-7648a293320fac45",
+      "url": "https://openai.com/news/rss.xml",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "OpenAI news RSS (securing item pubDate 10:00Z; secondary hour provenance, page day-only)",
+      "published_at": "2026-10-23T10:00:00Z",
+      "accessed_at": "2026-10-25T05:00:00Z",
+      "role": "Post-Screening exact authority supplement: Official-domain RSS item <link>.../securing-our-frontier-model-training-environment</link> pubDate Fri, 23 Oct 2026 10:00:00 GMT = 10:00Z IN-caveat. Page itself day-only (no article:published_time/ld+json; curl 403). Hour rests on RSS (secondary), not independent page clock."
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Frontier training containment (offline world, defense in depth, Sep 20 DNS incident, hundreds of billions tokens red-team, Kata/gVisor/Moby/kernel CVEs, Oct 1 RL resume, safety-case gating); attacker-favorable conditions caveat; separate from Patch execution. Page displayed October 23, 2026 (day-only; static HTML has no article:published_time/datePublished/ld+json); hour evidence from official-domain RSS pubDate Fri, 23 Oct 2026 10:00:00 GMT = 10:00Z (secondary provenance, not independent page clock).",
+      "subject_id": "openai-training-containment",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1",
+        "supplement-src-7648a293320fac45"
+      ],
+      "context": "Page day-only + official RSS 10:00Z (secondary)"
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "CVE/patch/incident scope and red-team conditions vendor-described; monitoring/stopping controls vendor-stated.",
+      "subject_id": "openai-training-containment",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1",
+        "supplement-src-7648a293320fac45"
+      ],
+      "context": "Research sections"
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Page clock day-only (no metadata time); 10:00Z rests on official RSS (secondary, not page proof)",
+      "subject_id": "openai-training-containment",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1",
+        "supplement-src-7648a293320fac45"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "Vendor-described containment/red-team; independent verification absent",
+      "subject_id": "openai-training-containment",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1",
+        "supplement-src-7648a293320fac45"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "cve-patch-provenance",
+        "status": "UNRESOLVED",
+        "finding": "Patch/CVE scope vendor-described; independent confirmation absent.",
+        "subject_ids": [
+          "openai-training-containment"
+        ],
+        "source_ids": [
+          "src-1",
+          "supplement-src-7648a293320fac45"
+        ]
+      },
+      {
+        "target": "incident-scope",
+        "status": "UNRESOLVED",
+        "finding": "Sep 20 DNS + RL resume vendor-described; third-party corroboration absent.",
+        "subject_ids": [
+          "openai-training-containment"
+        ],
+        "source_ids": [
+          "src-1",
+          "supplement-src-7648a293320fac45"
+        ]
+      },
+      {
+        "target": "red-team-conditions",
+        "status": "UNRESOLVED",
+        "finding": "Red-team scale/conditions vendor-described; independent reproduction absent.",
+        "subject_ids": [
+          "openai-training-containment"
+        ],
+        "source_ids": [
+          "src-1",
+          "supplement-src-7648a293320fac45"
+        ]
+      },
+      {
+        "target": "monitoring-and-stopping-controls",
+        "status": "UNRESOLVED",
+        "finding": "Controls vendor-stated; independent test absent.",
+        "subject_ids": [
+          "openai-training-containment"
+        ],
+        "source_ids": [
+          "src-1",
+          "supplement-src-7648a293320fac45"
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      "cve-patch-provenance: Patch/CVE scope vendor-described; independent confirmation absent.",
+      "incident-scope: Sep 20 DNS + RL resume vendor-described; third-party corroboration absent.",
+      "red-team-conditions: Red-team scale/conditions vendor-described; independent reproduction absent.",
+      "monitoring-and-stopping-controls: Controls vendor-stated; independent test absent."
+    ],
+    "contradictions": []
+  }
+}

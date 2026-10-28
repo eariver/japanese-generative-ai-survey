@@ -1,0 +1,1028 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W43",
+  "research_profile": "WEEKLY",
+  "publication_profile": "WEEKLY_MAGAZINE",
+  "package_id": "P3",
+  "draft_version": "v1.0",
+  "status": "ESTABLISHED",
+  "basis": {
+    "draft_package_sha256": "85ce0714667663b7c40e175d50855fc570a9ab3af31fd7b5cbf13d04af0465c5",
+    "prompt_id": "article-drafting-v2",
+    "prompt_sha256": "b687313312a23025228c16c3f10cb68f669b910cd7215e41886d4dd91f44fe11"
+  },
+  "runner": {
+    "provider": "muse-spark",
+    "model": "muse-spark-1.3",
+    "invocation": "muse-w43-r1-japanese-draft-with-closing-recap",
+    "generated_at": "2026-10-25T14:00:00Z",
+    "run_reference": null
+  },
+  "headline": "働く前に権限を決める――Duetと1Password・auto-modeの境界",
+  "deck": "AnthropicのClaude Duetは先回りして働く主体として提示されたが、待機列・提供範囲・権限境界が要点である。1Password for Agentsの承認注入と、Claude Codeのauto-mode既定化の扱いをあわせ、来た機能と来る予定を分けて読む。",
+  "deck_attribution_mode": "MIXED",
+  "deck_evidence_refs": [
+    {
+      "evidence_task_id": "evidence:2026-W43:88b6116628d87dd1",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1",
+      "subject_id": "duet",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:2026-W43:88b6116628d87dd1",
+      "kind": "CLAIM",
+      "evidence_id": "claim-2",
+      "subject_id": "duet",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:2026-W43:88b6116628d87dd1",
+      "kind": "CLAIM",
+      "evidence_id": "claim-3",
+      "subject_id": "duet",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:2026-W43:88b6116628d87dd1",
+      "kind": "CLAIM",
+      "evidence_id": "claim-4",
+      "subject_id": "duet",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:2026-W43:88b6116628d87dd1",
+      "kind": "CLAIM",
+      "evidence_id": "claim-5",
+      "subject_id": "duet",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:2026-W43:972ae1540f70e008",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1",
+      "subject_id": "onepassword-for-agents",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:2026-W43:972ae1540f70e008",
+      "kind": "CLAIM",
+      "evidence_id": "claim-2",
+      "subject_id": "onepassword-for-agents",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:2026-W43:972ae1540f70e008",
+      "kind": "CLAIM",
+      "evidence_id": "claim-3",
+      "subject_id": "onepassword-for-agents",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:2026-W43:956202d0dbd04246",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1",
+      "subject_id": "claude-auto-mode",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:2026-W43:956202d0dbd04246",
+      "kind": "CLAIM",
+      "evidence_id": "claim-2",
+      "subject_id": "claude-auto-mode",
+      "subject_role": "PRIMARY_SUBJECT"
+    }
+  ],
+  "blocks": [
+    {
+      "block_id": "p3-h1",
+      "block_type": "HEADING",
+      "text": "先回りする振舞いと提供の段階",
+      "attribution_mode": "NONE",
+      "evidence_refs": []
+    },
+    {
+      "block_id": "p3-p2",
+      "block_type": "PARAGRAPH",
+      "text": "Claude Duetは朝の要点整理、接続の監視、表や予報の作成、ウェブの作成、離席中の継続、要所での確認といった振舞いが説明される。技術的に新しいのは振舞いの列挙ではなく、それがどの権限と条件で動くかである。提供は待機列（waitlist）つきで、米国 Pro／Max が先行し、共有制限や背景消費（background consumption）の条件がつく。6000超の目録（catalogue）と実際に live な接続は別の数であり、目録の大きさを稼働の証拠として読んではならない。発表・待機・順次公開・一般提供（GA）は別の状態（status）として区別する。",
+      "attribution_mode": "ATTRIBUTED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W43:88b6116628d87dd1",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "duet",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:88b6116628d87dd1",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "duet",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:88b6116628d87dd1",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "duet",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:88b6116628d87dd1",
+          "kind": "CLAIM",
+          "evidence_id": "claim-4",
+          "subject_id": "duet",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:88b6116628d87dd1",
+          "kind": "CLAIM",
+          "evidence_id": "claim-5",
+          "subject_id": "duet",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p3-t1",
+      "block_type": "TABLE",
+      "text": "【表：権限×条件（Duet）】\n振舞い｜要点・監視・表・予報・web作成・離席継続・要所確認｜条件：権限と承認つき\n提供｜待機列＋US Pro/Max先行＋共有制限｜状態：発表／待機／順次公開／GAを別列\n接続｜6000+目録 vs 実live｜liveは接続別に未検証\n消費｜背景消費の条件あり｜料金・範囲外は未検証",
+      "attribution_mode": "ATTRIBUTED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W43:88b6116628d87dd1",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "duet",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:88b6116628d87dd1",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "duet",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:88b6116628d87dd1",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "duet",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:88b6116628d87dd1",
+          "kind": "CLAIM",
+          "evidence_id": "claim-4",
+          "subject_id": "duet",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:88b6116628d87dd1",
+          "kind": "CLAIM",
+          "evidence_id": "claim-5",
+          "subject_id": "duet",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p3-h2",
+      "block_type": "HEADING",
+      "text": "資格に触れずに働く設計",
+      "attribution_mode": "NONE",
+      "evidence_refs": []
+    },
+    {
+      "block_id": "p3-p3",
+      "block_type": "PARAGRAPH",
+      "text": "権限境界の中核は、資格情報（credential）に主体が触れない設計である。Anthropic側は trustworthy-agents、Managed-Agents（秘匿を保持しない）、分類器（classifier）による承認、browser の prompt 注入対策、red-team・外部 pen-test・bounty、CC や gov-ID の分類といった安全対策の積層（defense in depth 的な層別）を説明する。1Password for Agents は承認を契機に資格を注入し、主体（agent）は暗証・OTP を見ない設計とされる。ただし現時点では coming soon（提供予定）であり、連携済み・live として書いてはならない。承認フローや自動入力の独立再現は行われていない。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W43:88b6116628d87dd1",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "duet",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:88b6116628d87dd1",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "duet",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:88b6116628d87dd1",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "duet",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:88b6116628d87dd1",
+          "kind": "CLAIM",
+          "evidence_id": "claim-4",
+          "subject_id": "duet",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:88b6116628d87dd1",
+          "kind": "CLAIM",
+          "evidence_id": "claim-5",
+          "subject_id": "duet",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:972ae1540f70e008",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "onepassword-for-agents",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:972ae1540f70e008",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "onepassword-for-agents",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:972ae1540f70e008",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "onepassword-for-agents",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p3-p4",
+      "block_type": "PARAGRAPH",
+      "text": "決済や証券の扱いは境界の試金石である。Stripe Link や Shop Pay といった接続が語られる一方、証券・送金のような資金移動は禁止の側に置かれる。製品・運用者だけの安全主張（product-operator-only）を独立保証のように書いてはならない。VM・browser の実行環境、6000超の目録と実 live の区別、coming soon と live の区別を図に整理した。資格の流れは「見ない設計（credential never visible）」として描き、主体が秘密を見ないことを強調するが、その振舞いの独立試験はないことを併記する。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W43:88b6116628d87dd1",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "duet",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:88b6116628d87dd1",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "duet",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:88b6116628d87dd1",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "duet",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:88b6116628d87dd1",
+          "kind": "CLAIM",
+          "evidence_id": "claim-4",
+          "subject_id": "duet",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:88b6116628d87dd1",
+          "kind": "CLAIM",
+          "evidence_id": "claim-5",
+          "subject_id": "duet",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:972ae1540f70e008",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "onepassword-for-agents",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:972ae1540f70e008",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "onepassword-for-agents",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:972ae1540f70e008",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "onepassword-for-agents",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p3-h3",
+      "block_type": "HEADING",
+      "text": "安全対策の積層と未検証の明示",
+      "attribution_mode": "NONE",
+      "evidence_refs": []
+    },
+    {
+      "block_id": "p3-p5",
+      "block_type": "PARAGRAPH",
+      "text": "安全の説明は層の数で安心を作らない読み方が要る。分類器による gating、Managed-Agents の秘匿不保持、browser の注入対策、red-team と外部試験、bounty、分類といった各層は発行元の説明であり、分類器の独立試験はない。料金やプラン制限の範囲外は未検証である。接続別の live／順次公開／coming soon はベンダー blog の記述を超えて検証されておらず、すべての connector が live であるかのように書いてはならない。本号はベンダーの安全主張をベンダー報告（VENDOR_BENCH相当、未再現）として扱い、Xの投稿は二次情報にとどめる。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W43:88b6116628d87dd1",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "duet",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:88b6116628d87dd1",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "duet",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:88b6116628d87dd1",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "duet",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:88b6116628d87dd1",
+          "kind": "CLAIM",
+          "evidence_id": "claim-4",
+          "subject_id": "duet",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:88b6116628d87dd1",
+          "kind": "CLAIM",
+          "evidence_id": "claim-5",
+          "subject_id": "duet",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:972ae1540f70e008",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "onepassword-for-agents",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:972ae1540f70e008",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "onepassword-for-agents",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:972ae1540f70e008",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "onepassword-for-agents",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p3-h4",
+      "block_type": "HEADING",
+      "text": "auto-modeの既定化は完了ではない",
+      "attribution_mode": "NONE",
+      "evidence_refs": []
+    },
+    {
+      "block_id": "p3-p6",
+      "block_type": "PARAGRAPH",
+      "text": "Claude Code の auto-mode をめぐっては、10月22日の更新が当週内（IN）であり、8月7日の旧情報は範囲外（OUT）である。更新内容は Pro／Max／Team での既定化（default化）とされ、plan や partner の例外つき、多くのアプリでの既定化は翌週の将来（NEXT WEEK FUTURE）である。完了した既定化として書いてはならない。分類器（classifier gating）の詳細はベンダー記述であり独立試験はない。旧・新・未来の三段表で発表／プレビュー／GA を別列にし、Xのみが根拠の部分はその旨を明示する。",
+      "attribution_mode": "ATTRIBUTED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W43:956202d0dbd04246",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "claude-auto-mode",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:956202d0dbd04246",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "claude-auto-mode",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p3-t2",
+      "block_type": "TABLE",
+      "text": "【表：旧／新／未来の三段（auto-mode）】\n旧（8/7）｜OUT｜当週の根拠にしない\n新（10/22）｜IN｜Pro/Max/Teamで既定化、例外つき\n未来（翌週）｜FUTURE｜多くのアプリで既定化予定、完了と書かない\n分類器｜gatingの説明あり｜独立試験なし",
+      "attribution_mode": "ATTRIBUTED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W43:956202d0dbd04246",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "claude-auto-mode",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:956202d0dbd04246",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "claude-auto-mode",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p3-p7",
+      "block_type": "PARAGRAPH",
+      "text": "待機列とプラン制限の扱いは読者の導入計画に直結する。waitlist＋米国 Pro／Max 先行＋共有制限という三条件は発行元の記述であり、プラン別・提携別の展開は部分的にしか記されない。権限の範囲外（料金の詳細や上限の全容）は未検証であり、導入の可否を断じない。プラットフォーム・プランの適用範囲は例外つきで記し、独立の entitlement 確認はないことを明示する。",
+      "attribution_mode": "ATTRIBUTED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W43:88b6116628d87dd1",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "duet",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:88b6116628d87dd1",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "duet",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:88b6116628d87dd1",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "duet",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:88b6116628d87dd1",
+          "kind": "CLAIM",
+          "evidence_id": "claim-4",
+          "subject_id": "duet",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:88b6116628d87dd1",
+          "kind": "CLAIM",
+          "evidence_id": "claim-5",
+          "subject_id": "duet",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p3-p8",
+      "block_type": "PARAGRAPH",
+      "text": "6000超の目録と実 live の区別は本章の反復主題である。目録（catalogue）の大きさは接続の可能性であり、稼働（live）の証拠ではない。接続別・プラン別の live／順次公開／coming soon はベンダー blog の記述を超えて検証されておらず、独立の接続確認はない。1Password の coming soon はその典型であり、公開時を live と書かない。承認注入の信頼モデル（trust-model）は記述として読み、独立試験はない。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W43:88b6116628d87dd1",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "duet",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:88b6116628d87dd1",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "duet",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:88b6116628d87dd1",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "duet",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:88b6116628d87dd1",
+          "kind": "CLAIM",
+          "evidence_id": "claim-4",
+          "subject_id": "duet",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:88b6116628d87dd1",
+          "kind": "CLAIM",
+          "evidence_id": "claim-5",
+          "subject_id": "duet",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:972ae1540f70e008",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "onepassword-for-agents",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:972ae1540f70e008",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "onepassword-for-agents",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:972ae1540f70e008",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "onepassword-for-agents",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p3-p9",
+      "block_type": "PARAGRAPH",
+      "text": "分類器（classifier）の gating は権限境界の要であるが、仕様の記述と動作の検証は別である。分類器が承認を gate するという設計は発行元の説明であり、独立の動作試験はない。Managed-Agents が秘密を見ない（never sees secrets）という設計も同様に記述として読む。browser の prompt 注入対策、red-team・外部 pen-test・bounty といった層も発行元の安全主張であり、第三者保証の引用は検証まではベンダー報告扱いとする。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W43:88b6116628d87dd1",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "duet",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:88b6116628d87dd1",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "duet",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:88b6116628d87dd1",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "duet",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:88b6116628d87dd1",
+          "kind": "CLAIM",
+          "evidence_id": "claim-4",
+          "subject_id": "duet",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:88b6116628d87dd1",
+          "kind": "CLAIM",
+          "evidence_id": "claim-5",
+          "subject_id": "duet",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:972ae1540f70e008",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "onepassword-for-agents",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:972ae1540f70e008",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "onepassword-for-agents",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:972ae1540f70e008",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "onepassword-for-agents",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:956202d0dbd04246",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "claude-auto-mode",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:956202d0dbd04246",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "claude-auto-mode",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p3-n1",
+      "block_type": "NOTE",
+      "text": "【読み方の注意】接続別の live は未検証で振舞いの再現なし。1Password は coming soon であり連携済みと書かない。auto-mode の翌週展開を完了と書かない。全 connector live と書かない。料金・権限の範囲外は未検証。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W43:88b6116628d87dd1",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "duet",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:88b6116628d87dd1",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "duet",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:88b6116628d87dd1",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "duet",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:88b6116628d87dd1",
+          "kind": "CLAIM",
+          "evidence_id": "claim-4",
+          "subject_id": "duet",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:88b6116628d87dd1",
+          "kind": "CLAIM",
+          "evidence_id": "claim-5",
+          "subject_id": "duet",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:972ae1540f70e008",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "onepassword-for-agents",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:972ae1540f70e008",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "onepassword-for-agents",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:972ae1540f70e008",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "onepassword-for-agents",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:956202d0dbd04246",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "claude-auto-mode",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:956202d0dbd04246",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "claude-auto-mode",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "P3-boundaries",
+      "block_type": "CLAIM_BOUNDARY",
+      "text": "この節の読解上の境界: 接続別 live 未検証、振舞い未再現、1Password coming soon は live に読まない、展開 FUTURE を完了に読まない / 分類器の独立試験なし、料金・権限の範囲外は未検証 / DRAFT MUST NOT: 全 connector live と書かない／1Password 連携済みと書かない／auto-mode 完了と書かない / 出典種別: 告知・blog=PRIMARY_METADATA / 振舞い・安全=VENDOR_BENCH(未再現) / X=SECONDARY / Duet待機列・US Pro/Max先行・1Password coming soon・auto-mode翌週FUTUREは未完了 — 発表/待機/順次公開/GAを別status、完了と書かない / Independent behavioural reproduction absent; per-connector live status unvalidated; 6000+ != live / Pricing/plan limits beyond shared usage unvalidated; auto-mode default via separate X only / 1Password coming soon, not live; credential-boundary behaviour unreproduced / waitlist-and-plan-limits: Waitlist + US Pro/Max first + shared limits stated; per-plan rollout unvalidated. / connector-and-payment-integration-status: 6000+ catalogue vs live inventory distinguished; per-connector live + 1Password coming-soon; independent check absent. / auto-mode-classifier-and-credential-design: Classifier + Managed-Agents (never sees secrets) described; behaviour unreproduced. / independent-behavioral-repro: No independent Duet behaviour in-window. / Per-integration live/rolling/coming-soon unvalidated beyond vendor blog / No independent approval-flow or autofill reproduction / Plan/partner exceptions partially stated / per-integration-live-status: Live vs rolling vs coming-soon by connector/plan vendor-stated; independent per-integration check absent. / platform-and-plan-scope: Platform/plan scope stated with exceptions; independent entitlement check absent. / trust-model-docs: Approval + no-password/OTP injection described; independent trust-model test absent. / Platform webpage independent view metadata-only; rollout FUTURE at cutoff / Classifier/gating behaviour vendor-described; independent test absent / classifier-gating-spec: Classifier gating described; independent test absent. / rollout-scope: Most-apps NEXT WEEK future; completed-default claim prohibited; plan/partner exceptions noted.",
+      "attribution_mode": "INFERENCE",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W43:88b6116628d87dd1",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "duet",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:88b6116628d87dd1",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "duet",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:88b6116628d87dd1",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-3",
+          "subject_id": "duet",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:972ae1540f70e008",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "onepassword-for-agents",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:972ae1540f70e008",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "onepassword-for-agents",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:972ae1540f70e008",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-3",
+          "subject_id": "onepassword-for-agents",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:956202d0dbd04246",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "claude-auto-mode",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W43:956202d0dbd04246",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "claude-auto-mode",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    }
+  ],
+  "must_cover_coverage": [
+    {
+      "requirement": "§3.1 待機列・US Pro/Max 先行・共有制限・背景消費と、朝の要点・接続監視・表・予報・web 作成・離席継続・要所確認の振舞い — 表:権限×条件",
+      "block_ids": [
+        "p3-p2",
+        "p3-t1",
+        "p3-p3",
+        "p3-p4",
+        "p3-p5",
+        "p3-p6",
+        "p3-t2",
+        "p3-p7",
+        "p3-p8",
+        "p3-p9",
+        "p3-n1",
+        "P3-boundaries"
+      ]
+    },
+    {
+      "requirement": "§3.2 VM・browser、6000+ 目録と実liveの区別[発表/待機/順次公開/GAを別status]、Stripe Link/Shop Pay、1Password coming soon[公開時はliveと書かない]、証券・送金の禁止 — 図:資格の流れ(見ない設計、credential never visible)",
+      "block_ids": [
+        "p3-p2",
+        "p3-t1",
+        "p3-p3",
+        "p3-p4",
+        "p3-p5",
+        "p3-p6",
+        "p3-t2",
+        "p3-p7",
+        "p3-p8",
+        "p3-p9",
+        "p3-n1",
+        "P3-boundaries"
+      ]
+    },
+    {
+      "requirement": "§3.3 安全対策の積層(trustworthy-agents、Managed-Agents の秘匿不保持、分類器承認、browser prompt 注入対策、red-team・外部 pen-test・bounty、CC・gov-ID 分類)と 1Password の承認注入(agent は暗証・OTP を見ない)",
+      "block_ids": [
+        "p3-p2",
+        "p3-t1",
+        "p3-p3",
+        "p3-p4",
+        "p3-p5",
+        "p3-p6",
+        "p3-t2",
+        "p3-p7",
+        "p3-p8",
+        "p3-p9",
+        "p3-n1",
+        "P3-boundaries"
+      ]
+    },
+    {
+      "requirement": "§3.4 auto-mode の Oct22 更新(8/7 OUT)と翌週FUTURE[完了と書かない]・分類器(classifier gating)の未検証 — 表:旧/新/未来の三段[発表/プレビュー/GAを別列]",
+      "block_ids": [
+        "p3-p2",
+        "p3-t1",
+        "p3-p3",
+        "p3-p4",
+        "p3-p5",
+        "p3-p6",
+        "p3-t2",
+        "p3-p7",
+        "p3-p8",
+        "p3-p9",
+        "p3-n1",
+        "P3-boundaries"
+      ]
+    }
+  ],
+  "boundary_dispositions": [
+    {
+      "boundary": "接続別 live 未検証、振舞い未再現、1Password coming soon は live に読まない、展開 FUTURE を完了に読まない",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P3-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "分類器の独立試験なし、料金・権限の範囲外は未検証",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P3-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "DRAFT MUST NOT: 全 connector live と書かない／1Password 連携済みと書かない／auto-mode 完了と書かない",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P3-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "出典種別: 告知・blog=PRIMARY_METADATA / 振舞い・安全=VENDOR_BENCH(未再現) / X=SECONDARY",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P3-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Duet待機列・US Pro/Max先行・1Password coming soon・auto-mode翌週FUTUREは未完了 — 発表/待機/順次公開/GAを別status、完了と書かない",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P3-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Independent behavioural reproduction absent; per-connector live status unvalidated; 6000+ != live",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P3-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Pricing/plan limits beyond shared usage unvalidated; auto-mode default via separate X only",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P3-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "1Password coming soon, not live; credential-boundary behaviour unreproduced",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P3-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "waitlist-and-plan-limits: Waitlist + US Pro/Max first + shared limits stated; per-plan rollout unvalidated.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P3-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "connector-and-payment-integration-status: 6000+ catalogue vs live inventory distinguished; per-connector live + 1Password coming-soon; independent check absent.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P3-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "auto-mode-classifier-and-credential-design: Classifier + Managed-Agents (never sees secrets) described; behaviour unreproduced.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P3-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "independent-behavioral-repro: No independent Duet behaviour in-window.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P3-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Per-integration live/rolling/coming-soon unvalidated beyond vendor blog",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P3-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "No independent approval-flow or autofill reproduction",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P3-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Plan/partner exceptions partially stated",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P3-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "per-integration-live-status: Live vs rolling vs coming-soon by connector/plan vendor-stated; independent per-integration check absent.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P3-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "platform-and-plan-scope: Platform/plan scope stated with exceptions; independent entitlement check absent.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P3-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "trust-model-docs: Approval + no-password/OTP injection described; independent trust-model test absent.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P3-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Platform webpage independent view metadata-only; rollout FUTURE at cutoff",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P3-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Classifier/gating behaviour vendor-described; independent test absent",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P3-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "classifier-gating-spec: Classifier gating described; independent test absent.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P3-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "rollout-scope: Most-apps NEXT WEEK future; completed-default claim prohibited; plan/partner exceptions noted.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "P3-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    }
+  ],
+  "profile_extensions": {
+    "page_allocation": "4.5",
+    "editorial_note": "権限図が要。"
+  },
+  "publication_extensions": {}
+}

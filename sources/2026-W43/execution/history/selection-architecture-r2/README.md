@@ -1,0 +1,3 @@
+# W43 selection-architecture r2 history snapshot (unadvanced PROPOSED, no Human decision)
+
+R2 generated 2026-10-25 (commit `3f3c40b77d7ca7acde9ecb0612452210a4f45d26`): 19 SELECTED / 1 HOLD / 12 REJECT, 8 packages target 38/max 44 est 37.0, attention 68/68 untruncated. Sol r2 audit: Selection PASS_WITH_LIMITATIONS, Architecture REQUEST_CHANGES solely on new SA-007 (P4 inverted speedup fractions 10.95/277.80 and 12.45/277.80). R2 files here are exact snapshots of the unadvanced proposal surfaces BEFORE r3 arithmetic correction; machine State remained EVIDENCE_REVIEWED, Gates pending, no Human approval. Preserved for r2-vs-r3 SHA reconciliation.

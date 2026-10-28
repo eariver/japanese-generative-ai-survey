@@ -1,0 +1,39 @@
+{
+  "schema_version": "2.0-rc1",
+  "request_id": "sol-w43-selection-r5-advance-20261025",
+  "issue_id": "2026-W43",
+  "source_root": "sources/2026-W43",
+  "work_branch": "weekly/2026-W43-v2-work",
+  "reviewed_main_sha": "041a08dfef3112643cbf85b4a86a7b6f9128aed6",
+  "recorded_at": "2026-10-25T09:30:00.000Z",
+  "operation": {
+    "kind": "ADVANCE_STAGE",
+    "expected_from_state": "EVIDENCE_REVIEWED",
+    "state_path": "sources/2026-W43/production-state.json",
+    "artifacts": [
+      {
+        "name": "candidate-matrix",
+        "path": "sources/2026-W43/candidate-matrix-v2.json"
+      },
+      {
+        "name": "candidate-selection",
+        "path": "sources/2026-W43/candidate-selection-v2.json"
+      }
+    ],
+    "agent_reviews": [
+      {
+        "check_id": "SOL-W43-R5-SELECTION-EDITORIAL-CONDITIONAL",
+        "kind": "AGENT_EDITORIAL",
+        "executor": "J-GAS editorial Sol",
+        "evidence": "Editorial Sol approved SELECTION Stage only under an explicitly user-authorized revised sequence: skip an additional independent post-r5 audit until after the trusted Architecture Stage. Native Selection is exact unchanged r3/r4/r5, 32 assignments SELECTED19/HOLD1/REJECT12, 19/19 one-time placements, 8 packages; independent r4 Selection review PASS_WITH_LIMITATIONS. Sol final user-workflow adjudication sources/2026-W43/execution/reviews/sol-w43-architecture-r5-stage-advance-editorial-acceptance-20261025.md. This is editorial authorization, NOT independent post-r5 verification or Human Gate approval."
+      },
+      {
+        "check_id": "MUSE-W43-R5-FROZEN-NATIVE-SELECTION",
+        "kind": "AGENT_RESEARCH",
+        "executor": "Muse r5 frozen Core native runner",
+        "evidence": "Muse reports detached-worktree Frozen Core runner exit 0 19 selected / 8 packages / review readiness READY; Matrix SHA256 16a6bbfe569b3215d05fbae7175b3ca04efc6c1846d28c48662245b68f854c3b, Selection SHA256 50decd8697e1737d7adf6fe9f1ac0f4c7cc891353a7be09461b86e8b90beccea; scratch Stage precheck EVIDENCE_REVIEWED→SELECTION_COMPLETE PASS without state writes. See sources/2026-W43/execution/reviews/muse-w43-architecture-r5-postfix-3p2-closure-20261025.md. Sol independent CLI rerun NOT_EXECUTED; trusted Operator must independently validate and create actual receipt."
+      }
+    ],
+    "summary": "Trusted Selection-only advance of W43 EVIDENCE_REVIEWED→SELECTION_COMPLETE on 32/19/1/12 exact r5 Matrix+Selection. Do NOT advance Architecture in this request, leave Human Architecture/Publication Gates pending; full independent content audit scheduled after eventual real Architecture Stage."
+  }
+}

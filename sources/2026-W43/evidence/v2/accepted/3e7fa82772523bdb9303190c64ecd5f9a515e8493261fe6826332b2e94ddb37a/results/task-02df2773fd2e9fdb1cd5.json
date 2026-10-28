@@ -1,0 +1,155 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W43",
+  "evidence_task_id": "evidence:2026-W43:7b57cbc37d685ab4",
+  "basis": {
+    "task_sha256": "df3eba5e6f72d76273461edece4eb50db53e9cbf3eb5e0042501a58185cbf049",
+    "screening_acceptance_sha256": "566cde3bd287dffb38d705c4b6c3fec71a98f67dea96016a009bd929923be48a",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "flux-3-max",
+      "canonical_name": "fal FLUX 3 Max",
+      "entity_type": "MODEL",
+      "organization": "fal",
+      "canonical_url": "https://fal.ai/models/blackforestlabs/flux-3-max/text-to-video"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "flux-3-max",
+    "artifact_type": "PRODUCT",
+    "canonical_name": "fal FLUX 3 Max",
+    "canonical_url": "https://fal.ai/models/blackforestlabs/flux-3-max/text-to-video"
+  },
+  "temporal": {
+    "observed_at": "2026-10-24T19:30:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-10-19",
+        "subject_id": "flux-3-max",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "primary:fal.ai/models/blackforestlabs/flux-3-max/text-to-video",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "fal FLUX 3 Max video with BFL (Oct 19)",
+      "published_at": "2026-10-19",
+      "accessed_at": "2026-10-24T19:30:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Post-trained by fal Research with Black Forest Labs on FLUX 3 (RL plus inference optimization); text/image/keyframes-to-video via fal inference platform, pay-go; Oct 19 platform availability is the IN event (Klein image weights Oct 15 OUT, separate).",
+      "subject_id": "flux-3-max",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "fal PR Oct 19 3:46pm ET + model page + fal blog"
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Speed: PR says 10s clip in 10.95s vs 277.80s Seedance 2.5 (22x) and 11.5x vs FLUX 3 (126.44s); model page/blog/X say 12.45s average (10s 720p). Discrepancy preserved, both vendor-reported.",
+      "subject_id": "flux-3-max",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "PR vs model page vs X (discrepancy explicitly recorded)"
+    },
+    {
+      "statement_id": "claim-3",
+      "text": "Quality: Elo 1139 (1138 on Oct 20 board) tied number-1 image-to-video only, preliminary snapshot, 4868 votes; 47-point improvement over FLUX 3; pricing $0.0425/s 720p / $0.0725/s 1080p Oct 15-Nov 7 then $0.17/$0.29.",
+      "subject_id": "flux-3-max",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "fal-reported AA arena + pricing page"
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "All speed/quality vendor-reported; arena methodology snapshot only; license/availability terms unvalidated; no independent run",
+      "subject_id": "flux-3-max",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "fal-post-and-model-page",
+        "status": "VERIFIED",
+        "finding": "PR, model page, blog and X read; 10.95 vs 12.45 discrepancy preserved with sources.",
+        "subject_ids": [
+          "flux-3-max"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "aa-arena-snapshot",
+        "status": "UNRESOLVED",
+        "finding": "Elo via fal reporting only; arena snapshot unfetched.",
+        "subject_ids": [
+          "flux-3-max"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "speed-discrepancy-basis",
+        "status": "VERIFIED",
+        "finding": "Both figures sourced (PR 10.95s; page/blog 12.45s); vendor-only basis.",
+        "subject_ids": [
+          "flux-3-max"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "license-and-availability-terms",
+        "status": "UNRESOLVED",
+        "finding": " Platform availability stated; license text unvalidated.",
+        "subject_ids": [
+          "flux-3-max"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      "aa-arena-snapshot: Elo via fal reporting only; arena snapshot unfetched.",
+      "license-and-availability-terms:  Platform availability stated; license text unvalidated."
+    ],
+    "contradictions": []
+  }
+}
