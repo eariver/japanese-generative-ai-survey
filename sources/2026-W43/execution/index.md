@@ -625,3 +625,11 @@ This is the current human-readable navigation record for the edition. Machine li
 - Publication Candidate `b006f6df…` (READY_FOR_PUBLICATION_PREVIEW) still binds current PDF bytes `b09fd181…` — General PASS remains bound, no rebuild after PASS.
 - Trusted ADVANCE VALIDATED_DRAFT→RELEASE_CANDIDATE: bridge run 40542944795 SUCCESS, bot `319549499`; checkpoint `orchestration/v2/checkpoints/VALIDATED_DRAFT.json`; State RELEASE_CANDIDATE, publication_preview pending, terminal HUMAN_GATE_REACHED (stop, not approval), exception inactive.
 - Terminal: `MUSE_W43_EXACT_PDF_READY_FOR_HUMAN_PUBLICATION_PREVIEW_GO`. No Preview approval recorded, no Freeze/merge/Release/tag. Final session: `execution/sessions/muse-w43-integrated-final-handoff-20261028.md`.
+
+## Post-GO Freeze via W43-only W42-precedent compat (2026-10-28)
+
+- Contract `sol-w43-post-go-freeze-compat-through-public-release-20261028.md`; start `4b81523e…`/`cf7aae9f…` remote-verified (parent `f03ba496f…`, main `041a08df…`, frozen `774dd39a…`); GO/approval/candidate/freeze/manifest/PDF/TeX pins all match (approval `af676842…` APPROVED, candidate file `f85a17c1…`, freeze `f7369845…`, manifest `bc1a1fdd…`, PDF `b09fd181…`).
+- Trusted run #40608878000 FAILURE confirmed from job log: `prior Stage Checkpoint fails … 'artifacts' is a required property` (CV2-DM-002, approval-as-checkpoint); no bot commit, no State change. No retry of unmodified request.
+- W43 drivers `execution/compat/w43-freeze-compat-driver.py` + `w43-freeze-advance.py`: in-process WRAPPERS around frozen `_prior_artifacts`/`_current_artifacts` (narrower than W42 copy; frozen code untouched on disk). Staged freeze/manifest pass frozen schema/validators read-only.
+- `validate_stage` PASS → `execution/validation/freeze-validation-w43.json`; reviews `execution/compat/w43-freeze-stage-reviews.json` (CORE_STAGE_CONTRACT + exact-PDF + scope rows, label EDITION_LOCAL_RUNTIME_COMPAT).
+- Frozen `build_stage_checkpoint` + `advance_with_checkpoint` + `validate_agent_state` all PASS: checkpoint `orchestration/v2/checkpoints/RELEASE_CANDIDATE.json`, State FROZEN, freeze passed, next stage:release. `__pycache__` removed.
