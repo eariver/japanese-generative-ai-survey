@@ -1,0 +1,48 @@
+\section{OpenAI、セキュリティ特化のGPT-6 Cyberを発表}
+OpenAIはサイバーセキュリティ研究向けモデル「GPT-6 Cyber」を発表し、Daybreak Redの一部顧客への限定提供を開始した。Grokが引用する発表によれば、ExploitGymの成績は前世代の32.1\%から48.5\%へ改善。Firefoxの未知の高深刻度脆弱性81件の発見や、Linuxカーネル研究での活用も報告された。能力向上に加え、許可された範囲外の行為を抑制するアライメントを重視し、Preparedness FrameworkではCriticalに分類されたという。これらの数値は発表側の報告であり、本号で独立検証はしていない。
+\dailyxsource{OpenAI}{https://x.com/OpenAI/status/2118390190246879554}
+
+\section{Hugging Face、ML InternをSlackに展開}
+Hugging Faceはオープンソースの「ML Intern」を、利用者のSlackワークスペースに導入できるボットとして公開した。チャットからモデル評価、データセット構築、ファインチューニングを指示でき、ファイルやMCP接続との連携にも言及している。機械学習の実務を専門ツールの画面操作から会話型ワークフローへ移す試みとして注目される。一方、権限境界やGPU利用費の制御など、運用上の詳細は今後の確認事項となる。
+\dailyxsource{Hugging Face}{https://x.com/huggingface/status/2118430862949945612}
+
+\section{FlashProveのモデル出所証明に関心}
+AnthropicのFlashProveについて、モデル応答が実際に指定モデルから生成されたことを暗号学的に検証する仕組みとして、解説投稿が共有された。関連する投稿ではハッシュベースのzkSNARKやLlama 4 Maverickでの試験が言及されたが、いずれも投稿上の説明である。今回の観測窓内ではAnthropic公式の新規発表は確認されず、技術本体の発表は観測窓外とみられる。実用規模での証明コストと検証時間が今後の論点となる。
+\dailyxsource{eWeek}{https://x.com/eWEEKNews/status/2118455846040465603}
+
+\section{シミュレーションと実観測を結ぶADA}
+研究者Aditi KrishnapriyanがAdversarial Distribution Alignment（ADA）を紹介した。シミュレーションで訓練した生成モデルを、欠損やノイズを含む実世界の観測データに合わせて調整する方法で、分子動力学やタンパク質構造への応用が例示されている。計算環境と実測環境の分布差を縮めることは、科学向け生成モデルの実用化で重要な課題だ。NeurIPS 2026向け研究として紹介されており、他のsim-to-real手法との比較が待たれる。
+\dailyxsource{Aditi Krishnapriyan}{https://x.com/ask1729/status/2118361926669607022}
+
+\section{Kimi K3.1 Proの重み公開を巡る議論}
+Moonshot AIのKimi K3.1 ProがHugging Faceでオープンウェイト公開されたことを、日本語の解説投稿が取り上げた。重みへのアクセスはローカル推論や追加学習を試す機会を広げるが、実行に必要な計算資源やライセンス条件は別途確認が必要となる。引用元の公式発表は前日の観測窓外であり、今回取り上げる投稿も06日07時02分と終了時刻の2分後に公開された点に注意したい。
+\dailyxsource{あいり}{https://x.com/airiaiai8/status/2118464036019003756}
+
+\section{量子化とローカル推論のライブ配信告知}
+Hugging Faceはllama.cppとvLLMを用いたモデル量子化のライブ配信を翌週に実施すると告知した。大規模モデルをノートPCなど限られた計算環境に収める技術を扱う予定で、モデルの軽量化と推論基盤の選択を学ぶ機会となる。オープンウェイト公開と組み合わせ、手元でモデルを運用するための実践的な関心が続いている。
+\dailyxsource{Hugging Face}{https://x.com/huggingface/status/2118306577203822976}
+
+\section{次期フロンティアモデルの公開予測}
+11月中にGPT-6.2 Astra、Claude Fable、Gemini 4 Flash、DeepSeek V4.1、Qwen 4、Grok 4.8などが公開されるとの予測投稿が共有された。別の投稿では内部モデルのベンチマーク改善にも触れている。ただし、Grokの収集結果では公式の裏付けが確認されておらず、いずれもリークまたは推測として扱うべき情報である。モデル名や公開時期を確定事項とはみなせない。
+\dailyxsource{INDIE | KAI}{https://x.com/adityaa_behera/status/2118368850471432631}
+
+\section{エージェントハーネスで評価が変動するとの主張}
+同一モデルに同一の90タスクを与えても、エージェントハーネスの違いにより評価スコアが30\%から81\%へ変化したとする投稿が話題になった。IBM由来の数値と主張されるが、一次資料への直接リンクは確認されていない。モデル単体の能力と、ツール利用・手順管理・再試行などを含む実行環境の寄与を分けて測る必要性を示唆する話題である。なお当該投稿は観測終了5分後の07時05分に公開された。
+\dailyxsource{Prompt Engineer 48}{https://x.com/prompt48/status/2118464644780339336}
+
+\section{動画生成モデルの処理時間比較}
+Gemini Omni 1.2 Flash、Seedance 2.5、Kling 4.0などの動画生成モデルについて、生成時間を比較したとする個人投稿が共有された。速度は利用条件や入力内容、計測環境に左右されるため、提示値を公式な性能比較として扱うことはできない。原文でも一次資料や独立再現は未確認とされている。投稿時刻は07時03分で、今回の観測窓を3分越えている。
+\dailyxsource{Riccardo Wolf}{https://x.com/WolfRiccardo/status/2118464197914673386}
+
+\section{タンパク質配列を設計する生成モデル}
+研究者Jagannath Mondalが、相分離タンパク質の配列に見られる規則性を学習し、新しい配列を設計する生成言語モデルをChemical Scienceに発表したと投稿した。生成AIを自然言語から生体分子の設計へ応用する例であり、設計された配列が実験条件下でどのような物性を示すかが重要となる。投稿には論文へのリンクが付されているが、本号では実験内容を独立検証していない。
+\dailyxsource{Jagannath Mondal}{https://x.com/Jmondal_tifrh/status/2118240388737843292}
+
+\section{Parametric CAD Bench v3を公開}
+gNucleus AIは、テキスト指示や工学図面からエージェントがパラメトリックCADを作成する能力を評価する「Parametric CAD Bench v3」をarXivで公開した。単に形状を描画するだけでなく、設計パラメータや編集可能な構造を伴う成果物を評価する研究の方向性がうかがえる。今後は評価指標とリーダーボードの結果が注目される。
+\dailyxsource{gNucleus AI}{https://x.com/gNucleusAI/status/2118450946334499158}
+
+\section{生成モデリング研究の論文共有}
+統計・機械学習論文の紹介アカウントから、Cascading Extremesの生成モデリングに関するarXiv論文が共有された。原文ではほかにも材料生成や組織モデルの自律生成など、複数の研究投稿が観測されたとされる。応用対象は多岐にわたるが、いずれも生成モデルを科学的・工学的な問題設定に拡張する動きとして整理できる。各論文の詳細や再現性の確認は今後の課題となる。
+\dailyxsource{Statistics Papers}{https://x.com/StatsPapers/status/2118301355089522952}
+
