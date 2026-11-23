@@ -1,0 +1,31 @@
+\section{OpenAIとCisco、eBPF防護基盤Shirudoを公開}
+OpenAIとCiscoは、Linuxシステムを停止させずにエクスプロイトを防ぐオープンソースランタイム「Shirudo」を発表した。AIエージェントが動的なeBPF制御を作成し、正式なパッチを適用するまでの防護時間を確保する構想だ。OpenAIの説明では、制御されたテストでCodex生成のシールドがJava4Shellを再起動なしで阻止したという。署名付きマイクロパッチの設計も紹介されているが、本番適用のカーネル条件やTPM要件などは今後の確認課題である。
+\dailyxsource{OpenAI公式投稿}{https://x.com/OpenAI/status/2124980590717911527}
+
+\section{Anthropic、Claude Shipをベータ公開}
+Anthropicは、プルリクエストのレビュー、失敗したチェックの修正、チームポリシーに基づく承認を支援する「Claude Ship」をベータ公開した。既存のCode ReviewにPR StewardとClaude Approvalsを組み合わせ、Claude Codeからは\texttt{/ship}コマンドで利用する。対象はTeam／Enterpriseで、レビューから承認までをエージェントが扱う点が特徴だ。運用時にはポリシーの記述形式と、誤った承認を防ぐ安全設計が重要となる。
+\dailyxsource{Addy Osmaniの関連紹介投稿}{https://x.com/addyosmani/status/2124960211287101656}
+
+\section{OpenAI、地域企業向けOpenWorksを開始}
+OpenAIは、地域のAI専門家に資金を提供し、中小企業のAI導入をオーナー負担なしで支援する「OpenWorks」を発表した。米国20コミュニティで試験運用を開始し、公式サイトでは支援パートナーへの月額最大8,000ドルの給付や、参加企業向けChatGPT Businessの3か月無料提供が案内されている。モデル提供だけでなく、地域の導入支援人材を介して業務定着を促す取り組みとして注目される。具体的な応募条件や対象地域の確認が今後の焦点となる。
+\dailyxsource{OpenAI公式投稿}{https://x.com/OpenAI/status/2124922133545714160}
+
+\section{Gemini 4エージェント、量子回路を最適化}
+Google DeepMindは、Gemini 4のエージェントチームによって量子回路を最適化し、将来のシミュレーションコストを最大10分の1に削減できると発表した。Leanによる形式検証を組み合わせ、検証済みの解とライブラリをオープンソース化したという。生成した候補を形式的に検証する研究手法は、AIによる探索と厳密な正しさの確認を接続する事例となる。ただし、削減効果の適用範囲やベンチマーク条件は別途確認が必要だ。
+\dailyxsource{Google DeepMind公式投稿}{https://x.com/GoogleDeepMind/status/2124911073266413634}
+
+\section{Gemini 4 Neon、Turing研究室を3D再現}
+Google DeepMindは、Gemini 4 Neonを使い、アーカイブ写真からAlan Turingの1936年の研究室を対話型3D空間として再現したデモを公開した。デモではUniversal Turing Machineの動作も示されたという。歴史資料の視覚的再構成とインタラクティブな表現を組み合わせた例として興味深い。一方、制作工程や再現精度を詳述する独立した技術資料はGrokの収集時点で未確認であり、実装方法の評価には追加情報が必要である。
+\dailyxsource{Google DeepMind公式投稿}{https://x.com/GoogleDeepMind/status/2124959312606818597}
+
+\section{Meta関連研究者、MLEエージェントの実験成果を報告}
+Meta関連の研究者による投稿で、大規模推薦システムの検索ランカーに対し、機械学習エージェントが実験の提案・実装・評価を行う研究が紹介された。投稿では1,097件の候補実験を実行し、29.6\%の勝率で325件の変更を採用したと報告されている。実運用の機械学習改善を自律化する方向性が注目されるが、論文本文の完全な確認はGrok収集時点で未了である。数値は投稿者の報告として扱い、独立検証済みの結果とは区別する。
+\dailyxsource{Meta関連研究者の投稿}{https://x.com/armand_ruiz/status/2124910181062729857}
+
+\section{オープンウェイトモデルのイベント告知}
+Artificial Analysisが、オープンウェイトモデルに焦点を当てたイベントを告知した。NVIDIA、Google DeepMind、Reflection AI、Thinking Machines、MiniMaxなどの関係者が参加予定とされ、モデルの公開形態や開発動向を巡る議論が見込まれる。ただしGrok記載の投稿時刻は11月24日07:06 JST頃で、今回の観測窓の終了時刻07:00を過ぎている。したがって、窓外の関連投稿として掲載する。
+\dailyxsource{Artificial Analysisの告知（観測窓外）}{https://x.com/ArtificialAnlys/status/2124987975511740692}
+
+\section{RTX 3090による220Bモデル推論の個人報告}
+個人投稿では、RTX 3090を1台使用し、262Kコンテキストの220Bモデルを動作させたと報告された。ClaudeやCodexとの比較にも言及しているが、構成、オフロード方法、速度や再現性について独立した検証はない。大規模モデルのローカル運用を巡るコミュニティの関心を示す一例である。なお投稿時刻は11月24日07:06 JST頃であり、観測窓外の報告として扱う。
+\dailyxsource{MyKEの個人報告（観測窓外・未検証）}{https://x.com/michaelsabrnak/status/2124988028879802568}
